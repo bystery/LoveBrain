@@ -1,0 +1,585 @@
+{
+  "review_date": "2026-10-25 Asia/Shanghai",
+  "real_model_calls": 0,
+  "checks": {
+    "frozen_closure_and_files_match": true,
+    "candidate_identity_bound_to_request": true,
+    "request_pending": true,
+    "old_r2_authorization_closed": true,
+    "new_real_budget_absent": true,
+    "six_v5_fixtures_pass": true,
+    "pending_live_rejected_before_dispatch": true,
+    "capture_48_order_verified_zero_real": true,
+    "six_independent_states": true,
+    "full_seed_values_in_both_arms": true,
+    "goal_on_off_inputs_correct": true,
+    "all_candidate_requests_require_empty_analysis": true,
+    "reference_not_given_new_empty_analysis_protocol": true
+  },
+  "frozen_drift": [],
+  "fixtures": [
+    {
+      "name": "v5_system_drops_analysis_generation_requirement",
+      "ok": true,
+      "detail": "protocol PASS: v5 system 要求 analysis={}、与 r2 system 有意不同"
+    },
+    {
+      "name": "v5_fact_action_rule_enters_request",
+      "ok": true,
+      "detail": "fact_action PASS: 通用事实/行动边界进入请求"
+    },
+    {
+      "name": "v5_keeps_r2_guards",
+      "ok": true,
+      "detail": "guards PASS: 来源/媒体/时间三护栏从 r2 继承进入请求"
+    },
+    {
+      "name": "v5_goal_plans_boundary_carryover",
+      "ok": true,
+      "detail": "carry PASS: 目标启停/已确认事项持续/草稿不写回（analysis 空仍不写回）"
+    },
+    {
+      "name": "v5_snapshot_restore_state_isolated",
+      "ok": true,
+      "detail": "restore PASS: snapshot/restore 后真实事件+时间续用"
+    },
+    {
+      "name": "v5_notes_prefix_and_flags",
+      "ok": true,
+      "detail": "notes PASS: v5 身份前缀与护栏标志齐全"
+    }
+  ],
+  "pending_auth_error": "授权无效，零派发拒绝: 授权 AUTH-V5-CTX-20261025-01 不处于 authorized=true（实为 False，status='PENDING_USER_APPROVAL'）——关闭/超额授权不得复活",
+  "candidate_identity": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+  "rows": [
+    {
+      "arm": "parent",
+      "case_id": "E007_T01",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 589,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T02",
+      "seed_missing": [],
+      "expected_active": true,
+      "active_block_present": true,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 814,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T03",
+      "seed_missing": [],
+      "expected_active": true,
+      "active_block_present": true,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 859,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T04",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 902,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T05",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 853,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T06",
+      "seed_missing": [],
+      "expected_active": true,
+      "active_block_present": true,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 895,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T07",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 873,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T08",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 858,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E008_T01",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 621,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E008_T02",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 793,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E008_T03",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 862,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E008_T04",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 927,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E008_T05",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 857,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E008_T06",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 934,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E008_T07",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 874,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E008_T08",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 855,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E009_T01",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 619,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E009_T02",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 782,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E009_T03",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 863,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E009_T04",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 904,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E009_T05",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 863,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E009_T06",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 821,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E009_T07",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 846,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "parent",
+      "case_id": "E009_T08",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": false,
+      "user_utf16": 827,
+      "system_utf16": 8295
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T01",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1353,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T02",
+      "seed_missing": [],
+      "expected_active": true,
+      "active_block_present": true,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1675,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T03",
+      "seed_missing": [],
+      "expected_active": true,
+      "active_block_present": true,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1694,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T04",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1700,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T05",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1727,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T06",
+      "seed_missing": [],
+      "expected_active": true,
+      "active_block_present": true,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1931,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T07",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1938,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T08",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1973,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E008_T01",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1392,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E008_T02",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1562,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E008_T03",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1570,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E008_T04",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1743,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E008_T05",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1739,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E008_T06",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1924,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E008_T07",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1936,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E008_T08",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 2006,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E009_T01",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1380,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E009_T02",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1541,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E009_T03",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1561,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E009_T04",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1712,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E009_T05",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1743,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E009_T06",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1795,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E009_T07",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1941,
+      "system_utf16": 1989
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E009_T08",
+      "seed_missing": [],
+      "expected_active": false,
+      "active_block_present": false,
+      "old_permanent_private_goal_present": false,
+      "v5_analysis_empty_instruction": true,
+      "user_utf16": 1976,
+      "system_utf16": 1989
+    }
+  ],
+  "capture_is_not_model_quality_or_resource_evidence": true
+}

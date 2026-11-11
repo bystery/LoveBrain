@@ -1,0 +1,50 @@
+{
+  "checks": {
+    "restore_new_process": true,
+    "corrected_fact_in_on_prompt": true,
+    "old_fact_absent_from_raw_history": true,
+    "target_absent_when_memory_projection_off": true,
+    "closed_goal_not_in_current_prompt": true,
+    "draft_not_committed": true,
+    "one_gateway_call_per_turn": true
+  },
+  "passed": true,
+  "facts": {
+    "f_0001": {
+      "fact_id": "f_0001",
+      "text": "她对芝麻过敏，不能吃芝麻",
+      "subject": "HER",
+      "relation": "过敏",
+      "evidence_uids": [
+        0,
+        1
+      ],
+      "evidence_quotes": [
+        "我对花生过敏，外出吃饭不能加花生。",
+        "我刚确认过，不能吃的是芝麻，不是花生。"
+      ],
+      "certainty": "confirmed",
+      "status": "confirmed",
+      "event_time": "",
+      "valid_from": "2026-12-01 10:02",
+      "valid_to": "",
+      "supersedes": "f_0001@v1",
+      "origin": "reported",
+      "plan_status": "",
+      "ts": "2026-12-01 10:01",
+      "history": [
+        {
+          "status": "confirmed",
+          "text": "我对花生过敏，外出吃饭不能加花生。",
+          "valid_to": "2026-12-01 10:02",
+          "reason": "correct",
+          "src_uids": [
+            1
+          ],
+          "quote": "我刚确认过，不能吃的是芝麻，不是花生。"
+        }
+      ]
+    }
+  },
+  "measurement": "Mechanism/fixture proof only; not real model retrieval quality"
+}

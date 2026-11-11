@@ -1,0 +1,24 @@
+{
+  "kind": "clean_pair_source_data_only_not_a_dispatch_plan",
+  "source_primary_nodes": 191,
+  "source_repeat_nodes_excluded": 24,
+  "primary_pairs": 96,
+  "generation_slots_retained": 192,
+  "controls": 12,
+  "swapped_pair_ids": [
+    "FP030",
+    "FP072",
+    "FP047",
+    "FP012",
+    "FP001",
+    "FP044",
+    "FP024",
+    "FP022",
+    "FP076",
+    "FP002",
+    "FP069",
+    "FP014"
+  ],
+  "execution_plan": "../RECOVERY_PLAN.json",
+  "policy": "Data only. Full all-slot qwen study was stopped after feasibility failures. Use the separate primary-first profile plan; no regeneration or naive pooling with Gemini."
+}

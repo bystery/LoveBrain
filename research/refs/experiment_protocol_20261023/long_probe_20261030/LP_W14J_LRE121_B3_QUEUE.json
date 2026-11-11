@@ -1,0 +1,145 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W14J_LRE121",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W14J_LRE121_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w14j_long4_live_20261102",
+ "n_queued": 4,
+ "queue": [
+  {
+   "pair_id": "LP:LRE121:LRE121_T39",
+   "order": "main",
+   "story": "",
+   "cid": "LRE121_T39",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT 编造“九月底那针你答应请我一整笼虾饺”这一未发生的承诺，属编造已发生安排并无据确定化；LEFT 对“双份肠粉”归属提出异议但仍认账，未构成严重错误。",
+   "key_quote": "LEFT：“这周六还是那家？我请，虾饺你随便点”认账并落实下一步；RIGHT：“九月底那针你答应请我一整笼虾饺”系编造承诺",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "九月底那针你答应请我一整笼虾饺",
+      "双份肠粉"
+     ],
+     "found_where": {
+      "九月底那针你答应请我一整笼虾饺": "key_quote",
+      "双份肠粉": null
+     },
+     "nowhere": [
+      "双份肠粉"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE121:LRE121_T06",
+   "order": "main",
+   "story": "",
+   "cid": "LRE121_T06",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "可我下下周六晚上约了人吃饭，四点打完留观完也赶得上？我再想想——回复却当已定",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 0,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE121:LRE121_T21",
+   "order": "main",
+   "story": "",
+   "cid": "LRE121_T21",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "行，12号十点二十我记下了。19号也留着，别到时候真用上就好。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE121:LRE121_T28",
+   "order": "main",
+   "story": "",
+   "cid": "LRE121_T28",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT把'九点半被连夜取消'的旧约与桂溪→惠民换号、两针完成混成一条因果链，旧约取消原因与换号进程均无据，属无据确定化+事项状态错置",
+   "key_quote": "眼泪先收一收，人家行政这回总算提前两周了",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

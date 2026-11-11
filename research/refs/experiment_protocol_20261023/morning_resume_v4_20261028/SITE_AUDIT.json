@@ -1,0 +1,1334 @@
+{
+  "as_of": "2026-10-28T10:27:54.799750+08:00",
+  "new_real_model_calls": 0,
+  "budgets": {
+    "AUTH-P06-RECOVERY-20261027-01": {
+      "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-RECOVERY-20261027-01.jsonl",
+      "events": {
+        "authorization_scope": 1,
+        "attempt_started": 18,
+        "attempt_completed": 17,
+        "attempt_failed": 1,
+        "accounting_reconciliation": 1,
+        "authorization_closed": 1,
+        "accounting_reconciliation_correction": 1
+      },
+      "scope": {
+        "authorization_id": "AUTH-P06-RECOVERY-20261027-01",
+        "kind": "authorization_scope",
+        "max_attempts": 243,
+        "scope": {
+          "allowed_models": [
+            "dsf",
+            "qwen3.8-flash"
+          ],
+          "endpoint": "http://127.0.0.1:17770/v1",
+          "experiment": "P06_recovery_short_review",
+          "forbidden_models": [
+            "gemini-3.8-flash",
+            "hy3",
+            "hy4-preview"
+          ]
+        },
+        "ts": "2026-10-27 23:08:27"
+      },
+      "last": {
+        "authorization_id": "AUTH-P06-RECOVERY-20261027-01",
+        "budget_logical_reservations": 18,
+        "gateway_distinct_attempt_ids": 18,
+        "gateway_physical_starts": 27,
+        "kind": "accounting_reconciliation_correction",
+        "note": "首版对账把 distinct attempt_id 数(18)误当物理开始数写入 accounting_reconciliation 与 authorization_closed 的 reason；权威口径=物理 27 次、漏计 9（见本记录与 CALL_ACCOUNTING_RECONCILIATION.json）。closed 状态有效，额度按物理计。",
+        "reused_attempt_ids": [
+          "p06rec:FP001-interaction:1793113707:3",
+          "p06rec:FP001-task:1793113707:2",
+          "p06rec:FP001-task:q120:2",
+          "p06rec:FP001-task:small12:5",
+          "p06rec:FP005-task:small12:8"
+        ],
+        "session": "main-20261028-002629",
+        "source_json": "refs/experiment_protocol_20261023/max288_v3_20261028/CALL_ACCOUNTING_RECONCILIATION.json",
+        "supersedes": [
+          {
+            "line": 38,
+            "ts": "2026-10-28 00:41:40",
+            "wrong_gateway_physical_starts": 18,
+            "wrong_undercount": 0
+          }
+        ],
+        "ts": "2026-10-28 00:42:59",
+        "undercount": 9
+      },
+      "duplicate_started_ids": {},
+      "unsettled_ids": [],
+      "duplicate_terminal_ids": {},
+      "mtime": "2026-10-28T00:42:59.604961+08:00"
+    },
+    "AUTH-P07-V2-20261028-01": {
+      "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P07-V2-20261028-01.jsonl",
+      "events": {
+        "authorization_scope": 1,
+        "attempt_started": 86,
+        "attempt_failed": 19,
+        "attempt_completed": 67
+      },
+      "scope": {
+        "authorization_id": "AUTH-P07-V2-20261028-01",
+        "kind": "authorization_scope",
+        "max_attempts": 96,
+        "scope": {
+          "allowed_models": [
+            "dsf",
+            "hy3",
+            "qwen3.8-flash"
+          ],
+          "endpoint": "http://127.0.0.1:17770/v1",
+          "experiment": "P07_closed_loop_v2",
+          "forbidden_models": [
+            "gemini-3.8-flash",
+            "hy4-preview"
+          ]
+        },
+        "ts": "2026-10-28 00:53:44"
+      },
+      "last": {
+        "attempt_id": "p07:trajrev:I4_hesitant_pair01:1793142789:2",
+        "authorization_id": "AUTH-P07-V2-20261028-01",
+        "error": "timed out",
+        "kind": "attempt_failed",
+        "ts": "2026-10-28 07:15:39"
+      },
+      "duplicate_started_ids": {},
+      "unsettled_ids": [],
+      "duplicate_terminal_ids": {},
+      "mtime": "2026-10-28T07:15:39.864381+08:00"
+    },
+    "AUTH-P07-W09-20261028-01": {
+      "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P07-W09-20261028-01.jsonl",
+      "events": {
+        "authorization_scope": 1,
+        "attempt_started": 142,
+        "attempt_completed": 125,
+        "attempt_failed": 17,
+        "batch_rejected": 1
+      },
+      "scope": {
+        "authorization_id": "AUTH-P07-W09-20261028-01",
+        "kind": "authorization_scope",
+        "max_attempts": 304,
+        "scope": {
+          "allowed_models": [
+            "dsf",
+            "hy3",
+            "qwen3.8-flash"
+          ],
+          "endpoint": "http://127.0.0.1:17770/v1",
+          "experiment": "P07_closed_loop_v2",
+          "forbidden_models": [
+            "gemini-3.8-flash",
+            "hy4-preview"
+          ]
+        },
+        "ts": "2026-10-28 07:26:17"
+      },
+      "last": {
+        "attempt_id": "p07:I1__fbhesitant__v6_integrated__r5:w09a6:sim:8",
+        "authorization_id": "AUTH-P07-W09-20261028-01",
+        "error": "TimeoutError: timed out",
+        "kind": "attempt_failed",
+        "ts": "2026-10-28 09:08:10"
+      },
+      "duplicate_started_ids": {},
+      "unsettled_ids": [],
+      "duplicate_terminal_ids": {},
+      "mtime": "2026-10-28T09:08:10.220705+08:00"
+    },
+    "AUTH-P07-W03VAL-20261028-01": {
+      "ledger_exists": false
+    }
+  },
+  "pilot_v2": {
+    "traces": [
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\TRACE_I2__fbhesitant__reference_product_v1__r1.json",
+        "trajectory_id": "I2__fbhesitant__reference_product_v1__r1",
+        "status": "incomplete_environment_failure",
+        "arm": "reference_product_v1",
+        "scenario": "I2",
+        "feedback": "hesitant",
+        "repeat": 1,
+        "turns": 1,
+        "harness_calls": 1,
+        "sim_calls": 0,
+        "deliveries": {
+          "send": 1
+        },
+        "sha256": "412103d82682400ee6c5793c4ed142cd5ab1dd01b67bf72caf968a92b426b85b"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\TRACE_I2__fbpositive__reference_product_v1__r1.json",
+        "trajectory_id": "I2__fbpositive__reference_product_v1__r1",
+        "status": "incomplete_environment_failure",
+        "arm": "reference_product_v1",
+        "scenario": "I2",
+        "feedback": "positive",
+        "repeat": 1,
+        "turns": 2,
+        "harness_calls": 2,
+        "sim_calls": 1,
+        "deliveries": {
+          "send": 2
+        },
+        "sha256": "c04acbddc50b0288e3104cb8b426900c774879de9e8830a46a9a4c6c81e5d241"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_032742\\TRACE_I2__fbpositive__v6_integrated__r1.json",
+        "trajectory_id": "I2__fbpositive__v6_integrated__r1",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I2",
+        "feedback": "positive",
+        "repeat": 1,
+        "turns": 1,
+        "harness_calls": 1,
+        "sim_calls": 1,
+        "deliveries": {
+          "send": 1
+        },
+        "sha256": "90a03ba56142472e1e0c4ff5f1b84bf69a49024d41aa778227f85e8d85f63489"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_032742\\TRACE_I4__fbhesitant__reference_product_v1__r1.json",
+        "trajectory_id": "I4__fbhesitant__reference_product_v1__r1",
+        "status": "incomplete_environment_failure",
+        "arm": "reference_product_v1",
+        "scenario": "I4",
+        "feedback": "hesitant",
+        "repeat": 1,
+        "turns": 2,
+        "harness_calls": 2,
+        "sim_calls": 2,
+        "deliveries": {
+          "send": 2
+        },
+        "sha256": "fd6e7d6890ec01a6e0f8f0ae5df597689794d4ccabef1be0ac13f0d662c48dab"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_032742\\TRACE_I4__fbpositive__reference_product_v1__r1.json",
+        "trajectory_id": "I4__fbpositive__reference_product_v1__r1",
+        "status": "complete",
+        "arm": "reference_product_v1",
+        "scenario": "I4",
+        "feedback": "positive",
+        "repeat": 1,
+        "turns": 3,
+        "harness_calls": 3,
+        "sim_calls": 3,
+        "deliveries": {
+          "send": 3
+        },
+        "sha256": "8224e31b2964a1a6cfa709d3901b824c2c6a129ce018ea6d87883f2e98a27300"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_052708\\TRACE_I2__fbhesitant__v6_integrated__r1.json",
+        "trajectory_id": "I2__fbhesitant__v6_integrated__r1",
+        "status": "complete",
+        "arm": "v6_integrated",
+        "scenario": "I2",
+        "feedback": "hesitant",
+        "repeat": 1,
+        "turns": 3,
+        "harness_calls": 3,
+        "sim_calls": 3,
+        "deliveries": {
+          "send": 2,
+          "delivery_failed": 1
+        },
+        "sha256": "f1fdfe2cdd09b4c4cf9f2a29f22c76adbf6553e9b8f0d35ed3da53e693c60a4c"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_052708\\TRACE_I4__fbhesitant__v6_integrated__r1.json",
+        "trajectory_id": "I4__fbhesitant__v6_integrated__r1",
+        "status": "complete",
+        "arm": "v6_integrated",
+        "scenario": "I4",
+        "feedback": "hesitant",
+        "repeat": 1,
+        "turns": 3,
+        "harness_calls": 3,
+        "sim_calls": 3,
+        "deliveries": {
+          "send": 3
+        },
+        "sha256": "447c63a4cf51c9c1d526a3a675d42a6d2eb0f752ca08b5751bcba736253e588a"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_052708\\TRACE_I4__fbpositive__v6_integrated__r1.json",
+        "trajectory_id": "I4__fbpositive__v6_integrated__r1",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I4",
+        "feedback": "positive",
+        "repeat": 1,
+        "turns": 1,
+        "harness_calls": 1,
+        "sim_calls": 0,
+        "deliveries": {
+          "send": 1
+        },
+        "sha256": "ea4edb2172338f5fb2f9df61f348514d26664a035c6bbe2c9cba51789e16c0d7"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_055728a\\TRACE_I4__fbpositive__v6_integrated__r2.json",
+        "trajectory_id": "I4__fbpositive__v6_integrated__r2",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I4",
+        "feedback": "positive",
+        "repeat": 2,
+        "turns": 1,
+        "harness_calls": 1,
+        "sim_calls": 0,
+        "deliveries": {
+          "send": 1
+        },
+        "sha256": "2f789dbf0e316c88f3b734d4fed60aee6ab363621e5d5cb821ef2f5b08dc3655"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_055728b\\TRACE_I4__fbhesitant__reference_product_v1__r2.json",
+        "trajectory_id": "I4__fbhesitant__reference_product_v1__r2",
+        "status": "incomplete_environment_failure",
+        "arm": "reference_product_v1",
+        "scenario": "I4",
+        "feedback": "hesitant",
+        "repeat": 2,
+        "turns": 1,
+        "harness_calls": 1,
+        "sim_calls": 1,
+        "deliveries": {
+          "send": 1
+        },
+        "sha256": "e040776dc3ee64f7a6cfcda42428a46fbf48a45928133fa26dfffbed5acc4704"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_055728c\\TRACE_I2__fbhesitant__reference_product_v1__r2.json",
+        "trajectory_id": "I2__fbhesitant__reference_product_v1__r2",
+        "status": "complete",
+        "arm": "reference_product_v1",
+        "scenario": "I2",
+        "feedback": "hesitant",
+        "repeat": 2,
+        "turns": 3,
+        "harness_calls": 3,
+        "sim_calls": 3,
+        "deliveries": {
+          "send": 3
+        },
+        "sha256": "c8b6a1cece621e8a469aa1c116b399dfbaae763d50e2a752a2d1d3d9b9c58565"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_065658a\\TRACE_I4__fbpositive__v6_integrated__r3.json",
+        "trajectory_id": "I4__fbpositive__v6_integrated__r3",
+        "status": "complete",
+        "arm": "v6_integrated",
+        "scenario": "I4",
+        "feedback": "positive",
+        "repeat": 3,
+        "turns": 3,
+        "harness_calls": 3,
+        "sim_calls": 3,
+        "deliveries": {
+          "send": 3
+        },
+        "sha256": "797c367656181c783d17e081c637912149a8f33ad4eef0a48f75313d30fbb124"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_065658b\\TRACE_I4__fbhesitant__reference_product_v1__r3.json",
+        "trajectory_id": "I4__fbhesitant__reference_product_v1__r3",
+        "status": "complete",
+        "arm": "reference_product_v1",
+        "scenario": "I4",
+        "feedback": "hesitant",
+        "repeat": 3,
+        "turns": 3,
+        "harness_calls": 3,
+        "sim_calls": 3,
+        "deliveries": {
+          "send": 3
+        },
+        "sha256": "9b55bf071cf3bfdccb6958be19cb01a70c9aee938321ff276aa728c65dfde0a8"
+      }
+    ],
+    "statuses": {
+      "incomplete_environment_failure": 7,
+      "complete": 6
+    }
+  },
+  "w09": {
+    "traces": [
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbbusy__reference_product_v1__r1.json",
+        "trajectory_id": "I1__fbbusy__reference_product_v1__r1",
+        "status": "complete",
+        "arm": "reference_product_v1",
+        "scenario": "I1",
+        "feedback": "busy",
+        "repeat": 1,
+        "turns": 4,
+        "harness_calls": 4,
+        "sim_calls": 4,
+        "deliveries": {
+          "send": 4
+        },
+        "sha256": "e861d8ab7e5c6ed8c945d8af733383ab6a41a2488b57605cb58c2fc76c9d6d8e"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbbusy__v6_integrated__r1.json",
+        "trajectory_id": "I1__fbbusy__v6_integrated__r1",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I1",
+        "feedback": "busy",
+        "repeat": 1,
+        "turns": 2,
+        "harness_calls": 2,
+        "sim_calls": 1,
+        "deliveries": {
+          "send": 2
+        },
+        "sha256": "5de400adda13573037f0fab961816db3c450805d164903dfc7f027a53e3bc4a9"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbbusy__v6_integrated__r2.json",
+        "trajectory_id": "I1__fbbusy__v6_integrated__r2",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I1",
+        "feedback": "busy",
+        "repeat": 2,
+        "turns": 1,
+        "harness_calls": 1,
+        "sim_calls": 0,
+        "deliveries": {
+          "send": 1
+        },
+        "sha256": "e54906b51a98d09de978bd9bf5e31cadcb06d3e385ea116828ffc73c1e0ff8d7"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbdisengage__reference_product_v1__r1.json",
+        "trajectory_id": "I1__fbdisengage__reference_product_v1__r1",
+        "status": "complete",
+        "arm": "reference_product_v1",
+        "scenario": "I1",
+        "feedback": "disengage",
+        "repeat": 1,
+        "turns": 4,
+        "harness_calls": 4,
+        "sim_calls": 4,
+        "deliveries": {
+          "send": 4
+        },
+        "sha256": "324c5fbfe672fe0103244865f33e2c92dc9ea8a43a018051aa9e909cfa8557d9"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbhesitant__reference_product_v1__r1.json",
+        "trajectory_id": "I1__fbhesitant__reference_product_v1__r1",
+        "status": "complete",
+        "arm": "reference_product_v1",
+        "scenario": "I1",
+        "feedback": "hesitant",
+        "repeat": 1,
+        "turns": 3,
+        "harness_calls": 3,
+        "sim_calls": 3,
+        "deliveries": {
+          "send": 3
+        },
+        "sha256": "58c55f9dfd899294f61a331428f17a5185c28c30c18c546a1a3af0052dfe0303"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbhesitant__v6_integrated__r1.json",
+        "trajectory_id": "I1__fbhesitant__v6_integrated__r1",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I1",
+        "feedback": "hesitant",
+        "repeat": 1,
+        "turns": 3,
+        "harness_calls": 3,
+        "sim_calls": 2,
+        "deliveries": {
+          "send": 3
+        },
+        "sha256": "93cb0e6cb9a70dc79a71fc06ca9224ba4408c53e20d50ef1982845f9eec9204b"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbhesitant__v6_integrated__r2.json",
+        "trajectory_id": "I1__fbhesitant__v6_integrated__r2",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I1",
+        "feedback": "hesitant",
+        "repeat": 2,
+        "turns": 1,
+        "harness_calls": 1,
+        "sim_calls": 0,
+        "deliveries": {
+          "send": 1
+        },
+        "sha256": "b4e37e8a04715709a40758c0055f7fcb456327361677a72ada0544b0eafb1122"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbhesitant__v6_integrated__r3.json",
+        "trajectory_id": "I1__fbhesitant__v6_integrated__r3",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I1",
+        "feedback": "hesitant",
+        "repeat": 3,
+        "turns": 3,
+        "harness_calls": 3,
+        "sim_calls": 2,
+        "deliveries": {
+          "send": 3
+        },
+        "sha256": "721cc81fe861e723365c09d933dba995716086d80122463e1f811676fe59c36a"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbhesitant__v6_integrated__r4.json",
+        "trajectory_id": "I1__fbhesitant__v6_integrated__r4",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I1",
+        "feedback": "hesitant",
+        "repeat": 4,
+        "turns": 2,
+        "harness_calls": 2,
+        "sim_calls": 1,
+        "deliveries": {
+          "send": 1,
+          "delivery_failed": 1
+        },
+        "sha256": "231adcd04eec3172d049b7b6651046fde028ea4f380b7fd5ac96a261beda33b9"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbhesitant__v6_integrated__r5.json",
+        "trajectory_id": "I1__fbhesitant__v6_integrated__r5",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I1",
+        "feedback": "hesitant",
+        "repeat": 5,
+        "turns": 4,
+        "harness_calls": 4,
+        "sim_calls": 3,
+        "deliveries": {
+          "send": 4
+        },
+        "sha256": "0be16243f3c0523b7458a469cb5662f8556eabfd00576d25b26b56e7253643a4"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbpositive__reference_product_v1__r1.json",
+        "trajectory_id": "I1__fbpositive__reference_product_v1__r1",
+        "status": "complete",
+        "arm": "reference_product_v1",
+        "scenario": "I1",
+        "feedback": "positive",
+        "repeat": 1,
+        "turns": 4,
+        "harness_calls": 4,
+        "sim_calls": 4,
+        "deliveries": {
+          "send": 4
+        },
+        "sha256": "cfee9ee484e5db95ba58136992da5f2e38a664f06ffbb65c717bf29b620fb2e3"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbpositive__v6_integrated__r1.json",
+        "trajectory_id": "I1__fbpositive__v6_integrated__r1",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I1",
+        "feedback": "positive",
+        "repeat": 1,
+        "turns": 2,
+        "harness_calls": 2,
+        "sim_calls": 1,
+        "deliveries": {
+          "send": 2
+        },
+        "sha256": "79650dd5aee891d7dad5549d3725d086558424ce484aa5883bdeca055a6fffd4"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbpositive__v6_integrated__r2.json",
+        "trajectory_id": "I1__fbpositive__v6_integrated__r2",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I1",
+        "feedback": "positive",
+        "repeat": 2,
+        "turns": 1,
+        "harness_calls": 1,
+        "sim_calls": 0,
+        "deliveries": {
+          "send": 1
+        },
+        "sha256": "ffd325046d19f5c06b9f2627452dcc3cb55e40e327d2083ad14805c055201125"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbpositive__v6_integrated__r3.json",
+        "trajectory_id": "I1__fbpositive__v6_integrated__r3",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I1",
+        "feedback": "positive",
+        "repeat": 3,
+        "turns": 2,
+        "harness_calls": 2,
+        "sim_calls": 1,
+        "deliveries": {
+          "send": 2
+        },
+        "sha256": "607eac7c3919e6410a564067e8f6a1256c28feaa3fae6f7b6f7ad9c4f7292bbb"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbpositive__v6_integrated__r4.json",
+        "trajectory_id": "I1__fbpositive__v6_integrated__r4",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I1",
+        "feedback": "positive",
+        "repeat": 4,
+        "turns": 2,
+        "harness_calls": 2,
+        "sim_calls": 1,
+        "deliveries": {
+          "send": 2
+        },
+        "sha256": "26e5db57982d671476668b735d6a58876be566f1a5d9890a0652722062d057a7"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I1__fbpositive__v6_integrated__r5.json",
+        "trajectory_id": "I1__fbpositive__v6_integrated__r5",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I1",
+        "feedback": "positive",
+        "repeat": 5,
+        "turns": 2,
+        "harness_calls": 2,
+        "sim_calls": 1,
+        "deliveries": {
+          "send": 2
+        },
+        "sha256": "fe7df76131d07c7c1db01ba2f9d9c3f1d5c7f61f111fa7af8f8f125d95f81a59"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I3__fbbusy__reference_product_v1__r1.json",
+        "trajectory_id": "I3__fbbusy__reference_product_v1__r1",
+        "status": "complete",
+        "arm": "reference_product_v1",
+        "scenario": "I3",
+        "feedback": "busy",
+        "repeat": 1,
+        "turns": 4,
+        "harness_calls": 4,
+        "sim_calls": 4,
+        "deliveries": {
+          "delivery_failed": 1,
+          "send": 3
+        },
+        "sha256": "90fcc507db74adec612d23f924643d8af6d498600bd82b441054e5ca5a5a5e78"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I3__fbdisengage__reference_product_v1__r1.json",
+        "trajectory_id": "I3__fbdisengage__reference_product_v1__r1",
+        "status": "incomplete_environment_failure",
+        "arm": "reference_product_v1",
+        "scenario": "I3",
+        "feedback": "disengage",
+        "repeat": 1,
+        "turns": 3,
+        "harness_calls": 3,
+        "sim_calls": 3,
+        "deliveries": {
+          "send": 3
+        },
+        "sha256": "8ae1a5ed819a86e826df5e871b978cd20ef2d6e4513783914fdf2ba6a2916e24"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I3__fbdisengage__reference_product_v1__r2.json",
+        "trajectory_id": "I3__fbdisengage__reference_product_v1__r2",
+        "status": "complete",
+        "arm": "reference_product_v1",
+        "scenario": "I3",
+        "feedback": "disengage",
+        "repeat": 2,
+        "turns": 4,
+        "harness_calls": 4,
+        "sim_calls": 4,
+        "deliveries": {
+          "send": 4
+        },
+        "sha256": "8bd9974351ae19514b6820a2cf55838f78d3a4dcb10b39ee2f02328240647e86"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I3__fbhesitant__reference_product_v1__r1.json",
+        "trajectory_id": "I3__fbhesitant__reference_product_v1__r1",
+        "status": "complete",
+        "arm": "reference_product_v1",
+        "scenario": "I3",
+        "feedback": "hesitant",
+        "repeat": 1,
+        "turns": 4,
+        "harness_calls": 4,
+        "sim_calls": 4,
+        "deliveries": {
+          "send": 4
+        },
+        "sha256": "015f2a9f945361772d5d050d0bbb5f5de4577dd4e43a25f85c4f4d949361d5b4"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I3__fbhesitant__v6_integrated__r1.json",
+        "trajectory_id": "I3__fbhesitant__v6_integrated__r1",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I3",
+        "feedback": "hesitant",
+        "repeat": 1,
+        "turns": 1,
+        "harness_calls": 1,
+        "sim_calls": 0,
+        "deliveries": {
+          "send": 1
+        },
+        "sha256": "a080d5991231785b9878a873ed378dd6318182c2af0464e96aea1e923988b117"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I3__fbpositive__reference_product_v1__r1.json",
+        "trajectory_id": "I3__fbpositive__reference_product_v1__r1",
+        "status": "complete",
+        "arm": "reference_product_v1",
+        "scenario": "I3",
+        "feedback": "positive",
+        "repeat": 1,
+        "turns": 4,
+        "harness_calls": 4,
+        "sim_calls": 4,
+        "deliveries": {
+          "send": 4
+        },
+        "sha256": "5cd0352bc9df3846a3ee35c75c508d21b58df365ba05777a9e0a01e6dae1cc67"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\TRACE_I3__fbpositive__v6_integrated__r1.json",
+        "trajectory_id": "I3__fbpositive__v6_integrated__r1",
+        "status": "incomplete_environment_failure",
+        "arm": "v6_integrated",
+        "scenario": "I3",
+        "feedback": "positive",
+        "repeat": 1,
+        "turns": 1,
+        "harness_calls": 1,
+        "sim_calls": 0,
+        "deliveries": {
+          "send": 1
+        },
+        "sha256": "d267d375bf6e0a172f0d9937ed13027b6d3040473ecd871b6f7a128ef6e8349a"
+      }
+    ],
+    "statuses": {
+      "complete": 8,
+      "incomplete_environment_failure": 15
+    },
+    "complete_by_arm": {
+      "reference_product_v1": 8
+    },
+    "complete_paired_cells": 0,
+    "notes": "One overwritten complete trace is disclosed in W09_DISPATCH_INCIDENT; current files are authoritative, historical summary retained separately."
+  },
+  "gateway_files": [
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_005344\\GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 6,
+        "attempt_failed": 2,
+        "attempt_completed": 4
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 6
+      },
+      "attempt_ids": [
+        "p07:negctl:005344:negctl:1",
+        "p07:negctl:005344:negctl:2",
+        "p07:negctl:005344:negctl:3",
+        "p07:negctl:005344:negctl:4",
+        "p07:negctl:005344:negctl:5",
+        "p07:negctl:005344:negctl:6"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 10,
+        "attempt_failed": 5,
+        "attempt_completed": 5
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 7,
+        "dsf": 3
+      },
+      "attempt_ids": [
+        "p07:negctl:010448:negctl:1",
+        "p07:negctl:010448:negctl:2",
+        "p07:negctl:010448:negctl:3",
+        "p07:negctl:010448:negctl:4",
+        "p07:I2__fbpositive__reference_product_v1__r1:010448:main:1",
+        "p07:I2__fbpositive__reference_product_v1__r1:010448:sim:2",
+        "p07:I2__fbpositive__reference_product_v1__r1:010448:main:3",
+        "p07:I2__fbpositive__reference_product_v1__r1:010448:sim:4",
+        "p07:I2__fbhesitant__reference_product_v1__r1:010448:main:1",
+        "p07:I2__fbhesitant__reference_product_v1__r1:010448:sim:2"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\PROBE_GATEWAY_020135.jsonl",
+      "counts": {
+        "attempt_started": 1,
+        "attempt_failed": 1
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:probe:020135:sim:1"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\PROBE_GATEWAY_022743.jsonl",
+      "counts": {
+        "attempt_started": 1,
+        "attempt_failed": 1
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:probe:022743:sim:1"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\PROBE_GATEWAY_025654.jsonl",
+      "counts": {
+        "attempt_started": 1,
+        "attempt_failed": 1
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:probe:025654:sim:1"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\PROBE_GATEWAY_032721.jsonl",
+      "counts": {
+        "attempt_started": 1,
+        "attempt_completed": 1
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:probe:032721:sim:1"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\PROBE_GATEWAY_035649.jsonl",
+      "counts": {
+        "attempt_started": 1,
+        "attempt_failed": 1
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:probe:035649:sim:1"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\PROBE_GATEWAY_042652.jsonl",
+      "counts": {
+        "attempt_started": 1,
+        "attempt_failed": 1
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:probe:042652:sim:1"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\PROBE_GATEWAY_045652.jsonl",
+      "counts": {
+        "attempt_started": 1,
+        "attempt_failed": 1
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:probe:045652:sim:1"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\PROBE_GATEWAY_052652.jsonl",
+      "counts": {
+        "attempt_started": 1,
+        "attempt_completed": 1
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:probe:052652:sim:1"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\PROBE_GATEWAY_1793142195.jsonl",
+      "counts": {
+        "attempt_started": 1,
+        "attempt_completed": 1
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:probe:1793142195:sim:1"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\PROBE_GATEWAY_w09probe0826.jsonl",
+      "counts": {
+        "attempt_started": 1,
+        "attempt_completed": 1
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:probe:w09probe0826:sim:1"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_010448\\PROBE_GATEWAY_w09probe0840.jsonl",
+      "counts": {
+        "attempt_started": 1,
+        "attempt_completed": 1
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:probe:w09probe0840:sim:1"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_032742\\GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 12,
+        "attempt_completed": 12
+      },
+      "started_by_model": {
+        "dsf": 6,
+        "qwen3.8-flash": 6
+      },
+      "attempt_ids": [
+        "p07:I4__fbpositive__reference_product_v1__r1:032742:main:1",
+        "p07:I4__fbpositive__reference_product_v1__r1:032742:sim:2",
+        "p07:I4__fbpositive__reference_product_v1__r1:032742:main:3",
+        "p07:I4__fbpositive__reference_product_v1__r1:032742:sim:4",
+        "p07:I4__fbpositive__reference_product_v1__r1:032742:main:5",
+        "p07:I4__fbpositive__reference_product_v1__r1:032742:sim:6",
+        "p07:I4__fbhesitant__reference_product_v1__r1:032742:main:1",
+        "p07:I4__fbhesitant__reference_product_v1__r1:032742:sim:2",
+        "p07:I4__fbhesitant__reference_product_v1__r1:032742:main:3",
+        "p07:I4__fbhesitant__reference_product_v1__r1:032742:sim:4",
+        "p07:I2__fbpositive__v6_integrated__r1:032742:main:1",
+        "p07:I2__fbpositive__v6_integrated__r1:032742:sim:2"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_052708\\GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 14,
+        "attempt_completed": 13,
+        "attempt_failed": 1
+      },
+      "started_by_model": {
+        "dsf": 7,
+        "qwen3.8-flash": 7
+      },
+      "attempt_ids": [
+        "p07:I2__fbhesitant__v6_integrated__r1:052708:main:1",
+        "p07:I2__fbhesitant__v6_integrated__r1:052708:sim:2",
+        "p07:I2__fbhesitant__v6_integrated__r1:052708:main:3",
+        "p07:I2__fbhesitant__v6_integrated__r1:052708:sim:4",
+        "p07:I2__fbhesitant__v6_integrated__r1:052708:main:5",
+        "p07:I2__fbhesitant__v6_integrated__r1:052708:sim:6",
+        "p07:I4__fbpositive__v6_integrated__r1:052708:main:1",
+        "p07:I4__fbpositive__v6_integrated__r1:052708:sim:2",
+        "p07:I4__fbhesitant__v6_integrated__r1:052708:main:1",
+        "p07:I4__fbhesitant__v6_integrated__r1:052708:sim:2",
+        "p07:I4__fbhesitant__v6_integrated__r1:052708:main:3",
+        "p07:I4__fbhesitant__v6_integrated__r1:052708:sim:4",
+        "p07:I4__fbhesitant__v6_integrated__r1:052708:main:5",
+        "p07:I4__fbhesitant__v6_integrated__r1:052708:sim:6"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_055728a\\GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 2,
+        "attempt_completed": 1,
+        "attempt_failed": 1
+      },
+      "started_by_model": {
+        "dsf": 1,
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:I4__fbpositive__v6_integrated__r2:055728a:main:1",
+        "p07:I4__fbpositive__v6_integrated__r2:055728a:sim:2"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_055728b\\GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 2,
+        "attempt_completed": 2
+      },
+      "started_by_model": {
+        "dsf": 1,
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:I4__fbhesitant__reference_product_v1__r2:055728b:main:1",
+        "p07:I4__fbhesitant__reference_product_v1__r2:055728b:sim:2"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_055728c\\GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 6,
+        "attempt_completed": 6
+      },
+      "started_by_model": {
+        "dsf": 3,
+        "qwen3.8-flash": 3
+      },
+      "attempt_ids": [
+        "p07:I2__fbhesitant__reference_product_v1__r2:055728c:main:1",
+        "p07:I2__fbhesitant__reference_product_v1__r2:055728c:sim:2",
+        "p07:I2__fbhesitant__reference_product_v1__r2:055728c:main:3",
+        "p07:I2__fbhesitant__reference_product_v1__r2:055728c:sim:4",
+        "p07:I2__fbhesitant__reference_product_v1__r2:055728c:main:5",
+        "p07:I2__fbhesitant__reference_product_v1__r2:055728c:sim:6"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_055728c\\REVIEW_GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 6,
+        "attempt_failed": 2,
+        "attempt_completed": 4
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 6
+      },
+      "attempt_ids": [
+        "p07:trajrev:I2_hesitant_pair01:1793138632:1",
+        "p07:trajrev:I2_hesitant_pair01:1793138783:2",
+        "p07:trajrev:I2_hesitant_pair01:1793138922:1",
+        "p07:trajrev:I2_hesitant_pair01_v2:1793140337:1",
+        "p07:trajrev:I2_hesitant_pair01_v2:1793140408:2",
+        "p07:trajrev:I2_hesitant_pair01_v2:1793140803:2"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_065658a\\GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 6,
+        "attempt_completed": 6
+      },
+      "started_by_model": {
+        "dsf": 3,
+        "qwen3.8-flash": 3
+      },
+      "attempt_ids": [
+        "p07:I4__fbpositive__v6_integrated__r3:065658a:main:1",
+        "p07:I4__fbpositive__v6_integrated__r3:065658a:sim:2",
+        "p07:I4__fbpositive__v6_integrated__r3:065658a:main:3",
+        "p07:I4__fbpositive__v6_integrated__r3:065658a:sim:4",
+        "p07:I4__fbpositive__v6_integrated__r3:065658a:main:5",
+        "p07:I4__fbpositive__v6_integrated__r3:065658a:sim:6"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_065658b\\GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 6,
+        "attempt_completed": 6
+      },
+      "started_by_model": {
+        "dsf": 3,
+        "qwen3.8-flash": 3
+      },
+      "attempt_ids": [
+        "p07:I4__fbhesitant__reference_product_v1__r3:065658b:main:1",
+        "p07:I4__fbhesitant__reference_product_v1__r3:065658b:sim:2",
+        "p07:I4__fbhesitant__reference_product_v1__r3:065658b:main:3",
+        "p07:I4__fbhesitant__reference_product_v1__r3:065658b:sim:4",
+        "p07:I4__fbhesitant__reference_product_v1__r3:065658b:main:5",
+        "p07:I4__fbhesitant__reference_product_v1__r3:065658b:sim:6"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_pilot_v2_20261028_065658c\\REVIEW_GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 5,
+        "attempt_completed": 3,
+        "attempt_failed": 2
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 5
+      },
+      "attempt_ids": [
+        "p07:trajrev:I4_positive_pair01:1793142556:1",
+        "p07:trajrev:I4_hesitant_pair01:1793142556:1",
+        "p07:trajrev:I4_positive_pair01:1793142717:2",
+        "p07:trajrev:I4_hesitant_pair01:1793142717:1",
+        "p07:trajrev:I4_hesitant_pair01:1793142789:2"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\DIAG_GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 5,
+        "attempt_failed": 3,
+        "attempt_completed": 2
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 5
+      },
+      "attempt_ids": [
+        "p07:diag:r4turn2:sim:1",
+        "p07:diag:me2_only:sim:1",
+        "p07:diag:cjk_quotes:sim:1",
+        "p07:diag:no_dash:sim:1",
+        "p07:diag:single_dash:sim:1"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\GATEWAY.jsonl",
+      "counts": {
+        "attempt_started": 134,
+        "attempt_completed": 120,
+        "attempt_failed": 14
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 71,
+        "dsf": 63
+      },
+      "attempt_ids": [
+        "p07:negctl:w09a:negctl:1",
+        "p07:negctl:w09a:negctl:2",
+        "p07:negctl:w09a:negctl:3",
+        "p07:negctl:w09a:negctl:4",
+        "p07:negctl:w09a:negctl:5",
+        "p07:negctl:w09a:negctl:6",
+        "p07:negctl:w09a:negctl:7",
+        "p07:negctl:w09a:negctl:8",
+        "p07:I1__fbpositive__reference_product_v1__r1:w09a:main:1",
+        "p07:I1__fbpositive__reference_product_v1__r1:w09a:sim:2",
+        "p07:I1__fbpositive__reference_product_v1__r1:w09a:main:3",
+        "p07:I1__fbpositive__reference_product_v1__r1:w09a:sim:4",
+        "p07:I1__fbpositive__reference_product_v1__r1:w09a:main:5",
+        "p07:I1__fbpositive__reference_product_v1__r1:w09a:sim:6",
+        "p07:I1__fbpositive__reference_product_v1__r1:w09a:main:7",
+        "p07:I1__fbpositive__reference_product_v1__r1:w09a:sim:8",
+        "p07:I1__fbhesitant__reference_product_v1__r1:w09a:main:1",
+        "p07:I1__fbhesitant__reference_product_v1__r1:w09a:sim:2",
+        "p07:I1__fbhesitant__reference_product_v1__r1:w09a:main:3",
+        "p07:I1__fbhesitant__reference_product_v1__r1:w09a:sim:4",
+        "p07:I1__fbhesitant__reference_product_v1__r1:w09a:main:5",
+        "p07:I1__fbhesitant__reference_product_v1__r1:w09a:sim:6",
+        "p07:I1__fbbusy__reference_product_v1__r1:w09a:main:1",
+        "p07:I1__fbbusy__reference_product_v1__r1:w09a:sim:2",
+        "p07:I1__fbbusy__reference_product_v1__r1:w09a:main:3",
+        "p07:I1__fbbusy__reference_product_v1__r1:w09a:sim:4",
+        "p07:I1__fbbusy__reference_product_v1__r1:w09a:main:5",
+        "p07:I1__fbbusy__reference_product_v1__r1:w09a:sim:6",
+        "p07:I1__fbbusy__reference_product_v1__r1:w09a:main:7",
+        "p07:I1__fbbusy__reference_product_v1__r1:w09a:sim:8",
+        "p07:I1__fbdisengage__reference_product_v1__r1:w09a:main:1",
+        "p07:I1__fbdisengage__reference_product_v1__r1:w09a:sim:2",
+        "p07:I1__fbdisengage__reference_product_v1__r1:w09a:main:3",
+        "p07:I1__fbdisengage__reference_product_v1__r1:w09a:sim:4",
+        "p07:I1__fbdisengage__reference_product_v1__r1:w09a:main:5",
+        "p07:I1__fbdisengage__reference_product_v1__r1:w09a:sim:6",
+        "p07:I1__fbdisengage__reference_product_v1__r1:w09a:main:7",
+        "p07:I1__fbdisengage__reference_product_v1__r1:w09a:sim:8",
+        "p07:I3__fbpositive__reference_product_v1__r1:w09a:main:1",
+        "p07:I3__fbpositive__reference_product_v1__r1:w09a:sim:2",
+        "p07:I3__fbpositive__reference_product_v1__r1:w09a:main:3",
+        "p07:I3__fbpositive__reference_product_v1__r1:w09a:sim:4",
+        "p07:I3__fbpositive__reference_product_v1__r1:w09a:main:5",
+        "p07:I3__fbpositive__reference_product_v1__r1:w09a:sim:6",
+        "p07:I3__fbpositive__reference_product_v1__r1:w09a:main:7",
+        "p07:I3__fbpositive__reference_product_v1__r1:w09a:sim:8",
+        "p07:I3__fbhesitant__reference_product_v1__r1:w09a:main:1",
+        "p07:I3__fbhesitant__reference_product_v1__r1:w09a:sim:2",
+        "p07:I3__fbhesitant__reference_product_v1__r1:w09a:main:3",
+        "p07:I3__fbhesitant__reference_product_v1__r1:w09a:sim:4",
+        "p07:I3__fbhesitant__reference_product_v1__r1:w09a:main:5",
+        "p07:I3__fbhesitant__reference_product_v1__r1:w09a:sim:6",
+        "p07:I3__fbhesitant__reference_product_v1__r1:w09a:main:7",
+        "p07:I3__fbhesitant__reference_product_v1__r1:w09a:sim:8",
+        "p07:I3__fbbusy__reference_product_v1__r1:w09a:main:1",
+        "p07:I3__fbbusy__reference_product_v1__r1:w09a:sim:2",
+        "p07:I3__fbbusy__reference_product_v1__r1:w09a:main:3",
+        "p07:I3__fbbusy__reference_product_v1__r1:w09a:sim:4",
+        "p07:I3__fbbusy__reference_product_v1__r1:w09a:main:5",
+        "p07:I3__fbbusy__reference_product_v1__r1:w09a:sim:6",
+        "p07:I3__fbbusy__reference_product_v1__r1:w09a:main:7",
+        "p07:I3__fbbusy__reference_product_v1__r1:w09a:sim:8",
+        "p07:I3__fbdisengage__reference_product_v1__r1:w09a:main:1",
+        "p07:I3__fbdisengage__reference_product_v1__r1:w09a:sim:2",
+        "p07:I3__fbdisengage__reference_product_v1__r1:w09a:main:3",
+        "p07:I3__fbdisengage__reference_product_v1__r1:w09a:sim:4",
+        "p07:I3__fbdisengage__reference_product_v1__r1:w09a:main:5",
+        "p07:I3__fbdisengage__reference_product_v1__r1:w09a:sim:6",
+        "p07:I1__fbpositive__v6_integrated__r1:w09a:main:1",
+        "p07:I1__fbpositive__v6_integrated__r1:w09a:sim:2",
+        "p07:I1__fbpositive__v6_integrated__r1:w09a:main:3",
+        "p07:I1__fbpositive__v6_integrated__r1:w09a:sim:4",
+        "p07:I1__fbhesitant__v6_integrated__r1:w09a:main:1",
+        "p07:I1__fbhesitant__v6_integrated__r1:w09a:sim:2",
+        "p07:I1__fbhesitant__v6_integrated__r1:w09a:main:3",
+        "p07:I1__fbhesitant__v6_integrated__r1:w09a:sim:4",
+        "p07:I1__fbhesitant__v6_integrated__r1:w09a:main:5",
+        "p07:I1__fbhesitant__v6_integrated__r1:w09a:sim:6",
+        "p07:I1__fbbusy__v6_integrated__r1:w09a:main:1",
+        "p07:I1__fbbusy__v6_integrated__r1:w09a:sim:2",
+        "p07:I1__fbbusy__v6_integrated__r1:w09a:main:3",
+        "p07:I1__fbbusy__v6_integrated__r1:w09a:sim:4",
+        "p07:I3__fbdisengage__reference_product_v1__r2:w09a2a:main:1",
+        "p07:I3__fbpositive__v6_integrated__r1:w09a2c:main:1",
+        "p07:I3__fbdisengage__reference_product_v1__r2:w09a2a:sim:2",
+        "p07:I3__fbdisengage__reference_product_v1__r2:w09a2a:main:3",
+        "p07:I3__fbpositive__v6_integrated__r1:w09a2c:sim:2",
+        "p07:I3__fbdisengage__reference_product_v1__r2:w09a2a:sim:4",
+        "p07:I3__fbdisengage__reference_product_v1__r2:w09a2a:main:5",
+        "p07:I3__fbdisengage__reference_product_v1__r2:w09a2a:sim:6",
+        "p07:I3__fbdisengage__reference_product_v1__r2:w09a2a:main:7",
+        "p07:I3__fbdisengage__reference_product_v1__r2:w09a2a:sim:8",
+        "p07:I1__fbhesitant__v6_integrated__r2:w09a2b:main:1",
+        "p07:I1__fbhesitant__v6_integrated__r2:w09a2b:sim:2",
+        "p07:I3__fbhesitant__v6_integrated__r1:w09a2c:main:1",
+        "p07:I3__fbhesitant__v6_integrated__r1:w09a2c:sim:2",
+        "p07:I1__fbbusy__v6_integrated__r2:w09a2b:main:1",
+        "p07:I1__fbbusy__v6_integrated__r2:w09a2b:sim:2",
+        "p07:I1__fbpositive__v6_integrated__r1:w09a3:main:1",
+        "p07:I1__fbpositive__v6_integrated__r1:w09a3:sim:2",
+        "p07:I1__fbpositive__v6_integrated__r1:w09a3:main:3",
+        "p07:I1__fbpositive__v6_integrated__r1:w09a3:sim:4",
+        "p07:I1__fbpositive__v6_integrated__r2:w09a3:main:1",
+        "p07:I1__fbpositive__v6_integrated__r2:w09a3:sim:2",
+        "p07:I1__fbpositive__v6_integrated__r3:w09a4:main:1",
+        "p07:I1__fbpositive__v6_integrated__r3:w09a4:sim:2",
+        "p07:I1__fbpositive__v6_integrated__r3:w09a4:main:3",
+        "p07:I1__fbpositive__v6_integrated__r3:w09a4:sim:4",
+        "p07:I1__fbhesitant__v6_integrated__r3:w09a4:main:1",
+        "p07:I1__fbhesitant__v6_integrated__r3:w09a4:sim:2",
+        "p07:I1__fbhesitant__v6_integrated__r3:w09a4:main:3",
+        "p07:I1__fbhesitant__v6_integrated__r3:w09a4:sim:4",
+        "p07:I1__fbhesitant__v6_integrated__r3:w09a4:main:5",
+        "p07:I1__fbhesitant__v6_integrated__r3:w09a4:sim:6",
+        "p07:I1__fbpositive__v6_integrated__r4:w09a5:main:1",
+        "p07:I1__fbpositive__v6_integrated__r4:w09a5:sim:2",
+        "p07:I1__fbpositive__v6_integrated__r4:w09a5:main:3",
+        "p07:I1__fbpositive__v6_integrated__r4:w09a5:sim:4",
+        "p07:I1__fbhesitant__v6_integrated__r4:w09a5:main:1",
+        "p07:I1__fbhesitant__v6_integrated__r4:w09a5:sim:2",
+        "p07:I1__fbhesitant__v6_integrated__r4:w09a5:main:3",
+        "p07:I1__fbhesitant__v6_integrated__r4:w09a5:sim:4",
+        "p07:I1__fbpositive__v6_integrated__r5:w09a6:main:1",
+        "p07:I1__fbpositive__v6_integrated__r5:w09a6:sim:2",
+        "p07:I1__fbpositive__v6_integrated__r5:w09a6:main:3",
+        "p07:I1__fbpositive__v6_integrated__r5:w09a6:sim:4",
+        "p07:I1__fbhesitant__v6_integrated__r5:w09a6:main:1",
+        "p07:I1__fbhesitant__v6_integrated__r5:w09a6:sim:2",
+        "p07:I1__fbhesitant__v6_integrated__r5:w09a6:main:3",
+        "p07:I1__fbhesitant__v6_integrated__r5:w09a6:sim:4",
+        "p07:I1__fbhesitant__v6_integrated__r5:w09a6:main:5",
+        "p07:I1__fbhesitant__v6_integrated__r5:w09a6:sim:6",
+        "p07:I1__fbhesitant__v6_integrated__r5:w09a6:main:7",
+        "p07:I1__fbhesitant__v6_integrated__r5:w09a6:sim:8"
+      ]
+    },
+    {
+      "path": "D:\\lovebrain-arena\\logs\\p07_w09_20261028_a\\PROBE_REAL_realgate0905.jsonl",
+      "counts": {
+        "attempt_started": 1,
+        "attempt_completed": 1
+      },
+      "started_by_model": {
+        "qwen3.8-flash": 1
+      },
+      "attempt_ids": [
+        "p07:probe_real:realgate0905:sim:1"
+      ]
+    }
+  ],
+  "stage2": {
+    "passed": true,
+    "stories_passed": 16,
+    "unique_cases": 192,
+    "errors": [],
+    "turn_per_story": 12,
+    "independent_regression": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\morning_resume_v4_20261028\\STAGE2_INDEPENDENT_VALIDATION.json"
+  },
+  "sources": {
+    "tools/run_p07_pilot.py": {
+      "sha256": "7672050c4b106b71df93f7df14c617e9b8ef91577fc8ac5a6136d7c8695c4d55",
+      "mtime": "2026-10-28T08:35:21.998220+08:00"
+    },
+    "tools/run_p06_recovery_review.py": {
+      "sha256": "bb1d4010927b075355d24d478669227ad935facf34e4d0a2209bdc543097ce94",
+      "mtime": "2026-10-28T00:44:16.305538+08:00"
+    },
+    "tools/build_b3_simulator_request.py": {
+      "sha256": "49c0bd228b472df181667be770ca085ac2258b0242facf9f219489a31bad3c0e",
+      "mtime": "2026-10-28T08:57:55.856511+08:00"
+    },
+    "tools/normalize_reply_contract.py": {
+      "sha256": "427fd5a6f845e22ae963cb23617b1c7d8ff1c4e6e2961867d0b6fe18a905e5ba",
+      "mtime": "2026-10-28T00:52:29.050690+08:00"
+    },
+    "tools/validate_story_v2.py": {
+      "sha256": "0fb52cd663e848727336443372db44bcd6188b5a6184127bc35e179462473624",
+      "mtime": "2026-10-27T23:12:15.905800+08:00"
+    },
+    "candidates/action_policy_r1/mechanism/mechanism.py": {
+      "sha256": "2cebe1f877fc627e2f7e0c0e6916b1dfcbc277613ff03e4a8679052606c7f827",
+      "mtime": "2026-10-28T08:37:17.596182+08:00"
+    },
+    "candidates/action_policy_r1/params.json": {
+      "sha256": "7e4d1e52b946b852e9e0486ac4203a535473fd1a499896f72510a3865e3a397c",
+      "mtime": "2026-10-28T08:37:41.973188+08:00"
+    }
+  },
+  "lovebrain_processes": []
+}

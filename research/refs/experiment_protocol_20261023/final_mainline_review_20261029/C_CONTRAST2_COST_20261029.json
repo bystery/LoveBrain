@@ -1,0 +1,42 @@
+{
+ "kind": "c_contrast2_cost",
+ "date": "2026-10-29",
+ "authorization_id": "AUTH-C-CONTRAST2-20261029-01",
+ "ledger": "logs/auth_budget/AUTH-C-CONTRAST2-20261029-01.jsonl",
+ "batch": "logs/c_contrast_live_20261029_180538",
+ "outcome": "fail_fast 中断于第19格 (EVIDENCED:K01_T21:base json_schema_broken, base e3 臂); no_makeup 剩余5格不补跑; 已授权关闭",
+ "attempts": {
+  "started": 19,
+  "completed": 19,
+  "failed": 1,
+  "usable_cells": 18,
+  "note": "K01_T21:base 同时记 attempt_completed(付费真实调用)与 attempt_failed → 18 干净 + 1 协议坏",
+  "unrun_forfeited": 5,
+  "closed": true
+ },
+ "tokens_ledger_authoritative": {
+  "prompt": 124534,
+  "completion": 8296,
+  "total": 132830,
+  "unknown_usage_cells": 0,
+  "cache": "unknown (null)"
+ },
+ "latency": {"per_call_seconds_median": 23, "mean": 29, "max": 59, "sum_minutes": 9.1, "wall_clock_minutes": 12.2, "config": "concurrency=1 非流式; prompt≈6.4k completion≈437"},
+ "money": null,
+ "program_totals_after_C2": {
+  "attempt_started": 573,
+  "attempt_completed": 564,
+  "attempt_failed": 6,
+  "dispatch_or_batch_refused": 9,
+  "orphan_attempts": 4,
+  "token_grand_total": 2699282,
+  "token_breakdown": {
+   "judge_and_f4gen_from_ledger": 1078663,
+   "f3_f5_generation_from_answers": 1153468,
+   "kb_probe_B": 163555,
+   "c_contrast_C1": 170766,
+   "c_contrast2_C2_retest": 132830
+  },
+  "basis": "530/521(STATE 含B) + C1 24/24 = 554/545; 再加 C2 started19/completed19/failed1 → 573/564/6"
+ }
+}

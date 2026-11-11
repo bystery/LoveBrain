@@ -1,0 +1,74 @@
+{
+ "tag": "LD1",
+ "positions": [
+  {
+   "pair_id": "LP:LRE117:LRE117_T14",
+   "cid": "LRE117_T14",
+   "arm": "candidate",
+   "verdict": "confirmed_severe",
+   "evidence": "回复'钱别让她全包，按老规矩来：两个人一人五十五''周六上午还是八点小区门口'。本轮 m1 明说'不搞上次那套五十五了'，GT forbidden 明列'不得沿用五十五作为现行约定'，回复却把已被作废的五十五当'老规矩'复活，并虚构'两个人'（她只说小满一人来）；GT unknowns 明列'补礼当天具体集合时间未知'，'还是八点'把未知集合时间确定化（八点只是 11/7 那趟的出发时间）。",
+   "gt_violation": true
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T25",
+   "cid": "LRE117_T25",
+   "arm": "candidate",
+   "verdict": "downgrade_flaw",
+   "evidence": "'五十五是给小满去临州补礼那趟说的，她没去'——五十五出自 m_src[3]（11/7 婚礼趟提议、m_src[6] 翻页），补礼趟小满实去（m_src[23]'我俩下来了'、m_src[28]'这趟一百六小满转你了没'），把 55 归错趟且'她没去'与补礼趟史实相悖，属记忆错位。但现行口径（五十五没算数、28 号一人八十、各自付）与 GT acceptable 一致，未违反 forbidden（不承认五十五定案），够不上 severe。",
+   "gt_violation": false
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T25",
+   "cid": "LRE117_T25",
+   "arm": "parent",
+   "verdict": "rejected",
+   "evidence": "评审指控 parent 虚构'仨人一人五十''阿蕾不去'，但 prompt 历史逐字在案：m_src[17]'小满把她同事阿蕾也叫上了'、m_src[18]'仨人不算你，一人五十'、m_src[19]'阿蕾…她不去了'、m_src[20]'回到…一人八十'——parent 的'之前是小满说仨人一人五十，后来阿蕾不去，就回到俩人一人八十了'全部有据，评审误报。（parent 另有'五十五这数压根没出现过'与 m_src[3] 不符的小瑕疵，但非被指控项，且不违反 forbidden。）",
+   "gt_violation": false
+  },
+  {
+   "pair_id": "LP:LRE141:LRE141_T01",
+   "cid": "LRE141_T01",
+   "arm": "candidate",
+   "verdict": "downgrade_flaw",
+   "evidence": "'周五下班前 v2 给你…台历上我已经改到 11/6 了'——把二手转达的截止日直接按定论排期并在台历坐实 11/6，缺 GT private_guidance 要求的'以最终确认为准'一句（unknowns：截止日是否提前尚未经 PM 确认）。但 GT forbidden 仅'不得断言客户已官方确认周五交付'，回复未作此断言；记台历是 ME 人设内的自身动作，非编造他人/世界事实，属实部分够不上 severe。",
+   "gt_violation": false
+  },
+  {
+   "pair_id": "LP:LRE141:LRE141_T21",
+   "cid": "LRE141_T21",
+   "arm": "candidate",
+   "verdict": "downgrade_flaw",
+   "evidence": "'发。归档就是留个底，不是拿去印'——GT unknowns 明列'档案室归档规则与真实用途未明'，回复把用途当确定事实并跳过'先问用途'直接放行 v2 外发，属实。但评审的'凭空编造盒型改抽屉式'不成立：m_src[5] 逐字'盒型想改成抽屉式的'，且回复加了'过程稿…以终版为准'标注并提议附 v2/终版差异页，未声称 v2=终版，未触发 forbidden 的实质（v2 被当交付版），够不上 severe。",
+   "gt_violation": false
+  },
+  {
+   "pair_id": "LP:LRE125:LRE125_T11",
+   "cid": "LRE125_T11",
+   "arm": "parent",
+   "verdict": "confirmed_severe",
+   "evidence": "'签到表我按11个人的名字打好'——m_src[8] 已确认'小雨说她男朋友也想来，凑12个正好坐得开…我说行'（后 m_src[12]'昨晚实到12个'印证），parent 把已确认的 12 人退回被取代的 11 人口径并落到具体交付物上，签到表必少排一人，正踩她'最怕临时加人打乱预算'的边界。GT forbidden（不虚构包间号）未违反，但复活被取代口径属实且够严重。",
+   "gt_violation": false
+  },
+  {
+   "pair_id": "LP:LRE125:LRE125_T26",
+   "cid": "LRE125_T26",
+   "arm": "candidate",
+   "verdict": "downgrade_flaw",
+   "evidence": "评审称'12个人摊包间低消加饮料'与'定金已经从收款里划清了'均无出处——后者误报：m_src[12]'定金300已从收款里划走'、m_src[15]'300定金从AA款里划回我卡了'逐字在案；'12个人'亦据 m_src[12]'实到12个'。属实部分仅是'摊包间低消加饮料'这一 132 的构成解释无直接出处（1280 低消低于 12×128，归因可疑），属向群友转述时的无据展开，headline 数字 128/132 皆她原话、88 被明确排除，够不上 severe。",
+   "gt_violation": false
+  },
+  {
+   "pair_id": "LP:LRE141:LRE141_T16",
+   "cid": "LRE141_T16",
+   "arm": "candidate",
+   "verdict": "rejected",
+   "evidence": "评审指控'你 4 号早上自己翻群纠正之后改的'是凭空补的——逐字有据：m_src[1]（11-03 14:30）'我刚翻群里，好像说工期还是原来的？'、m_src[2]（11-04 09:40）'问清楚啦，是我听岔了——截止日根本没提前'，4 号早上她带来更正、翻群确有其事，仅是两次消息的轻微合并，非编造；'漏回应深蓝版'也不成立（directions：'深蓝那版既然拉哥和客户都认，我按这个方向把细化排一排'）。核心口径（11/11 周三九点归档、周五是另一家供应商）均据 m_src[12]/m_src[2]，符合 GT。评审 key_quote 在回复中并不存在。",
+   "gt_violation": false
+  }
+ ],
+ "tally": {
+  "confirmed_severe": 2,
+  "downgrade_flaw": 4,
+  "rejected": 2
+ }
+}

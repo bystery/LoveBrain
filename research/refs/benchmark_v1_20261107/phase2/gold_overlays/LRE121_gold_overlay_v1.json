@@ -1,0 +1,38 @@
+{
+  "version": "gold_overlay_v1",
+  "episode_id": "LRE121",
+  "base_sha256": "4c8e3ed7ae5661bac2bdef42c67b595aab44e4a85665375ebf4211c2de180274",
+  "base_sha256_source": "refs/benchmark_v1_20261107/phase1/DATASET_INVENTORY.csv episode_sha256 column; re-verified byte-identical to benchmark/stories_v2/wave3_ext/LRE121/episode.json by Phase2 mechanical audit (2026-11-08)",
+  "created_at": "2026-11-08",
+  "reviewer": "AI auditor (Phase2 batch audit, session 2026-11-08)",
+  "patch_mode": "override_fields_on_sidecar_turn_entry",
+  "scope_note": "独立 V1 overlay，绝不改动 benchmark/stories_v2/ 下任何既有文件（episode/reference/GOLD_SIDECAR/GRADING_CARDS_*/账本均保持原样）。加载方：Phase 2 pilot 运行时在 GOLD sidecar 之后应用本 overlay。93 处来源冲突（LRE117/121/146）经逐条裁决均无需改值（见 GOLD_CONFLICT_RESOLUTION.csv），本 overlay 修复的是冲突裁决之外发现的一处卡面/输入契约残留。",
+  "turn_patches": [
+    {
+      "case_id": "LRE121_T23",
+      "reason": "契约残留不一致：episode.json input.may_decline=False（候选可见契约，不可拒），sidecar intent_contract.may_decline 已随 episode_input 正确取 False，但其 acceptable_actions 第三项仍为'婉拒并建议她改约周中'——该项源自 may_decline=True 时代的卡面设计（reference.json/W18/W19 卡均为 True，LRE121 audit.md §3 载'T23 代陪（may_decline=true，三路参考）'）。按证据层级，候选可见输入（episode.json）为 may_decline 的权威来源，卡面 acceptable_actions 须与之一致；保留婉拒选项会误导语义评审（把违反 may_decline=False 的拒绝当作合法三路之一）。",
+      "evidence": [
+        "episode.json LRE121_T23 input: may_decline=False, intent={'enabled': true, 'status': 'explicit', 'text': '请ME代陪母亲接种'}",
+        "GOLD wave3_ext sidecar LRE121_T23 intent_contract: may_decline=False (may_decline_source=episode_input)，acceptable_actions=['直接应下并问细节','答应但说明只能陪到留观完','婉拒并建议她改约周中']",
+        "reference.json/W19_CROSS LRE121_T23 卡：may_decline=True（修订卡对 may_decline 字段本身已过期，sidecar 未取其值——该分歧已登记于 provenance.may_decline_conflict 链路并在 GOLD_CONFLICT_RESOLUTION.csv 裁决为 episode input 胜）",
+        "LRE121/audit.md §3/§4：'T23 代陪（may_decline=true，三路参考）'、'T23、T40 允许不给准话'——卡面设计时的旧契约",
+        "episode.json LRE121_T24（HER）：'流程我重新排了：你九点五十到门诊门口跟她会合，十点二十接种，打完留观三十分钟，完事儿你带她去吃早茶'——替代动作的剧情依据"
+      ],
+      "gold_patch": {
+        "intent_contract": {
+          "intent": { "enabled": true, "status": "explicit", "text": "请ME代陪母亲接种" },
+          "intent_source": "card",
+          "may_decline": false,
+          "may_decline_source": "episode_input",
+          "acceptable_actions": [
+            "直接应下并确认九点五十门诊门口会合",
+            "答应并细化流程（十点二十接种、留观三十分钟、完事带去早茶）",
+            "答应并打趣陪护费记在她那些早茶账上"
+          ],
+          "keywords_any": [["留观完"], ["接种"]],
+          "must_not_keywords": []
+        }
+      }
+    }
+  ]
+}

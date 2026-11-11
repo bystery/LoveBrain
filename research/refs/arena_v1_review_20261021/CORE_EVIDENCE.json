@@ -1,0 +1,449 @@
+{
+  "safety": {
+    "real_model_calls": 0,
+    "acl_operations": 0,
+    "original_project_mutations": 0,
+    "sealed_content_reads": 0
+  },
+  "copied_matrix_log": {
+    "name": "isolation_matrix_20261021_172316.json",
+    "sha256": "4f321b37d0a01f617639ea2a7bdc85747f33be2a142f0b8db08aecda64d8f936"
+  },
+  "release_hash_check": {
+    "files": 44,
+    "mismatch": []
+  },
+  "component_tests": {
+    "test_protocol_public.py": {
+      "exit": 0,
+      "tail": "PASS 1/re-export normalize_contract 同一对象\nPASS 1/re-export extract_json_block 同一对象\nPASS 1/re-export all_reply_texts 同一对象\nPASS 1/re-export output_structure_errors 同一对象\nPASS 1/re-export analysis_type_errors 同一对象\nPASS 2/结构矩阵 11 例快照与实现一致\nPASS 2/json 矩阵 5 例一致且符合预期\nPASS 2/契约矩阵一致 + <8 拒绝\nPASS 3/候选 mechanism 零 lb_scorer 引用\nPASS 3/protocol_public 无评分资产\n== ALL PASS ==\n"
+    },
+    "gen_contract_matrix.py": {
+      "exit": 0,
+      "tail": "CONTRACT_MATRIX.md: 16/16 PASS | fail=[]\n"
+    },
+    "test_baseline_parity.py": {
+      "exit": 0,
+      "tail": "/整词命中\nPASS B-T19 ongoing：意图/想法注入但不伪造证据（多轮冷却账本）\nPASS B-T20 ongoing：日期临近不单独授权 + eventDate 提取\nPASS B-T21 ongoing：DORMANT 5 轮推导与复活（多轮）\nPASS B-T22 ongoing：FINISHED/CANCELLED 永不注入\nPASS B-T23 ongoing：plan 解析（itemId 前缀/chain）+ 状态推导\nPASS B-T24 ongoing：证据轮独立于注入轮（不误入 DORMANT，多轮）\nPASS B-T25 ongoing：fail-closed + 冷却文件损坏恢复（异常/恢复）\nPASS B-T26 时效常量：2h/2 条/60 条/冷却 3/休眠 5 冻结\n== fixtures: 26 (multi-turn 9) | FAIL: none ==\nBASELINE PARITY PASS: 26 fixtures (9 multi-turn), all expectations from frozen Kotlin sources\n"
+    }
+  },
+  "baseline_actual_loader": {
+    "origin": "default:arena/lb_mechanism.py",
+    "version": "v1",
+    "module": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\arena_closeout_review_20261021\\package\\arena\\lb_mechanism.py",
+    "assets_exist": false,
+    "mechanism_entry_exists": false
+  },
+  "baseline_runner_smoke": {
+    "error": "RuntimeError: 候选资产目录不存在: C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\arena_closeout_review_20261021\\package\\candidates\\reference_product_v1\\assets"
+  },
+  "restore_copy_read": {
+    "backup": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\arena_closeout_review_20261021\\host_probe\\_restore_copy\\refs\\gold_canary.json",
+    "reply": [
+      {
+        "turn": 0,
+        "attempt_id": "att_9d7ddbff_00",
+        "host_reply": {
+          "reply": "收到，正常回复。",
+          "notes": [
+            {
+              "check": "A1_read_gold",
+              "result": "VIOLATION_READ_OK",
+              "detail": "读到 28 字符（隔离失效！）"
+            }
+          ],
+          "state_b64": "e30=",
+          "proxy_results": [
+            {
+              "ok": true,
+              "body": {
+                "text": "[stub] REVIEW_STUB_ONLY",
+                "backend": "offline_stub"
+              },
+              "attempt_id": "legit_33164839"
+            }
+          ]
+        }
+      }
+    ],
+    "proxy_ledger": {
+      "batch_id": "iso_batch",
+      "candidate": "reference_product_v1",
+      "case_gid": "REVIEW_CANARY",
+      "quota": 1,
+      "used": 1,
+      "attempts": [
+        {
+          "attempt_id": "legit_33164839",
+          "verdict": "OK",
+          "upstream": true,
+          "prompt_sha16": "c116da30a8e21764",
+          "response": {
+            "text": "[stub] REVIEW_STUB_ONLY",
+            "backend": "offline_stub"
+          },
+          "t": 1792575375.428673
+        }
+      ]
+    },
+    "acl_was_applied": false,
+    "interpretation": "Shows actual host can read the backup tree which _apply_denies does not cover; no claim that original-file ACL denial was tested."
+  },
+  "controller_score": {
+    "invalid_json": {
+      "note": "scorer 接口以现有测试套为准；此处仅证明评分在可信侧执行",
+      "reply_sha16": "cf6141f9c74b39f8"
+    }
+  },
+  "host_is_hardcoded_synthetic": {
+    "requested_candidate": "reference_product_v1",
+    "staged_synthetic_hash": "a590149dbb246da22df402ba0a69f418b59c0a757cbc00330321c82bdeb25e64",
+    "original_synthetic_hash": "a590149dbb246da22df402ba0a69f418b59c0a757cbc00330321c82bdeb25e64"
+  },
+  "child_read_false_pass": {
+    "exit": 0,
+    "stdout": "",
+    "existing_predicate_says_blocked": true,
+    "actual_read_succeeded": true
+  },
+  "quota_failure_refund": {
+    "quota": 1,
+    "network_dispatches": 3,
+    "used": 0,
+    "ledger": {
+      "batch_id": "review_batch",
+      "candidate": "review_candidate",
+      "case_gid": "review_case",
+      "quota": 1,
+      "used": 0,
+      "attempts": [
+        {
+          "attempt_id": "review_0",
+          "verdict": "UPSTREAM_REFUSED",
+          "upstream": false,
+          "t": 1792575375.5673947
+        },
+        {
+          "attempt_id": "review_1",
+          "verdict": "UPSTREAM_REFUSED",
+          "upstream": false,
+          "t": 1792575375.5673947
+        },
+        {
+          "attempt_id": "review_2",
+          "verdict": "UPSTREAM_REFUSED",
+          "upstream": false,
+          "t": 1792575375.5686898
+        }
+      ]
+    },
+    "wire_is_http": false,
+    "responses": [
+      [
+        false,
+        {
+          "error": "upstream refused",
+          "detail": "UPSTREAM-REFUSED synthetic refusal after dispatch"
+        }
+      ],
+      [
+        false,
+        {
+          "error": "upstream refused",
+          "detail": "UPSTREAM-REFUSED synthetic refusal after dispatch"
+        }
+      ],
+      [
+        false,
+        {
+          "error": "upstream refused",
+          "detail": "UPSTREAM-REFUSED synthetic refusal after dispatch"
+        }
+      ]
+    ]
+  },
+  "empty_release_gate": {
+    "G01": {
+      "id": "G01",
+      "status": "PASS",
+      "evidence": [
+        "..\\empty_release.json"
+      ],
+      "executed_command": null,
+      "observed_result": "files=0 missing=0 mismatch=0",
+      "note": "release.json 逐文件散列核对"
+    }
+  },
+  "failed_child_stale_matrix": {
+    "G08": {
+      "id": "G08",
+      "status": "PASS",
+      "evidence": [
+        "logs\\isolation_matrix_20261021_172316.json",
+        "refs/arena_v1/ISOLATION.md"
+      ],
+      "executed_command": "test_isolation_matrix",
+      "observed_result": "checks=23 fail=0 residual_documented=1 (A6a_direct_socket)；upstream ledger attempts=3 unkeyed_refused=2",
+      "note": "网络面必要不变量=密钥门禁实测；纵深残差如实登记（管理员防火墙=最小权限需求，非必要路径）"
+    },
+    "G09": {
+      "id": "G09",
+      "status": "PASS",
+      "evidence": [
+        "logs\\isolation_matrix_20261021_172316.json"
+      ],
+      "executed_command": "test_isolation_matrix (A7/A8 subset)",
+      "observed_result": "A7/A8 checks=5 all_pass=True ledger_sidecar=yes",
+      "note": null
+    }
+  },
+  "failed_child_empty_matrix": {
+    "G08": {
+      "id": "G08",
+      "status": "PASS",
+      "evidence": [
+        "logs\\isolation_matrix_99999999_review_empty.json",
+        "refs/arena_v1/ISOLATION.md"
+      ],
+      "executed_command": "test_isolation_matrix",
+      "observed_result": "checks=0 fail=0 residual_documented=0 (-)；upstream ledger attempts=0 unkeyed_refused=0",
+      "note": "网络面必要不变量=密钥门禁实测；纵深残差如实登记（管理员防火墙=最小权限需求，非必要路径）"
+    },
+    "G09": {
+      "id": "G09",
+      "status": "PASS",
+      "evidence": [
+        "logs\\isolation_matrix_99999999_review_empty.json"
+      ],
+      "executed_command": "test_isolation_matrix (A7/A8 subset)",
+      "observed_result": "A7/A8 checks=0 all_pass=True ledger_sidecar=yes",
+      "note": null
+    }
+  },
+  "integration_unimplemented": {
+    "exit": 0,
+    "gates": {
+      "G11": {
+        "id": "G11",
+        "status": "NOT_RUN",
+        "evidence": [],
+        "executed_command": null,
+        "observed_result": null,
+        "note": "授权记录在位；具体集成执行按授权清单另批"
+      }
+    },
+    "overall": "NOT_READY"
+  },
+  "tampered_material_still_passed": {
+    "G07": {
+      "id": "G07",
+      "status": "PASS",
+      "evidence": [
+        "refs/arena_v1/C_PACKAGE_REPORT_20261021.md"
+      ],
+      "executed_command": "binding recompute from live cases + ingest audit",
+      "observed_result": "materials=12 bad=0 accepted=11 rejected=1",
+      "note": null
+    }
+  },
+  "duplicate_review_forms": {
+    "ingest": {
+      "accepted": [
+        {
+          "entry": "repeated_00.json",
+          "material_id": "MAT_01",
+          "why": []
+        },
+        {
+          "entry": "repeated_01.json",
+          "material_id": "MAT_01",
+          "why": []
+        },
+        {
+          "entry": "repeated_02.json",
+          "material_id": "MAT_01",
+          "why": []
+        },
+        {
+          "entry": "repeated_03.json",
+          "material_id": "MAT_01",
+          "why": []
+        },
+        {
+          "entry": "repeated_04.json",
+          "material_id": "MAT_01",
+          "why": []
+        },
+        {
+          "entry": "repeated_05.json",
+          "material_id": "MAT_01",
+          "why": []
+        },
+        {
+          "entry": "repeated_06.json",
+          "material_id": "MAT_01",
+          "why": []
+        },
+        {
+          "entry": "repeated_07.json",
+          "material_id": "MAT_01",
+          "why": []
+        },
+        {
+          "entry": "repeated_08.json",
+          "material_id": "MAT_01",
+          "why": []
+        },
+        {
+          "entry": "repeated_09.json",
+          "material_id": "MAT_01",
+          "why": []
+        },
+        {
+          "entry": "repeated_10.json",
+          "material_id": "MAT_01",
+          "why": []
+        },
+        {
+          "entry": "repeated_11.json",
+          "material_id": "MAT_01",
+          "why": []
+        },
+        {
+          "entry": "repeated_12.json",
+          "material_id": "MAT_01",
+          "why": []
+        }
+      ],
+      "rejected": []
+    },
+    "summary": {
+      "date": "2026-10-21",
+      "release": "arena_v1",
+      "gate": "G07",
+      "rule": "无样本写 N/A；失败不从主分母消失；人工判定与流程成功分列；演练标签 fixture/reviewer，不伪造用户投票",
+      "process_layers": {
+        "全部尝试": 12,
+        "完成": 2,
+        "解析失败": 1,
+        "格式失败": 0
+      },
+      "manual_layers": {
+        "已审": 13,
+        "比较_甲": 13,
+        "比较_乙": 0,
+        "比较_相当": 0,
+        "两者都不合格": 0,
+        "不回更合适": 0,
+        "信息不足": 0,
+        "争议或未审": -1
+      },
+      "defect_fields": {},
+      "style_preference_tags": 0,
+      "reviewer_identities": [
+        "fixture"
+      ],
+      "drill_status": "fixture_drill"
+    }
+  },
+  "coverage_misses_clock_and_image": {
+    "broken_clock": "NCA second turn = 1900-01-01",
+    "broken_image_case": "L1_t07",
+    "exit": 0,
+    "stdout": "coverage_matrix: families=12 points=36 missing=0 field_issues=0\n",
+    "stderr": ""
+  },
+  "source_locations": {
+    "arena/isolation/trusted_controller.py": {
+      "_sha_file": 41,
+      "_icacls": 45,
+      "TrustedProxy": 52,
+      "IsoRun": 135,
+      "run_isolated": 374,
+      "__init__": 138,
+      "_call_upstream": 70,
+      "generate": 94,
+      "ledger": 129,
+      "stage": 152,
+      "_snapshot_for_restore": 184,
+      "_apply_denies": 197,
+      "_remove_denies": 219,
+      "_register_locked": 251,
+      "start": 264,
+      "_read_loop": 282,
+      "send": 287,
+      "recv": 291,
+      "request": 307,
+      "score": 312,
+      "log": 324,
+      "flush_ledger": 327,
+      "run_turns": 342,
+      "close": 364
+    },
+    "arena/isolation/candidate_host.py": {
+      "load_module": 25,
+      "Host": 32,
+      "main": 86,
+      "__init__": 33,
+      "read_within": 41,
+      "write_state": 51,
+      "snapshot": 59,
+      "restore": 63,
+      "proxy_call": 68,
+      "handle": 74
+    },
+    "arena/isolation/synthetic_candidate.py": {
+      "run_turn": 12
+    },
+    "tools/verify_arena_v1.py": {
+      "sha_file": 40,
+      "run_tool": 44,
+      "Verify": 52,
+      "main": 422,
+      "__init__": 53,
+      "record": 60,
+      "g01_release_audit": 67,
+      "g02_contract": 88,
+      "g03_scoring": 104,
+      "_matrix_a4": 119,
+      "g04_baseline": 132,
+      "g05_coverage": 143,
+      "g06a_split_seal": 155,
+      "g06b_selection": 175,
+      "g07_review_loop": 188,
+      "g08_g09_matrix": 258,
+      "g10_release_package": 300,
+      "run_offline": 314,
+      "run_integration": 336,
+      "finalize": 357,
+      "write_report": 394,
+      "sha16": 202,
+      "load_case": 207
+    },
+    "tools/review_loop.py": {
+      "sha_obj": 35,
+      "load_case": 40,
+      "cmd_gen": 69,
+      "cmd_ingest": 141,
+      "cmd_aggregate": 188,
+      "cmd_lookup": 232,
+      "main": 248
+    },
+    "tools/build_release_package.py": {
+      "sha_file": 73,
+      "build": 81,
+      "main": 203,
+      "copy_file": 86
+    },
+    "tools/test_isolation_matrix.py": {
+      "make_junction": 33,
+      "remove_junction": 40,
+      "CanaryEcho": 45,
+      "KeyGateUpstream": 68,
+      "judge": 101,
+      "main": 111,
+      "__init__": 72,
+      "run": 83
+    }
+  }
+}

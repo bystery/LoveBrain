@@ -1,0 +1,49 @@
+{
+  "registry_version": "arm_registry_v1",
+  "generated_at": "2026-11-08 06:02:39",
+  "reference_commit_intent": "byster/arena@75ab97e (工作起点)",
+  "arms": {
+    "DIRECT": {
+      "name": "Direct",
+      "source": "Phase1 新建轻量适配器",
+      "candidate_dir": "tools/benchmark_v1/baseline_candidates/direct_baseline",
+      "identity_sha256": {
+        "direct_baseline": "c5257585a49f475a8758b6cfa89fe6f07ab45bdface80c2c7b3019dc5ec16142"
+      }
+    },
+    "COT": {
+      "name": "CoT-style",
+      "source": "Phase1 新建轻量适配器",
+      "candidate_dir": "tools/benchmark_v1/baseline_candidates/cot_baseline",
+      "identity_sha256": {
+        "cot_baseline": "d028a6e7e3f55d4831253cac9756810a522df0d00fe3b07d3f6c6815636fb3d7"
+      }
+    },
+    "LEGACY": {
+      "name": "Historical Harness",
+      "source": "candidates/action_policy_r9_slim",
+      "candidate_dir": "candidates/action_policy_r9_slim",
+      "identity_sha256": {
+        "action_policy_r9_slim": "c57c093608060d740f16867604885daa6eef05d95f15d569fce0e2d04e55c7e8"
+      }
+    },
+    "CURRENT": {
+      "name": "LoveBrain Harness",
+      "source": "双域冠军（按轮数分流）",
+      "routing": {
+        "<=24": "window_expand_b_norecap_guard",
+        ">24": "window_expand_b_norecap_uc"
+      },
+      "candidate_dir": "candidates/window_expand_b_norecap_uc",
+      "identity_sha256": {
+        "window_expand_b_norecap_guard": "be85ee7b167beb3b6aeb44defc9126072d07b776fa102c37de8e058afc0b9751",
+        "window_expand_b_norecap_uc": "2c0728f5b00f6b142c94e2b23f1dab3836933d44a81813cdb25708d4804d7ac9"
+      }
+    }
+  },
+  "optional_fifth": {
+    "arm_id": "REFERENCE",
+    "candidate": "reference_product_v1",
+    "note": "原版产品参考组：Phase 1 不入主对照，先核保真边界（refs/arena_v1/BASELINE_PARITY.md），二/三阶段再定"
+  }
+}

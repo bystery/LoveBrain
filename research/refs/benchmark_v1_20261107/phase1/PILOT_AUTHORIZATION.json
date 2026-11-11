@@ -1,0 +1,27 @@
+{
+  "kind": "lovebrain_benchmark_v1_pilot_authorization",
+  "authorization_id": "AUTH-BM1-PHASE1-PILOT-20261107-01",
+  "scope": {
+    "purpose": "Benchmark V1 Phase 1 真实 Pilot：四组对照系统在真实模型上跑通 72 请求位（工程试验，非论文分数）",
+    "arms": ["DIRECT", "COT", "LEGACY", "CURRENT"],
+    "episodes": ["E032", "E037", "E191", "LRE117"],
+    "mode_b_replay_only": true,
+    "forbidden": ["修改正式题库/Gold/评分器", "读取或消费 B 线正文", "使用 SEALED 旧题",
+                  "与旧 dsf 批次成绩混合比较", "为任何一组私自重跑", "Key 落任何文件/日志"]
+  },
+  "cap_max_total_api_attempts": 320,
+  "arms": ["DIRECT", "COT", "LEGACY", "CURRENT"],
+  "episodes": ["E032", "E037", "E191", "LRE117"],
+  "cap_note": "一个 attempt=一次真实提交到模型端点的生成请求（含连接冒烟与内部附加调用）；超额停批不补跑",
+  "model": "deepseek-flash-2",
+  "provider": "ustc_openai_compatible",
+  "base_url": "https://api.llm.ustc.edu.cn/v1",
+  "temperature": 0.7,
+  "stream": false,
+  "max_concurrent_requests": 1,
+  "retry_on_quality_failure": false,
+  "key_source": "env:LB_API_KEY（唯一来源；旧 key 已泄露须由用户撤销重发）",
+  "issued_by": "用户外部指导书 2026-11-07（Phase 1 执行指令）",
+  "registered_at": "2026-11-07",
+  "runner": "tools/benchmark_v1/four_arm_runner.py (four_arm_runner_v1)"
+}

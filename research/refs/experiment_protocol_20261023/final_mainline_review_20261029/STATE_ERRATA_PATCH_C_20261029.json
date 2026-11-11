@@ -1,0 +1,43 @@
+{
+ "kind": "state_errata_patch",
+ "supersedes_sections_of": "STATE_AND_ERRATA.json (不回改原件，本 patch 为版本追加)",
+ "authored": "2026-10-29",
+ "authored_by": "本窗口独立复核后追加",
+ "retractions_and_updates": [
+  {
+   "id": "E-C-DISPATCHED",
+   "retracts": "STATE.phases.C_major_reclass_hypothesis.status=analysis_done_dispatch_not_registered; next_actions#1 '对照批≤24生成未登记未派发'; F_BCD_CLOSEOUT_ADDENDUM_20261029.md §C 末 '未登记未派发'",
+   "truth": "action_policy_r5_tier(ceb8008f…) 已从 e3 另建并通过 check_identity_drift --flat identical=true；AUTH-C-CONTRAST-20261029-01 于 17:20 登记、17:30 实跑 logs/c_contrast_live_20261029_173054、账本 24/24 且末事件 authorization_closed；两臂拼接关系(前缀/292/12组sha)独立复算通过；逐格语义判定见 F_C_CONTRAST_GRADES_20261029.{md,json}",
+   "verdict": "NEEDS_CHECK 4/4 首选位改善、PROPOSAL 4/4 与 EVIDENCED 4/4 护栏未回退 → assertion_tiering 未被否证、方向得到支持（未证明胜出：单次抽样、directions 槽残留、无人类校准）"
+  },
+  {
+   "id": "E-C-AUTH-STALE",
+   "note": "C_CONTRAST_AUTHORIZATION_20261029.json 的 status=ACTIVE 为派发前写入、跑完未回写；以账本末事件 authorization_closed 为准，该单已关、不复活不补跑"
+  },
+  {
+   "id": "E-C-TASK-DIR-ERR",
+   "retracts": "交接任务描述 'C 数据 …c_contrast_live_20261029_164332 与 173054 两个目录'",
+   "truth": "c_contrast_live 只有 173054 一个目录；164332 属 B 批 kb_probe_live_20261029_164332"
+  },
+  {
+   "id": "E-C-GUARDFINAL-FLAT",
+   "note": "check_identity_drift --flat 对 action_policy_r4_guard_final 抛 KeyError:'files'（FINAL_CANDIDATE_FREEZE 无 files 映射）；改用非 --flat 校验 identical=true=9b8f4e…，属工具限制非身份漂移"
+  }
+ ],
+ "cost_update_after_C": {
+  "attempt_started": 554,
+  "attempt_completed": 545,
+  "attempt_failed": 5,
+  "dispatch_or_batch_refused": 9,
+  "c_contrast_tokens_total": 170766,
+  "program_token_grand_total": 2566452,
+  "money": null,
+  "see": "C_CONTRAST_COST_20261029.json"
+ },
+ "unchanged": [
+  "F0-F6 不回改、不重跑",
+  "B 结果与判定不变（Use on 11/12 vs off 0/12；污染 1/24，含 E-MAT-B）",
+  "D 人工对 12 仍未标注 → W=未知，不代投",
+  "已登记未生效：E-MAT-B、RULER-C-01；改尺子走离线重评+版本化"
+ ]
+}

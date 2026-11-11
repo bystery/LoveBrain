@@ -1,0 +1,1570 @@
+{
+ "kind": "f_b_precheck",
+ "candidate": "action_policy_r4_guard_e3",
+ "registration": "logs/kp_precheck_20261029/F_B_PROBE_REGISTRATION.json",
+ "registration_sha256": "94be88b41b6b6e07b529d25e3f45fb0c577da83c2719d7665c63ab8b2bd17c01",
+ "history_budget_cu": 1400,
+ "facts_projection_budget_cu": 500,
+ "relevance_floor": 0.12,
+ "zero_real_calls": true,
+ "probes": [
+  {
+   "probe_id": "KP-A1",
+   "class": "attribution",
+   "story": "K02",
+   "fact_id": "f_0029",
+   "domain": "装修/宠物（豆豆）",
+   "paid_turn_count": 24,
+   "paid_events": 72,
+   "failures": [],
+   "notes": [],
+   "fact_current_text": "豆豆怕电钻",
+   "fact_status": "confirmed",
+   "fact_evidence_uids": [
+    22
+   ],
+   "registered_prior_state": [],
+   "prior_state_registered": true,
+   "source_uid_hits": [
+    22
+   ],
+   "source_messages": [
+    {
+     "uid": 22,
+     "role": "HER",
+     "ts": "2026-05-14 21:34",
+     "text": "它怕电钻"
+    }
+   ],
+   "carrier_uids_before": [
+    22
+   ],
+   "fillers_used": 0,
+   "filler_log": [],
+   "carriers_still_in_window": [],
+   "segment_kinds": [
+    "seed",
+    "action",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "proj_facts",
+    "proj_tent",
+    "proj_upd",
+    "history",
+    "current",
+    "other",
+    "media",
+    "other",
+    "other",
+    "other"
+   ],
+   "unknown_segments": [
+    "【目标让位】她的消息若带低落/疲惫/自嘲/沉重色彩（不论是否命中上方显式信号词，以你的语义读取为准）：本轮目标全部让位—",
+    "【钩子承接】她最近一条消息里的具体细节（身体状态/手边物件/正在做的动作/提到的人和事）是本轮最高优先钩子：先至少接住一",
+    "【自我状态有据】凡陈述自己的时间/位置/经历/安排（如'我路过''我有空''我去过'），前文必须有据；没有依据就含糊带过",
+    "【单 JSON 硬约束】① 整条回复只有一个 JSON 对象；按标准 JSON 规则闭合各层：response、dire",
+    "【回扣有据】凡提到'上次/之前/你说的X'这类旧事或她给过的东西，X 必须能在【对话记录】或上方【记忆行】里逐字或近乎逐",
+    "# 来源与回扣：本轮真正新增的事实只认下方 <chat> 里的消息(id：m0)；【真实历史消息】的 m_src[..]",
+    "【当前时间】2026-06-15 22:38\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段",
+    "# 时间与亲历边界：时间性事实（空闲/日程/排班/上班/带课/约定等）保留其原消息所指的【日期、时段、适用范围】；消息时",
+    "# 事实与行动的边界：信息不足时照样可以推进——查场次/查资料、比较选择、表达兴趣、提出时间或路线的建议，允许玩笑与调情"
+   ],
+   "relevance_question_vs_fact": 0.25,
+   "projection_line": "· [f_0029] 她：豆豆怕电钻（来源 m_src[22] @2026-05-14 21:40）",
+   "projection_fact_lines": 9,
+   "fidelity_value_verbatim_in_source": [
+    "怕电钻"
+   ],
+   "fidelity_source_map": [
+    {
+     "怕电钻": [
+      22
+     ]
+    }
+   ],
+   "fidelity_ok": true,
+   "na_conditions": {
+    "Capture": "n/a：原子来自已付费写回，本批不再测写回机会",
+    "Fidelity": "离线按原文逐字核验，见 fidelity_value_verbatim_in_source",
+    "Update": "NA：非更正类探针",
+    "Retrieval": "on 侧有投影证据即成立；off 侧为对照",
+    "Use": "需真实生成答卷，本前置不判",
+    "Contamination": "需真实生成答卷，本前置不判"
+   },
+   "P1_value_outside_projection": [],
+   "P1_question_carries_answer": false,
+   "retained_history_uids": [
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71
+   ],
+   "history_cu": 1427,
+   "fixture_lines_in_history": 0,
+   "P2_forms_inside_history_segment": [],
+   "probe_clock": "2026-06-15 22:38",
+   "stale_forms_inside_history_segment": [],
+   "P4_removed_sections": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "P4_projection_sections_present": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "passed": true,
+   "on_prompt_sha256": "f9fa1843a051847aadfd53a035518ef730751f42a036847dd50bd52004519ec1",
+   "off_prompt_sha256": "4c9643c3efd5296cb4beec3eb1715530e5ab56156d388accb08040fe5dd079c5",
+   "on_prompt_cu": 4956,
+   "off_prompt_cu": 4437
+  },
+  {
+   "probe_id": "KP-A2",
+   "class": "attribution",
+   "story": "K01",
+   "fact_id": "f_0020",
+   "domain": "旅行/朋友家（阿岚）",
+   "paid_turn_count": 24,
+   "paid_events": 71,
+   "failures": [],
+   "notes": [],
+   "fact_current_text": "阿岚家猫最近掉毛",
+   "fact_status": "confirmed",
+   "fact_evidence_uids": [
+    15
+   ],
+   "registered_prior_state": [],
+   "prior_state_registered": true,
+   "source_uid_hits": [
+    15
+   ],
+   "source_messages": [
+    {
+     "uid": 15,
+     "role": "HER",
+     "ts": "2026-10-25 20:10",
+     "text": "但她家猫最近掉毛"
+    }
+   ],
+   "carrier_uids_before": [
+    15,
+    54
+   ],
+   "fillers_used": 11,
+   "filler_log": [
+    {
+     "seq": 25,
+     "clock": "2026-11-17 22:18",
+     "text": "今天降温了 风挺大"
+    },
+    {
+     "seq": 26,
+     "clock": "2026-11-17 22:48",
+     "text": "中午吃了碗面 汤有点咸"
+    },
+    {
+     "seq": 27,
+     "clock": "2026-11-17 23:18",
+     "text": "地铁晚点 在门口站了半天"
+    },
+    {
+     "seq": 28,
+     "clock": "2026-11-17 23:48",
+     "text": "新买的鞋有点磨脚"
+    },
+    {
+     "seq": 29,
+     "clock": "2026-11-18 00:18",
+     "text": "楼下超市鸡蛋在打折"
+    },
+    {
+     "seq": 30,
+     "clock": "2026-11-18 00:48",
+     "text": "追的那部剧更了一集"
+    },
+    {
+     "seq": 31,
+     "clock": "2026-11-18 01:18",
+     "text": "周末想睡个懒觉再说"
+    },
+    {
+     "seq": 32,
+     "clock": "2026-11-18 01:48",
+     "text": "同事换了个新杯子"
+    },
+    {
+     "seq": 33,
+     "clock": "2026-11-18 02:18",
+     "text": "傍晚沿河走了两圈"
+    },
+    {
+     "seq": 34,
+     "clock": "2026-11-18 02:48",
+     "text": "手机快没电了 先充会儿"
+    },
+    {
+     "seq": 35,
+     "clock": "2026-11-18 03:18",
+     "text": "阳台的衣服忘了收"
+    }
+   ],
+   "carriers_still_in_window": [],
+   "segment_kinds": [
+    "seed",
+    "action",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "proj_facts",
+    "proj_tent",
+    "proj_upd",
+    "history",
+    "current",
+    "other",
+    "media",
+    "other",
+    "other",
+    "other"
+   ],
+   "unknown_segments": [
+    "【目标让位】她的消息若带低落/疲惫/自嘲/沉重色彩（不论是否命中上方显式信号词，以你的语义读取为准）：本轮目标全部让位—",
+    "【钩子承接】她最近一条消息里的具体细节（身体状态/手边物件/正在做的动作/提到的人和事）是本轮最高优先钩子：先至少接住一",
+    "【自我状态有据】凡陈述自己的时间/位置/经历/安排（如'我路过''我有空''我去过'），前文必须有据；没有依据就含糊带过",
+    "【单 JSON 硬约束】① 整条回复只有一个 JSON 对象；按标准 JSON 规则闭合各层：response、dire",
+    "【回扣有据】凡提到'上次/之前/你说的X'这类旧事或她给过的东西，X 必须能在【对话记录】或上方【记忆行】里逐字或近乎逐",
+    "# 来源与回扣：本轮真正新增的事实只认下方 <chat> 里的消息(id：m0)；【真实历史消息】的 m_src[..]",
+    "【当前时间】2026-11-18 04:28\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段",
+    "# 时间与亲历边界：时间性事实（空闲/日程/排班/上班/带课/约定等）保留其原消息所指的【日期、时段、适用范围】；消息时",
+    "# 事实与行动的边界：信息不足时照样可以推进——查场次/查资料、比较选择、表达兴趣、提出时间或路线的建议，允许玩笑与调情"
+   ],
+   "relevance_question_vs_fact": 0.2857,
+   "projection_line": "· [f_0020] 她：阿岚家猫最近掉毛（来源 m_src[15] @2026-10-25 20:15）",
+   "projection_fact_lines": 11,
+   "fidelity_value_verbatim_in_source": [
+    "掉毛"
+   ],
+   "fidelity_source_map": [
+    {
+     "掉毛": [
+      15
+     ]
+    }
+   ],
+   "fidelity_ok": true,
+   "na_conditions": {
+    "Capture": "n/a：原子来自已付费写回，本批不再测写回机会",
+    "Fidelity": "离线按原文逐字核验，见 fidelity_value_verbatim_in_source",
+    "Update": "NA：非更正类探针",
+    "Retrieval": "on 侧有投影证据即成立；off 侧为对照",
+    "Use": "需真实生成答卷，本前置不判",
+    "Contamination": "需真实生成答卷，本前置不判"
+   },
+   "P1_value_outside_projection": [],
+   "P1_question_carries_answer": false,
+   "retained_history_uids": [
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81
+   ],
+   "history_cu": 1407,
+   "fixture_lines_in_history": 11,
+   "P2_forms_inside_history_segment": [],
+   "probe_clock": "2026-11-18 04:28",
+   "stale_forms_inside_history_segment": [],
+   "P4_removed_sections": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "P4_projection_sections_present": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "passed": true,
+   "on_prompt_sha256": "e1ae8c0683a5a93a2b83aa70a745ab5b06aed19e341bc0578c3a0ad4391eeace",
+   "off_prompt_sha256": "209c6fd923d30645d358d39bd6a24b0f7bf0944ec6d4ef079130fb33bc4486af",
+   "on_prompt_cu": 5055,
+   "off_prompt_cu": 4402
+  },
+  {
+   "probe_id": "KP-C1",
+   "class": "correction",
+   "story": "K01",
+   "fact_id": "f_0015",
+   "domain": "旅行/客栈退订",
+   "paid_turn_count": 24,
+   "paid_events": 71,
+   "failures": [],
+   "notes": [],
+   "fact_current_text": "客栈退款截止改为11月10号（原11月8号），房型不变仍三晚",
+   "fact_status": "confirmed",
+   "fact_evidence_uids": [
+    9,
+    24
+   ],
+   "registered_prior_state": [
+    {
+     "text": "客栈三晚，11月8号前可退",
+     "status": "confirmed",
+     "reason": "correct",
+     "src_uids": [
+      24
+     ]
+    }
+   ],
+   "prior_state_registered": true,
+   "source_uid_hits": [
+    9,
+    24
+   ],
+   "source_messages": [
+    {
+     "uid": 9,
+     "role": "HER",
+     "ts": "2026-10-22 21:34",
+     "text": "三晚 11月8号前可退"
+    },
+    {
+     "uid": 24,
+     "role": "HER",
+     "ts": "2026-10-30 20:36",
+     "text": "退款截止改成11月10号"
+    }
+   ],
+   "carrier_uids_before": [
+    9,
+    24,
+    50
+   ],
+   "fillers_used": 7,
+   "filler_log": [
+    {
+     "seq": 25,
+     "clock": "2026-11-17 22:18",
+     "text": "今天降温了 风挺大"
+    },
+    {
+     "seq": 26,
+     "clock": "2026-11-17 22:48",
+     "text": "中午吃了碗面 汤有点咸"
+    },
+    {
+     "seq": 27,
+     "clock": "2026-11-17 23:18",
+     "text": "地铁晚点 在门口站了半天"
+    },
+    {
+     "seq": 28,
+     "clock": "2026-11-17 23:48",
+     "text": "新买的鞋有点磨脚"
+    },
+    {
+     "seq": 29,
+     "clock": "2026-11-18 00:18",
+     "text": "楼下超市鸡蛋在打折"
+    },
+    {
+     "seq": 30,
+     "clock": "2026-11-18 00:48",
+     "text": "追的那部剧更了一集"
+    },
+    {
+     "seq": 31,
+     "clock": "2026-11-18 01:18",
+     "text": "周末想睡个懒觉再说"
+    }
+   ],
+   "carriers_still_in_window": [],
+   "segment_kinds": [
+    "seed",
+    "action",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "proj_facts",
+    "proj_tent",
+    "proj_upd",
+    "history",
+    "current",
+    "other",
+    "media",
+    "other",
+    "other",
+    "other"
+   ],
+   "unknown_segments": [
+    "【发送合同】若你选 收尾：按下面【不回怎么写】执行；一旦写了任何正文，'不回+正文'冲突同样被拒发。想说话就别选这两个动",
+    "【不回怎么写】本轮不回：用顶层 \"action\":\"no_reply\" + 一句 \"decline_reason\" 表达",
+    "【目标让位】她的消息若带低落/疲惫/自嘲/沉重色彩（不论是否命中上方显式信号词，以你的语义读取为准）：本轮目标全部让位—",
+    "【钩子承接】她最近一条消息里的具体细节（身体状态/手边物件/正在做的动作/提到的人和事）是本轮最高优先钩子：先至少接住一",
+    "【自我状态有据】凡陈述自己的时间/位置/经历/安排（如'我路过''我有空''我去过'），前文必须有据；没有依据就含糊带过",
+    "【单 JSON 硬约束】① 整条回复只有一个 JSON 对象；按标准 JSON 规则闭合各层：response、dire",
+    "【回扣有据】凡提到'上次/之前/你说的X'这类旧事或她给过的东西，X 必须能在【对话记录】或上方【记忆行】里逐字或近乎逐",
+    "# 来源与回扣：本轮真正新增的事实只认下方 <chat> 里的消息(id：m0)；【真实历史消息】的 m_src[..]",
+    "【当前时间】2026-11-18 02:28\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段",
+    "# 时间与亲历边界：时间性事实（空闲/日程/排班/上班/带课/约定等）保留其原消息所指的【日期、时段、适用范围】；消息时",
+    "# 事实与行动的边界：信息不足时照样可以推进——查场次/查资料、比较选择、表达兴趣、提出时间或路线的建议，允许玩笑与调情"
+   ],
+   "relevance_question_vs_fact": 0.1481,
+   "projection_line": "· [f_0015] 她：客栈退款截止改为11月10号（原11月8号），房型不变仍三晚（来源 m_src[9],m_src[24] 事件@2026-11-08 前可退）",
+   "projection_fact_lines": 13,
+   "fidelity_value_verbatim_in_source": [
+    "11月10号",
+    "10号"
+   ],
+   "fidelity_source_map": [
+    {
+     "11月10号": [
+      24
+     ]
+    },
+    {
+     "10号": [
+      24
+     ]
+    }
+   ],
+   "fidelity_ok": true,
+   "na_conditions": {
+    "Capture": "n/a：原子来自已付费写回，本批不再测写回机会",
+    "Fidelity": "离线按原文逐字核验，见 fidelity_value_verbatim_in_source",
+    "Update": "仅更正类探针适用",
+    "Retrieval": "on 侧有投影证据即成立；off 侧为对照",
+    "Use": "需真实生成答卷，本前置不判",
+    "Contamination": "需真实生成答卷，本前置不判"
+   },
+   "P1_value_outside_projection": [],
+   "P1_question_carries_answer": false,
+   "retained_history_uids": [
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77
+   ],
+   "history_cu": 1401,
+   "fixture_lines_in_history": 7,
+   "P2_forms_inside_history_segment": [],
+   "probe_clock": "2026-11-18 02:28",
+   "stale_forms_inside_history_segment": [
+    "8号"
+   ],
+   "P4_removed_sections": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "P4_projection_sections_present": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "passed": true,
+   "on_prompt_sha256": "947b54f4220f25945a6f7acaa65e7a590180a30ff85f2e2694f5615d9c47eeb2",
+   "off_prompt_sha256": "19d408261d495b2663809e37994c396829f3e316d688a2a94889ce24bd714502",
+   "on_prompt_cu": 5528,
+   "off_prompt_cu": 4741
+  },
+  {
+   "probe_id": "KP-C2",
+   "class": "correction",
+   "story": "K02",
+   "fact_id": "f_0011",
+   "domain": "装修/材料到货",
+   "paid_turn_count": 24,
+   "paid_events": 72,
+   "failures": [],
+   "notes": [],
+   "fact_current_text": "瓷砖到货改到11月8号（原11月5号，厂家说5号来不及）",
+   "fact_status": "confirmed",
+   "fact_evidence_uids": [
+    5,
+    15,
+    16
+   ],
+   "registered_prior_state": [
+    {
+     "text": "瓷砖说11月5号到货",
+     "status": "confirmed",
+     "reason": "correct",
+     "src_uids": [
+      15,
+      16
+     ]
+    }
+   ],
+   "prior_state_registered": true,
+   "source_uid_hits": [
+    5,
+    15,
+    16
+   ],
+   "source_messages": [
+    {
+     "uid": 5,
+     "role": "HER",
+     "ts": "2026-05-07 21:18",
+     "text": "说11月5号到货"
+    },
+    {
+     "uid": 15,
+     "role": "HER",
+     "ts": "2026-05-12 21:20",
+     "text": "瓷砖改到11月8号到"
+    },
+    {
+     "uid": 16,
+     "role": "HER",
+     "ts": "2026-05-12 21:24",
+     "text": "厂家说5号来不及"
+    }
+   ],
+   "carrier_uids_before": [
+    5,
+    15,
+    16
+   ],
+   "fillers_used": 0,
+   "filler_log": [],
+   "carriers_still_in_window": [],
+   "segment_kinds": [
+    "seed",
+    "action",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "proj_facts",
+    "proj_tent",
+    "proj_upd",
+    "history",
+    "current",
+    "other",
+    "media",
+    "other",
+    "other",
+    "other"
+   ],
+   "unknown_segments": [
+    "【目标让位】她的消息若带低落/疲惫/自嘲/沉重色彩（不论是否命中上方显式信号词，以你的语义读取为准）：本轮目标全部让位—",
+    "【钩子承接】她最近一条消息里的具体细节（身体状态/手边物件/正在做的动作/提到的人和事）是本轮最高优先钩子：先至少接住一",
+    "【自我状态有据】凡陈述自己的时间/位置/经历/安排（如'我路过''我有空''我去过'），前文必须有据；没有依据就含糊带过",
+    "【单 JSON 硬约束】① 整条回复只有一个 JSON 对象；按标准 JSON 规则闭合各层：response、dire",
+    "【回扣有据】凡提到'上次/之前/你说的X'这类旧事或她给过的东西，X 必须能在【对话记录】或上方【记忆行】里逐字或近乎逐",
+    "# 来源与回扣：本轮真正新增的事实只认下方 <chat> 里的消息(id：m0)；【真实历史消息】的 m_src[..]",
+    "【当前时间】2026-06-15 22:38\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段",
+    "# 时间与亲历边界：时间性事实（空闲/日程/排班/上班/带课/约定等）保留其原消息所指的【日期、时段、适用范围】；消息时",
+    "# 事实与行动的边界：信息不足时照样可以推进——查场次/查资料、比较选择、表达兴趣、提出时间或路线的建议，允许玩笑与调情"
+   ],
+   "relevance_question_vs_fact": 0.2083,
+   "projection_line": "· [f_0011] 她：瓷砖到货改到11月8号（原11月5号，厂家说5号来不及）（来源 m_src[5],m_src[15],m_src[16] 事件@2026-11-05）",
+   "projection_fact_lines": 14,
+   "fidelity_value_verbatim_in_source": [
+    "11月8号"
+   ],
+   "fidelity_source_map": [
+    {
+     "11月8号": [
+      15
+     ]
+    }
+   ],
+   "fidelity_ok": true,
+   "na_conditions": {
+    "Capture": "n/a：原子来自已付费写回，本批不再测写回机会",
+    "Fidelity": "离线按原文逐字核验，见 fidelity_value_verbatim_in_source",
+    "Update": "仅更正类探针适用",
+    "Retrieval": "on 侧有投影证据即成立；off 侧为对照",
+    "Use": "需真实生成答卷，本前置不判",
+    "Contamination": "需真实生成答卷，本前置不判"
+   },
+   "P1_value_outside_projection": [],
+   "P1_question_carries_answer": false,
+   "retained_history_uids": [
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71
+   ],
+   "history_cu": 1427,
+   "fixture_lines_in_history": 0,
+   "P2_forms_inside_history_segment": [],
+   "probe_clock": "2026-06-15 22:38",
+   "stale_forms_inside_history_segment": [],
+   "P4_removed_sections": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "P4_projection_sections_present": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "passed": true,
+   "on_prompt_sha256": "406d8169285dc8474895df33aabd825ce52e30356f492aaa9644b7f85087c594",
+   "off_prompt_sha256": "1b21d9b30563f15f9da07329b29ff3817237132b9373f6bac721f2aaeaa2d688",
+   "on_prompt_cu": 5259,
+   "off_prompt_cu": 4440
+  },
+  {
+   "probe_id": "KP-T1",
+   "class": "time_state",
+   "story": "K01",
+   "fact_id": "f_0023",
+   "domain": "旅行/抢票",
+   "paid_turn_count": 24,
+   "paid_events": 71,
+   "failures": [],
+   "notes": [],
+   "fact_current_text": "高铁票11月1号开售",
+   "fact_status": "confirmed",
+   "fact_evidence_uids": [
+    17
+   ],
+   "registered_prior_state": [],
+   "prior_state_registered": true,
+   "source_uid_hits": [
+    17
+   ],
+   "source_messages": [
+    {
+     "uid": 17,
+     "role": "HER",
+     "ts": "2026-10-28 21:22",
+     "text": "高铁票11月1号开售"
+    }
+   ],
+   "carrier_uids_before": [
+    17,
+    44
+   ],
+   "fillers_used": 1,
+   "filler_log": [
+    {
+     "seq": 25,
+     "clock": "2026-11-17 22:18",
+     "text": "今天降温了 风挺大"
+    }
+   ],
+   "carriers_still_in_window": [],
+   "segment_kinds": [
+    "seed",
+    "action",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "proj_facts",
+    "proj_tent",
+    "proj_upd",
+    "history",
+    "current",
+    "other",
+    "media",
+    "other",
+    "other",
+    "other"
+   ],
+   "unknown_segments": [
+    "【目标让位】她的消息若带低落/疲惫/自嘲/沉重色彩（不论是否命中上方显式信号词，以你的语义读取为准）：本轮目标全部让位—",
+    "【钩子承接】她最近一条消息里的具体细节（身体状态/手边物件/正在做的动作/提到的人和事）是本轮最高优先钩子：先至少接住一",
+    "【自我状态有据】凡陈述自己的时间/位置/经历/安排（如'我路过''我有空''我去过'），前文必须有据；没有依据就含糊带过",
+    "【单 JSON 硬约束】① 整条回复只有一个 JSON 对象；按标准 JSON 规则闭合各层：response、dire",
+    "【回扣有据】凡提到'上次/之前/你说的X'这类旧事或她给过的东西，X 必须能在【对话记录】或上方【记忆行】里逐字或近乎逐",
+    "# 来源与回扣：本轮真正新增的事实只认下方 <chat> 里的消息(id：m0)；【真实历史消息】的 m_src[..]",
+    "【当前时间】2026-11-17 23:28\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段",
+    "# 时间与亲历边界：时间性事实（空闲/日程/排班/上班/带课/约定等）保留其原消息所指的【日期、时段、适用范围】；消息时",
+    "# 事实与行动的边界：信息不足时照样可以推进——查场次/查资料、比较选择、表达兴趣、提出时间或路线的建议，允许玩笑与调情"
+   ],
+   "relevance_question_vs_fact": 0.3333,
+   "projection_line": "· [f_0023] 公开：高铁票11月1号开售（来源 m_src[17] 事件@2026-11-01）",
+   "projection_fact_lines": 9,
+   "fidelity_value_verbatim_in_source": [
+    "11月1号",
+    "1号开售"
+   ],
+   "fidelity_source_map": [
+    {
+     "11月1号": [
+      17
+     ]
+    },
+    {
+     "1号开售": [
+      17
+     ]
+    }
+   ],
+   "fidelity_ok": true,
+   "na_conditions": {
+    "Capture": "n/a：原子来自已付费写回，本批不再测写回机会",
+    "Fidelity": "离线按原文逐字核验，见 fidelity_value_verbatim_in_source",
+    "Update": "NA：非更正类探针",
+    "Retrieval": "on 侧有投影证据即成立；off 侧为对照",
+    "Use": "需真实生成答卷，本前置不判",
+    "Contamination": "需真实生成答卷，本前置不判"
+   },
+   "P1_value_outside_projection": [],
+   "P1_question_carries_answer": false,
+   "retained_history_uids": [
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71
+   ],
+   "history_cu": 1402,
+   "fixture_lines_in_history": 1,
+   "P2_forms_inside_history_segment": [],
+   "probe_clock": "2026-11-17 23:28",
+   "stale_forms_inside_history_segment": [],
+   "P4_removed_sections": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "P4_projection_sections_present": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "passed": true,
+   "on_prompt_sha256": "58a57831876829636022987d07e8aa418c8afb33a414f9cc8b82538d24b50468",
+   "off_prompt_sha256": "9b7ca7bc5f543a655d6665aa23cc6cba0c05526d90052fb746aeea8a6f741ecf",
+   "on_prompt_cu": 4921,
+   "off_prompt_cu": 4383
+  },
+  {
+   "probe_id": "KP-T2",
+   "class": "time_state",
+   "story": "K02",
+   "fact_id": "f_0025",
+   "domain": "家庭/学校日程",
+   "paid_turn_count": 24,
+   "paid_events": 72,
+   "failures": [],
+   "notes": [],
+   "fact_current_text": "她11月7号要开家长会",
+   "fact_status": "confirmed",
+   "fact_evidence_uids": [
+    18
+   ],
+   "registered_prior_state": [],
+   "prior_state_registered": true,
+   "source_uid_hits": [
+    18
+   ],
+   "source_messages": [
+    {
+     "uid": 18,
+     "role": "HER",
+     "ts": "2026-05-13 20:02",
+     "text": "11月7号我要开家长会"
+    }
+   ],
+   "carrier_uids_before": [
+    18
+   ],
+   "fillers_used": 0,
+   "filler_log": [],
+   "carriers_still_in_window": [],
+   "segment_kinds": [
+    "seed",
+    "action",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "proj_facts",
+    "proj_tent",
+    "proj_upd",
+    "history",
+    "current",
+    "other",
+    "media",
+    "other",
+    "other",
+    "other"
+   ],
+   "unknown_segments": [
+    "【目标让位】她的消息若带低落/疲惫/自嘲/沉重色彩（不论是否命中上方显式信号词，以你的语义读取为准）：本轮目标全部让位—",
+    "【钩子承接】她最近一条消息里的具体细节（身体状态/手边物件/正在做的动作/提到的人和事）是本轮最高优先钩子：先至少接住一",
+    "【自我状态有据】凡陈述自己的时间/位置/经历/安排（如'我路过''我有空''我去过'），前文必须有据；没有依据就含糊带过",
+    "【单 JSON 硬约束】① 整条回复只有一个 JSON 对象；按标准 JSON 规则闭合各层：response、dire",
+    "【回扣有据】凡提到'上次/之前/你说的X'这类旧事或她给过的东西，X 必须能在【对话记录】或上方【记忆行】里逐字或近乎逐",
+    "# 来源与回扣：本轮真正新增的事实只认下方 <chat> 里的消息(id：m0)；【真实历史消息】的 m_src[..]",
+    "【当前时间】2026-06-15 22:38\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段",
+    "# 时间与亲历边界：时间性事实（空闲/日程/排班/上班/带课/约定等）保留其原消息所指的【日期、时段、适用范围】；消息时",
+    "# 事实与行动的边界：信息不足时照样可以推进——查场次/查资料、比较选择、表达兴趣、提出时间或路线的建议，允许玩笑与调情"
+   ],
+   "relevance_question_vs_fact": 0.2,
+   "projection_line": "· [f_0025] 她：她11月7号要开家长会（来源 m_src[18] 事件@2026-11-07）",
+   "projection_fact_lines": 10,
+   "fidelity_value_verbatim_in_source": [
+    "11月7号"
+   ],
+   "fidelity_source_map": [
+    {
+     "11月7号": [
+      18
+     ]
+    }
+   ],
+   "fidelity_ok": true,
+   "na_conditions": {
+    "Capture": "n/a：原子来自已付费写回，本批不再测写回机会",
+    "Fidelity": "离线按原文逐字核验，见 fidelity_value_verbatim_in_source",
+    "Update": "NA：非更正类探针",
+    "Retrieval": "on 侧有投影证据即成立；off 侧为对照",
+    "Use": "需真实生成答卷，本前置不判",
+    "Contamination": "需真实生成答卷，本前置不判"
+   },
+   "P1_value_outside_projection": [],
+   "P1_question_carries_answer": false,
+   "retained_history_uids": [
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71
+   ],
+   "history_cu": 1427,
+   "fixture_lines_in_history": 0,
+   "P2_forms_inside_history_segment": [],
+   "probe_clock": "2026-06-15 22:38",
+   "stale_forms_inside_history_segment": [],
+   "P4_removed_sections": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "P4_projection_sections_present": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "passed": true,
+   "on_prompt_sha256": "16e1103fee6a4f3c7e026d56ccc741378bf2bc4cf962992e6684a2832b371b84",
+   "off_prompt_sha256": "4d3d18386889e1313aa95ca4c342464ca87fe789de0e6998c5f44b4e368e4c12",
+   "on_prompt_cu": 5017,
+   "off_prompt_cu": 4442
+  },
+  {
+   "probe_id": "KP-B1",
+   "class": "attribution",
+   "story": "N02",
+   "fact_id": "f_0015",
+   "domain": "救助站/领养",
+   "paid_turn_count": 12,
+   "paid_events": 29,
+   "failures": [],
+   "notes": [],
+   "fact_current_text": "她说那只猫叫年糕",
+   "fact_status": "confirmed",
+   "fact_evidence_uids": [
+    8
+   ],
+   "registered_prior_state": [],
+   "prior_state_registered": true,
+   "source_uid_hits": [
+    8
+   ],
+   "source_messages": [
+    {
+     "uid": 8,
+     "role": "HER",
+     "ts": "2026-04-10 21:12",
+     "text": "它叫年糕 你看"
+    }
+   ],
+   "carrier_uids_before": [
+    8,
+    16,
+    22,
+    28
+   ],
+   "fillers_used": 27,
+   "filler_log": [
+    {
+     "seq": 13,
+     "clock": "2026-04-19 11:07",
+     "text": "今天降温了 风挺大"
+    },
+    {
+     "seq": 14,
+     "clock": "2026-04-19 11:37",
+     "text": "中午吃了碗面 汤有点咸"
+    },
+    {
+     "seq": 15,
+     "clock": "2026-04-19 12:07",
+     "text": "地铁晚点 在门口站了半天"
+    },
+    {
+     "seq": 16,
+     "clock": "2026-04-19 12:37",
+     "text": "新买的鞋有点磨脚"
+    },
+    {
+     "seq": 17,
+     "clock": "2026-04-19 13:07",
+     "text": "楼下超市鸡蛋在打折"
+    },
+    {
+     "seq": 18,
+     "clock": "2026-04-19 13:37",
+     "text": "追的那部剧更了一集"
+    },
+    {
+     "seq": 19,
+     "clock": "2026-04-19 14:07",
+     "text": "周末想睡个懒觉再说"
+    },
+    {
+     "seq": 20,
+     "clock": "2026-04-19 14:37",
+     "text": "同事换了个新杯子"
+    },
+    {
+     "seq": 21,
+     "clock": "2026-04-19 15:07",
+     "text": "傍晚沿河走了两圈"
+    },
+    {
+     "seq": 22,
+     "clock": "2026-04-19 15:37",
+     "text": "手机快没电了 先充会儿"
+    },
+    {
+     "seq": 23,
+     "clock": "2026-04-19 16:07",
+     "text": "阳台的衣服忘了收"
+    },
+    {
+     "seq": 24,
+     "clock": "2026-04-19 16:37",
+     "text": "早上闹钟居然没响"
+    },
+    {
+     "seq": 25,
+     "clock": "2026-04-19 17:07",
+     "text": "食堂今天的菜太淡"
+    },
+    {
+     "seq": 26,
+     "clock": "2026-04-19 17:37",
+     "text": "快递在驿站放了三天"
+    },
+    {
+     "seq": 27,
+     "clock": "2026-04-19 18:07",
+     "text": "新换的床单有点皱"
+    },
+    {
+     "seq": 28,
+     "clock": "2026-04-19 18:37",
+     "text": "办公室空调开得太冷"
+    },
+    {
+     "seq": 29,
+     "clock": "2026-04-19 19:07",
+     "text": "晚上十点才吃上饭"
+    },
+    {
+     "seq": 30,
+     "clock": "2026-04-19 19:37",
+     "text": "路上堵了一个多小时"
+    },
+    {
+     "seq": 31,
+     "clock": "2026-04-19 20:07",
+     "text": "把抽屉翻了个底朝天"
+    },
+    {
+     "seq": 32,
+     "clock": "2026-04-19 20:37",
+     "text": "旧杂志堆了一摞没扔"
+    },
+    {
+     "seq": 33,
+     "clock": "2026-04-19 21:07",
+     "text": "楼下装修队在楼道说话"
+    },
+    {
+     "seq": 34,
+     "clock": "2026-04-19 21:37",
+     "text": "今晚月亮挺亮"
+    },
+    {
+     "seq": 35,
+     "clock": "2026-04-19 22:07",
+     "text": "洗了两大盆衣服"
+    },
+    {
+     "seq": 36,
+     "clock": "2026-04-19 22:37",
+     "text": "明天还得早起排队"
+    },
+    {
+     "seq": 37,
+     "clock": "2026-04-19 23:07",
+     "text": "把这周的家务理顺了一下"
+    },
+    {
+     "seq": 38,
+     "clock": "2026-04-19 23:37",
+     "text": "钥匙又找不到 翻了一遍包"
+    },
+    {
+     "seq": 39,
+     "clock": "2026-04-20 00:07",
+     "text": "水壶水垢厚了一层"
+    }
+   ],
+   "carriers_still_in_window": [],
+   "segment_kinds": [
+    "seed",
+    "action",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "proj_facts",
+    "proj_tent",
+    "proj_upd",
+    "history",
+    "current",
+    "other",
+    "media",
+    "other",
+    "other",
+    "other"
+   ],
+   "unknown_segments": [
+    "【目标让位】她的消息若带低落/疲惫/自嘲/沉重色彩（不论是否命中上方显式信号词，以你的语义读取为准）：本轮目标全部让位—",
+    "【钩子承接】她最近一条消息里的具体细节（身体状态/手边物件/正在做的动作/提到的人和事）是本轮最高优先钩子：先至少接住一",
+    "【自我状态有据】凡陈述自己的时间/位置/经历/安排（如'我路过''我有空''我去过'），前文必须有据；没有依据就含糊带过",
+    "【单 JSON 硬约束】① 整条回复只有一个 JSON 对象；按标准 JSON 规则闭合各层：response、dire",
+    "【回扣有据】凡提到'上次/之前/你说的X'这类旧事或她给过的东西，X 必须能在【对话记录】或上方【记忆行】里逐字或近乎逐",
+    "# 来源与回扣：本轮真正新增的事实只认下方 <chat> 里的消息(id：m0)；【真实历史消息】的 m_src[..]",
+    "【当前时间】2026-04-20 01:17\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段",
+    "# 时间与亲历边界：时间性事实（空闲/日程/排班/上班/带课/约定等）保留其原消息所指的【日期、时段、适用范围】；消息时",
+    "# 事实与行动的边界：信息不足时照样可以推进——查场次/查资料、比较选择、表达兴趣、提出时间或路线的建议，允许玩笑与调情"
+   ],
+   "relevance_question_vs_fact": 0.1429,
+   "projection_line": "· [f_0015] 她：她说那只猫叫年糕（来源 m_src[8] @2026-04-10 21:20）",
+   "projection_fact_lines": 12,
+   "fidelity_value_verbatim_in_source": [
+    "年糕"
+   ],
+   "fidelity_source_map": [
+    {
+     "年糕": [
+      8
+     ]
+    }
+   ],
+   "fidelity_ok": true,
+   "na_conditions": {
+    "Capture": "n/a：原子来自已付费写回，本批不再测写回机会",
+    "Fidelity": "离线按原文逐字核验，见 fidelity_value_verbatim_in_source",
+    "Update": "NA：非更正类探针",
+    "Retrieval": "on 侧有投影证据即成立；off 侧为对照",
+    "Use": "需真实生成答卷，本前置不判",
+    "Contamination": "需真实生成答卷，本前置不判"
+   },
+   "P1_value_outside_projection": [],
+   "P1_question_carries_answer": false,
+   "retained_history_uids": [
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55
+   ],
+   "history_cu": 1404,
+   "fixture_lines_in_history": 27,
+   "P2_forms_inside_history_segment": [],
+   "probe_clock": "2026-04-20 01:17",
+   "stale_forms_inside_history_segment": [],
+   "P4_removed_sections": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "P4_projection_sections_present": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "passed": true,
+   "on_prompt_sha256": "2a0d915909b034b97d13a09afe2e2b6f7af59f893a3cd4065d7f2ce9b42e780c",
+   "off_prompt_sha256": "6304dd5e73624240a3c340248973f86f42d2dea45d455a9970897ded0e10b6bb",
+   "on_prompt_cu": 5115,
+   "off_prompt_cu": 4396
+  },
+  {
+   "probe_id": "KP-B2",
+   "class": "time_state",
+   "story": "N01",
+   "fact_id": "f_0019",
+   "domain": "家庭/带娃",
+   "paid_turn_count": 12,
+   "paid_events": 28,
+   "failures": [],
+   "notes": [],
+   "fact_current_text": "孩子跟她半天，下午三点前来接",
+   "fact_status": "confirmed",
+   "fact_evidence_uids": [
+    20
+   ],
+   "registered_prior_state": [],
+   "prior_state_registered": true,
+   "source_uid_hits": [
+    20
+   ],
+   "source_messages": [
+    {
+     "uid": 20,
+     "role": "HER",
+     "ts": "2026-03-07 09:10",
+     "text": "半天 下午三点前来接"
+    }
+   ],
+   "carrier_uids_before": [
+    20,
+    21
+   ],
+   "fillers_used": 21,
+   "filler_log": [
+    {
+     "seq": 13,
+     "clock": "2026-03-09 19:26",
+     "text": "今天降温了 风挺大"
+    },
+    {
+     "seq": 14,
+     "clock": "2026-03-09 19:56",
+     "text": "中午吃了碗面 汤有点咸"
+    },
+    {
+     "seq": 15,
+     "clock": "2026-03-09 20:26",
+     "text": "地铁晚点 在门口站了半天"
+    },
+    {
+     "seq": 16,
+     "clock": "2026-03-09 20:56",
+     "text": "新买的鞋有点磨脚"
+    },
+    {
+     "seq": 17,
+     "clock": "2026-03-09 21:26",
+     "text": "楼下超市鸡蛋在打折"
+    },
+    {
+     "seq": 18,
+     "clock": "2026-03-09 21:56",
+     "text": "追的那部剧更了一集"
+    },
+    {
+     "seq": 19,
+     "clock": "2026-03-09 22:26",
+     "text": "周末想睡个懒觉再说"
+    },
+    {
+     "seq": 20,
+     "clock": "2026-03-09 22:56",
+     "text": "同事换了个新杯子"
+    },
+    {
+     "seq": 21,
+     "clock": "2026-03-09 23:26",
+     "text": "傍晚沿河走了两圈"
+    },
+    {
+     "seq": 22,
+     "clock": "2026-03-09 23:56",
+     "text": "手机快没电了 先充会儿"
+    },
+    {
+     "seq": 23,
+     "clock": "2026-03-10 00:26",
+     "text": "阳台的衣服忘了收"
+    },
+    {
+     "seq": 24,
+     "clock": "2026-03-10 00:56",
+     "text": "早上闹钟居然没响"
+    },
+    {
+     "seq": 25,
+     "clock": "2026-03-10 01:26",
+     "text": "食堂今天的菜太淡"
+    },
+    {
+     "seq": 26,
+     "clock": "2026-03-10 01:56",
+     "text": "快递在驿站放了三天"
+    },
+    {
+     "seq": 27,
+     "clock": "2026-03-10 02:26",
+     "text": "新换的床单有点皱"
+    },
+    {
+     "seq": 28,
+     "clock": "2026-03-10 02:56",
+     "text": "办公室空调开得太冷"
+    },
+    {
+     "seq": 29,
+     "clock": "2026-03-10 03:26",
+     "text": "晚上十点才吃上饭"
+    },
+    {
+     "seq": 30,
+     "clock": "2026-03-10 03:56",
+     "text": "路上堵了一个多小时"
+    },
+    {
+     "seq": 31,
+     "clock": "2026-03-10 04:26",
+     "text": "把抽屉翻了个底朝天"
+    },
+    {
+     "seq": 32,
+     "clock": "2026-03-10 04:56",
+     "text": "旧杂志堆了一摞没扔"
+    },
+    {
+     "seq": 33,
+     "clock": "2026-03-10 05:26",
+     "text": "楼下装修队在楼道说话"
+    }
+   ],
+   "carriers_still_in_window": [],
+   "segment_kinds": [
+    "seed",
+    "action",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other",
+    "proj_facts",
+    "proj_tent",
+    "proj_upd",
+    "history",
+    "current",
+    "other",
+    "media",
+    "other",
+    "other",
+    "other"
+   ],
+   "unknown_segments": [
+    "【目标让位】她的消息若带低落/疲惫/自嘲/沉重色彩（不论是否命中上方显式信号词，以你的语义读取为准）：本轮目标全部让位—",
+    "【钩子承接】她最近一条消息里的具体细节（身体状态/手边物件/正在做的动作/提到的人和事）是本轮最高优先钩子：先至少接住一",
+    "【自我状态有据】凡陈述自己的时间/位置/经历/安排（如'我路过''我有空''我去过'），前文必须有据；没有依据就含糊带过",
+    "【单 JSON 硬约束】① 整条回复只有一个 JSON 对象；按标准 JSON 规则闭合各层：response、dire",
+    "【回扣有据】凡提到'上次/之前/你说的X'这类旧事或她给过的东西，X 必须能在【对话记录】或上方【记忆行】里逐字或近乎逐",
+    "# 来源与回扣：本轮真正新增的事实只认下方 <chat> 里的消息(id：m0)；【真实历史消息】的 m_src[..]",
+    "【当前时间】2026-03-10 06:36\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段",
+    "# 时间与亲历边界：时间性事实（空闲/日程/排班/上班/带课/约定等）保留其原消息所指的【日期、时段、适用范围】；消息时",
+    "# 事实与行动的边界：信息不足时照样可以推进——查场次/查资料、比较选择、表达兴趣、提出时间或路线的建议，允许玩笑与调情"
+   ],
+   "relevance_question_vs_fact": 0.2308,
+   "projection_line": "· [f_0019] 她：孩子跟她半天，下午三点前来接（来源 m_src[20] 事件@2026-03-08 下午）",
+   "projection_fact_lines": 10,
+   "fidelity_value_verbatim_in_source": [
+    "三点前",
+    "三点"
+   ],
+   "fidelity_source_map": [
+    {
+     "三点前": [
+      20
+     ]
+    },
+    {
+     "三点": [
+      20
+     ]
+    }
+   ],
+   "fidelity_ok": true,
+   "na_conditions": {
+    "Capture": "n/a：原子来自已付费写回，本批不再测写回机会",
+    "Fidelity": "离线按原文逐字核验，见 fidelity_value_verbatim_in_source",
+    "Update": "NA：非更正类探针",
+    "Retrieval": "on 侧有投影证据即成立；off 侧为对照",
+    "Use": "需真实生成答卷，本前置不判",
+    "Contamination": "需真实生成答卷，本前置不判"
+   },
+   "P1_value_outside_projection": [],
+   "P1_question_carries_answer": false,
+   "retained_history_uids": [
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+   ],
+   "history_cu": 1404,
+   "fixture_lines_in_history": 21,
+   "P2_forms_inside_history_segment": [],
+   "probe_clock": "2026-03-10 06:36",
+   "stale_forms_inside_history_segment": [],
+   "P4_removed_sections": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "P4_projection_sections_present": [
+    "proj_facts",
+    "proj_tent",
+    "proj_upd"
+   ],
+   "passed": true,
+   "on_prompt_sha256": "eae407bb8d52c214575e342ea4a3916e0f0a8cc0b833d9485ba1a8c17a7afe79",
+   "off_prompt_sha256": "2f3de0a10ac27aecffda276e6ccc1e4a42e2c9d316518707482d054675a5a660",
+   "on_prompt_cu": 5039,
+   "off_prompt_cu": 4413
+  }
+ ],
+ "gate": {
+  "probes_defined": 8,
+  "probes_passing_all_preconditions": 8,
+  "selection_rule": "通过全部前置者按类别配额(归属2/更正2/时间2)选取，同类按 story+fact_id 字典序，正选探针优先、备用其次；此规则在派发前写死，不看分数临时挑。",
+  "selected": [
+   "KP-A2",
+   "KP-A1",
+   "KP-C1",
+   "KP-C2",
+   "KP-T1",
+   "KP-T2"
+  ],
+  "selected_domains": [
+   "家庭/学校日程",
+   "旅行/客栈退订",
+   "旅行/抢票",
+   "旅行/朋友家（阿岚）",
+   "装修/宠物（豆豆）",
+   "装修/材料到货"
+  ],
+  "requirement_6_probes": true,
+  "requirement_3_domains": true,
+  "dispatch_allowed": true,
+  "physical_generations_if_dispatched": 24,
+  "note": "24 次=选中探针数×on/off×2 重复；夹具轮为 0 成本，不计入授权额度，但会在账本外单独登记为 fixture_turns。"
+ },
+ "measurement_scope": {
+  "ablation": "off = on 精确删除【相关已确认事实】【暂定事项】【最近状态变更】三段；seed/目标/计划/note/动作层/原文历史/本轮输入/规则段逐字节同一份。",
+  "asymmetry_1": "on 侧投影不止被问那一条（实测每探针 1–5 行），off 侧一并删除，所以 on/off 差值是“整层投影”的效应，不是单条事实的效应。",
+  "asymmetry_2": "夹具消息占据原文窗口的一部分（见各探针 fixture_lines_in_history、history_cu），且各探针保留窗口内容不同；跨探针只比“同一探针的 on/off”。",
+  "asymmetry_3": "投影选择是词面二元组重合（RELEVANCE_FLOOR 以下不注入）；问题不复述事实用词就没有投影证据，这类失败记“测量设计未过”，不能算模型检索失败。",
+  "correction_probe_note": "更正类探针故意让旧值留在窗口内（见 stale_forms_inside_history_segment），新值只在投影里——这样 on/off 与污染才有区分度。"
+ },
+ "fixture_turns_total": 67
+}

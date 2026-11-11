@@ -1,0 +1,41 @@
+{
+  "auth_id": "AUTH-RP1-UNLIMITED-20261111-03",
+  "date": "2026-11-11",
+  "authority": "用户 2026-11-11 原话：现在开始给你不限制的额度！不限制的预算！+ RESEARCH-P1 宪章 + AGENTS.md §-1 持续自主迭代",
+  "purpose": "LOOP-10+：基于外部检索（ModeX/Self-Refine/Score Before You Speak）设计新机制类别（生成层改进+零调用选择器），真实实验+五维判决，持续循环至绝对提升≥50%",
+  "budget_envelope": {
+    "cap_max_total_api_attempts": "UNLIMITED",
+    "note": "用户明确解除额度限制；仍按 RESEARCH-P1 纪律记账（每批落账 attempts/失败/时延），不浪费但不限量",
+    "priority_rule": "并行多候选同时跑；不再串行排队"
+  },
+  "scope": {
+    "positions": "smoke_24（固定）为主；达标后扩 DEV_FAST_SET 60 位",
+    "arms_allowed": [
+      "rh_b04_anchored_layout",
+      "rh_b15_multicast_validator",
+      "rh_b15b_selector",
+      "rh_b17_memorycard",
+      "rh_pipe_v1",
+      "新登记的 RH-B 原型（须先入 MECHANISM_REGISTRY）",
+      "rh_converge"
+    ],
+    "runner": "tools/benchmark_v1/prototype_runner.py",
+    "concurrency": "UNLIMITED（用户解除限制）",
+    "forbidden": [
+      "HOLDOUT E401-E520 全部",
+      "benchmark/b_line/",
+      "换模型/换采样（dsf/0.7/17770 固定）",
+      "伪造完整结果/虚报后台运行"
+    ]
+  },
+  "model": "deepseek-flash-2",
+  "temperature": 0.7,
+  "max_concurrent_requests": 4,
+  "retry_on_quality_failure": false,
+  "honesty_rules": [
+    "失败位置如实登记缺失，不伪造完整结果",
+    "AI 质量审阅只能标探索性，不冒充人类评分",
+    "每轮落账 CANDIDATE_SCOREBOARD.csv + LIVE_LOOP_LOG.md",
+    "看门狗合规：每 LOOP 必须 ≥3 次外部检索+≥1 篇新论文+LOOP 段落引用"
+  ]
+}

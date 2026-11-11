@@ -1,0 +1,48 @@
+{
+ "kind": "b3_personal_read_result",
+ "tag": "W14J",
+ "date": "2026-11-02",
+ "batch": "BATCH-W14J-LONG4-20261102",
+ "positions": [
+  {
+   "pair_id": "LP:LRE145:LRE145_T02",
+   "judge_flag": "candidate severe",
+   "personal_read": "'信七点'为带理由的实用决策建议（宁早不宁晚）+'App时间是系统算的'常识泛述；未坐实具体未定事实",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T20",
+   "judge_flag": "candidate severe (swap)",
+   "personal_read": "断言'是这块电池本身有毛病'（故障原因未明→坐实未定）+'全国联保两年…老板亲口说的'（来源无据归属，HER 原话仅转述舅称老板人实在）——坐实未定族成立，判据定义的同类 severe",
+   "verdict": "counted_severe_candidate_same_family"
+  },
+  {
+   "pair_id": "LP:LRE121:LRE121_T28",
+   "judge_flag": "parent severe",
+   "personal_read": "把已取消的九点半旧约与换号/两针进程混成因果链，无据确定化成立",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:LRE121:LRE121_T39",
+   "judge_flag": "parent severe",
+   "personal_read": "编造'九月底那针答应请一整笼虾饺'未发生承诺，成立",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "其余 9 个 PAR 旗",
+   "judge_flag": "LRE121_T06/T21, LRE127_T31, LRE145_T25/T28, LRE146_T05/T22/T25/T32",
+   "personal_read": "上下文预算内抽样读 2/2 成立（上列）；未逐位深读的 9 位按原旗保守计入 parent 总账（对 b2 门不构成风险：总账门为 b2<=b）",
+   "verdict": "counted_conservative_parent"
+  }
+ ],
+ "severe_ledger": {
+  "candidate_window_expand_b2": 1,
+  "parent_window_expand_b": "11（抽样2成立+9保守计入）",
+  "raw_judge": {
+   "candidate": 2,
+   "parent": 11
+  },
+  "note": "cand LRE145_T02 拒绝后=1；parent 全部保守计入"
+ },
+ "key_observation": "LRE121=唯一压制段活跃故事（36/40 轮）：b2 零 severe vs b ≥2（复活/编造族）——机制正向；LRE146 压制段全程为空（无可测更正），该篇 severe 属检测覆盖缺口而非压制失效"
+}

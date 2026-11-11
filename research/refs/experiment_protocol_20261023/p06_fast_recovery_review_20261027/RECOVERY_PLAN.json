@@ -1,0 +1,28 @@
+{
+  "kind": "new_stratified_paired_cohort_not_pooled_gemini_patch",
+  "incomplete_pairs_with_both_texts": 33,
+  "bridge_pairs": 12,
+  "delivery_failure_only_pairs": [
+    "FP034"
+  ],
+  "new_pair_units": 45,
+  "primary_dimension_jobs": 135,
+  "execution_controls": 12,
+  "primary_phase_planned": 147,
+  "optional_backup_risk_jobs": 96,
+  "max_combined_jobs": 243,
+  "per_alias_cap": 3,
+  "global_initial_cap": 3,
+  "global_ramp_cap": 6,
+  "timeout_s": 45,
+  "model_policy": {
+    "gemini-3.8-flash": 0,
+    "hy4-preview": "forbidden",
+    "hy3": "noncritical authoring initially1; large load timed out"
+  },
+  "qualification": "Profiles without directly applicable reference controls remain advisory; evidence review required. Same-model repeated roles are not independent human review.",
+  "if_service_slow": "Do not burn full queue: test a small profile unit first, stop that model after consecutive failures and continue P07/candidate work. No third all-dimensional judge rerun.",
+  "no_new_authorization_required_from_user": true,
+  "new_per_scope_authorization_documents_required": true,
+  "actual_dispatch_started": false
+}

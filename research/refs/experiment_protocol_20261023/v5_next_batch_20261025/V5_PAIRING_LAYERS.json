@@ -1,0 +1,1410 @@
+{
+ "batch_id": "BATCH-V5-CTX-20261025",
+ "authorization_id": "AUTH-V5-CTX-20261025-01",
+ "arms": {
+  "parent": "reference_product_v1@6e65b6bc",
+  "candidate": "v5_purpose_aligned@ef855510"
+ },
+ "real_model_calls": 48,
+ "layers": {
+  "layer1_primary_content_counts": {
+   "parent": 2,
+   "candidate": 3,
+   "tie": 19
+  },
+  "layer2_delivery_contract_counts": {
+   "parent_fail": 1,
+   "candidate_fail": 1,
+   "failure_families": {
+    "parent": "analysis 来源 id 越界（被删的那层）",
+    "candidate": "必需键名混入零宽字符（协议输出层）"
+   }
+  },
+  "layer3_backup_risk_counts": {
+   "parent": {
+    "tagged": 4,
+    "high": 1,
+    "medium": 2,
+    "low": 1
+   },
+   "candidate": {
+    "tagged": 7,
+    "high": 0,
+    "medium": 5,
+    "low": 2
+   }
+  },
+  "layer4_resource_wait": {
+   "parent": {
+    "n": 24,
+    "prompt_tokens": 176355,
+    "completion_tokens": 6966,
+    "total_tokens": 183321,
+    "program_mean10": 9.51375,
+    "veto_count": 1,
+    "latency_ms": {
+     "p50": 29606,
+     "p95": 61401,
+     "max": 64456,
+     "sum": 823836
+    },
+    "primary_mean_chars": 23.375,
+    "nonempty_backup_slots": 161,
+    "illegal_source_slots": 1,
+    "literal_null_slots": 0
+   },
+   "candidate": {
+    "n": 24,
+    "prompt_tokens": 72146,
+    "completion_tokens": 5491,
+    "total_tokens": 77637,
+    "program_mean10": 9.583333333333334,
+    "veto_count": 1,
+    "latency_ms": {
+     "p50": 24381,
+     "p95": 77949,
+     "max": 91219,
+     "sum": 826005
+    },
+    "primary_mean_chars": 35.166666666666664,
+    "nonempty_backup_slots": 155,
+    "illegal_source_slots": 0,
+    "literal_null_slots": 0
+   }
+  }
+ },
+ "shared_observations": {
+  "coach_instruction_leak": {
+   "parent": 0,
+   "candidate": 0,
+   "note": "r2 曾出现的“你可以这样发”类指令在本批两臂 0 命中（正则族扫描），不能把它记作 v5 单独修好的功劳。"
+  },
+  "legal_null_never_exercised": {
+   "parent": 0,
+   "candidate": 0,
+   "note": "48/48 两臂都填满四风格+四方向，合法不回选项一次都没用；不能宣称任一臂更尊重 null 语义。"
+  },
+  "iso_date_in_sendable_text": {
+   "parent": 2,
+   "candidate": 0
+  },
+  "empty_analysis_compliance": {
+   "empty": 24,
+   "nonempty": 0,
+   "corrupt": 0,
+   "denominator": 24,
+   "note": "实现遵从，非聊天质量胜负；nonempty/corrupt 才是需要看的偏差。"
+  },
+  "primary_mean_chars": {
+   "parent": 23.375,
+   "candidate": 35.166666666666664
+  }
+ },
+ "not_counted_as_evidence": [
+  "程序均分（parent 9.51 / candidate 9.58）与逐位程序胜负（parent1/candidate2/tie21）不作为质量胜负依据，只作契约层参考。",
+  "candidate illegal_source_slots=0 主要是因为不再输出 scene_facts，属作用域变化非能力胜出。",
+  "两臂在不同故事上跑过（r2=E007/E010/E012，v5=E007/E008/E009），不做跨批数字相减。",
+  "首选字符数 +50.45% 不构成优劣（本批不设回复长度目标）。"
+ ],
+ "pairs": [
+  {
+   "case_id": "E007_T01",
+   "episode": "E007",
+   "note": "先接住她的情绪，别一上来就抛约会",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "两臂都先接情绪、未抛约会；v5 多问一句“打算往哪跑”仍贴话题。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7172,
+     "completion": 179,
+     "total": 7351,
+     "latency_ms": 19203,
+     "primary_chars": 17
+    },
+    "candidate": {
+     "prompt": 2820,
+     "completion": 196,
+     "total": 3016,
+     "latency_ms": 23795,
+     "primary_chars": 24
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "38f03374734956d0be668255b77ceb3f78be1c02fb1b74b861d17b98b1b8237e",
+    "candidate_raw_sha256": "78c08583b032dc3f5c4e0c07091ff724cac56983e2208ad40a14b68e29009f7b",
+    "parent_run_id": "iso_20261025_093842_48b2df",
+    "candidate_run_id": "iso_20261025_093842_b58b79",
+    "case_input_sha256_parent": "03501305e62a946b25a9ab1c3fc00d5969c3cbf17586f5b73f07487140609138",
+    "case_input_sha256_candidate": "03501305e62a946b25a9ab1c3fc00d5969c3cbf17586f5b73f07487140609138"
+   }
+  },
+  {
+   "case_id": "E007_T02",
+   "episode": "E007",
+   "note": "她松口了；顺势推进但要贴着她的口味",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "两臂都按她的口味筛场并交回选择权；无催定。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7361,
+     "completion": 288,
+     "total": 7649,
+     "latency_ms": 44333,
+     "primary_chars": 23
+    },
+    "candidate": {
+     "prompt": 3025,
+     "completion": 276,
+     "total": 3301,
+     "latency_ms": 91219,
+     "primary_chars": 47
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "59c09a0615b3e248ff76c139057ad1c25041a463d40f8994071343a6025ae949",
+    "candidate_raw_sha256": "a04d532178a0f80ebe3e7e596f8112b8971777315b111919d730f52f93c92c93",
+    "parent_run_id": "iso_20261025_093842_48b2df",
+    "candidate_run_id": "iso_20261025_093842_b58b79",
+    "case_input_sha256_parent": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+    "case_input_sha256_candidate": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87"
+   }
+  },
+  {
+   "case_id": "E007_T03",
+   "episode": "E007",
+   "note": "她在往你提过的事上靠；可回扣但不要假装已经买好票",
+   "layer1_primary_content": {
+    "winner": "parent",
+    "rationale": "两臂都没假装买票，但 v5 首选把那次现场声学说成已知（“中间还能听见彼此说话”），parent 停在曲风层（“基本没人声，一层一层铺上来”），断言强度更低。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": [
+     [
+      "E007_T03",
+      "directions[2]",
+      "medium",
+      "“想跟你一起去听一次，这话我记挺久了”——自称早已存在的内心想法，输入无支持"
+     ]
+    ]
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7443,
+     "completion": 304,
+     "total": 7747,
+     "latency_ms": 22604,
+     "primary_chars": 42
+    },
+    "candidate": {
+     "prompt": 3050,
+     "completion": 275,
+     "total": 3325,
+     "latency_ms": 19402,
+     "primary_chars": 60
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "fbd8da9eedd59db52aca34e6d2f1bbcf8890c58c3e9978f7fea413a12094f346",
+    "candidate_raw_sha256": "b4cdffa0967e889e5c6fc3d547d3eeb901900b2e4716b1e5e6e36c59bcb1fdac",
+    "parent_run_id": "iso_20261025_093842_48b2df",
+    "candidate_run_id": "iso_20261025_093842_b58b79",
+    "case_input_sha256_parent": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+    "case_input_sha256_candidate": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18"
+   }
+  },
+  {
+   "case_id": "E007_T04",
+   "episode": "E007",
+   "note": "她没拒绝但也没应；先记成暂定别催",
+   "layer1_primary_content": {
+    "winner": "parent",
+    "rationale": "note 要求记成暂定别催；parent“你看着来，定了跟我说一声”纯交回，v5“真要来我这边把票弄好”多加一层我来办的承接，接近替她决定。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7348,
+     "completion": 259,
+     "total": 7607,
+     "latency_ms": 16394,
+     "primary_chars": 15
+    },
+    "candidate": {
+     "prompt": 2968,
+     "completion": 182,
+     "total": 3150,
+     "latency_ms": 46846,
+     "primary_chars": 28
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "80938649ac19566d8082d0a660fbcc2c259d6fcdd34ab288cfa7a2ea811d11de",
+    "candidate_raw_sha256": "4d417fad1360c77396893818efcab96ede2b2e7a559204bd1c775e2090aab748",
+    "parent_run_id": "iso_20261025_093842_48b2df",
+    "candidate_run_id": "iso_20261025_093842_b58b79",
+    "case_input_sha256_parent": "51c6aa90730126a89e0b420bebd85a9a9231a4c50cf962cffa57be6bbc33722c",
+    "case_input_sha256_candidate": "51c6aa90730126a89e0b420bebd85a9a9231a4c50cf962cffa57be6bbc33722c"
+   }
+  },
+  {
+   "case_id": "E007_T05",
+   "episode": "E007",
+   "note": "她把话题从我之前的目标挪开了；别再往约会上引，别被旧目标绑架",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "旧目标未被绑架：两臂首选都顺着新话题答周末，没把 livehouse 拽回来。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 0.0,
+     "veto": "illegal_source_id:t4_1",
+     "sendable_recommended": false,
+     "detail": "首选正文本身可发；整位被判 0 分来自 analysis.scene_facts 引了历史轮标记 id（<!-- round:msgIds:t4_0,t4_1 -->），而声明的来源 id 集合只有本轮 <chat> 的 m0。"
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7422,
+     "completion": 281,
+     "total": 7703,
+     "latency_ms": 25947,
+     "primary_chars": 33
+    },
+    "candidate": {
+     "prompt": 2995,
+     "completion": 250,
+     "total": 3245,
+     "latency_ms": 71039,
+     "primary_chars": 30
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "8bbdc810974c59ea88ec03cf3a342b9ce8fdc8c5201086575572cf70997b8e0c",
+    "candidate_raw_sha256": "69e306b3c2da538f492463326e8bd619dcdf860909ceb73557efc400f2b77d25",
+    "parent_run_id": "iso_20261025_093842_48b2df",
+    "candidate_run_id": "iso_20261025_093842_b58b79",
+    "case_input_sha256_parent": "d142f73192a019803b0c39d6e7e3024e3275ab0a91d4b06dea3c6ce591b8e329",
+    "case_input_sha256_candidate": "d142f73192a019803b0c39d6e7e3024e3275ab0a91d4b06dea3c6ce591b8e329"
+   }
+  },
+  {
+   "case_id": "E007_T06",
+   "episode": "E007",
+   "note": "她重新接上之前那个约；把状态从暂定切成她来推进，正常高兴一下",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "两臂都接住“票我自己买”并只提新建议（v5 自己买一张、parent 回头给两个选项）；v5 首选夹带“后摇那种一开场就安静下来”的曲风断言，属轻度外推。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [
+     [
+      "E007_T06",
+      "directions[1]",
+      "low",
+      "“后摇配不上太吵的地方”——曲风层概括断言，轻度外推"
+     ]
+    ],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7364,
+     "completion": 361,
+     "total": 7725,
+     "latency_ms": 27491,
+     "primary_chars": 25
+    },
+    "candidate": {
+     "prompt": 3154,
+     "completion": 348,
+     "total": 3502,
+     "latency_ms": 38895,
+     "primary_chars": 82
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "4f1ef093846de262df7effd14fee9db6c25bf8948ef9f881c2638b3524e17628",
+    "candidate_raw_sha256": "1e7dc7457d9f4bc19f873bb648e68df3c6cd8ef870e3da13d7ef6056fb0d6748",
+    "parent_run_id": "iso_20261025_093842_48b2df",
+    "candidate_run_id": "iso_20261025_093842_b58b79",
+    "case_input_sha256_parent": "adf80385380136670b151707f38d5a5dadd9007d5ef0aed627cd7ceebaa10f6d",
+    "case_input_sha256_candidate": "adf80385380136670b151707f38d5a5dadd9007d5ef0aed627cd7ceebaa10f6d"
+   }
+  },
+  {
+   "case_id": "E007_T07",
+   "episode": "E007",
+   "note": "双方已明确说定周六;轻松收尾即可,不用再往前推",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "都是轻松收尾不再前推；parent 程序分 8.33 扣在 style_diversity（首选与 warm 相近），不是内容缺陷，不计入本层胜负。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 8.33,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7415,
+     "completion": 272,
+     "total": 7687,
+     "latency_ms": 15009,
+     "primary_chars": 6
+    },
+    "candidate": {
+     "prompt": 3072,
+     "completion": 133,
+     "total": 3205,
+     "latency_ms": 17131,
+     "primary_chars": 8
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "63a0284ded11a7dc717361bb2003f44d4ad03e1dd916e409f55a34f511f70cef",
+    "candidate_raw_sha256": "10e677f97a4143a1f71d15fa85d381430338111b921015a927df9ccc910ab07c",
+    "parent_run_id": "iso_20261025_093842_48b2df",
+    "candidate_run_id": "iso_20261025_093842_b58b79",
+    "case_input_sha256_parent": "e0198492845b2c5f49e54676c361e932a19bbcd3792f6849a5e1de9b41a22b13",
+    "case_input_sha256_candidate": "e0198492845b2c5f49e54676c361e932a19bbcd3792f6849a5e1de9b41a22b13"
+   }
+  },
+  {
+   "case_id": "E007_T08",
+   "episode": "E007",
+   "note": "第三人(同事)的观点，不是她的、也不是你的；就事论事给想法，别把同事的话安到她头上",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "两臂首选都把同事的话当第三方观点、就事论事答耳塞，没安到她头上。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 0.0,
+     "veto": "json_schema_broken",
+     "sendable_recommended": false,
+     "detail": "键名被写成 bad_bo+U+200B+y（零宽空格），JSON 可解析但必需键缺失→整位判 0；八槽内容都完整，analysis={} 仍守约。"
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [
+     [
+      "E007_T08",
+      "directions[1]",
+      "high",
+      "“那天阵容里有两支偏躁的，但也不是金属那种”——本场阵容无任何输入支持，属具体事实编造"
+     ],
+     [
+      "E007_T08",
+      "directions[2]",
+      "medium",
+      "“我一般不带，后摇想听清每个层次”——自称既往现场习惯，输入无此经历"
+     ]
+    ],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7343,
+     "completion": 298,
+     "total": 7641,
+     "latency_ms": 60895,
+     "primary_chars": 33
+    },
+    "candidate": {
+     "prompt": 3112,
+     "completion": 311,
+     "total": 3423,
+     "latency_ms": 16399,
+     "primary_chars": 53
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "a0b70d9a01f94e1b4e6da81205e58e12b619deba4f4f6eaa953b1d2d91a4dbdb",
+    "candidate_raw_sha256": "307838c8f3485d9e76073b9bf9cc1cd5dc53507160472975d1c706bdd5f07130",
+    "parent_run_id": "iso_20261025_093842_48b2df",
+    "candidate_run_id": "iso_20261025_093842_b58b79",
+    "case_input_sha256_parent": "cf5016b8f5e0e3c2f9606fe62b9673230a339dd32ca5997e314422f1b83b3cc0",
+    "case_input_sha256_candidate": "cf5016b8f5e0e3c2f9606fe62b9673230a339dd32ca5997e314422f1b83b3cc0"
+   }
+  },
+  {
+   "case_id": "E008_T01",
+   "episode": "E008",
+   "note": "是妹妹的事不是她的私事；回应她的心意，别越界安排",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "都按“妹妹的事”回应心意，未越界安排。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7200,
+     "completion": 333,
+     "total": 7533,
+     "latency_ms": 37925,
+     "primary_chars": 25
+    },
+    "candidate": {
+     "prompt": 2848,
+     "completion": 278,
+     "total": 3126,
+     "latency_ms": 16111,
+     "primary_chars": 41
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "917ac9be14491295a3086e14f137cd88ea9a77a04fe3aaa96d07ceedc3a34ca8",
+    "candidate_raw_sha256": "ab6dec6761fb4ec5fae5b7e36ab9e78e548649e1ab163f90854f26271c0ebbff",
+    "parent_run_id": "iso_20261025_093842_c8d7b9",
+    "candidate_run_id": "iso_20261025_093842_a1b9da",
+    "case_input_sha256_parent": "70a199a37badc63e9f702d9ed975d701b9cec09257c1e8e3d092508cc85e2763",
+    "case_input_sha256_candidate": "70a199a37badc63e9f702d9ed975d701b9cec09257c1e8e3d092508cc85e2763"
+   }
+  },
+  {
+   "case_id": "E008_T02",
+   "episode": "E008",
+   "note": "'太惯着'是小林的评价，不是她的结论；别替她认领，也别顺着贬她妹妹",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "都没替她认领“太惯着”，也未贬其妹。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7383,
+     "completion": 293,
+     "total": 7676,
+     "latency_ms": 23243,
+     "primary_chars": 23
+    },
+    "candidate": {
+     "prompt": 2919,
+     "completion": 236,
+     "total": 3155,
+     "latency_ms": 20278,
+     "primary_chars": 32
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "a6538de2ba49f6abda2e86602b1240ee2cb89b83c5d3bb5c6f9281d1b0158fd1",
+    "candidate_raw_sha256": "b3d4c3ffe0e679d68a0a129b985c8e910b889905930908eb772cd9a06c68ddde",
+    "parent_run_id": "iso_20261025_093842_c8d7b9",
+    "candidate_run_id": "iso_20261025_093842_a1b9da",
+    "case_input_sha256_parent": "e3428916ae6d98b7208d9f140aa6a1c575b335a352858707b3e039a8da16370e",
+    "case_input_sha256_candidate": "e3428916ae6d98b7208d9f140aa6a1c575b335a352858707b3e039a8da16370e"
+   }
+  },
+  {
+   "case_id": "E008_T03",
+   "episode": "E008",
+   "note": "事实来源要准：你和小林怎么认识，据你真实经历答，别编读书会",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "两臂都没编读书会，也没借用 T04 的“同事介绍”答案；parent 说“这话我没说过”偏窗口可核，v5 说“我跟小林不是那么认识的”略进一步自证相识方式，仍属否定，判平并列观察。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": [
+     [
+      "E008_T03",
+      "directions[3]",
+      "medium",
+      "“昨天你问小林说你太惯你妹”——把“她转述小林的话”压成易误读的归属句"
+     ]
+    ]
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7354,
+     "completion": 309,
+     "total": 7663,
+     "latency_ms": 23221,
+     "primary_chars": 18
+    },
+    "candidate": {
+     "prompt": 2934,
+     "completion": 268,
+     "total": 3202,
+     "latency_ms": 22381,
+     "primary_chars": 36
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "7bf8437d344a6e8f2366919b62694a5639f2ea84e47ad8cf8b70272853f28f13",
+    "candidate_raw_sha256": "33744e6e9bb590a6923db5bb591ed6add42fc43ffe7b3ff28e008ffc97ac8d07",
+    "parent_run_id": "iso_20261025_093842_c8d7b9",
+    "candidate_run_id": "iso_20261025_093842_a1b9da",
+    "case_input_sha256_parent": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+    "case_input_sha256_candidate": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307"
+   }
+  },
+  {
+   "case_id": "E008_T04",
+   "episode": "E008",
+   "note": "'夸你稳重'是小林转述；可以领她的情，但别把它当成她本人的表态往前推",
+   "layer1_primary_content": {
+    "winner": "candidate",
+    "rationale": "note 要“可领情但别当成她本人表态”：v5 首选明确分开来源并问她“你自己觉得呢”，parent 首选把人情记到小林账上（来源正确）但没回到她本人立场。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7401,
+     "completion": 246,
+     "total": 7647,
+     "latency_ms": 64456,
+     "primary_chars": 18
+    },
+    "candidate": {
+     "prompt": 3007,
+     "completion": 191,
+     "total": 3198,
+     "latency_ms": 32341,
+     "primary_chars": 26
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "5f9e0d183b28421926f752b93513020be06b26f9401f7e577c6ba4f7b32c33f4",
+    "candidate_raw_sha256": "4f238da825b61b7d186c73aa6979824d04133c977c3e1f82d2549d902d37003a",
+    "parent_run_id": "iso_20261025_093842_c8d7b9",
+    "candidate_run_id": "iso_20261025_093842_a1b9da",
+    "case_input_sha256_parent": "890bdf0dd980340ca10489189c707914a4c7e4eb8fa064a2243274e5576a5fba",
+    "case_input_sha256_candidate": "890bdf0dd980340ca10489189c707914a4c7e4eb8fa064a2243274e5576a5fba"
+   }
+  },
+  {
+   "case_id": "E008_T05",
+   "episode": "E008",
+   "note": "她因妹妹改期，不是拒绝；正常接受别阴阳",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "都当作改期而非拒绝，无阴阳。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7349,
+     "completion": 257,
+     "total": 7606,
+     "latency_ms": 39901,
+     "primary_chars": 23
+    },
+    "candidate": {
+     "prompt": 3010,
+     "completion": 197,
+     "total": 3207,
+     "latency_ms": 22687,
+     "primary_chars": 31
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "833242fe818c95a9e9610980b4ae7c430ef9e68e64da1e0bf217d56d460ce249",
+    "candidate_raw_sha256": "adaec00f9c93f57510b3827a35b06194ee09de1370ad1c7157a4650dbc5132c5",
+    "parent_run_id": "iso_20261025_093842_c8d7b9",
+    "candidate_run_id": "iso_20261025_093842_a1b9da",
+    "case_input_sha256_parent": "6526fcc72a2a52e8904999801ea8f7a7f590892a745d2e963bbcccc0d6cb83bb",
+    "case_input_sha256_candidate": "6526fcc72a2a52e8904999801ea8f7a7f590892a745d2e963bbcccc0d6cb83bb"
+   }
+  },
+  {
+   "case_id": "E008_T06",
+   "episode": "E008",
+   "note": "主体明确是她本人、单独；咖啡由'一起'升级成她愿意见，可自然确认",
+   "layer1_primary_content": {
+    "winner": "candidate",
+    "rationale": "她连说两遍“就我 不带我妹”：v5 首选原样点出重复并确认主体，再问时间；parent 首选“就你一个”主体正确但把她强调的话复述得较硬。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7368,
+     "completion": 254,
+     "total": 7622,
+     "latency_ms": 40052,
+     "primary_chars": 18
+    },
+    "candidate": {
+     "prompt": 3093,
+     "completion": 261,
+     "total": 3354,
+     "latency_ms": 37975,
+     "primary_chars": 40
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "81a5ba2e638f4644d0939370b259eb99483e2ce56d3ea535b7fdd5753671348a",
+    "candidate_raw_sha256": "bf8b378e9c85a82e96fc22799ec0d7a6401277125a85e7244791b462fcdb9d3e",
+    "parent_run_id": "iso_20261025_093842_c8d7b9",
+    "candidate_run_id": "iso_20261025_093842_a1b9da",
+    "case_input_sha256_parent": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+    "case_input_sha256_candidate": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9"
+   }
+  },
+  {
+   "case_id": "E008_T07",
+   "episode": "E008",
+   "note": "'破费'是她在意第三方眼光；安抚但别把小林拉进这场，也别自作主张请一大桌",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "两臂首选都安抚“破费”且未自作主张摆桌。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": [
+     [
+      "E008_T07",
+      "response.playful",
+      "medium",
+      "“小林真要来，我也只给他点杯白水”——note 要求别把小林拉进这场，玩笑仍把第三方拉进来"
+     ]
+    ]
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7431,
+     "completion": 300,
+     "total": 7731,
+     "latency_ms": 46295,
+     "primary_chars": 21
+    },
+    "candidate": {
+     "prompt": 3111,
+     "completion": 219,
+     "total": 3330,
+     "latency_ms": 17545,
+     "primary_chars": 34
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "57d13537071af756667b4c7a4609c9520b2dbf704643bf05d56869b38664de2c",
+    "candidate_raw_sha256": "139610e00fd23a331a80cde7b89fc897cae320ed0c2b2fb53bc758fc04bb8406",
+    "parent_run_id": "iso_20261025_093842_c8d7b9",
+    "candidate_run_id": "iso_20261025_093842_a1b9da",
+    "case_input_sha256_parent": "eca92d288fe336bacc75d5e117426840b5965425d57391d448463285c734e4f9",
+    "case_input_sha256_candidate": "eca92d288fe336bacc75d5e117426840b5965425d57391d448463285c734e4f9"
+   }
+  },
+  {
+   "case_id": "E008_T08",
+   "episode": "E008",
+   "note": "再次改期且她说'约别人也行'；别赌气别阴阳，接住+留后续由她主导，不回需说明",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "两臂首选都接住再改期、不把“约别人也行”当邀请、后续交给她主导。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": [
+     [
+      "E008_T08",
+      "response.bad_boy",
+      "medium",
+      "“约别人也行？行，那我先记着这句”——接近赌气，note 明确禁止阴阳"
+     ],
+     [
+      "E008_T08",
+      "directions[1]",
+      "low",
+      "“监考站一天挺熬人的”——把未给定的时长当已知"
+     ]
+    ]
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7362,
+     "completion": 296,
+     "total": 7658,
+     "latency_ms": 21565,
+     "primary_chars": 31
+    },
+    "candidate": {
+     "prompt": 3147,
+     "completion": 221,
+     "total": 3368,
+     "latency_ms": 37784,
+     "primary_chars": 34
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "2019ccae79f1a8ea2605b8aec16cafb1e9d44a3bd5578cefa6914a686cec2d63",
+    "candidate_raw_sha256": "b8af58466e4145e2b82e8bae6de605f4c899456699481259046569be0fe9581d",
+    "parent_run_id": "iso_20261025_093842_c8d7b9",
+    "candidate_run_id": "iso_20261025_093842_a1b9da",
+    "case_input_sha256_parent": "29be125f4f3277fdd43a5e5569888214201adb72ed41381a08c5fd3489a89c5d",
+    "case_input_sha256_candidate": "29be125f4f3277fdd43a5e5569888214201adb72ed41381a08c5fd3489a89c5d"
+   }
+  },
+  {
+   "case_id": "E009_T01",
+   "episode": "E009",
+   "note": "她开口求助但给了退路；有空就直接应，别把'没空就算了'当拒绝",
+   "layer1_primary_content": {
+    "winner": "candidate",
+    "rationale": "parent 首选把“2026-11-14或2026-11-15”原样写进要发给她的话（日期由时钟推得正确，但机器格式直发不自然）；v5 首选“你周六还是周日在家”同样有据且可直接发送。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [
+     [
+      "E009_T01",
+      "directions[3]",
+      "medium",
+      "“要不2026-11-14下午”——机器日期直接进可发消息"
+     ]
+    ],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7190,
+     "completion": 340,
+     "total": 7530,
+     "latency_ms": 29277,
+     "primary_chars": 37
+    },
+    "candidate": {
+     "prompt": 2835,
+     "completion": 225,
+     "total": 3060,
+     "latency_ms": 35851,
+     "primary_chars": 30
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "3e0dc917416ff7407ec30bf5c2bb1df405c4cda53f489fb3730114841151412d",
+    "candidate_raw_sha256": "54c1b9e0f1d9c1eb594a71ed6fcbcc9fcbc57d3573873d79b6000adcad460819",
+    "parent_run_id": "iso_20261025_093843_80b105",
+    "candidate_run_id": "iso_20261025_093843_40b463",
+    "case_input_sha256_parent": "d5f388f7ff7436d4eb7e74f9945f416e03749439e4f47d181fce3ca3aa611e97",
+    "case_input_sha256_candidate": "d5f388f7ff7436d4eb7e74f9945f416e03749439e4f47d181fce3ca3aa611e97"
+   }
+  },
+  {
+   "case_id": "E009_T02",
+   "episode": "E009",
+   "note": "暂定状态：'先这么说'不等于已定死；别擅自定地点",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "都停在暂定，未擅自定地点。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7366,
+     "completion": 275,
+     "total": 7641,
+     "latency_ms": 25732,
+     "primary_chars": 11
+    },
+    "candidate": {
+     "prompt": 2898,
+     "completion": 183,
+     "total": 3081,
+     "latency_ms": 22833,
+     "primary_chars": 19
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "cc7480085dc286d636fa38b942d388724afb89fcb9e68d7f1550fedb19b79159",
+    "candidate_raw_sha256": "c84df940e481cac0f9e19f303b9df7717aaa9a3281918c3b97f2a5a0c8d75510",
+    "parent_run_id": "iso_20261025_093843_80b105",
+    "candidate_run_id": "iso_20261025_093843_40b463",
+    "case_input_sha256_parent": "a7995561f6a7df382606696afba3256be328deca8bbade304a24ee97581b034c",
+    "case_input_sha256_candidate": "a7995561f6a7df382606696afba3256be328deca8bbade304a24ee97581b034c"
+   }
+  },
+  {
+   "case_id": "E009_T03",
+   "episode": "E009",
+   "note": "事项回退到未定：如实松绑，别阴阳也别硬撑'我随时都行'",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "都如实松绑，既不阴阳也不硬撑“我随时都行”。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7343,
+     "completion": 287,
+     "total": 7630,
+     "latency_ms": 26546,
+     "primary_chars": 21
+    },
+    "candidate": {
+     "prompt": 2923,
+     "completion": 245,
+     "total": 3168,
+     "latency_ms": 79168,
+     "primary_chars": 33
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "0a5585e476d86f7ad5d8e48f42b4e0e053a349c94bc112bb2a0a7674e04d00b7",
+    "candidate_raw_sha256": "d6ae082f89ee0f3b8225c60dff141cf13a9bfe12fe825d08af03a1f4df229475",
+    "parent_run_id": "iso_20261025_093843_80b105",
+    "candidate_run_id": "iso_20261025_093843_40b463",
+    "case_input_sha256_parent": "407166b9ff4124e6b567e3069dbdc31178c59b1d4ad55ce849f6561ff66579ce",
+    "case_input_sha256_candidate": "407166b9ff4124e6b567e3069dbdc31178c59b1d4ad55ce849f6561ff66579ce"
+   }
+  },
+  {
+   "case_id": "E009_T04",
+   "episode": "E009",
+   "note": "她周日下午空、让我记一下;这回是真定下来了",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "都按“这次真定下来”确认周日并推进细节；v5 提出先备镜像属新提议。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7352,
+     "completion": 321,
+     "total": 7673,
+     "latency_ms": 61490,
+     "primary_chars": 29
+    },
+    "candidate": {
+     "prompt": 2977,
+     "completion": 260,
+     "total": 3237,
+     "latency_ms": 16737,
+     "primary_chars": 34
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "3ab860344e11c853f283620c042012354a510c295e2c92304dc4ef9f418a8451",
+    "candidate_raw_sha256": "490ae34d0b909025c119ae9aee09d046f13737aa7e754c1aa0b739e1fda2618c",
+    "parent_run_id": "iso_20261025_093843_80b105",
+    "candidate_run_id": "iso_20261025_093843_40b463",
+    "case_input_sha256_parent": "50aaeca320c1036821dd8789661348f0591f0b8046e544310dd5cd1950d4348e",
+    "case_input_sha256_candidate": "50aaeca320c1036821dd8789661348f0591f0b8046e544310dd5cd1950d4348e"
+   }
+  },
+  {
+   "case_id": "E009_T05",
+   "episode": "E009",
+   "note": "'同事说你客气'是第三人转述；别被安到自己头上，也别据此擅自安排带东西",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "语气歧义位：两臂都按“不用讲究”轻松承接，未擅自安排带东西，也未被同事转述牵着认领。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": [
+     [
+      "E009_T05",
+      "response.bad_boy",
+      "low",
+      "“同事都这么说了”——把第三人转述当成既定依据轻带一步"
+     ]
+    ]
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7433,
+     "completion": 277,
+     "total": 7710,
+     "latency_ms": 29934,
+     "primary_chars": 18
+    },
+    "candidate": {
+     "prompt": 3012,
+     "completion": 190,
+     "total": 3202,
+     "latency_ms": 20683,
+     "primary_chars": 29
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "902f105dcdebb8072cf76b6268706e828c49f40898656ba12de927fbe4b4762e",
+    "candidate_raw_sha256": "29133220de850135f8e68630e14dc7ec36ff48bc11ac130b0e72b3e83d6399a2",
+    "parent_run_id": "iso_20261025_093843_80b105",
+    "candidate_run_id": "iso_20261025_093843_40b463",
+    "case_input_sha256_parent": "36677b11038256c7bc057ac986d70751e8546a2d4365cc0ff2a110a6fd8f709e",
+    "case_input_sha256_candidate": "36677b11038256c7bc057ac986d70751e8546a2d4365cc0ff2a110a6fd8f709e"
+   }
+  },
+  {
+   "case_id": "E009_T06",
+   "episode": "E009",
+   "note": "事项已完成；接住感谢别邀功别顺势表白，自然收尾即可",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "都据回顾完成、不邀功不顺势表白。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7305,
+     "completion": 380,
+     "total": 7685,
+     "latency_ms": 45357,
+     "primary_chars": 26
+    },
+    "candidate": {
+     "prompt": 3033,
+     "completion": 138,
+     "total": 3171,
+     "latency_ms": 24967,
+     "primary_chars": 27
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "19c3eed8138bccf331a68c5441c7235172e8f9289cf03110805cf69a5b4f6972",
+    "candidate_raw_sha256": "8bcde9e7bb6e0ab2b1d2c8fc8039efb4c36abf97f4c957ef2a1e91abe07ac9ea",
+    "parent_run_id": "iso_20261025_093843_80b105",
+    "candidate_run_id": "iso_20261025_093843_40b463",
+    "case_input_sha256_parent": "c8e3c6ec96ee02b70e98f9f6040472bff488c24e421d92cc7268fba04e41cf4d",
+    "case_input_sha256_candidate": "c8e3c6ec96ee02b70e98f9f6040472bff488c24e421d92cc7268fba04e41cf4d"
+   }
+  },
+  {
+   "case_id": "E009_T07",
+   "episode": "E009",
+   "note": "收尾的轻松回应；不回也可但要自然，别过度承诺",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "都是轻松收尾、无过度承诺。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": []
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7342,
+     "completion": 239,
+     "total": 7581,
+     "latency_ms": 37945,
+     "primary_chars": 17
+    },
+    "candidate": {
+     "prompt": 3082,
+     "completion": 128,
+     "total": 3210,
+     "latency_ms": 27993,
+     "primary_chars": 24
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "e1786c41ca4d9857ce34c0aadb333217e94dc1d8485ec8682c6a93fa3d11c874",
+    "candidate_raw_sha256": "08b9dab14d231400ddd105c72b05aa69a3ccbed038ed5db4c2e031998879d80c",
+    "parent_run_id": "iso_20261025_093843_80b105",
+    "candidate_run_id": "iso_20261025_093843_40b463",
+    "case_input_sha256_parent": "cc509547a3ff8e96745b2b5756b02fb944130e7ae11b1183c8d845c026e07af9",
+    "case_input_sha256_candidate": "cc509547a3ff8e96745b2b5756b02fb944130e7ae11b1183c8d845c026e07af9"
+   }
+  },
+  {
+   "case_id": "E009_T08",
+   "episode": "E009",
+   "note": "重开新事项，且主体是她妹妹借她的口；可答应但要分清是帮妹妹、别当成她本人的求助加码",
+   "layer1_primary_content": {
+    "winner": "tie",
+    "rationale": "都把新事项主体分清是妹妹（借她的口），答应但不加码成她本人的求助。"
+   },
+   "layer2_delivery_contract": {
+    "parent": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    },
+    "candidate": {
+     "score10": 10.0,
+     "veto": null,
+     "sendable_recommended": true,
+     "detail": ""
+    }
+   },
+   "layer3_backup_risk": {
+    "parent": [],
+    "candidate": [
+     [
+      "E009_T08",
+      "directions[0]",
+      "medium",
+      "“就让她妹直接跟我讲”——主体错位（要讲话的就是妹妹本人），指代混乱"
+     ]
+    ]
+   },
+   "layer4_resource_wait": {
+    "parent": {
+     "prompt": 7308,
+     "completion": 317,
+     "total": 7625,
+     "latency_ms": 39021,
+     "primary_chars": 31
+    },
+    "candidate": {
+     "prompt": 3121,
+     "completion": 280,
+     "total": 3401,
+     "latency_ms": 65945,
+     "primary_chars": 42
+    }
+   },
+   "bind": {
+    "parent_raw_sha256": "48a66810b7073f0b28880c7fee67ff4a192ef529dd790801d069b5d3c5c586b3",
+    "candidate_raw_sha256": "dbadee2ae657ee0489c7468f19020ba685f2bc35183b0bf4413281d29c5fa26c",
+    "parent_run_id": "iso_20261025_093843_80b105",
+    "candidate_run_id": "iso_20261025_093843_40b463",
+    "case_input_sha256_parent": "8f796a237165c7ecde89a308c0a35d53e1cad7674f5541364d896c546281aa00",
+    "case_input_sha256_candidate": "8f796a237165c7ecde89a308c0a35d53e1cad7674f5541364d896c546281aa00"
+   }
+  }
+ ]
+}

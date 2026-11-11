@@ -1,0 +1,45 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-FLREGB-20261101-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30地狱级常设授权（AUTH-GLOBAL-CONTINUOUS-20261030-01）",
+ "phase": "W12_armB_window_expand_regression_le24",
+ "budget_ledger": "logs/auth_budget/AUTH-FLREGB-20261101-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 64
+ },
+ "scope": {
+  "purpose": "W12 臂B回归批(设计§3)：window_expand_b(扩窗3600CU+确定性摘取式recap≤400CU,认识论=对话历史摘录非事实断言) vs r9_slim on E061(24轮,EXPOSED复用)。背景：fact_ledger_v1/v2 连续两批语义门FAIL(interaact -0.5 触发H_FL_null淘汰,账本权威口吻升格HER原话),按§8换姊妹假设不缝补。判据同FLREG冻结：九维最差维≥-0.3、severe(cand)≤severe(parent)(T13基座族双杀不计)、T15-24窗口保持率≥v0同段(97.1%)、prompt usage≤r9_slim。任一硬门不达→B淘汰归因",
+  "route": "two_arm_batch_48",
+  "total_attempts": 48,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "FLREGB": "BATCH-FLREGB-E061-20261101"
+  },
+  "episodes": [
+   "E061"
+  ],
+  "cards": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+  "design": "refs/experiment_protocol_20261023/global_harness_program_20261030/W12_FACT_LEDGER_DESIGN_20261101.md §3"
+ },
+ "frozen_bindings": {
+  "FLREGB": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/LONGPROBE_FLREGB.INTERLEAVE_PLAN.json",
+   "plan_sha256": "ff8677c92dcbb8c2bc8d9f87df9cceddf4a58d8bdff3a6a3b7ffd6fe45cf9bcb",
+   "batch_id": "BATCH-FLREGB-E061-20261101",
+   "cards_file": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+   "attempts": 48,
+   "parent": "action_policy_r9_slim",
+   "candidate": "window_expand_b",
+   "parent_identity_sha256": "2099c12f55337dd7dcfac0327cdd9411f7e5de2cdaa0a7083498bab6d12c9c03",
+   "candidate_identity_sha256": "e233ce314d5ee628425f22ab7c74f2fd58871ee367a4d91358d8be818bd88ba6"
+  }
+ }
+}

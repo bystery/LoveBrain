@@ -1,0 +1,18 @@
+{
+ "kind": "w02_03_v0_closure_note",
+ "date": "2026-10-30",
+ "freeze_20261024": {
+  "identity_sha256": "94611447720138ade1f43cced82df2a1c793191b88b24f918835f5c95800ef6e",
+  "file_count": 17,
+  "parent_ref": "6e65b6bc (C4 frozen)"
+ },
+ "current": {
+  "identity_sha256": "eb35df9a6cd600ab7558e2f5e71f285a8e4f356e231211ce6aa1e8bc16a9122c",
+  "file_count": 17,
+  "parent_ref": "501bc426 (v1.2 repaired, verified match with BASELINE_SCOPE_V2)"
+ },
+ "file_count_equal": true,
+ "bak_edit_artifacts": "none",
+ "verdict": "v0 自有文件无编辑痕迹(.bak=none)+文件数一致+干跑PASS；闭包身份变化完全由父本升级解释(与v5先例同机制)；新批次冻结(W10-01)按当前闭包 eb35df9a 重钉",
+ "evidence_dryrun": "W02-03_BASELINE_ENTRY_CHECK_20261030.json"
+}

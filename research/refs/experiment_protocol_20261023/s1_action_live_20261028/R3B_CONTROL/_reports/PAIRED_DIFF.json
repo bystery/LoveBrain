@@ -1,0 +1,194 @@
+{
+ "mode": "capture",
+ "authorization_id": "AUTH-REHEARSAL-20261028193111",
+ "batch_id": "BATCH-R3B-D03-CONTROL-20261028",
+ "arm_mapping": {
+  "parent": "reference_product_v1",
+  "candidate": "action_policy_r3"
+ },
+ "recall_metrics_applicable": false,
+ "parent": {
+  "program_mean10": 8.33,
+  "semantic": {
+   "pass": 0,
+   "edge": 0,
+   "fail": 0,
+   "unrated": 6
+  },
+  "cost": {
+   "prompt": 6,
+   "completion": 6,
+   "latency_p50_ms": 24,
+   "latency_p95_ms": 30,
+   "latency_max_ms": 32
+  }
+ },
+ "candidate": {
+  "program_mean10": 8.33,
+  "semantic": {
+   "pass": 0,
+   "edge": 0,
+   "fail": 0,
+   "unrated": 6
+  },
+  "cost": {
+   "prompt": 6,
+   "completion": 6,
+   "latency_p50_ms": 17,
+   "latency_p95_ms": 20,
+   "latency_max_ms": 20
+  }
+ },
+ "paired_program_winner_counts": {
+  "parent": 0,
+  "candidate": 0,
+  "tie": 6
+ },
+ "all_semantic_unrated_without_annotations": true,
+ "turns_parent": 6,
+ "turns_candidate": 6,
+ "injection_newseg_max_utf16": null,
+ "injection_cap": null,
+ "injection_within_budget_ok": null,
+ "cross_arm_user_len_diff_max": 3256,
+ "paired": [
+  {
+   "case_id": "D03_T01",
+   "status": "paired",
+   "parent_program10": 8.33,
+   "candidate_program10": 8.33,
+   "parent_veto": null,
+   "candidate_veto": null,
+   "parent_primary_semantic": "unrated",
+   "candidate_primary_semantic": "unrated",
+   "program_winner": "tie",
+   "injection_new_seg_est_utf16": null,
+   "cross_arm_user_len_diff_added_utf16": 2829,
+   "parent_tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "candidate_tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "parent_latency_ms": 32,
+   "candidate_latency_ms": 17
+  },
+  {
+   "case_id": "D03_T02",
+   "status": "paired",
+   "parent_program10": 8.33,
+   "candidate_program10": 8.33,
+   "parent_veto": null,
+   "candidate_veto": null,
+   "parent_primary_semantic": "unrated",
+   "candidate_primary_semantic": "unrated",
+   "program_winner": "tie",
+   "injection_new_seg_est_utf16": null,
+   "cross_arm_user_len_diff_added_utf16": 2624,
+   "parent_tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "candidate_tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "parent_latency_ms": 22,
+   "candidate_latency_ms": 17
+  },
+  {
+   "case_id": "D03_T03",
+   "status": "paired",
+   "parent_program10": 8.33,
+   "candidate_program10": 8.33,
+   "parent_veto": null,
+   "candidate_veto": null,
+   "parent_primary_semantic": "unrated",
+   "candidate_primary_semantic": "unrated",
+   "program_winner": "tie",
+   "injection_new_seg_est_utf16": null,
+   "cross_arm_user_len_diff_added_utf16": 2850,
+   "parent_tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "candidate_tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "parent_latency_ms": 24,
+   "candidate_latency_ms": 16
+  },
+  {
+   "case_id": "D03_T04",
+   "status": "paired",
+   "parent_program10": 8.33,
+   "candidate_program10": 8.33,
+   "parent_veto": null,
+   "candidate_veto": null,
+   "parent_primary_semantic": "unrated",
+   "candidate_primary_semantic": "unrated",
+   "program_winner": "tie",
+   "injection_new_seg_est_utf16": null,
+   "cross_arm_user_len_diff_added_utf16": 2909,
+   "parent_tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "candidate_tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "parent_latency_ms": 22,
+   "candidate_latency_ms": 20
+  },
+  {
+   "case_id": "D03_T05",
+   "status": "paired",
+   "parent_program10": 8.33,
+   "candidate_program10": 8.33,
+   "parent_veto": null,
+   "candidate_veto": null,
+   "parent_primary_semantic": "unrated",
+   "candidate_primary_semantic": "unrated",
+   "program_winner": "tie",
+   "injection_new_seg_est_utf16": null,
+   "cross_arm_user_len_diff_added_utf16": 2907,
+   "parent_tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "candidate_tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "parent_latency_ms": 25,
+   "candidate_latency_ms": 17
+  },
+  {
+   "case_id": "D03_T06",
+   "status": "paired",
+   "parent_program10": 8.33,
+   "candidate_program10": 8.33,
+   "parent_veto": null,
+   "candidate_veto": null,
+   "parent_primary_semantic": "unrated",
+   "candidate_primary_semantic": "unrated",
+   "program_winner": "tie",
+   "injection_new_seg_est_utf16": null,
+   "cross_arm_user_len_diff_added_utf16": 3256,
+   "parent_tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "candidate_tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "parent_latency_ms": 25,
+   "candidate_latency_ms": 18
+  }
+ ]
+}

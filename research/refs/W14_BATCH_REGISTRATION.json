@@ -1,0 +1,186 @@
+{
+  "kind": "batch_registration_flattened",
+  "generated_at": "2026-11-12",
+  "source_repository": "D:\\lovebrain-arena",
+  "generator": "第1份指导书 W13/W14 特殊目录展平登记件（asset-audit 迁移辅助物料）",
+  "batch_id": "BATCH-W14J-LONG4-20261102",
+  "original_dir_path": "D:\\lovebrain-arena\\W14 判决批（W14_SUPPRESSION_DESIGN_20261102.md §3.2），池=LRE121\\LRE127\\LRE145\\LRE146 域分散：医疗\\数码\\出行\\家庭",
+  "flatten_metadata": {
+    "artifact_type": "filesystem_slash_split_chain",
+    "top_level_entry_name": "W14 判决批（W14_SUPPRESSION_DESIGN_20261102.md §3.2），池=LRE121",
+    "nested_chain_segments": [
+      "W14 判决批（W14_SUPPRESSION_DESIGN_20261102.md §3.2），池=LRE121",
+      "LRE127",
+      "LRE145",
+      "LRE146 域分散：医疗",
+      "数码",
+      "出行",
+      "家庭"
+    ],
+    "intermediate_dirs_empty": true,
+    "chain_file_count": 1,
+    "tail_entry": "家庭（实体文件，即链尾池摘要 JSON，1,361B）",
+    "tail_file_sha256": "4e9a888ea2e45e5349bd848bf8bee54ab66a86f5a53b938d19642cb35add6373"
+  },
+  "tail_summary_metadata": {
+    "stage": "wave3_ext",
+    "built_at": "2026-11-02T13:54:01",
+    "stories_count": 0,
+    "story_ids": [],
+    "cards_count": 0,
+    "checks_status": {
+      "passed": false,
+      "error_count": 4,
+      "errors": [
+        "LRE121: 缺 runner episode（D:\\lovebrain-arena\\benchmark\\episodes\\LRE121.json）",
+        "LRE127: 缺 runner episode（D:\\lovebrain-arena\\benchmark\\episodes\\LRE127.json）",
+        "LRE145: 缺 runner episode（D:\\lovebrain-arena\\benchmark\\episodes\\LRE145.json）",
+        "LRE146: 缺 runner episode（D:\\lovebrain-arena\\benchmark\\episodes\\LRE146.json）"
+      ]
+    },
+    "cards_file_pointer": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W14.json",
+    "cards_sha256_in_summary": "67a9f6e8375eb892eb13f95afee4311d1ef0620e38ecafcd4354f37d3bebcb6c"
+  },
+  "tail_summary": {
+    "kind": "grading_cards_stories_v2",
+    "stage": "wave3_ext",
+    "built_at": "2026-11-02T13:54:01",
+    "source": "同故事 reference.json 逐字派生（本工具不新写判据）",
+    "schema": [
+      "case_id",
+      "current_action",
+      "acceptable_actions",
+      "applicable_dimensions",
+      "required_memory_atoms",
+      "private_guidance",
+      "unknowns",
+      "protected_expressions",
+      "forbidden_factual_claims",
+      "may_decline",
+      "intent"
+    ],
+    "schema_note": "Stage1 十键 + intent（Stage1 卡丢失 intent，goal 维评审看不到当前有效目标；此处原样搬运 reference 的 intent，不新造判据）",
+    "use": "评估侧专用：不进入候选可见输入；不声称独立封存",
+    "stories": {},
+    "counts": {
+      "stories": 0,
+      "cards": 0
+    },
+    "checks": {
+      "errors": [
+        "LRE121: 缺 runner episode（D:\\lovebrain-arena\\benchmark\\episodes\\LRE121.json）",
+        "LRE127: 缺 runner episode（D:\\lovebrain-arena\\benchmark\\episodes\\LRE127.json）",
+        "LRE145: 缺 runner episode（D:\\lovebrain-arena\\benchmark\\episodes\\LRE145.json）",
+        "LRE146: 缺 runner episode（D:\\lovebrain-arena\\benchmark\\episodes\\LRE146.json）"
+      ],
+      "passed": false
+    },
+    "cards_sha256": "67a9f6e8375eb892eb13f95afee4311d1ef0620e38ecafcd4354f37d3bebcb6c",
+    "cards_file": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W14.json"
+  },
+  "cards_sha256_discrepancy_record": {
+    "observed": "tail_summary.cards_sha256=67a9f6e8…bcb6c（初始构建，0 stories/0 cards，checks.passed=false），而现存池文件 GRADING_CARDS_W14.json 实测 SHA256=5bfda500…97f2，两者不一致",
+    "evidence": "池摘要 built_at=2026-11-02T13:54:01；现存池文件 mtime=2026-11-02T13:54:32（晚 31 秒）、264,391B——初始构建因 4 个 runner episode 缺失而失败，池文件在其后 31 秒重建为已填充版本",
+    "interpretation": "链尾摘要记录的是首次（失败）池构建快照；判决批实际使用的是重建后的已填充池文件。后续判决批 288/288 零失败（W14M02 判决书）佐证重建池已就绪",
+    "migration_guidance": "迁移登记以现存池文件实测 SHA256=5bfda500c677e0860175615c91fbd6c650c77d9b7cb4e566bbcc4a6f715b97f2 为准；tail_summary 原样保留作为历史快照，不以其 cards_sha256 为迁移校验基准"
+  },
+  "true_materials": {
+    "design_docs": [
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\global_harness_program_20261030\\W14_SUPPRESSION_DESIGN_20261102.md",
+        "sha256": "378d3744f3ba980169ebfeaa3bdcd320a8b63204584744d2b96b558c1ab8fc7e",
+        "role": "本批主设计（判据冻结 2026-11-02）：window_expand_b2 被取代口径主动压制；§3.1 回归批门（九维最差维≥−0.3、severe(b2)≤severe(parent)、prompt≤r9_slim）+ §3.2 判决批门（同类 severe b2=0、九维最差维≥−0.5、T25-32 真实保持≥0.85、severe 总账 b2≤b）；§6 记录五处实现层受控修订（判据 §3 一字不动）",
+        "registered_for": "W14 机制候选全序列（回归批 W14M-01 + 判决批 W14M-02）"
+      }
+    ],
+    "pool_files": [
+      {
+        "path": "D:\\lovebrain-arena\\benchmark\\stories_v2\\wave3_ext\\GRADING_CARDS_W14.json",
+        "sha256": "5bfda500c677e0860175615c91fbd6c650c77d9b7cb4e566bbcc4a6f715b97f2",
+        "size_bytes": 264391,
+        "mtime": "2026-11-02T13:54:32",
+        "role": "判决批评分卡池文件（cards_file 指针所指实体，重建后已填充版本，LRE121/LRE127/LRE145/LRE146）",
+        "matches_tail_summary_cards_sha256": false,
+        "cards_sha256_verification": "实测 SHA256 与 tail_summary.cards_sha256（67a9f6e8…）不一致；不一致原因与证据见本件 cards_sha256_discrepancy_record"
+      }
+    ],
+    "verdicts": [
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\W14M01_REGRESSION_VERDICT_20261102.md",
+        "sha256": "01f7f3ec6bed7bdcd6b77e68272b0e8f9eb85e5e012f371dfca64a3cd3cefd57",
+        "conclusion_line": "W14M-01 回归 PASS → 按 §3.2 派发判决批（LRE121/LRE127/LRE145/LRE146，288 attempts，b2 vs window_expand_b 冠军对冠军）",
+        "conclusion_detail": "三项门全过：九维最差维 init −0.042（≥−0.3）、severe 亲读 1≤1、prompt 69,912 字符（−52%）。对拍存档：b2 vs window_expand_b 在 E061 上 24/24 轮 prompt 逐字节一致。",
+        "batch_reference": "BATCH-W14R-E061-20261102（AUTH-W14R-REG-20261102-01，48/48 完成 0 失败）"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\W14M02_JUDGMENT_VERDICT_20261102.md",
+        "sha256": "de18711e6477a780f772b17596924db36e20b9bbf220277fafb4e574698a2f06",
+        "conclusion_line": "判决：H_SUP_null 触发 → window_expand_b2 淘汰（不调参重跑）",
+        "conclusion_detail": "同类 severe 门 FAIL（LRE146_T20 亲读成立 1 例），其余三门 PASS（九维最差 emotion −0.007、T25-32 双臂 1.000、总账 1≤11）。诚实归因：机制正向信号在 LRE121（唯一压制段活跃篇，b2 零 severe）；失败定位为检测覆盖缺口非压制失效；冠军格局不变（>24 轮 window_expand_b / ≤24 轮 r9_slim）。下一机制假设移交 W16（扩覆盖方向：事实账本 uncertain 标记，非继续扩取消词表）。",
+        "batch_reference": "BATCH-W14J-LONG4-20261102（AUTH-W14J-JUDG-20261102-01，288/288 零失败）"
+      }
+    ],
+    "authorizations": [
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\AUTHORIZATION_W14R.json",
+        "sha256": "cddcf8843bbf440d068f89724d88afdc3f1fb393f13f8bc084f4174d803dc72d",
+        "authorization_id": "AUTH-W14R-REG-20261102-01",
+        "role": "回归批授权（48 attempts，E061，W14M01 判决书引用其 ID）"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\AUTHORIZATION_W14J.json",
+        "sha256": "dd483efc3a2d2161f83377bf73ec8209afbacf95ba6e397373cd6ace4dba5030",
+        "authorization_id": "AUTH-W14J-JUDG-20261102-01",
+        "role": "判决批主授权（288 attempts，episodes LRE121/LRE127/LRE145/LRE146，cards_file 指向 wave3_ext/GRADING_CARDS_W14.json）",
+        "plan_sha256_binding_verified": true
+      }
+    ],
+    "interleave_plans": [
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\W14R.INTERLEAVE_PLAN.json",
+        "sha256": "503c49d3b6a1cb66462a03ccbec1ef5d6bef9673eca4ddac989f6c9b509918c3",
+        "binding_check": "实测存档（回归批）"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\W14J.INTERLEAVE_PLAN.json",
+        "sha256": "7e89a47fc35c1240a450395211254f67d6c41341e42757cc2efb926a6cb428b4",
+        "binding_check": "与 AUTH-W14J-JUDG-20261102-01 frozen_bindings.plan_sha256 完全一致"
+      }
+    ],
+    "run_logs": [
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w14r_e061_live_20261102\\",
+        "role": "回归批运行日志根目录（含臂×故事子目录与 _reports；子目录内逐轮文件不在本清单逐项登记）"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w14r_e061_live_20261102.DONE.json",
+        "sha256": "9a3c2d840d1666989f88554bfa5126d25b515018d887eee908c779e4567e2990"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w14r_e061_live_20261102.REPORTS.json",
+        "sha256": "6af4850720b797f8d5184f955ebd614f886bbbbdafb0cbc339a1b0a1dc41205a"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w14r_e061_live_20261102.RESULT.json",
+        "sha256": "8f83d8c415e3afbd4fd86b829f3fc74803411df62f9d3a6b208790008268cec3"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w14j_long4_live_20261102\\",
+        "role": "判决批运行日志根目录（含 8 个臂×故事子目录与 _reports；子目录内逐轮文件不在本清单逐项登记）"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w14j_long4_live_20261102.DONE.json",
+        "sha256": "48486acc1a6b28ca2a555226a885d7ac931a5120e558610f3c4445be82b55bc6"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w14j_long4_live_20261102.REPORTS.json",
+        "sha256": "4aaf39ec3e138e110cefaa24ffa9ed4c506bf03b7635f8bbbd89dee0ad2cc685"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w14j_long4_live_20261102.RESULT.json",
+        "sha256": "f8df5bd0360d5c3abc076f268021fefecddf69ec45ff9bfa59b6d925f98f3e5f"
+      }
+    ]
+  },
+  "flatten_note": "文件系统拆链伪影登记。原顶层长名条目名称内含 \"/\" 字符（批次描述串：池单 LRE121/LRE127/LRE145/LRE146、域分散 医疗/数码/出行/家庭），Windows 文件系统将名称按 \"/\" 逐段拆开，形成七层嵌套目录链（顶层\"W14 判决批…，池=LRE121\"→LRE127→LRE145→\"LRE146 域分散：医疗\"→数码→出行→家庭）；链中间各层均为空目录，链尾是唯一的实体文件——即本登记件 tail_summary 对应的池摘要 JSON（1,361B）。真材料均不在该目录链内：设计文档、判决书、授权、交错计划位于 refs\\experiment_protocol_20261023\\ 下，池文件位于 benchmark\\stories_v2\\wave3_ext\\，运行日志位于 logs\\。迁移时按 true_materials 清单逐项登记迁移；顶层目录链本体（含链尾摘要文件）不作为独立材料迁移，仅以本登记件留档。tail_summary 已原样嵌入本件，链尾文件自身 SHA256=4e9a888ea2e45e5349bd848bf8bee54ab66a86f5a53b938d19642cb35add6373。注意：链尾摘要记录的是首次失败池构建快照（0 cards、4 缺 episode、checks.passed=false），现存池文件为 31 秒后重建的已填充版本，实测 SHA256 与摘要 cards_sha256 不一致——详见 cards_sha256_discrepancy_record，迁移校验以现存池文件实测哈希为准。"
+}

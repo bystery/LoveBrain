@@ -1,0 +1,77 @@
+{
+  "episode_id": "E027",
+  "candidate": "reference_product_v1",
+  "adapter": "openai_compat",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "lifecycle": "v2",
+  "contract": "legacy",
+  "run_id": "iso_20261028_122811_71c6e5",
+  "runner_pid": 28484,
+  "turns": 12,
+  "turns_total": 12,
+  "complete": true,
+  "resumed_from": null,
+  "mean_score10": 8.33,
+  "veto_turns": 0,
+  "first_pass_rate": 1.0,
+  "tokens_total": {
+    "prompt": 12,
+    "completion": 12
+  },
+  "latency_ms": {
+    "p50": 31,
+    "p95": 35,
+    "max": 36,
+    "n": 12
+  },
+  "integrity": {
+    "episode_sha256": "e56080f384f6305441234de1b2be53abae5c6ae73888fb03cbeb6b85805b8d19",
+    "code": {
+      "lb_runner.py": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+      "lb_gateway.py": "56867a44380fe03df4e84e945b1ed854a211d2f0b92d93b80b9e42d54e051d8e",
+      "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+      "lb_scorer.py": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+      "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+    },
+    "candidate_tree": {
+      "IDENTITY.md": "c59102200db794e6432814375debc1aaa5ac403ee9a2fd5d662adf2e16b564ac",
+      "params.json": "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f",
+      "product_memory.py": "a05e26673c51fa19aaa17a845f4955fddf684fd76912ee11649a4b190164592f",
+      "reference_chain.py": "c31e612cbafae7d282dee975305ee88d156bc5b43693468e655873ed25af6dbe",
+      "reference_chain.py.bak-20261027-0450-cron15-p0401": "ecca9f87326b3217a4226a46242871e3f5c82ffb0f6639244ab2aa9b998763da",
+      "reference_chain.py.bak-20261027-0505-cron15-p0404": "6597eb973dd20ce7aff4fc7fc6a06e4cee5b442b8f607017d68029d1102869e3",
+      "assets/system_prompt/core.md": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+      "assets/system_prompt/format.md": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+      "assets/system_prompt/naturalness_check.md": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+      "assets/system_prompt/redline.md": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+      "mechanism/mechanism.py": "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba",
+      "mechanism/__pycache__/mechanism.cpython-312.pyc": "d30b55baaaca37d3ef5707295d7b406e2e3d9baa8f1ebd6617c230e51ab274b9",
+      "__pycache__/product_memory.cpython-312.pyc": "5d14127263279fc2ac3c7de45f45ae84bbaa5997e2d8139959f1beb58d51fc41",
+      "__pycache__/reference_chain.cpython-312.pyc": "9724c77df7c47afbaf188b637dc5b1acc1a0e768c5d7f69214274a6c20d93cf2"
+    }
+  },
+  "isolated": true,
+  "settlement_pending_turns": [],
+  "execution_fingerprint": {
+    "episode_id": "E027",
+    "episode_sha256_16": "e56080f384f63054",
+    "candidate": "reference_product_v1",
+    "adapter": "openai_compat",
+    "model": "dsf",
+    "temperature": 0.7
+  },
+  "report_metadata": {
+    "authorization_id": "AUTH-REHEARSAL-20261028122810",
+    "budget": {
+      "authorization_id": "AUTH-REHEARSAL-20261028122810",
+      "used": 48,
+      "max_attempts": 96,
+      "remaining": 48,
+      "closed": false,
+      "close_reason": null,
+      "ledger": "D:\\lovebrain-arena\\logs\\auth_budget_rehearsal\\AUTH-REHEARSAL-20261028122810.jsonl"
+    },
+    "evidence_paths": "报告/路径元数据不参与执行指纹"
+  },
+  "ts": "2026-10-28 12:28:18"
+}

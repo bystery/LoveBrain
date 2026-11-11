@@ -1,0 +1,35 @@
+{
+ "batch_id": "BATCH-W1304-STAGE-20261102",
+ "arm_map": {
+  "parent": "action_policy_r9_slim",
+  "candidate": "window_expand_b"
+ },
+ "episode_order": [
+  {
+   "episode": "E140",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E128",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E179",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E184",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E205",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E127",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/wave3/GRADING_CARDS_W13_03.json",
+ "recall_capable": false
+}

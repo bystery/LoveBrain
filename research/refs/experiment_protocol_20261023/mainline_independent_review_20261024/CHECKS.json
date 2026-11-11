@@ -1,0 +1,646 @@
+{
+  "real_model_calls": 0,
+  "before": {
+    "tools/exam_interleave_plan.py": "6e8d75eafb731a6d596a7454cdc9db5e75cd24dd0d0f78c278231e7425bae6e8",
+    "tools/exam_layered_score.py": "93dc7a86dd294000638d07d218aebe6b65f1e3ef4d6c7e067528b7c4033ea288",
+    "tools/build_review_worksheet.py": "1a96ac679cc9bf7e3547462b1dce50b3d7077cbd7510ce2fba81c9ca03a797ef",
+    "arena/isolation/trusted_controller.py": "7dc3c93a57c41110dd81fd9fc5859d59710a058b97184c033170d920018afd39",
+    "candidates/v0_minimal_events/mechanism/mechanism.py": "5a417b4d54086d188bd34f81315ea32b1aeeb5cd0c99267ca8391c3f3243e8ba",
+    "candidates/v3_system_slim/mechanism/mechanism.py": "a5574885703f48c63cea5d5e05ce59a97d861eeaafdf21f83358c46bcef879c3"
+  },
+  "existing_checks": [
+    {
+      "name": "r1_case_id_hit_wrong_reply_not_inherited",
+      "pass": true,
+      "detail": "R1.tampered_reply_unmatched PASS"
+    },
+    {
+      "name": "r1_correct_replacement_also_invalidates_old_fail",
+      "pass": true,
+      "detail": "R1.correct_replacement_unmatched PASS"
+    },
+    {
+      "name": "r1_slot_swap_invalidates_other_slots",
+      "pass": true,
+      "detail": "R1.slot_isolation PASS"
+    },
+    {
+      "name": "r1_corrupt_hash_in_annotation_file_denied",
+      "pass": true,
+      "detail": "R1.hash_tamper_denied PASS"
+    },
+    {
+      "name": "r1_no_annotations_file_means_all_unrated",
+      "pass": true,
+      "detail": "R1.no_file_all_unrated PASS (turns=24)"
+    },
+    {
+      "name": "b_full_context_matches",
+      "pass": true,
+      "detail": "B.full_context_match PASS"
+    },
+    {
+      "name": "b_same_output_case_content_drift_denied",
+      "pass": true,
+      "detail": "B.case_content_drift_denied PASS"
+    },
+    {
+      "name": "b_wrong_run_or_harness_identity_denied",
+      "pass": true,
+      "detail": "B.wrong_run_or_harness_denied PASS"
+    },
+    {
+      "name": "b_annotation_missing_context_binding_unverified",
+      "pass": true,
+      "detail": "B.missing_context_unverified PASS"
+    },
+    {
+      "name": "b_missing_case_input_context_denied",
+      "pass": true,
+      "detail": "B.missing_case_input_context_denied PASS"
+    },
+    {
+      "name": "b_real_annotations_bound_and_run_verified",
+      "pass": true,
+      "detail": "B.real_annotations_bound PASS bound=22 rated=21 drift_honored=0"
+    },
+    {
+      "name": "b_backup_derived_primary_not_inherited",
+      "pass": true,
+      "detail": "B.backup_derived_primary_unrated PASS edge=0 coverage=0.875"
+    },
+    {
+      "name": "r2_tri_any_pass_unknown_when_backup_unrated",
+      "pass": true,
+      "detail": "R2.tri_any_pass PASS (unknown/true/false 三态)"
+    },
+    {
+      "name": "r2_tri_backup_severe_unknown_when_partial",
+      "pass": true,
+      "detail": "R2.tri_backup_severe PASS"
+    },
+    {
+      "name": "r2_real_exam_coverage_and_invariants",
+      "pass": true,
+      "detail": "R2.coverage PASS primary=20/21 alop_true=20 sev_true=1 sev_unknown=23 gate=False"
+    },
+    {
+      "name": "r2_lower_bound_severe_rate",
+      "pass": true,
+      "detail": "R2.lower_bound PASS severe_error_backup_lower_bound_rate=0.042"
+    },
+    {
+      "name": "c1_recall_fact_reaches_prompt",
+      "pass": true,
+      "detail": "t06_prompt_has=杯底/刻字/不刻+【回忆】"
+    },
+    {
+      "name": "c2_no_recall_false_positive",
+      "pass": true,
+      "detail": "recall_only_on_turn=6"
+    },
+    {
+      "name": "c3_zero_overlap_no_injection",
+      "pass": true,
+      "detail": "zero_overlap_skipped"
+    },
+    {
+      "name": "c4_recall_bypass_injects_ongoing",
+      "pass": true,
+      "detail": "v2_ongoing_injected=True base=False"
+    },
+    {
+      "name": "c5_e003_untouched",
+      "pass": true,
+      "detail": "e003_prompts_identical(8 轮)"
+    },
+    {
+      "name": "c6_no_cross_message_recall_activation",
+      "pass": true,
+      "detail": "P1 false_positive_blocked=True last_marker_still_hits=True"
+    },
+    {
+      "name": "c7_no_dormant_whole_dump",
+      "pass": true,
+      "detail": "P2 extras=1 cap=2 relevant_included=True"
+    },
+    {
+      "name": "c8_total_new_injection_budget",
+      "pass": true,
+      "detail": "P3 recall_seg_utf16=1307 new_seg_est=1307 cap=1800"
+    },
+    {
+      "name": "c9_restore_keeps_recall_wrapper",
+      "pass": true,
+      "detail": "P4 restore_wrapper_active=True recall_still_fires=True"
+    },
+    {
+      "name": "c10_positive_photo_exhibit_domain",
+      "pass": true,
+      "detail": "P_positive[photo] recall_body_ok extras=1"
+    },
+    {
+      "name": "c11_positive_business_trip_domain",
+      "pass": true,
+      "detail": "P_positive[business-trip] recall_body_ok extras=1"
+    },
+    {
+      "name": "c12_reviewer_20_extras_probe",
+      "pass": true,
+      "detail": "R3 reviewer_probe extras_selector=20 extras_in_prompt=4 recall_seg_utf16=161 new_seg_est=681 cap=1800"
+    },
+    {
+      "name": "c13_utf16_truncate_unit",
+      "pass": true,
+      "detail": "C unit tail=head=600 emoji @1200码元, BMP 100字, 无半截代理"
+    },
+    {
+      "name": "c14_reviewer_emoji_run_turn_budget",
+      "pass": true,
+      "detail": "C emoji recall_seg_utf16=1307 emoji_payload=1200 cap=1800 obeyed"
+    },
+    {
+      "name": "c15_joint_squeeze_bmp_plus_emoji",
+      "pass": true,
+      "detail": "C joint held=4/4 new_seg_est=1800 recall_seg=1216 cap=1800"
+    },
+    {
+      "name": "replay_user_prompt_and_memory_identical",
+      "pass": true,
+      "detail": "replay PASS: 24 轮 user prompt 全同、3 故事记忆写回全同、system 全更短"
+    },
+    {
+      "name": "per_asset_length_report",
+      "pass": true,
+      "detail": "system UTF-16: parent=8295 slim=2598 saved=5697(68.7%); per-asset=[('core.md', 3010, 696), ('naturalness_check.md', 356, 132), ('redline.md', 465, 142), ('format.md', 4316, 1480)]"
+    },
+    {
+      "name": "g_no_system_drift",
+      "pass": true,
+      "detail": "guard PASS: v0/v3 build_system_prompt 逐字节相等(2598 码元)"
+    },
+    {
+      "name": "c1_write_then_read",
+      "pass": true,
+      "detail": "story-internal PASS: 真实消息写入且下一轮读到"
+    },
+    {
+      "name": "c2_story_isolation",
+      "pass": true,
+      "detail": "isolation PASS: 故事 B 未见故事 A 的消息"
+    },
+    {
+      "name": "c3_snapshot_restore",
+      "pass": true,
+      "detail": "restore PASS: 往返一致，恢复后继续同状态"
+    },
+    {
+      "name": "c4_draft_not_committed",
+      "pass": true,
+      "detail": "draft PASS: 模型回复(草稿)未进入真实事件历史"
+    },
+    {
+      "name": "c5_closed_intent_not_persisted",
+      "pass": true,
+      "detail": "intent PASS: 目标只取当轮，关闭/空 note 轮不再带旧目标"
+    },
+    {
+      "name": "c6_current_input_not_evicted",
+      "pass": true,
+      "detail": "budget PASS: 长历史下当前输入保留、历史段≤MAX_EVENT_HISTORY_CU(1400)"
+    },
+    {
+      "name": "c7_declared_units",
+      "pass": true,
+      "detail": "units PASS: notes 报 UTF-16 码元 (v0_minimal_events[events=1 prompt_cu=77 history_cu=13 hist_b)"
+    }
+  ],
+  "probes": {
+    "insufficient_budget": {
+      "rejected": true,
+      "dispatches": 0,
+      "error": "PlanError('整批预检拒绝（零派发，未构造任何 IsolatedRun）: 整批预检拒绝：本批需 48 次，授权 OFFLINE-REVIEW-too_small-5b8fbd33 已用 0/8（剩 8）。应停止并申请覆盖整批的新授权，不得先跑到一半。')"
+    },
+    "preferred_manifest": {
+      "accepted": false,
+      "error": "StopIteration()"
+    },
+    "v0_visible_inputs": {
+      "active_intent_in_request": false,
+      "initial_kb_in_request": false,
+      "clock_in_request": false,
+      "message_timestamp_in_request": false,
+      "current_source_alias_m0": false,
+      "prompt": "【画像/初始事实(种子)】\n{\"me\": \"成年人\"}\n\n# 【真实历史事件：仅实际发送的消息；生成回复是草稿，不在此列】\n[1] HER: 你这周还想做点什么\n\n# 本轮输入(最高优先，整条不被裁掉)\nHER: 你这周还想做点什么"
+    },
+    "v0_single_long_message": {
+      "history_utf16": 2009,
+      "declared_cap": 1400
+    },
+    "worksheet_coverage": {
+      "rows": 184,
+      "unique_cases": 24,
+      "missing_cases": [],
+      "prefilled": 0
+    }
+  },
+  "live_fake": {
+    "attempt_started": 48,
+    "attempt_completed": 48,
+    "attempt_failed": 0,
+    "real_dispatched": 0,
+    "stub_dispatched": 48,
+    "execution_order_verified": true,
+    "dispatch_bijection": true,
+    "evidence_persisted": true,
+    "network": "live branch, rehearsal transport (0 real)",
+    "files_exist": true,
+    "all_slots_have_attempt_id": true,
+    "http_dispatches": 48
+  },
+  "reports": {
+    "out_dir": "refs\\experiment_protocol_20261023\\mainline_independent_review_20261024\\live_fake\\_reports",
+    "mode": "live",
+    "authorization_id": "OFFLINE-REVIEW-live-9b168bff",
+    "arm_mapping": {
+      "parent": "reference_product_v1",
+      "candidate": "v2_recall"
+    },
+    "parent": {
+      "program_mean10": 8.33,
+      "semantic": {
+        "pass": 0,
+        "edge": 0,
+        "fail": 0,
+        "unrated": 24
+      }
+    },
+    "candidate": {
+      "program_mean10": 8.33,
+      "semantic": {
+        "pass": 0,
+        "edge": 0,
+        "fail": 0,
+        "unrated": 24
+      }
+    },
+    "paired_program_winner_counts": {
+      "parent": 0,
+      "candidate": 0,
+      "tie": 24
+    },
+    "all_semantic_unrated_without_annotations": true,
+    "turns_parent": 24,
+    "turns_candidate": 24,
+    "injection_newseg_max_utf16": 0,
+    "injection_cap": 1800,
+    "injection_within_budget_ok": true,
+    "cross_arm_user_len_diff_max": 0,
+    "paired": [
+      {
+        "case_id": "E001_T01",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T02",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T03",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T04",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T05",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T06",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T07",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T08",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T01",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T02",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T03",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T04",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T05",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T06",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T07",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T08",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T01",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T02",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T03",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T04",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T05",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T06",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T07",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T08",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "injection_new_seg_est_utf16": 0,
+        "cross_arm_user_len_diff_added_utf16": 0
+      }
+    ]
+  },
+  "new_data_mechanical": {
+    "episodes": 3,
+    "requests": 24,
+    "hard_failures": [],
+    "warnings": [
+      [
+        "ep_id_neutral:E004",
+        true,
+        "编号疑似泄漏考点，建议中性编号 E0xx"
+      ],
+      [
+        "ep_id_neutral:E005",
+        true,
+        "编号疑似泄漏考点，建议中性编号 E0xx"
+      ],
+      [
+        "ep_id_neutral:E006",
+        true,
+        "编号疑似泄漏考点，建议中性编号 E0xx"
+      ]
+    ]
+  },
+  "after": {
+    "tools/exam_interleave_plan.py": "6e8d75eafb731a6d596a7454cdc9db5e75cd24dd0d0f78c278231e7425bae6e8",
+    "tools/exam_layered_score.py": "93dc7a86dd294000638d07d218aebe6b65f1e3ef4d6c7e067528b7c4033ea288",
+    "tools/build_review_worksheet.py": "1a96ac679cc9bf7e3547462b1dce50b3d7077cbd7510ce2fba81c9ca03a797ef",
+    "arena/isolation/trusted_controller.py": "7dc3c93a57c41110dd81fd9fc5859d59710a058b97184c033170d920018afd39",
+    "candidates/v0_minimal_events/mechanism/mechanism.py": "5a417b4d54086d188bd34f81315ea32b1aeeb5cd0c99267ca8391c3f3243e8ba",
+    "candidates/v3_system_slim/mechanism/mechanism.py": "a5574885703f48c63cea5d5e05ce59a97d861eeaafdf21f83358c46bcef879c3"
+  },
+  "watched_source_unchanged": true,
+  "existing_checks_passed": 41
+}

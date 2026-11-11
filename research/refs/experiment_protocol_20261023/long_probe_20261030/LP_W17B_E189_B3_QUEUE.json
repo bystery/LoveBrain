@@ -1,0 +1,73 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W17B_E189",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W17B_E189_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w17b_guard_live_20261102",
+ "n_queued": 2,
+ "queue": [
+  {
+   "pair_id": "LP:E189:E189_T06",
+   "order": "main",
+   "story": "E189",
+   "cid": "E189_T06",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "LEFT只一句告别，未落实打包存云盘与'十二月重启'说明；RIGHT却称'进度我记着''就这么定'，把暂定批次说成定论。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 0,
+     "attrib": 1,
+     "memory": 0
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E189:E189_T11",
+   "order": "main",
+   "story": "E189",
+   "cid": "E189_T11",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "十月批次又正好开着，等于你十天前忍的那一下，今天连本带利回来了",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 2,
+     "memory": 3
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

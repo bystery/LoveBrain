@@ -1,0 +1,96 @@
+{
+  "review_kind": "independent offline reconstruction; no generation, no new authorization",
+  "batch": "D:\\lovebrain-arena\\logs\\r2_ctx_live_20261024",
+  "plan_sha256": "4ffcec0d9fa6e058109d1bf9b05b7a542b75dceb6edae03ee39bc3431cda5ae4",
+  "budget_ledger_sha256": "561b7553ca6c8fdfc85e93f3e05345a041b4ffb6af59fbc1ae16265265caa594",
+  "checks": {
+    "frozen_files_match_current": true,
+    "rows_48": true,
+    "six_independent_run_ids": true,
+    "all_starts_completed_no_fail": true,
+    "attempt_one_to_one": true,
+    "actual_order_matches_frozen_plan": true,
+    "budget_matches_control": true,
+    "48_unique_response_ids": true,
+    "all_case_hashes_bound": true,
+    "both_arms_receive_public_seed": true,
+    "no_private_goal_leak_on_closed_turns": true,
+    "all_temp_model_adapter_correct": true,
+    "all_raw_equals_saved_reply": true,
+    "all_strict_json_parsed": true,
+    "all_api_usage_known": true,
+    "one_system_per_arm": true
+  },
+  "failed_checks": [],
+  "frozen_mismatches": [],
+  "metrics": {
+    "parent": {
+      "n": 24,
+      "prompt_tokens": 176313,
+      "completion_tokens": 7039,
+      "total_tokens": 183352,
+      "program_mean10": 9.583333333333334,
+      "veto_count": 1,
+      "latency_ms": {
+        "p50": 25366,
+        "p95": 44805,
+        "max": 45382,
+        "sum": 705882
+      },
+      "primary_mean_chars": 23.666666666666668,
+      "nonempty_backup_slots": 159,
+      "system_utf16": [
+        8295
+      ],
+      "illegal_source_slots": 0,
+      "literal_null_slots": 0
+    },
+    "candidate": {
+      "n": 24,
+      "prompt_tokens": 71428,
+      "completion_tokens": 8218,
+      "total_tokens": 79646,
+      "program_mean10": 9.860833333333334,
+      "veto_count": 0,
+      "latency_ms": {
+        "p50": 25413,
+        "p95": 65377,
+        "max": 92936,
+        "sum": 847830
+      },
+      "primary_mean_chars": 41.916666666666664,
+      "nonempty_backup_slots": 152,
+      "system_utf16": [
+        2598
+      ],
+      "illegal_source_slots": 0,
+      "literal_null_slots": 0
+    }
+  },
+  "candidate_vs_parent_percent": {
+    "prompt_tokens": -59.488,
+    "completion_tokens": 16.7495,
+    "total_tokens": -56.5612,
+    "primary_mean_chars": 77.1127,
+    "latency_p50_percent": 0.1853,
+    "latency_p95_percent": 45.9145,
+    "latency_sum_percent": 20.1093
+  },
+  "wall_elapsed_seconds_from_event_timestamps": 1556,
+  "budget_kinds": {
+    "authorization_scope": 1,
+    "attempt_started": 48,
+    "attempt_completed": 48,
+    "authorization_closed": 1
+  },
+  "budget_closed_event_present": true,
+  "money": null,
+  "model_alias": "dsf",
+  "underlying_provider_model_verified": false,
+  "quality_not_inferred_from_program_score": true,
+  "flagged_sources": [],
+  "literal_null_outputs": [],
+  "no_image_rows_count": 48,
+  "stories_independent_sample_unit": 3,
+  "one_generation_per_arm_per_position": true
+}

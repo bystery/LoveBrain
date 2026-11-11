@@ -1,0 +1,26 @@
+{
+  "real_model_calls": 0,
+  "worksheet_synthetic_branches": {
+    "input_turns": 2,
+    "rows_returned": 0,
+    "covered_cases": [],
+    "note": "Malformed reply and legal no_reply both need a visible turn record"
+  },
+  "v3_configuration_probe": {
+    "attempt_started": 48,
+    "attempt_completed": 48,
+    "attempt_failed": 0,
+    "execution_order_verified": true,
+    "dispatch_bijection": true,
+    "state_isolated": true,
+    "real_model_calls": 0,
+    "candidate": "v3_system_slim",
+    "episodes": [
+      "E004",
+      "E005",
+      "E006"
+    ],
+    "scope": "In-memory configuration / fake replies only; no semantic result or production-ready CLI claim"
+  },
+  "source_unchanged": true
+}

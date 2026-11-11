@@ -1,0 +1,96 @@
+{
+ "kind": "lovebrain_first_screening_preregistration_v1",
+ "task": "W10-01",
+ "created_at": "2026-10-30T01:29:52+08:00",
+ "author_session": "main-zcode-20261030-0052",
+ "authority": "用户2026-10-30地狱级常设授权（AUTH-GLOBAL-CONTINUOUS-20261030-01）；各批派发前仍自建scope账本",
+ "baseline_decision_ref": "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W02-03_BASELINE_FIXING_20261030.md",
+ "story_subset_ref": "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W03-03_SUBSET_REVIEW_20261030.md",
+ "frozen_config": {
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7
+ },
+ "batch_design": "两批两臂（run_max288_batch 既定两臂制，P06 先例）；跨批横比只作探索，批内配对为准",
+ "batches": [
+  {
+   "batch_id": "BATCH-FS1-A-E3VSREF-20261030",
+   "arm_mapping": {
+    "parent": "reference_product_v1",
+    "candidate": "action_policy_r4_guard_e3"
+   },
+   "arm_identity_sha256": {
+    "parent": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+    "candidate": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17"
+   },
+   "question": "E3 相对增强基线 B0 的九维配对质量与严重错误（主比较）",
+   "attempts": 96
+  },
+  {
+   "batch_id": "BATCH-FS1-B-BMINVSREF-20261030",
+   "arm_mapping": {
+    "parent": "reference_product_v1",
+    "candidate": "v0_minimal_events"
+   },
+   "arm_identity_sha256": {
+    "parent": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+    "candidate": "eb35df9a6cd600ab7558e2f5e71f285a8e4f356e231211ce6aa1e8bc16a9122c"
+   },
+   "question": "最小事件记忆 Bmin 的复杂度问题：MECHANISM 预登记假设 C1(日常承接接近)/C2(跨话题续存/意图跟随应弱)/C3(user prompt 更短)逐条判读",
+   "attempts": 96
+  }
+ ],
+ "episodes": [
+  {
+   "story": "E021",
+   "arm_order": "parent_first"
+  },
+  {
+   "story": "E026",
+   "arm_order": "candidate_first"
+  },
+  {
+   "story": "E032",
+   "arm_order": "parent_first"
+  },
+  {
+   "story": "E033",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "episode_note": "W03-03 八篇子集的代表四篇：新认识约定/意图就医/渐暧昧跃迁/长期装修链；12位×2臂=96/批；arm_order 按篇交替平衡首位效应",
+ "cards": "沿用各故事 reference.json 现卡（stage2 未封板候选池，本批使用后按暴露登记）；无独立封存声明",
+ "randomization": {
+  "repeat_planned": 0,
+  "note": "首轮不预登记随机重复；重复属新物理attempt，如判读需要另登记"
+ },
+ "budget": {
+  "total_generation_attempts": 192,
+  "per_batch": 96,
+  "authorization_mode": "每批独立 scope 账本（AUTH-FS1-A-20261030-01 / AUTH-FS1-B-20261030-01，cap 各 96+2 预检余量按工具要求），fail_fast，无 makeup 配对，不复活旧单",
+  "judge_budget": "评审另册登记，待 W04-03 judge 资格核过后按 pairs 计"
+ },
+ "primary_comparison": [
+  "九维 0-3 配对（story 级聚合，首选/备选分审）",
+  "严重错误清单双向（F3 口径）",
+  "无据确定化族计数"
+ ],
+ "protections": [
+  "E3 不得在目标完成/边界/主动推进上任一维显著退化而仅靠均分晋级",
+  "Bmin 允许在 C2 预登记维度如实失败——失败即答案",
+  "程序分只证契约；语义失败/严重污染/成本显著上升任一即阻断",
+  "未知/NA 不补 0；W 愿发未知不代填不阻塞"
+ ],
+ "execution_gates": [
+  "G1-G7 precheck 全过（plan sha/字段/冻结身份/授权/网关/输出目录/入口 sha）",
+  "capture 模式先行（零网络核验数量/顺序/出站白名单）再 live",
+  "派发时生成 plan JSON 与授权单并登记 scope 账本；身份按本文件当前值冻结",
+  "W04-03 评审资格核过之前不判生死，只交生成+程序分"
+ ],
+ "post_batch": [
+  "逐位程序分+消费核验",
+  "W04-03 就绪后九维评审（另册scope）",
+  "FS1-A/FS1-B 各出 KEEP/REWORK/ELIMINATE 建议",
+  "下一轮差额补齐"
+ ]
+}

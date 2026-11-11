@@ -1,0 +1,214 @@
+{
+ "kind": "w0904_compose_replay",
+ "date": "2026-10-31",
+ "story": "E021",
+ "arms": {
+  "r10_all_on_vs_r7_byte_identical": true,
+  "r7_prompt_chars": 103565,
+  "goal_block": {
+   "per_turn_diffs": [
+    {
+     "turn": 1,
+     "sys_diff": 0,
+     "user_diff": 419
+    },
+    {
+     "turn": 2,
+     "sys_diff": 0,
+     "user_diff": 102
+    },
+    {
+     "turn": 3,
+     "sys_diff": 0,
+     "user_diff": 341
+    },
+    {
+     "turn": 4,
+     "sys_diff": 0,
+     "user_diff": -213
+    },
+    {
+     "turn": 5,
+     "sys_diff": 0,
+     "user_diff": 479
+    },
+    {
+     "turn": 6,
+     "sys_diff": 0,
+     "user_diff": 370
+    },
+    {
+     "turn": 7,
+     "sys_diff": 0,
+     "user_diff": -63
+    },
+    {
+     "turn": 8,
+     "sys_diff": 0,
+     "user_diff": -95
+    },
+    {
+     "turn": 9,
+     "sys_diff": 0,
+     "user_diff": -251
+    },
+    {
+     "turn": 10,
+     "sys_diff": 0,
+     "user_diff": -253
+    },
+    {
+     "turn": 11,
+     "sys_diff": 0,
+     "user_diff": 101
+    },
+    {
+     "turn": 12,
+     "sys_diff": 0,
+     "user_diff": 59
+    }
+   ],
+   "saved_chars_net": 996,
+   "budget_realloc_turns": 5,
+   "consistent_span": true,
+   "block_has_cost": true
+  },
+  "action_block": {
+   "per_turn_diffs": [
+    {
+     "turn": 1,
+     "sys_diff": 0,
+     "user_diff": 1540
+    },
+    {
+     "turn": 2,
+     "sys_diff": 0,
+     "user_diff": 1507
+    },
+    {
+     "turn": 3,
+     "sys_diff": 0,
+     "user_diff": 1618
+    },
+    {
+     "turn": 4,
+     "sys_diff": 0,
+     "user_diff": 1822
+    },
+    {
+     "turn": 5,
+     "sys_diff": 0,
+     "user_diff": 1480
+    },
+    {
+     "turn": 6,
+     "sys_diff": 0,
+     "user_diff": 1316
+    },
+    {
+     "turn": 7,
+     "sys_diff": 0,
+     "user_diff": 1672
+    },
+    {
+     "turn": 8,
+     "sys_diff": 0,
+     "user_diff": 1704
+    },
+    {
+     "turn": 9,
+     "sys_diff": 0,
+     "user_diff": 1860
+    },
+    {
+     "turn": 10,
+     "sys_diff": 0,
+     "user_diff": 1862
+    },
+    {
+     "turn": 11,
+     "sys_diff": 0,
+     "user_diff": 1508
+    },
+    {
+     "turn": 12,
+     "sys_diff": 0,
+     "user_diff": 1602
+    }
+   ],
+   "saved_chars_net": 19491,
+   "budget_realloc_turns": 0,
+   "consistent_span": true,
+   "block_has_cost": true
+  },
+  "source_rule": {
+   "per_turn_diffs": [
+    {
+     "turn": 1,
+     "sys_diff": 0,
+     "user_diff": 130
+    },
+    {
+     "turn": 2,
+     "sys_diff": 0,
+     "user_diff": 133
+    },
+    {
+     "turn": 3,
+     "sys_diff": 0,
+     "user_diff": 130
+    },
+    {
+     "turn": 4,
+     "sys_diff": 0,
+     "user_diff": 133
+    },
+    {
+     "turn": 5,
+     "sys_diff": 0,
+     "user_diff": 130
+    },
+    {
+     "turn": 6,
+     "sys_diff": 0,
+     "user_diff": 133
+    },
+    {
+     "turn": 7,
+     "sys_diff": 0,
+     "user_diff": 130
+    },
+    {
+     "turn": 8,
+     "sys_diff": 0,
+     "user_diff": 133
+    },
+    {
+     "turn": 9,
+     "sys_diff": 0,
+     "user_diff": 130
+    },
+    {
+     "turn": 10,
+     "sys_diff": 0,
+     "user_diff": 133
+    },
+    {
+     "turn": 11,
+     "sys_diff": 0,
+     "user_diff": 130
+    },
+    {
+     "turn": 12,
+     "sys_diff": 0,
+     "user_diff": 133
+    }
+   ],
+   "saved_chars_net": 1578,
+   "budget_realloc_turns": 0,
+   "consistent_span": true,
+   "block_has_cost": true
+  }
+ },
+ "verdict": "PASS"
+}

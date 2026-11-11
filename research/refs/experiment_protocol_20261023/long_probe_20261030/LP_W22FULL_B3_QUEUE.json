@@ -1,0 +1,513 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W22FULL",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W22FULL_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w22_full_live_20261104",
+ "n_queued": 15,
+ "queue": [
+  {
+   "pair_id": "LP:LRE121:LRE121_T20",
+   "order": "swap",
+   "story": "",
+   "cid": "LRE121_T20",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "RIGHT 把“退烧后再正式确认”的暂定状态当作已安排，并凭空造出“免疫科”行程和“这回虾饺我请”的新请客承诺，属无据确定化与编造安排",
+   "key_quote": "先占上占上，我妈退烧了再正式确认，反正取消不扣钱",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "退烧后再正式确认",
+      "免疫科",
+      "这回虾饺我请"
+     ],
+     "found_where": {
+      "退烧后再正式确认": null,
+      "免疫科": null,
+      "这回虾饺我请": null
+     },
+     "nowhere": [
+      "退烧后再正式确认",
+      "免疫科",
+      "这回虾饺我请"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE121:LRE121_T39",
+   "order": "main",
+   "story": "",
+   "cid": "LRE121_T39",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT将未知的回请时间自行定为“下周末”，属无据确定化；并称“虾饺你也别抢”，把HER所说“看心情——骗她的，早茶我肯定去”错置为虾饺许诺，人物归属有误。",
+   "key_quote": "双份肠粉是我欠的，一整笼虾饺是你明年九月许诺的，这两笔别给我混成一账。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "下周末",
+      "虾饺你也别抢",
+      "看心情——骗她的，早茶我肯定去"
+     ],
+     "found_where": {
+      "下周末": null,
+      "虾饺你也别抢": null,
+      "看心情——骗她的，早茶我肯定去": null
+     },
+     "nowhere": [
+      "下周末",
+      "虾饺你也别抢",
+      "看心情——骗她的，早茶我肯定去"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:E157:E157_T02",
+   "order": "main",
+   "story": "E157",
+   "cid": "E157_T02",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "那就是两笔钱：新机按名单单品立减，旧机单独估价，能不能叠加、按什么价收，得把这两笔算清楚",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E157:E157_T06",
+   "order": "main",
+   "story": "E157",
+   "cid": "E157_T06",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 将'暂停、恢复时间另行通知'断言为'算废了，别等了'，无据确定化并越过其'不掏全款、先核实'的边界，还替对方决定卖机路径；RIGHT 承接口径未核实，提出先向官方确认暂停范围再决定，守住边界。",
+   "key_quote": "LEFT：这活动算废了，别等了；RIGHT：先别急…问清了再决定要不要继续等",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E164:E164_T04",
+   "order": "main",
+   "story": "E164",
+   "cid": "E164_T04",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT 把季卡按14次算并直接除出64.2元/次，但季卡能游多少次在对话里未定，属无据确定化（臆造次数）；LEFT 的回本13次是按72.5回本线推出，尚在口径内",
+   "key_quote": "RIGHT：899÷14次≈64.2一次……季卡实际能游多少天得看有效期写多少",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 3,
+     "attrib": 3,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E170:E170_T07",
+   "order": "main",
+   "story": "E170",
+   "cid": "E170_T07",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT把'工期不拖'当成待核对的事，还暗示增项工期可能和17号二次安装撞车，与'工期不拖'的已定信息和合同'工期不变'的说法相悖，属无据的确定化相反表述",
+   "key_quote": "变更单只写拉篮加三百五、工期不变，责任单和变更单分开签",
+   "dims_flagged": {
+    "parent": {
+     "fact": 2,
+     "time": 1,
+     "attrib": 3,
+     "memory": 3
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T04",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T04",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "LEFT：老规矩是每人八十，两个人就是一百六……要么两人各八十，要么你俩合计一百六",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T12",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T12",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "市集日期未知，RIGHT却把『你去我就去』当成已定承诺，属无据确定化",
+   "key_quote": "八十是八十，咖啡算你请，我记着。市集那个我还没定，你先说哪天",
+   "dims_flagged": {
+    "parent": {
+     "fact": 2,
+     "time": 1,
+     "attrib": 3,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T14",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T14",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "跟小满说钱不用一个人扛，照老规矩三人平摊，她要是坚持全包，就让她请我们喝杯咖啡，扯平了。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 2,
+     "memory": 0
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T34",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T34",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "扫了，我摆手没让她扫，阿蕾还愣在车窗外问要不要打表",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": null,
+     "attrib": 3,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE121:LRE121_T01",
+   "order": "main",
+   "story": "",
+   "cid": "LRE121_T01",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "LEFT：九点半，桂溪那边周末人不少，早去一阵好排队",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE121:LRE121_T19",
+   "order": "main",
+   "story": "",
+   "cid": "LRE121_T19",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "LEFT：取消得对，阿姨那针不差这几天，养好才是正经事",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE121:LRE121_T31",
+   "order": "main",
+   "story": "",
+   "cid": "LRE121_T31",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "RIGHT 臆造“十一月底补的凭条”“小票/支付记录教训”，属无据编造已发生事项；L 接住梗并追问周中哪天",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 0,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T16",
+   "order": "swap",
+   "story": "",
+   "cid": "LRE146_T16",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "RIGHT把未明的日期时段无据确定化为'六号中午'，并把'好日子别拖到月底'绑到周六晚上，与已知12月6日为周日的硬信息冲突（时间无据确定化+错时）。LEFT漏钉日期，仅时间维度不足。",
+   "key_quote": "姥姥生日是阳历十二月六号，正好周日；R:先把六号中午的样子定下来…周六晚上的包间",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 1,
+     "time": 0,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T24",
+   "order": "swap",
+   "story": "",
+   "cid": "LRE146_T24",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "",
+   "key_quote": "连我舅都亲口认了。电池这事翻篇了，接下来就专心等十二月六号。",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

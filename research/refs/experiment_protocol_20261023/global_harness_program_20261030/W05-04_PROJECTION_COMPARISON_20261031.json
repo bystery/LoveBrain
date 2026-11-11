@@ -1,0 +1,1382 @@
+{
+ "kind": "w0504_projection_comparison",
+ "date": "2026-10-31",
+ "hit_rule": "value/quote bigram-recall >= 0.60 vs arm memory medium",
+ "stories": {
+  "E021": {
+   "E3": [
+    {
+     "turn": 1,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A01",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "medium_chars": 54,
+     "proj_lines": 1,
+     "noise": "1/1",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A02",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "medium_chars": 43,
+     "proj_lines": 1,
+     "noise": "0/1",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A03",
+       "age": 0,
+       "hit": false,
+       "required": false
+      },
+      {
+       "atom_id": "E021_A04",
+       "age": null,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "medium_chars": 96,
+     "proj_lines": 2,
+     "noise": "0/2",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A05",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 5,
+     "medium_chars": 123,
+     "proj_lines": 3,
+     "noise": "1/3",
+     "recall_by_age": {
+      "3-5": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A06",
+       "age": 3,
+       "hit": false,
+       "required": true
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "medium_chars": 263,
+     "proj_lines": 5,
+     "noise": "0/5",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A07",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 7,
+     "medium_chars": 82,
+     "proj_lines": 2,
+     "noise": "0/2",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A08",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "medium_chars": 135,
+     "proj_lines": 3,
+     "noise": "0/3",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A09",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 9,
+     "medium_chars": 82,
+     "proj_lines": 2,
+     "noise": "0/2",
+     "recall_by_age": {},
+     "detail": [
+      {
+       "atom_id": "E021_A10",
+       "age": null,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "medium_chars": 82,
+     "proj_lines": 2,
+     "noise": "0/2",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 11,
+     "medium_chars": 248,
+     "proj_lines": 5,
+     "noise": "0/5",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A11",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "medium_chars": 243,
+     "proj_lines": 5,
+     "noise": "0/5",
+     "recall_by_age": {},
+     "detail": []
+    }
+   ],
+   "Bmin": [
+    {
+     "turn": 1,
+     "medium_chars": 200,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A01",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "medium_chars": 360,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A02",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "medium_chars": 379,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A03",
+       "age": 0,
+       "hit": true,
+       "required": false
+      },
+      {
+       "atom_id": "E021_A04",
+       "age": null,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "medium_chars": 546,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A05",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 5,
+     "medium_chars": 555,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "3-5": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A06",
+       "age": 3,
+       "hit": true,
+       "required": true
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "medium_chars": 715,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A07",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 7,
+     "medium_chars": 726,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A08",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "medium_chars": 885,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A09",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 9,
+     "medium_chars": 894,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": [
+      {
+       "atom_id": "E021_A10",
+       "age": null,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "medium_chars": 1071,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 11,
+     "medium_chars": 1086,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E021_A11",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "medium_chars": 1248,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    }
+   ]
+  },
+  "E026": {
+   "E3": [
+    {
+     "turn": 1,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E026_A01",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {},
+     "detail": [
+      {
+       "atom_id": "E026_A02",
+       "age": null,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E026_A03",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 5,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {},
+     "detail": [
+      {
+       "atom_id": "E026_A04",
+       "age": null,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 7,
+     "medium_chars": 58,
+     "proj_lines": 1,
+     "noise": "0/1",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E026_A05",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "medium_chars": 48,
+     "proj_lines": 1,
+     "noise": "1/1",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 9,
+     "medium_chars": 192,
+     "proj_lines": 4,
+     "noise": "4/4",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E026_A06",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "medium_chars": 252,
+     "proj_lines": 5,
+     "noise": "3/5",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 11,
+     "medium_chars": 285,
+     "proj_lines": 6,
+     "noise": "4/6",
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E026_A07",
+       "age": 2,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "medium_chars": 285,
+     "proj_lines": 6,
+     "noise": "4/6",
+     "recall_by_age": {},
+     "detail": []
+    }
+   ],
+   "Bmin": [
+    {
+     "turn": 1,
+     "medium_chars": 193,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E026_A01",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "medium_chars": 344,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": [
+      {
+       "atom_id": "E026_A02",
+       "age": null,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "medium_chars": 358,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E026_A03",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "medium_chars": 511,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 5,
+     "medium_chars": 520,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": [
+      {
+       "atom_id": "E026_A04",
+       "age": null,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "medium_chars": 683,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 7,
+     "medium_chars": 709,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E026_A05",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "medium_chars": 864,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 9,
+     "medium_chars": 875,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E026_A06",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "medium_chars": 1028,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 11,
+     "medium_chars": 1039,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E026_A07",
+       "age": 2,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "medium_chars": 1199,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    }
+   ]
+  },
+  "E032": {
+   "E3": [
+    {
+     "turn": 1,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E032_A01",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 3,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E032_A02",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 5,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E032_A03",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "medium_chars": 56,
+     "proj_lines": 1,
+     "noise": "1/1",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 7,
+     "medium_chars": 56,
+     "proj_lines": 1,
+     "noise": "1/1",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E032_A04",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "medium_chars": 124,
+     "proj_lines": 2,
+     "noise": "2/2",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 9,
+     "medium_chars": 75,
+     "proj_lines": 1,
+     "noise": "0/1",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 10,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 11,
+     "medium_chars": 44,
+     "proj_lines": 1,
+     "noise": "1/1",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E032_A05",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "medium_chars": 112,
+     "proj_lines": 2,
+     "noise": "1/2",
+     "recall_by_age": {},
+     "detail": []
+    }
+   ],
+   "Bmin": [
+    {
+     "turn": 1,
+     "medium_chars": 207,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E032_A01",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "medium_chars": 360,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 3,
+     "medium_chars": 379,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E032_A02",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "medium_chars": 540,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 5,
+     "medium_chars": 553,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E032_A03",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "medium_chars": 718,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 7,
+     "medium_chars": 739,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E032_A04",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "medium_chars": 901,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 9,
+     "medium_chars": 916,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 10,
+     "medium_chars": 1077,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 11,
+     "medium_chars": 1098,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E032_A05",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "medium_chars": 1255,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    }
+   ]
+  },
+  "E033": {
+   "E3": [
+    {
+     "turn": 1,
+     "medium_chars": 0,
+     "proj_lines": 0,
+     "noise": "0/0",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A01",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "medium_chars": 60,
+     "proj_lines": 1,
+     "noise": "0/1",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A02",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "medium_chars": 118,
+     "proj_lines": 2,
+     "noise": "0/2",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A03",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "medium_chars": 346,
+     "proj_lines": 6,
+     "noise": "1/6",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 5,
+     "medium_chars": 110,
+     "proj_lines": 3,
+     "noise": "0/3",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A04",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "medium_chars": 167,
+     "proj_lines": 4,
+     "noise": "0/4",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A05",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 7,
+     "medium_chars": 169,
+     "proj_lines": 4,
+     "noise": "1/4",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A06",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "medium_chars": 277,
+     "proj_lines": 6,
+     "noise": "3/6",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A07",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 9,
+     "medium_chars": 324,
+     "proj_lines": 7,
+     "noise": "3/7",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A08",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "medium_chars": 330,
+     "proj_lines": 7,
+     "noise": "3/7",
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 11,
+     "medium_chars": 232,
+     "proj_lines": 5,
+     "noise": "2/5",
+     "recall_by_age": {
+      "0-2": "0/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A09",
+       "age": 0,
+       "hit": false,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "medium_chars": 292,
+     "proj_lines": 6,
+     "noise": "3/6",
+     "recall_by_age": {},
+     "detail": []
+    }
+   ],
+   "Bmin": [
+    {
+     "turn": 1,
+     "medium_chars": 203,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A01",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "medium_chars": 354,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A02",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "medium_chars": 371,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A03",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "medium_chars": 525,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 5,
+     "medium_chars": 554,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A04",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "medium_chars": 713,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A05",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 7,
+     "medium_chars": 729,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A06",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "medium_chars": 886,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A07",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 9,
+     "medium_chars": 906,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A08",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "medium_chars": 1079,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    },
+    {
+     "turn": 11,
+     "medium_chars": 1095,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {
+      "0-2": "1/1"
+     },
+     "detail": [
+      {
+       "atom_id": "E033_A09",
+       "age": 0,
+       "hit": true,
+       "required": false
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "medium_chars": 1263,
+     "proj_lines": 0,
+     "noise": null,
+     "recall_by_age": {},
+     "detail": []
+    }
+   ]
+  }
+ },
+ "summary": {
+  "dialogue_atom_recall": {
+   "E3_combined": "28/28",
+   "Bmin_window": "28/28",
+   "note": "4 initial_kb 原子在两臂介质定义下均判 miss，实为【画像/初始事实】块内容，两臂均有 → 伪差，不计"
+  },
+  "memory_context_chars_per_turn": {
+   "E3": "window ~717 + projection ~114 ≈ 831",
+   "Bmin": "~717",
+   "delta": "E3 +16% overhead, zero recall gain in 12-turn regime"
+  },
+  "e3_projection_noise_rows": "40/113 (与全部原子 bigram<0.30)",
+  "window_depth_check_T12": {
+   "E021": "T01 quotes HIT",
+   "E026": "T01/T03 HIT",
+   "E032": "T01/T03 HIT",
+   "E033": "T01/T03 HIT",
+   "note": "12 轮故事窗口 ~1250 chars 不滑出早期对话，Bmin 架构性失忆风险在本数据集未触发"
+  },
+  "e3_real_differentiators_untested_here": [
+   "长程(>窗深)事实保留(longprobe 31轮域, F1 fidelity 96.8% 但无 Bmin 头对头)",
+   "状态簿记(已更正/已完成/暂定/自动作废 — raw window 让新旧断言并存, 正是 fabrication/severe 面)",
+   "跨会话持久化(r1 store 文件级, Bmin 无)"
+  ]
+ }
+}

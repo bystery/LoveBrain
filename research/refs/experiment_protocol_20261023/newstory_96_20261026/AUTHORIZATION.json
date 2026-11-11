@@ -1,0 +1,46 @@
+{
+ "authorization_id": "AUTH-NEWSTORY-96-20261026-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "kind": "signed_authorization",
+ "granted_by": "持续执行授权（AGENTS.md §0：用户 2026-10-25 原话「我额度很多！随便用！！！现在重点就是修复好bug之后推进主线！」）；本文件是对该既有授权的落地登记，不是新索取",
+ "standing_grant_reference": "AGENTS.md §0 + WORKER_EXECUTION.md §六.4（下一批 96 次：原版 vs 保留候选，新 6 故事，两臂共 96）",
+ "approval_basis": "v5 处置=保留开发可进独立验证（evaluation/JUDGE_QUALITY_V2_AND_V5_DISPOSITION.json）；目标维度裁判资格 QUALIFIED；输入公平捕获 capture 96/96 通过（logs/newstory96_plan_probe）",
+ "scope": {
+  "batch_id": "BATCH-NEWSTORY-96-20261026",
+  "arms": [
+   "reference_product_v1",
+   "v5_purpose_aligned"
+  ],
+  "episodes": [
+   "P001",
+   "P002",
+   "P003",
+   "P004",
+   "P005",
+   "P006"
+  ],
+  "positions_per_arm": 48,
+  "purpose": "独立新故事检验（评审器留出代理性质）：保留候选 v5 vs 原版在未见过的新 6 故事上的对照；覆盖目标/情绪/钩子/深聊；正向能力首测",
+  "api_config": "api_cfg:openai_compat_stream_true_v1(include_usage gated)——与 D5 验证的共同流式身份；不与历史非流式数字合并",
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "third_arm": false,
+  "automatic_judge": false,
+  "interleaving": "六故事分块交错（parent_first/candidate_first 交替），同故事时间连续，两臂独立状态",
+  "separate_from": "AUTH-V5/AUTH-R2/AUTH-V3/AUTH-STREAM-INT 均已 CLOSED 不得复用；AUTH-HARNESS-PERF-PHASE1（余252）与 AUTH-EVAL-JUDGE（满载）不写入"
+ },
+ "frozen_bindings": {
+  "parent_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+  "candidate_identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+  "plan_sha256_to_freeze": "logs/newstory96_plan_probe/INTERLEAVE_PLAN.json（派发时以复制的冻结计划为准）"
+ },
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 96
+ },
+ "budget_ledger": "logs/auth_budget/AUTH-NEWSTORY-96-20261026-01.jsonl"
+}

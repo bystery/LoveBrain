@@ -1,0 +1,107 @@
+--- a/tools/l3b_three_arm_executor.py
++++ b/tools/l3b_three_arm_executor.py
+@@ -275,45 +275,71 @@
+ 
+ 
+ def _verify_slot_attempts(run_dir, run_id, case_id):
+-    """每槽 (run_id, case_id, attempt_id) 真实配对校验（v10 复核 §5-3）。"""
++    """Require one ordered, identity-matched start/completion for this slot."""
+     res = {"ok": True, "errors": [], "started": 0, "completed": 0,
+            "failed": 0, "attempt_ids": [], "cases_seen": []}
+-    ev_path = os.path.join(run_dir, "gateway_events.jsonl")
+-    if not os.path.isfile(ev_path):
++
++    def error(message):
++        res["errors"].append(message)
++
++    path = os.path.join(run_dir, "gateway_events.jsonl")
++    if not os.path.isfile(path):
++        error("gateway_events.jsonl missing")
+         res["ok"] = False
+-        res["errors"].append("gateway_events.jsonl 缺失（无真实调用证据）")
+         return res
+-    with open(ev_path, encoding="utf-8") as f:
+-        for line in f:
+-            line = line.strip()
+-            if not line:
+-                continue
+-            ev = json.loads(line)
+-            if ev.get("run_id") != run_id:
+-                continue   # 同一 run 目录承载本分支各轮；按 run_id 归属本槽
+-            k = ev.get("kind")
+-            if k == "attempt_started":
+-                res["started"] += 1
+-                res["attempt_ids"].append(ev.get("attempt_id"))
+-                res["cases_seen"].append(ev.get("case_id"))
+-                if ev.get("case_id") != case_id:
+-                    res["ok"] = False
+-                    res["errors"].append(
+-                        "attempt %s case=%r ≠ 目标 %r（case 不符=隐藏重跑）"
+-                        % (ev.get("attempt_id"), ev.get("case_id"), case_id))
+-            elif k in ("attempt_completed", "attempt_failed"):
+-                res["completed" if k == "attempt_completed" else "failed"] += 1
++    events = []
++    try:
++        with open(path, encoding="utf-8") as source:
++            for line_no, line in enumerate(source, 1):
++                if not line.strip():
++                    continue
++                ev = json.loads(line)
++                if not isinstance(ev, dict):
++                    error("event line %d is not an object" % line_no)
++                    continue
++                if ev.get("run_id") == run_id and ev.get("kind") in (
++                        "attempt_started", "attempt_completed", "attempt_failed"):
++                    events.append(ev)
++    except (OSError, ValueError) as exc:
++        error("event log unreadable: %s" % type(exc).__name__)
++
++    started_key = None
++    terminal_seen = False
++    for ev in events:
++        kind = ev["kind"]
++        aid = ev.get("attempt_id")
++        valid_id = (isinstance(aid, (str, int)) and not isinstance(aid, bool)
++                    and (not isinstance(aid, str) or bool(aid.strip())))
++        key = (run_id, ev.get("case_id"), type(aid).__name__, str(aid))
++        if not valid_id:
++            error("missing or invalid attempt_id")
++        if ev.get("case_id") != case_id:
++            error("event case_id does not match target case")
++        if kind == "attempt_started":
++            res["started"] += 1
++            res["attempt_ids"].append(aid)
++            res["cases_seen"].append(ev.get("case_id"))
++            if started_key is not None:
++                error("duplicate start")
++            else:
++                started_key = key
++        else:
++            res["completed" if kind == "attempt_completed" else "failed"] += 1
++            if started_key is None:
++                error("terminal without preceding start")
++            elif key != started_key:
++                error("terminal identity does not match start")
++            if terminal_seen:
++                error("duplicate terminal")
++            terminal_seen = True
++
+     if res["started"] != 1:
+-        res["ok"] = False
+-        res["errors"].append("started=%d ≠ 1（一槽只允许目标 case 的一次实际调用）"
+-                             % res["started"])
+-    if res["completed"] + res["failed"] != res["started"]:
+-        res["ok"] = False
+-        res["errors"].append("终态 %d ≠ started %d（缺终态配对）"
+-                             % (res["completed"] + res["failed"], res["started"]))
++        error("expected exactly one started event")
++    if res["completed"] + res["failed"] != 1:
++        error("expected exactly one terminal event")
+     if res["failed"]:
+-        res["ok"] = False
+-        res["errors"].append("存在网关内部失败事件（transport 失败）")
++        error("gateway failure: stop the batch")
++    res["ok"] = not res["errors"]
+     return res
+ 
+ 

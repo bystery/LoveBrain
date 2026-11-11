@@ -1,0 +1,43 @@
+{
+ "batch_id": "BATCH-CF1-W13-20261102",
+ "arm_map": {
+  "parent": "action_policy_r9_slim",
+  "candidate": "window_expand_b"
+ },
+ "episode_order": [
+  {
+   "episode": "E149",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E150",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E151",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E152",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E153",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E154",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E155",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E156",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/wave3/GRADING_CARDS_CF.json",
+ "recall_capable": false
+}

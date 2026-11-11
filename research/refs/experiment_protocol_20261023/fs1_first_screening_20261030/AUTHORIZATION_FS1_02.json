@@ -1,0 +1,62 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-FS1-FIRSTSCREEN-20261030-02",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30地狱级常设授权（AUTH-GLOBAL-CONTINUOUS-20261030-01 登记件）+ 总书§6/§7 首个完整循环A波次；管理帽16384不变；-02 为上游修复后重派 scope",
+ "phase": "FS1_first_screening",
+ "budget_ledger": "logs/auth_budget/AUTH-FS1-FIRSTSCREEN-20261030-02.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 192
+ },
+ "scope": {
+  "purpose": "全局程序首筛（W10-02）：两批两臂×4故事×12位=192次真实生成；E3 vs 增强基线B0（主比较）+ Bmin vs B0（复杂度问题）；评审另册",
+  "route": "two_two_arm_batches_192",
+  "preregistration": "refs/experiment_protocol_20261023/global_harness_program_20261030/W10-01_PREREGISTRATION_20261030.json",
+  "total_attempts": 192,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "FS1_A": "BATCH-FS1-A-E3VSREF-20261030",
+   "FS1_B": "BATCH-FS1-B-BMINVSREF-20261030"
+  },
+  "episodes": [
+   "E021",
+   "E026",
+   "E032",
+   "E033"
+  ],
+  "cards": "benchmark/stories_v2/stage2/GRADING_CARDS_E021_E026_E032_E033.json"
+ },
+ "frozen_bindings": {
+  "FS1_A": {
+   "plan_file": "D:/lovebrain-arena/refs/experiment_protocol_20261023/fs1_first_screening_20261030/FS1_A.INTERLEAVE_PLAN.json",
+   "plan_sha256": "e16349b000fb15b35899be21320c9644b947d9245cc7497f88b5b0fd66de156f",
+   "batch_id": "BATCH-FS1-A-E3VSREF-20261030",
+   "cards_file": "benchmark/stories_v2/stage2/GRADING_CARDS_E021_E026_E032_E033.json",
+   "attempts": 96,
+   "parent": "reference_product_v1",
+   "candidate": "action_policy_r4_guard_e3",
+   "parent_identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "candidate_identity_sha256": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17"
+  },
+  "FS1_B": {
+   "plan_file": "D:/lovebrain-arena/refs/experiment_protocol_20261023/fs1_first_screening_20261030/FS1_B.INTERLEAVE_PLAN.json",
+   "plan_sha256": "94af2aca00f1f665da949335d9977d365d298d1c6a27d5be0e18ce938c078146",
+   "batch_id": "BATCH-FS1-B-BMINVSREF-20261030",
+   "cards_file": "benchmark/stories_v2/stage2/GRADING_CARDS_E021_E026_E032_E033.json",
+   "attempts": 96,
+   "parent": "reference_product_v1",
+   "candidate": "v0_minimal_events",
+   "parent_identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "candidate_identity_sha256": "eb35df9a6cd600ab7558e2f5e71f285a8e4f356e231211ce6aa1e8bc16a9122c"
+  }
+ },
+ "execution_entry_sha256": "908d58695cccdac8be6d261894b47037367f1802de40d46e1f0eb8ffdbf2c685",
+ "predecessor": "AUTH-FS1-FIRSTSCREEN-20261030-01（2 次失败已记账后关闭；本单非复活，是新 scope）"
+}

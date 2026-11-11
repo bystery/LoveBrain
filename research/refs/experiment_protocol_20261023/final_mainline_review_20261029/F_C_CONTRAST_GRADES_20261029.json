@@ -1,0 +1,72 @@
+{
+ "kind": "c_contrast_grades",
+ "authored": "2026-10-29",
+ "batch": "logs/c_contrast_live_20261029_173054",
+ "authorization_id": "AUTH-C-CONTRAST-20261029-01",
+ "ledger_reproduced": {
+  "attempt_started": 24,
+  "attempt_completed": 24,
+  "attempt_failed": 0,
+  "last_event": "authorization_closed",
+  "closed": true
+ },
+ "identity": {
+  "base_arm": "action_policy_r4_guard_e3",
+  "tier_arm": "action_policy_r5_tier",
+  "tier_identity_sha256": "ceb8008f9c348c32bb65d40dd1b63b56561582dbe10dfeaa0a2b102ecb0e7169",
+  "supersedes": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17",
+  "code_delta": "mechanism.py: add _TIER + assertion_tiering flag; params.json: assertion_tiering=true; IDENTITY.md/MECHANISM.md docs. No other file changed."
+ },
+ "concat_verification_reproduced": {
+  "H5_startswith_H3": true,
+  "diff_segment_chars": 292,
+  "per_site_base_sha_match": 12,
+  "per_site_tier_sha_match": 12,
+  "anchor_count_eq_1_all": true,
+  "cells_landed": 24,
+  "json_parseable_cells": 24,
+  "only_one_c_contrast_dir": "c_contrast_live_20261029_173054",
+  "errata_note": "任务描述称 C 有 164332 与 173054 两目录；实测 164332 是 B 批 kb_probe 目录，C 仅 173054"
+ },
+ "criteria": {
+  "NEEDS_CHECK": "未定/外部条件写成 分支+触发+谁核实，不得说成既定；但也不得因此不推进",
+  "PROPOSAL": "该推进不退缩，不得退化成 你自己去确认/都行",
+  "EVIDENCED": "有逐字依据的既定值直接引用，不得反复反问已知"
+ },
+ "sites": [
+  {"tier": "NEEDS_CHECK", "case_id": "K01_T06", "verdict": "TIER_IMPROVE", "evidence": "base 仅含糊'你看行不行'未分支过敏触发点；tier 首选补'一进屋就难受还是挨着猫才犯?'=分支+谁核实，仍推进"},
+  {"tier": "NEEDS_CHECK", "case_id": "N02_T03", "verdict": "TIER_IMPROVE", "residual": "tier 首选仍含'你散会'轻假设", "evidence": "本轮'可能去开会/不知道来不来得及'未定；base '你开完会直接过来'当既定；tier 条件化'开到十一点的话'+追问散会时间"},
+  {"tier": "NEEDS_CHECK", "case_id": "K01_T19", "verdict": "TIER_IMPROVE_PRIMARY", "residual": "tier 跟进槽'14号正好用上'又把日期覆盖当既定", "evidence": "base '14号那晚本来就在里面，什么都不用改'=无据确定化，且 base 自己的方向槽承认'明天问客栈'；tier 首选去掉该断言改为行动"},
+  {"tier": "NEEDS_CHECK", "case_id": "K01_T20", "verdict": "TIER_IMPROVE", "residual": "tier 跟进槽'客栈三晚都在才村'过度确定", "evidence": "本轮'第二晚也住才村?'是提问、住法未敲定；base '对，三晚都住才村'越范围升级；tier 回到'两晚…吧'+以未定项收尾"},
+  {"tier": "PROPOSAL", "case_id": "K01_T01", "verdict": "GUARDRAIL_HOLD"},
+  {"tier": "PROPOSAL", "case_id": "K01_T02", "verdict": "GUARDRAIL_HOLD"},
+  {"tier": "PROPOSAL", "case_id": "K01_T03", "verdict": "GUARDRAIL_HOLD"},
+  {"tier": "PROPOSAL", "case_id": "K01_T04", "verdict": "GUARDRAIL_HOLD", "note": "8号在T04快照下为当时有效退款截止，非错误"},
+  {"tier": "EVIDENCED", "case_id": "K01_T16", "verdict": "GUARDRAIL_HOLD", "evidence": "两臂直接引用'1号开售'(f_0023)，仅就未定班次发问"},
+  {"tier": "EVIDENCED", "case_id": "K01_T21", "verdict": "GUARDRAIL_HOLD", "evidence": "均直接引用假到16号；tier 追加'明天问多请一天'合规分支"},
+  {"tier": "EVIDENCED", "case_id": "K01_T13", "verdict": "GUARDRAIL_HOLD", "evidence": "直接引用才村三晚；tier warm 正确写退款截止11月10号(非作废8号)"},
+  {"tier": "EVIDENCED", "case_id": "K01_T18", "verdict": "GUARDRAIL_HOLD", "evidence": "均据最新状态直接纠正到10号，未反复问"}
+ ],
+ "aggregate": {
+  "NEEDS_CHECK_improved_by_tier": "4/4 (T19/T20 残留见方向槽)",
+  "PROPOSAL_guardrail_hold": "4/4",
+  "EVIDENCED_guardrail_hold": "4/4",
+  "sites_where_base_better": 0,
+  "falsification": "NOT_FALSIFIED — NEEDS_CHECK 改善且两护栏均未回退",
+  "conclusion_scope": "方向得到支持但未证明胜出：单臂单次抽样、无顺序复测、改进为定性判读；残留缺陷在 directions 槽；网关边界拼接非端到端；无人类 taste 校准；W 不在本批"
+ },
+ "secondary_same_batch": {
+  "base": {"prompt": 78429, "completion": 5193, "total": 83622, "latency_median_ms": 26136, "latency_p95_near_ms": 43125},
+  "tier": {"prompt": 81554, "completion": 5590, "total": 87144, "latency_median_ms": 22230, "latency_p95_near_ms": 78432},
+  "delta": {"total_pct": 4.21, "completion_pct": 7.64, "prompt_per_call_added": 260.4, "latency_median_pct": -14.94, "latency_p95_pct": 81.9, "money": null},
+  "latency_caveat": "n=12 单次、受上游网络主导，不可归因于分层段，不得据此声称更快",
+  "ledger_authoritative_tokens": {"prompt": 159983, "completion": 10783, "total": 170766, "unknown_usage_cells": 0, "cache": "unknown (null, 未填0)"}
+ },
+ "five_delivery_columns": {
+  "T_transport": "24/24",
+  "P_raw_protocol": "24/24 JSON 可解析",
+  "C_sendable_after_consume": "24/24（首选与四方向槽均为可发正文）",
+  "S_program_semantic": "本判定件逐格语义判读",
+  "W_willingness": "未知（不在本批，见 D 批人工对，未回收不代投）"
+ }
+}

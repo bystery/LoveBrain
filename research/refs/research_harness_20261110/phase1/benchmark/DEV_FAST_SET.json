@@ -1,0 +1,3275 @@
+{
+ "set_id": "DEV_FAST_SET_v1",
+ "version": "1.0.0",
+ "created": "2026-11-11",
+ "purpose": "A2 第一级：60 位高价值回复位置研发快速评估集（工作正常性/质量比较/明显倒退检测/Token延迟统计）",
+ "selection_rule": {
+  "rule_version": "selection_rule_v1",
+  "fixed_before_selection": true,
+  "R1_universe": "wave4_dev E301–E338（488 reply 位）∪ wave5_selection E339–E378（492 reply 位）= 980；不读 benchmark/b_line/、D:/lovebrain-arena_holdout_vault/、E401+。",
+  "R2_topic_tags": "primary_topic = DATASET_V1_FROZEN_MANIFEST.episodes[*].topic；派生：intent.status=explicit → +T06；gold unknowns 非空或 must-not-affirm(negation) 原子 → +T07；CANCEL_FAMILY 原子（cancelled/superseded/retracted/negated/…）→ +T09；断言 source.case_id ≠ 本轮 → +T08（跨轮回扣）。T01–T05 仅经 primary_topic。",
+  "R3_evidence_binding": {
+   "wave4_dev": "PILOT_RESULTS_MERGED.csv（DIRECT/CURRENT，2026-11-08）；轻量臂结构性假 veto unknown_payload_field（recommended 键契约已知问题）不计失败。",
+   "wave5_selection": "FOUR_ARM_RESULTS.csv（DIRECT/COT/LEGACY/CURRENT，2026-11-10）。",
+   "hard_fail": "parse 失败 | 契约失败 | error_type | severe_error | cancel_affirm>0 | 真实 veto",
+   "soft_fail": "required_total>0 且 hits<total（marker 匹配严格，作难度提示不作硬失败）| may_decline=false 时 no_reply",
+   "clean": "全部臂记录无硬/软失败且 action=reply"
+  },
+  "R4_quota": "主专题配额 T01–T04 各 8（合计 53%）、T05/T06/T07 各 6、T08 5、T09 3（=全部三篇长/状态篇）、T10 2，共 60。",
+  "R5_slot_order": "每专题依次：(a) W 槽 = 硬失败臂最多者（并列：硬类别严重度 severe/cancel/veto > parse/contract → wave5 四臂证据优先 → episode 小 → turn 小），marker=expected_weakness（仅软旗时如实记 expected_weakness_soft）；(b) S 槽 = 全臂干净者中 required 原子位优先、池缺口大者优先，marker=expected_strength；(c) 其余槽按池缺口轮转填充，难度标签多样性 → episode 分散优先。池配额见 POOL_QUOTA（合计 wave4_dev=36 / wave5_selection=24）；每篇 episode 全局 ≤2 位。",
+  "R6_order_and_smoke": "position_id 按 (kind_rank, topic, episode, turn) 排序分配 D60-001..D60-060；smoke_24 = ID 前 24 位。",
+  "R7_blindness": "选位只用 episode/gold 元数据与 live 判定 flag（parse/contract/severe/cancel_affirm/required 计数），不读、不比较任何候选输出文本（primary_text 列不参与决策）；无随机数，全程可复现。"
+ },
+ "coverage_summary": {
+  "total_positions": 60,
+  "by_pool": {
+   "wave5_selection": 24,
+   "wave4_dev": 36
+  },
+  "per_topic": {
+   "T01": {
+    "quota": 8,
+    "selected": 8,
+    "by_pool": {
+     "wave5_selection": 2,
+     "wave4_dev": 6
+    },
+    "expected_weakness": 1,
+    "expected_strength": 1,
+    "probe": 6,
+    "position_ids": [
+     "D60-001",
+     "D60-011",
+     "D60-021",
+     "D60-022",
+     "D60-023",
+     "D60-024",
+     "D60-025",
+     "D60-026"
+    ]
+   },
+   "T02": {
+    "quota": 8,
+    "selected": 8,
+    "by_pool": {
+     "wave5_selection": 3,
+     "wave4_dev": 5
+    },
+    "expected_weakness": 1,
+    "expected_strength": 1,
+    "probe": 6,
+    "position_ids": [
+     "D60-002",
+     "D60-012",
+     "D60-027",
+     "D60-028",
+     "D60-029",
+     "D60-030",
+     "D60-031",
+     "D60-032"
+    ]
+   },
+   "T03": {
+    "quota": 8,
+    "selected": 8,
+    "by_pool": {
+     "wave5_selection": 3,
+     "wave4_dev": 5
+    },
+    "expected_weakness": 1,
+    "expected_strength": 1,
+    "probe": 6,
+    "position_ids": [
+     "D60-003",
+     "D60-013",
+     "D60-033",
+     "D60-034",
+     "D60-035",
+     "D60-036",
+     "D60-037",
+     "D60-038"
+    ]
+   },
+   "T04": {
+    "quota": 8,
+    "selected": 8,
+    "by_pool": {
+     "wave5_selection": 3,
+     "wave4_dev": 5
+    },
+    "expected_weakness": 1,
+    "expected_strength": 1,
+    "probe": 6,
+    "position_ids": [
+     "D60-004",
+     "D60-014",
+     "D60-039",
+     "D60-040",
+     "D60-041",
+     "D60-042",
+     "D60-043",
+     "D60-044"
+    ]
+   },
+   "T05": {
+    "quota": 6,
+    "selected": 6,
+    "by_pool": {
+     "wave5_selection": 3,
+     "wave4_dev": 3
+    },
+    "expected_weakness": 1,
+    "expected_strength": 1,
+    "probe": 4,
+    "position_ids": [
+     "D60-005",
+     "D60-015",
+     "D60-045",
+     "D60-046",
+     "D60-047",
+     "D60-048"
+    ]
+   },
+   "T06": {
+    "quota": 6,
+    "selected": 6,
+    "by_pool": {
+     "wave5_selection": 2,
+     "wave4_dev": 4
+    },
+    "expected_weakness": 1,
+    "expected_strength": 1,
+    "probe": 4,
+    "position_ids": [
+     "D60-006",
+     "D60-016",
+     "D60-049",
+     "D60-050",
+     "D60-051",
+     "D60-052"
+    ]
+   },
+   "T07": {
+    "quota": 6,
+    "selected": 6,
+    "by_pool": {
+     "wave5_selection": 2,
+     "wave4_dev": 4
+    },
+    "expected_weakness": 1,
+    "expected_strength": 1,
+    "probe": 4,
+    "position_ids": [
+     "D60-007",
+     "D60-017",
+     "D60-053",
+     "D60-054",
+     "D60-055",
+     "D60-056"
+    ]
+   },
+   "T08": {
+    "quota": 5,
+    "selected": 5,
+    "by_pool": {
+     "wave5_selection": 3,
+     "wave4_dev": 2
+    },
+    "expected_weakness": 1,
+    "expected_strength": 1,
+    "probe": 3,
+    "position_ids": [
+     "D60-008",
+     "D60-018",
+     "D60-057",
+     "D60-058",
+     "D60-059"
+    ]
+   },
+   "T09": {
+    "quota": 3,
+    "selected": 3,
+    "by_pool": {
+     "wave5_selection": 2,
+     "wave4_dev": 1
+    },
+    "expected_weakness": 1,
+    "expected_strength": 1,
+    "probe": 1,
+    "position_ids": [
+     "D60-009",
+     "D60-019",
+     "D60-060"
+    ]
+   },
+   "T10": {
+    "quota": 2,
+    "selected": 2,
+    "by_pool": {
+     "wave5_selection": 1,
+     "wave4_dev": 1
+    },
+    "expected_weakness": 1,
+    "expected_strength": 1,
+    "probe": 0,
+    "position_ids": [
+     "D60-010",
+     "D60-020"
+    ]
+   }
+  },
+  "smoke_24_topics": [
+   "T01",
+   "T02",
+   "T03",
+   "T04",
+   "T05",
+   "T06",
+   "T07",
+   "T08",
+   "T09",
+   "T10"
+  ]
+ },
+ "scorer_pipeline": {
+  "declared_pipeline": "tools/benchmark_v1/universal_scorer.py（universal_scorer_v1）+ normalize_output.py (normalize_v1) + semantic_guards_v1 + gold_diag 原子族（CANCEL/ACTIVE_FAMILY）",
+  "primary_extraction": "normalize_v1 固定规则抽取 primary_text（不挑备选；harness 组=recommended 槽，轻量组=light 契约 recommended 键）",
+  "universal_layer_metrics": [
+   "action(reply/no_reply/missing)",
+   "parse_ok",
+   "contract_ok",
+   "generic_cancel_affirm（语义守卫：疑问/否定/条件/引用/过去式提及不算坐实）",
+   "generic_required_hits/misses/total",
+   "severe_error",
+   "latency_ms",
+   "tokens"
+  ],
+  "product_layer": "LEGACY/CURRENT(LEGACY_COMPAT_R9)：lb_scorer score10/veto 原样透传；DIRECT/COT：仅 light 契约（parse_ok/contract_ok），harness 形状 score10/veto 记 NOT_APPLICABLE——轻量臂输出无 recommended 顶层键，lb_scorer PROTOCOL_TOP_KEYS 会误触发 veto（pilot 实测 DIRECT veto=544/552 为结构假象），universal_scorer v1 已按层隔离",
+  "not_covered": "Q1–Q5 语义质量（自然度/逻辑连贯/上下文承接/情境分寸/可发送性）与 T01–T05 行为档位不在 universal_scorer 通用层内——需 judge（受 W20-03 资格表限制）+ B3 亲读；本集通用层只做确定性筛查与回归对照"
+ },
+ "leakage_check": {
+  "conclusion": "PASS_for_DEV_DIAGNOSTIC（附三条边界声明）",
+  "sources_used": "仅 wave4_dev（2026-11-08 pilot2 曝光）与 wave5_selection（2026-11-10 selection_v1 四臂曝光）；gold sidecar 为评估侧合法引用（GOLD_SCHEMA 评估侧使用口径）；未读 b_line/holdout 金库/E401+。",
+  "no_future_info": "集内只登记 episode+turn 指针与元数据，不内嵌题面正文/gold 文本；候选可见输入边界（真实 HER/ME 消息+IDEA+意图+时间戳）由 runner 保证，本集不改输入。",
+  "selection_blindness": "选位未使用任何候选输出文本（R7）；live 证据只取判定 flag 与计数。",
+  "caveats": [
+   "两池均为已开发曝光材料：对曾在 pilot2/selection 上调过的候选，本集不是盲测，只作 DEV 诊断与回归对照；不得作为独立泛化成绩（详见 COVERAGE_AND_VALIDITY.md 免责声明）。",
+   "wave5 每篇 exposure.json 的 experiments_used 仍为空/ authored_pending_review（曝光账本回填滞后），实际曝光证据在 runs/selection_v1* 与 phase3/experiments/selection_v1/。",
+   "STORY_CUSTODY_LEDGER.json 实际位于 refs/experiment_protocol_20261023/global_harness_program_20261030/ （非仓库根），且未收录 E339–E378（仅 248 篇，E301–E338 有 consumed_by 记录）。"
+  ]
+ },
+ "smoke_24": {
+  "rule": "R6: position_id 升序前 24 位（D60-001..D60-024）；ID 按 (kind_rank[weakness=0,strength=1,probe=2], topic, episode, turn) 排序分配，故前 24 位 = 10 个专题弱项位 + 10 个专题强项位 + 4 个探针位，覆盖 T01–T10 全部专题，含 ≥1 强项与 ≥1 弱项",
+  "position_ids": [
+   "D60-001",
+   "D60-002",
+   "D60-003",
+   "D60-004",
+   "D60-005",
+   "D60-006",
+   "D60-007",
+   "D60-008",
+   "D60-009",
+   "D60-010",
+   "D60-011",
+   "D60-012",
+   "D60-013",
+   "D60-014",
+   "D60-015",
+   "D60-016",
+   "D60-017",
+   "D60-018",
+   "D60-019",
+   "D60-020",
+   "D60-021",
+   "D60-022",
+   "D60-023",
+   "D60-024"
+  ],
+  "topics_covered": [
+   "T01",
+   "T02",
+   "T03",
+   "T04",
+   "T05",
+   "T06",
+   "T07",
+   "T08",
+   "T09",
+   "T10"
+  ]
+ },
+ "evidence_sources": {
+  "wave4_dev": {
+   "live_run": "runs/pilot2_wave4_live_b/ + runs/pilot2_wave4_live_c/（DIRECT/CURRENT，2026-11-08）",
+   "per_case_flags": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+   "report": "refs/benchmark_v1_20261107/phase2/PHASE2_PILOT_REPORT.md"
+  },
+  "wave5_selection": {
+   "live_run": "runs/selection_v1{,_current,_direct,_fast,_slow}/（四臂，2026-11-10）",
+   "per_case_flags": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+   "universal_scores": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/selection_v1_universal_scores.csv"
+  },
+  "topic_definitions": "refs/benchmark_v1_20261107/phase1/TOPIC_RUBRIC_DRAFT_V1.md",
+  "frozen_manifest": "refs/benchmark_v1_20261107/phase3/DATASET_V1_FROZEN_MANIFEST.json"
+ },
+ "sha256": "99e8fe68acf293eb61190573c58cbf6a5aaa47be7b3624a6669005dec3dea2fe",
+ "sha256_scope": "sha256(canonical_json(payload without 'sha256' field; sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8'))",
+ "positions": [
+  {
+   "position_id": "D60-001",
+   "episode_id": "E339",
+   "case_id": "E339_T01",
+   "turn_no": 1,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T01"
+   ],
+   "primary_topic": "T01",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "required_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T01",
+     "marker": "expected_weakness_soft",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [
+        "COT",
+        "CURRENT",
+        "DIRECT"
+       ],
+       "hard_kinds": [],
+       "detail": "soft only: no hard failure recorded; required-atom miss flags in arms COT,CURRENT,DIRECT (marker matching is strict; treat as difficulty hint)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E339_T01",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E339/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-002",
+   "episode_id": "E341",
+   "case_id": "E341_T04",
+   "turn_no": 4,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T02",
+    "T06",
+    "T09"
+   ],
+   "primary_topic": "T02",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "说明年审加班安排并撤回周六赌约"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "cancel_or_superseded_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T02",
+     "marker": "expected_weakness",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [
+        "DIRECT",
+        "LEGACY"
+       ],
+       "arms_fail_soft": [],
+       "hard_kinds": [
+        "cancel_affirm",
+        "severe_error"
+       ],
+       "detail": "live-fail: hard_arms=['DIRECT', 'LEGACY'] kinds=['cancel_affirm', 'severe_error'] soft_arms=[]"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E341_T04",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E341/episode.json#turns[3]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-003",
+   "episode_id": "E347",
+   "case_id": "E347_T03",
+   "turn_no": 3,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T03",
+    "T08"
+   ],
+   "primary_topic": "T03",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "cross_turn_callback",
+    "required_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T03",
+     "marker": "expected_weakness_soft",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [
+        "COT",
+        "CURRENT",
+        "DIRECT",
+        "LEGACY"
+       ],
+       "hard_kinds": [],
+       "detail": "soft only: no hard failure recorded; required-atom miss flags in arms COT,CURRENT,DIRECT,LEGACY (marker matching is strict; treat as difficulty hint)"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E347_T03",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E347/episode.json#turns[2]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-004",
+   "episode_id": "E351",
+   "case_id": "E351_T05",
+   "turn_no": 5,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T04",
+    "T08"
+   ],
+   "primary_topic": "T04",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "cross_turn_callback",
+    "required_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T04",
+     "marker": "expected_weakness_soft",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [
+        "COT",
+        "DIRECT"
+       ],
+       "hard_kinds": [],
+       "detail": "soft only: no hard failure recorded; required-atom miss flags in arms COT,DIRECT (marker matching is strict; treat as difficulty hint)"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E351_T05",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E351/episode.json#turns[4]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-005",
+   "episode_id": "E355",
+   "case_id": "E355_T03",
+   "turn_no": 3,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T05",
+    "T07"
+   ],
+   "primary_topic": "T05",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T05",
+     "marker": "expected_weakness",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [
+        "LEGACY"
+       ],
+       "arms_fail_soft": [],
+       "hard_kinds": [
+        "contract",
+        "severe_error"
+       ],
+       "detail": "live-fail: hard_arms=['LEGACY'] kinds=['contract', 'severe_error'] soft_arms=[]"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E355_T03",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E355/episode.json#turns[2]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-006",
+   "episode_id": "E364",
+   "case_id": "E364_T02",
+   "turn_no": 2,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T06",
+    "T09",
+    "T08"
+   ],
+   "primary_topic": "T06",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "确认今日仅代收猫砂一件，羽绒服顺延至明日"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "cancel_or_superseded_atoms",
+    "cross_turn_callback"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T06",
+     "marker": "expected_weakness",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [
+        "COT",
+        "CURRENT",
+        "DIRECT"
+       ],
+       "arms_fail_soft": [],
+       "hard_kinds": [
+        "cancel_affirm",
+        "severe_error"
+       ],
+       "detail": "live-fail: hard_arms=['COT', 'CURRENT', 'DIRECT'] kinds=['cancel_affirm', 'severe_error'] soft_arms=[]"
+      }
+     ]
+    },
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E364_T02",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E364/episode.json#turns[1]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-007",
+   "episode_id": "E369",
+   "case_id": "E369_T12",
+   "turn_no": 12,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T07",
+    "T09",
+    "T08"
+   ],
+   "primary_topic": "T07",
+   "intent": null,
+   "may_decline": true,
+   "difficulty_tags": [
+    "may_decline",
+    "unknowns_in_gold",
+    "cancel_or_superseded_atoms",
+    "cross_turn_callback",
+    "required_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T07",
+     "marker": "expected_weakness",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [
+        "COT",
+        "CURRENT",
+        "DIRECT"
+       ],
+       "arms_fail_soft": [
+        "LEGACY"
+       ],
+       "hard_kinds": [
+        "cancel_affirm",
+        "severe_error"
+       ],
+       "detail": "live-fail: hard_arms=['COT', 'CURRENT', 'DIRECT'] kinds=['cancel_affirm', 'severe_error'] soft_arms=['LEGACY']"
+      }
+     ]
+    },
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E369_T12",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E369/episode.json#turns[11]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-008",
+   "episode_id": "E373",
+   "case_id": "E373_T07",
+   "turn_no": 7,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T08",
+    "T06",
+    "T09"
+   ],
+   "primary_topic": "T08",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "更正 10 月日常合计，剔除重复记录的一笔"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "cancel_or_superseded_atoms",
+    "cross_turn_callback"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T08",
+     "marker": "expected_weakness",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [
+        "COT",
+        "CURRENT",
+        "DIRECT",
+        "LEGACY"
+       ],
+       "arms_fail_soft": [],
+       "hard_kinds": [
+        "cancel_affirm",
+        "severe_error"
+       ],
+       "detail": "live-fail: hard_arms=['COT', 'CURRENT', 'DIRECT', 'LEGACY'] kinds=['cancel_affirm', 'severe_error'] soft_arms=[]"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E373_T07",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E373/episode.json#turns[6]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-009",
+   "episode_id": "E374",
+   "case_id": "E374_T22",
+   "turn_no": 22,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T09",
+    "T07"
+   ],
+   "primary_topic": "T09",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "must_not_affirm_atoms",
+    "cancel_or_superseded_atoms",
+    "long_episode"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T09",
+     "marker": "expected_weakness",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [
+        "COT",
+        "CURRENT",
+        "LEGACY"
+       ],
+       "arms_fail_soft": [],
+       "hard_kinds": [
+        "cancel_affirm",
+        "severe_error"
+       ],
+       "detail": "live-fail: hard_arms=['COT', 'CURRENT', 'LEGACY'] kinds=['cancel_affirm', 'severe_error'] soft_arms=[]"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E374_T22",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E374/episode.json#turns[21]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-010",
+   "episode_id": "E376",
+   "case_id": "E376_T04",
+   "turn_no": 4,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T10",
+    "T06",
+    "T09",
+    "T08"
+   ],
+   "primary_topic": "T10",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "告诉搭子首马目标由安全完赛改为破四，请重排课表"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "cancel_or_superseded_atoms",
+    "cross_turn_callback"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T10",
+     "marker": "expected_weakness",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [
+        "COT",
+        "DIRECT"
+       ],
+       "arms_fail_soft": [],
+       "hard_kinds": [
+        "cancel_affirm",
+        "severe_error"
+       ],
+       "detail": "live-fail: hard_arms=['COT', 'DIRECT'] kinds=['cancel_affirm', 'severe_error'] soft_arms=[]"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E376_T04",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E376/episode.json#turns[3]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-011",
+   "episode_id": "E301",
+   "case_id": "E301_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T01"
+   ],
+   "primary_topic": "T01",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T01",
+     "marker": "expected_strength",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "all 2 live arm records clean (contract ok in own layer, no severe/cancel-affirm/parse/contract fail)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E301_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E301/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-012",
+   "episode_id": "E342",
+   "case_id": "E342_T10",
+   "turn_no": 10,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T02",
+    "T08"
+   ],
+   "primary_topic": "T02",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "cross_turn_callback",
+    "required_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T02",
+     "marker": "expected_strength",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "all 4 live arm records clean (contract ok in own layer, no severe/cancel-affirm/parse/contract fail)"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E342_T10",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E342/episode.json#turns[9]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-013",
+   "episode_id": "E309",
+   "case_id": "E309_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T03",
+    "T07"
+   ],
+   "primary_topic": "T03",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T03",
+     "marker": "expected_strength",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "all 2 live arm records clean (contract ok in own layer, no severe/cancel-affirm/parse/contract fail)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E309_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E309/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-014",
+   "episode_id": "E313",
+   "case_id": "E313_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T04",
+    "T06",
+    "T07"
+   ],
+   "primary_topic": "T04",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "接住她的看展邀约，把去不去和时间定下来"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T04",
+     "marker": "expected_strength",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "all 2 live arm records clean (contract ok in own layer, no severe/cancel-affirm/parse/contract fail)"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E313_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E313/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-015",
+   "episode_id": "E317",
+   "case_id": "E317_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T05",
+    "T07"
+   ],
+   "primary_topic": "T05",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T05",
+     "marker": "expected_strength",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "all 2 live arm records clean (contract ok in own layer, no severe/cancel-affirm/parse/contract fail)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E317_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E317/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-016",
+   "episode_id": "E360",
+   "case_id": "E360_T01",
+   "turn_no": 1,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T06"
+   ],
+   "primary_topic": "T06",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "确认周六搬家时间地址与大件清单"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "required_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T06",
+     "marker": "expected_strength",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "all 4 live arm records clean (contract ok in own layer, no severe/cancel-affirm/parse/contract fail)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E360_T01",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E360/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-017",
+   "episode_id": "E366",
+   "case_id": "E366_T01",
+   "turn_no": 1,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T07",
+    "T06"
+   ],
+   "primary_topic": "T07",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "把公告栏的实际单价和依据告诉她"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "unknowns_in_gold",
+    "required_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T07",
+     "marker": "expected_strength",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "all 4 live arm records clean (contract ok in own layer, no severe/cancel-affirm/parse/contract fail)"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E366_T01",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E366/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-018",
+   "episode_id": "E329",
+   "case_id": "E329_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T08"
+   ],
+   "primary_topic": "T08",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T08",
+     "marker": "expected_strength",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "all 2 live arm records clean (contract ok in own layer, no severe/cancel-affirm/parse/contract fail)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E329_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E329/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-019",
+   "episode_id": "E374",
+   "case_id": "E374_T10",
+   "turn_no": 10,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T09",
+    "T08"
+   ],
+   "primary_topic": "T09",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "cross_turn_callback",
+    "required_atoms",
+    "long_episode"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T09",
+     "marker": "expected_strength",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "all 4 live arm records clean (contract ok in own layer, no severe/cancel-affirm/parse/contract fail)"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E374_T10",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E374/episode.json#turns[9]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-020",
+   "episode_id": "E333",
+   "case_id": "E333_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T10"
+   ],
+   "primary_topic": "T10",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T10",
+     "marker": "expected_strength",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "all 2 live arm records clean (contract ok in own layer, no severe/cancel-affirm/parse/contract fail)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E333_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E333/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-021",
+   "episode_id": "E301",
+   "case_id": "E301_T02",
+   "turn_no": 2,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T01"
+   ],
+   "primary_topic": "T01",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T01",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E301_T02",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E301/episode.json#turns[1]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-022",
+   "episode_id": "E302",
+   "case_id": "E302_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T01",
+    "T07"
+   ],
+   "primary_topic": "T01",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T01",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E302_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E302/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-023",
+   "episode_id": "E302",
+   "case_id": "E302_T03",
+   "turn_no": 3,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T01"
+   ],
+   "primary_topic": "T01",
+   "intent": null,
+   "may_decline": true,
+   "difficulty_tags": [
+    "may_decline"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T01",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E302_T03",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E302/episode.json#turns[2]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-024",
+   "episode_id": "E303",
+   "case_id": "E303_T12",
+   "turn_no": 12,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T01",
+    "T06",
+    "T07"
+   ],
+   "primary_topic": "T01",
+   "intent": {
+    "enabled": true,
+    "text": "告知63元已转账并确认下周安排",
+    "status": "explicit"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T01",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E303_T12",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E303/episode.json#turns[11]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-025",
+   "episode_id": "E304",
+   "case_id": "E304_T05",
+   "turn_no": 5,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T01",
+    "T07",
+    "T09"
+   ],
+   "primary_topic": "T01",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "must_not_affirm_atoms",
+    "cancel_or_superseded_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T01",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E304_T05",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E304/episode.json#turns[4]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-026",
+   "episode_id": "E339",
+   "case_id": "E339_T04",
+   "turn_no": 4,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T01",
+    "T06",
+    "T08"
+   ],
+   "primary_topic": "T01",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "通知周六集合时间由八点改到七点半"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "cross_turn_callback",
+    "required_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T01",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [
+        "COT",
+        "CURRENT",
+        "LEGACY"
+       ],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E339_T04",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E339/episode.json#turns[3]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-027",
+   "episode_id": "E305",
+   "case_id": "E305_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T02"
+   ],
+   "primary_topic": "T02",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T02",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E305_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E305/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-028",
+   "episode_id": "E305",
+   "case_id": "E305_T03",
+   "turn_no": 3,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T02",
+    "T07"
+   ],
+   "primary_topic": "T02",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T02",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E305_T03",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E305/episode.json#turns[2]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-029",
+   "episode_id": "E306",
+   "case_id": "E306_T09",
+   "turn_no": 9,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T02"
+   ],
+   "primary_topic": "T02",
+   "intent": null,
+   "may_decline": true,
+   "difficulty_tags": [
+    "may_decline"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T02",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E306_T09",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E306/episode.json#turns[8]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-030",
+   "episode_id": "E307",
+   "case_id": "E307_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T02",
+    "T07"
+   ],
+   "primary_topic": "T02",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T02",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E307_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E307/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-031",
+   "episode_id": "E308",
+   "case_id": "E308_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T02"
+   ],
+   "primary_topic": "T02",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T02",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E308_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E308/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-032",
+   "episode_id": "E340",
+   "case_id": "E340_T01",
+   "turn_no": 1,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T02"
+   ],
+   "primary_topic": "T02",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T02",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E340_T01",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E340/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-033",
+   "episode_id": "E309",
+   "case_id": "E309_T02",
+   "turn_no": 2,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T03",
+    "T07"
+   ],
+   "primary_topic": "T03",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T03",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E309_T02",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E309/episode.json#turns[1]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-034",
+   "episode_id": "E310",
+   "case_id": "E310_T11",
+   "turn_no": 11,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T03",
+    "T07",
+    "T09",
+    "T08"
+   ],
+   "primary_topic": "T03",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "must_not_affirm_atoms",
+    "cancel_or_superseded_atoms",
+    "cross_turn_callback"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T03",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E310_T11",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E310/episode.json#turns[10]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-035",
+   "episode_id": "E311",
+   "case_id": "E311_T04",
+   "turn_no": 4,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T03",
+    "T06"
+   ],
+   "primary_topic": "T03",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "对她的'松了口气'说真话"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T03",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E311_T04",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E311/episode.json#turns[3]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-036",
+   "episode_id": "E312",
+   "case_id": "E312_T12",
+   "turn_no": 12,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T03",
+    "T07"
+   ],
+   "primary_topic": "T03",
+   "intent": null,
+   "may_decline": true,
+   "difficulty_tags": [
+    "may_decline",
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T03",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E312_T12",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E312/episode.json#turns[11]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-037",
+   "episode_id": "E348",
+   "case_id": "E348_T01",
+   "turn_no": 1,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T03"
+   ],
+   "primary_topic": "T03",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T03",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E348_T01",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E348/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-038",
+   "episode_id": "E349",
+   "case_id": "E349_T01",
+   "turn_no": 1,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T03",
+    "T06"
+   ],
+   "primary_topic": "T03",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "重启昨晚没聊完的观点分歧"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T03",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E349_T01",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E349/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-039",
+   "episode_id": "E313",
+   "case_id": "E313_T02",
+   "turn_no": 2,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T04",
+    "T07"
+   ],
+   "primary_topic": "T04",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T04",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E313_T02",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E313/episode.json#turns[1]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-040",
+   "episode_id": "E314",
+   "case_id": "E314_T05",
+   "turn_no": 5,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T04"
+   ],
+   "primary_topic": "T04",
+   "intent": null,
+   "may_decline": true,
+   "difficulty_tags": [
+    "may_decline"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T04",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E314_T05",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E314/episode.json#turns[4]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-041",
+   "episode_id": "E315",
+   "case_id": "E315_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T04",
+    "T07"
+   ],
+   "primary_topic": "T04",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T04",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E315_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E315/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-042",
+   "episode_id": "E316",
+   "case_id": "E316_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T04",
+    "T06",
+    "T07",
+    "T09"
+   ],
+   "primary_topic": "T04",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "确认明早东门七点五十的集合"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "unknowns_in_gold",
+    "must_not_affirm_atoms",
+    "cancel_or_superseded_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T04",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E316_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E316/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-043",
+   "episode_id": "E352",
+   "case_id": "E352_T01",
+   "turn_no": 1,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T04"
+   ],
+   "primary_topic": "T04",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T04",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E352_T01",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E352/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-044",
+   "episode_id": "E353",
+   "case_id": "E353_T01",
+   "turn_no": 1,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T04"
+   ],
+   "primary_topic": "T04",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T04",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E353_T01",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E353/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-045",
+   "episode_id": "E317",
+   "case_id": "E317_T06",
+   "turn_no": 6,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T05",
+    "T06",
+    "T07",
+    "T09",
+    "T08"
+   ],
+   "primary_topic": "T05",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "解释体检陪同改由妹妹顶替并许诺十二月补偿"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "unknowns_in_gold",
+    "must_not_affirm_atoms",
+    "cancel_or_superseded_atoms",
+    "cross_turn_callback"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T05",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E317_T06",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E317/episode.json#turns[5]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-046",
+   "episode_id": "E318",
+   "case_id": "E318_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T05",
+    "T07"
+   ],
+   "primary_topic": "T05",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T05",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E318_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E318/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-047",
+   "episode_id": "E354",
+   "case_id": "E354_T01",
+   "turn_no": 1,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T05",
+    "T06"
+   ],
+   "primary_topic": "T05",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "请他周五晚到周日早来家里喂药"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T05",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E354_T01",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E354/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-048",
+   "episode_id": "E358",
+   "case_id": "E358_T07",
+   "turn_no": 7,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T05",
+    "T08"
+   ],
+   "primary_topic": "T05",
+   "intent": null,
+   "may_decline": true,
+   "difficulty_tags": [
+    "may_decline",
+    "cross_turn_callback",
+    "required_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T05",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [
+        "COT",
+        "CURRENT",
+        "DIRECT",
+        "LEGACY"
+       ],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E358_T07",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E358/episode.json#turns[6]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-049",
+   "episode_id": "E321",
+   "case_id": "E321_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T06",
+    "T07"
+   ],
+   "primary_topic": "T06",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "深夜递歌单试探"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E321_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E321/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-050",
+   "episode_id": "E322",
+   "case_id": "E322_T08",
+   "turn_no": 8,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T06",
+    "T07"
+   ],
+   "primary_topic": "T06",
+   "intent": null,
+   "may_decline": true,
+   "difficulty_tags": [
+    "may_decline",
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E322_T08",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E322/episode.json#turns[7]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-051",
+   "episode_id": "E323",
+   "case_id": "E323_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T06"
+   ],
+   "primary_topic": "T06",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E323_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E323/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-052",
+   "episode_id": "E324",
+   "case_id": "E324_T04",
+   "turn_no": 4,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T06",
+    "T07",
+    "T09",
+    "T08"
+   ],
+   "primary_topic": "T06",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "unknowns_in_gold",
+    "must_not_affirm_atoms",
+    "cancel_or_superseded_atoms",
+    "cross_turn_callback"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E324_T04",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E324/episode.json#turns[3]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-053",
+   "episode_id": "E325",
+   "case_id": "E325_T09",
+   "turn_no": 9,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T07",
+    "T09",
+    "T08"
+   ],
+   "primary_topic": "T07",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "must_not_affirm_atoms",
+    "cancel_or_superseded_atoms",
+    "cross_turn_callback"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E325_T09",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E325/episode.json#turns[8]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-054",
+   "episode_id": "E326",
+   "case_id": "E326_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T07"
+   ],
+   "primary_topic": "T07",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E326_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E326/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-055",
+   "episode_id": "E327",
+   "case_id": "E327_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T07"
+   ],
+   "primary_topic": "T07",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E327_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E327/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-056",
+   "episode_id": "E328",
+   "case_id": "E328_T01",
+   "turn_no": 1,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T07"
+   ],
+   "primary_topic": "T07",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E328_T01",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E328/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-057",
+   "episode_id": "E331",
+   "case_id": "E331_T06",
+   "turn_no": 6,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T08",
+    "T07"
+   ],
+   "primary_topic": "T08",
+   "intent": null,
+   "may_decline": true,
+   "difficulty_tags": [
+    "may_decline",
+    "unknowns_in_gold"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E331_T06",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E331/episode.json#turns[5]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-058",
+   "episode_id": "E371",
+   "case_id": "E371_T01",
+   "turn_no": 1,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T08"
+   ],
+   "primary_topic": "T08",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [],
+   "expected_capabilities": [
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E371_T01",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E371/episode.json#turns[0]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-059",
+   "episode_id": "E372",
+   "case_id": "E372_T10",
+   "turn_no": 10,
+   "source_pool": "wave5_selection",
+   "topics": [
+    "T08",
+    "T07",
+    "T09"
+   ],
+   "primary_topic": "T08",
+   "intent": null,
+   "may_decline": false,
+   "difficulty_tags": [
+    "must_not_affirm_atoms",
+    "cancel_or_superseded_atoms",
+    "cross_turn_callback",
+    "required_atoms"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase3/experiments/selection_v1/FOUR_ARM_RESULTS.csv",
+       "run_dirs": "runs/selection_v1* (four-arm, 2026-11-10)",
+       "arms_fail_hard": [
+        "CURRENT"
+       ],
+       "arms_fail_soft": [
+        "DIRECT"
+       ],
+       "hard_kinds": [
+        "cancel_affirm",
+        "severe_error"
+       ],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave5_selection.json#case_id=E372_T10",
+   "input_ref": "benchmark/stories_v2/wave5_selection/E372/episode.json#turns[9]",
+   "notes": ""
+  },
+  {
+   "position_id": "D60-060",
+   "episode_id": "E337",
+   "case_id": "E337_T23",
+   "turn_no": 23,
+   "source_pool": "wave4_dev",
+   "topics": [
+    "T09",
+    "T06",
+    "T07",
+    "T08"
+   ],
+   "primary_topic": "T09",
+   "intent": {
+    "enabled": true,
+    "status": "explicit",
+    "text": "邀请周四汇报视频到场当观众"
+   },
+   "may_decline": false,
+   "difficulty_tags": [
+    "intent_turn",
+    "unknowns_in_gold",
+    "cross_turn_callback",
+    "long_episode"
+   ],
+   "expected_capabilities": [
+    {
+     "topic": "T09",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "refs/benchmark_v1_20261107/phase2/pilot2_merged/PILOT_RESULTS_MERGED.csv",
+       "run_dirs": "runs/pilot2_wave4_live_b/ runs/pilot2_wave4_live_c/",
+       "arms_fail_hard": [],
+       "arms_fail_soft": [],
+       "hard_kinds": [],
+       "detail": "fill by R5c (tag-diversity, ep-spread, pool deficit)"
+      }
+     ]
+    },
+    {
+     "topic": "T06",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T07",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    },
+    {
+     "topic": "T08",
+     "marker": "probe",
+     "evidence": [
+      {
+       "ref": "derived",
+       "detail": "derived topic by R2 signal (intent/unknowns/cancel/cross-turn); no separate live strength/weakness claim"
+      }
+     ]
+    }
+   ],
+   "gold_sidecar_ref": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_wave4_dev.json#case_id=E337_T23",
+   "input_ref": "benchmark/stories_v2/wave4_dev/E337/episode.json#turns[22]",
+   "notes": ""
+  }
+ ]
+}

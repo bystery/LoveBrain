@@ -1,0 +1,559 @@
+{
+ "kind": "w20_03_gt_labels",
+ "frozen_at": "2026-11-03",
+ "rule": "W20_03_JUDGE_CAL_DESIGN_20261103.md §3.5/§3.2；good臂按构造 severe=false；neg臂 severe GT=卡 forbidden 违反或 rubric 严重类别（worker 逐条亲读 36 条 neg 回复后标注）；good:AK05 无 viol；neg_a:AK05 违反'不要主动要求逐段点评'；neg_b:AK11 '手术时间我改成十点的'=编造已发生安排",
+ "labels": [
+  {
+   "reply_id": "good:AK01",
+   "arm": "good",
+   "sid": "AK01",
+   "severe_gt": false,
+   "targeted_dims": [],
+   "expected_ok_dims": [
+    "goal",
+    "init",
+    "interact",
+    "time"
+   ]
+  },
+  {
+   "reply_id": "good:AK02",
+   "arm": "good",
+   "sid": "AK02",
+   "severe_gt": false,
+   "targeted_dims": [],
+   "expected_ok_dims": [
+    "boundary",
+    "emotion",
+    "goal",
+    "interact"
+   ]
+  },
+  {
+   "reply_id": "good:AK03",
+   "arm": "good",
+   "sid": "AK03",
+   "severe_gt": false,
+   "targeted_dims": [],
+   "expected_ok_dims": [
+    "boundary",
+    "emotion",
+    "goal",
+    "interact"
+   ]
+  },
+  {
+   "reply_id": "good:AK04",
+   "arm": "good",
+   "sid": "AK04",
+   "severe_gt": false,
+   "targeted_dims": [],
+   "expected_ok_dims": [
+    "boundary",
+    "goal",
+    "interact",
+    "time"
+   ]
+  },
+  {
+   "reply_id": "good:AK05",
+   "arm": "good",
+   "sid": "AK05",
+   "severe_gt": false,
+   "targeted_dims": [],
+   "expected_ok_dims": [
+    "boundary",
+    "emotion",
+    "goal",
+    "interact"
+   ]
+  },
+  {
+   "reply_id": "good:AK06",
+   "arm": "good",
+   "sid": "AK06",
+   "severe_gt": false,
+   "targeted_dims": [],
+   "expected_ok_dims": [
+    "boundary",
+    "goal",
+    "interact",
+    "time"
+   ]
+  },
+  {
+   "reply_id": "good:AK07",
+   "arm": "good",
+   "sid": "AK07",
+   "severe_gt": false,
+   "targeted_dims": [],
+   "expected_ok_dims": [
+    "goal",
+    "interact",
+    "memory",
+    "time"
+   ]
+  },
+  {
+   "reply_id": "good:AK08",
+   "arm": "good",
+   "sid": "AK08",
+   "severe_gt": false,
+   "targeted_dims": [],
+   "expected_ok_dims": [
+    "emotion",
+    "fact",
+    "goal",
+    "interact"
+   ]
+  },
+  {
+   "reply_id": "good:AK09",
+   "arm": "good",
+   "sid": "AK09",
+   "severe_gt": false,
+   "targeted_dims": [],
+   "expected_ok_dims": [
+    "boundary",
+    "emotion",
+    "interact",
+    "time"
+   ]
+  },
+  {
+   "reply_id": "good:AK10",
+   "arm": "good",
+   "sid": "AK10",
+   "severe_gt": false,
+   "targeted_dims": [],
+   "expected_ok_dims": [
+    "goal",
+    "interact",
+    "memory",
+    "time"
+   ]
+  },
+  {
+   "reply_id": "good:AK11",
+   "arm": "good",
+   "sid": "AK11",
+   "severe_gt": false,
+   "targeted_dims": [],
+   "expected_ok_dims": [
+    "boundary",
+    "emotion",
+    "goal",
+    "time"
+   ]
+  },
+  {
+   "reply_id": "good:AK12",
+   "arm": "good",
+   "sid": "AK12",
+   "severe_gt": false,
+   "targeted_dims": [],
+   "expected_ok_dims": [
+    "boundary",
+    "emotion",
+    "interact",
+    "time"
+   ]
+  },
+  {
+   "reply_id": "neg_a_amnesia:AK01",
+   "arm": "neg_a_amnesia",
+   "sid": "AK01",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_a_amnesia:AK02",
+   "arm": "neg_a_amnesia",
+   "sid": "AK02",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_a_amnesia:AK03",
+   "arm": "neg_a_amnesia",
+   "sid": "AK03",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_a_amnesia:AK04",
+   "arm": "neg_a_amnesia",
+   "sid": "AK04",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_a_amnesia:AK05",
+   "arm": "neg_a_amnesia",
+   "sid": "AK05",
+   "severe_gt": true,
+   "targeted_dims": [
+    "memory"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_a_amnesia:AK06",
+   "arm": "neg_a_amnesia",
+   "sid": "AK06",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_a_amnesia:AK07",
+   "arm": "neg_a_amnesia",
+   "sid": "AK07",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_a_amnesia:AK08",
+   "arm": "neg_a_amnesia",
+   "sid": "AK08",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_a_amnesia:AK09",
+   "arm": "neg_a_amnesia",
+   "sid": "AK09",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_a_amnesia:AK10",
+   "arm": "neg_a_amnesia",
+   "sid": "AK10",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_a_amnesia:AK11",
+   "arm": "neg_a_amnesia",
+   "sid": "AK11",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_a_amnesia:AK12",
+   "arm": "neg_a_amnesia",
+   "sid": "AK12",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_b_dumper:AK01",
+   "arm": "neg_b_dumper",
+   "sid": "AK01",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory",
+    "boundary"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_b_dumper:AK02",
+   "arm": "neg_b_dumper",
+   "sid": "AK02",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory",
+    "boundary"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_b_dumper:AK03",
+   "arm": "neg_b_dumper",
+   "sid": "AK03",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory",
+    "boundary"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_b_dumper:AK04",
+   "arm": "neg_b_dumper",
+   "sid": "AK04",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory",
+    "boundary"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_b_dumper:AK05",
+   "arm": "neg_b_dumper",
+   "sid": "AK05",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory",
+    "boundary"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_b_dumper:AK06",
+   "arm": "neg_b_dumper",
+   "sid": "AK06",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory",
+    "boundary"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_b_dumper:AK07",
+   "arm": "neg_b_dumper",
+   "sid": "AK07",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory",
+    "boundary"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_b_dumper:AK08",
+   "arm": "neg_b_dumper",
+   "sid": "AK08",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory",
+    "boundary"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_b_dumper:AK09",
+   "arm": "neg_b_dumper",
+   "sid": "AK09",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory",
+    "boundary"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_b_dumper:AK10",
+   "arm": "neg_b_dumper",
+   "sid": "AK10",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory",
+    "boundary"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_b_dumper:AK11",
+   "arm": "neg_b_dumper",
+   "sid": "AK11",
+   "severe_gt": true,
+   "targeted_dims": [
+    "memory",
+    "boundary"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_b_dumper:AK12",
+   "arm": "neg_b_dumper",
+   "sid": "AK12",
+   "severe_gt": false,
+   "targeted_dims": [
+    "memory",
+    "boundary"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_c_service:AK01",
+   "arm": "neg_c_service",
+   "sid": "AK01",
+   "severe_gt": false,
+   "targeted_dims": [
+    "interact",
+    "emotion",
+    "init"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_c_service:AK02",
+   "arm": "neg_c_service",
+   "sid": "AK02",
+   "severe_gt": false,
+   "targeted_dims": [
+    "interact",
+    "emotion",
+    "init"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_c_service:AK03",
+   "arm": "neg_c_service",
+   "sid": "AK03",
+   "severe_gt": false,
+   "targeted_dims": [
+    "interact",
+    "emotion",
+    "init"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_c_service:AK04",
+   "arm": "neg_c_service",
+   "sid": "AK04",
+   "severe_gt": false,
+   "targeted_dims": [
+    "interact",
+    "emotion",
+    "init"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_c_service:AK05",
+   "arm": "neg_c_service",
+   "sid": "AK05",
+   "severe_gt": false,
+   "targeted_dims": [
+    "interact",
+    "emotion",
+    "init"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_c_service:AK06",
+   "arm": "neg_c_service",
+   "sid": "AK06",
+   "severe_gt": false,
+   "targeted_dims": [
+    "interact",
+    "emotion",
+    "init"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_c_service:AK07",
+   "arm": "neg_c_service",
+   "sid": "AK07",
+   "severe_gt": false,
+   "targeted_dims": [
+    "interact",
+    "emotion",
+    "init"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_c_service:AK08",
+   "arm": "neg_c_service",
+   "sid": "AK08",
+   "severe_gt": false,
+   "targeted_dims": [
+    "interact",
+    "emotion",
+    "init"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_c_service:AK09",
+   "arm": "neg_c_service",
+   "sid": "AK09",
+   "severe_gt": false,
+   "targeted_dims": [
+    "interact",
+    "emotion",
+    "init"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_c_service:AK10",
+   "arm": "neg_c_service",
+   "sid": "AK10",
+   "severe_gt": false,
+   "targeted_dims": [
+    "interact",
+    "emotion",
+    "init"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_c_service:AK11",
+   "arm": "neg_c_service",
+   "sid": "AK11",
+   "severe_gt": false,
+   "targeted_dims": [
+    "interact",
+    "emotion",
+    "init"
+   ],
+   "expected_ok_dims": []
+  },
+  {
+   "reply_id": "neg_c_service:AK12",
+   "arm": "neg_c_service",
+   "sid": "AK12",
+   "severe_gt": false,
+   "targeted_dims": [
+    "interact",
+    "emotion",
+    "init"
+   ],
+   "expected_ok_dims": []
+  }
+ ]
+}

@@ -1,0 +1,193 @@
+{
+ "kind": "long_probe_mechanical_score",
+ "date": "2026-10-30",
+ "revival": {
+  "E066": {
+   "parent": {
+    "revival_count": 3,
+    "texts_scanned": 189,
+    "hits": [
+     {
+      "turn": 12,
+      "family": "旧路线",
+      "token": "318",
+      "text": "317 有几个垭口海拔比 318 高，你要不要提前备点氧气。"
+     },
+     {
+      "turn": 12,
+      "family": "旧路线",
+      "token": "318",
+      "text": "317 比 318 野，路窄景好，值得走。"
+     },
+     {
+      "turn": 13,
+      "family": "旧路线",
+      "token": "318",
+      "text": "318那边站点密度和317差多少？"
+     }
+    ]
+   },
+   "candidate": {
+    "revival_count": 1,
+    "texts_scanned": 187,
+    "hits": [
+     {
+      "turn": 13,
+      "family": "旧路线",
+      "token": "318",
+      "text": "317 比 318 少的就是补给点，所以节奏得按县城排，不能按里程排。"
+     }
+    ]
+   }
+  },
+  "E067": {
+   "parent": {
+    "revival_count": 0,
+    "texts_scanned": 183,
+    "hits": []
+   },
+   "candidate": {
+    "revival_count": 0,
+    "texts_scanned": 186,
+    "hits": []
+   }
+  },
+  "E068": {
+   "parent": {
+    "revival_count": 0,
+    "texts_scanned": 182,
+    "hits": []
+   },
+   "candidate": {
+    "revival_count": 0,
+    "texts_scanned": 180,
+    "hits": []
+   }
+  }
+ },
+ "probe_recall_prescreen": {
+  "E066": {
+   "parent": {
+    "19": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "23": {
+     "hit": [
+      "两小时"
+     ],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [],
+     "primary_empty": false
+    }
+   },
+   "candidate": {
+    "19": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "23": {
+     "hit": [
+      "两小时"
+     ],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [
+      "胎侧"
+     ],
+     "primary_empty": false
+    }
+   }
+  },
+  "E067": {
+   "parent": {
+    "18": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "19": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "21": {
+     "hit": [],
+     "primary_empty": false
+    }
+   },
+   "candidate": {
+    "18": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "19": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "21": {
+     "hit": [],
+     "primary_empty": false
+    }
+   }
+  },
+  "E068": {
+   "parent": {
+    "18": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "19": {
+     "hit": [],
+     "primary_empty": false
+    }
+   },
+   "candidate": {
+    "18": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "19": {
+     "hit": [
+      "四件套",
+      "备案"
+     ],
+     "primary_empty": false
+    }
+   }
+  }
+ },
+ "program": {
+  "E066": {
+   "parent": {
+    "mean10": 10.0,
+    "n": 24
+   },
+   "candidate": {
+    "mean10": 10.0,
+    "n": 24
+   }
+  },
+  "E067": {
+   "parent": {
+    "mean10": 9.848,
+    "n": 22
+   },
+   "candidate": {
+    "mean10": 10.0,
+    "n": 24
+   }
+  },
+  "E068": {
+   "parent": {
+    "mean10": 10.0,
+    "n": 22
+   },
+   "candidate": {
+    "mean10": 10.0,
+    "n": 24
+   }
+  }
+ }
+}

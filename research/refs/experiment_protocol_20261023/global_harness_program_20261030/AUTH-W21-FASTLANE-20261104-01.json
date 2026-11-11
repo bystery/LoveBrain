@@ -1,0 +1,47 @@
+{
+ "document_type": "FASTLANE_G0_AUTHORIZATION",
+ "authorization_id": "AUTH-W21-FASTLANE-20261104-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "authorized_by": "常设授权 AUTH-GLOBAL-CONTINUOUS-20261030-01（用户 2026-10-30 原话授予）；判据冻结 W21_02_NEXT_BATCH_DESIGN_20261103.md（2026-11-04 主会话代裁①②在案）；快车道启用登记 W19-06（2026-11-04）",
+ "authorized_at": "2026-11-04T02:30:00+08:00",
+ "scope": {
+  "scope_id": "fastlane_w21_uc_retry",
+  "purpose": "快车道 G0 淘汰闸 BATCH-W21-FASTLANE-20261104：uc_retry(单变量=崩坏轮重试) vs uc，E157+LRE117 104 attempts；重试另册 AUTH-W21-FASTLANE-RETRY-20261104-01 cap≤20；只淘汰不晋级",
+  "automatic_candidate_generations": true,
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "model_alias": "dsf"
+ },
+ "budget_authority": "持久账本 logs/auth_budget/AUTH-W21-FASTLANE-20261104-01.jsonl；重试另册 AUTH-W21-FASTLANE-RETRY-20261104-01（cap≤20=20%×104，仅空/不可解析 raw 触发，双臂对称，逐次登记）",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 104
+ },
+ "rules": [
+  "base 批 no_retry/no_makeup：失败如实记账不补跑（重试只走另册且仅限合同破坏）",
+  "fail_fast=true：传输类失败即停批→事故登记→新 scope 整批重跑",
+  "live 独占 ≈6 流，不与评审/其它 live 并行；派发前网关探针已过（HTTP 200）",
+  "plan_sha256 冻结绑定，不得编辑计划；L0 三件全绿（80/80 等价+闭合 6/6+mock 104/104）",
+  "LRE117 暴露状态抄录（FAST_LANE §9）：consumed_by=BATCH-LD1-W13-20261102（EXPOSED），E157 SEALED 未暴露",
+  "G0 只淘汰不晋级；通过=四门全过（重试后口径修订见 W19-06 登记件）",
+  "本次不修改系统权限、不建账户、不改防火墙/ACL；不碰 benchmark/b_line/"
+ ],
+ "frozen_bindings": {
+  "W21_FASTLANE": {
+   "batch_id": "BATCH-W21-FASTLANE-20261104",
+   "plan_sha256": "b8e6c88539099c668163b1c705e24ee0fd08140ab41ee6ab9f6c2efddd617133",
+   "attempts": 104,
+   "parent": "window_expand_b_norecap_uc",
+   "candidate": "window_expand_b_norecap_uc_retry",
+   "cards_file": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+   "parent_identity_sha256": "5b3266a91350d66a799f2d3c53274168f9c9b1d16a81f26d8b7193e1847c13df",
+   "candidate_identity_sha256": "bf69cc910ae262a6a978a62d01945bf3e4a44527688eff67ce7935f740ece10b"
+  }
+ },
+ "batch_need": 104,
+ "budget_ledger": "logs/auth_budget/AUTH-W21-FASTLANE-20261104-01.jsonl",
+ "max_attempts": 104,
+ "scope_note": "快车道 G0 淘汰闸：BATCH-W21-FASTLANE-20261104，window_expand_b_norecap_uc_retry(parent=uc,单变量=崩坏轮重试) vs window_expand_b_norecap_uc，E157+LRE117 双臂 104 attempts；只淘汰不晋级"
+}

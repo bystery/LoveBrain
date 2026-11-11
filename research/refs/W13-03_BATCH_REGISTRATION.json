@@ -1,0 +1,258 @@
+{
+  "kind": "batch_registration_flattened",
+  "generated_at": "2026-11-12",
+  "source_repository": "D:\\lovebrain-arena",
+  "generator": "第1份指导书 W13/W14 特殊目录展平登记件（asset-audit 迁移辅助物料）",
+  "batch_id": "BATCH-W13-03-NEWDOM-20261102",
+  "original_dir_path": "D:\\lovebrain-arena\\W13-03 新领域验证批（设计 W13-03_NEWDOMAIN_DESIGN_20261102.md）：兴趣社交 E131\\E140\\E166 + 已见域对照 E117\\E122\\E125",
+  "flatten_metadata": {
+    "artifact_type": "filesystem_slash_split_chain",
+    "top_level_entry_name": "W13-03 新领域验证批（设计 W13-03_NEWDOMAIN_DESIGN_20261102.md）：兴趣社交 E131",
+    "nested_chain_segments": [
+      "W13-03 新领域验证批（设计 W13-03_NEWDOMAIN_DESIGN_20261102.md）：兴趣社交 E131",
+      "E140",
+      "E166 + 已见域对照 E117",
+      "E122",
+      "E125"
+    ],
+    "intermediate_dirs_empty": true,
+    "chain_file_count": 1,
+    "tail_entry": "E125（实体文件，即链尾池摘要 JSON，4,128B）",
+    "tail_file_sha256": "4a7ff9acffe61c459cb5c9ed1840094dbd11b537305690117727a153defd74d6"
+  },
+  "tail_summary_metadata": {
+    "stage": "wave3",
+    "built_at": "2026-11-02T14:01:53",
+    "stories_count": 6,
+    "story_ids": ["E117", "E122", "E125", "E131", "E140", "E166"],
+    "cards_count": 72,
+    "checks_status": {
+      "passed": true,
+      "error_count": 0
+    },
+    "cards_file_pointer": "benchmark/stories_v2/wave3/GRADING_CARDS_W13_03.json",
+    "cards_sha256_in_summary": "849c0e83d4edcc69f3cc3515d46c8c1911b01b0e3c89cc11464af171f6a3616b"
+  },
+  "tail_summary": {
+    "kind": "grading_cards_stories_v2",
+    "stage": "wave3",
+    "built_at": "2026-11-02T14:01:53",
+    "source": "同故事 reference.json 逐字派生（本工具不新写判据）",
+    "schema": [
+      "case_id",
+      "current_action",
+      "acceptable_actions",
+      "applicable_dimensions",
+      "required_memory_atoms",
+      "private_guidance",
+      "unknowns",
+      "protected_expressions",
+      "forbidden_factual_claims",
+      "may_decline",
+      "intent"
+    ],
+    "schema_note": "Stage1 十键 + intent（Stage1 卡丢失 intent，goal 维评审看不到当前有效目标；此处原样搬运 reference 的 intent，不新造判据）",
+    "use": "评估侧专用：不进入候选可见输入；不声称独立封存",
+    "stories": {
+      "E117": {
+        "positions": 12,
+        "episode_sha256": "584a030b8001e62f02f33d19c39a198edf79ac1a8fbeb3e92cf56c1c89ce6a2f",
+        "reference_sha256": "e518d0b1e5b0a330a38ae745aae07dde5b1129fcfd37f536e6cdfb57c2f58ebd",
+        "exposure_sha256": "abf1d8f159469101772b9bce9ad1f8c17884b8f7535b89cb821238a016594671",
+        "declared_hashes_match": {
+          "episode.json": true,
+          "reference.json": true
+        },
+        "dev_exposed": false,
+        "independent_review": false,
+        "author": "AI",
+        "may_decline_turns": null
+      },
+      "E122": {
+        "positions": 12,
+        "episode_sha256": "3ccbb795aa993f3937e30b220c66e8dee1455b5ed793c8b2ad47f7309290a396",
+        "reference_sha256": "a14dd0e98ff237809a5ab84a816eaa5cf6069a0ff018e91c81b7269736c29d28",
+        "exposure_sha256": "fc72ed124243aeff9d06a9a6f09e4d6bbfd8e0c2f87f627a50cdece8f170d731",
+        "declared_hashes_match": {
+          "episode.json": true,
+          "reference.json": true
+        },
+        "dev_exposed": false,
+        "independent_review": false,
+        "author": "AI",
+        "may_decline_turns": null
+      },
+      "E125": {
+        "positions": 12,
+        "episode_sha256": "20045f18e56f862d4249e1034e866568efb3b91dd30f4b497132685b916a8dd3",
+        "reference_sha256": "526b9ea44da97b457b02e54cdeb7f852e2a71573fdb32c520c66bceda83988e4",
+        "exposure_sha256": "eb0da80c5a0cc3a0e6d6b6cf0764fa54e769ed6ba4744f34f74f6b0b2efd790a",
+        "declared_hashes_match": {
+          "episode.json": true,
+          "reference.json": true
+        },
+        "dev_exposed": false,
+        "independent_review": false,
+        "author": "AI",
+        "may_decline_turns": null
+      },
+      "E131": {
+        "positions": 12,
+        "episode_sha256": "b6ea87852beabea2e5807e9231d290c16a35b44cc5ffde067357c5710a761b7c",
+        "reference_sha256": "9f54d9198148c58dd561f0f3667ac26db0a38815525a822cc643779306891c29",
+        "exposure_sha256": "ccb3d3e7d09859dbcee7fb1b9d295c29205d36d572fd95498b24980b81450ab2",
+        "declared_hashes_match": {
+          "episode.json": true,
+          "reference.json": true
+        },
+        "dev_exposed": false,
+        "independent_review": false,
+        "author": "AI",
+        "may_decline_turns": null
+      },
+      "E140": {
+        "positions": 12,
+        "episode_sha256": "c7cdc9300475b8db2fc1bba41f29e4e35b804e8f6849436b38a6c01edcfdd632",
+        "reference_sha256": "8a76e5888e9f9eac0e7706a2fc0c8c3b55ba9345b11167c4c5f810608b6dcafe",
+        "exposure_sha256": "750d38d1543ddb60527adfdcb8cba27c99b728555be4cf01894cbe02e81ec861",
+        "declared_hashes_match": {
+          "episode.json": true,
+          "reference.json": true
+        },
+        "dev_exposed": false,
+        "independent_review": false,
+        "author": "AI (isolation generation session C, batch W3-T1-20261102)",
+        "may_decline_turns": null
+      },
+      "E166": {
+        "positions": 12,
+        "episode_sha256": "f74a30b886d997de8e68422183c67d53c06d44471cc960354a4d215c31e693ee",
+        "reference_sha256": "0e242cf1b34e5fa70871427bcc6a6615787e9d5c13e2a72c96780e49cc642344",
+        "exposure_sha256": "4ea1e1a9695a20c3046fca97404c66973eeacb542746131c7fb3de0265479796",
+        "declared_hashes_match": {
+          "episode.json": true,
+          "reference.json": true
+        },
+        "dev_exposed": false,
+        "independent_review": false,
+        "author": "AI",
+        "may_decline_turns": null
+      }
+    },
+    "counts": {
+      "stories": 6,
+      "cards": 72
+    },
+    "checks": {
+      "errors": [],
+      "passed": true
+    },
+    "cards_sha256": "849c0e83d4edcc69f3cc3515d46c8c1911b01b0e3c89cc11464af171f6a3616b",
+    "cards_file": "benchmark/stories_v2/wave3/GRADING_CARDS_W13_03.json"
+  },
+  "true_materials": {
+    "design_docs": [
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\global_harness_program_20261030\\W13-03_NEWDOMAIN_DESIGN_20261102.md",
+        "sha256": "481df9e767bc60ff75c875e27ef51a40539d80479254f2a7bf089565531b5653",
+        "role": "本批主设计（判据冻结 2026-11-02）：H_GEN 新领域（兴趣社交第12域）+弱词面验证，6篇×12轮×2臂=144 attempts；含新域三篇 vs 已见域三篇判据（最差维差≤0.5）",
+        "registered_for": "本批（BATCH-W13-03-NEWDOM-20261102）"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\global_harness_program_20261030\\W13-04_STAGESPREAD_DESIGN_20261102.md",
+        "sha256": "01e874e2491148e8ee29521dcbb62d3012652a7408fd7a507795c62431af3368",
+        "role": "同波次姊妹批 W13-04（跨关系阶段正向互动）设计，本登记件同时登记其判决书，故附其设计文档",
+        "registered_for": "姊妹批（BATCH-W1304-STAGE-20261102）"
+      }
+    ],
+    "pool_files": [
+      {
+        "path": "D:\\lovebrain-arena\\benchmark\\stories_v2\\wave3\\GRADING_CARDS_W13_03.json",
+        "sha256": "849c0e83d4edcc69f3cc3515d46c8c1911b01b0e3c89cc11464af171f6a3616b",
+        "size_bytes": 141008,
+        "role": "本批评分卡池文件（cards_file 指针所指实体）",
+        "matches_tail_summary_cards_sha256": true,
+        "cards_sha256_verification": "实测 SHA256 与 tail_summary.cards_sha256 完全一致（849c0e83…6a3616b）"
+      }
+    ],
+    "verdicts": [
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\W13-03_VERDICT_20261102.md",
+        "sha256": "f3f219f21ca1109870594b21a545aa3a9ddecc9f1f4b51a83469bc137ef7cacd",
+        "conclusion_line": "判决：H_GEN 泛化成立（双冠军在新域兴趣社交均无塌陷）",
+        "conclusion_detail": "兴趣社交（第 12 域）对双冠军均不构成泛化塌陷；H_GEN 成立，不改判据不改题。b 在 12 轮新域短剧上九维 9/9 全正 + severe 亲读占优 + 成本 −53%，登记为\"≤24 轮域冠军再评估\"的候选证据（不即时改判）。",
+        "batch_reference": "BATCH-W13-03-NEWDOM-20261102（AUTH-W1303-GEN-20261102-01，144/144 零失败）"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\W13-04_VERDICT_20261102.md",
+        "sha256": "4b81ff7299b0b25bd9354a3e186f9b316b8033816ffa60e3ac856cb60ad93aeb",
+        "conclusion_line": "判决：H_STAGE 成立——无回避型塌陷；渐暧昧桶 b 全面占优",
+        "conclusion_detail": "H_STAGE 成立：双冠军跨关系阶段无泛化塌陷；b 在暧昧推进桶全面占优且更主动。冠军格局议题升级：正式再评估（是否合并双冠军为 b 单冠军）需一轮 ≤24 轮已见域确认批，判据另冻结。",
+        "batch_reference": "BATCH-W1304-STAGE-20261102（AUTH-W1304-20261102-01，144/144 零失败）",
+        "note": "任务指定的四份 VERDICT 之一；作为 W13-03 同波次姊妹批判决一并登记于本件"
+      }
+    ],
+    "authorizations": [
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\AUTHORIZATION_W1303.json",
+        "sha256": "2fc7ec4db710bd68ab00d6e16bf1d9aa636a5388cee2042bb1190a97a04043e4",
+        "authorization_id": "AUTH-W1303-GEN-20261102-01",
+        "role": "本批主授权（144 attempts，episodes E131/E122/E140/E117/E166/E125，cards_file 指向 wave3/GRADING_CARDS_W13_03.json）",
+        "plan_sha256_binding_verified": true
+      },
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\AUTHORIZATION_W1304.json",
+        "sha256": "55ef7b3739d764ce611e0f088757360bb18ec45ca63e14fb92f9cef8823d639b",
+        "authorization_id": "AUTH-W1304-20261102-01",
+        "role": "姊妹批 W13-04 授权（判决书引用其 ID）"
+      }
+    ],
+    "interleave_plans": [
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\W1303.INTERLEAVE_PLAN.json",
+        "sha256": "90c2d9f510e03ad3cb10beea2e96f5148af65b68ca7efa22c98ccdeac29433ef",
+        "binding_check": "与 AUTH-W1303-GEN-20261102-01 frozen_bindings.plan_sha256 完全一致"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\W1304.INTERLEAVE_PLAN.json",
+        "sha256": "8f1b28c50610bde4a73e5e3007e617dc71537ef0ff512b2b5f989d8258412246",
+        "binding_check": "实测存档（姊妹批）"
+      }
+    ],
+    "run_logs": [
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w1303_newdom_live_20261102\\",
+        "role": "本批运行日志根目录（含 12 个臂×故事子目录与 _reports；子目录内逐轮文件不在本清单逐项登记）"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w1303_newdom_live_20261102.DONE.json",
+        "sha256": "8aad0ed228659d0639c099d67ad72e0418af373426404590b48a9e699d5ae87d"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w1303_newdom_live_20261102.REPORTS.json",
+        "sha256": "3ff172f90a4b509e2c453108fea43a9b19c5241130a8ad7e9c5e6ef2044f54ef"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w1303_newdom_live_20261102.RESULT.json",
+        "sha256": "065b4029032b9cc95b03f8d921579e9586cba7fe5cab6718d19b0092077d9982"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w1304_stage_live_20261102\\",
+        "role": "姊妹批 W13-04 运行日志根目录"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w1304_stage_live_20261102.DONE.json",
+        "sha256": "cc01ff4d2e36e132ce6a1e2cb034fe60df2d36ae02e959cb45d94db8e1121a25"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w1304_stage_live_20261102.REPORTS.json",
+        "sha256": "cfec339658bd4632bcdd9133bb3822c9a7309d60edc477e951c64aaed090f9fc"
+      },
+      {
+        "path": "D:\\lovebrain-arena\\logs\\w1304_stage_live_20261102.RESULT.json",
+        "sha256": "c80d7114d00e0b202aa2a6ad2d6b17e42b99d0237a820c1e858d1e676c33504b"
+      }
+    ]
+  },
+  "flatten_note": "文件系统拆链伪影登记。原顶层长名条目名称内含 \"/\" 字符（批次描述串），Windows 文件系统将名称按 \"/\" 逐段拆开，形成五层嵌套目录链（顶层\"W13-03 新领域验证批…：兴趣社交 E131\"→E140→\"E166 + 已见域对照 E117\"→E122→E125）；链中间各层均为空目录，链尾是唯一的实体文件——即本登记件 tail_summary 对应的池摘要 JSON（4,128B）。真材料均不在该目录链内：设计文档、判决书、授权、交错计划位于 refs\\experiment_protocol_20261023\\ 下，池文件位于 benchmark\\stories_v2\\，运行日志位于 logs\\。迁移时按 true_materials 清单逐项登记迁移；顶层目录链本体（含链尾摘要文件）不作为独立材料迁移，仅以本登记件留档。tail_summary 已原样嵌入本件，链尾文件自身 SHA256=4a7ff9acffe61c459cb5c9ed1840094dbd11b537305690117727a153defd74d6。"
+}

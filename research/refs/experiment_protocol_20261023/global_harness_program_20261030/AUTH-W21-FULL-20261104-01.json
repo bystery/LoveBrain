@@ -1,0 +1,43 @@
+{
+ "document_type": "FULL_BATCH_AUTHORIZATION",
+ "authorization_id": "AUTH-W21-FULL-20261104-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "max_attempts": 464,
+ "authorized_by": "常设授权 AUTH-GLOBAL-CONTINUOUS-20261030-01；判据冻结 W21_02_NEXT_BATCH_DESIGN_20261103.md（代裁①②在案）；快车道 G0 FASTLANE_PASS（W21_FASTLANE_G0_VERDICT_20261104.md）",
+ "authorized_at": "2026-11-04T04:20:00+08:00",
+ "scope_note": "W21-02 全量批：uc_retry vs uc，10 篇 232 位 464 attempts；G1-G5+G3'（有效回复率门）冻结判据",
+ "scope": {
+  "scope_id": "full_w21_uc_retry",
+  "purpose": "全量批 464 attempts：uc_retry(单变量=崩坏轮重试) vs uc；重试另册 AUTH-W21-FULL-RETRY-20261104-01 cap92",
+  "automatic_candidate_generations": true,
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "model_alias": "dsf"
+ },
+ "budget_authority": "持久账本 logs/auth_budget/AUTH-W21-FULL-20261104-01.jsonl；重试另册 cap≤92（20%×464）仅合同破坏触发、双臂对称、逐次登记",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 464
+ },
+ "rules": [
+  "base no_retry/no_makeup：失败如实记账不补跑（重试只走另册且仅限空/不可解析 raw）",
+  "fail_fast=true：传输类失败即停批→事故登记→新 scope 整批重跑",
+  "live 独占 ≈6 流；派发前网关探针；不碰 benchmark/b_line/；不判生死于程序分",
+  "LRE 系暴露状态沿用 W19CROSS 抄录；本批不新增故事暴露（全复用已暴露素材）"
+ ],
+ "frozen_bindings": {
+  "W21_FULL": {
+   "batch_id": "BATCH-W21-FULL-20261104",
+   "plan_sha256": "d41f23990a99a7ac1bd379312aff28280510ee41fd0b30e568a4f438fdc008c4",
+   "attempts": 464,
+   "parent": "window_expand_b_norecap_uc",
+   "candidate": "window_expand_b_norecap_uc_retry",
+   "cards_file": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+   "parent_identity_sha256": "5b3266a91350d66a799f2d3c53274168f9c9b1d16a81f26d8b7193e1847c13df",
+   "candidate_identity_sha256": "bf69cc910ae262a6a978a62d01945bf3e4a44527688eff67ce7935f740ece10b"
+  }
+ },
+ "budget_ledger": "logs/auth_budget/AUTH-W21-FULL-20261104-01.jsonl"
+}

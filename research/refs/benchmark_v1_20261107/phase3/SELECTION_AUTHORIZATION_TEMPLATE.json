@@ -1,0 +1,17 @@
+{
+  "scope": "Phase 3 第 7 步：SELECTION 40 篇（E339-E378）四组正式对照（DIRECT/COT/LEGACY_COMPAT_R9/CURRENT），同场同任务表；仅基础设施重试按预注册规则；禁止质量重跑；到 cap 停批",
+  "batch_id": "phase3_selection_4arm",
+  "kind": "phase3_formal_selection",
+  "cap_max_total_api_attempts": 2250,
+  "model": "deepseek-flash-2",
+  "temperature": 0.7,
+  "max_concurrent_requests": 4,
+  "retry_on_quality_failure": false,
+  "authorized_splits": ["SELECTION"],
+  "arms": ["DIRECT", "COT", "LEGACY_COMPAT_R9", "CURRENT"],
+  "episodes": ["E339","E340","E341","E342","E343","E344","E345","E346","E347","E348","E349","E350","E351","E352","E353","E354","E355","E356","E357","E358","E359","E360","E361","E362","E363","E364","E365","E366","E367","E368","E369","E370","E371","E372","E373","E374","E375","E376","E377","E378"],
+  "budget_note": "cap 2250 = 480 正常位×4组(1920) + E374 24轮×4组(96) + 基础设施重试余量(234)；授权=管理上限不是必须花完；实际消费以 GLOBAL_ATTEMPT_LEDGER.jsonl reserve 实数为准",
+  "preregistered_gate": "SELECTION 输出用于：四组同场可行性、指标有效性、评分规则残余问题、严重退化检测、HOLDOUT 准入门；不得为提高 SELECTION 分数调参（正式候选修改=新身份哈希+完整记录）",
+  "registered_at": "第 7 步开跑前登记（届时填日期）",
+  "registered_by": "Worker（Phase 3 持续授权范围内，AGENTS.md §0 授权）"
+}

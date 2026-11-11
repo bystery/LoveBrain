@@ -1,0 +1,32 @@
+{
+ "kind": "lp_b3_readresult",
+ "tag": "W21FASTLANE",
+ "date": "2026-11-04",
+ "reviewer": "main-session B3（主会话本人逐位亲读，52/52 全覆盖）",
+ "batch": "BATCH-W21-FASTLANE-20261104 (logs/w21_fastlane_live_20261104, 104/104 零失败)",
+ "source_review": "LP_W21FASTLANE_NINEDIM_REVIEW.json（AUTH-W21-FASTLANE-REVIEW-20261104-01，judge 索引 + 引文硬校验 severe_unverified=1 强制 B3）",
+ "method": "E157 12 位全读 + LRE117 40 位全读；每位 HER 原文 + 双臂 recommended 对照；价格/时间口径全部回题面逐字锚定（老规矩=一人八十：T01/T17/T26 逐字链；老时间=八点半→八点整由 HER T06 本人更新；55 为 T04 提案-T07 翻篇-T25 死灰-T26 终结）",
+ "counts": {"candidate_confirmed_severe": 1, "parent_confirmed_severe": 5,
+            "judge_initial": {"candidate": 1, "parent": 2},
+            "b3_additions_parent": 3, "judge_rejections": "T14 par'规矩套全包'半边 REJECTED（司机本人付费立场有据）"},
+ "candidate_severe": [
+  {"position": "LRE117_T23", "verdict": "CONFIRMED_mild", "family": "无据确定化-编造已发生安排-lite",
+   "evidence": "'我爸妈那边也早说好要用'无前文根据（全篇 HER/ME 无此约定）+ '这周去不了'对 21号事项时间口径含混；quote 硬校验 severe_unverified 双通道一致"}
+ ],
+ "parent_severe": [
+  {"position": "LRE117_T04", "verdict": "CONFIRMED_mild", "family": "无据确定化-口径错", "evidence": "'老规矩八十，你俩一共八十'——老规矩=一人八十（T17/T26 逐字），par 说成 total"},
+  {"position": "LRE117_T06", "verdict": "CONFIRMED", "family": "复活-被否口径", "evidence": "'油费还是五十五一人，跟你原先说的对得上'——55 系 T04 HER 提案且被司机本人当场否决，T07 HER 逐字'五十五那页翻过去'；par 复活并伪称 HER 原话背书"},
+  {"position": "LRE117_T14", "verdict": "CONFIRMED_mild", "family": "时间确定化", "evidence": "HER T06 本人更新为八点整，但'老时间'既定=八点半（T02 逐字）；par 断言'八点整小区门口'为新老时间口径（方向自损，仍属确定化错误）"},
+  {"position": "LRE117_T15", "verdict": "CONFIRMED_mild", "family": "时间确定化", "evidence": "HER 说'老时间老地方'，par 复述'八点'（应为八点半）；cand 同位反问'还是八点？'保持不确定 ✓"},
+  {"position": "LRE117_T25", "verdict": "CONFIRMED", "family": "无据确定化-假老规矩", "evidence": "'就按老规矩来：你们三个人不算我，一人五十'——50 系 T16 一次性提案且 T17 HER 逐字废止（'费用也回俩人的老规矩，一人八十'）；par 把一次性价伪称老规矩；cand 同位正确引用一人八十"}
+ ],
+ "notable_clean": [
+  "LRE117_T22/T34：双臂对'一百六到账没'都老实说'还没看/没收到'——W19CROSS 批 cand 同位坐实到账的确证化错误本次未复现（底模采样噪声直接证据）",
+  "LRE117_T33：par 主动阻止复活旧价（'谁也别再算五十五、五十那套'）✓",
+  "LRE117_T36：'三百二'=160(14号)+160(28号) 全篇价格链验证精确，双臂引用有据",
+  "E157 全 12 位双臂 0 severe；cand T11 轻微无据归因记 note"
+ ],
+ "contract_note": "par T31 可解析但 schema 破损（601 字符）——计入 G0-1 契约账（par veto 5），非四类语义 severe",
+ "new_failure_family": "无（cand 唯一 severe 属冠军链共性无据确定化族；par 5 例全为口径/时间确定化族，既有族）",
+ "g0_3_conclusion": "candidate severe 1 ≤ 1 且 ≤ parent 5，且不新增故障族 → G0-3 PASS"
+}

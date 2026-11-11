@@ -1,0 +1,16 @@
+{
+ "candidate": "action_policy_r1",
+ "role": "candidate",
+ "parent": "v6_integrated",
+ "output_contract": null,
+ "mechanism_flags": {
+  "action_layer": true,
+  "evidence_memory": true,
+  "action_contract_fix": true,
+  "goal_yield_fix": true,
+  "hook_catch_fix": true,
+  "failure_repair_fix": true,
+  "self_grounding_fix": true
+ },
+ "note": "MAX-288 V3 W03 第一个增量分支：全量继承 v6_integrated（证据记忆/状态机/上下文选择/promise 收敛零改动），做五项 flag 门控修复，证据=P07 v2 pilot 成对评审（I2__fbhesitant 双序一致 REF 20/21>V6 10/14）。FIX-1 action_contract_fix：机制侧'收尾/停'规则与公共消费者 classify_reply 的动作语义对齐——不回动作正文必须为空（实测根因：v6 r1 第3轮 收尾+正文→action_conflict:no_reply_with_body→delivery_failed，no_reply_fitness 评审 0-1），may_decline=false 收尾轮不提供不回动作、由承接承载自然短消息。FIX-2 goal_yield_fix：她带低落/疲惫/自嘲色彩时目标让位（goal_action 评审 1-2 vs REF 3 的根因；关键词表检不出，裁量权交模型，goal_category=暂缓不算失败）。FIX-3 hook_catch_fix：她的具体细节钩子必须至少接住一个（hook_response 评审落空 n=5）。FIX-4 failure_repair_fix：环境 v2.1 把 delivery_failed 事件放进 ctx.input.own_events，机制渲染为系统事件并给出修复指引（misunderstanding_repair 无修复 n=4）。FIX-5 self_grounding_fix：自我状态陈述须有前文依据（factual_safety 无据编造 n=1）。消融：两 flag 可独立关闭；全关=逐字节回到 v6_integrated 行为（闭包引用同一 v6_goal_context，不改父本磁盘）。改 flags=改 params=新身份。诚实边界：两修复均未经真实轨迹验证，待下一轮 pilot 实测；不声称已修复评审短板，只声称消除了合同错位与缺让位指令两个已定位根因。output_contract 沿用父本 legacy（response 四风格 + directions 四方向不变）。"
+}

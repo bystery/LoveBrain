@@ -1,0 +1,357 @@
+{
+ "kind": "pair_scorecard_v1",
+ "label": "S2R",
+ "batch_id": "AUTH-P08-S2R-20261028-01",
+ "arms": {
+  "parent": "reference_product_v1",
+  "candidate": "action_policy_r2"
+ },
+ "role_identity": {
+  "parent": {
+   "harness": "reference_product_v1",
+   "harness_identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "authorization_id": "AUTH-P08-S2R-20261028-01",
+   "batch_id": "AUTH-P08-S2R-20261028-01"
+  },
+  "candidate": {
+   "harness": "action_policy_r2",
+   "harness_identity_sha256": "352c0c063e96a6dc728ca54b95c12aeaf8321aa4798d7a4e3c9f000679cb7333",
+   "authorization_id": "AUTH-P08-S2R-20261028-01",
+   "batch_id": "AUTH-P08-S2R-20261028-01"
+  }
+ },
+ "cards_file": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+ "exam_dir": "logs/p08_s2r_live_20261028/_reports",
+ "judge": "worker 亲读全部首选与非空备选后手填（tools/build_pair_review_dump.py 摊开原文）",
+ "scale": "0-3（0反向/严重错 1关键不足 2合理完成 3本情境实质增益）；NA不适用 NR未测 uncertain审过不确定",
+ "answer_binding": {
+  "status": "VERIFIED_ALL",
+  "binding_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/S2R_SCORE_BINDING.json",
+  "digest_sha256": "ddd271834647a518dd3dae83205feb36da101af02c2accbcf6e71226de67facb",
+  "scores_declared_digest": "ddd271834647a518dd3dae83205feb36da101af02c2accbcf6e71226de67facb",
+  "verified_positions": 12,
+  "rejected_positions": 0,
+  "rejected_detail": {},
+  "binding_positions_not_in_skeleton": 0,
+  "checked_fields": [
+   "run_id",
+   "case_input_sha256",
+   "raw_reply_sha256",
+   "primary_sha256",
+   "raw_file_sha256（磁盘上的 reply_raw.txt）"
+  ]
+ },
+ "coverage": {
+  "positions_in_answers": 12,
+  "positions_judged": 10,
+  "unjudged_positions": [
+   "AK09_T01",
+   "AK12_T01"
+  ],
+  "missing_from_answers": [],
+  "unrated_due_to_binding": [],
+  "dims_scored_off_card": [],
+  "cells_per_arm": 40
+ },
+ "transport_layer_from_ledger": {
+  "authorization_id": "AUTH-P08-S2R-20261028-01",
+  "events": {
+   "authorization_scope": 1,
+   "attempt_started": 24,
+   "attempt_completed": 24
+  }
+ },
+ "five_layer_delivery": {
+  "reference_product_v1": {
+   "T_transport_failed_events": 0,
+   "P_protocol_positions": 12,
+   "P_protocol_failures": 0,
+   "P_veto_kinds": {},
+   "C_usable_primary": 12,
+   "C_no_primary": 0,
+   "C_legal_no_reply": 0,
+   "C_empty_without_action": 0,
+   "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+   "C_nonempty_backup_slots": 81,
+   "S_semantic_positions_judged": 10,
+   "W_user_willing": "unknown（AI 不代投）"
+  },
+  "action_policy_r2": {
+   "T_transport_failed_events": 0,
+   "P_protocol_positions": 12,
+   "P_protocol_failures": 1,
+   "P_veto_kinds": {
+    "json_schema_broken": 1
+   },
+   "C_usable_primary": 10,
+   "C_no_primary": 2,
+   "C_legal_no_reply": 2,
+   "C_empty_without_action": 0,
+   "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+   "C_nonempty_backup_slots": 69,
+   "S_semantic_positions_judged": 10,
+   "W_user_willing": "unknown（AI 不代投）"
+  }
+ },
+ "legal_no_reply_review": {
+  "AK09_T01": {
+   "action": "no_reply",
+   "decline_reason": "她说已经背到十二点、六点半要起、让我别等，是明确的收尾和休息信号；深夜再发一条只会多响一次铃，安静收住，周六的事等她醒来再提。",
+   "analysis_signal": "收尾",
+   "program": {
+    "score10": 10.0,
+    "veto": null,
+    "failed_checks": []
+   },
+   "card_check": "卡的 acceptable 第一条就是'不回（她已收尾，合法）'；本轮 may_decline=true；analysis 完整 → 记忆写回未丢失（S2 同格是丢失的）",
+   "same_batch_parent": "父本给了一句短收尾'行，睡吧，剩下的明早再说。'（卡的 acceptable 第二条，同样合法）",
+   "verdict": "语义与合同都成立；无正文可审故九维 NR，不用它给候选加分也不记它退化"
+  },
+  "AK12_T01": {
+   "action": "no_reply",
+   "decline_reason": "她说“先这样吧 结果出来我再说 谢了”，已经明确收尾；她又头疼又要请假，此时再发消息只会添乱，安静收住，等她那边出结果再开口。",
+   "analysis_signal": "收尾",
+   "program": {
+    "score10": 10.0,
+    "veto": null,
+    "failed_checks": []
+   },
+   "card_check": "同上：may_decline=true，不回是卡的合法第一条；未追问手术细节、未再提帮请假（卡禁项都未触碰），且 decline_reason 逐字承 m2",
+   "same_batch_parent": "父本给收尾+留跑腿话头'行，结果出来跟我说一声。那天要人跑腿，喊我。'",
+   "verdict": "合法静默；九维 NR"
+  }
+ },
+ "over_decline_review": {},
+ "card_tension_note": "",
+ "backup_risks": [
+  {
+   "case_id": "AK04_T01",
+   "arm": "both",
+   "slot": "directions[1]",
+   "risk": "追问她的段子结构/时长安排，贴近卡禁'不要临场提出帮她改段子'的边缘（是提问不是指导）"
+  },
+  {
+   "case_id": "AK05_T01",
+   "arm": "candidate",
+   "slot": "directions[1]",
+   "risk": "'你怕的可能不是不好笑…'读心，虽带'可能'仍属替她归因"
+  },
+  {
+   "case_id": "AK07_T01",
+   "arm": "candidate",
+   "slot": "directions",
+   "risk": "directions 给 5 条（合同四槽）→原始协议 veto；正文完好、消费侧可归一（R2）"
+  }
+ ],
+ "paired_position_verdicts": {
+  "wins_candidate": 7,
+  "wins_parent": 0,
+  "ties": 3,
+  "n": 10
+ },
+ "per_dimension_mean": {
+  "parent": {
+   "boundary": 2.667,
+   "emotion_relation": 2.4,
+   "factuality": 3.0,
+   "goal": 2.8,
+   "initiative": 2.0,
+   "interaction": 2.222,
+   "memory_use": 2.5,
+   "time_state": 2.5
+  },
+  "candidate": {
+   "boundary": 2.667,
+   "emotion_relation": 3.0,
+   "factuality": 3.0,
+   "goal": 2.8,
+   "initiative": 3.0,
+   "interaction": 3.0,
+   "memory_use": 3.0,
+   "time_state": 2.833
+  }
+ },
+ "per_dimension_cells": {
+  "parent": {
+   "boundary": 6,
+   "emotion_relation": 5,
+   "factuality": 1,
+   "goal": 10,
+   "initiative": 1,
+   "interaction": 9,
+   "memory_use": 2,
+   "time_state": 6
+  },
+  "candidate": {
+   "boundary": 6,
+   "emotion_relation": 5,
+   "factuality": 1,
+   "goal": 10,
+   "initiative": 1,
+   "interaction": 9,
+   "memory_use": 2,
+   "time_state": 6
+  }
+ },
+ "per_story_mean": {
+  "AK01": {
+   "action_policy_r2": 3.0,
+   "reference_product_v1": 2.5
+  },
+  "AK02": {
+   "action_policy_r2": 2.75,
+   "reference_product_v1": 2.75
+  },
+  "AK03": {
+   "action_policy_r2": 2.5,
+   "reference_product_v1": 2.0
+  },
+  "AK04": {
+   "action_policy_r2": 2.75,
+   "reference_product_v1": 2.75
+  },
+  "AK05": {
+   "action_policy_r2": 3.0,
+   "reference_product_v1": 2.5
+  },
+  "AK06": {
+   "action_policy_r2": 3.0,
+   "reference_product_v1": 2.25
+  },
+  "AK07": {
+   "action_policy_r2": 3.0,
+   "reference_product_v1": 2.5
+  },
+  "AK08": {
+   "action_policy_r2": 3.0,
+   "reference_product_v1": 3.0
+  },
+  "AK10": {
+   "action_policy_r2": 3.0,
+   "reference_product_v1": 2.5
+  },
+  "AK11": {
+   "action_policy_r2": 2.75,
+   "reference_product_v1": 2.5
+  }
+ },
+ "severe_errors": [],
+ "protocol_failure_notes": {
+  "AK07_T01": {
+   "arm": "candidate",
+   "veto": "json_schema_broken",
+   "raw_evidence": "response 四键完好 + directions=[4 句 + null]=5 条 + analysis 完整",
+   "root_cause": "故障族 F2（directions 超槽）在 FIX-7 注入硬约束后仍复现 1 次/12；同批 S1 家族里 F1（键名写坏）未复现、F3（提前闭合 }）未复现",
+   "conclusion": "FIX-7 只降低未消除结构类故障率：r1 在该锚点集 3/12 → r2 1/12。不得据单批 2 次差异宣布显著（n=12），也不得把它写成已修复。"
+  }
+ },
+ "resources": {
+  "reference_product_v1": {
+   "prompt_tokens": 87753,
+   "completion_tokens": 4046,
+   "total_tokens": 91799,
+   "tokens_per_position": 7649.9,
+   "latency_p50_ms": 27942,
+   "latency_p95_ms": 72593,
+   "latency_max_ms": 83595,
+   "cache_usage_unknown_positions": 12,
+   "money": null,
+   "money_reason": "无可核单价，金额恒 null"
+  },
+  "action_policy_r2": {
+   "prompt_tokens": 71878,
+   "completion_tokens": 5188,
+   "total_tokens": 77066,
+   "tokens_per_position": 6422.2,
+   "latency_p50_ms": 29068,
+   "latency_p95_ms": 78851,
+   "latency_max_ms": 83319,
+   "cache_usage_unknown_positions": 12,
+   "money": null,
+   "money_reason": "无可核单价，金额恒 null"
+  }
+ },
+ "cross_arm_delta_candidate_vs_parent": {
+  "total_tokens_change": -16.05,
+  "prompt_change_pct": -18.09,
+  "completion_change_pct": 28.23,
+  "p50_change_pct": 4.03,
+  "p95_change_pct": 8.62
+ },
+ "positions": [
+  {
+   "case_id": "AK01_T01",
+   "parent_total": 10,
+   "candidate_total": 12,
+   "winner": "candidate",
+   "note": "卡要求当场把时间+集合点定死。两臂这次都定死（P '周五18:00，小区门口见'；C '六点行…我提前到小区门口等你'）→goal/time_state 双 3。差别在推进与回扣：C 主动把量改轻（'先走一圈，脚有感觉就停，不硬凑两圈'，承 m1 医生约束+m2 两圈提议）并 directions[3] 追加'走完要还有劲…吃点热的'=initiative 3；C directions[2]'三个月午饭搭子，总算能一起走走了'命中长期库 warmth'午饭搭子三个月，聊得来'且不在本轮窗口内=真实长期召回 interaction 3。P 备选'我到得早就先走半圈等你'也在，但首选只落约定→2。禁区复核：两臂都没把距离/配速说成已定、都没提跑步✓。"
+  },
+  {
+   "case_id": "AK02_T01",
+   "parent_total": 11,
+   "candidate_total": 11,
+   "winner": "tie",
+   "note": "卡要求承认两层（补觉+不敢用力）并把目标改轻或改期。P 首选撤七点+给替代（'脚能踩实了咱再走，不行就河边坐会儿'）并把下一步落到 directions[3]'周六下午两点左右怎么样？睡到自然醒再定'→goal 3；C 首选两层都点名、且不当日定数（'等它自己愿意了再说'）+补一句'现在还肿吗？'→goal 2（本周不落点，只留 directions[1] 往后挪）。两层承认与不越权两臂都合格（emotion 3/boundary 3）；禁区复核：都没把'想补觉'当客套续推、都没说'运动对谁都好'✓；C 的'还肿吗'问的是 unknowns 里的脚状态，不是逼她选改期还是减量。interaction：C 多一个照顾式提问→3，P 首选偏陈述→2。"
+  },
+  {
+   "case_id": "AK03_T01",
+   "parent_total": 8,
+   "candidate_total": 10,
+   "winner": "candidate",
+   "note": "卡私指：她的忙碌是排班不是态度，最忌追问'那到底哪天有空'。P 首选'明天几点下？我按你的时间来，别硬凑'与 C 首选'明晚六点你要是刚交完班太赶，改成七点也行，你定'都还挂着明晚的时点→goal 2/boundary 2（C 用'你定'不索要承诺，未犯禁区）。差别：C 先接住今晚（'八点才走，今晚挺熬的'）→emotion 3，P 首选无今晚承接（在 warm 备选里才有）→2；C directions[0]'回去早点躺，别硬撑着收拾'+'疫苗门诊今晚人是不是特别多'把她的班当回事→interaction 3。两臂都没说她'总是忙'✓。"
+  },
+  {
+   "case_id": "AK04_T01",
+   "parent_total": 11,
+   "candidate_total": 11,
+   "winner": "tie",
+   "note": "约定已成形，按她的条件接住。两臂首选都'水带两瓶/话我全咽回去'+八点准时到→goal/time_state/互动 3；C 另把位置落到实处（'坐第一排不显眼的那种位置'）但未升级成上台互动✓。boundary 各扣到 2：两臂的directions[1] 都问起她的段子安排（P '你打算一上台就开还是先铺垫两句？'/C '五分钟够你放几个段子进去？'），已接近卡禁'不要临场提出帮她改段子'的边缘——都是提问不是指导，记风险不记严重错，且该扣分对两臂对称施加。"
+  },
+  {
+   "case_id": "AK05_T01",
+   "parent_total": 10,
+   "candidate_total": 12,
+   "winner": "candidate",
+   "note": "她同时摆出需求（对词）与顾虑（怕我觉得不好笑）。两臂都认领对词、都声明不当评委、都没保证'一定好笑'、都没要求逐段点评→goal/boundary 3。C 把她的顾虑转成可验证承诺并给出两个具体时间（'现在念两段，还是明天下午我早点过去？你挑一个，我保证只笑、不改'）→emotion 3/interaction 3；P 首选'我当第一个观众。不点评，只负责笑'表态到位但未正面接她那句顾虑→2。C directions[1]'你怕的可能不是不好笑，是怕我听完一声不吭吧'是带'可能'的读心，未替她认领既成事实，记轻微风险。"
+  },
+  {
+   "case_id": "AK06_T01",
+   "parent_total": 9,
+   "candidate_total": 12,
+   "winner": "candidate",
+   "note": "卡要求给可执行方案，不让她在愧疚里选。P 首选把方案留到备选（'赶不上就慢慢来，位子我给你留着'→占座有、时间账没算）→goal 2/time_state 2。C 首选给完整可执行链条：'七点半才放人，别赶得慌。我八点在鼓楼那家楼下等你，你出来跟我说一声，一起上去'→先给她的时间留余量、再落自己的到场点与接头方式→3/3/3。'鼓楼'来自长期库 me 字段（'平时爱去鼓楼那家小酒吧看开放麦'）✓ 非编造；'园门口'承 her=保育员+顶晚托 ✓。禁区：两臂都没断言她肯定迟到、都没把取消当默认✓。"
+  },
+  {
+   "case_id": "AK07_T01",
+   "parent_total": 10,
+   "candidate_total": 12,
+   "winner": "candidate",
+   "note": "'你带那本真题'是指派，必须回应且落到时点/座位。两臂都答'真题我带'→goal/memory_use 3；P 首选停在'周六下午'（具体点在 directions[0] 才出现）→time_state 2，C 首选'周六下午两点到四点，找个安静点的位置？'→3。**本格 C 的原始协议判 json_schema_broken**：directions 给了 5 条（4 句+1 null），合同固定四槽；四风格正文完好（见 PROTOCOL_REPAIR_OFFLINE 的 R2 归一，消费侧可交付），损失记协议层与本轮记忆写回，不用内容分抵消。上一批（S2）同格 C 的'你上次说的那个考点笔记'式无据回扣，本批未复现：C 的回扣'我去年也是最后才啃下来的'有 m1+initial_kb.me 依据。"
+  },
+  {
+   "case_id": "AK08_T01",
+   "parent_total": 12,
+   "candidate_total": 12,
+   "winner": "tie",
+   "note": "她在认真算负荷并征求判断。两臂都给判断+给判据、都没只回'你觉得呢'、都没说'你开心就好'、都没断言'撤了肯定考不过'→四维 3。C 首选'撤一门不等于不学，是把劲儿留在一门上…两个小时也不至于摊成四份'把判断与本轮目标同时保住；P 首选'哪门最费劲，剩下的时间够不够，算一遍再定'同样落地，bad_boy'撤一门不叫半途而废'也命中长期库'怕半途而废'。本轮无差别，记平。"
+  },
+  {
+   "case_id": "AK10_T01",
+   "parent_total": 10,
+   "candidate_total": 12,
+   "winner": "candidate",
+   "note": "链条已成形，要把'谁几点拿笼/停车点'讲清。P 首选解决笼子+六点四十楼下，但没接住她的限制与后续（备用钥匙/停车点/术后去向都在 unknowns）→memory_use 2/interaction 2。C 首选把链条走完并反查关键未知（'后座我给你腾出来，猫笼多大？我看看放不放得下'），bad_boy 给出发车余量（'七点半出发都算宽裕，不用摸黑出门'），directions[3]'你爸妈这周末不是要来？时间上没撞上吧？'命中 lessons'她爸妈周末会从老家来，时间容易冲突'→长期召回且以问句呈现，未写成既成事实→memory_use 3/interaction 3。禁区：'六点四十'两臂都写成自己的到场承诺，不是替她确定✓；都没替医生保证'猫没事'✓。"
+  },
+  {
+   "case_id": "AK11_T01",
+   "parent_total": 10,
+   "candidate_total": 11,
+   "winner": "candidate",
+   "note": "卡私指：'要不改到下周'是征求不是通知，别让她在两件重要的事之间选。两臂都先让位于车站、都没说'你妈重要还是猫重要'、都没声称医院一定能改（P'跟医生确认下能不能拖一周，别硬拖'；C'医院改期是我去说，还是你自己打过去？'把改期动作明确成交给谁的提问）→goal/boundary 双 3。time_state 双 2：两臂都没在本轮落下下周哪天（都在 directions 里问）。emotion_relation：C '先顾车站那边…东西多的话我过去搭把手''这两天快递我顺手帮你取'把她的处境接住→3；P 首选以事务为主→2。C playful'我六点四十的车位先留着，明天改接你妈也行'是提供选项不是替她决定✓。"
+  }
+ ],
+ "arm_identity_sha256": {
+  "reference_product_v1": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+  "action_policy_r2": "352c0c063e96a6dc728ca54b95c12aeaf8321aa4798d7a4e3c9f000679cb7333"
+ }
+}

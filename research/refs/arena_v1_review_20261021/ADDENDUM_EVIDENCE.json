@@ -1,0 +1,26 @@
+{
+  "empty_selection_with_ready_label": {
+    "G06b": {
+      "id": "G06b",
+      "status": "PASS",
+      "evidence": [
+        "benchmark\\releases\\arena_v1\\split_manifest.json"
+      ],
+      "executed_command": null,
+      "observed_result": "selection_set.status=READY",
+      "note": "独立出题/保管身份未指定（外部缺件）——不阻塞离线工程门禁，报告首页如实写明"
+    }
+  },
+  "locked_path_metadata": {
+    "ledger_entries": 161,
+    "existing_paths": 146,
+    "stat_errors": [],
+    "note": "Only existence metadata checked. No contents read, no ACL mutation, no cleanup."
+  },
+  "release_benchmark_entries": [
+    "benchmark/episodes/NCA_CORR_INTENT_v1.json",
+    "benchmark/episodes/NCB_ENTITY_DENSE_v1.json",
+    "benchmark/rubric.md"
+  ],
+  "new_runtime_hook_in_existing_runner": false
+}

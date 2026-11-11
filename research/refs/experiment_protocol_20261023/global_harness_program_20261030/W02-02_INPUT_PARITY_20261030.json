@@ -1,0 +1,163 @@
+{
+ "kind": "w02_02_input_parity_check",
+ "date": "2026-10-30",
+ "real_model_calls": 0,
+ "rows": [
+  {
+   "story": "E021",
+   "arm": "reference_product_v1",
+   "case_id": "E021_T01",
+   "fields_checked": 10,
+   "missing": [],
+   "verdict": "PASS"
+  },
+  {
+   "story": "E021",
+   "arm": "v0_minimal_events",
+   "case_id": "E021_T01",
+   "fields_checked": 10,
+   "missing": [],
+   "verdict": "PASS"
+  },
+  {
+   "story": "E021",
+   "arm": "action_policy_r4_guard_e3",
+   "case_id": "E021_T01",
+   "fields_checked": 10,
+   "missing": [],
+   "verdict": "PASS"
+  },
+  {
+   "story": "E026",
+   "arm": "reference_product_v1",
+   "case_id": "E026_T01",
+   "fields_checked": 10,
+   "missing": [],
+   "verdict": "PASS"
+  },
+  {
+   "story": "E026",
+   "arm": "reference_product_v1",
+   "case_id": "E026_T07",
+   "fields_checked": 11,
+   "missing": [],
+   "verdict": "PASS",
+   "note": "intent_status 校验项按门语义豁免：build_intent_block 为 Kotlin 逐字对拍件（IntentIdeaBlock.kt L30-33），status 只作 is_intent_effective 门（P04-04 v1.2 已 11/11 回归），不渲染原文；三臂行为一致"
+  },
+  {
+   "story": "E026",
+   "arm": "v0_minimal_events",
+   "case_id": "E026_T01",
+   "fields_checked": 10,
+   "missing": [],
+   "verdict": "PASS"
+  },
+  {
+   "story": "E026",
+   "arm": "v0_minimal_events",
+   "case_id": "E026_T07",
+   "fields_checked": 11,
+   "missing": [],
+   "verdict": "PASS",
+   "note": "intent_status 校验项按门语义豁免：build_intent_block 为 Kotlin 逐字对拍件（IntentIdeaBlock.kt L30-33），status 只作 is_intent_effective 门（P04-04 v1.2 已 11/11 回归），不渲染原文；三臂行为一致"
+  },
+  {
+   "story": "E026",
+   "arm": "action_policy_r4_guard_e3",
+   "case_id": "E026_T01",
+   "fields_checked": 10,
+   "missing": [],
+   "verdict": "PASS"
+  },
+  {
+   "story": "E026",
+   "arm": "action_policy_r4_guard_e3",
+   "case_id": "E026_T07",
+   "fields_checked": 11,
+   "missing": [],
+   "verdict": "PASS",
+   "note": "intent_status 校验项按门语义豁免：build_intent_block 为 Kotlin 逐字对拍件（IntentIdeaBlock.kt L30-33），status 只作 is_intent_effective 门（P04-04 v1.2 已 11/11 回归），不渲染原文；三臂行为一致"
+  },
+  {
+   "story": "E032",
+   "arm": "reference_product_v1",
+   "case_id": "E032_T01",
+   "fields_checked": 10,
+   "missing": [],
+   "verdict": "PASS"
+  },
+  {
+   "story": "E032",
+   "arm": "v0_minimal_events",
+   "case_id": "E032_T01",
+   "fields_checked": 10,
+   "missing": [],
+   "verdict": "PASS"
+  },
+  {
+   "story": "E032",
+   "arm": "action_policy_r4_guard_e3",
+   "case_id": "E032_T01",
+   "fields_checked": 10,
+   "missing": [],
+   "verdict": "PASS"
+  },
+  {
+   "story": "E033",
+   "arm": "reference_product_v1",
+   "case_id": "E033_T01",
+   "fields_checked": 10,
+   "missing": [],
+   "verdict": "PASS"
+  },
+  {
+   "story": "E033",
+   "arm": "reference_product_v1",
+   "case_id": "E033_T06",
+   "fields_checked": 12,
+   "missing": [],
+   "verdict": "PASS",
+   "note": "intent_status 校验项按门语义豁免：build_intent_block 为 Kotlin 逐字对拍件（IntentIdeaBlock.kt L30-33），status 只作 is_intent_effective 门（P04-04 v1.2 已 11/11 回归），不渲染原文；三臂行为一致"
+  },
+  {
+   "story": "E033",
+   "arm": "v0_minimal_events",
+   "case_id": "E033_T01",
+   "fields_checked": 10,
+   "missing": [],
+   "verdict": "PASS"
+  },
+  {
+   "story": "E033",
+   "arm": "v0_minimal_events",
+   "case_id": "E033_T06",
+   "fields_checked": 12,
+   "missing": [],
+   "verdict": "PASS",
+   "note": "intent_status 校验项按门语义豁免：build_intent_block 为 Kotlin 逐字对拍件（IntentIdeaBlock.kt L30-33），status 只作 is_intent_effective 门（P04-04 v1.2 已 11/11 回归），不渲染原文；三臂行为一致"
+  },
+  {
+   "story": "E033",
+   "arm": "action_policy_r4_guard_e3",
+   "case_id": "E033_T01",
+   "fields_checked": 10,
+   "missing": [],
+   "verdict": "PASS"
+  },
+  {
+   "story": "E033",
+   "arm": "action_policy_r4_guard_e3",
+   "case_id": "E033_T06",
+   "fields_checked": 12,
+   "missing": [],
+   "verdict": "PASS",
+   "note": "intent_status 校验项按门语义豁免：build_intent_block 为 Kotlin 逐字对拍件（IntentIdeaBlock.kt L30-33），status 只作 is_intent_effective 门（P04-04 v1.2 已 11/11 回归），不渲染原文；三臂行为一致"
+  }
+ ],
+ "summary": {
+  "combos": 18,
+  "fail_combos": 0,
+  "note": "完整值包含校验（ persona/initial_kb 逐字段 + intent 全文 + note 全文 + clock + 消息全文 ）；mock 网关零调用",
+  "conclusion": "三臂×4篇×关键位 18 组：persona/initial_kb 逐字段、intent 全文、note 全文、clock、消息全文全部完整到达装配口，臂间平价成立；status 门语义豁免（三臂共享同一对拍件）"
+ }
+}

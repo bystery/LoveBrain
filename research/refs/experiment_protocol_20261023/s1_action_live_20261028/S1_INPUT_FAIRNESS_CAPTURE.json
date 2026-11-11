@@ -1,0 +1,116 @@
+{
+ "out": "logs/p08_s1_capture_20261028",
+ "cards": "benchmark/stories_v2/stage2/GRADING_CARDS_E024_E027_E031_E034.json",
+ "episodes": [
+  "E024",
+  "E027",
+  "E031",
+  "E034"
+ ],
+ "arms": [
+  "parent",
+  "candidate"
+ ],
+ "positions_audited": 48,
+ "failures": [],
+ "passed": true,
+ "per_position": [
+  {
+   "case_id": "E024_T01",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 3798
+   },
+   "arm_user_utf16": {
+    "parent": 633,
+    "candidate": 2570
+   },
+   "user_len_diff": 1937
+  },
+  {
+   "case_id": "E024_T02",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 3798
+   },
+   "arm_user_utf16": {
+    "parent": 787,
+    "candidate": 2774
+   },
+   "user_len_diff": 1987
+  },
+  {
+   "case_id": "E024_T03",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 3798
+   },
+   "arm_user_utf16": {
+    "parent": 858,
+    "candidate": 2784
+   },
+   "user_len_diff": 1926
+  },
+  {
+   "case_id": "E024_T04",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 3798
+   },
+   "arm_user_utf16": {
+    "parent": 902,
+    "candidate": 2939
+   },
+   "user_len_diff": 2037
+  },
+  {
+   "case_id": "E024_T05",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 3798
+   },
+   "arm_user_utf16": {
+    "parent": 853,
+    "candidate": 2895
+   },
+   "user_len_diff": 2042
+  },
+  {
+   "case_id": "E024_T06",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 3798
+   },
+   "arm_user_utf16": {
+    "parent": 903,
+    "candidate": 3051
+   },
+   "user_len_diff": 2148
+  },
+  {
+   "case_id": "E024_T07",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 3798
+   },
+   "arm_user_utf16": {
+    "parent": 834,
+    "candidate": 3067
+   },
+   "user_len_diff": 2233
+  },
+  {
+   "case_id": "E024_T08",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 3798
+   },
+   "arm_user_utf16": {
+    "parent": 896,
+    "candidate": 3233
+   },
+   "user_len_diff": 2337
+  }
+ ],
+ "rows_total": 56
+}

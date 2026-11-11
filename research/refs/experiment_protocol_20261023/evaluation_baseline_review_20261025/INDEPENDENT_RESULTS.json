@@ -1,0 +1,197 @@
+{
+  "real_model_calls": 0,
+  "raw_faults": [
+    {
+      "file": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E007\\out\\turn_08_E007_T08\\reply_raw.txt",
+      "sha256": "307838c8f3485d9e76073b9bf9cc1cd5dc53507160472975d1c706bdd5f07130",
+      "response_keys_ascii": [
+        "'recommended'",
+        "'bad_bo\\u200by'",
+        "'playful'",
+        "'warm'"
+      ],
+      "directions_length": 4,
+      "consumed_status": "ok",
+      "normalizations": [
+        {
+          "original_repr": "'bad_bo\\u200by'",
+          "normalized": "bad_boy",
+          "slot_affected": "response.bad_boy",
+          "action": "key-name normalized (values untouched)"
+        }
+      ]
+    },
+    {
+      "file": "D:\\lovebrain-arena\\logs\\r2_ctx_live_20261024\\parent_E007\\out\\turn_08_E007_T08\\reply_raw.txt",
+      "sha256": "ba95c3381580010fb7a21f0a0ec690bcee970d01e0ddeb27aca45b4acaf628c8",
+      "response_keys_ascii": [
+        "'recommended'",
+        "'bad_boy'",
+        "'playful'",
+        "'warm'"
+      ],
+      "directions_length": 3,
+      "consumed_status": "ok",
+      "normalizations": []
+    }
+  ],
+  "cost_denominators": {
+    "v5/parent": {
+      "total_tokens": 183321,
+      "P": 24,
+      "C": 24,
+      "S_no_veto": 23,
+      "per_consumable_primary": 7638.375,
+      "per_no_veto_primary": 7970.478260869565,
+      "per_semantically_passed_or_user_willing": null
+    },
+    "v5/candidate": {
+      "total_tokens": 77637,
+      "P": 23,
+      "C": 24,
+      "S_no_veto": 23,
+      "per_consumable_primary": 3234.875,
+      "per_no_veto_primary": 3375.521739130435,
+      "per_semantically_passed_or_user_willing": null
+    },
+    "r2/parent": {
+      "total_tokens": 183352,
+      "P": 23,
+      "C": 24,
+      "S_no_veto": 23,
+      "per_consumable_primary": 7639.666666666667,
+      "per_no_veto_primary": 7971.826086956522,
+      "per_semantically_passed_or_user_willing": null
+    },
+    "r2/candidate": {
+      "total_tokens": 79646,
+      "P": 24,
+      "C": 24,
+      "S_no_veto": 24,
+      "per_consumable_primary": 3318.5833333333335,
+      "per_no_veto_primary": 3318.5833333333335,
+      "per_semantically_passed_or_user_willing": null
+    }
+  },
+  "historical_freeze": {
+    "plan_sha256": "8401c482238c7646cd64def91917078eb5cbefca4fef6ed1f166a4bdef62c3e3",
+    "checked": 47,
+    "mismatch": [
+      {
+        "path": "arena/lb_gateway.py",
+        "expected": "a1f46a632d76a5e4759b5d15f6cc8872ec9aee2eee491b638d864f3198de07b6",
+        "current": "403a67ba9a079f82131643186869cb53a7ca7ee6e9a5fd1099f3b6a6488b71a0"
+      }
+    ]
+  },
+  "phase_budget": {
+    "counts": {
+      "authorization_scope": 1,
+      "attempt_started": 4,
+      "attempt_completed": 4
+    },
+    "cap": 256,
+    "started": 4,
+    "remaining": 252
+  },
+  "adapter_timing_probe": {
+    "network": "replaced; zero real dispatch",
+    "request_stream": false,
+    "returned_timing": null,
+    "request_keys": [
+      "messages",
+      "model",
+      "stream",
+      "temperature"
+    ]
+  },
+  "late_validator_backdating": {
+    "validated_at_request_relative_ms": 11000,
+    "reported": {
+      "pre_request_ms": 0.0,
+      "first_content_ms": 1000.0,
+      "last_content_ms": 1000.0,
+      "first_preview_ms": 1000.0,
+      "completion_ms": 10000.0,
+      "first_usable_ms": 1000.0,
+      "requires_full_payload": false,
+      "usage_source": "none",
+      "stream_requested": false,
+      "stream_options_sent": false,
+      "preview_key": "recommended",
+      "chunk_count": 0,
+      "content_delta_count": 1,
+      "bytes_total": 0
+    }
+  },
+  "invalid_payload_usable_fallback": {
+    "pre_request_ms": 0.0,
+    "first_content_ms": 0.0,
+    "last_content_ms": 0.0,
+    "completion_ms": 0.0,
+    "first_usable_ms": 0.0,
+    "requires_full_payload": true,
+    "usage_source": "none",
+    "stream_requested": false,
+    "stream_options_sent": false,
+    "preview_key": "recommended",
+    "chunk_count": 0,
+    "content_delta_count": 1,
+    "bytes_total": 0
+  },
+  "calibration_audit": {
+    "all_nodes": 54,
+    "selected_nodes": 13,
+    "selected_story_counts": {
+      "E007": 3,
+      "E008": 3,
+      "E010": 4,
+      "CONTROL": 3
+    },
+    "true_both_decisive_pairs_R1_R3": 3,
+    "flips": 0,
+    "equal_non_decisive_labels_counted_as_decisive_in_worker_code": 3,
+    "all_nodes_given_blanket_card_defect_note": 48,
+    "model_paid_nodes": 48,
+    "control_C03": {
+      "甲": {
+        "primary": "是呀，就那次，你还记得谁带的我？",
+        "backups": []
+      },
+      "乙": {
+        "primary": "不是读书会吧？我记着不是这个，你从哪儿听来的说法？",
+        "backups": []
+      }
+    }
+  },
+  "integration_direct_probes": {
+    "[]": {
+      "status": "unconsumable-schema",
+      "slots": {},
+      "audit": []
+    },
+    "{\"response\": []}": {
+      "status": "partially-consumable",
+      "slots": {},
+      "audit": []
+    },
+    "{\"response\":{\"bad_bo\\u200by\":\"x\",\"recommended\":\"hi\"}}": {
+      "status": "ok",
+      "slots": {
+        "recommended": "hi",
+        "bad_boy": "x",
+        "playful": null,
+        "warm": null
+      },
+      "audit": [
+        {
+          "original_repr": "'bad_bo\\u200by'",
+          "normalized": "bad_boy",
+          "slot_affected": "response.bad_boy",
+          "action": "key-name normalized (values untouched)"
+        }
+      ]
+    },
+    "note_to_chat_rejected": true
+  }
+}

@@ -1,0 +1,52 @@
+{
+ "batch_id": "BATCH-W22-FULL-20261104",
+ "arm_map": {
+  "parent": "window_expand_b_norecap_uc",
+  "candidate": "window_expand_b_norecap_uc_attr"
+ },
+ "episode_order": [
+  {
+   "episode": "E157",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E164",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E170",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E183",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E191",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E212",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "LRE117",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "LRE121",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "LRE146",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "LRE138",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+ "recall_capable": false,
+ "note": "W22-01 全量批：uc_attr(归属锚定) vs uc，232位×2=464 attempts；判据 G1-G5 冻结（W22_01_ATTR_DESIGN_20261104.md，G1 主假设=归因错位族 cand<par）；快车道 G0 PASS（W22_FASTLANE_G0_VERDICT_20261104.md）；无重试另册（本候选不改崩坏域，崩坏按 base no_retry 如实记账）"
+}

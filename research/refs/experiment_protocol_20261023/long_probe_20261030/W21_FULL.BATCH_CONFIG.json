@@ -1,0 +1,19 @@
+{
+ "batch_id": "BATCH-W21-FULL-20261104",
+ "arm_map": {"parent": "window_expand_b_norecap_uc", "candidate": "window_expand_b_norecap_uc_retry"},
+ "episode_order": [
+  {"episode": "E157", "arm_order": "parent_first"},
+  {"episode": "E164", "arm_order": "candidate_first"},
+  {"episode": "E170", "arm_order": "parent_first"},
+  {"episode": "E183", "arm_order": "candidate_first"},
+  {"episode": "E191", "arm_order": "parent_first"},
+  {"episode": "E212", "arm_order": "candidate_first"},
+  {"episode": "LRE117", "arm_order": "parent_first"},
+  {"episode": "LRE121", "arm_order": "candidate_first"},
+  {"episode": "LRE146", "arm_order": "parent_first"},
+  {"episode": "LRE138", "arm_order": "candidate_first"}
+ ],
+ "cards_path": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+ "recall_capable": false,
+ "note": "W21-02 全量批：uc_retry（单变量=崩坏轮确定性重试）vs uc，232 位×2=464 attempts；判据 G1-G5+G3' 冻结于 W21_02_NEXT_BATCH_DESIGN_20261103.md（2026-11-04 代裁①②）；快车道 G0 FASTLANE_PASS 已过（W21_FASTLANE_G0_VERDICT_20261104.md）；重试另册 AUTH-W21-FULL-RETRY-20261104-01 cap≤92=20%×464，仅空/不可解析 raw 触发、双臂对称、逐次登记"
+}

@@ -1,0 +1,4876 @@
+{
+ "generated_at": "2026-11-03T14:52:14",
+ "protocol": "refs/experiment_protocol_20261023/EXPERIMENT_PLAN_20261023.md rev R5.2 §4",
+ "arm_mapping": {
+  "parent": "window_expand_b_norecap_uc",
+  "candidate": "window_expand_b_norecap_uc_guard"
+ },
+ "episode_order": [
+  {
+   "episode": "E157",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E164",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E170",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E183",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E191",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E212",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "LRE117",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "LRE121",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "LRE146",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "LRE138",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "batch": {
+  "batch_id": "BATCH-W19-CROSS-20261103",
+  "cards_path": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+  "recall_capable": false,
+  "episode_turns": {
+   "E157": 12,
+   "E164": 12,
+   "E170": 12,
+   "E183": 12,
+   "E191": 12,
+   "E212": 12,
+   "LRE117": 40,
+   "LRE121": 40,
+   "LRE146": 40,
+   "LRE138": 40
+  },
+  "turns_per_episode": null,
+  "positions_total": 464
+ },
+ "total_attempts": 464,
+ "no_auto_retry": true,
+ "no_makeup_paired_run": true,
+ "fail_fast_on_transmission_error": true,
+ "execution_entry": "arena.isolation.trusted_controller.IsolatedRun (mock/capture/live 共用)",
+ "frozen": {
+  "identity_closure": {
+   "parent": {
+    "identity_sha256": "5b3266a91350d66a799f2d3c53274168f9c9b1d16a81f26d8b7193e1847c13df",
+    "closure": [
+     "window_expand_b_norecap_uc",
+     "window_expand_b_norecap",
+     "window_expand_b",
+     "v0_minimal_events",
+     "reference_product_v1"
+    ],
+    "file_count": 43,
+    "files": {
+     "candidates/window_expand_b_norecap_uc/IDENTITY.md": "aaa5b4ef323d90faeb7e49107fb9236a1436d26ca09e654b21393bed47ceb61a",
+     "candidates/window_expand_b_norecap_uc/MECHANISM.md": "74893d363c6fa09ecb28cef6e12227c11e46032cc177ea11d9d02fecbf6da9e9",
+     "candidates/window_expand_b_norecap_uc/params.json": "4f3d7cc7c23604398863700bd2d7d75606e8062350d4e72be12a90f3f579bad9",
+     "candidates/window_expand_b_norecap_uc/assets/system_prompt/core.md": "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+     "candidates/window_expand_b_norecap_uc/assets/system_prompt/format.md": "9d5f07ead2ee937680c7401a3ff6c4dc2452c0221cc396d97cca67eae43cc00a",
+     "candidates/window_expand_b_norecap_uc/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/window_expand_b_norecap_uc/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/window_expand_b_norecap_uc/mechanism/mechanism.py": "f9a1860b411558fa1470828ca894237858974b6ae99fa5001f3c06a69c29275c",
+     "candidates/window_expand_b_norecap_uc/mechanism/uncertain_rules.py": "11706e0d6b6c884c54453e8174e996e97b7558b14eac1ab7f6eb4f08245a0d47",
+     "candidates/window_expand_b_norecap/IDENTITY.md": "6e18673f237cd9b5308045920cfea420df611118559200a9fddcf90497f73443",
+     "candidates/window_expand_b_norecap/MECHANISM.md": "b767c3828253cec292c558e973b143527b21779a2e864bb2f24c89168b0fc6a9",
+     "candidates/window_expand_b_norecap/params.json": "0595175bb665dbbd195f24a9c6ce5f670a8a6013883f2b090ab23ed9147a0cd8",
+     "candidates/window_expand_b_norecap/assets/system_prompt/core.md": "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+     "candidates/window_expand_b_norecap/assets/system_prompt/format.md": "9d5f07ead2ee937680c7401a3ff6c4dc2452c0221cc396d97cca67eae43cc00a",
+     "candidates/window_expand_b_norecap/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/window_expand_b_norecap/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/window_expand_b_norecap/mechanism/mechanism.py": "ac643f4633678cc903d3a6cde08a6a6c0bdac9a63466aac1780c1bf6269c7d92",
+     "candidates/window_expand_b/IDENTITY.md": "5aeaafdf4ed057326f2151413654d3c7b779f2c1d23019c1accf7896c4573c1c",
+     "candidates/window_expand_b/MECHANISM.md": "02ffb26b2bfbf1fac004b6f1d14dbe55a91dd5e0cf224c3d5abe3d54b8909fb2",
+     "candidates/window_expand_b/params.json": "78768218d42175c77b81f2e7c21a3add97bc17f480658e05cf88f3e308b19170",
+     "candidates/window_expand_b/assets/system_prompt/core.md": "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+     "candidates/window_expand_b/assets/system_prompt/format.md": "9d5f07ead2ee937680c7401a3ff6c4dc2452c0221cc396d97cca67eae43cc00a",
+     "candidates/window_expand_b/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/window_expand_b/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/window_expand_b/mechanism/ledger_rules.py": "e0186df43a596037c1bee335e4655c43d36f7a3e6843c8cabd0e51c632841b18",
+     "candidates/window_expand_b/mechanism/mechanism.py": "90c9fbfe92a14fde29928535980d918d3bfb12cfa84b733144c4503f9086d529",
+     "candidates/v0_minimal_events/IDENTITY.md": "cf6967b276ddd60943f215a37e6e38923ce3075aba2e952488c115979f08ba72",
+     "candidates/v0_minimal_events/MECHANISM.md": "ffc73f67a5dad326f9702f10de5a51261f677dcd462d20d1cc79df0a6aa3d05e",
+     "candidates/v0_minimal_events/params.json": "aced3393b6a69724d9bc0a457e1722af98e090784cd644af8a4d363b3f6777f2",
+     "candidates/v0_minimal_events/assets/system_prompt/core.md": "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+     "candidates/v0_minimal_events/assets/system_prompt/format.md": "9d5f07ead2ee937680c7401a3ff6c4dc2452c0221cc396d97cca67eae43cc00a",
+     "candidates/v0_minimal_events/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/v0_minimal_events/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/v0_minimal_events/mechanism/mechanism.py": "066f98a1f72eeaa3e99ae651f681669942bccb6c9940afc0eda7a0b856e9199a",
+     "candidates/reference_product_v1/IDENTITY.md": "c59102200db794e6432814375debc1aaa5ac403ee9a2fd5d662adf2e16b564ac",
+     "candidates/reference_product_v1/params.json": "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f",
+     "candidates/reference_product_v1/product_memory.py": "a05e26673c51fa19aaa17a845f4955fddf684fd76912ee11649a4b190164592f",
+     "candidates/reference_product_v1/reference_chain.py": "c31e612cbafae7d282dee975305ee88d156bc5b43693468e655873ed25af6dbe",
+     "candidates/reference_product_v1/assets/system_prompt/core.md": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+     "candidates/reference_product_v1/assets/system_prompt/format.md": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+     "candidates/reference_product_v1/assets/system_prompt/naturalness_check.md": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+     "candidates/reference_product_v1/assets/system_prompt/redline.md": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+     "candidates/reference_product_v1/mechanism/mechanism.py": "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba"
+    }
+   },
+   "candidate": {
+    "identity_sha256": "aceb7d92379a859f422d194327a6aa2b9676ddfdf7671a652010508b9e1c90fc",
+    "closure": [
+     "window_expand_b_norecap_uc_guard",
+     "window_expand_b_norecap_uc",
+     "window_expand_b_norecap",
+     "window_expand_b",
+     "v0_minimal_events",
+     "reference_product_v1"
+    ],
+    "file_count": 55,
+    "files": {
+     "candidates/window_expand_b_norecap_uc_guard/IDENTITY.md": "7401b283900635ac4447ccd2d63cbc12eb16034a7d95eef8b19bb68c739b2d67",
+     "candidates/window_expand_b_norecap_uc_guard/MECHANISM.md": "2a48f028cbfe9ee1d7acb207e1bc83478d0c64394087abb6e3e2624fa7343d8a",
+     "candidates/window_expand_b_norecap_uc_guard/params.json": "e94cdabfcb7de1a7e24fd3bc0eb35d396a1d258eb645189bafb26f9ea9729ac3",
+     "candidates/window_expand_b_norecap_uc_guard/assets/system_prompt/core.md": "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+     "candidates/window_expand_b_norecap_uc_guard/assets/system_prompt/format.md": "9d5f07ead2ee937680c7401a3ff6c4dc2452c0221cc396d97cca67eae43cc00a",
+     "candidates/window_expand_b_norecap_uc_guard/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/window_expand_b_norecap_uc_guard/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/window_expand_b_norecap_uc_guard/mechanism/contract_guard.py": "c26c68c080838f07e1d006ed020c7a4695c94bddb16dcadadb018a14f116ec74",
+     "candidates/window_expand_b_norecap_uc_guard/mechanism/mechanism.py": "0defb2e82661cade19ff0950f7e9f15ebb33c7f1797a4a937028be2f33d76990",
+     "candidates/window_expand_b_norecap_uc_guard/mechanism/uncertain_rules.py": "11706e0d6b6c884c54453e8174e996e97b7558b14eac1ab7f6eb4f08245a0d47",
+     "candidates/window_expand_b_norecap_uc_guard/mechanism/_vendor/normalize_reply_contract.py": "427fd5a6f845e22ae963cb23617b1c7d8ff1c4e6e2961867d0b6fe18a905e5ba",
+     "candidates/window_expand_b_norecap_uc_guard/mechanism/_vendor/output_repair.py": "3d95d42e3f932bf21c8ac9770dc1488203066df28127830482e72f7b401c3be4",
+     "candidates/window_expand_b_norecap_uc/IDENTITY.md": "aaa5b4ef323d90faeb7e49107fb9236a1436d26ca09e654b21393bed47ceb61a",
+     "candidates/window_expand_b_norecap_uc/MECHANISM.md": "74893d363c6fa09ecb28cef6e12227c11e46032cc177ea11d9d02fecbf6da9e9",
+     "candidates/window_expand_b_norecap_uc/params.json": "4f3d7cc7c23604398863700bd2d7d75606e8062350d4e72be12a90f3f579bad9",
+     "candidates/window_expand_b_norecap_uc/assets/system_prompt/core.md": "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+     "candidates/window_expand_b_norecap_uc/assets/system_prompt/format.md": "9d5f07ead2ee937680c7401a3ff6c4dc2452c0221cc396d97cca67eae43cc00a",
+     "candidates/window_expand_b_norecap_uc/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/window_expand_b_norecap_uc/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/window_expand_b_norecap_uc/mechanism/mechanism.py": "f9a1860b411558fa1470828ca894237858974b6ae99fa5001f3c06a69c29275c",
+     "candidates/window_expand_b_norecap_uc/mechanism/uncertain_rules.py": "11706e0d6b6c884c54453e8174e996e97b7558b14eac1ab7f6eb4f08245a0d47",
+     "candidates/window_expand_b_norecap/IDENTITY.md": "6e18673f237cd9b5308045920cfea420df611118559200a9fddcf90497f73443",
+     "candidates/window_expand_b_norecap/MECHANISM.md": "b767c3828253cec292c558e973b143527b21779a2e864bb2f24c89168b0fc6a9",
+     "candidates/window_expand_b_norecap/params.json": "0595175bb665dbbd195f24a9c6ce5f670a8a6013883f2b090ab23ed9147a0cd8",
+     "candidates/window_expand_b_norecap/assets/system_prompt/core.md": "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+     "candidates/window_expand_b_norecap/assets/system_prompt/format.md": "9d5f07ead2ee937680c7401a3ff6c4dc2452c0221cc396d97cca67eae43cc00a",
+     "candidates/window_expand_b_norecap/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/window_expand_b_norecap/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/window_expand_b_norecap/mechanism/mechanism.py": "ac643f4633678cc903d3a6cde08a6a6c0bdac9a63466aac1780c1bf6269c7d92",
+     "candidates/window_expand_b/IDENTITY.md": "5aeaafdf4ed057326f2151413654d3c7b779f2c1d23019c1accf7896c4573c1c",
+     "candidates/window_expand_b/MECHANISM.md": "02ffb26b2bfbf1fac004b6f1d14dbe55a91dd5e0cf224c3d5abe3d54b8909fb2",
+     "candidates/window_expand_b/params.json": "78768218d42175c77b81f2e7c21a3add97bc17f480658e05cf88f3e308b19170",
+     "candidates/window_expand_b/assets/system_prompt/core.md": "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+     "candidates/window_expand_b/assets/system_prompt/format.md": "9d5f07ead2ee937680c7401a3ff6c4dc2452c0221cc396d97cca67eae43cc00a",
+     "candidates/window_expand_b/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/window_expand_b/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/window_expand_b/mechanism/ledger_rules.py": "e0186df43a596037c1bee335e4655c43d36f7a3e6843c8cabd0e51c632841b18",
+     "candidates/window_expand_b/mechanism/mechanism.py": "90c9fbfe92a14fde29928535980d918d3bfb12cfa84b733144c4503f9086d529",
+     "candidates/v0_minimal_events/IDENTITY.md": "cf6967b276ddd60943f215a37e6e38923ce3075aba2e952488c115979f08ba72",
+     "candidates/v0_minimal_events/MECHANISM.md": "ffc73f67a5dad326f9702f10de5a51261f677dcd462d20d1cc79df0a6aa3d05e",
+     "candidates/v0_minimal_events/params.json": "aced3393b6a69724d9bc0a457e1722af98e090784cd644af8a4d363b3f6777f2",
+     "candidates/v0_minimal_events/assets/system_prompt/core.md": "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+     "candidates/v0_minimal_events/assets/system_prompt/format.md": "9d5f07ead2ee937680c7401a3ff6c4dc2452c0221cc396d97cca67eae43cc00a",
+     "candidates/v0_minimal_events/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/v0_minimal_events/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/v0_minimal_events/mechanism/mechanism.py": "066f98a1f72eeaa3e99ae651f681669942bccb6c9940afc0eda7a0b856e9199a",
+     "candidates/reference_product_v1/IDENTITY.md": "c59102200db794e6432814375debc1aaa5ac403ee9a2fd5d662adf2e16b564ac",
+     "candidates/reference_product_v1/params.json": "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f",
+     "candidates/reference_product_v1/product_memory.py": "a05e26673c51fa19aaa17a845f4955fddf684fd76912ee11649a4b190164592f",
+     "candidates/reference_product_v1/reference_chain.py": "c31e612cbafae7d282dee975305ee88d156bc5b43693468e655873ed25af6dbe",
+     "candidates/reference_product_v1/assets/system_prompt/core.md": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+     "candidates/reference_product_v1/assets/system_prompt/format.md": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+     "candidates/reference_product_v1/assets/system_prompt/naturalness_check.md": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+     "candidates/reference_product_v1/assets/system_prompt/redline.md": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+     "candidates/reference_product_v1/mechanism/mechanism.py": "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba"
+    }
+   }
+  },
+  "config_files": {
+   "benchmark/episodes/E157.json": "666503d948abbeffbae51851164aa1b75680b0222bf3b897d73c4a2560dbf07c",
+   "benchmark/episodes/E164.json": "4fa1c6070e3e92753d62b9d8dfefca9613ea2aa96bd46a901b30d96a5dedeaf3",
+   "benchmark/episodes/E170.json": "6494937da56671de83964b356050f3b724ac53cc8d01ad73e8ecca08ae976daf",
+   "benchmark/episodes/E183.json": "17e43c3c6f947a8f4a37953ab3443d7db5364a4164eaed61b2b2d1207ce95fe4",
+   "benchmark/episodes/E191.json": "026abf428483860a576039bc8448a58939aa2f8cb98f5c86f6919bca15f35ea5",
+   "benchmark/episodes/E212.json": "dd783cce8149ae7f93ea773e7bc60a5c901a64c7684c7e14d639439fb1168c3d",
+   "benchmark/episodes/LRE117.json": "2d224a9a5dcb4296f01e22d4ad0de3e3c4ae2567f43ae9949a745b5c402d94e0",
+   "benchmark/episodes/LRE121.json": "af55f931c85f4b9b9c8edc8ac308669a38b3b743437f6df28fc8117eddc9b6a9",
+   "benchmark/episodes/LRE146.json": "af4da2f6ab8ddc2b1f33e5618b0867b88f44b5ab647848a4a15fe395055934eb",
+   "benchmark/episodes/LRE138.json": "f8e7f36f57057910f10c6c3f527ffecfb0da709e97ba39e010ea7d6cdd532ff2",
+   "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json": "badd923b6be466daafcd4dcdaf4eb4f594964b418b06146d6c5e0a9a2f298c7c",
+   "benchmark/rubric.md": "0b96fc5b0d8bf325ff225bed912fc616437b81782a2ebb19c178f1be6f2e1e86",
+   "benchmark/annotations/exam1_20261023_semantic.json": "bc39a3a3812dc3c4ac8f453eec99f6c4e11e19c5164f69e9deb3a52be4596a2f",
+   "arena/lb_scorer.py": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+   "arena/protocol_public.py": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7",
+   "arena/lb_gateway.py": "56867a44380fe03df4e84e945b1ed854a211d2f0b92d93b80b9e42d54e051d8e",
+   "arena/lb_runner.py": "e540ad1bd4798d74657d9ccf7b070d35476c3ef70782274480ac7986a119f7d5",
+   "arena/lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+   "arena/api_candidate.py": "5b5948ec5aed8093535c448f5e651f9235f7e18adad4c451d80e136f5905f2d3",
+   "arena/isolation/trusted_controller.py": "b79d04f9217ac65c5044677a0f31707f1dd27c4ff3b2cbb5744f4da8f060d4f1",
+   "arena/isolation/host_runtime.py": "bc1c11240feca92536e0607abbcb26262cd4388a4f8db9a860eb0c07ee1194bd",
+   "arena/isolation/_candidate_host.py": "8fada64f5d3012733100e9537685c8f490fc877ba603a47137f8c020923368a5",
+   "arena/isolation/authorization_budget.py": "aef5b5735c37d082c7fdfe3e0d5967ec7045e77a41a4f6483fceb6a73efec568",
+   "tools/api_trial.py": "eb2c6b91faec14aa559859d1c3171d9152e030747db63006ab38f8c1c8b29b85",
+   "tools/exam_layered_score.py": "9db7335386bf15c4e1e03530d81571152f73377dedb8fd5c3a7da4ef55be24f7",
+   "tools/build_semantic_annotations.py": "77da2b27017ea0e8c4e907c6698fdab153ac1bf88c2a64c7e97e7e86a5b5bb4e",
+   "tools/freeze_identity.py": "ca08af7a51bdd53067e127358f39a7091fb15b6ba780b838ef0dc6b889593ec9",
+   "tools/exam_interleave_plan.py": "f30188b66b5e97e987b644f1897ed3ff09ae0152e78f7dd1f8591ba44ed65abc",
+   "tools/rescore_offline.py": "62300c04b7501c1eae8b9ce5d3faa09c92a7f73eed0990ba610c03e31156a836"
+  }
+ },
+ "attempts": [
+  {
+   "seq": 1,
+   "episode": "E157",
+   "turn": 1,
+   "case_id": "E157_T01",
+   "arm": "parent",
+   "pair_key": "E157_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 2,
+   "episode": "E157",
+   "turn": 1,
+   "case_id": "E157_T01",
+   "arm": "candidate",
+   "pair_key": "E157_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 3,
+   "episode": "E157",
+   "turn": 2,
+   "case_id": "E157_T02",
+   "arm": "parent",
+   "pair_key": "E157_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 4,
+   "episode": "E157",
+   "turn": 2,
+   "case_id": "E157_T02",
+   "arm": "candidate",
+   "pair_key": "E157_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 5,
+   "episode": "E157",
+   "turn": 3,
+   "case_id": "E157_T03",
+   "arm": "parent",
+   "pair_key": "E157_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 6,
+   "episode": "E157",
+   "turn": 3,
+   "case_id": "E157_T03",
+   "arm": "candidate",
+   "pair_key": "E157_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 7,
+   "episode": "E157",
+   "turn": 4,
+   "case_id": "E157_T04",
+   "arm": "parent",
+   "pair_key": "E157_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 8,
+   "episode": "E157",
+   "turn": 4,
+   "case_id": "E157_T04",
+   "arm": "candidate",
+   "pair_key": "E157_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 9,
+   "episode": "E157",
+   "turn": 5,
+   "case_id": "E157_T05",
+   "arm": "parent",
+   "pair_key": "E157_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 10,
+   "episode": "E157",
+   "turn": 5,
+   "case_id": "E157_T05",
+   "arm": "candidate",
+   "pair_key": "E157_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 11,
+   "episode": "E157",
+   "turn": 6,
+   "case_id": "E157_T06",
+   "arm": "parent",
+   "pair_key": "E157_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 12,
+   "episode": "E157",
+   "turn": 6,
+   "case_id": "E157_T06",
+   "arm": "candidate",
+   "pair_key": "E157_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 13,
+   "episode": "E157",
+   "turn": 7,
+   "case_id": "E157_T07",
+   "arm": "parent",
+   "pair_key": "E157_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 14,
+   "episode": "E157",
+   "turn": 7,
+   "case_id": "E157_T07",
+   "arm": "candidate",
+   "pair_key": "E157_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 15,
+   "episode": "E157",
+   "turn": 8,
+   "case_id": "E157_T08",
+   "arm": "parent",
+   "pair_key": "E157_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 16,
+   "episode": "E157",
+   "turn": 8,
+   "case_id": "E157_T08",
+   "arm": "candidate",
+   "pair_key": "E157_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 17,
+   "episode": "E157",
+   "turn": 9,
+   "case_id": "E157_T09",
+   "arm": "parent",
+   "pair_key": "E157_T09",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 18,
+   "episode": "E157",
+   "turn": 9,
+   "case_id": "E157_T09",
+   "arm": "candidate",
+   "pair_key": "E157_T09",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 19,
+   "episode": "E157",
+   "turn": 10,
+   "case_id": "E157_T10",
+   "arm": "parent",
+   "pair_key": "E157_T10",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 20,
+   "episode": "E157",
+   "turn": 10,
+   "case_id": "E157_T10",
+   "arm": "candidate",
+   "pair_key": "E157_T10",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 21,
+   "episode": "E157",
+   "turn": 11,
+   "case_id": "E157_T11",
+   "arm": "parent",
+   "pair_key": "E157_T11",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 22,
+   "episode": "E157",
+   "turn": 11,
+   "case_id": "E157_T11",
+   "arm": "candidate",
+   "pair_key": "E157_T11",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 23,
+   "episode": "E157",
+   "turn": 12,
+   "case_id": "E157_T12",
+   "arm": "parent",
+   "pair_key": "E157_T12",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 24,
+   "episode": "E157",
+   "turn": 12,
+   "case_id": "E157_T12",
+   "arm": "candidate",
+   "pair_key": "E157_T12",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 25,
+   "episode": "E164",
+   "turn": 1,
+   "case_id": "E164_T01",
+   "arm": "candidate",
+   "pair_key": "E164_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 26,
+   "episode": "E164",
+   "turn": 1,
+   "case_id": "E164_T01",
+   "arm": "parent",
+   "pair_key": "E164_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 27,
+   "episode": "E164",
+   "turn": 2,
+   "case_id": "E164_T02",
+   "arm": "candidate",
+   "pair_key": "E164_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 28,
+   "episode": "E164",
+   "turn": 2,
+   "case_id": "E164_T02",
+   "arm": "parent",
+   "pair_key": "E164_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 29,
+   "episode": "E164",
+   "turn": 3,
+   "case_id": "E164_T03",
+   "arm": "candidate",
+   "pair_key": "E164_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 30,
+   "episode": "E164",
+   "turn": 3,
+   "case_id": "E164_T03",
+   "arm": "parent",
+   "pair_key": "E164_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 31,
+   "episode": "E164",
+   "turn": 4,
+   "case_id": "E164_T04",
+   "arm": "candidate",
+   "pair_key": "E164_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 32,
+   "episode": "E164",
+   "turn": 4,
+   "case_id": "E164_T04",
+   "arm": "parent",
+   "pair_key": "E164_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 33,
+   "episode": "E164",
+   "turn": 5,
+   "case_id": "E164_T05",
+   "arm": "candidate",
+   "pair_key": "E164_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 34,
+   "episode": "E164",
+   "turn": 5,
+   "case_id": "E164_T05",
+   "arm": "parent",
+   "pair_key": "E164_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 35,
+   "episode": "E164",
+   "turn": 6,
+   "case_id": "E164_T06",
+   "arm": "candidate",
+   "pair_key": "E164_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 36,
+   "episode": "E164",
+   "turn": 6,
+   "case_id": "E164_T06",
+   "arm": "parent",
+   "pair_key": "E164_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 37,
+   "episode": "E164",
+   "turn": 7,
+   "case_id": "E164_T07",
+   "arm": "candidate",
+   "pair_key": "E164_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 38,
+   "episode": "E164",
+   "turn": 7,
+   "case_id": "E164_T07",
+   "arm": "parent",
+   "pair_key": "E164_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 39,
+   "episode": "E164",
+   "turn": 8,
+   "case_id": "E164_T08",
+   "arm": "candidate",
+   "pair_key": "E164_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 40,
+   "episode": "E164",
+   "turn": 8,
+   "case_id": "E164_T08",
+   "arm": "parent",
+   "pair_key": "E164_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 41,
+   "episode": "E164",
+   "turn": 9,
+   "case_id": "E164_T09",
+   "arm": "candidate",
+   "pair_key": "E164_T09",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 42,
+   "episode": "E164",
+   "turn": 9,
+   "case_id": "E164_T09",
+   "arm": "parent",
+   "pair_key": "E164_T09",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 43,
+   "episode": "E164",
+   "turn": 10,
+   "case_id": "E164_T10",
+   "arm": "candidate",
+   "pair_key": "E164_T10",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 44,
+   "episode": "E164",
+   "turn": 10,
+   "case_id": "E164_T10",
+   "arm": "parent",
+   "pair_key": "E164_T10",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 45,
+   "episode": "E164",
+   "turn": 11,
+   "case_id": "E164_T11",
+   "arm": "candidate",
+   "pair_key": "E164_T11",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 46,
+   "episode": "E164",
+   "turn": 11,
+   "case_id": "E164_T11",
+   "arm": "parent",
+   "pair_key": "E164_T11",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 47,
+   "episode": "E164",
+   "turn": 12,
+   "case_id": "E164_T12",
+   "arm": "candidate",
+   "pair_key": "E164_T12",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 48,
+   "episode": "E164",
+   "turn": 12,
+   "case_id": "E164_T12",
+   "arm": "parent",
+   "pair_key": "E164_T12",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 49,
+   "episode": "E170",
+   "turn": 1,
+   "case_id": "E170_T01",
+   "arm": "parent",
+   "pair_key": "E170_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 50,
+   "episode": "E170",
+   "turn": 1,
+   "case_id": "E170_T01",
+   "arm": "candidate",
+   "pair_key": "E170_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 51,
+   "episode": "E170",
+   "turn": 2,
+   "case_id": "E170_T02",
+   "arm": "parent",
+   "pair_key": "E170_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 52,
+   "episode": "E170",
+   "turn": 2,
+   "case_id": "E170_T02",
+   "arm": "candidate",
+   "pair_key": "E170_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 53,
+   "episode": "E170",
+   "turn": 3,
+   "case_id": "E170_T03",
+   "arm": "parent",
+   "pair_key": "E170_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 54,
+   "episode": "E170",
+   "turn": 3,
+   "case_id": "E170_T03",
+   "arm": "candidate",
+   "pair_key": "E170_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 55,
+   "episode": "E170",
+   "turn": 4,
+   "case_id": "E170_T04",
+   "arm": "parent",
+   "pair_key": "E170_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 56,
+   "episode": "E170",
+   "turn": 4,
+   "case_id": "E170_T04",
+   "arm": "candidate",
+   "pair_key": "E170_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 57,
+   "episode": "E170",
+   "turn": 5,
+   "case_id": "E170_T05",
+   "arm": "parent",
+   "pair_key": "E170_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 58,
+   "episode": "E170",
+   "turn": 5,
+   "case_id": "E170_T05",
+   "arm": "candidate",
+   "pair_key": "E170_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 59,
+   "episode": "E170",
+   "turn": 6,
+   "case_id": "E170_T06",
+   "arm": "parent",
+   "pair_key": "E170_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 60,
+   "episode": "E170",
+   "turn": 6,
+   "case_id": "E170_T06",
+   "arm": "candidate",
+   "pair_key": "E170_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 61,
+   "episode": "E170",
+   "turn": 7,
+   "case_id": "E170_T07",
+   "arm": "parent",
+   "pair_key": "E170_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 62,
+   "episode": "E170",
+   "turn": 7,
+   "case_id": "E170_T07",
+   "arm": "candidate",
+   "pair_key": "E170_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 63,
+   "episode": "E170",
+   "turn": 8,
+   "case_id": "E170_T08",
+   "arm": "parent",
+   "pair_key": "E170_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 64,
+   "episode": "E170",
+   "turn": 8,
+   "case_id": "E170_T08",
+   "arm": "candidate",
+   "pair_key": "E170_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 65,
+   "episode": "E170",
+   "turn": 9,
+   "case_id": "E170_T09",
+   "arm": "parent",
+   "pair_key": "E170_T09",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 66,
+   "episode": "E170",
+   "turn": 9,
+   "case_id": "E170_T09",
+   "arm": "candidate",
+   "pair_key": "E170_T09",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 67,
+   "episode": "E170",
+   "turn": 10,
+   "case_id": "E170_T10",
+   "arm": "parent",
+   "pair_key": "E170_T10",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 68,
+   "episode": "E170",
+   "turn": 10,
+   "case_id": "E170_T10",
+   "arm": "candidate",
+   "pair_key": "E170_T10",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 69,
+   "episode": "E170",
+   "turn": 11,
+   "case_id": "E170_T11",
+   "arm": "parent",
+   "pair_key": "E170_T11",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 70,
+   "episode": "E170",
+   "turn": 11,
+   "case_id": "E170_T11",
+   "arm": "candidate",
+   "pair_key": "E170_T11",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 71,
+   "episode": "E170",
+   "turn": 12,
+   "case_id": "E170_T12",
+   "arm": "parent",
+   "pair_key": "E170_T12",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 72,
+   "episode": "E170",
+   "turn": 12,
+   "case_id": "E170_T12",
+   "arm": "candidate",
+   "pair_key": "E170_T12",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 73,
+   "episode": "E183",
+   "turn": 1,
+   "case_id": "E183_T01",
+   "arm": "candidate",
+   "pair_key": "E183_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 74,
+   "episode": "E183",
+   "turn": 1,
+   "case_id": "E183_T01",
+   "arm": "parent",
+   "pair_key": "E183_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 75,
+   "episode": "E183",
+   "turn": 2,
+   "case_id": "E183_T02",
+   "arm": "candidate",
+   "pair_key": "E183_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 76,
+   "episode": "E183",
+   "turn": 2,
+   "case_id": "E183_T02",
+   "arm": "parent",
+   "pair_key": "E183_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 77,
+   "episode": "E183",
+   "turn": 3,
+   "case_id": "E183_T03",
+   "arm": "candidate",
+   "pair_key": "E183_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 78,
+   "episode": "E183",
+   "turn": 3,
+   "case_id": "E183_T03",
+   "arm": "parent",
+   "pair_key": "E183_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 79,
+   "episode": "E183",
+   "turn": 4,
+   "case_id": "E183_T04",
+   "arm": "candidate",
+   "pair_key": "E183_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 80,
+   "episode": "E183",
+   "turn": 4,
+   "case_id": "E183_T04",
+   "arm": "parent",
+   "pair_key": "E183_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 81,
+   "episode": "E183",
+   "turn": 5,
+   "case_id": "E183_T05",
+   "arm": "candidate",
+   "pair_key": "E183_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 82,
+   "episode": "E183",
+   "turn": 5,
+   "case_id": "E183_T05",
+   "arm": "parent",
+   "pair_key": "E183_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 83,
+   "episode": "E183",
+   "turn": 6,
+   "case_id": "E183_T06",
+   "arm": "candidate",
+   "pair_key": "E183_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 84,
+   "episode": "E183",
+   "turn": 6,
+   "case_id": "E183_T06",
+   "arm": "parent",
+   "pair_key": "E183_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 85,
+   "episode": "E183",
+   "turn": 7,
+   "case_id": "E183_T07",
+   "arm": "candidate",
+   "pair_key": "E183_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 86,
+   "episode": "E183",
+   "turn": 7,
+   "case_id": "E183_T07",
+   "arm": "parent",
+   "pair_key": "E183_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 87,
+   "episode": "E183",
+   "turn": 8,
+   "case_id": "E183_T08",
+   "arm": "candidate",
+   "pair_key": "E183_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 88,
+   "episode": "E183",
+   "turn": 8,
+   "case_id": "E183_T08",
+   "arm": "parent",
+   "pair_key": "E183_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 89,
+   "episode": "E183",
+   "turn": 9,
+   "case_id": "E183_T09",
+   "arm": "candidate",
+   "pair_key": "E183_T09",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 90,
+   "episode": "E183",
+   "turn": 9,
+   "case_id": "E183_T09",
+   "arm": "parent",
+   "pair_key": "E183_T09",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 91,
+   "episode": "E183",
+   "turn": 10,
+   "case_id": "E183_T10",
+   "arm": "candidate",
+   "pair_key": "E183_T10",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 92,
+   "episode": "E183",
+   "turn": 10,
+   "case_id": "E183_T10",
+   "arm": "parent",
+   "pair_key": "E183_T10",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 93,
+   "episode": "E183",
+   "turn": 11,
+   "case_id": "E183_T11",
+   "arm": "candidate",
+   "pair_key": "E183_T11",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 94,
+   "episode": "E183",
+   "turn": 11,
+   "case_id": "E183_T11",
+   "arm": "parent",
+   "pair_key": "E183_T11",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 95,
+   "episode": "E183",
+   "turn": 12,
+   "case_id": "E183_T12",
+   "arm": "candidate",
+   "pair_key": "E183_T12",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 96,
+   "episode": "E183",
+   "turn": 12,
+   "case_id": "E183_T12",
+   "arm": "parent",
+   "pair_key": "E183_T12",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 97,
+   "episode": "E191",
+   "turn": 1,
+   "case_id": "E191_T01",
+   "arm": "parent",
+   "pair_key": "E191_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 98,
+   "episode": "E191",
+   "turn": 1,
+   "case_id": "E191_T01",
+   "arm": "candidate",
+   "pair_key": "E191_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 99,
+   "episode": "E191",
+   "turn": 2,
+   "case_id": "E191_T02",
+   "arm": "parent",
+   "pair_key": "E191_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 100,
+   "episode": "E191",
+   "turn": 2,
+   "case_id": "E191_T02",
+   "arm": "candidate",
+   "pair_key": "E191_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 101,
+   "episode": "E191",
+   "turn": 3,
+   "case_id": "E191_T03",
+   "arm": "parent",
+   "pair_key": "E191_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 102,
+   "episode": "E191",
+   "turn": 3,
+   "case_id": "E191_T03",
+   "arm": "candidate",
+   "pair_key": "E191_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 103,
+   "episode": "E191",
+   "turn": 4,
+   "case_id": "E191_T04",
+   "arm": "parent",
+   "pair_key": "E191_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 104,
+   "episode": "E191",
+   "turn": 4,
+   "case_id": "E191_T04",
+   "arm": "candidate",
+   "pair_key": "E191_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 105,
+   "episode": "E191",
+   "turn": 5,
+   "case_id": "E191_T05",
+   "arm": "parent",
+   "pair_key": "E191_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 106,
+   "episode": "E191",
+   "turn": 5,
+   "case_id": "E191_T05",
+   "arm": "candidate",
+   "pair_key": "E191_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 107,
+   "episode": "E191",
+   "turn": 6,
+   "case_id": "E191_T06",
+   "arm": "parent",
+   "pair_key": "E191_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 108,
+   "episode": "E191",
+   "turn": 6,
+   "case_id": "E191_T06",
+   "arm": "candidate",
+   "pair_key": "E191_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 109,
+   "episode": "E191",
+   "turn": 7,
+   "case_id": "E191_T07",
+   "arm": "parent",
+   "pair_key": "E191_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 110,
+   "episode": "E191",
+   "turn": 7,
+   "case_id": "E191_T07",
+   "arm": "candidate",
+   "pair_key": "E191_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 111,
+   "episode": "E191",
+   "turn": 8,
+   "case_id": "E191_T08",
+   "arm": "parent",
+   "pair_key": "E191_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 112,
+   "episode": "E191",
+   "turn": 8,
+   "case_id": "E191_T08",
+   "arm": "candidate",
+   "pair_key": "E191_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 113,
+   "episode": "E191",
+   "turn": 9,
+   "case_id": "E191_T09",
+   "arm": "parent",
+   "pair_key": "E191_T09",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 114,
+   "episode": "E191",
+   "turn": 9,
+   "case_id": "E191_T09",
+   "arm": "candidate",
+   "pair_key": "E191_T09",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 115,
+   "episode": "E191",
+   "turn": 10,
+   "case_id": "E191_T10",
+   "arm": "parent",
+   "pair_key": "E191_T10",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 116,
+   "episode": "E191",
+   "turn": 10,
+   "case_id": "E191_T10",
+   "arm": "candidate",
+   "pair_key": "E191_T10",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 117,
+   "episode": "E191",
+   "turn": 11,
+   "case_id": "E191_T11",
+   "arm": "parent",
+   "pair_key": "E191_T11",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 118,
+   "episode": "E191",
+   "turn": 11,
+   "case_id": "E191_T11",
+   "arm": "candidate",
+   "pair_key": "E191_T11",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 119,
+   "episode": "E191",
+   "turn": 12,
+   "case_id": "E191_T12",
+   "arm": "parent",
+   "pair_key": "E191_T12",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 120,
+   "episode": "E191",
+   "turn": 12,
+   "case_id": "E191_T12",
+   "arm": "candidate",
+   "pair_key": "E191_T12",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 121,
+   "episode": "E212",
+   "turn": 1,
+   "case_id": "E212_T01",
+   "arm": "candidate",
+   "pair_key": "E212_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 122,
+   "episode": "E212",
+   "turn": 1,
+   "case_id": "E212_T01",
+   "arm": "parent",
+   "pair_key": "E212_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 123,
+   "episode": "E212",
+   "turn": 2,
+   "case_id": "E212_T02",
+   "arm": "candidate",
+   "pair_key": "E212_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 124,
+   "episode": "E212",
+   "turn": 2,
+   "case_id": "E212_T02",
+   "arm": "parent",
+   "pair_key": "E212_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 125,
+   "episode": "E212",
+   "turn": 3,
+   "case_id": "E212_T03",
+   "arm": "candidate",
+   "pair_key": "E212_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 126,
+   "episode": "E212",
+   "turn": 3,
+   "case_id": "E212_T03",
+   "arm": "parent",
+   "pair_key": "E212_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 127,
+   "episode": "E212",
+   "turn": 4,
+   "case_id": "E212_T04",
+   "arm": "candidate",
+   "pair_key": "E212_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 128,
+   "episode": "E212",
+   "turn": 4,
+   "case_id": "E212_T04",
+   "arm": "parent",
+   "pair_key": "E212_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 129,
+   "episode": "E212",
+   "turn": 5,
+   "case_id": "E212_T05",
+   "arm": "candidate",
+   "pair_key": "E212_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 130,
+   "episode": "E212",
+   "turn": 5,
+   "case_id": "E212_T05",
+   "arm": "parent",
+   "pair_key": "E212_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 131,
+   "episode": "E212",
+   "turn": 6,
+   "case_id": "E212_T06",
+   "arm": "candidate",
+   "pair_key": "E212_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 132,
+   "episode": "E212",
+   "turn": 6,
+   "case_id": "E212_T06",
+   "arm": "parent",
+   "pair_key": "E212_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 133,
+   "episode": "E212",
+   "turn": 7,
+   "case_id": "E212_T07",
+   "arm": "candidate",
+   "pair_key": "E212_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 134,
+   "episode": "E212",
+   "turn": 7,
+   "case_id": "E212_T07",
+   "arm": "parent",
+   "pair_key": "E212_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 135,
+   "episode": "E212",
+   "turn": 8,
+   "case_id": "E212_T08",
+   "arm": "candidate",
+   "pair_key": "E212_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 136,
+   "episode": "E212",
+   "turn": 8,
+   "case_id": "E212_T08",
+   "arm": "parent",
+   "pair_key": "E212_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 137,
+   "episode": "E212",
+   "turn": 9,
+   "case_id": "E212_T09",
+   "arm": "candidate",
+   "pair_key": "E212_T09",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 138,
+   "episode": "E212",
+   "turn": 9,
+   "case_id": "E212_T09",
+   "arm": "parent",
+   "pair_key": "E212_T09",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 139,
+   "episode": "E212",
+   "turn": 10,
+   "case_id": "E212_T10",
+   "arm": "candidate",
+   "pair_key": "E212_T10",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 140,
+   "episode": "E212",
+   "turn": 10,
+   "case_id": "E212_T10",
+   "arm": "parent",
+   "pair_key": "E212_T10",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 141,
+   "episode": "E212",
+   "turn": 11,
+   "case_id": "E212_T11",
+   "arm": "candidate",
+   "pair_key": "E212_T11",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 142,
+   "episode": "E212",
+   "turn": 11,
+   "case_id": "E212_T11",
+   "arm": "parent",
+   "pair_key": "E212_T11",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 143,
+   "episode": "E212",
+   "turn": 12,
+   "case_id": "E212_T12",
+   "arm": "candidate",
+   "pair_key": "E212_T12",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 144,
+   "episode": "E212",
+   "turn": 12,
+   "case_id": "E212_T12",
+   "arm": "parent",
+   "pair_key": "E212_T12",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 145,
+   "episode": "LRE117",
+   "turn": 1,
+   "case_id": "LRE117_T01",
+   "arm": "parent",
+   "pair_key": "LRE117_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 146,
+   "episode": "LRE117",
+   "turn": 1,
+   "case_id": "LRE117_T01",
+   "arm": "candidate",
+   "pair_key": "LRE117_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 147,
+   "episode": "LRE117",
+   "turn": 2,
+   "case_id": "LRE117_T02",
+   "arm": "parent",
+   "pair_key": "LRE117_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 148,
+   "episode": "LRE117",
+   "turn": 2,
+   "case_id": "LRE117_T02",
+   "arm": "candidate",
+   "pair_key": "LRE117_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 149,
+   "episode": "LRE117",
+   "turn": 3,
+   "case_id": "LRE117_T03",
+   "arm": "parent",
+   "pair_key": "LRE117_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 150,
+   "episode": "LRE117",
+   "turn": 3,
+   "case_id": "LRE117_T03",
+   "arm": "candidate",
+   "pair_key": "LRE117_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 151,
+   "episode": "LRE117",
+   "turn": 4,
+   "case_id": "LRE117_T04",
+   "arm": "parent",
+   "pair_key": "LRE117_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 152,
+   "episode": "LRE117",
+   "turn": 4,
+   "case_id": "LRE117_T04",
+   "arm": "candidate",
+   "pair_key": "LRE117_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 153,
+   "episode": "LRE117",
+   "turn": 5,
+   "case_id": "LRE117_T05",
+   "arm": "parent",
+   "pair_key": "LRE117_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 154,
+   "episode": "LRE117",
+   "turn": 5,
+   "case_id": "LRE117_T05",
+   "arm": "candidate",
+   "pair_key": "LRE117_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 155,
+   "episode": "LRE117",
+   "turn": 6,
+   "case_id": "LRE117_T06",
+   "arm": "parent",
+   "pair_key": "LRE117_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 156,
+   "episode": "LRE117",
+   "turn": 6,
+   "case_id": "LRE117_T06",
+   "arm": "candidate",
+   "pair_key": "LRE117_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 157,
+   "episode": "LRE117",
+   "turn": 7,
+   "case_id": "LRE117_T07",
+   "arm": "parent",
+   "pair_key": "LRE117_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 158,
+   "episode": "LRE117",
+   "turn": 7,
+   "case_id": "LRE117_T07",
+   "arm": "candidate",
+   "pair_key": "LRE117_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 159,
+   "episode": "LRE117",
+   "turn": 8,
+   "case_id": "LRE117_T08",
+   "arm": "parent",
+   "pair_key": "LRE117_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 160,
+   "episode": "LRE117",
+   "turn": 8,
+   "case_id": "LRE117_T08",
+   "arm": "candidate",
+   "pair_key": "LRE117_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 161,
+   "episode": "LRE117",
+   "turn": 9,
+   "case_id": "LRE117_T09",
+   "arm": "parent",
+   "pair_key": "LRE117_T09",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 162,
+   "episode": "LRE117",
+   "turn": 9,
+   "case_id": "LRE117_T09",
+   "arm": "candidate",
+   "pair_key": "LRE117_T09",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 163,
+   "episode": "LRE117",
+   "turn": 10,
+   "case_id": "LRE117_T10",
+   "arm": "parent",
+   "pair_key": "LRE117_T10",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 164,
+   "episode": "LRE117",
+   "turn": 10,
+   "case_id": "LRE117_T10",
+   "arm": "candidate",
+   "pair_key": "LRE117_T10",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 165,
+   "episode": "LRE117",
+   "turn": 11,
+   "case_id": "LRE117_T11",
+   "arm": "parent",
+   "pair_key": "LRE117_T11",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 166,
+   "episode": "LRE117",
+   "turn": 11,
+   "case_id": "LRE117_T11",
+   "arm": "candidate",
+   "pair_key": "LRE117_T11",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 167,
+   "episode": "LRE117",
+   "turn": 12,
+   "case_id": "LRE117_T12",
+   "arm": "parent",
+   "pair_key": "LRE117_T12",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 168,
+   "episode": "LRE117",
+   "turn": 12,
+   "case_id": "LRE117_T12",
+   "arm": "candidate",
+   "pair_key": "LRE117_T12",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 169,
+   "episode": "LRE117",
+   "turn": 13,
+   "case_id": "LRE117_T13",
+   "arm": "parent",
+   "pair_key": "LRE117_T13",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 170,
+   "episode": "LRE117",
+   "turn": 13,
+   "case_id": "LRE117_T13",
+   "arm": "candidate",
+   "pair_key": "LRE117_T13",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 171,
+   "episode": "LRE117",
+   "turn": 14,
+   "case_id": "LRE117_T14",
+   "arm": "parent",
+   "pair_key": "LRE117_T14",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 172,
+   "episode": "LRE117",
+   "turn": 14,
+   "case_id": "LRE117_T14",
+   "arm": "candidate",
+   "pair_key": "LRE117_T14",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 173,
+   "episode": "LRE117",
+   "turn": 15,
+   "case_id": "LRE117_T15",
+   "arm": "parent",
+   "pair_key": "LRE117_T15",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 174,
+   "episode": "LRE117",
+   "turn": 15,
+   "case_id": "LRE117_T15",
+   "arm": "candidate",
+   "pair_key": "LRE117_T15",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 175,
+   "episode": "LRE117",
+   "turn": 16,
+   "case_id": "LRE117_T16",
+   "arm": "parent",
+   "pair_key": "LRE117_T16",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 176,
+   "episode": "LRE117",
+   "turn": 16,
+   "case_id": "LRE117_T16",
+   "arm": "candidate",
+   "pair_key": "LRE117_T16",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 177,
+   "episode": "LRE117",
+   "turn": 17,
+   "case_id": "LRE117_T17",
+   "arm": "parent",
+   "pair_key": "LRE117_T17",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 178,
+   "episode": "LRE117",
+   "turn": 17,
+   "case_id": "LRE117_T17",
+   "arm": "candidate",
+   "pair_key": "LRE117_T17",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 179,
+   "episode": "LRE117",
+   "turn": 18,
+   "case_id": "LRE117_T18",
+   "arm": "parent",
+   "pair_key": "LRE117_T18",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 180,
+   "episode": "LRE117",
+   "turn": 18,
+   "case_id": "LRE117_T18",
+   "arm": "candidate",
+   "pair_key": "LRE117_T18",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 181,
+   "episode": "LRE117",
+   "turn": 19,
+   "case_id": "LRE117_T19",
+   "arm": "parent",
+   "pair_key": "LRE117_T19",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 182,
+   "episode": "LRE117",
+   "turn": 19,
+   "case_id": "LRE117_T19",
+   "arm": "candidate",
+   "pair_key": "LRE117_T19",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 183,
+   "episode": "LRE117",
+   "turn": 20,
+   "case_id": "LRE117_T20",
+   "arm": "parent",
+   "pair_key": "LRE117_T20",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 184,
+   "episode": "LRE117",
+   "turn": 20,
+   "case_id": "LRE117_T20",
+   "arm": "candidate",
+   "pair_key": "LRE117_T20",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 185,
+   "episode": "LRE117",
+   "turn": 21,
+   "case_id": "LRE117_T21",
+   "arm": "parent",
+   "pair_key": "LRE117_T21",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 186,
+   "episode": "LRE117",
+   "turn": 21,
+   "case_id": "LRE117_T21",
+   "arm": "candidate",
+   "pair_key": "LRE117_T21",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 187,
+   "episode": "LRE117",
+   "turn": 22,
+   "case_id": "LRE117_T22",
+   "arm": "parent",
+   "pair_key": "LRE117_T22",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 188,
+   "episode": "LRE117",
+   "turn": 22,
+   "case_id": "LRE117_T22",
+   "arm": "candidate",
+   "pair_key": "LRE117_T22",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 189,
+   "episode": "LRE117",
+   "turn": 23,
+   "case_id": "LRE117_T23",
+   "arm": "parent",
+   "pair_key": "LRE117_T23",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 190,
+   "episode": "LRE117",
+   "turn": 23,
+   "case_id": "LRE117_T23",
+   "arm": "candidate",
+   "pair_key": "LRE117_T23",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 191,
+   "episode": "LRE117",
+   "turn": 24,
+   "case_id": "LRE117_T24",
+   "arm": "parent",
+   "pair_key": "LRE117_T24",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 192,
+   "episode": "LRE117",
+   "turn": 24,
+   "case_id": "LRE117_T24",
+   "arm": "candidate",
+   "pair_key": "LRE117_T24",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 193,
+   "episode": "LRE117",
+   "turn": 25,
+   "case_id": "LRE117_T25",
+   "arm": "parent",
+   "pair_key": "LRE117_T25",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 194,
+   "episode": "LRE117",
+   "turn": 25,
+   "case_id": "LRE117_T25",
+   "arm": "candidate",
+   "pair_key": "LRE117_T25",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 195,
+   "episode": "LRE117",
+   "turn": 26,
+   "case_id": "LRE117_T26",
+   "arm": "parent",
+   "pair_key": "LRE117_T26",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 196,
+   "episode": "LRE117",
+   "turn": 26,
+   "case_id": "LRE117_T26",
+   "arm": "candidate",
+   "pair_key": "LRE117_T26",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 197,
+   "episode": "LRE117",
+   "turn": 27,
+   "case_id": "LRE117_T27",
+   "arm": "parent",
+   "pair_key": "LRE117_T27",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 198,
+   "episode": "LRE117",
+   "turn": 27,
+   "case_id": "LRE117_T27",
+   "arm": "candidate",
+   "pair_key": "LRE117_T27",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 199,
+   "episode": "LRE117",
+   "turn": 28,
+   "case_id": "LRE117_T28",
+   "arm": "parent",
+   "pair_key": "LRE117_T28",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 200,
+   "episode": "LRE117",
+   "turn": 28,
+   "case_id": "LRE117_T28",
+   "arm": "candidate",
+   "pair_key": "LRE117_T28",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 201,
+   "episode": "LRE117",
+   "turn": 29,
+   "case_id": "LRE117_T29",
+   "arm": "parent",
+   "pair_key": "LRE117_T29",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 202,
+   "episode": "LRE117",
+   "turn": 29,
+   "case_id": "LRE117_T29",
+   "arm": "candidate",
+   "pair_key": "LRE117_T29",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 203,
+   "episode": "LRE117",
+   "turn": 30,
+   "case_id": "LRE117_T30",
+   "arm": "parent",
+   "pair_key": "LRE117_T30",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 204,
+   "episode": "LRE117",
+   "turn": 30,
+   "case_id": "LRE117_T30",
+   "arm": "candidate",
+   "pair_key": "LRE117_T30",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 205,
+   "episode": "LRE117",
+   "turn": 31,
+   "case_id": "LRE117_T31",
+   "arm": "parent",
+   "pair_key": "LRE117_T31",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 206,
+   "episode": "LRE117",
+   "turn": 31,
+   "case_id": "LRE117_T31",
+   "arm": "candidate",
+   "pair_key": "LRE117_T31",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 207,
+   "episode": "LRE117",
+   "turn": 32,
+   "case_id": "LRE117_T32",
+   "arm": "parent",
+   "pair_key": "LRE117_T32",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 208,
+   "episode": "LRE117",
+   "turn": 32,
+   "case_id": "LRE117_T32",
+   "arm": "candidate",
+   "pair_key": "LRE117_T32",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 209,
+   "episode": "LRE117",
+   "turn": 33,
+   "case_id": "LRE117_T33",
+   "arm": "parent",
+   "pair_key": "LRE117_T33",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 210,
+   "episode": "LRE117",
+   "turn": 33,
+   "case_id": "LRE117_T33",
+   "arm": "candidate",
+   "pair_key": "LRE117_T33",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 211,
+   "episode": "LRE117",
+   "turn": 34,
+   "case_id": "LRE117_T34",
+   "arm": "parent",
+   "pair_key": "LRE117_T34",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 212,
+   "episode": "LRE117",
+   "turn": 34,
+   "case_id": "LRE117_T34",
+   "arm": "candidate",
+   "pair_key": "LRE117_T34",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 213,
+   "episode": "LRE117",
+   "turn": 35,
+   "case_id": "LRE117_T35",
+   "arm": "parent",
+   "pair_key": "LRE117_T35",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 214,
+   "episode": "LRE117",
+   "turn": 35,
+   "case_id": "LRE117_T35",
+   "arm": "candidate",
+   "pair_key": "LRE117_T35",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 215,
+   "episode": "LRE117",
+   "turn": 36,
+   "case_id": "LRE117_T36",
+   "arm": "parent",
+   "pair_key": "LRE117_T36",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 216,
+   "episode": "LRE117",
+   "turn": 36,
+   "case_id": "LRE117_T36",
+   "arm": "candidate",
+   "pair_key": "LRE117_T36",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 217,
+   "episode": "LRE117",
+   "turn": 37,
+   "case_id": "LRE117_T37",
+   "arm": "parent",
+   "pair_key": "LRE117_T37",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 218,
+   "episode": "LRE117",
+   "turn": 37,
+   "case_id": "LRE117_T37",
+   "arm": "candidate",
+   "pair_key": "LRE117_T37",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 219,
+   "episode": "LRE117",
+   "turn": 38,
+   "case_id": "LRE117_T38",
+   "arm": "parent",
+   "pair_key": "LRE117_T38",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 220,
+   "episode": "LRE117",
+   "turn": 38,
+   "case_id": "LRE117_T38",
+   "arm": "candidate",
+   "pair_key": "LRE117_T38",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 221,
+   "episode": "LRE117",
+   "turn": 39,
+   "case_id": "LRE117_T39",
+   "arm": "parent",
+   "pair_key": "LRE117_T39",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 222,
+   "episode": "LRE117",
+   "turn": 39,
+   "case_id": "LRE117_T39",
+   "arm": "candidate",
+   "pair_key": "LRE117_T39",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 223,
+   "episode": "LRE117",
+   "turn": 40,
+   "case_id": "LRE117_T40",
+   "arm": "parent",
+   "pair_key": "LRE117_T40",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 224,
+   "episode": "LRE117",
+   "turn": 40,
+   "case_id": "LRE117_T40",
+   "arm": "candidate",
+   "pair_key": "LRE117_T40",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 225,
+   "episode": "LRE121",
+   "turn": 1,
+   "case_id": "LRE121_T01",
+   "arm": "candidate",
+   "pair_key": "LRE121_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 226,
+   "episode": "LRE121",
+   "turn": 1,
+   "case_id": "LRE121_T01",
+   "arm": "parent",
+   "pair_key": "LRE121_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 227,
+   "episode": "LRE121",
+   "turn": 2,
+   "case_id": "LRE121_T02",
+   "arm": "candidate",
+   "pair_key": "LRE121_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 228,
+   "episode": "LRE121",
+   "turn": 2,
+   "case_id": "LRE121_T02",
+   "arm": "parent",
+   "pair_key": "LRE121_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 229,
+   "episode": "LRE121",
+   "turn": 3,
+   "case_id": "LRE121_T03",
+   "arm": "candidate",
+   "pair_key": "LRE121_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 230,
+   "episode": "LRE121",
+   "turn": 3,
+   "case_id": "LRE121_T03",
+   "arm": "parent",
+   "pair_key": "LRE121_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 231,
+   "episode": "LRE121",
+   "turn": 4,
+   "case_id": "LRE121_T04",
+   "arm": "candidate",
+   "pair_key": "LRE121_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 232,
+   "episode": "LRE121",
+   "turn": 4,
+   "case_id": "LRE121_T04",
+   "arm": "parent",
+   "pair_key": "LRE121_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 233,
+   "episode": "LRE121",
+   "turn": 5,
+   "case_id": "LRE121_T05",
+   "arm": "candidate",
+   "pair_key": "LRE121_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 234,
+   "episode": "LRE121",
+   "turn": 5,
+   "case_id": "LRE121_T05",
+   "arm": "parent",
+   "pair_key": "LRE121_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 235,
+   "episode": "LRE121",
+   "turn": 6,
+   "case_id": "LRE121_T06",
+   "arm": "candidate",
+   "pair_key": "LRE121_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 236,
+   "episode": "LRE121",
+   "turn": 6,
+   "case_id": "LRE121_T06",
+   "arm": "parent",
+   "pair_key": "LRE121_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 237,
+   "episode": "LRE121",
+   "turn": 7,
+   "case_id": "LRE121_T07",
+   "arm": "candidate",
+   "pair_key": "LRE121_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 238,
+   "episode": "LRE121",
+   "turn": 7,
+   "case_id": "LRE121_T07",
+   "arm": "parent",
+   "pair_key": "LRE121_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 239,
+   "episode": "LRE121",
+   "turn": 8,
+   "case_id": "LRE121_T08",
+   "arm": "candidate",
+   "pair_key": "LRE121_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 240,
+   "episode": "LRE121",
+   "turn": 8,
+   "case_id": "LRE121_T08",
+   "arm": "parent",
+   "pair_key": "LRE121_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 241,
+   "episode": "LRE121",
+   "turn": 9,
+   "case_id": "LRE121_T09",
+   "arm": "candidate",
+   "pair_key": "LRE121_T09",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 242,
+   "episode": "LRE121",
+   "turn": 9,
+   "case_id": "LRE121_T09",
+   "arm": "parent",
+   "pair_key": "LRE121_T09",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 243,
+   "episode": "LRE121",
+   "turn": 10,
+   "case_id": "LRE121_T10",
+   "arm": "candidate",
+   "pair_key": "LRE121_T10",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 244,
+   "episode": "LRE121",
+   "turn": 10,
+   "case_id": "LRE121_T10",
+   "arm": "parent",
+   "pair_key": "LRE121_T10",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 245,
+   "episode": "LRE121",
+   "turn": 11,
+   "case_id": "LRE121_T11",
+   "arm": "candidate",
+   "pair_key": "LRE121_T11",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 246,
+   "episode": "LRE121",
+   "turn": 11,
+   "case_id": "LRE121_T11",
+   "arm": "parent",
+   "pair_key": "LRE121_T11",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 247,
+   "episode": "LRE121",
+   "turn": 12,
+   "case_id": "LRE121_T12",
+   "arm": "candidate",
+   "pair_key": "LRE121_T12",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 248,
+   "episode": "LRE121",
+   "turn": 12,
+   "case_id": "LRE121_T12",
+   "arm": "parent",
+   "pair_key": "LRE121_T12",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 249,
+   "episode": "LRE121",
+   "turn": 13,
+   "case_id": "LRE121_T13",
+   "arm": "candidate",
+   "pair_key": "LRE121_T13",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 250,
+   "episode": "LRE121",
+   "turn": 13,
+   "case_id": "LRE121_T13",
+   "arm": "parent",
+   "pair_key": "LRE121_T13",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 251,
+   "episode": "LRE121",
+   "turn": 14,
+   "case_id": "LRE121_T14",
+   "arm": "candidate",
+   "pair_key": "LRE121_T14",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 252,
+   "episode": "LRE121",
+   "turn": 14,
+   "case_id": "LRE121_T14",
+   "arm": "parent",
+   "pair_key": "LRE121_T14",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 253,
+   "episode": "LRE121",
+   "turn": 15,
+   "case_id": "LRE121_T15",
+   "arm": "candidate",
+   "pair_key": "LRE121_T15",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 254,
+   "episode": "LRE121",
+   "turn": 15,
+   "case_id": "LRE121_T15",
+   "arm": "parent",
+   "pair_key": "LRE121_T15",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 255,
+   "episode": "LRE121",
+   "turn": 16,
+   "case_id": "LRE121_T16",
+   "arm": "candidate",
+   "pair_key": "LRE121_T16",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 256,
+   "episode": "LRE121",
+   "turn": 16,
+   "case_id": "LRE121_T16",
+   "arm": "parent",
+   "pair_key": "LRE121_T16",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 257,
+   "episode": "LRE121",
+   "turn": 17,
+   "case_id": "LRE121_T17",
+   "arm": "candidate",
+   "pair_key": "LRE121_T17",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 258,
+   "episode": "LRE121",
+   "turn": 17,
+   "case_id": "LRE121_T17",
+   "arm": "parent",
+   "pair_key": "LRE121_T17",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 259,
+   "episode": "LRE121",
+   "turn": 18,
+   "case_id": "LRE121_T18",
+   "arm": "candidate",
+   "pair_key": "LRE121_T18",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 260,
+   "episode": "LRE121",
+   "turn": 18,
+   "case_id": "LRE121_T18",
+   "arm": "parent",
+   "pair_key": "LRE121_T18",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 261,
+   "episode": "LRE121",
+   "turn": 19,
+   "case_id": "LRE121_T19",
+   "arm": "candidate",
+   "pair_key": "LRE121_T19",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 262,
+   "episode": "LRE121",
+   "turn": 19,
+   "case_id": "LRE121_T19",
+   "arm": "parent",
+   "pair_key": "LRE121_T19",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 263,
+   "episode": "LRE121",
+   "turn": 20,
+   "case_id": "LRE121_T20",
+   "arm": "candidate",
+   "pair_key": "LRE121_T20",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 264,
+   "episode": "LRE121",
+   "turn": 20,
+   "case_id": "LRE121_T20",
+   "arm": "parent",
+   "pair_key": "LRE121_T20",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 265,
+   "episode": "LRE121",
+   "turn": 21,
+   "case_id": "LRE121_T21",
+   "arm": "candidate",
+   "pair_key": "LRE121_T21",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 266,
+   "episode": "LRE121",
+   "turn": 21,
+   "case_id": "LRE121_T21",
+   "arm": "parent",
+   "pair_key": "LRE121_T21",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 267,
+   "episode": "LRE121",
+   "turn": 22,
+   "case_id": "LRE121_T22",
+   "arm": "candidate",
+   "pair_key": "LRE121_T22",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 268,
+   "episode": "LRE121",
+   "turn": 22,
+   "case_id": "LRE121_T22",
+   "arm": "parent",
+   "pair_key": "LRE121_T22",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 269,
+   "episode": "LRE121",
+   "turn": 23,
+   "case_id": "LRE121_T23",
+   "arm": "candidate",
+   "pair_key": "LRE121_T23",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 270,
+   "episode": "LRE121",
+   "turn": 23,
+   "case_id": "LRE121_T23",
+   "arm": "parent",
+   "pair_key": "LRE121_T23",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 271,
+   "episode": "LRE121",
+   "turn": 24,
+   "case_id": "LRE121_T24",
+   "arm": "candidate",
+   "pair_key": "LRE121_T24",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 272,
+   "episode": "LRE121",
+   "turn": 24,
+   "case_id": "LRE121_T24",
+   "arm": "parent",
+   "pair_key": "LRE121_T24",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 273,
+   "episode": "LRE121",
+   "turn": 25,
+   "case_id": "LRE121_T25",
+   "arm": "candidate",
+   "pair_key": "LRE121_T25",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 274,
+   "episode": "LRE121",
+   "turn": 25,
+   "case_id": "LRE121_T25",
+   "arm": "parent",
+   "pair_key": "LRE121_T25",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 275,
+   "episode": "LRE121",
+   "turn": 26,
+   "case_id": "LRE121_T26",
+   "arm": "candidate",
+   "pair_key": "LRE121_T26",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 276,
+   "episode": "LRE121",
+   "turn": 26,
+   "case_id": "LRE121_T26",
+   "arm": "parent",
+   "pair_key": "LRE121_T26",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 277,
+   "episode": "LRE121",
+   "turn": 27,
+   "case_id": "LRE121_T27",
+   "arm": "candidate",
+   "pair_key": "LRE121_T27",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 278,
+   "episode": "LRE121",
+   "turn": 27,
+   "case_id": "LRE121_T27",
+   "arm": "parent",
+   "pair_key": "LRE121_T27",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 279,
+   "episode": "LRE121",
+   "turn": 28,
+   "case_id": "LRE121_T28",
+   "arm": "candidate",
+   "pair_key": "LRE121_T28",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 280,
+   "episode": "LRE121",
+   "turn": 28,
+   "case_id": "LRE121_T28",
+   "arm": "parent",
+   "pair_key": "LRE121_T28",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 281,
+   "episode": "LRE121",
+   "turn": 29,
+   "case_id": "LRE121_T29",
+   "arm": "candidate",
+   "pair_key": "LRE121_T29",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 282,
+   "episode": "LRE121",
+   "turn": 29,
+   "case_id": "LRE121_T29",
+   "arm": "parent",
+   "pair_key": "LRE121_T29",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 283,
+   "episode": "LRE121",
+   "turn": 30,
+   "case_id": "LRE121_T30",
+   "arm": "candidate",
+   "pair_key": "LRE121_T30",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 284,
+   "episode": "LRE121",
+   "turn": 30,
+   "case_id": "LRE121_T30",
+   "arm": "parent",
+   "pair_key": "LRE121_T30",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 285,
+   "episode": "LRE121",
+   "turn": 31,
+   "case_id": "LRE121_T31",
+   "arm": "candidate",
+   "pair_key": "LRE121_T31",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 286,
+   "episode": "LRE121",
+   "turn": 31,
+   "case_id": "LRE121_T31",
+   "arm": "parent",
+   "pair_key": "LRE121_T31",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 287,
+   "episode": "LRE121",
+   "turn": 32,
+   "case_id": "LRE121_T32",
+   "arm": "candidate",
+   "pair_key": "LRE121_T32",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 288,
+   "episode": "LRE121",
+   "turn": 32,
+   "case_id": "LRE121_T32",
+   "arm": "parent",
+   "pair_key": "LRE121_T32",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 289,
+   "episode": "LRE121",
+   "turn": 33,
+   "case_id": "LRE121_T33",
+   "arm": "candidate",
+   "pair_key": "LRE121_T33",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 290,
+   "episode": "LRE121",
+   "turn": 33,
+   "case_id": "LRE121_T33",
+   "arm": "parent",
+   "pair_key": "LRE121_T33",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 291,
+   "episode": "LRE121",
+   "turn": 34,
+   "case_id": "LRE121_T34",
+   "arm": "candidate",
+   "pair_key": "LRE121_T34",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 292,
+   "episode": "LRE121",
+   "turn": 34,
+   "case_id": "LRE121_T34",
+   "arm": "parent",
+   "pair_key": "LRE121_T34",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 293,
+   "episode": "LRE121",
+   "turn": 35,
+   "case_id": "LRE121_T35",
+   "arm": "candidate",
+   "pair_key": "LRE121_T35",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 294,
+   "episode": "LRE121",
+   "turn": 35,
+   "case_id": "LRE121_T35",
+   "arm": "parent",
+   "pair_key": "LRE121_T35",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 295,
+   "episode": "LRE121",
+   "turn": 36,
+   "case_id": "LRE121_T36",
+   "arm": "candidate",
+   "pair_key": "LRE121_T36",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 296,
+   "episode": "LRE121",
+   "turn": 36,
+   "case_id": "LRE121_T36",
+   "arm": "parent",
+   "pair_key": "LRE121_T36",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 297,
+   "episode": "LRE121",
+   "turn": 37,
+   "case_id": "LRE121_T37",
+   "arm": "candidate",
+   "pair_key": "LRE121_T37",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 298,
+   "episode": "LRE121",
+   "turn": 37,
+   "case_id": "LRE121_T37",
+   "arm": "parent",
+   "pair_key": "LRE121_T37",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 299,
+   "episode": "LRE121",
+   "turn": 38,
+   "case_id": "LRE121_T38",
+   "arm": "candidate",
+   "pair_key": "LRE121_T38",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 300,
+   "episode": "LRE121",
+   "turn": 38,
+   "case_id": "LRE121_T38",
+   "arm": "parent",
+   "pair_key": "LRE121_T38",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 301,
+   "episode": "LRE121",
+   "turn": 39,
+   "case_id": "LRE121_T39",
+   "arm": "candidate",
+   "pair_key": "LRE121_T39",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 302,
+   "episode": "LRE121",
+   "turn": 39,
+   "case_id": "LRE121_T39",
+   "arm": "parent",
+   "pair_key": "LRE121_T39",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 303,
+   "episode": "LRE121",
+   "turn": 40,
+   "case_id": "LRE121_T40",
+   "arm": "candidate",
+   "pair_key": "LRE121_T40",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 304,
+   "episode": "LRE121",
+   "turn": 40,
+   "case_id": "LRE121_T40",
+   "arm": "parent",
+   "pair_key": "LRE121_T40",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 305,
+   "episode": "LRE146",
+   "turn": 1,
+   "case_id": "LRE146_T01",
+   "arm": "parent",
+   "pair_key": "LRE146_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 306,
+   "episode": "LRE146",
+   "turn": 1,
+   "case_id": "LRE146_T01",
+   "arm": "candidate",
+   "pair_key": "LRE146_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 307,
+   "episode": "LRE146",
+   "turn": 2,
+   "case_id": "LRE146_T02",
+   "arm": "parent",
+   "pair_key": "LRE146_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 308,
+   "episode": "LRE146",
+   "turn": 2,
+   "case_id": "LRE146_T02",
+   "arm": "candidate",
+   "pair_key": "LRE146_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 309,
+   "episode": "LRE146",
+   "turn": 3,
+   "case_id": "LRE146_T03",
+   "arm": "parent",
+   "pair_key": "LRE146_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 310,
+   "episode": "LRE146",
+   "turn": 3,
+   "case_id": "LRE146_T03",
+   "arm": "candidate",
+   "pair_key": "LRE146_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 311,
+   "episode": "LRE146",
+   "turn": 4,
+   "case_id": "LRE146_T04",
+   "arm": "parent",
+   "pair_key": "LRE146_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 312,
+   "episode": "LRE146",
+   "turn": 4,
+   "case_id": "LRE146_T04",
+   "arm": "candidate",
+   "pair_key": "LRE146_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 313,
+   "episode": "LRE146",
+   "turn": 5,
+   "case_id": "LRE146_T05",
+   "arm": "parent",
+   "pair_key": "LRE146_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 314,
+   "episode": "LRE146",
+   "turn": 5,
+   "case_id": "LRE146_T05",
+   "arm": "candidate",
+   "pair_key": "LRE146_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 315,
+   "episode": "LRE146",
+   "turn": 6,
+   "case_id": "LRE146_T06",
+   "arm": "parent",
+   "pair_key": "LRE146_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 316,
+   "episode": "LRE146",
+   "turn": 6,
+   "case_id": "LRE146_T06",
+   "arm": "candidate",
+   "pair_key": "LRE146_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 317,
+   "episode": "LRE146",
+   "turn": 7,
+   "case_id": "LRE146_T07",
+   "arm": "parent",
+   "pair_key": "LRE146_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 318,
+   "episode": "LRE146",
+   "turn": 7,
+   "case_id": "LRE146_T07",
+   "arm": "candidate",
+   "pair_key": "LRE146_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 319,
+   "episode": "LRE146",
+   "turn": 8,
+   "case_id": "LRE146_T08",
+   "arm": "parent",
+   "pair_key": "LRE146_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 320,
+   "episode": "LRE146",
+   "turn": 8,
+   "case_id": "LRE146_T08",
+   "arm": "candidate",
+   "pair_key": "LRE146_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 321,
+   "episode": "LRE146",
+   "turn": 9,
+   "case_id": "LRE146_T09",
+   "arm": "parent",
+   "pair_key": "LRE146_T09",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 322,
+   "episode": "LRE146",
+   "turn": 9,
+   "case_id": "LRE146_T09",
+   "arm": "candidate",
+   "pair_key": "LRE146_T09",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 323,
+   "episode": "LRE146",
+   "turn": 10,
+   "case_id": "LRE146_T10",
+   "arm": "parent",
+   "pair_key": "LRE146_T10",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 324,
+   "episode": "LRE146",
+   "turn": 10,
+   "case_id": "LRE146_T10",
+   "arm": "candidate",
+   "pair_key": "LRE146_T10",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 325,
+   "episode": "LRE146",
+   "turn": 11,
+   "case_id": "LRE146_T11",
+   "arm": "parent",
+   "pair_key": "LRE146_T11",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 326,
+   "episode": "LRE146",
+   "turn": 11,
+   "case_id": "LRE146_T11",
+   "arm": "candidate",
+   "pair_key": "LRE146_T11",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 327,
+   "episode": "LRE146",
+   "turn": 12,
+   "case_id": "LRE146_T12",
+   "arm": "parent",
+   "pair_key": "LRE146_T12",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 328,
+   "episode": "LRE146",
+   "turn": 12,
+   "case_id": "LRE146_T12",
+   "arm": "candidate",
+   "pair_key": "LRE146_T12",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 329,
+   "episode": "LRE146",
+   "turn": 13,
+   "case_id": "LRE146_T13",
+   "arm": "parent",
+   "pair_key": "LRE146_T13",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 330,
+   "episode": "LRE146",
+   "turn": 13,
+   "case_id": "LRE146_T13",
+   "arm": "candidate",
+   "pair_key": "LRE146_T13",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 331,
+   "episode": "LRE146",
+   "turn": 14,
+   "case_id": "LRE146_T14",
+   "arm": "parent",
+   "pair_key": "LRE146_T14",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 332,
+   "episode": "LRE146",
+   "turn": 14,
+   "case_id": "LRE146_T14",
+   "arm": "candidate",
+   "pair_key": "LRE146_T14",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 333,
+   "episode": "LRE146",
+   "turn": 15,
+   "case_id": "LRE146_T15",
+   "arm": "parent",
+   "pair_key": "LRE146_T15",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 334,
+   "episode": "LRE146",
+   "turn": 15,
+   "case_id": "LRE146_T15",
+   "arm": "candidate",
+   "pair_key": "LRE146_T15",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 335,
+   "episode": "LRE146",
+   "turn": 16,
+   "case_id": "LRE146_T16",
+   "arm": "parent",
+   "pair_key": "LRE146_T16",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 336,
+   "episode": "LRE146",
+   "turn": 16,
+   "case_id": "LRE146_T16",
+   "arm": "candidate",
+   "pair_key": "LRE146_T16",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 337,
+   "episode": "LRE146",
+   "turn": 17,
+   "case_id": "LRE146_T17",
+   "arm": "parent",
+   "pair_key": "LRE146_T17",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 338,
+   "episode": "LRE146",
+   "turn": 17,
+   "case_id": "LRE146_T17",
+   "arm": "candidate",
+   "pair_key": "LRE146_T17",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 339,
+   "episode": "LRE146",
+   "turn": 18,
+   "case_id": "LRE146_T18",
+   "arm": "parent",
+   "pair_key": "LRE146_T18",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 340,
+   "episode": "LRE146",
+   "turn": 18,
+   "case_id": "LRE146_T18",
+   "arm": "candidate",
+   "pair_key": "LRE146_T18",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 341,
+   "episode": "LRE146",
+   "turn": 19,
+   "case_id": "LRE146_T19",
+   "arm": "parent",
+   "pair_key": "LRE146_T19",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 342,
+   "episode": "LRE146",
+   "turn": 19,
+   "case_id": "LRE146_T19",
+   "arm": "candidate",
+   "pair_key": "LRE146_T19",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 343,
+   "episode": "LRE146",
+   "turn": 20,
+   "case_id": "LRE146_T20",
+   "arm": "parent",
+   "pair_key": "LRE146_T20",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 344,
+   "episode": "LRE146",
+   "turn": 20,
+   "case_id": "LRE146_T20",
+   "arm": "candidate",
+   "pair_key": "LRE146_T20",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 345,
+   "episode": "LRE146",
+   "turn": 21,
+   "case_id": "LRE146_T21",
+   "arm": "parent",
+   "pair_key": "LRE146_T21",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 346,
+   "episode": "LRE146",
+   "turn": 21,
+   "case_id": "LRE146_T21",
+   "arm": "candidate",
+   "pair_key": "LRE146_T21",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 347,
+   "episode": "LRE146",
+   "turn": 22,
+   "case_id": "LRE146_T22",
+   "arm": "parent",
+   "pair_key": "LRE146_T22",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 348,
+   "episode": "LRE146",
+   "turn": 22,
+   "case_id": "LRE146_T22",
+   "arm": "candidate",
+   "pair_key": "LRE146_T22",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 349,
+   "episode": "LRE146",
+   "turn": 23,
+   "case_id": "LRE146_T23",
+   "arm": "parent",
+   "pair_key": "LRE146_T23",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 350,
+   "episode": "LRE146",
+   "turn": 23,
+   "case_id": "LRE146_T23",
+   "arm": "candidate",
+   "pair_key": "LRE146_T23",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 351,
+   "episode": "LRE146",
+   "turn": 24,
+   "case_id": "LRE146_T24",
+   "arm": "parent",
+   "pair_key": "LRE146_T24",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 352,
+   "episode": "LRE146",
+   "turn": 24,
+   "case_id": "LRE146_T24",
+   "arm": "candidate",
+   "pair_key": "LRE146_T24",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 353,
+   "episode": "LRE146",
+   "turn": 25,
+   "case_id": "LRE146_T25",
+   "arm": "parent",
+   "pair_key": "LRE146_T25",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 354,
+   "episode": "LRE146",
+   "turn": 25,
+   "case_id": "LRE146_T25",
+   "arm": "candidate",
+   "pair_key": "LRE146_T25",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 355,
+   "episode": "LRE146",
+   "turn": 26,
+   "case_id": "LRE146_T26",
+   "arm": "parent",
+   "pair_key": "LRE146_T26",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 356,
+   "episode": "LRE146",
+   "turn": 26,
+   "case_id": "LRE146_T26",
+   "arm": "candidate",
+   "pair_key": "LRE146_T26",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 357,
+   "episode": "LRE146",
+   "turn": 27,
+   "case_id": "LRE146_T27",
+   "arm": "parent",
+   "pair_key": "LRE146_T27",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 358,
+   "episode": "LRE146",
+   "turn": 27,
+   "case_id": "LRE146_T27",
+   "arm": "candidate",
+   "pair_key": "LRE146_T27",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 359,
+   "episode": "LRE146",
+   "turn": 28,
+   "case_id": "LRE146_T28",
+   "arm": "parent",
+   "pair_key": "LRE146_T28",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 360,
+   "episode": "LRE146",
+   "turn": 28,
+   "case_id": "LRE146_T28",
+   "arm": "candidate",
+   "pair_key": "LRE146_T28",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 361,
+   "episode": "LRE146",
+   "turn": 29,
+   "case_id": "LRE146_T29",
+   "arm": "parent",
+   "pair_key": "LRE146_T29",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 362,
+   "episode": "LRE146",
+   "turn": 29,
+   "case_id": "LRE146_T29",
+   "arm": "candidate",
+   "pair_key": "LRE146_T29",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 363,
+   "episode": "LRE146",
+   "turn": 30,
+   "case_id": "LRE146_T30",
+   "arm": "parent",
+   "pair_key": "LRE146_T30",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 364,
+   "episode": "LRE146",
+   "turn": 30,
+   "case_id": "LRE146_T30",
+   "arm": "candidate",
+   "pair_key": "LRE146_T30",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 365,
+   "episode": "LRE146",
+   "turn": 31,
+   "case_id": "LRE146_T31",
+   "arm": "parent",
+   "pair_key": "LRE146_T31",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 366,
+   "episode": "LRE146",
+   "turn": 31,
+   "case_id": "LRE146_T31",
+   "arm": "candidate",
+   "pair_key": "LRE146_T31",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 367,
+   "episode": "LRE146",
+   "turn": 32,
+   "case_id": "LRE146_T32",
+   "arm": "parent",
+   "pair_key": "LRE146_T32",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 368,
+   "episode": "LRE146",
+   "turn": 32,
+   "case_id": "LRE146_T32",
+   "arm": "candidate",
+   "pair_key": "LRE146_T32",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 369,
+   "episode": "LRE146",
+   "turn": 33,
+   "case_id": "LRE146_T33",
+   "arm": "parent",
+   "pair_key": "LRE146_T33",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 370,
+   "episode": "LRE146",
+   "turn": 33,
+   "case_id": "LRE146_T33",
+   "arm": "candidate",
+   "pair_key": "LRE146_T33",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 371,
+   "episode": "LRE146",
+   "turn": 34,
+   "case_id": "LRE146_T34",
+   "arm": "parent",
+   "pair_key": "LRE146_T34",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 372,
+   "episode": "LRE146",
+   "turn": 34,
+   "case_id": "LRE146_T34",
+   "arm": "candidate",
+   "pair_key": "LRE146_T34",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 373,
+   "episode": "LRE146",
+   "turn": 35,
+   "case_id": "LRE146_T35",
+   "arm": "parent",
+   "pair_key": "LRE146_T35",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 374,
+   "episode": "LRE146",
+   "turn": 35,
+   "case_id": "LRE146_T35",
+   "arm": "candidate",
+   "pair_key": "LRE146_T35",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 375,
+   "episode": "LRE146",
+   "turn": 36,
+   "case_id": "LRE146_T36",
+   "arm": "parent",
+   "pair_key": "LRE146_T36",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 376,
+   "episode": "LRE146",
+   "turn": 36,
+   "case_id": "LRE146_T36",
+   "arm": "candidate",
+   "pair_key": "LRE146_T36",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 377,
+   "episode": "LRE146",
+   "turn": 37,
+   "case_id": "LRE146_T37",
+   "arm": "parent",
+   "pair_key": "LRE146_T37",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 378,
+   "episode": "LRE146",
+   "turn": 37,
+   "case_id": "LRE146_T37",
+   "arm": "candidate",
+   "pair_key": "LRE146_T37",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 379,
+   "episode": "LRE146",
+   "turn": 38,
+   "case_id": "LRE146_T38",
+   "arm": "parent",
+   "pair_key": "LRE146_T38",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 380,
+   "episode": "LRE146",
+   "turn": 38,
+   "case_id": "LRE146_T38",
+   "arm": "candidate",
+   "pair_key": "LRE146_T38",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 381,
+   "episode": "LRE146",
+   "turn": 39,
+   "case_id": "LRE146_T39",
+   "arm": "parent",
+   "pair_key": "LRE146_T39",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 382,
+   "episode": "LRE146",
+   "turn": 39,
+   "case_id": "LRE146_T39",
+   "arm": "candidate",
+   "pair_key": "LRE146_T39",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 383,
+   "episode": "LRE146",
+   "turn": 40,
+   "case_id": "LRE146_T40",
+   "arm": "parent",
+   "pair_key": "LRE146_T40",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 384,
+   "episode": "LRE146",
+   "turn": 40,
+   "case_id": "LRE146_T40",
+   "arm": "candidate",
+   "pair_key": "LRE146_T40",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 385,
+   "episode": "LRE138",
+   "turn": 1,
+   "case_id": "LRE138_T01",
+   "arm": "candidate",
+   "pair_key": "LRE138_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 386,
+   "episode": "LRE138",
+   "turn": 1,
+   "case_id": "LRE138_T01",
+   "arm": "parent",
+   "pair_key": "LRE138_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 387,
+   "episode": "LRE138",
+   "turn": 2,
+   "case_id": "LRE138_T02",
+   "arm": "candidate",
+   "pair_key": "LRE138_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 388,
+   "episode": "LRE138",
+   "turn": 2,
+   "case_id": "LRE138_T02",
+   "arm": "parent",
+   "pair_key": "LRE138_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 389,
+   "episode": "LRE138",
+   "turn": 3,
+   "case_id": "LRE138_T03",
+   "arm": "candidate",
+   "pair_key": "LRE138_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 390,
+   "episode": "LRE138",
+   "turn": 3,
+   "case_id": "LRE138_T03",
+   "arm": "parent",
+   "pair_key": "LRE138_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 391,
+   "episode": "LRE138",
+   "turn": 4,
+   "case_id": "LRE138_T04",
+   "arm": "candidate",
+   "pair_key": "LRE138_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 392,
+   "episode": "LRE138",
+   "turn": 4,
+   "case_id": "LRE138_T04",
+   "arm": "parent",
+   "pair_key": "LRE138_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 393,
+   "episode": "LRE138",
+   "turn": 5,
+   "case_id": "LRE138_T05",
+   "arm": "candidate",
+   "pair_key": "LRE138_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 394,
+   "episode": "LRE138",
+   "turn": 5,
+   "case_id": "LRE138_T05",
+   "arm": "parent",
+   "pair_key": "LRE138_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 395,
+   "episode": "LRE138",
+   "turn": 6,
+   "case_id": "LRE138_T06",
+   "arm": "candidate",
+   "pair_key": "LRE138_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 396,
+   "episode": "LRE138",
+   "turn": 6,
+   "case_id": "LRE138_T06",
+   "arm": "parent",
+   "pair_key": "LRE138_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 397,
+   "episode": "LRE138",
+   "turn": 7,
+   "case_id": "LRE138_T07",
+   "arm": "candidate",
+   "pair_key": "LRE138_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 398,
+   "episode": "LRE138",
+   "turn": 7,
+   "case_id": "LRE138_T07",
+   "arm": "parent",
+   "pair_key": "LRE138_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 399,
+   "episode": "LRE138",
+   "turn": 8,
+   "case_id": "LRE138_T08",
+   "arm": "candidate",
+   "pair_key": "LRE138_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 400,
+   "episode": "LRE138",
+   "turn": 8,
+   "case_id": "LRE138_T08",
+   "arm": "parent",
+   "pair_key": "LRE138_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 401,
+   "episode": "LRE138",
+   "turn": 9,
+   "case_id": "LRE138_T09",
+   "arm": "candidate",
+   "pair_key": "LRE138_T09",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 402,
+   "episode": "LRE138",
+   "turn": 9,
+   "case_id": "LRE138_T09",
+   "arm": "parent",
+   "pair_key": "LRE138_T09",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 403,
+   "episode": "LRE138",
+   "turn": 10,
+   "case_id": "LRE138_T10",
+   "arm": "candidate",
+   "pair_key": "LRE138_T10",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 404,
+   "episode": "LRE138",
+   "turn": 10,
+   "case_id": "LRE138_T10",
+   "arm": "parent",
+   "pair_key": "LRE138_T10",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 405,
+   "episode": "LRE138",
+   "turn": 11,
+   "case_id": "LRE138_T11",
+   "arm": "candidate",
+   "pair_key": "LRE138_T11",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 406,
+   "episode": "LRE138",
+   "turn": 11,
+   "case_id": "LRE138_T11",
+   "arm": "parent",
+   "pair_key": "LRE138_T11",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 407,
+   "episode": "LRE138",
+   "turn": 12,
+   "case_id": "LRE138_T12",
+   "arm": "candidate",
+   "pair_key": "LRE138_T12",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 408,
+   "episode": "LRE138",
+   "turn": 12,
+   "case_id": "LRE138_T12",
+   "arm": "parent",
+   "pair_key": "LRE138_T12",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 409,
+   "episode": "LRE138",
+   "turn": 13,
+   "case_id": "LRE138_T13",
+   "arm": "candidate",
+   "pair_key": "LRE138_T13",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 410,
+   "episode": "LRE138",
+   "turn": 13,
+   "case_id": "LRE138_T13",
+   "arm": "parent",
+   "pair_key": "LRE138_T13",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 411,
+   "episode": "LRE138",
+   "turn": 14,
+   "case_id": "LRE138_T14",
+   "arm": "candidate",
+   "pair_key": "LRE138_T14",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 412,
+   "episode": "LRE138",
+   "turn": 14,
+   "case_id": "LRE138_T14",
+   "arm": "parent",
+   "pair_key": "LRE138_T14",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 413,
+   "episode": "LRE138",
+   "turn": 15,
+   "case_id": "LRE138_T15",
+   "arm": "candidate",
+   "pair_key": "LRE138_T15",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 414,
+   "episode": "LRE138",
+   "turn": 15,
+   "case_id": "LRE138_T15",
+   "arm": "parent",
+   "pair_key": "LRE138_T15",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 415,
+   "episode": "LRE138",
+   "turn": 16,
+   "case_id": "LRE138_T16",
+   "arm": "candidate",
+   "pair_key": "LRE138_T16",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 416,
+   "episode": "LRE138",
+   "turn": 16,
+   "case_id": "LRE138_T16",
+   "arm": "parent",
+   "pair_key": "LRE138_T16",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 417,
+   "episode": "LRE138",
+   "turn": 17,
+   "case_id": "LRE138_T17",
+   "arm": "candidate",
+   "pair_key": "LRE138_T17",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 418,
+   "episode": "LRE138",
+   "turn": 17,
+   "case_id": "LRE138_T17",
+   "arm": "parent",
+   "pair_key": "LRE138_T17",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 419,
+   "episode": "LRE138",
+   "turn": 18,
+   "case_id": "LRE138_T18",
+   "arm": "candidate",
+   "pair_key": "LRE138_T18",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 420,
+   "episode": "LRE138",
+   "turn": 18,
+   "case_id": "LRE138_T18",
+   "arm": "parent",
+   "pair_key": "LRE138_T18",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 421,
+   "episode": "LRE138",
+   "turn": 19,
+   "case_id": "LRE138_T19",
+   "arm": "candidate",
+   "pair_key": "LRE138_T19",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 422,
+   "episode": "LRE138",
+   "turn": 19,
+   "case_id": "LRE138_T19",
+   "arm": "parent",
+   "pair_key": "LRE138_T19",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 423,
+   "episode": "LRE138",
+   "turn": 20,
+   "case_id": "LRE138_T20",
+   "arm": "candidate",
+   "pair_key": "LRE138_T20",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 424,
+   "episode": "LRE138",
+   "turn": 20,
+   "case_id": "LRE138_T20",
+   "arm": "parent",
+   "pair_key": "LRE138_T20",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 425,
+   "episode": "LRE138",
+   "turn": 21,
+   "case_id": "LRE138_T21",
+   "arm": "candidate",
+   "pair_key": "LRE138_T21",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 426,
+   "episode": "LRE138",
+   "turn": 21,
+   "case_id": "LRE138_T21",
+   "arm": "parent",
+   "pair_key": "LRE138_T21",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 427,
+   "episode": "LRE138",
+   "turn": 22,
+   "case_id": "LRE138_T22",
+   "arm": "candidate",
+   "pair_key": "LRE138_T22",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 428,
+   "episode": "LRE138",
+   "turn": 22,
+   "case_id": "LRE138_T22",
+   "arm": "parent",
+   "pair_key": "LRE138_T22",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 429,
+   "episode": "LRE138",
+   "turn": 23,
+   "case_id": "LRE138_T23",
+   "arm": "candidate",
+   "pair_key": "LRE138_T23",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 430,
+   "episode": "LRE138",
+   "turn": 23,
+   "case_id": "LRE138_T23",
+   "arm": "parent",
+   "pair_key": "LRE138_T23",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 431,
+   "episode": "LRE138",
+   "turn": 24,
+   "case_id": "LRE138_T24",
+   "arm": "candidate",
+   "pair_key": "LRE138_T24",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 432,
+   "episode": "LRE138",
+   "turn": 24,
+   "case_id": "LRE138_T24",
+   "arm": "parent",
+   "pair_key": "LRE138_T24",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 433,
+   "episode": "LRE138",
+   "turn": 25,
+   "case_id": "LRE138_T25",
+   "arm": "candidate",
+   "pair_key": "LRE138_T25",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 434,
+   "episode": "LRE138",
+   "turn": 25,
+   "case_id": "LRE138_T25",
+   "arm": "parent",
+   "pair_key": "LRE138_T25",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 435,
+   "episode": "LRE138",
+   "turn": 26,
+   "case_id": "LRE138_T26",
+   "arm": "candidate",
+   "pair_key": "LRE138_T26",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 436,
+   "episode": "LRE138",
+   "turn": 26,
+   "case_id": "LRE138_T26",
+   "arm": "parent",
+   "pair_key": "LRE138_T26",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 437,
+   "episode": "LRE138",
+   "turn": 27,
+   "case_id": "LRE138_T27",
+   "arm": "candidate",
+   "pair_key": "LRE138_T27",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 438,
+   "episode": "LRE138",
+   "turn": 27,
+   "case_id": "LRE138_T27",
+   "arm": "parent",
+   "pair_key": "LRE138_T27",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 439,
+   "episode": "LRE138",
+   "turn": 28,
+   "case_id": "LRE138_T28",
+   "arm": "candidate",
+   "pair_key": "LRE138_T28",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 440,
+   "episode": "LRE138",
+   "turn": 28,
+   "case_id": "LRE138_T28",
+   "arm": "parent",
+   "pair_key": "LRE138_T28",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 441,
+   "episode": "LRE138",
+   "turn": 29,
+   "case_id": "LRE138_T29",
+   "arm": "candidate",
+   "pair_key": "LRE138_T29",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 442,
+   "episode": "LRE138",
+   "turn": 29,
+   "case_id": "LRE138_T29",
+   "arm": "parent",
+   "pair_key": "LRE138_T29",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 443,
+   "episode": "LRE138",
+   "turn": 30,
+   "case_id": "LRE138_T30",
+   "arm": "candidate",
+   "pair_key": "LRE138_T30",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 444,
+   "episode": "LRE138",
+   "turn": 30,
+   "case_id": "LRE138_T30",
+   "arm": "parent",
+   "pair_key": "LRE138_T30",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 445,
+   "episode": "LRE138",
+   "turn": 31,
+   "case_id": "LRE138_T31",
+   "arm": "candidate",
+   "pair_key": "LRE138_T31",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 446,
+   "episode": "LRE138",
+   "turn": 31,
+   "case_id": "LRE138_T31",
+   "arm": "parent",
+   "pair_key": "LRE138_T31",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 447,
+   "episode": "LRE138",
+   "turn": 32,
+   "case_id": "LRE138_T32",
+   "arm": "candidate",
+   "pair_key": "LRE138_T32",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 448,
+   "episode": "LRE138",
+   "turn": 32,
+   "case_id": "LRE138_T32",
+   "arm": "parent",
+   "pair_key": "LRE138_T32",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 449,
+   "episode": "LRE138",
+   "turn": 33,
+   "case_id": "LRE138_T33",
+   "arm": "candidate",
+   "pair_key": "LRE138_T33",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 450,
+   "episode": "LRE138",
+   "turn": 33,
+   "case_id": "LRE138_T33",
+   "arm": "parent",
+   "pair_key": "LRE138_T33",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 451,
+   "episode": "LRE138",
+   "turn": 34,
+   "case_id": "LRE138_T34",
+   "arm": "candidate",
+   "pair_key": "LRE138_T34",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 452,
+   "episode": "LRE138",
+   "turn": 34,
+   "case_id": "LRE138_T34",
+   "arm": "parent",
+   "pair_key": "LRE138_T34",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 453,
+   "episode": "LRE138",
+   "turn": 35,
+   "case_id": "LRE138_T35",
+   "arm": "candidate",
+   "pair_key": "LRE138_T35",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 454,
+   "episode": "LRE138",
+   "turn": 35,
+   "case_id": "LRE138_T35",
+   "arm": "parent",
+   "pair_key": "LRE138_T35",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 455,
+   "episode": "LRE138",
+   "turn": 36,
+   "case_id": "LRE138_T36",
+   "arm": "candidate",
+   "pair_key": "LRE138_T36",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 456,
+   "episode": "LRE138",
+   "turn": 36,
+   "case_id": "LRE138_T36",
+   "arm": "parent",
+   "pair_key": "LRE138_T36",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 457,
+   "episode": "LRE138",
+   "turn": 37,
+   "case_id": "LRE138_T37",
+   "arm": "candidate",
+   "pair_key": "LRE138_T37",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 458,
+   "episode": "LRE138",
+   "turn": 37,
+   "case_id": "LRE138_T37",
+   "arm": "parent",
+   "pair_key": "LRE138_T37",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 459,
+   "episode": "LRE138",
+   "turn": 38,
+   "case_id": "LRE138_T38",
+   "arm": "candidate",
+   "pair_key": "LRE138_T38",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 460,
+   "episode": "LRE138",
+   "turn": 38,
+   "case_id": "LRE138_T38",
+   "arm": "parent",
+   "pair_key": "LRE138_T38",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 461,
+   "episode": "LRE138",
+   "turn": 39,
+   "case_id": "LRE138_T39",
+   "arm": "candidate",
+   "pair_key": "LRE138_T39",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 462,
+   "episode": "LRE138",
+   "turn": 39,
+   "case_id": "LRE138_T39",
+   "arm": "parent",
+   "pair_key": "LRE138_T39",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 463,
+   "episode": "LRE138",
+   "turn": 40,
+   "case_id": "LRE138_T40",
+   "arm": "candidate",
+   "pair_key": "LRE138_T40",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 464,
+   "episode": "LRE138",
+   "turn": 40,
+   "case_id": "LRE138_T40",
+   "arm": "parent",
+   "pair_key": "LRE138_T40",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  }
+ ]
+}

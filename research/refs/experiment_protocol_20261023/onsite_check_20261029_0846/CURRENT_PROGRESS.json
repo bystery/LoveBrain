@@ -1,0 +1,757 @@
+{
+  "observed_at": "2026-10-29T08:48:24.346653+08:00",
+  "batches": [
+    {
+      "batch": "S1",
+      "ledger_counts": {
+        "authorization_scope": 1,
+        "attempt_started": 96,
+        "attempt_completed": 96
+      },
+      "ledger_mtime": "2026-10-28T13:37:23.989384+08:00",
+      "arms": {
+        "parent": "reference_product_v1",
+        "candidate": "action_policy_r1"
+      },
+      "paired": {
+        "wins_candidate": 32,
+        "wins_parent": 4,
+        "ties": 12,
+        "n": 48
+      },
+      "dimensions": {
+        "parent": {
+          "boundary": 2.812,
+          "emotion_relation": 2.2,
+          "factuality": 2.778,
+          "goal": 2.81,
+          "initiative": 2.333,
+          "interaction": 2.605,
+          "memory_use": 2.419,
+          "time_state": 2.875
+        },
+        "candidate": {
+          "boundary": 2.75,
+          "emotion_relation": 2.567,
+          "factuality": 3.0,
+          "goal": 2.905,
+          "initiative": 2.778,
+          "interaction": 2.93,
+          "memory_use": 2.871,
+          "time_state": 2.812
+        }
+      },
+      "denominators": {
+        "parent": {
+          "boundary": 16,
+          "emotion_relation": 30,
+          "factuality": 9,
+          "goal": 21,
+          "initiative": 9,
+          "interaction": 43,
+          "memory_use": 31,
+          "time_state": 16
+        },
+        "candidate": {
+          "boundary": 16,
+          "emotion_relation": 30,
+          "factuality": 9,
+          "goal": 21,
+          "initiative": 9,
+          "interaction": 43,
+          "memory_use": 31,
+          "time_state": 16
+        }
+      },
+      "coverage": {
+        "positions_in_answers": 48,
+        "positions_judged": 48,
+        "unjudged_positions": [],
+        "missing_from_answers": [],
+        "unrated_due_to_binding": [],
+        "dims_scored_off_card": [],
+        "cells_per_arm": 175
+      },
+      "five_layer_delivery": {
+        "reference_product_v1": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 48,
+          "P_protocol_failures": 2,
+          "P_veto_kinds": {
+            "illegal_source_id:t5_0": 1,
+            "json_schema_broken": 1
+          },
+          "C_usable_primary": 48,
+          "C_no_primary": 0,
+          "C_legal_no_reply": 0,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 326,
+          "S_semantic_positions_judged": 48,
+          "W_user_willing": "unknown（AI 不代投）"
+        },
+        "action_policy_r1": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 48,
+          "P_protocol_failures": 3,
+          "P_veto_kinds": {
+            "json_schema_broken": 3
+          },
+          "C_usable_primary": 48,
+          "C_no_primary": 0,
+          "C_legal_no_reply": 0,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 315,
+          "S_semantic_positions_judged": 48,
+          "W_user_willing": "unknown（AI 不代投）"
+        }
+      }
+    },
+    {
+      "batch": "S2",
+      "ledger_counts": {
+        "authorization_scope": 1,
+        "attempt_started": 24,
+        "attempt_completed": 24
+      },
+      "ledger_mtime": "2026-10-28T13:48:57.816137+08:00",
+      "arms": {
+        "parent": "reference_product_v1",
+        "candidate": "action_policy_r1"
+      },
+      "paired": {
+        "wins_candidate": 9,
+        "wins_parent": 0,
+        "ties": 1,
+        "n": 10
+      },
+      "dimensions": {
+        "parent": {
+          "boundary": 2.333,
+          "emotion_relation": 2.0,
+          "factuality": 3.0,
+          "goal": 2.6,
+          "initiative": 2.0,
+          "interaction": 2.111,
+          "memory_use": 2.0,
+          "time_state": 2.167
+        },
+        "candidate": {
+          "boundary": 2.833,
+          "emotion_relation": 3.0,
+          "factuality": 3.0,
+          "goal": 2.7,
+          "initiative": 3.0,
+          "interaction": 2.889,
+          "memory_use": 3.0,
+          "time_state": 3.0
+        }
+      },
+      "denominators": {
+        "parent": {
+          "boundary": 6,
+          "emotion_relation": 5,
+          "factuality": 1,
+          "goal": 10,
+          "initiative": 1,
+          "interaction": 9,
+          "memory_use": 2,
+          "time_state": 6
+        },
+        "candidate": {
+          "boundary": 6,
+          "emotion_relation": 5,
+          "factuality": 1,
+          "goal": 10,
+          "initiative": 1,
+          "interaction": 9,
+          "memory_use": 2,
+          "time_state": 6
+        }
+      },
+      "coverage": {
+        "positions_in_answers": 12,
+        "positions_judged": 10,
+        "unjudged_positions": [
+          "AK09_T01",
+          "AK12_T01"
+        ],
+        "missing_from_answers": [],
+        "unrated_due_to_binding": [],
+        "dims_scored_off_card": [],
+        "cells_per_arm": 40
+      },
+      "five_layer_delivery": {
+        "reference_product_v1": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 12,
+          "P_protocol_failures": 0,
+          "P_veto_kinds": {},
+          "C_usable_primary": 12,
+          "C_no_primary": 0,
+          "C_legal_no_reply": 0,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 80,
+          "S_semantic_positions_judged": 10,
+          "W_user_willing": "unknown（AI 不代投）"
+        },
+        "action_policy_r1": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 12,
+          "P_protocol_failures": 3,
+          "P_veto_kinds": {
+            "json_schema_broken": 3
+          },
+          "C_usable_primary": 10,
+          "C_no_primary": 2,
+          "C_legal_no_reply": 0,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 64,
+          "S_semantic_positions_judged": 10,
+          "W_user_willing": "unknown（AI 不代投）"
+        }
+      }
+    },
+    {
+      "batch": "S2R",
+      "ledger_counts": {
+        "authorization_scope": 1,
+        "attempt_started": 24,
+        "attempt_completed": 24
+      },
+      "ledger_mtime": "2026-10-28T16:47:19.922971+08:00",
+      "arms": {
+        "parent": "reference_product_v1",
+        "candidate": "action_policy_r2"
+      },
+      "paired": {
+        "wins_candidate": 7,
+        "wins_parent": 0,
+        "ties": 3,
+        "n": 10
+      },
+      "dimensions": {
+        "parent": {
+          "boundary": 2.667,
+          "emotion_relation": 2.4,
+          "factuality": 3.0,
+          "goal": 2.8,
+          "initiative": 2.0,
+          "interaction": 2.222,
+          "memory_use": 2.5,
+          "time_state": 2.5
+        },
+        "candidate": {
+          "boundary": 2.667,
+          "emotion_relation": 3.0,
+          "factuality": 3.0,
+          "goal": 2.8,
+          "initiative": 3.0,
+          "interaction": 3.0,
+          "memory_use": 3.0,
+          "time_state": 2.833
+        }
+      },
+      "denominators": {
+        "parent": {
+          "boundary": 6,
+          "emotion_relation": 5,
+          "factuality": 1,
+          "goal": 10,
+          "initiative": 1,
+          "interaction": 9,
+          "memory_use": 2,
+          "time_state": 6
+        },
+        "candidate": {
+          "boundary": 6,
+          "emotion_relation": 5,
+          "factuality": 1,
+          "goal": 10,
+          "initiative": 1,
+          "interaction": 9,
+          "memory_use": 2,
+          "time_state": 6
+        }
+      },
+      "coverage": {
+        "positions_in_answers": 12,
+        "positions_judged": 10,
+        "unjudged_positions": [
+          "AK09_T01",
+          "AK12_T01"
+        ],
+        "missing_from_answers": [],
+        "unrated_due_to_binding": [],
+        "dims_scored_off_card": [],
+        "cells_per_arm": 40
+      },
+      "five_layer_delivery": {
+        "reference_product_v1": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 12,
+          "P_protocol_failures": 0,
+          "P_veto_kinds": {},
+          "C_usable_primary": 12,
+          "C_no_primary": 0,
+          "C_legal_no_reply": 0,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 81,
+          "S_semantic_positions_judged": 10,
+          "W_user_willing": "unknown（AI 不代投）"
+        },
+        "action_policy_r2": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 12,
+          "P_protocol_failures": 1,
+          "P_veto_kinds": {
+            "json_schema_broken": 1
+          },
+          "C_usable_primary": 10,
+          "C_no_primary": 2,
+          "C_legal_no_reply": 2,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 69,
+          "S_semantic_positions_judged": 10,
+          "W_user_willing": "unknown（AI 不代投）"
+        }
+      }
+    },
+    {
+      "batch": "S3",
+      "ledger_counts": {
+        "authorization_scope": 1,
+        "attempt_started": 24,
+        "attempt_completed": 24
+      },
+      "ledger_mtime": "2026-10-28T17:37:09.471762+08:00",
+      "arms": {
+        "parent": "v6_integrated",
+        "candidate": "action_policy_r1"
+      },
+      "paired": {
+        "wins_candidate": 2,
+        "wins_parent": 3,
+        "ties": 5,
+        "n": 10
+      },
+      "dimensions": {
+        "parent": {
+          "boundary": 2.833,
+          "emotion_relation": 3.0,
+          "factuality": 3.0,
+          "goal": 2.9,
+          "initiative": 3.0,
+          "interaction": 2.889,
+          "memory_use": 2.5,
+          "time_state": 3.0
+        },
+        "candidate": {
+          "boundary": 3.0,
+          "emotion_relation": 3.0,
+          "factuality": 3.0,
+          "goal": 2.7,
+          "initiative": 3.0,
+          "interaction": 2.778,
+          "memory_use": 3.0,
+          "time_state": 2.833
+        }
+      },
+      "denominators": {
+        "parent": {
+          "boundary": 6,
+          "emotion_relation": 5,
+          "factuality": 1,
+          "goal": 10,
+          "initiative": 1,
+          "interaction": 9,
+          "memory_use": 2,
+          "time_state": 6
+        },
+        "candidate": {
+          "boundary": 6,
+          "emotion_relation": 5,
+          "factuality": 1,
+          "goal": 10,
+          "initiative": 1,
+          "interaction": 9,
+          "memory_use": 2,
+          "time_state": 6
+        }
+      },
+      "coverage": {
+        "positions_in_answers": 12,
+        "positions_judged": 10,
+        "unjudged_positions": [
+          "AK09_T01",
+          "AK12_T01"
+        ],
+        "missing_from_answers": [],
+        "unrated_due_to_binding": [],
+        "dims_scored_off_card": [],
+        "cells_per_arm": 40
+      },
+      "five_layer_delivery": {
+        "v6_integrated": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 12,
+          "P_protocol_failures": 2,
+          "P_veto_kinds": {
+            "json_schema_broken": 2
+          },
+          "C_usable_primary": 12,
+          "C_no_primary": 0,
+          "C_legal_no_reply": 0,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 72,
+          "S_semantic_positions_judged": 10,
+          "W_user_willing": "unknown（AI 不代投）"
+        },
+        "action_policy_r1": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 12,
+          "P_protocol_failures": 3,
+          "P_veto_kinds": {
+            "json_schema_broken": 3
+          },
+          "C_usable_primary": 10,
+          "C_no_primary": 2,
+          "C_legal_no_reply": 0,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 66,
+          "S_semantic_positions_judged": 10,
+          "W_user_willing": "unknown（AI 不代投）"
+        }
+      }
+    },
+    {
+      "batch": "D1",
+      "ledger_counts": {
+        "authorization_scope": 1,
+        "attempt_started": 32,
+        "attempt_completed": 32
+      },
+      "ledger_mtime": "2026-10-28T18:08:27.725265+08:00",
+      "arms": {
+        "parent": "reference_product_v1",
+        "candidate": "action_policy_r2"
+      },
+      "paired": {
+        "wins_candidate": 5,
+        "wins_parent": 3,
+        "ties": 5,
+        "n": 13
+      },
+      "dimensions": {
+        "parent": {
+          "attribution": 3.0,
+          "boundary": 3.0,
+          "emotion_relation": 2.5,
+          "factuality": 3.0,
+          "goal": 2.875,
+          "initiative": 2.9,
+          "interaction": 2.0,
+          "memory_use": 2.5,
+          "time_state": 2.875
+        },
+        "candidate": {
+          "attribution": 3.0,
+          "boundary": 3.0,
+          "emotion_relation": 3.0,
+          "factuality": 3.0,
+          "goal": 3.0,
+          "initiative": 2.8,
+          "interaction": 3.0,
+          "memory_use": 2.875,
+          "time_state": 2.875
+        }
+      },
+      "denominators": {
+        "parent": {
+          "attribution": 3,
+          "boundary": 2,
+          "emotion_relation": 4,
+          "factuality": 8,
+          "goal": 8,
+          "initiative": 10,
+          "interaction": 1,
+          "memory_use": 8,
+          "time_state": 8
+        },
+        "candidate": {
+          "attribution": 3,
+          "boundary": 2,
+          "emotion_relation": 4,
+          "factuality": 8,
+          "goal": 8,
+          "initiative": 10,
+          "interaction": 1,
+          "memory_use": 8,
+          "time_state": 8
+        }
+      },
+      "coverage": {
+        "positions_in_answers": 16,
+        "positions_judged": 13,
+        "unjudged_positions": [
+          "D01_T08",
+          "D02_T06",
+          "D02_T08"
+        ],
+        "missing_from_answers": [],
+        "unrated_due_to_binding": [],
+        "dims_scored_off_card": [],
+        "cells_per_arm": 52
+      },
+      "five_layer_delivery": {
+        "reference_product_v1": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 16,
+          "P_protocol_failures": 0,
+          "P_veto_kinds": {},
+          "C_usable_primary": 16,
+          "C_no_primary": 0,
+          "C_legal_no_reply": 0,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 108,
+          "S_semantic_positions_judged": 13,
+          "W_user_willing": "unknown（AI 不代投）"
+        },
+        "action_policy_r2": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 16,
+          "P_protocol_failures": 0,
+          "P_veto_kinds": {},
+          "C_usable_primary": 13,
+          "C_no_primary": 3,
+          "C_legal_no_reply": 3,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 88,
+          "S_semantic_positions_judged": 13,
+          "W_user_willing": "unknown（AI 不代投）"
+        }
+      }
+    },
+    {
+      "batch": "R3A",
+      "ledger_counts": {
+        "authorization_scope": 1,
+        "attempt_started": 48,
+        "attempt_completed": 48
+      },
+      "ledger_mtime": "2026-10-28T20:12:05.327734+08:00",
+      "arms": {
+        "parent": "action_policy_r2",
+        "candidate": "action_policy_r3"
+      },
+      "paired": {
+        "wins_candidate": 0,
+        "wins_parent": 1,
+        "ties": 20,
+        "n": 21
+      },
+      "dimensions": {
+        "parent": {
+          "attribution": 3.0,
+          "boundary": 3.0,
+          "emotion_relation": 3.0,
+          "factuality": 3.0,
+          "goal": 3.0,
+          "initiative": 3.0,
+          "interaction": 3.0,
+          "memory_use": 3.0,
+          "time_state": 3.0
+        },
+        "candidate": {
+          "attribution": 3.0,
+          "boundary": 3.0,
+          "emotion_relation": 3.0,
+          "factuality": 3.0,
+          "goal": 3.0,
+          "initiative": 3.0,
+          "interaction": 3.0,
+          "memory_use": 3.0,
+          "time_state": 2.923
+        }
+      },
+      "denominators": {
+        "parent": {
+          "attribution": 3,
+          "boundary": 9,
+          "emotion_relation": 9,
+          "factuality": 10,
+          "goal": 10,
+          "initiative": 13,
+          "interaction": 3,
+          "memory_use": 9,
+          "time_state": 13
+        },
+        "candidate": {
+          "attribution": 3,
+          "boundary": 9,
+          "emotion_relation": 9,
+          "factuality": 10,
+          "goal": 10,
+          "initiative": 13,
+          "interaction": 3,
+          "memory_use": 9,
+          "time_state": 13
+        }
+      },
+      "coverage": {
+        "positions_in_answers": 24,
+        "positions_judged": 21,
+        "unjudged_positions": [
+          "D01_T08",
+          "D02_T06",
+          "D02_T08"
+        ],
+        "missing_from_answers": [],
+        "unrated_due_to_binding": [],
+        "dims_scored_off_card": [],
+        "cells_per_arm": 79
+      },
+      "five_layer_delivery": {
+        "action_policy_r2": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 24,
+          "P_protocol_failures": 0,
+          "P_veto_kinds": {},
+          "C_usable_primary": 20,
+          "C_no_primary": 4,
+          "C_legal_no_reply": 4,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 123,
+          "S_semantic_positions_judged": 21,
+          "W_user_willing": "unknown（AI 不代投）"
+        },
+        "action_policy_r3": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 24,
+          "P_protocol_failures": 1,
+          "P_veto_kinds": {
+            "json_schema_broken": 1
+          },
+          "C_usable_primary": 24,
+          "C_no_primary": 0,
+          "C_legal_no_reply": 0,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 142,
+          "S_semantic_positions_judged": 21,
+          "W_user_willing": "unknown（AI 不代投）"
+        }
+      }
+    },
+    {
+      "batch": "R3B",
+      "ledger_counts": {
+        "authorization_scope": 1,
+        "attempt_started": 12,
+        "attempt_completed": 12
+      },
+      "ledger_mtime": "2026-10-28T19:41:33.660255+08:00",
+      "arms": {
+        "parent": "reference_product_v1",
+        "candidate": "action_policy_r3"
+      },
+      "paired": {
+        "wins_candidate": 1,
+        "wins_parent": 0,
+        "ties": 5,
+        "n": 6
+      },
+      "dimensions": {
+        "parent": {
+          "boundary": 2.8,
+          "emotion_relation": 3.0,
+          "factuality": 2.5,
+          "goal": 3.0,
+          "initiative": 3.0,
+          "memory_use": 3.0,
+          "time_state": 3.0
+        },
+        "candidate": {
+          "boundary": 3.0,
+          "emotion_relation": 3.0,
+          "factuality": 3.0,
+          "goal": 3.0,
+          "initiative": 3.0,
+          "memory_use": 3.0,
+          "time_state": 3.0
+        }
+      },
+      "denominators": {
+        "parent": {
+          "boundary": 5,
+          "emotion_relation": 3,
+          "factuality": 2,
+          "goal": 2,
+          "initiative": 3,
+          "memory_use": 1,
+          "time_state": 3
+        },
+        "candidate": {
+          "boundary": 5,
+          "emotion_relation": 3,
+          "factuality": 2,
+          "goal": 2,
+          "initiative": 3,
+          "memory_use": 1,
+          "time_state": 3
+        }
+      },
+      "coverage": {
+        "positions_in_answers": 6,
+        "positions_judged": 6,
+        "unjudged_positions": [],
+        "missing_from_answers": [],
+        "unrated_due_to_binding": [],
+        "dims_scored_off_card": [],
+        "cells_per_arm": 19
+      },
+      "five_layer_delivery": {
+        "reference_product_v1": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 6,
+          "P_protocol_failures": 0,
+          "P_veto_kinds": {},
+          "C_usable_primary": 6,
+          "C_no_primary": 0,
+          "C_legal_no_reply": 0,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 37,
+          "S_semantic_positions_judged": 6,
+          "W_user_willing": "unknown（AI 不代投）"
+        },
+        "action_policy_r3": {
+          "T_transport_failed_events": 0,
+          "P_protocol_positions": 6,
+          "P_protocol_failures": 0,
+          "P_veto_kinds": {},
+          "C_usable_primary": 6,
+          "C_no_primary": 0,
+          "C_legal_no_reply": 0,
+          "C_empty_without_action": 0,
+          "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+          "C_nonempty_backup_slots": 31,
+          "S_semantic_positions_judged": 6,
+          "W_user_willing": "unknown（AI 不代投）"
+        }
+      }
+    }
+  ],
+  "status": "Historical real comparisons finished; final F0-F6 execution has no new on-disk evidence after 2026-10-29 00:42",
+  "caution": "Quality scores are worker self-review; binding verification is not independent semantic validation. Known closing/no_reply label conflict remains."
+}

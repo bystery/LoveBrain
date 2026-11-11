@@ -1,0 +1,41 @@
+{
+ "kind": "fs1_first_loop_verdict",
+ "date": "2026-10-30",
+ "thresholds": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\global_harness_program_20261030\\W04-03_VERDICT_THRESHOLDS_PREREG.json",
+ "judge_status": "PARTIAL_QUALIFIED(fact/time→B3亲读)",
+ "verdicts": {
+  "A": {
+   "candidate": "E3",
+   "verdict": "ELIMINATE",
+   "blockers": [
+    "severe 增多: cand 2 > parent 0"
+   ],
+   "notes": [
+    "成本交易: candidate completion +34.0%（需报告）",
+    "prompt -18.5%, p50 -16.2%",
+    "双口径保护维（含/不含素材缺陷位）: goal 0.50/0.57; boundary 0.08/0.09; init 0.75/0.81"
+   ],
+   "severe": {
+    "candidate": 2,
+    "parent": 0
+   }
+  },
+  "B": {
+   "candidate": "Bmin",
+   "verdict": "ELIMINATE",
+   "blockers": [
+    "severe 增多: cand 3 > parent 0"
+   ],
+   "notes": [
+    "C1 日常承接接近=False（interact 0.68 / emotion 0.60）",
+    "C2 跨话题/意图弱证实=False（弱维: 无）",
+    "C3 prompt 更短=True（-63.6%）"
+   ],
+   "severe": {
+    "candidate": 3,
+    "parent": 0
+   }
+  }
+ },
+ "w_note": "W 愿发未知不阻塞不代填；跨批横比探索性不进判决"
+}

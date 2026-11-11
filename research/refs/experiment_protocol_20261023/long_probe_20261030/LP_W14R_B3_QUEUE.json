@@ -1,0 +1,105 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W14R",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W14R_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w14r_e061_live_20261102",
+ "n_queued": 3,
+ "queue": [
+  {
+   "pair_id": "LP:E061:E061_T16",
+   "order": "swap",
+   "story": "E061",
+   "cid": "E061_T16",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "",
+   "key_quote": "30 块是贵，不过换来个“没长、医生说挺好”，这钱花得值",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 2,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E061:E061_T20",
+   "order": "swap",
+   "story": "E061",
+   "cid": "E061_T20",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "LEFT把复查日期说成'改到6号'，与已知的8月6日不符且把'8月那次'和'明早翻单'混在一起，属时间/事项状态错误；RIGHT明确8月单子未定、以新单为准并给可执行下一步。",
+   "key_quote": "你翻一下8月那张单子，写没写空腹，没有明天打门诊问一句最稳。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E061:E061_T24",
+   "order": "swap",
+   "story": "E061",
+   "cid": "E061_T24",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "",
+   "key_quote": "明天你不用赶，我提前到，先占好位子等你下班。就是别又在路上随便对付一口，留着肚子。",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 2,
+     "time": 3,
+     "attrib": 2,
+     "memory": 0
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

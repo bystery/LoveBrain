@@ -1,0 +1,36 @@
+{
+ "kind": "b3_personal_read_result",
+ "tag": "W14R",
+ "date": "2026-11-02",
+ "batch": "BATCH-W14R-E061-20261102",
+ "positions": [
+  {
+   "pair_id": "LP:E061:E061_T16",
+   "judge_flag": "candidate severe, note empty",
+   "personal_read": "candidate recommended '把8月6号的新号弄清楚怎么改约'——T15 已确立下次复查即8月6号，无改约事项，属虚构状态需求；其余三变体干净、损失承接正确。判：severe 成立（轻度状态虚构，与 T20 parent 同级）",
+   "verdict": "counted_severe_candidate"
+  },
+  {
+   "pair_id": "LP:E061:E061_T20",
+   "judge_flag": "parent severe, note 详",
+   "personal_read": "parent 把复查日期说成'改到6号'并把'8月空腹'与'明早翻单'混搅；candidate 明确8月单子未定以新单为准并给防晕招，符合卡 unknowns['8月单子的具体要求']。判：severe 成立（归 parent）",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:E061:E061_T24",
+   "judge_flag": "candidate severe, note empty",
+   "personal_read": "candidate 四变体均无事实/状态/边界违例：确认老地方七点、提前到、未翻健康话题、无说教；judge 无 note 且双序判定不一致（swap→parent / main→TIE）。判：拒绝",
+   "verdict": "rejected"
+  }
+ ],
+ "severe_ledger": {
+  "candidate_window_expand_b2": 1,
+  "parent_r9_slim": 1,
+  "raw_judge": {
+   "candidate": 2,
+   "parent": 1
+  },
+  "note": "亲读修正：T24 candidate 拒绝；其余维持"
+ },
+ "gate": "severe(b2) <= severe(parent)（亲读账）：1 <= 1 → PASS"
+}

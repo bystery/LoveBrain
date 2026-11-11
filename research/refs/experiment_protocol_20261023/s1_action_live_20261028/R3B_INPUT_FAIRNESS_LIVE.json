@@ -1,0 +1,97 @@
+{
+ "out": "logs/p08_r3b_live_20261028",
+ "cards": "benchmark/stories_v2/stageD/GRADING_CARDS_R3_DECLINE.json",
+ "episodes": [
+  "D03"
+ ],
+ "arms": [
+  "parent",
+  "candidate"
+ ],
+ "positions_audited": 6,
+ "failures": [],
+ "passed": true,
+ "per_position": [
+  {
+   "case_id": "D03_T01",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 5085
+   },
+   "arm_user_utf16": {
+    "parent": 783,
+    "candidate": 3612
+   },
+   "user_len_diff": 2829
+  },
+  {
+   "case_id": "D03_T02",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 5085
+   },
+   "arm_user_utf16": {
+    "parent": 950,
+    "candidate": 3572
+   },
+   "user_len_diff": 2622
+  },
+  {
+   "case_id": "D03_T03",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 5085
+   },
+   "arm_user_utf16": {
+    "parent": 1102,
+    "candidate": 4059
+   },
+   "user_len_diff": 2957
+  },
+  {
+   "case_id": "D03_T04",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 5085
+   },
+   "arm_user_utf16": {
+    "parent": 1092,
+    "candidate": 4150
+   },
+   "user_len_diff": 3058
+  },
+  {
+   "case_id": "D03_T05",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 5085
+   },
+   "arm_user_utf16": {
+    "parent": 1106,
+    "candidate": 4264
+   },
+   "user_len_diff": 3158
+  },
+  {
+   "case_id": "D03_T06",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 5085
+   },
+   "arm_user_utf16": {
+    "parent": 988,
+    "candidate": 4587
+   },
+   "user_len_diff": 3599
+  },
+  {
+   "case_id": "D03_F8_parent",
+   "note": "末轮未见本臂替身回复回投（可能在预算内被截断）"
+  },
+  {
+   "case_id": "D03_F8_candidate",
+   "note": "末轮未见本臂替身回复回投（可能在预算内被截断）"
+  }
+ ],
+ "rows_total": 8
+}

@@ -1,0 +1,1028 @@
+{
+ "kind": "evidence_index_v1",
+ "generated_by": "build_evidence_index.py",
+ "batches": [
+  {
+   "stage": "S1",
+   "plan_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/S1_ACTION/INTERLEAVE_PLAN.json",
+   "batch_id": "BATCH-S1-ACTION-20261028",
+   "plan_sha256": "19053ee7a20e3a697caf22de2ff1b53239fa1b1947388303476263f46a622d55",
+   "total_attempts": 96,
+   "arms": {
+    "parent": "reference_product_v1",
+    "candidate": "action_policy_r1"
+   },
+   "identity_closure": {
+    "parent": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+    "candidate": "6e450c8f607b9c255171ec9c40c1c4f731461d0ae8b16b045ac7549665b2a46b"
+   },
+   "cards_file": "benchmark/stories_v2/stage2/GRADING_CARDS_E024_E027_E031_E034.json",
+   "live_dir": "logs/p08_s1_live_20261028",
+   "turns_written": {
+    "parent": 48,
+    "candidate": 48
+   },
+   "scorecard": "refs/experiment_protocol_20261023/s1_action_live_20261028/S1_SCORECARD.json",
+   "five_layer_delivery": {
+    "reference_product_v1": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 48,
+     "P_protocol_failures": 2,
+     "P_veto_kinds": {
+      "illegal_source_id:t5_0": 1,
+      "json_schema_broken": 1
+     },
+     "C_usable_primary": 48,
+     "C_no_primary": 0,
+     "C_legal_no_reply": 0,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 326,
+     "S_semantic_positions_judged": 48,
+     "W_user_willing": "unknown（AI 不代投）"
+    },
+    "action_policy_r1": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 48,
+     "P_protocol_failures": 3,
+     "P_veto_kinds": {
+      "json_schema_broken": 3
+     },
+     "C_usable_primary": 48,
+     "C_no_primary": 0,
+     "C_legal_no_reply": 0,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 315,
+     "S_semantic_positions_judged": 48,
+     "W_user_willing": "unknown（AI 不代投）"
+    }
+   },
+   "per_dimension_mean": {
+    "parent": {
+     "boundary": 2.812,
+     "emotion_relation": 2.2,
+     "factuality": 2.778,
+     "goal": 2.81,
+     "initiative": 2.333,
+     "interaction": 2.605,
+     "memory_use": 2.419,
+     "time_state": 2.875
+    },
+    "candidate": {
+     "boundary": 2.75,
+     "emotion_relation": 2.567,
+     "factuality": 3.0,
+     "goal": 2.905,
+     "initiative": 2.778,
+     "interaction": 2.93,
+     "memory_use": 2.871,
+     "time_state": 2.812
+    }
+   },
+   "paired_verdicts": {
+    "wins_candidate": 32,
+    "wins_parent": 4,
+    "ties": 12,
+    "n": 48
+   },
+   "severe_error_count": 0,
+   "resources": {
+    "reference_product_v1": {
+     "prompt_tokens": 354951,
+     "completion_tokens": 13821,
+     "total_tokens": 368772,
+     "tokens_per_position": 7682.8,
+     "latency_p50_ms": 22416,
+     "latency_p95_ms": 60438,
+     "latency_max_ms": 68464,
+     "cache_usage_unknown_positions": 48,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    },
+    "action_policy_r1": {
+     "prompt_tokens": 245499,
+     "completion_tokens": 18201,
+     "total_tokens": 263700,
+     "tokens_per_position": 5493.8,
+     "latency_p50_ms": 22020,
+     "latency_p95_ms": 47085,
+     "latency_max_ms": 55783,
+     "cache_usage_unknown_positions": 48,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    }
+   },
+   "cross_arm_delta": {
+    "total_tokens_change": -28.49,
+    "prompt_change_pct": -30.84,
+    "completion_change_pct": 31.69,
+    "p50_change_pct": -1.77,
+    "p95_change_pct": -22.09
+   },
+   "fairness_audits": [
+    "S1_INPUT_FAIRNESS_CAPTURE.json",
+    "S1_INPUT_FAIRNESS_LIVE.json"
+   ]
+  },
+  {
+   "stage": "S2",
+   "plan_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/S2_ANCHORS/INTERLEAVE_PLAN.json",
+   "batch_id": "BATCH-S2-ANCHORS-20261028",
+   "plan_sha256": "969878a2582b48bc36b570408cc25c56c5a167302c055f3397d27f8c2172367a",
+   "total_attempts": 24,
+   "arms": {
+    "parent": "reference_product_v1",
+    "candidate": "action_policy_r1"
+   },
+   "identity_closure": {
+    "parent": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+    "candidate": "6e450c8f607b9c255171ec9c40c1c4f731461d0ae8b16b045ac7549665b2a46b"
+   },
+   "cards_file": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+   "live_dir": "logs/p08_s2_live_20261028",
+   "turns_written": {
+    "parent": 12,
+    "candidate": 12
+   },
+   "scorecard": "refs/experiment_protocol_20261023/s1_action_live_20261028/S2_SCORECARD.json",
+   "five_layer_delivery": {
+    "reference_product_v1": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 12,
+     "P_protocol_failures": 0,
+     "P_veto_kinds": {},
+     "C_usable_primary": 12,
+     "C_no_primary": 0,
+     "C_legal_no_reply": 0,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 80,
+     "S_semantic_positions_judged": 10,
+     "W_user_willing": "unknown（AI 不代投）"
+    },
+    "action_policy_r1": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 12,
+     "P_protocol_failures": 3,
+     "P_veto_kinds": {
+      "json_schema_broken": 3
+     },
+     "C_usable_primary": 10,
+     "C_no_primary": 2,
+     "C_legal_no_reply": 0,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 64,
+     "S_semantic_positions_judged": 10,
+     "W_user_willing": "unknown（AI 不代投）"
+    }
+   },
+   "per_dimension_mean": {
+    "parent": {
+     "boundary": 2.333,
+     "emotion_relation": 2.0,
+     "factuality": 3.0,
+     "goal": 2.6,
+     "initiative": 2.0,
+     "interaction": 2.111,
+     "memory_use": 2.0,
+     "time_state": 2.167
+    },
+    "candidate": {
+     "boundary": 2.833,
+     "emotion_relation": 3.0,
+     "factuality": 3.0,
+     "goal": 2.7,
+     "initiative": 3.0,
+     "interaction": 2.889,
+     "memory_use": 3.0,
+     "time_state": 3.0
+    }
+   },
+   "paired_verdicts": {
+    "wins_candidate": 9,
+    "wins_parent": 0,
+    "ties": 1,
+    "n": 10
+   },
+   "severe_error_count": 1,
+   "resources": {
+    "reference_product_v1": {
+     "prompt_tokens": 87753,
+     "completion_tokens": 4004,
+     "total_tokens": 91757,
+     "tokens_per_position": 7646.4,
+     "latency_p50_ms": 23589,
+     "latency_p95_ms": 33350,
+     "latency_max_ms": 37675,
+     "cache_usage_unknown_positions": 12,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    },
+    "action_policy_r1": {
+     "prompt_tokens": 60755,
+     "completion_tokens": 5017,
+     "total_tokens": 65772,
+     "tokens_per_position": 5481.0,
+     "latency_p50_ms": 22899,
+     "latency_p95_ms": 59638,
+     "latency_max_ms": 85778,
+     "cache_usage_unknown_positions": 12,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    }
+   },
+   "cross_arm_delta": {
+    "total_tokens_change": -28.32,
+    "prompt_change_pct": -30.77,
+    "completion_change_pct": 25.3,
+    "p50_change_pct": -2.93,
+    "p95_change_pct": 78.82
+   },
+   "fairness_audits": [
+    "S2_INPUT_FAIRNESS_CAPTURE.json"
+   ]
+  },
+  {
+   "stage": "S2R",
+   "plan_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/S2R_RETEST/INTERLEAVE_PLAN.json",
+   "batch_id": "BATCH-S2R-FIX-20261028",
+   "plan_sha256": "92369c27b44f09763c07eff59fe4b915b2b6a84e158c863d0655be5408744bca",
+   "total_attempts": 24,
+   "arms": {
+    "parent": "reference_product_v1",
+    "candidate": "action_policy_r2"
+   },
+   "identity_closure": {
+    "parent": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+    "candidate": "352c0c063e96a6dc728ca54b95c12aeaf8321aa4798d7a4e3c9f000679cb7333"
+   },
+   "cards_file": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+   "live_dir": "logs/p08_s2r_live_20261028",
+   "turns_written": {
+    "parent": 12,
+    "candidate": 12
+   },
+   "scorecard": "refs/experiment_protocol_20261023/s1_action_live_20261028/S2R_SCORECARD.json",
+   "five_layer_delivery": {
+    "reference_product_v1": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 12,
+     "P_protocol_failures": 0,
+     "P_veto_kinds": {},
+     "C_usable_primary": 12,
+     "C_no_primary": 0,
+     "C_legal_no_reply": 0,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 81,
+     "S_semantic_positions_judged": 10,
+     "W_user_willing": "unknown（AI 不代投）"
+    },
+    "action_policy_r2": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 12,
+     "P_protocol_failures": 1,
+     "P_veto_kinds": {
+      "json_schema_broken": 1
+     },
+     "C_usable_primary": 10,
+     "C_no_primary": 2,
+     "C_legal_no_reply": 2,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 69,
+     "S_semantic_positions_judged": 10,
+     "W_user_willing": "unknown（AI 不代投）"
+    }
+   },
+   "per_dimension_mean": {
+    "parent": {
+     "boundary": 2.667,
+     "emotion_relation": 2.4,
+     "factuality": 3.0,
+     "goal": 2.8,
+     "initiative": 2.0,
+     "interaction": 2.222,
+     "memory_use": 2.5,
+     "time_state": 2.5
+    },
+    "candidate": {
+     "boundary": 2.667,
+     "emotion_relation": 3.0,
+     "factuality": 3.0,
+     "goal": 2.8,
+     "initiative": 3.0,
+     "interaction": 3.0,
+     "memory_use": 3.0,
+     "time_state": 2.833
+    }
+   },
+   "paired_verdicts": {
+    "wins_candidate": 7,
+    "wins_parent": 0,
+    "ties": 3,
+    "n": 10
+   },
+   "severe_error_count": 0,
+   "resources": {
+    "reference_product_v1": {
+     "prompt_tokens": 87753,
+     "completion_tokens": 4046,
+     "total_tokens": 91799,
+     "tokens_per_position": 7649.9,
+     "latency_p50_ms": 27942,
+     "latency_p95_ms": 72593,
+     "latency_max_ms": 83595,
+     "cache_usage_unknown_positions": 12,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    },
+    "action_policy_r2": {
+     "prompt_tokens": 71878,
+     "completion_tokens": 5188,
+     "total_tokens": 77066,
+     "tokens_per_position": 6422.2,
+     "latency_p50_ms": 29068,
+     "latency_p95_ms": 78851,
+     "latency_max_ms": 83319,
+     "cache_usage_unknown_positions": 12,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    }
+   },
+   "cross_arm_delta": {
+    "total_tokens_change": -16.05,
+    "prompt_change_pct": -18.09,
+    "completion_change_pct": 28.23,
+    "p50_change_pct": 4.03,
+    "p95_change_pct": 8.62
+   },
+   "fairness_audits": [
+    "S2R_INPUT_FAIRNESS_CAPTURE.json",
+    "S2R_INPUT_FAIRNESS_LIVE.json"
+   ]
+  },
+  {
+   "stage": "S3",
+   "plan_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/S3_ATTRIB/INTERLEAVE_PLAN.json",
+   "batch_id": "BATCH-S3-ATTRIB-20261028",
+   "plan_sha256": "a877944558078493aa8a614467bb5b868b5085015da1f244770ddf03204302d6",
+   "total_attempts": 24,
+   "arms": {
+    "parent": "v6_integrated",
+    "candidate": "action_policy_r1"
+   },
+   "identity_closure": {
+    "parent": "ac2672ffac3ba82d799a49b753840573cb1933eb71d8110792e5e0f3448c127b",
+    "candidate": "6e450c8f607b9c255171ec9c40c1c4f731461d0ae8b16b045ac7549665b2a46b"
+   },
+   "cards_file": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+   "live_dir": "logs/p08_s3_live_20261028",
+   "turns_written": {
+    "parent": 12,
+    "candidate": 12
+   },
+   "scorecard": "refs/experiment_protocol_20261023/s1_action_live_20261028/S3_SCORECARD.json",
+   "five_layer_delivery": {
+    "v6_integrated": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 12,
+     "P_protocol_failures": 2,
+     "P_veto_kinds": {
+      "json_schema_broken": 2
+     },
+     "C_usable_primary": 12,
+     "C_no_primary": 0,
+     "C_legal_no_reply": 0,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 72,
+     "S_semantic_positions_judged": 10,
+     "W_user_willing": "unknown（AI 不代投）"
+    },
+    "action_policy_r1": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 12,
+     "P_protocol_failures": 3,
+     "P_veto_kinds": {
+      "json_schema_broken": 3
+     },
+     "C_usable_primary": 10,
+     "C_no_primary": 2,
+     "C_legal_no_reply": 0,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 66,
+     "S_semantic_positions_judged": 10,
+     "W_user_willing": "unknown（AI 不代投）"
+    }
+   },
+   "per_dimension_mean": {
+    "parent": {
+     "boundary": 2.833,
+     "emotion_relation": 3.0,
+     "factuality": 3.0,
+     "goal": 2.9,
+     "initiative": 3.0,
+     "interaction": 2.889,
+     "memory_use": 2.5,
+     "time_state": 3.0
+    },
+    "candidate": {
+     "boundary": 3.0,
+     "emotion_relation": 3.0,
+     "factuality": 3.0,
+     "goal": 2.7,
+     "initiative": 3.0,
+     "interaction": 2.778,
+     "memory_use": 3.0,
+     "time_state": 2.833
+    }
+   },
+   "paired_verdicts": {
+    "wins_candidate": 2,
+    "wins_parent": 3,
+    "ties": 5,
+    "n": 10
+   },
+   "severe_error_count": 3,
+   "resources": {
+    "v6_integrated": {
+     "prompt_tokens": 57479,
+     "completion_tokens": 5403,
+     "total_tokens": 62882,
+     "tokens_per_position": 5240.2,
+     "latency_p50_ms": 32515,
+     "latency_p95_ms": 81552,
+     "latency_max_ms": 83745,
+     "cache_usage_unknown_positions": 12,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    },
+    "action_policy_r1": {
+     "prompt_tokens": 60755,
+     "completion_tokens": 5010,
+     "total_tokens": 65765,
+     "tokens_per_position": 5480.4,
+     "latency_p50_ms": 30615,
+     "latency_p95_ms": 49242,
+     "latency_max_ms": 83376,
+     "cache_usage_unknown_positions": 12,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    }
+   },
+   "cross_arm_delta": {
+    "total_tokens_change": 4.58,
+    "prompt_change_pct": 5.7,
+    "completion_change_pct": -7.27,
+    "p50_change_pct": -5.84,
+    "p95_change_pct": -39.62
+   },
+   "fairness_audits": [
+    "S3_INPUT_FAIRNESS_CAPTURE.json",
+    "S3_INPUT_FAIRNESS_LIVE.json"
+   ]
+  },
+  {
+   "stage": "D1",
+   "plan_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/D1_GENERAL/INTERLEAVE_PLAN.json",
+   "batch_id": "BATCH-D1-GENERAL-20261028",
+   "plan_sha256": "aa1da608e948065e650cc96758e1c1d60ac25e1eca76934d3452d83eebb80071",
+   "total_attempts": 32,
+   "arms": {
+    "parent": "reference_product_v1",
+    "candidate": "action_policy_r2"
+   },
+   "identity_closure": {
+    "parent": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+    "candidate": "352c0c063e96a6dc728ca54b95c12aeaf8321aa4798d7a4e3c9f000679cb7333"
+   },
+   "cards_file": "benchmark/stories_v2/stageD/GRADING_CARDS_D01_D02.json",
+   "live_dir": "logs/p08_d1_live_20261028",
+   "turns_written": {
+    "parent": 16,
+    "candidate": 16
+   },
+   "scorecard": "refs/experiment_protocol_20261023/s1_action_live_20261028/D1_SCORECARD.json",
+   "five_layer_delivery": {
+    "reference_product_v1": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 16,
+     "P_protocol_failures": 0,
+     "P_veto_kinds": {},
+     "C_usable_primary": 16,
+     "C_no_primary": 0,
+     "C_legal_no_reply": 0,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 108,
+     "S_semantic_positions_judged": 13,
+     "W_user_willing": "unknown（AI 不代投）"
+    },
+    "action_policy_r2": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 16,
+     "P_protocol_failures": 0,
+     "P_veto_kinds": {},
+     "C_usable_primary": 13,
+     "C_no_primary": 3,
+     "C_legal_no_reply": 3,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 88,
+     "S_semantic_positions_judged": 13,
+     "W_user_willing": "unknown（AI 不代投）"
+    }
+   },
+   "per_dimension_mean": {
+    "parent": {
+     "attribution": 3.0,
+     "boundary": 3.0,
+     "emotion_relation": 2.5,
+     "factuality": 3.0,
+     "goal": 2.875,
+     "initiative": 2.9,
+     "interaction": 2.0,
+     "memory_use": 2.5,
+     "time_state": 2.875
+    },
+    "candidate": {
+     "attribution": 3.0,
+     "boundary": 3.0,
+     "emotion_relation": 3.0,
+     "factuality": 3.0,
+     "goal": 3.0,
+     "initiative": 2.8,
+     "interaction": 3.0,
+     "memory_use": 2.875,
+     "time_state": 2.875
+    }
+   },
+   "paired_verdicts": {
+    "wins_candidate": 5,
+    "wins_parent": 3,
+    "ties": 5,
+    "n": 13
+   },
+   "severe_error_count": 3,
+   "resources": {
+    "reference_product_v1": {
+     "prompt_tokens": 120046,
+     "completion_tokens": 5666,
+     "total_tokens": 125712,
+     "tokens_per_position": 7857.0,
+     "latency_p50_ms": 24632,
+     "latency_p95_ms": 61167,
+     "latency_max_ms": 73340,
+     "cache_usage_unknown_positions": 16,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    },
+    "action_policy_r2": {
+     "prompt_tokens": 104527,
+     "completion_tokens": 8033,
+     "total_tokens": 112560,
+     "tokens_per_position": 7035.0,
+     "latency_p50_ms": 27030,
+     "latency_p95_ms": 50514,
+     "latency_max_ms": 63562,
+     "cache_usage_unknown_positions": 16,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    }
+   },
+   "cross_arm_delta": {
+    "total_tokens_change": -10.46,
+    "prompt_change_pct": -12.93,
+    "completion_change_pct": 41.78,
+    "p50_change_pct": 9.74,
+    "p95_change_pct": -17.42
+   },
+   "fairness_audits": [
+    "D1_INPUT_FAIRNESS_CAPTURE.json",
+    "D1_INPUT_FAIRNESS_LIVE.json"
+   ]
+  },
+  {
+   "stage": "R3A",
+   "plan_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/R3A_RETEST/INTERLEAVE_PLAN.json",
+   "batch_id": "BATCH-R3A-DECLINE-20261028",
+   "plan_sha256": "d378b2643449fdad2b063a425aa6151226c3af24c30127ccdb6628682a55a79a",
+   "total_attempts": 48,
+   "arms": {
+    "parent": "action_policy_r2",
+    "candidate": "action_policy_r3"
+   },
+   "identity_closure": {
+    "parent": "352c0c063e96a6dc728ca54b95c12aeaf8321aa4798d7a4e3c9f000679cb7333",
+    "candidate": "e400275f7e272695b577f4f8536ca0aa2e999420297e2c0840f08d3d79db704c"
+   },
+   "cards_file": "benchmark/stories_v2/stageD/GRADING_CARDS_R3_DECLINE.json",
+   "live_dir": "logs/p08_r3a_live_20261028",
+   "turns_written": {
+    "parent": 24,
+    "candidate": 24
+   },
+   "scorecard": "refs/experiment_protocol_20261023/s1_action_live_20261028/R3A_SCORECARD.json",
+   "five_layer_delivery": {
+    "action_policy_r2": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 24,
+     "P_protocol_failures": 0,
+     "P_veto_kinds": {},
+     "C_usable_primary": 20,
+     "C_no_primary": 4,
+     "C_legal_no_reply": 4,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 123,
+     "S_semantic_positions_judged": 21,
+     "W_user_willing": "unknown（AI 不代投）"
+    },
+    "action_policy_r3": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 24,
+     "P_protocol_failures": 1,
+     "P_veto_kinds": {
+      "json_schema_broken": 1
+     },
+     "C_usable_primary": 24,
+     "C_no_primary": 0,
+     "C_legal_no_reply": 0,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 142,
+     "S_semantic_positions_judged": 21,
+     "W_user_willing": "unknown（AI 不代投）"
+    }
+   },
+   "per_dimension_mean": {
+    "parent": {
+     "attribution": 3.0,
+     "boundary": 3.0,
+     "emotion_relation": 3.0,
+     "factuality": 3.0,
+     "goal": 3.0,
+     "initiative": 3.0,
+     "interaction": 3.0,
+     "memory_use": 3.0,
+     "time_state": 3.0
+    },
+    "candidate": {
+     "attribution": 3.0,
+     "boundary": 3.0,
+     "emotion_relation": 3.0,
+     "factuality": 3.0,
+     "goal": 3.0,
+     "initiative": 3.0,
+     "interaction": 3.0,
+     "memory_use": 3.0,
+     "time_state": 2.923
+    }
+   },
+   "paired_verdicts": {
+    "wins_candidate": 0,
+    "wins_parent": 1,
+    "ties": 20,
+    "n": 21
+   },
+   "severe_error_count": 0,
+   "resources": {
+    "action_policy_r2": {
+     "prompt_tokens": 155571,
+     "completion_tokens": 11138,
+     "total_tokens": 166709,
+     "tokens_per_position": 6946.2,
+     "latency_p50_ms": 35829,
+     "latency_p95_ms": 81764,
+     "latency_max_ms": 92308,
+     "cache_usage_unknown_positions": 24,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    },
+    "action_policy_r3": {
+     "prompt_tokens": 162708,
+     "completion_tokens": 11419,
+     "total_tokens": 174127,
+     "tokens_per_position": 7255.3,
+     "latency_p50_ms": 29035,
+     "latency_p95_ms": 66989,
+     "latency_max_ms": 72264,
+     "cache_usage_unknown_positions": 24,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    }
+   },
+   "cross_arm_delta": {
+    "total_tokens_change": 4.45,
+    "prompt_change_pct": 4.59,
+    "completion_change_pct": 2.52,
+    "p50_change_pct": -18.96,
+    "p95_change_pct": -18.07
+   },
+   "fairness_audits": [
+    "R3A_INPUT_FAIRNESS_CAPTURE.json",
+    "R3A_INPUT_FAIRNESS_LIVE.json"
+   ]
+  },
+  {
+   "stage": "R3B",
+   "plan_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/R3B_CONTROL/INTERLEAVE_PLAN.json",
+   "batch_id": "BATCH-R3B-D03-CONTROL-20261028",
+   "plan_sha256": "47e086649db40481712e95042140b96172bc43119dc21079471bbeac8f250824",
+   "total_attempts": 12,
+   "arms": {
+    "parent": "reference_product_v1",
+    "candidate": "action_policy_r3"
+   },
+   "identity_closure": {
+    "parent": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+    "candidate": "e400275f7e272695b577f4f8536ca0aa2e999420297e2c0840f08d3d79db704c"
+   },
+   "cards_file": "benchmark/stories_v2/stageD/GRADING_CARDS_R3_DECLINE.json",
+   "live_dir": "logs/p08_r3b_live_20261028",
+   "turns_written": {
+    "parent": 6,
+    "candidate": 6
+   },
+   "scorecard": "refs/experiment_protocol_20261023/s1_action_live_20261028/R3B_SCORECARD.json",
+   "five_layer_delivery": {
+    "reference_product_v1": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 6,
+     "P_protocol_failures": 0,
+     "P_veto_kinds": {},
+     "C_usable_primary": 6,
+     "C_no_primary": 0,
+     "C_legal_no_reply": 0,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 37,
+     "S_semantic_positions_judged": 6,
+     "W_user_willing": "unknown（AI 不代投）"
+    },
+    "action_policy_r3": {
+     "T_transport_failed_events": 0,
+     "P_protocol_positions": 6,
+     "P_protocol_failures": 0,
+     "P_veto_kinds": {},
+     "C_usable_primary": 6,
+     "C_no_primary": 0,
+     "C_legal_no_reply": 0,
+     "C_empty_without_action": 0,
+     "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+     "C_nonempty_backup_slots": 31,
+     "S_semantic_positions_judged": 6,
+     "W_user_willing": "unknown（AI 不代投）"
+    }
+   },
+   "per_dimension_mean": {
+    "parent": {
+     "boundary": 2.8,
+     "emotion_relation": 3.0,
+     "factuality": 2.5,
+     "goal": 3.0,
+     "initiative": 3.0,
+     "memory_use": 3.0,
+     "time_state": 3.0
+    },
+    "candidate": {
+     "boundary": 3.0,
+     "emotion_relation": 3.0,
+     "factuality": 3.0,
+     "goal": 3.0,
+     "initiative": 3.0,
+     "memory_use": 3.0,
+     "time_state": 3.0
+    }
+   },
+   "paired_verdicts": {
+    "wins_candidate": 1,
+    "wins_parent": 0,
+    "ties": 5,
+    "n": 6
+   },
+   "severe_error_count": 0,
+   "resources": {
+    "reference_product_v1": {
+     "prompt_tokens": 44655,
+     "completion_tokens": 2035,
+     "total_tokens": 46690,
+     "tokens_per_position": 7781.7,
+     "latency_p50_ms": 42550,
+     "latency_p95_ms": 81292,
+     "latency_max_ms": 81292,
+     "cache_usage_unknown_positions": 6,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    },
+    "action_policy_r3": {
+     "prompt_tokens": 39587,
+     "completion_tokens": 2713,
+     "total_tokens": 42300,
+     "tokens_per_position": 7050.0,
+     "latency_p50_ms": 40283,
+     "latency_p95_ms": 57289,
+     "latency_max_ms": 57289,
+     "cache_usage_unknown_positions": 6,
+     "money": null,
+     "money_reason": "无可核单价，金额恒 null"
+    }
+   },
+   "cross_arm_delta": {
+    "total_tokens_change": -9.4,
+    "prompt_change_pct": -11.35,
+    "completion_change_pct": 33.32,
+    "p50_change_pct": -5.33,
+    "p95_change_pct": -29.53
+   },
+   "fairness_audits": [
+    "R3B_INPUT_FAIRNESS_CAPTURE.json",
+    "R3B_INPUT_FAIRNESS_LIVE.json"
+   ]
+  }
+ ],
+ "ruler_drift": [
+  {
+   "file": "arena/lb_scorer.py",
+   "on_disk_now": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+   "per_plan": {
+    "S1": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+    "S2": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+    "S2R": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+    "S3": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+    "D1": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+    "R3A": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+    "R3B": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65"
+   },
+   "identical_across_plans": true,
+   "matches_disk_now": true
+  },
+  {
+   "file": "benchmark/rubric.md",
+   "on_disk_now": "0b96fc5b0d8bf325ff225bed912fc616437b81782a2ebb19c178f1be6f2e1e86",
+   "per_plan": {
+    "S1": "0b96fc5b0d8bf325ff225bed912fc616437b81782a2ebb19c178f1be6f2e1e86",
+    "S2": "0b96fc5b0d8bf325ff225bed912fc616437b81782a2ebb19c178f1be6f2e1e86",
+    "S2R": "0b96fc5b0d8bf325ff225bed912fc616437b81782a2ebb19c178f1be6f2e1e86",
+    "S3": "0b96fc5b0d8bf325ff225bed912fc616437b81782a2ebb19c178f1be6f2e1e86",
+    "D1": "0b96fc5b0d8bf325ff225bed912fc616437b81782a2ebb19c178f1be6f2e1e86",
+    "R3A": "0b96fc5b0d8bf325ff225bed912fc616437b81782a2ebb19c178f1be6f2e1e86",
+    "R3B": "0b96fc5b0d8bf325ff225bed912fc616437b81782a2ebb19c178f1be6f2e1e86"
+   },
+   "identical_across_plans": true,
+   "matches_disk_now": true
+  },
+  {
+   "file": "arena/isolation/trusted_controller.py",
+   "on_disk_now": "7d5798a9c958c68d18f0dbaaf099b4258e377db03db9194e42a2af9fb56ce80f",
+   "per_plan": {
+    "S1": "7dc3c93a57c41110dd81fd9fc5859d59710a058b97184c033170d920018afd39",
+    "S2": "7dc3c93a57c41110dd81fd9fc5859d59710a058b97184c033170d920018afd39",
+    "S2R": "7d5798a9c958c68d18f0dbaaf099b4258e377db03db9194e42a2af9fb56ce80f",
+    "S3": "7d5798a9c958c68d18f0dbaaf099b4258e377db03db9194e42a2af9fb56ce80f",
+    "D1": "7d5798a9c958c68d18f0dbaaf099b4258e377db03db9194e42a2af9fb56ce80f",
+    "R3A": "7d5798a9c958c68d18f0dbaaf099b4258e377db03db9194e42a2af9fb56ce80f",
+    "R3B": "7d5798a9c958c68d18f0dbaaf099b4258e377db03db9194e42a2af9fb56ce80f"
+   },
+   "identical_across_plans": false,
+   "matches_disk_now": false
+  },
+  {
+   "file": "tools/exam_layered_score.py",
+   "on_disk_now": "9db7335386bf15c4e1e03530d81571152f73377dedb8fd5c3a7da4ef55be24f7",
+   "per_plan": {
+    "S1": "93dc7a86dd294000638d07d218aebe6b65f1e3ef4d6c7e067528b7c4033ea288",
+    "S2": "93dc7a86dd294000638d07d218aebe6b65f1e3ef4d6c7e067528b7c4033ea288",
+    "S2R": "9db7335386bf15c4e1e03530d81571152f73377dedb8fd5c3a7da4ef55be24f7",
+    "S3": "9db7335386bf15c4e1e03530d81571152f73377dedb8fd5c3a7da4ef55be24f7",
+    "D1": "9db7335386bf15c4e1e03530d81571152f73377dedb8fd5c3a7da4ef55be24f7",
+    "R3A": "9db7335386bf15c4e1e03530d81571152f73377dedb8fd5c3a7da4ef55be24f7",
+    "R3B": "9db7335386bf15c4e1e03530d81571152f73377dedb8fd5c3a7da4ef55be24f7"
+   },
+   "identical_across_plans": false,
+   "matches_disk_now": false
+  },
+  {
+   "file": "tools/exam_interleave_plan.py",
+   "on_disk_now": "c27d9600c68f4081188bead73a8fd34ec30e5dd18860c3f22fcf92e733edb177",
+   "per_plan": {
+    "S1": "39b49a4c9d743116421812ae462f57fd938ae440239312fe33443aea0cd6e64e",
+    "S2": "39b49a4c9d743116421812ae462f57fd938ae440239312fe33443aea0cd6e64e",
+    "S2R": "39b49a4c9d743116421812ae462f57fd938ae440239312fe33443aea0cd6e64e",
+    "S3": "39b49a4c9d743116421812ae462f57fd938ae440239312fe33443aea0cd6e64e",
+    "D1": "39b49a4c9d743116421812ae462f57fd938ae440239312fe33443aea0cd6e64e",
+    "R3A": "c27d9600c68f4081188bead73a8fd34ec30e5dd18860c3f22fcf92e733edb177",
+    "R3B": "c27d9600c68f4081188bead73a8fd34ec30e5dd18860c3f22fcf92e733edb177"
+   },
+   "identical_across_plans": false,
+   "matches_disk_now": false
+  },
+  {
+   "file": "arena/lb_runner.py",
+   "on_disk_now": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+   "per_plan": {
+    "S1": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+    "S2": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+    "S2R": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+    "S3": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+    "D1": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+    "R3A": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+    "R3B": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3"
+   },
+   "identical_across_plans": true,
+   "matches_disk_now": true
+  },
+  {
+   "file": "arena/protocol_public.py",
+   "on_disk_now": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7",
+   "per_plan": {
+    "S1": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7",
+    "S2": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7",
+    "S2R": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7",
+    "S3": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7",
+    "D1": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7",
+    "R3A": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7",
+    "R3B": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7"
+   },
+   "identical_across_plans": true,
+   "matches_disk_now": true
+  }
+ ],
+ "ledgers": [
+  {
+   "stage": "S1",
+   "authorization_id": "AUTH-P08-S1-20261028-01",
+   "distinct_attempt_ids": 96,
+   "events": {
+    "authorization_scope": 1,
+    "attempt_started": 96,
+    "attempt_completed": 96
+   }
+  },
+  {
+   "stage": "S2",
+   "authorization_id": "AUTH-P08-S2-20261028-01",
+   "distinct_attempt_ids": 24,
+   "events": {
+    "authorization_scope": 1,
+    "attempt_started": 24,
+    "attempt_completed": 24
+   }
+  },
+  {
+   "stage": "S2R",
+   "authorization_id": "AUTH-P08-S2R-20261028-01",
+   "distinct_attempt_ids": 24,
+   "events": {
+    "authorization_scope": 1,
+    "attempt_started": 24,
+    "attempt_completed": 24
+   }
+  },
+  {
+   "stage": "S3",
+   "authorization_id": "AUTH-P08-S3-20261028-01",
+   "distinct_attempt_ids": 24,
+   "events": {
+    "authorization_scope": 1,
+    "attempt_started": 24,
+    "attempt_completed": 24
+   }
+  },
+  {
+   "stage": "D1",
+   "authorization_id": "AUTH-P08-D1-20261028-01",
+   "distinct_attempt_ids": 32,
+   "events": {
+    "authorization_scope": 1,
+    "attempt_started": 32,
+    "attempt_completed": 32
+   }
+  },
+  {
+   "stage": "R3A",
+   "authorization_id": "AUTH-P08-R3A-20261028-01",
+   "distinct_attempt_ids": 48,
+   "events": {
+    "authorization_scope": 1,
+    "attempt_started": 48,
+    "attempt_completed": 48
+   }
+  },
+  {
+   "stage": "R3B",
+   "authorization_id": "AUTH-P08-R3B-20261028-01",
+   "distinct_attempt_ids": 12,
+   "events": {
+    "authorization_scope": 1,
+    "attempt_started": 12,
+    "attempt_completed": 12
+   }
+  }
+ ],
+ "grand_total_physical_attempts_registered": 260
+}

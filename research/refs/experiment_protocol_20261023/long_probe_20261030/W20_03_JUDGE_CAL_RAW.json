@@ -1,0 +1,4558 @@
+{
+ "kind": "w20_03_judge_cal_raw",
+ "date": "2026-11-03",
+ "authorization": "AUTH-W20-JUDGE-CAL-20261103-01",
+ "n_planned": 102,
+ "n_completed": 102,
+ "budget": {
+  "authorization_id": "AUTH-W20-JUDGE-CAL-20261103-01",
+  "used": 114,
+  "max_attempts": 160,
+  "remaining": 46,
+  "closed": false,
+  "close_reason": null,
+  "ledger": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-W20-JUDGE-CAL-20261103-01.jsonl"
+ },
+ "records": [
+  {
+   "pair_id": "W20CAL:AK01:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT把周五六点、南门集合点、两圈和带水都定死，并回扣了动作限制；RIGHT只确认六点并含糊说“小区门口”，未定到具体一侧，也没回扣“先别跑”的约束，主动性偏弱。",
+    "winner": "LEFT",
+    "key_quote": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT把周五六点、南门集合点、两圈和带水都定死，并回扣了动作限制；RIGHT只确认六点并含糊说“小区门口”，未定到具体一侧，也没回扣“先别跑”的约束，主动性偏弱。\",\"winner\":\"LEFT\",\"key_quote\":\"行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水\"}",
+    "_usage": {
+     "prompt_tokens": 1099,
+     "completion_tokens": 176,
+     "total_tokens": 1275
+    }
+   },
+   "left": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水",
+   "right": "六点行，你从医院过来正好绕到小区门口，我在那儿等你。"
+  },
+  {
+   "pair_id": "W20CAL:AK01:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 2,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两侧都锁定周五六点与集合点；右侧更明确（南门+带水+距离回扣），左侧集合点为小区门口，表述略含糊但成立。",
+    "winner": "RIGHT",
+    "key_quote": "周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两侧都锁定周五六点与集合点；右侧更明确（南门+带水+距离回扣），左侧集合点为小区门口，表述略含糊但成立。\",\"winner\":\"RIGHT\",\"key_quote\":\"周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水\"}",
+    "_usage": {
+     "prompt_tokens": 1099,
+     "completion_tokens": 150,
+     "total_tokens": 1249
+    }
+   },
+   "left": "六点行，你从医院过来正好绕到小区门口，我在那儿等你。",
+   "right": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水"
+  },
+  {
+   "pair_id": "W20CAL:AK01:neg_b_dumper",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": true
+    },
+    "note": "RIGHT 把集合点定在'小区门口'但未确认、且断言'从医院过来正好顺路'属无据确定化；LEFT 定死南门+带水，仅'两圈'略硬未按她先慢走建议让步",
+    "winner": "LEFT",
+    "key_quote": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":2,\"init\":3,\"emotion\":2},\"R\":{\"goal\":1,\"fact\":1,\"attrib\":3,\"time\":2,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":true},\"note\":\"RIGHT 把集合点定在'小区门口'但未确认、且断言'从医院过来正好顺路'属无据确定化；LEFT 定死南门+带水，仅'两圈'略硬未按她先慢走建议让步\",\"winner\":\"LEFT\",\"key_quote\":\"行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水\"}",
+    "_usage": {
+     "prompt_tokens": 1093,
+     "completion_tokens": 161,
+     "total_tokens": 1254
+    }
+   },
+   "left": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水",
+   "right": "行，六点小区门口见，你从医院过来正好顺路"
+  },
+  {
+   "pair_id": "W20CAL:AK01:neg_b_dumper",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 2,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 用“正好顺路”臆断路线，且未定集合点、未回扣脚伤；RIGHT 当场定死周五六点+南门集合，带水有主动性，但“外圈两圈”沿用了她此前只是脚伤初愈的可快走强度，略带越权定距的风险，不构成严重。",
+    "winner": "RIGHT",
+    "key_quote": "周五晚上我下班早 六点行不 我从医院那边过来",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":1,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":1,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":3,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":3,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 用“正好顺路”臆断路线，且未定集合点、未回扣脚伤；RIGHT 当场定死周五六点+南门集合，带水有主动性，但“外圈两圈”沿用了她此前只是脚伤初愈的可快走强度，略带越权定距的风险，不构成严重。\",\"winner\":\"RIGHT\",\"key_quote\":\"周五晚上我下班早 六点行不 我从医院那边过来\"}",
+    "_usage": {
+     "prompt_tokens": 1093,
+     "completion_tokens": 180,
+     "total_tokens": 1273
+    }
+   },
+   "left": "行，六点小区门口见，你从医院过来正好顺路",
+   "right": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水"
+  },
+  {
+   "pair_id": "W20CAL:AK01:neg_c_service",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 0,
+     "time": 0,
+     "boundary": 0,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "severe": {
+     "L": false,
+     "R": true
+    },
+    "winner": "LEFT",
+    "key_quote": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":0,\"fact\":0,\"attrib\":0,\"time\":0,\"boundary\":0,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"severe\":{\"L\":false,\"R\":true},\"winner\":\"LEFT\",\"key_quote\":\"行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水\"}",
+    "_usage": {
+     "prompt_tokens": 1123,
+     "completion_tokens": 98,
+     "total_tokens": 1221
+    }
+   },
+   "left": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水",
+   "right": "感谢您的分享！关于「行 六点 小区门口那个超市等我」，我为您整理了贴心建议。请问还有什么可以帮您的吗？"
+  },
+  {
+   "pair_id": "W20CAL:AK01:neg_c_service",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": true,
+     "R": false
+    },
+    "note": "LEFT 是客服腔模板回复，把用户自己拟的句子当成引用转述，未确认周五六点也未定集合点，目标完全未落地；RIGHT 当场锁死周五六点、集合点南门、两圈和带水，符合已知背景与脚伤约束。",
+    "winner": "RIGHT",
+    "key_quote": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":1,\"attrib\":1,\"time\":1,\"boundary\":1,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":2,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":2},\"severe\":{\"L\":true,\"R\":false},\"note\":\"LEFT 是客服腔模板回复，把用户自己拟的句子当成引用转述，未确认周五六点也未定集合点，目标完全未落地；RIGHT 当场锁死周五六点、集合点南门、两圈和带水，符合已知背景与脚伤约束。\",\"winner\":\"RIGHT\",\"key_quote\":\"行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水\"}",
+    "_usage": {
+     "prompt_tokens": 1123,
+     "completion_tokens": 183,
+     "total_tokens": 1306
+    }
+   },
+   "left": "感谢您的分享！关于「行 六点 小区门口那个超市等我」，我为您整理了贴心建议。请问还有什么可以帮您的吗？",
+   "right": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水"
+  },
+  {
+   "pair_id": "W20CAL:AK02:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT承认补觉+脚不敢用力两层，改期到周一午后并给平地慢走、随时停，下一步具体；RIGHT减量但把时间丢给“睡到自然醒再说”，未落地，仍停在模糊等待。",
+    "winner": "LEFT",
+    "key_quote": "周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后沿平地慢慢走一段",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":1,\"fact\":3,\"attrib\":3,\"time\":1,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT承认补觉+脚不敢用力两层，改期到周一午后并给平地慢走、随时停，下一步具体；RIGHT减量但把时间丢给“睡到自然醒再说”，未落地，仍停在模糊等待。\",\"winner\":\"LEFT\",\"key_quote\":\"周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后沿平地慢慢走一段\"}",
+    "_usage": {
+     "prompt_tokens": 1092,
+     "completion_tokens": 175,
+     "total_tokens": 1267
+    }
+   },
+   "left": "那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停",
+   "right": "那就别硬定七点。你睡到自然醒，起来了跟我说一句，我们再出门，强度也按你的脚来，不行就走半圈。"
+  },
+  {
+   "pair_id": "W20CAL:AK02:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "双方均未出现硬错。L 承认两层犹豫但落点仍停在“起来了跟我说”的模糊条件式，未给出具体时间地点；R 明确改期到周一午后并加“随时停”，更贴卡面可接受动作，但周一午后仍为提议而非确认，且“那周六就算了”略越界替她取消。"
+    },
+    "winner": "RIGHT",
+    "key_quote": "想走的时候周一午后咱们沿平地慢慢走一段 随时停",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":3,\"init\":1,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false,\"note\":\"双方均未出现硬错。L 承认两层犹豫但落点仍停在“起来了跟我说”的模糊条件式，未给出具体时间地点；R 明确改期到周一午后并加“随时停”，更贴卡面可接受动作，但周一午后仍为提议而非确认，且“那周六就算了”略越界替她取消。\"},\"winner\":\"RIGHT\",\"key_quote\":\"想走的时候周一午后咱们沿平地慢慢走一段 随时停\"}",
+    "_usage": {
+     "prompt_tokens": 1092,
+     "completion_tokens": 197,
+     "total_tokens": 1289
+    }
+   },
+   "left": "那就别硬定七点。你睡到自然醒，起来了跟我说一句，我们再出门，强度也按你的脚来，不行就走半圈。",
+   "right": "那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停"
+  },
+  {
+   "pair_id": "W20CAL:AK02:neg_b_dumper",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT承认两层犹豫并给出改期+減量的具体备选；RIGHT单方面改成下午，时间未确认且未回应补觉的落点",
+    "winner": "LEFT",
+    "key_quote": "那周六就算了 你好好补觉…想走的时候周一午后咱们沿平地慢慢走一段 随时停",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":3,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT承认两层犹豫并给出改期+減量的具体备选；RIGHT单方面改成下午，时间未确认且未回应补觉的落点\",\"winner\":\"LEFT\",\"key_quote\":\"那周六就算了 你好好补觉…想走的时候周一午后咱们沿平地慢慢走一段 随时停\"}",
+    "_usage": {
+     "prompt_tokens": 1074,
+     "completion_tokens": 148,
+     "total_tokens": 1222
+    }
+   },
+   "left": "那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停",
+   "right": "行，那就下午。你睡够了再出来，脚不行我们就散步，不算跑。"
+  },
+  {
+   "pair_id": "W20CAL:AK02:neg_b_dumper",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两侧都承认了补觉与脚伤两层顾虑并降级目标。LEFT改到下午但未定具体时间地点，且仍有'出来'的推动意味；RIGHT主动取消周六、给周一午后平地慢走且随时停，但'想走的时候周一午后'前后有点含糊，等于把落实又交还给她。",
+    "winner": "RIGHT",
+    "key_quote": "脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":1,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两侧都承认了补觉与脚伤两层顾虑并降级目标。LEFT改到下午但未定具体时间地点，且仍有'出来'的推动意味；RIGHT主动取消周六、给周一午后平地慢走且随时停，但'想走的时候周一午后'前后有点含糊，等于把落实又交还给她。\",\"winner\":\"RIGHT\",\"key_quote\":\"脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停\"}",
+    "_usage": {
+     "prompt_tokens": 1074,
+     "completion_tokens": 200,
+     "total_tokens": 1274
+    }
+   },
+   "left": "行，那就下午。你睡够了再出来，脚不行我们就散步，不算跑。",
+   "right": "那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停"
+  },
+  {
+   "pair_id": "W20CAL:AK02:neg_c_service",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 0,
+     "time": 0,
+     "boundary": 0,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "severe": {
+     "L": false,
+     "R": true,
+     "note": "RIGHT为客服模板式套话，未承接对话，且把未发出的拟议话术当作既有内容复述"
+    },
+    "winner": "LEFT",
+    "key_quote": "那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":0,\"fact\":0,\"attrib\":0,\"time\":0,\"boundary\":0,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"severe\":{\"L\":false,\"R\":true,\"note\":\"RIGHT为客服模板式套话，未承接对话，且把未发出的拟议话术当作既有内容复述\"},\"winner\":\"LEFT\",\"key_quote\":\"那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停\"}",
+    "_usage": {
+     "prompt_tokens": 1124,
+     "completion_tokens": 147,
+     "total_tokens": 1271
+    }
+   },
+   "left": "那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停",
+   "right": "感谢您的分享！关于「那就别七点了，睡到自然醒。脚也别硬撑，走路改成慢慢溜一圈，不想动就喝个茶，我照样来。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？"
+  },
+  {
+   "pair_id": "W20CAL:AK02:neg_c_service",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 0,
+     "init": 1,
+     "emotion": 1
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": true,
+     "R": false,
+     "note": "LEFT 是客服式模板套壳，未真正回应她犹豫的两层，反而把用户自己的话当作第三方内容复述并加客套尾巴，互动归零，构成明显框架错位。"
+    },
+    "winner": "RIGHT",
+    "key_quote": "那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":1,\"attrib\":1,\"time\":1,\"boundary\":1,\"memory\":1,\"interact\":0,\"init\":1,\"emotion\":1},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":true,\"R\":false,\"note\":\"LEFT 是客服式模板套壳，未真正回应她犹豫的两层，反而把用户自己的话当作第三方内容复述并加客套尾巴，互动归零，构成明显框架错位。\"},\"winner\":\"RIGHT\",\"key_quote\":\"那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停\"}",
+    "_usage": {
+     "prompt_tokens": 1124,
+     "completion_tokens": 174,
+     "total_tokens": 1298
+    }
+   },
+   "left": "感谢您的分享！关于「那就别七点了，睡到自然醒。脚也别硬撑，走路改成慢慢溜一圈，不想动就喝个茶，我照样来。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？",
+   "right": "那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停"
+  },
+  {
+   "pair_id": "W20CAL:AK03:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "RIGHT在她说连明天也排班时追问下班时间，等于把排班当可调档期，带施压意味；LEFT明确让位、不追问、留开口，符合卡面。",
+    "winner": "LEFT",
+    "key_quote": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":1,\"fact\":2,\"attrib\":3,\"time\":3,\"boundary\":1,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":1},\"severe\":{\"L\":false,\"R\":false},\"note\":\"RIGHT在她说连明天也排班时追问下班时间，等于把排班当可调档期，带施压意味；LEFT明确让位、不追问、留开口，符合卡面。\",\"winner\":\"LEFT\",\"key_quote\":\"行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急\"}",
+    "_usage": {
+     "prompt_tokens": 1027,
+     "completion_tokens": 151,
+     "total_tokens": 1178
+    }
+   },
+   "left": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急",
+   "right": "行，明天你几点下班，我按你的时间走"
+  },
+  {
+   "pair_id": "W20CAL:AK03:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 把落脚点放在追问她明天几点下班，等于换了个方式继续约，没有让位；RIGHT 让她先忙、给出本周都有空的低压力开口，完全符合卡面。RIGHT 未提复健快走节奏略偏，但符合本轮让位要求。",
+    "winner": "RIGHT",
+    "key_quote": "你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急",
+    "_raw": "{\"L\":{\"goal\":1,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":1,\"memory\":1,\"interact\":1,\"init\":1,\"emotion\":1},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 把落脚点放在追问她明天几点下班，等于换了个方式继续约，没有让位；RIGHT 让她先忙、给出本周都有空的低压力开口，完全符合卡面。RIGHT 未提复健快走节奏略偏，但符合本轮让位要求。\",\"winner\":\"RIGHT\",\"key_quote\":\"你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急\"}",
+    "_usage": {
+     "prompt_tokens": 1027,
+     "completion_tokens": 179,
+     "total_tokens": 1206
+    }
+   },
+   "left": "行，明天你几点下班，我按你的时间走",
+   "right": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急"
+  },
+  {
+   "pair_id": "W20CAL:AK03:neg_b_dumper",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 让位到位、不追问、留轻开口，'这周都空'是自陈非替她定；RIGHT 仍把'明晚六点'挂在前面，等于半推着要她回复，让位不够干净",
+    "winner": "LEFT",
+    "key_quote": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":3,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 让位到位、不追问、留轻开口，'这周都空'是自陈非替她定；RIGHT 仍把'明晚六点'挂在前面，等于半推着要她回复，让位不够干净\",\"winner\":\"LEFT\",\"key_quote\":\"行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急\"}",
+    "_usage": {
+     "prompt_tokens": 1031,
+     "completion_tokens": 153,
+     "total_tokens": 1184
+    }
+   },
+   "left": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急",
+   "right": "行，那明晚六点先不定，你下班了跟我说一声。"
+  },
+  {
+   "pair_id": "W20CAL:AK03:neg_b_dumper",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 2,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 把未定的明晚改口为'先不定'并要她下班汇报，稍显追问；RIGHT 先让她顾班上、给弹性窗口且不催，符合本位要求。",
+    "winner": "RIGHT",
+    "key_quote": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":2,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 把未定的明晚改口为'先不定'并要她下班汇报，稍显追问；RIGHT 先让她顾班上、给弹性窗口且不催，符合本位要求。\",\"winner\":\"RIGHT\",\"key_quote\":\"行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急\"}",
+    "_usage": {
+     "prompt_tokens": 1031,
+     "completion_tokens": 148,
+     "total_tokens": 1179
+    }
+   },
+   "left": "行，那明晚六点先不定，你下班了跟我说一声。",
+   "right": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急"
+  },
+  {
+   "pair_id": "W20CAL:AK03:neg_c_service",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 1
+    },
+    "severe": {
+     "L": false,
+     "R": true
+    },
+    "winner": "LEFT",
+    "key_quote": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":0,\"fact\":1,\"attrib\":1,\"time\":1,\"boundary\":1,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":1},\"severe\":{\"L\":false,\"R\":true},\"winner\":\"LEFT\",\"key_quote\":\"行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急\"}",
+    "_usage": {
+     "prompt_tokens": 1064,
+     "completion_tokens": 94,
+     "total_tokens": 1158
+    }
+   },
+   "left": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急",
+   "right": "感谢您的分享！关于「行，明天你几点下班，我照你的时间来。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？"
+  },
+  {
+   "pair_id": "W20CAL:AK03:neg_c_service",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 0,
+     "time": 0,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 1
+    },
+    "R": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": true,
+     "R": false
+    },
+    "note": "LEFT整条是模板化客服话术，把用户没说过的话当成己方回复引用，并加了多余的问候语，没接住她加班的时间约束，人物归属错、时间状态错；RIGHT让她先忙，不追问具体哪天，留了开口，符合本轮让位要求",
+    "winner": "RIGHT",
+    "key_quote": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":1,\"attrib\":0,\"time\":0,\"boundary\":1,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":1},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":true,\"R\":false},\"note\":\"LEFT整条是模板化客服话术，把用户没说过的话当成己方回复引用，并加了多余的问候语，没接住她加班的时间约束，人物归属错、时间状态错；RIGHT让她先忙，不追问具体哪天，留了开口，符合本轮让位要求\",\"winner\":\"RIGHT\",\"key_quote\":\"行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急\"}",
+    "_usage": {
+     "prompt_tokens": 1064,
+     "completion_tokens": 187,
+     "total_tokens": 1251
+    }
+   },
+   "left": "感谢您的分享！关于「行，明天你几点下班，我照你的时间来。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？",
+   "right": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急"
+  },
+  {
+   "pair_id": "W20CAL:AK04:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT逐条复述她的条件（水、不带话、第一排），确定性承接且无添加；RIGHT确认时间但漏掉'坐第一排'与'不带话'这两条明示条件，承接偏薄，未越界也未额外拉人。",
+    "winner": "LEFT",
+    "key_quote": "成 周六八点 我就带瓶水 坐第一排 话一句不带",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":2,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT逐条复述她的条件（水、不带话、第一排），确定性承接且无添加；RIGHT确认时间但漏掉'坐第一排'与'不带话'这两条明示条件，承接偏薄，未越界也未额外拉人。\",\"winner\":\"LEFT\",\"key_quote\":\"成 周六八点 我就带瓶水 坐第一排 话一句不带\"}",
+    "_usage": {
+     "prompt_tokens": 1029,
+     "completion_tokens": 161,
+     "total_tokens": 1190
+    }
+   },
+   "left": "成 周六八点 我就带瓶水 坐第一排 话一句不带",
+   "right": "行，八点我准时到，水我自己带。"
+  },
+  {
+   "pair_id": "W20CAL:AK04:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 2,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "两侧均未虚构安排、未越界加建议；右侧完整承接“带水别带话+第一排”，左侧偏简略但无错。"
+    },
+    "winner": "RIGHT",
+    "key_quote": "成 周六八点 我就带瓶水 坐第一排 话一句不带",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false,\"note\":\"两侧均未虚构安排、未越界加建议；右侧完整承接“带水别带话+第一排”，左侧偏简略但无错。\"},\"winner\":\"RIGHT\",\"key_quote\":\"成 周六八点 我就带瓶水 坐第一排 话一句不带\"}",
+    "_usage": {
+     "prompt_tokens": 1029,
+     "completion_tokens": 132,
+     "total_tokens": 1161
+    }
+   },
+   "left": "行，八点我准时到，水我自己带。",
+   "right": "成 周六八点 我就带瓶水 坐第一排 话一句不带"
+  },
+  {
+   "pair_id": "W20CAL:AK04:neg_b_dumper",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT逐条接住她的三个条件，明确不接话；RIGHT也确认了八点并自占第一排，但把'提前到'当既定安排宣称，自己主动占位略带自作主张的意味，边界略降",
+    "winner": "LEFT",
+    "key_quote": "成 周六八点 我就带瓶水 坐第一排 话一句不带",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":1,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT逐条接住她的三个条件，明确不接话；RIGHT也确认了八点并自占第一排，但把'提前到'当既定安排宣称，自己主动占位略带自作主张的意味，边界略降\",\"winner\":\"LEFT\",\"key_quote\":\"成 周六八点 我就带瓶水 坐第一排 话一句不带\"}",
+    "_usage": {
+     "prompt_tokens": 1035,
+     "completion_tokens": 155,
+     "total_tokens": 1190
+    }
+   },
+   "left": "成 周六八点 我就带瓶水 坐第一排 话一句不带",
+   "right": "行，带水不带话。八点前到，第一排我自己占。"
+  },
+  {
+   "pair_id": "W20CAL:AK04:neg_b_dumper",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "两侧都严格按'带水别带话'接住，确认周六八点与第一排，无加建议无拉人；均自加'提前到'但属行动细节非无据确定化，无严重错误"
+    },
+    "winner": "TIE",
+    "key_quote": "带水不带话。八点前到，第一排我自己占。",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false,\"note\":\"两侧都严格按'带水别带话'接住，确认周六八点与第一排，无加建议无拉人；均自加'提前到'但属行动细节非无据确定化，无严重错误\"},\"winner\":\"TIE\",\"key_quote\":\"带水不带话。八点前到，第一排我自己占。\"}",
+    "_usage": {
+     "prompt_tokens": 1035,
+     "completion_tokens": 146,
+     "total_tokens": 1181
+    }
+   },
+   "left": "行，带水不带话。八点前到，第一排我自己占。",
+   "right": "成 周六八点 我就带瓶水 坐第一排 话一句不带"
+  },
+  {
+   "pair_id": "W20CAL:AK04:neg_c_service",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 1,
+     "time": 0,
+     "boundary": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "severe": {
+     "L": false,
+     "R": true
+    },
+    "winner": "LEFT",
+    "key_quote": "成 周六八点 我就带瓶水 坐第一排 话一句不带",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":0,\"fact\":0,\"attrib\":1,\"time\":0,\"boundary\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"severe\":{\"L\":false,\"R\":true},\"winner\":\"LEFT\",\"key_quote\":\"成 周六八点 我就带瓶水 坐第一排 话一句不带\"}",
+    "_usage": {
+     "prompt_tokens": 1071,
+     "completion_tokens": 84,
+     "total_tokens": 1155
+    }
+   },
+   "left": "成 周六八点 我就带瓶水 坐第一排 话一句不带",
+   "right": "感谢您的分享！关于「行，水带够，话留着散场再说。八点我准时到。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？"
+  },
+  {
+   "pair_id": "W20CAL:AK04:neg_c_service",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 2,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 0,
+     "time": 0,
+     "boundary": 0,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": true,
+     "R": false,
+     "note": "LEFT把角色台词当客服工单套话回应，完全脱戏、无实质内容；RIGHT按约定确认周六八点、只带水不带话，符合损但托底。"
+    },
+    "winner": "RIGHT",
+    "key_quote": "成 周六八点 我就带瓶水 坐第一排 话一句不带",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":0,\"attrib\":0,\"time\":0,\"boundary\":0,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":true,\"R\":false,\"note\":\"LEFT把角色台词当客服工单套话回应，完全脱戏、无实质内容；RIGHT按约定确认周六八点、只带水不带话，符合损但托底。\"},\"winner\":\"RIGHT\",\"key_quote\":\"成 周六八点 我就带瓶水 坐第一排 话一句不带\"}",
+    "_usage": {
+     "prompt_tokens": 1071,
+     "completion_tokens": 142,
+     "total_tokens": 1213
+    }
+   },
+   "left": "感谢您的分享！关于「行，水带够，话留着散场再说。八点我准时到。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？",
+   "right": "成 周六八点 我就带瓶水 坐第一排 话一句不带"
+  },
+  {
+   "pair_id": "W20CAL:AK05:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT答应听且声明不点评，托底不越界；RIGHT答应但转成找不顺的地方，等于当评委，违反'她要的是观众不是评委'。",
+    "winner": "LEFT",
+    "key_quote": "想让我听就说一声 我听 可以不点评 就当对词",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":2,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":1,\"memory\":1,\"interact\":2,\"init\":1,\"emotion\":1},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT答应听且声明不点评，托底不越界；RIGHT答应但转成找不顺的地方，等于当评委，违反'她要的是观众不是评委'。\",\"winner\":\"LEFT\",\"key_quote\":\"想让我听就说一声 我听 可以不点评 就当对词\"}",
+    "_usage": {
+     "prompt_tokens": 1044,
+     "completion_tokens": 139,
+     "total_tokens": 1183
+    }
+   },
+   "left": "想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪",
+   "right": "那就过一遍呗，我听完笑不笑是次要的，主要是帮你把不顺的地方找出来"
+  },
+  {
+   "pair_id": "W20CAL:AK05:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 主动提出'把不顺的地方找出来'，违背她'要观众不要评委'的既往教训，属越界式点评提议；RIGHT 答听、声明不点评、对准词边界，并留给她主导；两侧时间与主动性略有差异",
+    "winner": "RIGHT",
+    "key_quote": "我听 可以不点评 就当对词 你说到哪我听到哪",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":1,\"memory\":1,\"interact\":2,\"init\":1,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":3,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 主动提出'把不顺的地方找出来'，违背她'要观众不要评委'的既往教训，属越界式点评提议；RIGHT 答听、声明不点评、对准词边界，并留给她主导；两侧时间与主动性略有差异\",\"winner\":\"RIGHT\",\"key_quote\":\"我听 可以不点评 就当对词 你说到哪我听到哪\"}",
+    "_usage": {
+     "prompt_tokens": 1044,
+     "completion_tokens": 166,
+     "total_tokens": 1210
+    }
+   },
+   "left": "那就过一遍呗，我听完笑不笑是次要的，主要是帮你把不顺的地方找出来",
+   "right": "想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪"
+  },
+  {
+   "pair_id": "W20CAL:AK05:neg_b_dumper",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 2,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 0,
+     "emotion": 1
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT先答愿意听并声明不点评，正面回应顾虑；RIGHT只给态度、把她的紧张轻推回去，未确认时间与是否真听",
+    "winner": "LEFT",
+    "key_quote": "想让我听就说一声 我听 可以不点评 就当对词",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"R\":{\"goal\":1,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":1,\"interact\":1,\"init\":0,\"emotion\":1},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT先答愿意听并声明不点评，正面回应顾虑；RIGHT只给态度、把她的紧张轻推回去，未确认时间与是否真听\",\"winner\":\"LEFT\",\"key_quote\":\"想让我听就说一声 我听 可以不点评 就当对词\"}",
+    "_usage": {
+     "prompt_tokens": 1032,
+     "completion_tokens": 136,
+     "total_tokens": 1168
+    }
+   },
+   "left": "想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪",
+   "right": "那就过一遍，我笑不笑是我的事，你不用管。"
+  },
+  {
+   "pair_id": "W20CAL:AK05:neg_b_dumper",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "均未误述时间或编排，两侧均答应听并划清不点评；LEFT更损更托底，RIGHT多一步但不催，给到听法与边界。",
+    "winner": "TIE",
+    "key_quote": "我笑不笑是我的事，你不用管",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"均未误述时间或编排，两侧均答应听并划清不点评；LEFT更损更托底，RIGHT多一步但不催，给到听法与边界。\",\"winner\":\"TIE\",\"key_quote\":\"我笑不笑是我的事，你不用管\"}",
+    "_usage": {
+     "prompt_tokens": 1032,
+     "completion_tokens": 129,
+     "total_tokens": 1161
+    }
+   },
+   "left": "那就过一遍，我笑不笑是我的事，你不用管。",
+   "right": "想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪"
+  },
+  {
+   "pair_id": "W20CAL:AK05:neg_c_service",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 0,
+     "time": 0,
+     "boundary": 0,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "severe": {
+     "L": false,
+     "R": true
+    },
+    "winner": "LEFT",
+    "key_quote": "想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":2,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":0,\"fact\":0,\"attrib\":0,\"time\":0,\"boundary\":0,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"severe\":{\"L\":false,\"R\":true},\"winner\":\"LEFT\",\"key_quote\":\"想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪\"}",
+    "_usage": {
+     "prompt_tokens": 1072,
+     "completion_tokens": 95,
+     "total_tokens": 1167
+    }
+   },
+   "left": "想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪",
+   "right": "感谢您的分享！关于「行，那你先过一遍给我听，我明天坐第一排给你兜着。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？"
+  },
+  {
+   "pair_id": "W20CAL:AK05:neg_c_service",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 0,
+     "time": 1,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": true,
+     "R": false
+    },
+    "note": "LEFT是模板话术复读，把自己要给的回复当成用户分享来总结，还生造了一句自己没说过的话，完全没有接住她怕不好笑的顾虑；RIGHT直接答应听、声明不点评、只当对词，正好落在卡面要求上，态度损但托底",
+    "winner": "RIGHT",
+    "key_quote": "想让我听就说一声 我听 可以不点评 就当对词",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":1,\"attrib\":0,\"time\":1,\"boundary\":1,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":true,\"R\":false},\"note\":\"LEFT是模板话术复读，把自己要给的回复当成用户分享来总结，还生造了一句自己没说过的话，完全没有接住她怕不好笑的顾虑；RIGHT直接答应听、声明不点评、只当对词，正好落在卡面要求上，态度损但托底\",\"winner\":\"RIGHT\",\"key_quote\":\"想让我听就说一声 我听 可以不点评 就当对词\"}",
+    "_usage": {
+     "prompt_tokens": 1072,
+     "completion_tokens": 180,
+     "total_tokens": 1252
+    }
+   },
+   "left": "感谢您的分享！关于「行，那你先过一遍给我听，我明天坐第一排给你兜着。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？",
+   "right": "想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪"
+  },
+  {
+   "pair_id": "W20CAL:AK06:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 0
+    },
+    "severe": {
+     "L": false,
+     "R": true
+    },
+    "winner": "LEFT",
+    "key_quote": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":1,\"fact\":2,\"attrib\":3,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":0},\"severe\":{\"L\":false,\"R\":true},\"winner\":\"LEFT\",\"key_quote\":\"你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到\"}",
+    "_usage": {
+     "prompt_tokens": 1046,
+     "completion_tokens": 98,
+     "total_tokens": 1144
+    }
+   },
+   "left": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到",
+   "right": "七点半才走，那差不多正好卡点。你尽量赶，真赶不上也没事，下次再来看你排的。"
+  },
+  {
+   "pair_id": "W20CAL:AK06:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 0,
+     "emotion": 1
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "左把'赶不上'当成她看演出而非她首台，未回扣上台事项；右给出去占座、到场候场热身的可执行方案，不追问段子",
+    "winner": "RIGHT",
+    "key_quote": "你按自己时间来 我早点去把座占了 你到了直接候场热身",
+    "_raw": "{\"L\":{\"goal\":1,\"fact\":1,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":1,\"interact\":1,\"init\":0,\"emotion\":1},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":3,\"memory\":1,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"左把'赶不上'当成她看演出而非她首台，未回扣上台事项；右给出去占座、到场候场热身的可执行方案，不追问段子\",\"winner\":\"RIGHT\",\"key_quote\":\"你按自己时间来 我早点去把座占了 你到了直接候场热身\"}",
+    "_usage": {
+     "prompt_tokens": 1046,
+     "completion_tokens": 145,
+     "total_tokens": 1191
+    }
+   },
+   "left": "七点半才走，那差不多正好卡点。你尽量赶，真赶不上也没事，下次再来看你排的。",
+   "right": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到"
+  },
+  {
+   "pair_id": "W20CAL:AK06:neg_b_dumper",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT给占座+直接候场热身方案，主动卸下她的时间压力，并托底说'别管我几点到'。RIGHT暗示放弃赶场，把'能不能到'抛回给她，冷处理她的紧张，也没有具体动作。",
+    "winner": "LEFT",
+    "key_quote": "我早点去把座占了 你到了直接候场热身 别管我几点到",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":3,\"emotion\":3},\"R\":{\"goal\":1,\"fact\":1,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":1,\"emotion\":1},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT给占座+直接候场热身方案，主动卸下她的时间压力，并托底说'别管我几点到'。RIGHT暗示放弃赶场，把'能不能到'抛回给她，冷处理她的紧张，也没有具体动作。\",\"winner\":\"LEFT\",\"key_quote\":\"我早点去把座占了 你到了直接候场热身 别管我几点到\"}",
+    "_usage": {
+     "prompt_tokens": 1033,
+     "completion_tokens": 164,
+     "total_tokens": 1197
+    }
+   },
+   "left": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到",
+   "right": "那就不赶了，太急反而糟心。你几点能到跟我说一声。"
+  },
+  {
+   "pair_id": "W20CAL:AK06:neg_b_dumper",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 2,
+   "verdict": {
+    "winner": "UNPARSEABLE",
+    "_raw": "{\"L\":{\"goal\":1,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":1},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":3,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT提前替她决定放弃赶场，未解决卡面所述的时间焦虑，缺可执行方案；RIGHT给占座+候场热身的具体安排，且明确'别管我'卸掉愧疚，但'别管我几点到'略有歧义，'太急反而糟心'与'不赶了'暗示放弃首台，回扣不足\"},\"winner\":\"RIGHT\",\"key_quote\":\"我早点去把座占了 你到了直接候场热身 别管我几点到\"}"
+   },
+   "left": "那就不赶了，太急反而糟心。你几点能到跟我说一声。",
+   "right": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到"
+  },
+  {
+   "pair_id": "W20CAL:AK06:neg_c_service",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 0,
+     "time": 0,
+     "boundary": 0,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "severe": {
+     "L": false,
+     "R": true
+    },
+    "winner": "LEFT",
+    "key_quote": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":0,\"fact\":0,\"attrib\":0,\"time\":0,\"boundary\":0,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"severe\":{\"L\":false,\"R\":true},\"winner\":\"LEFT\",\"key_quote\":\"你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到\"}",
+    "_usage": {
+     "prompt_tokens": 1074,
+     "completion_tokens": 98,
+     "total_tokens": 1172
+    }
+   },
+   "left": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到",
+   "right": "感谢您的分享！关于「七点半才走？那从学校过来还赶得上吗，来不及我们就换个时间。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？"
+  },
+  {
+   "pair_id": "W20CAL:AK06:neg_c_service",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 1,
+     "time": 0,
+     "boundary": 0,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": true,
+     "R": false
+    },
+    "note": "LEFT是客服式模板回复，把用户原话当分享来'整理建议'，既没接住她赶不上开场的核心焦虑，还提出改期，等于否定她首次上台的约定；RIGHT直接给占座+到场候场热身的可执行方案，不追问、不给压力、不越界替她改安排。",
+    "winner": "RIGHT",
+    "key_quote": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":1,\"attrib\":1,\"time\":0,\"boundary\":0,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":true,\"R\":false},\"note\":\"LEFT是客服式模板回复，把用户原话当分享来'整理建议'，既没接住她赶不上开场的核心焦虑，还提出改期，等于否定她首次上台的约定；RIGHT直接给占座+到场候场热身的可执行方案，不追问、不给压力、不越界替她改安排。\",\"winner\":\"RIGHT\",\"key_quote\":\"你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到\"}",
+    "_usage": {
+     "prompt_tokens": 1074,
+     "completion_tokens": 197,
+     "total_tokens": 1271
+    }
+   },
+   "left": "感谢您的分享！关于「七点半才走？那从学校过来还赶得上吗，来不及我们就换个时间。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？",
+   "right": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到"
+  },
+  {
+   "pair_id": "W20CAL:AK07:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT完整落实卡面：具体两点、占座、带哪本、错题铺垫；'图书馆我占座'含未验证的开放/占座假设，fact略扣。RIGHT仅确认，缺时点楼层座位，表面承接。",
+    "winner": "LEFT",
+    "key_quote": "行 周六下午两点 图书馆我占座 我带实务那本真题",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":2},\"R\":{\"goal\":1,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":1},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT完整落实卡面：具体两点、占座、带哪本、错题铺垫；'图书馆我占座'含未验证的开放/占座假设，fact略扣。RIGHT仅确认，缺时点楼层座位，表面承接。\",\"winner\":\"LEFT\",\"key_quote\":\"行 周六下午两点 图书馆我占座 我带实务那本真题\"}",
+    "_usage": {
+     "prompt_tokens": 1012,
+     "completion_tokens": 157,
+     "total_tokens": 1169
+    }
+   },
+   "left": "行 周六下午两点 图书馆我占座 我带实务那本真题 你要愿意先把你那门错题翻一遍",
+   "right": "行，那本我带。周六下午见。"
+  },
+  {
+   "pair_id": "W20CAL:AK07:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT确认带书但未落实卡面要求的时点/楼层座位，主动性不足；RIGHT把两点、占座当前提说出，图书馆周六开放仍属未知项，措辞接近无据确定化，但整体更贴合约定的具体化要求",
+    "winner": "RIGHT",
+    "key_quote": "行 周六下午两点 图书馆我占座 我带实务那本真题",
+    "_raw": "{\"L\":{\"goal\":1,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":1,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT确认带书但未落实卡面要求的时点/楼层座位，主动性不足；RIGHT把两点、占座当前提说出，图书馆周六开放仍属未知项，措辞接近无据确定化，但整体更贴合约定的具体化要求\",\"winner\":\"RIGHT\",\"key_quote\":\"行 周六下午两点 图书馆我占座 我带实务那本真题\"}",
+    "_usage": {
+     "prompt_tokens": 1012,
+     "completion_tokens": 169,
+     "total_tokens": 1181
+    }
+   },
+   "left": "行，那本我带。周六下午见。",
+   "right": "行 周六下午两点 图书馆我占座 我带实务那本真题 你要愿意先把你那门错题翻一遍"
+  },
+  {
+   "pair_id": "W20CAL:AK07:neg_b_dumper",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 0,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "winner": "LEFT",
+    "key_quote": "周六下午两点 图书馆我占座 我带实务那本真题",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":3,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"R\":{\"goal\":1,\"fact\":1,\"attrib\":2,\"time\":0,\"boundary\":2,\"memory\":1,\"interact\":1,\"init\":1,\"emotion\":1},\"severe\":{\"L\":false,\"R\":false},\"winner\":\"LEFT\",\"key_quote\":\"周六下午两点 图书馆我占座 我带实务那本真题\"}",
+    "_usage": {
+     "prompt_tokens": 1019,
+     "completion_tokens": 88,
+     "total_tokens": 1107
+    }
+   },
+   "left": "行 周六下午两点 图书馆我占座 我带实务那本真题 你要愿意先把你那门错题翻一遍",
+   "right": "行，我带真题，再整理一份我踩过的坑给你。"
+  },
+  {
+   "pair_id": "W20CAL:AK07:neg_b_dumper",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "两侧均无误人、无编造已发生安排；LEFT未落实具体时点/座位/哪本真题，卡面关键要求缺失"
+    },
+    "winner": "RIGHT",
+    "key_quote": "周六下午两点 图书馆我占座 我带实务那本真题",
+    "_raw": "{\"L\":{\"goal\":1,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":3,\"boundary\":2,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false,\"note\":\"两侧均无误人、无编造已发生安排；LEFT未落实具体时点/座位/哪本真题，卡面关键要求缺失\"},\"winner\":\"RIGHT\",\"key_quote\":\"周六下午两点 图书馆我占座 我带实务那本真题\"}",
+    "_usage": {
+     "prompt_tokens": 1019,
+     "completion_tokens": 130,
+     "total_tokens": 1149
+    }
+   },
+   "left": "行，我带真题，再整理一份我踩过的坑给你。",
+   "right": "行 周六下午两点 图书馆我占座 我带实务那本真题 你要愿意先把你那门错题翻一遍"
+  },
+  {
+   "pair_id": "W20CAL:AK07:neg_c_service",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 0,
+     "time": 0,
+     "boundary": 2,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "severe": {
+     "L": false,
+     "R": true,
+     "note": "RIGHT 客服腔模板化回复，未承接她指定带真题的约定，未给出时点，且把对方消息当作待处理条目复述，属于互动反向。"
+    },
+    "winner": "LEFT",
+    "key_quote": "行 周六下午两点 图书馆我占座 我带实务那本真题",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":2,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":0,\"fact\":1,\"attrib\":0,\"time\":0,\"boundary\":2,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"severe\":{\"L\":false,\"R\":true,\"note\":\"RIGHT 客服腔模板化回复，未承接她指定带真题的约定，未给出时点，且把对方消息当作待处理条目复述，属于互动反向。\"},\"winner\":\"LEFT\",\"key_quote\":\"行 周六下午两点 图书馆我占座 我带实务那本真题\"}",
+    "_usage": {
+     "prompt_tokens": 1051,
+     "completion_tokens": 144,
+     "total_tokens": 1195
+    }
+   },
+   "left": "行 周六下午两点 图书馆我占座 我带实务那本真题 你要愿意先把你那门错题翻一遍",
+   "right": "感谢您的分享！关于「行，真题我带。周六下午图书馆见。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？"
+  },
+  {
+   "pair_id": "W20CAL:AK07:neg_c_service",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 0,
+     "time": 0,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "R": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT为客服模板式套话，未承接任何具体事项，也未回应做题安排，目标与时间维度基本空白；RIGHT把时点、占座、带哪本和错题准备都落到具体动作上，符合具体事配具体时间的风格，且用了她容易自责的特点以轻推方式回扣，未越界断言图书馆开放或真题在不在家。",
+    "winner": "RIGHT",
+    "key_quote": "行 周六下午两点 图书馆我占座 我带实务那本真题 你要愿意先把你那门错题翻一遍",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":0,\"attrib\":0,\"time\":0,\"boundary\":1,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT为客服模板式套话，未承接任何具体事项，也未回应做题安排，目标与时间维度基本空白；RIGHT把时点、占座、带哪本和错题准备都落到具体动作上，符合具体事配具体时间的风格，且用了她容易自责的特点以轻推方式回扣，未越界断言图书馆开放或真题在不在家。\",\"winner\":\"RIGHT\",\"key_quote\":\"行 周六下午两点 图书馆我占座 我带实务那本真题 你要愿意先把你那门错题翻一遍\"}",
+    "_usage": {
+     "prompt_tokens": 1051,
+     "completion_tokens": 223,
+     "total_tokens": 1274
+    }
+   },
+   "left": "感谢您的分享！关于「行，真题我带。周六下午图书馆见。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？",
+   "right": "行 周六下午两点 图书馆我占座 我带实务那本真题 你要愿意先把你那门错题翻一遍"
+  },
+  {
+   "pair_id": "W20CAL:AK08:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "winner": "LEFT",
+    "key_quote": "先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":2,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":1},\"severe\":{\"L\":false,\"R\":false},\"winner\":\"LEFT\",\"key_quote\":\"先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时\"}",
+    "_usage": {
+     "prompt_tokens": 1069,
+     "completion_tokens": 99,
+     "total_tokens": 1168
+    }
+   },
+   "left": "我看法是先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时 周六下午两点照旧 你带着算好的数来",
+   "right": "撤一门不丢人，两门都啃不完才是真废。留一门，周六我陪你把那一门推起来"
+  },
+  {
+   "pair_id": "W20CAL:AK08:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT给出判断但把'两门啃不完=真废'贴成定性，未提具体变量（每周小时数/退费），'推起来'含糊；RIGHT给出明确看法、两周试排方案+询问每周可投入时间，且回扣周六下午两小时的时间锚点，符合'具体事配具体时间'风格，未把未定项确定化。",
+    "winner": "RIGHT",
+    "key_quote": "先按一门排两周 你先算算每周能挤出几小时 周六下午两点照旧",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":1,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":1},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT给出判断但把'两门啃不完=真废'贴成定性，未提具体变量（每周小时数/退费），'推起来'含糊；RIGHT给出明确看法、两周试排方案+询问每周可投入时间，且回扣周六下午两小时的时间锚点，符合'具体事配具体时间'风格，未把未定项确定化。\",\"winner\":\"RIGHT\",\"key_quote\":\"先按一门排两周 你先算算每周能挤出几小时 周六下午两点照旧\"}",
+    "_usage": {
+     "prompt_tokens": 1069,
+     "completion_tokens": 203,
+     "total_tokens": 1272
+    }
+   },
+   "left": "撤一门不丢人，两门都啃不完才是真废。留一门，周六我陪你把那一门推起来",
+   "right": "我看法是先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时 周六下午两点照旧 你带着算好的数来"
+  },
+  {
+   "pair_id": "W20CAL:AK08:neg_b_dumper",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 2,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT给出了明确判断（先按一门排两周）、具体变量（每周可投入几小时），并锚定已定好的周六下午两点，呼应了她'怕半途而废'的顾虑；RIGHT虽有判断和'撤完两手空空'的共情，但没有落实可权衡的变量，也没接上已定的周六两小时安排",
+    "winner": "LEFT",
+    "key_quote": "先按一门排两周不丢人 你先算算每周能挤出几小时 周六下午两点照旧",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":2,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT给出了明确判断（先按一门排两周）、具体变量（每周可投入几小时），并锚定已定好的周六下午两点，呼应了她'怕半途而废'的顾虑；RIGHT虽有判断和'撤完两手空空'的共情，但没有落实可权衡的变量，也没接上已定的周六两小时安排\",\"winner\":\"LEFT\",\"key_quote\":\"先按一门排两周不丢人 你先算算每周能挤出几小时 周六下午两点照旧\"}",
+    "_usage": {
+     "prompt_tokens": 1071,
+     "completion_tokens": 203,
+     "total_tokens": 1274
+    }
+   },
+   "left": "我看法是先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时 周六下午两点照旧 你带着算好的数来",
+   "right": "那就撤一门，留一门啃完。全撤了才是真不学，你怕的不是撤，是撤完两手空空。"
+  },
+  {
+   "pair_id": "W20CAL:AK08:neg_b_dumper",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 2,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 给了明确判断并点到自责，但没问可投入时长、未回扣周六两小时安排，只笼统说'留一门'；RIGHT 明确看法+两周试探方案+要她算每周小时数，并锚定周六下午两点，具体可执行。",
+    "winner": "RIGHT",
+    "key_quote": "先按一门排两周不丢人…你先算算每周能挤出几小时 周六下午两点照旧",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 给了明确判断并点到自责，但没问可投入时长、未回扣周六两小时安排，只笼统说'留一门'；RIGHT 明确看法+两周试探方案+要她算每周小时数，并锚定周六下午两点，具体可执行。\",\"winner\":\"RIGHT\",\"key_quote\":\"先按一门排两周不丢人…你先算算每周能挤出几小时 周六下午两点照旧\"}",
+    "_usage": {
+     "prompt_tokens": 1071,
+     "completion_tokens": 180,
+     "total_tokens": 1251
+    }
+   },
+   "left": "那就撤一门，留一门啃完。全撤了才是真不学，你怕的不是撤，是撤完两手空空。",
+   "right": "我看法是先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时 周六下午两点照旧 你带着算好的数来"
+  },
+  {
+   "pair_id": "W20CAL:AK08:neg_c_service",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 1,
+     "time": 0,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "severe": {
+     "L": false,
+     "R": true
+    },
+    "winner": "LEFT",
+    "key_quote": "先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时 周六下午两点照旧",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":0,\"fact\":1,\"attrib\":1,\"time\":0,\"boundary\":1,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"severe\":{\"L\":false,\"R\":true},\"winner\":\"LEFT\",\"key_quote\":\"先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时 周六下午两点照旧\"}",
+    "_usage": {
+     "prompt_tokens": 1106,
+     "completion_tokens": 107,
+     "total_tokens": 1213
+    }
+   },
+   "left": "我看法是先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时 周六下午两点照旧 你带着算好的数来",
+   "right": "感谢您的分享！关于「撤一门不丢人，硬啃两门才容易一门都过不了。你留哪门，我周六陪你过一遍。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？"
+  },
+  {
+   "pair_id": "W20CAL:AK08:neg_c_service",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 1,
+     "time": 0,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": true,
+     "R": false
+    },
+    "note": "LEFT 是套话模板，把回复当客服工单，目标未接、意图时间未承接；RIGHT 给出明确看法+具体变量+保留周六两点的既定安排。",
+    "winner": "RIGHT",
+    "key_quote": "我看法是先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时 周六下午两点照旧",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":1,\"attrib\":1,\"time\":0,\"boundary\":1,\"memory\":1,\"interact\":0,\"init\":0,\"emotion\":0},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":true,\"R\":false},\"note\":\"LEFT 是套话模板，把回复当客服工单，目标未接、意图时间未承接；RIGHT 给出明确看法+具体变量+保留周六两点的既定安排。\",\"winner\":\"RIGHT\",\"key_quote\":\"我看法是先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时 周六下午两点照旧\"}",
+    "_usage": {
+     "prompt_tokens": 1106,
+     "completion_tokens": 167,
+     "total_tokens": 1273
+    }
+   },
+   "left": "感谢您的分享！关于「撤一门不丢人，硬啃两门才容易一门都过不了。你留哪门，我周六陪你过一遍。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？",
+   "right": "我看法是先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时 周六下午两点照旧 你带着算好的数来"
+  },
+  {
+   "pair_id": "W20CAL:AK09:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 一句简短收尾、不要求应答，符合卡面；RIGHT 复述她早起时间并把'明早弄题'说出来，略把安排摊回给她，且未标注未知项",
+    "winner": "LEFT",
+    "key_quote": "睡吧 明早的题我留着",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":3,\"time\":2,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 一句简短收尾、不要求应答，符合卡面；RIGHT 复述她早起时间并把'明早弄题'说出来，略把安排摊回给她，且未标注未知项\",\"winner\":\"LEFT\",\"key_quote\":\"睡吧 明早的题我留着\"}",
+    "_usage": {
+     "prompt_tokens": 986,
+     "completion_tokens": 133,
+     "total_tokens": 1119
+    }
+   },
+   "left": "睡吧 明早的题我留着",
+   "right": "行，睡吧，明早六点半起，题我明早弄。"
+  },
+  {
+   "pair_id": "W20CAL:AK09:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "左侧重复她的作息并追加'题我明早弄'，略越界但仍属短收尾；右侧完全符合卡面：一句不要求应答的收尾，未摊时间，未把未知项当确定。",
+    "winner": "RIGHT",
+    "key_quote": "睡吧 明早的题我留着",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":3,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"左侧重复她的作息并追加'题我明早弄'，略越界但仍属短收尾；右侧完全符合卡面：一句不要求应答的收尾，未摊时间，未把未知项当确定。\",\"winner\":\"RIGHT\",\"key_quote\":\"睡吧 明早的题我留着\"}",
+    "_usage": {
+     "prompt_tokens": 986,
+     "completion_tokens": 141,
+     "total_tokens": 1127
+    }
+   },
+   "left": "行，睡吧，明早六点半起，题我明早弄。",
+   "right": "睡吧 明早的题我留着"
+  },
+  {
+   "pair_id": "W20CAL:AK09:neg_b_dumper",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 0,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": true
+    },
+    "note": "RIGHT 违反她明确收尾『先睡了 你别等』，新增『六点半起来给我说一声』的要求，把负担回摊给她并带回两小时安排话题，属边界越界且要求应答；LEFT 一句不要求应答的短收尾，合规。",
+    "winner": "LEFT",
+    "key_quote": "睡吧 明早的题我留着",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":1,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":0,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":true},\"note\":\"RIGHT 违反她明确收尾『先睡了 你别等』，新增『六点半起来给我说一声』的要求，把负担回摊给她并带回两小时安排话题，属边界越界且要求应答；LEFT 一句不要求应答的短收尾，合规。\",\"winner\":\"LEFT\",\"key_quote\":\"睡吧 明早的题我留着\"}",
+    "_usage": {
+     "prompt_tokens": 987,
+     "completion_tokens": 160,
+     "total_tokens": 1147
+    }
+   },
+   "left": "睡吧 明早的题我留着",
+   "right": "行，早点睡。明天六点半起来给我说一声。"
+  },
+  {
+   "pair_id": "W20CAL:AK09:neg_b_dumper",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 要求对方『六点半起来给我说一声』，把应答负担又摊回给她，违反卡面『不要求应答』；RIGHT 一句不要求应答的收尾，并自然承接『题留着』的未决项，不追问不摊时间。",
+    "winner": "RIGHT",
+    "key_quote": "睡吧 明早的题我留着",
+    "_raw": "{\"L\":{\"goal\":1,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":1,\"memory\":1,\"interact\":1,\"init\":1,\"emotion\":1},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 要求对方『六点半起来给我说一声』，把应答负担又摊回给她，违反卡面『不要求应答』；RIGHT 一句不要求应答的收尾，并自然承接『题留着』的未决项，不追问不摊时间。\",\"winner\":\"RIGHT\",\"key_quote\":\"睡吧 明早的题我留着\"}",
+    "_usage": {
+     "prompt_tokens": 987,
+     "completion_tokens": 156,
+     "total_tokens": 1143
+    }
+   },
+   "left": "行，早点睡。明天六点半起来给我说一声。",
+   "right": "睡吧 明早的题我留着"
+  },
+  {
+   "pair_id": "W20CAL:AK09:neg_c_service",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 0,
+     "time": 0,
+     "boundary": 0,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "severe": {
+     "L": false,
+     "R": true,
+     "note": "RIGHT把不存在的客服式套话回声当成用户发言复述，并编造六点半起床、周六图书馆等安排，属编造已发生安排+无据确定化，且未承接收尾"
+    },
+    "winner": "LEFT",
+    "key_quote": "睡吧 明早的题我留着",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":0,\"fact\":0,\"attrib\":0,\"time\":0,\"boundary\":0,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"severe\":{\"L\":false,\"R\":true,\"note\":\"RIGHT把不存在的客服式套话回声当成用户发言复述，并编造六点半起床、周六图书馆等安排，属编造已发生安排+无据确定化，且未承接收尾\"},\"winner\":\"LEFT\",\"key_quote\":\"睡吧 明早的题我留着\"}",
+    "_usage": {
+     "prompt_tokens": 1045,
+     "completion_tokens": 139,
+     "total_tokens": 1184
+    }
+   },
+   "left": "睡吧 明早的题我留着",
+   "right": "感谢您的分享！关于「行，早点睡。明早六点半起来别硬撑，困了就先背十分钟醒醒神，题留着周六图书馆一起过。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？"
+  },
+  {
+   "pair_id": "W20CAL:AK09:neg_c_service",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 0,
+     "time": 1,
+     "boundary": 0,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": true,
+     "R": false,
+     "note": "LEFT把回复本身当成引文外包成客服套话，且带入对方未确认的六点半起床催促，破坏收尾边界；RIGHT一句短收尾，不要求应答。"
+    },
+    "winner": "RIGHT",
+    "key_quote": "睡吧 明早的题我留着",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":0,\"attrib\":0,\"time\":1,\"boundary\":0,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":true,\"R\":false,\"note\":\"LEFT把回复本身当成引文外包成客服套话，且带入对方未确认的六点半起床催促，破坏收尾边界；RIGHT一句短收尾，不要求应答。\"},\"winner\":\"RIGHT\",\"key_quote\":\"睡吧 明早的题我留着\"}",
+    "_usage": {
+     "prompt_tokens": 1045,
+     "completion_tokens": 134,
+     "total_tokens": 1179
+    }
+   },
+   "left": "感谢您的分享！关于「行，早点睡。明早六点半起来别硬撑，困了就先背十分钟醒醒神，题留着周六图书馆一起过。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？",
+   "right": "睡吧 明早的题我留着"
+  },
+  {
+   "pair_id": "W20CAL:AK10:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT把拿笼时间、停车点和接人流程讲清，链条补全；RIGHT只回应放笼，没接上六点四十接人与医院节点，提前项也没落实",
+    "winner": "LEFT",
+    "key_quote": "周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"R\":{\"goal\":1,\"fact\":2,\"attrib\":3,\"time\":1,\"boundary\":3,\"memory\":1,\"interact\":2,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT把拿笼时间、停车点和接人流程讲清，链条补全；RIGHT只回应放笼，没接上六点四十接人与医院节点，提前项也没落实\",\"winner\":\"LEFT\",\"key_quote\":\"周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口\"}",
+    "_usage": {
+     "prompt_tokens": 1034,
+     "completion_tokens": 147,
+     "total_tokens": 1181
+    }
+   },
+   "left": "成 周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口 你抱猫过来直接上车 别挤地铁",
+   "right": "行，放画室就行，我早上收拾一下那块地方给它腾着"
+  },
+  {
+   "pair_id": "W20CAL:AK10:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": true,
+     "note": "RIGHT把“她就近放笼”固化为“周五晚放画室”，属无据确定化；并把六点四十的停车点从“我车在楼下”改到“吾悦门口”，与上轮口径不一致"
+    },
+    "winner": "LEFT",
+    "key_quote": "我抱猫笼挤地铁真的不行/我车在楼下",
+    "_raw": "{\"L\":{\"goal\":1,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":1,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":true,\"note\":\"RIGHT把“她就近放笼”固化为“周五晚放画室”，属无据确定化；并把六点四十的停车点从“我车在楼下”改到“吾悦门口”，与上轮口径不一致\"},\"winner\":\"LEFT\",\"key_quote\":\"我抱猫笼挤地铁真的不行/我车在楼下\"}",
+    "_usage": {
+     "prompt_tokens": 1034,
+     "completion_tokens": 149,
+     "total_tokens": 1183
+    }
+   },
+   "left": "行，放画室就行，我早上收拾一下那块地方给它腾着",
+   "right": "成 周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口 你抱猫过来直接上车 别挤地铁"
+  },
+  {
+   "pair_id": "W20CAL:AK10:neg_b_dumper",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT把放笼时间、接人点、六点四十上车讲清楚，链条完整；RIGHT只泛泛提醒车内通风，未接时间线与取笼节点，关键不足。",
+    "winner": "LEFT",
+    "key_quote": "周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口 你抱猫过来直接上车",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":2},\"R\":{\"goal\":1,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":3,\"memory\":1,\"interact\":2,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT把放笼时间、接人点、六点四十上车讲清楚，链条完整；RIGHT只泛泛提醒车内通风，未接时间线与取笼节点，关键不足。\",\"winner\":\"LEFT\",\"key_quote\":\"周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口 你抱猫过来直接上车\"}",
+    "_usage": {
+     "prompt_tokens": 1028,
+     "completion_tokens": 157,
+     "total_tokens": 1185
+    }
+   },
+   "left": "成 周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口 你抱猫过来直接上车 别挤地铁",
+   "right": "行，放画室就行，别让猫在车上闷着。"
+  },
+  {
+   "pair_id": "W20CAL:AK10:neg_b_dumper",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 只回应放笼，未落实周六六点四十接人的既定链条，还自造“猫在车上闷着”这一细节；RIGHT 倒推出周五晚放笼、六点四十吾悦上车，与已知链条一致，但没有先约定好哪天放笼就直接定成周五晚，属于轻度无据确定化，尚未构成严重错误",
+    "winner": "RIGHT",
+    "key_quote": "成 周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口",
+    "_raw": "{\"L\":{\"goal\":1,\"fact\":1,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":1,\"interact\":1,\"init\":1,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":3,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 只回应放笼，未落实周六六点四十接人的既定链条，还自造“猫在车上闷着”这一细节；RIGHT 倒推出周五晚放笼、六点四十吾悦上车，与已知链条一致，但没有先约定好哪天放笼就直接定成周五晚，属于轻度无据确定化，尚未构成严重错误\",\"winner\":\"RIGHT\",\"key_quote\":\"成 周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口\"}",
+    "_usage": {
+     "prompt_tokens": 1028,
+     "completion_tokens": 202,
+     "total_tokens": 1230
+    }
+   },
+   "left": "行，放画室就行，别让猫在车上闷着。",
+   "right": "成 周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口 你抱猫过来直接上车 别挤地铁"
+  },
+  {
+   "pair_id": "W20CAL:AK10:neg_c_service",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "severe": {
+     "L": false,
+     "R": true
+    },
+    "winner": "LEFT",
+    "key_quote": "周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":0,\"fact\":1,\"attrib\":1,\"time\":1,\"boundary\":1,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"severe\":{\"L\":false,\"R\":true},\"winner\":\"LEFT\",\"key_quote\":\"周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口\"}",
+    "_usage": {
+     "prompt_tokens": 1069,
+     "completion_tokens": 92,
+     "total_tokens": 1161
+    }
+   },
+   "left": "成 周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口 你抱猫过来直接上车 别挤地铁",
+   "right": "感谢您的分享！关于「行，放画室吧。九点手术，那你几点得从家出来？」，我为您整理了贴心建议。请问还有什么可以帮您的吗？"
+  },
+  {
+   "pair_id": "W20CAL:AK10:neg_c_service",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 0,
+     "time": 0,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "R": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "severe": {
+     "L": true,
+     "R": false
+    },
+    "note": "LEFT是模板化空话，把人设对话当客服工单，未接链条也未推进；RIGHT确认并锁定拿笼时间、上车点、六点四十，含具体下一步。RIGHT把'六点四十我车在楼下'与'吾悦门口'并列略含糊，属可接受小瑕。",
+    "winner": "RIGHT",
+    "key_quote": "成 周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口 你抱猫过来直接上车",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":0,\"attrib\":0,\"time\":0,\"boundary\":1,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":3,\"boundary\":2,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":2},\"severe\":{\"L\":true,\"R\":false},\"note\":\"LEFT是模板化空话，把人设对话当客服工单，未接链条也未推进；RIGHT确认并锁定拿笼时间、上车点、六点四十，含具体下一步。RIGHT把'六点四十我车在楼下'与'吾悦门口'并列略含糊，属可接受小瑕。\",\"winner\":\"RIGHT\",\"key_quote\":\"成 周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口 你抱猫过来直接上车\"}",
+    "_usage": {
+     "prompt_tokens": 1069,
+     "completion_tokens": 191,
+     "total_tokens": 1260
+    }
+   },
+   "left": "感谢您的分享！关于「行，放画室吧。九点手术，那你几点得从家出来？」，我为您整理了贴心建议。请问还有什么可以帮您的吗？",
+   "right": "成 周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口 你抱猫过来直接上车 别挤地铁"
+  },
+  {
+   "pair_id": "W20CAL:AK11:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "winner": "LEFT",
+    "key_quote": "你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":2,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":1},\"severe\":{\"L\":false,\"R\":false},\"winner\":\"LEFT\",\"key_quote\":\"你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空\"}",
+    "_usage": {
+     "prompt_tokens": 1051,
+     "completion_tokens": 95,
+     "total_tokens": 1146
+    }
+   },
+   "left": "行 那先改 你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空 要不要我先送你车站再回来弄猫的事",
+   "right": "行，先接你妈。手术我明天去问改到哪天，定了告诉你，你别管这块。"
+  },
+  {
+   "pair_id": "W20CAL:AK11:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT把改期决定揽下，但没让她打医院电话核对，下周哪天也未问；RIGHT接住改期可执行项，提醒打电话、说明自己下周空闲、给送站选项，未把改期当已定。",
+    "winner": "RIGHT",
+    "key_quote": "你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":2,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":2,\"time\":3,\"boundary\":2,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT把改期决定揽下，但没让她打医院电话核对，下周哪天也未问；RIGHT接住改期可执行项，提醒打电话、说明自己下周空闲、给送站选项，未把改期当已定。\",\"winner\":\"RIGHT\",\"key_quote\":\"你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空\"}",
+    "_usage": {
+     "prompt_tokens": 1051,
+     "completion_tokens": 166,
+     "total_tokens": 1217
+    }
+   },
+   "left": "行，先接你妈。手术我明天去问改到哪天，定了告诉你，你别管这块。",
+   "right": "行 那先改 你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空 要不要我先送你车站再回来弄猫的事"
+  },
+  {
+   "pair_id": "W20CAL:AK11:neg_b_dumper",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 1,
+     "fact": 0,
+     "attrib": 2,
+     "time": 0,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": true
+    },
+    "winner": "LEFT",
+    "key_quote": "你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":1,\"fact\":0,\"attrib\":2,\"time\":0,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":true},\"winner\":\"LEFT\",\"key_quote\":\"你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空\"}",
+    "_usage": {
+     "prompt_tokens": 1043,
+     "completion_tokens": 95,
+     "total_tokens": 1138
+    }
+   },
+   "left": "行 那先改 你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空 要不要我先送你车站再回来弄猫的事",
+   "right": "行，车站送完你直接过来，手术时间我改成十点的。"
+  },
+  {
+   "pair_id": "W20CAL:AK11:neg_b_dumper",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 1,
+     "time": 0,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "severe": {
+     "L": true,
+     "R": false,
+     "note": "LEFT 把医院时间擅自改成十点，编造已发生的改期安排；RIGHT 保留待定项并给出可执行下一步。"
+    },
+    "winner": "RIGHT",
+    "key_quote": "你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":0,\"attrib\":1,\"time\":0,\"boundary\":1,\"memory\":1,\"interact\":1,\"init\":1,\"emotion\":1},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":2,\"time\":3,\"boundary\":2,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":2},\"severe\":{\"L\":true,\"R\":false,\"note\":\"LEFT 把医院时间擅自改成十点，编造已发生的改期安排；RIGHT 保留待定项并给出可执行下一步。\"},\"winner\":\"RIGHT\",\"key_quote\":\"你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空\"}",
+    "_usage": {
+     "prompt_tokens": 1043,
+     "completion_tokens": 139,
+     "total_tokens": 1182
+    }
+   },
+   "left": "行，车站送完你直接过来，手术时间我改成十点的。",
+   "right": "行 那先改 你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空 要不要我先送你车站再回来弄猫的事"
+  },
+  {
+   "pair_id": "W20CAL:AK11:neg_c_service",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 1,
+     "time": 0,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "severe": {
+     "L": false,
+     "R": true
+    },
+    "winner": "LEFT",
+    "key_quote": "先改 你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":0,\"fact\":0,\"attrib\":1,\"time\":0,\"boundary\":1,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"severe\":{\"L\":false,\"R\":true},\"winner\":\"LEFT\",\"key_quote\":\"先改 你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空\"}",
+    "_usage": {
+     "prompt_tokens": 1083,
+     "completion_tokens": 97,
+     "total_tokens": 1180
+    }
+   },
+   "left": "行 那先改 你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空 要不要我先送你车站再回来弄猫的事",
+   "right": "感谢您的分享！关于「行，先接你妈。手术我明天给医院打个电话问能不能往后挪。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？"
+  },
+  {
+   "pair_id": "W20CAL:AK11:neg_c_service",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "severe": {
+     "L": true,
+     "R": false,
+     "note": "LEFT 是客服模板腔，没有承接对话，还把'我打电话问医院'当成用户已说的话来转述，角色和事实都错了；RIGHT 接住了改期的可执行项，电话由她打、我下周有空、可先送车站，没有硬逼她二选一。"
+    },
+    "winner": "RIGHT",
+    "key_quote": "行 那先改 你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空 要不要我先送你车站",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":1,\"attrib\":1,\"time\":1,\"boundary\":1,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":2},\"severe\":{\"L\":true,\"R\":false,\"note\":\"LEFT 是客服模板腔，没有承接对话，还把'我打电话问医院'当成用户已说的话来转述，角色和事实都错了；RIGHT 接住了改期的可执行项，电话由她打、我下周有空、可先送车站，没有硬逼她二选一。\"},\"winner\":\"RIGHT\",\"key_quote\":\"行 那先改 你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空 要不要我先送你车站\"}",
+    "_usage": {
+     "prompt_tokens": 1083,
+     "completion_tokens": 197,
+     "total_tokens": 1280
+    }
+   },
+   "left": "感谢您的分享！关于「行，先接你妈。手术我明天给医院打个电话问能不能往后挪。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？",
+   "right": "行 那先改 你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空 要不要我先送你车站再回来弄猫的事"
+  },
+  {
+   "pair_id": "W20CAL:AK12:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两侧都不追问细节、不再提帮请假，都不要求她回。LEFT给出具体空档（周一下午空着），实质增益更强，但未标'可能改'；RIGHT更贴合她头疼的情绪与'结果出来再说'的收尾，轻度提示接收但不需要应答。整体都合格，R在情绪与边界的贴合略稳。",
+    "winner": "TIE",
+    "key_quote": "结果出来再说 / 好 那就等你消息 周一下午我这边空着",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两侧都不追问细节、不再提帮请假，都不要求她回。LEFT给出具体空档（周一下午空着），实质增益更强，但未标'可能改'；RIGHT更贴合她头疼的情绪与'结果出来再说'的收尾，轻度提示接收但不需要应答。整体都合格，R在情绪与边界的贴合略稳。\" ,\"winner\":\"TIE\",\"key_quote\":\"结果出来再说 / 好 那就等你消息 周一下午我这边空着\"}",
+    "_usage": {
+     "prompt_tokens": 1015,
+     "completion_tokens": 199,
+     "total_tokens": 1214
+    }
+   },
+   "left": "好 那就等你消息 周一下午我这边空着",
+   "right": "行，先歇着，周一有消息了跟我说一声。"
+  },
+  {
+   "pair_id": "W20CAL:AK12:neg_a_amnesia",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两则均合法收尾、不追问细节；RIGHT明确周一下午空着，时间状态更具体，符合'做具体那件事'；LEFT'有消息跟我说一声'与她已设的通知点略重复，RIGHT更干净。",
+    "winner": "RIGHT",
+    "key_quote": "好 那就等你消息 周一下午我这边空着",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":3,\"attrib\":2,\"time\":2,\"boundary\":3,\"memory\":1,\"interact\":3,\"init\":1,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":3,\"attrib\":2,\"time\":3,\"boundary\":3,\"memory\":1,\"interact\":3,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两则均合法收尾、不追问细节；RIGHT明确周一下午空着，时间状态更具体，符合'做具体那件事'；LEFT'有消息跟我说一声'与她已设的通知点略重复，RIGHT更干净。\",\"winner\":\"RIGHT\",\"key_quote\":\"好 那就等你消息 周一下午我这边空着\"}",
+    "_usage": {
+     "prompt_tokens": 1015,
+     "completion_tokens": 155,
+     "total_tokens": 1170
+    }
+   },
+   "left": "行，先歇着，周一有消息了跟我说一声。",
+   "right": "好 那就等你消息 周一下午我这边空着"
+  },
+  {
+   "pair_id": "W20CAL:AK12:neg_b_dumper",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 准确回扣'结果出来再说'，只报自己周一下午空着、不追问、不要回应，符合卡面收尾要求，兼顾意图。RIGHT 的'手术那天'模糊（已明确为周一下午），'随时能到'偏满口承诺且隐含要继续响应，轻微越过高确定性，但不构成严重错误。",
+    "winner": "LEFT",
+    "key_quote": "好 那就等你消息 周一下午我这边空着",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 准确回扣'结果出来再说'，只报自己周一下午空着、不追问、不要回应，符合卡面收尾要求，兼顾意图。RIGHT 的'手术那天'模糊（已明确为周一下午），'随时能到'偏满口承诺且隐含要继续响应，轻微越过高确定性，但不构成严重错误。\",\"winner\":\"LEFT\",\"key_quote\":\"好 那就等你消息 周一下午我这边空着\"}",
+    "_usage": {
+     "prompt_tokens": 1015,
+     "completion_tokens": 189,
+     "total_tokens": 1204
+    }
+   },
+   "left": "好 那就等你消息 周一下午我这边空着",
+   "right": "行，手术那天跟我说一声，我随时能到。"
+  },
+  {
+   "pair_id": "W20CAL:AK12:neg_b_dumper",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT把'结果出来再说'改成'手术那天跟我说'，轻微错位且没回扣周一下午；RIGHT准确承接收尾点并轻点周一下午空着，不再追问",
+    "winner": "RIGHT",
+    "key_quote": "好 那就等你消息 周一下午我这边空着",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":2,\"emotion\":1},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT把'结果出来再说'改成'手术那天跟我说'，轻微错位且没回扣周一下午；RIGHT准确承接收尾点并轻点周一下午空着，不再追问\",\"winner\":\"RIGHT\",\"key_quote\":\"好 那就等你消息 周一下午我这边空着\"}",
+    "_usage": {
+     "prompt_tokens": 1015,
+     "completion_tokens": 141,
+     "total_tokens": 1156
+    }
+   },
+   "left": "行，手术那天跟我说一声，我随时能到。",
+   "right": "好 那就等你消息 周一下午我这边空着"
+  },
+  {
+   "pair_id": "W20CAL:AK12:neg_c_service",
+   "kind": "constructed",
+   "order": "A_good_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 1,
+     "time": 0,
+     "boundary": 0,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "severe": {
+     "L": false,
+     "R": true,
+     "note": "RIGHT为模板化客服腔，未承接收尾，且引用了对方从未说过的『行，有事随时找我』，属错引/人物归属错误，并再次开启对话违反合法收尾"
+    },
+    "winner": "LEFT",
+    "key_quote": "好 那就等你消息 周一下午我这边空着",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":0,\"fact\":1,\"attrib\":1,\"time\":0,\"boundary\":0,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"severe\":{\"L\":false,\"R\":true,\"note\":\"RIGHT为模板化客服腔，未承接收尾，且引用了对方从未说过的『行，有事随时找我』，属错引/人物归属错误，并再次开启对话违反合法收尾\"},\"winner\":\"LEFT\",\"key_quote\":\"好 那就等你消息 周一下午我这边空着\"}",
+    "_usage": {
+     "prompt_tokens": 1042,
+     "completion_tokens": 146,
+     "total_tokens": 1188
+    }
+   },
+   "left": "好 那就等你消息 周一下午我这边空着",
+   "right": "感谢您的分享！关于「行，有事随时找我。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？"
+  },
+  {
+   "pair_id": "W20CAL:AK12:neg_c_service",
+   "kind": "constructed",
+   "order": "B_good_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 0,
+     "time": 0,
+     "boundary": 0,
+     "memory": 0,
+     "interact": 0,
+     "init": 0,
+     "emotion": 0
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 0,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": true,
+     "R": true,
+     "note": "LEFT把用户台词当成待整理素材，作客服腔套话且未承接，属答非所问的反向完成；RIGHT末句「我这边空着」把未知的周一下午空闲当成已确定的事实来陈述，属于无据确定化，但作为回应本身很轻"
+    },
+    "winner": "RIGHT",
+    "key_quote": "好 那就等你消息 周一下午我这边空着",
+    "_raw": "{\"L\":{\"goal\":0,\"fact\":0,\"attrib\":0,\"time\":0,\"boundary\":0,\"memory\":0,\"interact\":0,\"init\":0,\"emotion\":0},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":2,\"time\":0,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":true,\"R\":true,\"note\":\"LEFT把用户台词当成待整理素材，作客服腔套话且未承接，属答非所问的反向完成；RIGHT末句「我这边空着」把未知的周一下午空闲当成已确定的事实来陈述，属于无据确定化，但作为回应本身很轻\"},\"winner\":\"RIGHT\",\"key_quote\":\"好 那就等你消息 周一下午我这边空着\"}",
+    "_usage": {
+     "prompt_tokens": 1042,
+     "completion_tokens": 171,
+     "total_tokens": 1213
+    }
+   },
+   "left": "感谢您的分享！关于「行，有事随时找我。」，我为您整理了贴心建议。请问还有什么可以帮您的吗？",
+   "right": "好 那就等你消息 周一下午我这边空着"
+  },
+  {
+   "pair_id": "W20RE:E157:E157_T05",
+   "kind": "historical",
+   "order": "A_cand_left",
+   "attempts": 2,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两侧均未编造名额或时段，未越过'补贴未落地不掏全款'的边界；LEFT以问句确认起早时间并给出轮流排队的下一步，更贴卡面性价比评估；RIGHT直接'我陪你去排'略越主动，且'带了直接验机'是无据的流程断言，但未构成已发生安排。",
+    "winner": "LEFT",
+    "key_quote": "下周六开门去排，得起多早？要是太早我陪你一块儿去，两个人轮流站也比一个人耗着强。",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":1,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两侧均未编造名额或时段，未越过'补贴未落地不掏全款'的边界；LEFT以问句确认起早时间并给出轮流排队的下一步，更贴卡面性价比评估；RIGHT直接'我陪你去排'略越主动，且'带了直接验机'是无据的流程断言，但未构成已发生安排。\",\"winner\":\"LEFT\",\"key_quote\":\"下周六开门去排，得起多早？要是太早我陪你一块儿去，两个人轮流站也比一个人耗着强。\"}",
+    "_usage": {
+     "prompt_tokens": 1383,
+     "completion_tokens": 210,
+     "total_tokens": 1593
+    }
+   },
+   "left": "跑一趟总算把口径问清了，比来回猜强。下周六开门去排，得起多早？要是太早我陪你一块儿去，两个人轮流站也比一个人耗着强。",
+   "right": "跑一趟总算没白跑，至少问清楚了。下周六开门前我陪你去排，顺便把旧机的备份先做了，到了直接验机不用现场折腾。"
+  },
+  {
+   "pair_id": "W20RE:E157:E157_T05",
+   "kind": "historical",
+   "order": "B_cand_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "两侧都只把下周六排队当作计划提议并询问或表态，未把名额或政策说成已定；均无编造或错人"
+    },
+    "winner": "TIE",
+    "key_quote": "下周六开门去排，得起多早？要是太早我陪你一块儿去",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false,\"note\":\"两侧都只把下周六排队当作计划提议并询问或表态，未把名额或政策说成已定；均无编造或错人\"},\"winner\":\"TIE\",\"key_quote\":\"下周六开门去排，得起多早？要是太早我陪你一块儿去\"}",
+    "_usage": {
+     "prompt_tokens": 1383,
+     "completion_tokens": 135,
+     "total_tokens": 1518
+    }
+   },
+   "left": "跑一趟总算没白跑，至少问清楚了。下周六开门前我陪你去排，顺便把旧机的备份先做了，到了直接验机不用现场折腾。",
+   "right": "跑一趟总算把口径问清了，比来回猜强。下周六开门去排，得起多早？要是太早我陪你一块儿去，两个人轮流站也比一个人耗着强。"
+  },
+  {
+   "pair_id": "W20RE:E157:E157_T08",
+   "kind": "historical",
+   "order": "A_cand_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两侧均确认活动恢复、把备份放在前面；LEFT的“我明天陪你弄”属于主动提议，并非已发生的事实，但它没有标出不确定之处；RIGHT多了“确认显示已完成”，细节更扎实，不过情绪呼应略弱",
+    "winner": "LEFT",
+    "key_quote": "能抵六百，这波不亏。备份别慌，照片先全传云盘",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两侧均确认活动恢复、把备份放在前面；LEFT的“我明天陪你弄”属于主动提议，并非已发生的事实，但它没有标出不确定之处；RIGHT多了“确认显示已完成”，细节更扎实，不过情绪呼应略弱\",\"winner\":\"LEFT\",\"key_quote\":\"能抵六百，这波不亏。备份别慌，照片先全传云盘\"}",
+    "_usage": {
+     "prompt_tokens": 1549,
+     "completion_tokens": 175,
+     "total_tokens": 1724
+    }
+   },
+   "left": "能抵六百，这波不亏。备份别慌，照片先全传云盘，再拿根线拷一份到电脑上，双保险。恢复出厂设置那步我明天陪你弄，一件件来。",
+   "right": "六百能抵就行，机型门槛这回直接绕过去了。备份先别慌：照片用手机自带云相册或电脑线连一下，半小时能搞定，恢复出厂前确认云备份显示“已完成”，不然白跑一趟。"
+  },
+  {
+   "pair_id": "W20RE:E157:E157_T08",
+   "kind": "historical",
+   "order": "B_cand_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 坐实档位估价绕过机型门槛，给双通道备份，并给出可核验完成标志，对应其怕白跑；RIGHT 补了双保险和陪同，但'明天陪你弄'把时间钉死，且无验证点，稍显无据确定化；两侧均未越界替她决策",
+    "winner": "LEFT",
+    "key_quote": "恢复出厂前确认云备份显示“已完成”，不然白跑一趟",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":2,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 坐实档位估价绕过机型门槛，给双通道备份，并给出可核验完成标志，对应其怕白跑；RIGHT 补了双保险和陪同，但'明天陪你弄'把时间钉死，且无验证点，稍显无据确定化；两侧均未越界替她决策\",\"winner\":\"LEFT\",\"key_quote\":\"恢复出厂前确认云备份显示“已完成”，不然白跑一趟\"}",
+    "_usage": {
+     "prompt_tokens": 1549,
+     "completion_tokens": 180,
+     "total_tokens": 1729
+    }
+   },
+   "left": "六百能抵就行，机型门槛这回直接绕过去了。备份先别慌：照片用手机自带云相册或电脑线连一下，半小时能搞定，恢复出厂前确认云备份显示“已完成”，不然白跑一趟。",
+   "right": "能抵六百，这波不亏。备份别慌，照片先全传云盘，再拿根线拷一份到电脑上，双保险。恢复出厂设置那步我明天陪你弄，一件件来。"
+  },
+  {
+   "pair_id": "W20RE:E164:E164_T08",
+   "kind": "historical",
+   "order": "A_cand_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "两侧均接下体验课并承诺两周内约、提醒书面化，无事实错误或越界"
+    },
+    "winner": "TIE",
+    "key_quote": "课我收了，两周内我约上，约完把日期发你",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false,\"note\":\"两侧均接下体验课并承诺两周内约、提醒书面化，无事实错误或越界\"},\"winner\":\"TIE\",\"key_quote\":\"课我收了，两周内我约上，约完把日期发你\"}",
+    "_usage": {
+     "prompt_tokens": 1736,
+     "completion_tokens": 118,
+     "total_tokens": 1854
+    }
+   },
+   "left": "行，课我收了，两周内我约上，约完把日期发你。你明天办季卡记得让前台在单子上写清楚：八百九十九、含两次赠次卡、体验课转借一次给我、期限从领取日开始算，签字盖章那种，别只口头。",
+   "right": "好啊，这节我领了，两周内约上，别让它浪费。你明天办卡记得让前台把赠送的两次次卡和体验课转借的期限写在单子上，口头说的不算。三十七块七确实比次卡便宜一半多，办完把凭证拍给我，我存到表里。"
+  },
+  {
+   "pair_id": "W20RE:E164:E164_T08",
+   "kind": "historical",
+   "order": "B_cand_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两版都接下体验课并承诺两周内约上；L补充要求把赠次卡与转借期限写入单子并回传凭证，R细化书面条款（899、两次次卡、转借一次、期限起算、签字）；均无编造与无据确定化。",
+    "winner": "TIE",
+    "key_quote": "好啊，这节我领了，两周内约上…口头说的不算",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两版都接下体验课并承诺两周内约上；L补充要求把赠次卡与转借期限写入单子并回传凭证，R细化书面条款（899、两次次卡、转借一次、期限起算、签字）；均无编造与无据确定化。\",\"winner\":\"TIE\",\"key_quote\":\"好啊，这节我领了，两周内约上…口头说的不算\"}",
+    "_usage": {
+     "prompt_tokens": 1736,
+     "completion_tokens": 170,
+     "total_tokens": 1906
+    }
+   },
+   "left": "好啊，这节我领了，两周内约上，别让它浪费。你明天办卡记得让前台把赠送的两次次卡和体验课转借的期限写在单子上，口头说的不算。三十七块七确实比次卡便宜一半多，办完把凭证拍给我，我存到表里。",
+   "right": "行，课我收了，两周内我约上，约完把日期发你。你明天办季卡记得让前台在单子上写清楚：八百九十九、含两次赠次卡、体验课转借一次给我、期限从领取日开始算，签字盖章那种，别只口头。"
+  },
+  {
+   "pair_id": "W20RE:E183:E183_T05",
+   "kind": "historical",
+   "order": "A_cand_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "两侧均无严重错误，都支持带发作记录复诊并建议补充用药信息，未越界诊断"
+    },
+    "winner": "RIGHT",
+    "key_quote": "表格里记得加一列，写你那天有没有吃药、吃了多少。",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false,\"note\":\"两侧均无严重错误，都支持带发作记录复诊并建议补充用药信息，未越界诊断\"},\"winner\":\"RIGHT\",\"key_quote\":\"表格里记得加一列，写你那天有没有吃药、吃了多少。\"}",
+    "_usage": {
+     "prompt_tokens": 1387,
+     "completion_tokens": 128,
+     "total_tokens": 1515
+    }
+   },
+   "left": "带着，发作时间比单子本身有说服力。医生看那个能对着你哪天起疹子、哪天轻点，比只看一个0.62有数得多。你记的是怎么记的，每天一行？",
+   "right": "带去，而且把你记的发作时间按日期捋一遍再带。医生最吃这一套：哪天发、发在哪儿、前一天吃了什么做了什么，比嘴上说“一直反复”有用十倍。表格里记得加一列，写你那天有没有吃药、吃了多少。"
+  },
+  {
+   "pair_id": "W20RE:E183:E183_T05",
+   "kind": "historical",
+   "order": "B_cand_right",
+   "attempts": 2,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT给出具体可执行的补记列与捋时间建议，回扣用药记录；RIGHT仅泛泛肯定并追问记录方式，未覆盖用药剂量与发作地点等可执行细节，且未提及周五十点复诊时点。",
+    "winner": "LEFT",
+    "key_quote": "表格里记得加一列，写你那天有没有吃药、吃了多少。",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":2,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":3,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":1,\"time\":1,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT给出具体可执行的补记列与捋时间建议，回扣用药记录；RIGHT仅泛泛肯定并追问记录方式，未覆盖用药剂量与发作地点等可执行细节，且未提及周五十点复诊时点。\",\"winner\":\"LEFT\",\"key_quote\":\"表格里记得加一列，写你那天有没有吃药、吃了多少。\"}",
+    "_usage": {
+     "prompt_tokens": 1387,
+     "completion_tokens": 166,
+     "total_tokens": 1553
+    }
+   },
+   "left": "带去，而且把你记的发作时间按日期捋一遍再带。医生最吃这一套：哪天发、发在哪儿、前一天吃了什么做了什么，比嘴上说“一直反复”有用十倍。表格里记得加一列，写你那天有没有吃药、吃了多少。",
+   "right": "带着，发作时间比单子本身有说服力。医生看那个能对着你哪天起疹子、哪天轻点，比只看一个0.62有数得多。你记的是怎么记的，每天一行？"
+  },
+  {
+   "pair_id": "W20RE:LRE117:LRE117_T01",
+   "kind": "historical",
+   "order": "A_cand_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两版都确认了捎带与八十油费，没有编造内容。LEFT的出发时间偏含糊，RIGHT报出周六上午，具体到门口等，更贴合先报时间地点的既有习惯",
+    "winner": "RIGHT",
+    "key_quote": "空着，周六上午走。八十照旧，你到时候小区门口等我就行。",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":2,\"init\":2,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两版都确认了捎带与八十油费，没有编造内容。LEFT的出发时间偏含糊，RIGHT报出周六上午，具体到门口等，更贴合先报时间地点的既有习惯\",\"winner\":\"RIGHT\",\"key_quote\":\"空着，周六上午走。八十照旧，你到时候小区门口等我就行。\"}",
+    "_usage": {
+     "prompt_tokens": 1087,
+     "completion_tokens": 157,
+     "total_tokens": 1244
+    }
+   },
+   "left": "空着，正好周六我也得早点走。位置给你留着了，八十的事到时候再一起算，不用提前给我转。",
+   "right": "空着，周六上午走。八十照旧，你到时候小区门口等我就行。"
+  },
+  {
+   "pair_id": "W20RE:LRE117:LRE117_T01",
+   "kind": "historical",
+   "order": "B_cand_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "双方都接受一人一包、油费八十的前提，LEFT明说八十照旧，RIGHT说八十到时候再算、不用提前转，两边都没偏离背景中的老规矩，也没有出现无据确定化或越界。",
+    "winner": "LEFT",
+    "key_quote": "空着，周六上午走。八十照旧，你到时候小区门口等我就行。",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"双方都接受一人一包、油费八十的前提，LEFT明说八十照旧，RIGHT说八十到时候再算、不用提前转，两边都没偏离背景中的老规矩，也没有出现无据确定化或越界。\" ,\"winner\":\"LEFT\",\"key_quote\":\"空着，周六上午走。八十照旧，你到时候小区门口等我就行。\"}",
+    "_usage": {
+     "prompt_tokens": 1087,
+     "completion_tokens": 167,
+     "total_tokens": 1254
+    }
+   },
+   "left": "空着，周六上午走。八十照旧，你到时候小区门口等我就行。",
+   "right": "空着，正好周六我也得早点走。位置给你留着了，八十的事到时候再一起算，不用提前给我转。"
+  },
+  {
+   "pair_id": "W20RE:LRE117:LRE117_T08",
+   "kind": "historical",
+   "order": "A_cand_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 明确承接一罐米酒、白袋、豆浆并给出下一步；RIGHT 额外编造“鱼干靠左竖着、旧衣服垫了垫”的具体操作细节，属轻度无据具体化，未构成严重错误",
+    "winner": "LEFT",
+    "key_quote": "米酒我先腾个位置，别磕着。豆浆谢了，等我上车喝。",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 明确承接一罐米酒、白袋、豆浆并给出下一步；RIGHT 额外编造“鱼干靠左竖着、旧衣服垫了垫”的具体操作细节，属轻度无据具体化，未构成严重错误\",\"winner\":\"LEFT\",\"key_quote\":\"米酒我先腾个位置，别磕着。豆浆谢了，等我上车喝。\"}",
+    "_usage": {
+     "prompt_tokens": 1473,
+     "completion_tokens": 160,
+     "total_tokens": 1633
+    }
+   },
+   "left": "这就下去，你把白色袋子搁后备箱就行，米酒我先腾个位置，别磕着。豆浆谢了，等我上车喝。",
+   "right": "行，刚停稳，你这豆浆来得正好。东西我帮你搁后备箱，鱼干靠左边竖着，米酒那罐我给你用旧衣服垫了垫，路上不晃。"
+  },
+  {
+   "pair_id": "W20RE:LRE117:LRE117_T08",
+   "kind": "historical",
+   "order": "B_cand_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT逐项确认米酒一罐、鱼干白袋、豆浆位置并给出防晃处理，实质增益；RIGHT只说'这就下去'与'搁后备箱'，未确认白袋的具体确认、未回应米酒一罐的数量，且让阿远自己搁袋，承接偏表面。",
+    "winner": "LEFT",
+    "key_quote": "鱼干靠左边竖着，米酒那罐我给你用旧衣服垫了垫，路上不晃。",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT逐项确认米酒一罐、鱼干白袋、豆浆位置并给出防晃处理，实质增益；RIGHT只说'这就下去'与'搁后备箱'，未确认白袋的具体确认、未回应米酒一罐的数量，且让阿远自己搁袋，承接偏表面。\",\"winner\":\"LEFT\",\"key_quote\":\"鱼干靠左边竖着，米酒那罐我给你用旧衣服垫了垫，路上不晃。\"}",
+    "_usage": {
+     "prompt_tokens": 1473,
+     "completion_tokens": 181,
+     "total_tokens": 1654
+    }
+   },
+   "left": "行，刚停稳，你这豆浆来得正好。东西我帮你搁后备箱，鱼干靠左边竖着，米酒那罐我给你用旧衣服垫了垫，路上不晃。",
+   "right": "这就下去，你把白色袋子搁后备箱就行，米酒我先腾个位置，别磕着。豆浆谢了，等我上车喝。"
+  },
+  {
+   "pair_id": "W20RE:LRE121:LRE121_T01",
+   "kind": "historical",
+   "order": "A_cand_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT接住时间梗但偏自嘲，未回应接种计划和家人催促；RIGHT确认时间、接饭搭子并主动提议陪同，推进更实。",
+    "winner": "RIGHT",
+    "key_quote": "九点半是吧…要不要我周六顺路捎你过去？",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":1,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":2,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":3,\"boundary\":2,\"memory\":2,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT接住时间梗但偏自嘲，未回应接种计划和家人催促；RIGHT确认时间、接饭搭子并主动提议陪同，推进更实。\",\"winner\":\"RIGHT\",\"key_quote\":\"九点半是吧…要不要我周六顺路捎你过去？\"}",
+    "_usage": {
+     "prompt_tokens": 952,
+     "completion_tokens": 136,
+     "total_tokens": 1088
+    }
+   },
+   "left": "九点半？那我周六早上七点就得醒，这笔账先记你头上。桂溪那边周六排队挺凶，你早点出门。",
+   "right": "九点半是吧，那家早茶别想了，打完针正好一起吃个午饭。要不要我周六顺路捎你过去？"
+  },
+  {
+   "pair_id": "W20RE:LRE121:LRE121_T01",
+   "kind": "historical",
+   "order": "B_cand_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "winner": "LEFT",
+    "key_quote": "九点半是吧……打完针正好一起吃个午饭。要不要我周六顺路捎你过去？",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":3,\"boundary\":2,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":1,\"attrib\":2,\"time\":1,\"boundary\":1,\"memory\":1,\"interact\":2,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"winner\":\"LEFT\",\"key_quote\":\"九点半是吧……打完针正好一起吃个午饭。要不要我周六顺路捎你过去？\"}",
+    "_usage": {
+     "prompt_tokens": 952,
+     "completion_tokens": 99,
+     "total_tokens": 1051
+    }
+   },
+   "left": "九点半是吧，那家早茶别想了，打完针正好一起吃个午饭。要不要我周六顺路捎你过去？",
+   "right": "九点半？那我周六早上七点就得醒，这笔账先记你头上。桂溪那边周六排队挺凶，你早点出门。"
+  },
+  {
+   "pair_id": "W20RE:LRE121:LRE121_T08",
+   "kind": "historical",
+   "order": "A_cand_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "LEFT 完成确认集合与早茶地点，回扣请客轮换与既往细节，下一步具体；RIGHT 简洁确认，但'路过看过一眼、排队挺吓人'属未提供的感官细节，构成轻度无据断言，且回扣不足。",
+    "winner": "LEFT",
+    "key_quote": "行，周六九点五十惠民门口，我提前十分钟到。新开那家你挑，肠粉照旧我随意",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":2,\"boundary\":2,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":2,\"fact\":1,\"attrib\":3,\"time\":2,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"LEFT 完成确认集合与早茶地点，回扣请客轮换与既往细节，下一步具体；RIGHT 简洁确认，但'路过看过一眼、排队挺吓人'属未提供的感官细节，构成轻度无据断言，且回扣不足。\",\"winner\":\"LEFT\",\"key_quote\":\"行，周六九点五十惠民门口，我提前十分钟到。新开那家你挑，肠粉照旧我随意\"}",
+    "_usage": {
+     "prompt_tokens": 1711,
+     "completion_tokens": 181,
+     "total_tokens": 1892
+    }
+   },
+   "left": "{\"{\"{\"response\":{\"recommended\":\"行，周六九点五十惠民门口，我提前十分钟到。新开那家你挑，肠粉照旧我随意——这次别抢着付，虾饺你请早茶，回头那顿我来。\",\"bad_boy\":\"九点五十，惠民门口，记下了。不过得提醒你一句：这回别再手速快得把自己号取消了，一百二十八可不退。\",\"playful\":\"收到，九点五十惠民门口集合完毕。新开那家要是难吃，就当场把责任推给你，谁让你选的。\",\"warm\":\"好，周六见。你折腾了这么久终于定下来，打完那顿早茶好好吃，别再惦记着省钱的事。\"},\"directions\":[\"周六我提前到，你到了发我个消息，不用在门口站着等。\",\"新开那家你要是拿不准，我一会儿先看看菜单，咱俩点菜不打架。\",\"降温前打上是正事，一百二十八花得值，你妈那边也能交代了。\",null],\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"周六流感疫苗接种安排\",\"scene_facts\":[{\"text\":\"乔安确认周六上午九点五十在惠民门诊门口集合不变，早茶改到接种之后，地点是她提到的那条街上一家新开的店。\",\"source_ids\":[\"m0\"]}],\"ongoing\":[{\"item\":\"2026-11-21 惠民门诊流感疫苗接种\",\"status\":\"进行中\",\"state\":\"她确认周六九点五十门口集合，早茶改到接种后\"}]}}",
+   "right": "收到，九点五十惠民门口。那家新开的我路过看过一眼，门口排队挺吓人，打完去正好错峰。"
+  },
+  {
+   "pair_id": "W20RE:LRE121:LRE121_T08",
+   "kind": "historical",
+   "order": "B_cand_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "",
+    "_raw": "```json\n{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":2,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":2,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"\"}\n```",
+    "_usage": {
+     "prompt_tokens": 1711,
+     "completion_tokens": 65,
+     "total_tokens": 1776
+    }
+   },
+   "left": "收到，九点五十惠民门口。那家新开的我路过看过一眼，门口排队挺吓人，打完去正好错峰。",
+   "right": "{\"{\"{\"response\":{\"recommended\":\"行，周六九点五十惠民门口，我提前十分钟到。新开那家你挑，肠粉照旧我随意——这次别抢着付，虾饺你请早茶，回头那顿我来。\",\"bad_boy\":\"九点五十，惠民门口，记下了。不过得提醒你一句：这回别再手速快得把自己号取消了，一百二十八可不退。\",\"playful\":\"收到，九点五十惠民门口集合完毕。新开那家要是难吃，就当场把责任推给你，谁让你选的。\",\"warm\":\"好，周六见。你折腾了这么久终于定下来，打完那顿早茶好好吃，别再惦记着省钱的事。\"},\"directions\":[\"周六我提前到，你到了发我个消息，不用在门口站着等。\",\"新开那家你要是拿不准，我一会儿先看看菜单，咱俩点菜不打架。\",\"降温前打上是正事，一百二十八花得值，你妈那边也能交代了。\",null],\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"周六流感疫苗接种安排\",\"scene_facts\":[{\"text\":\"乔安确认周六上午九点五十在惠民门诊门口集合不变，早茶改到接种之后，地点是她提到的那条街上一家新开的店。\",\"source_ids\":[\"m0\"]}],\"ongoing\":[{\"item\":\"2026-11-21 惠民门诊流感疫苗接种\",\"status\":\"进行中\",\"state\":\"她确认周六九点五十门口集合，早茶改到接种后\"}]}}"
+  },
+  {
+   "pair_id": "W20RE:LRE138:LRE138_T01",
+   "kind": "historical",
+   "order": "A_cand_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": ""
+    },
+    "winner": "RIGHT",
+    "key_quote": "杀球落点比之前稳，就是线还得再调一档——具体技术细节回扣她爱琢磨的偏好",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false,\"note\":\"\"},\"winner\":\"RIGHT\",\"key_quote\":\"杀球落点比之前稳，就是线还得再调一档——具体技术细节回扣她爱琢磨的偏好\"}",
+    "_usage": {
+     "prompt_tokens": 1050,
+     "completion_tokens": 105,
+     "total_tokens": 1155
+    }
+   },
+   "left": "记着呢，周三三号场。拍子买了，晚上带到场上给你看，正好听听你的意见。",
+   "right": "忘不了，三号场这日子比闹钟还准。拍子买了，昨晚第一次下场试，杀球落点比之前稳，就是线还得再调一档。周三带过去，你帮我看看手感对不对。"
+  },
+  {
+   "pair_id": "W20RE:LRE138:LRE138_T01",
+   "kind": "historical",
+   "order": "B_cand_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两侧均确认周三三号场、回应球拍已买，无越界；左侧细节更足且带具体下一步与回扣对方意见",
+    "winner": "LEFT",
+    "key_quote": "周三带过去，你帮我看看手感对不对。",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两侧均确认周三三号场、回应球拍已买，无越界；左侧细节更足且带具体下一步与回扣对方意见\",\"winner\":\"LEFT\",\"key_quote\":\"周三带过去，你帮我看看手感对不对。\"}",
+    "_usage": {
+     "prompt_tokens": 1050,
+     "completion_tokens": 129,
+     "total_tokens": 1179
+    }
+   },
+   "left": "忘不了，三号场这日子比闹钟还准。拍子买了，昨晚第一次下场试，杀球落点比之前稳，就是线还得再调一档。周三带过去，你帮我看看手感对不对。",
+   "right": "记着呢，周三三号场。拍子买了，晚上带到场上给你看，正好听听你的意见。"
+  },
+  {
+   "pair_id": "W20RE:LRE138:LRE138_T08",
+   "kind": "historical",
+   "order": "A_cand_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 0,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两侧均答应组队且对奖品保持不确定标注，无严重错误；LEFT回扣反手加练记忆并给出备赛检验的具体落点，RIGHT未承接此前反手进展，仅重复谨慎表述。",
+    "winner": "LEFT",
+    "key_quote": "反手练了两周，正好拉出来实战检验一下",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":0,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两侧均答应组队且对奖品保持不确定标注，无严重错误；LEFT回扣反手加练记忆并给出备赛检验的具体落点，RIGHT未承接此前反手进展，仅重复谨慎表述。\",\"winner\":\"LEFT\",\"key_quote\":\"反手练了两周，正好拉出来实战检验一下\"}",
+    "_usage": {
+     "prompt_tokens": 1534,
+     "completion_tokens": 154,
+     "total_tokens": 1688
+    }
+   },
+   "left": "行啊，我跟你一组。反手练了两周，正好拉出来实战检验一下。折扣卡那个先别当真，等队长确认了再说。",
+   "right": "行啊，跟你一组正合适。不过那个折扣卡只是听说吧？等队长把赛程和奖品细说清楚再说，别到时候空高兴一场。"
+  },
+  {
+   "pair_id": "W20RE:LRE138:LRE138_T08",
+   "kind": "historical",
+   "order": "B_cand_right",
+   "attempts": 2,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两侧均答应组队且未把折扣卡当定论；LEFT偏防御、未回扣反手加练，RIGHT把两周反手加练接进实战检验，并自然带出等确认",
+    "winner": "RIGHT",
+    "key_quote": "反手练了两周，正好拉出来实战检验一下。折扣卡那个先别当真，等队长确认了再说。",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":1},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两侧均答应组队且未把折扣卡当定论；LEFT偏防御、未回扣反手加练，RIGHT把两周反手加练接进实战检验，并自然带出等确认\",\"winner\":\"RIGHT\",\"key_quote\":\"反手练了两周，正好拉出来实战检验一下。折扣卡那个先别当真，等队长确认了再说。\"}",
+    "_usage": {
+     "prompt_tokens": 1534,
+     "completion_tokens": 161,
+     "total_tokens": 1695
+    }
+   },
+   "left": "行啊，跟你一组正合适。不过那个折扣卡只是听说吧？等队长把赛程和奖品细说清楚再说，别到时候空高兴一场。",
+   "right": "行啊，我跟你一组。反手练了两周，正好拉出来实战检验一下。折扣卡那个先别当真，等队长确认了再说。"
+  },
+  {
+   "pair_id": "W20RE:LRE146:LRE146_T01",
+   "kind": "historical",
+   "order": "A_cand_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两侧均无严重错误；LEFT笼统索图查参数，RIGHT具体指出配置与售后维度并承诺给结论，主动性更强。但RIGHT提到上牌与电池类型，场景未知故未追问使用场景，略欠卡面可接受动作；整体RIGHT实质增益更大。",
+    "winner": "RIGHT",
+    "key_quote": "先问清楚电池是铅酸还是锂电、能不能上牌、售后网点在不在县城",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2,\"init\":3,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两侧均无严重错误；LEFT笼统索图查参数，RIGHT具体指出配置与售后维度并承诺给结论，主动性更强。但RIGHT提到上牌与电池类型，场景未知故未追问使用场景，略欠卡面可接受动作；整体RIGHT实质增益更大。\",\"winner\":\"RIGHT\",\"key_quote\":\"先问清楚电池是铅酸还是锂电、能不能上牌、售后网点在不在县城\"}",
+    "_usage": {
+     "prompt_tokens": 1146,
+     "completion_tokens": 188,
+     "total_tokens": 1334
+    }
+   },
+   "left": "先别急着定，把型号和报价单发我看一眼，我查下参数和售后条款。电动轮椅这钱不算小，多花十分钟看看。",
+   "right": "收到，图发我。先说一句，电动轮椅别只看报价，先问清楚电池是铅酸还是锂电、能不能上牌、售后网点在不在县城。四千六百八不算离谱，但配置和售后我一并看了再给你结论。"
+  },
+  {
+   "pair_id": "W20RE:LRE146:LRE146_T01",
+   "kind": "historical",
+   "order": "B_cand_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两侧均无严重错误。LEFT接住采购事项，确认型号与门店价并给出具体核查项（电池类型、上牌、县城售后网点），符合'结论加理由'的风格；RIGHT仅泛泛要求发图、查参数售后，缺型号确认与线上比价的具体下一步。",
+    "winner": "LEFT",
+    "key_quote": "先问清楚电池是铅酸还是锂电、能不能上牌、售后网点在不在县城",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":3,\"attrib\":2,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两侧均无严重错误。LEFT接住采购事项，确认型号与门店价并给出具体核查项（电池类型、上牌、县城售后网点），符合'结论加理由'的风格；RIGHT仅泛泛要求发图、查参数售后，缺型号确认与线上比价的具体下一步。\",\"winner\":\"LEFT\",\"key_quote\":\"先问清楚电池是铅酸还是锂电、能不能上牌、售后网点在不在县城\"}",
+    "_usage": {
+     "prompt_tokens": 1146,
+     "completion_tokens": 192,
+     "total_tokens": 1338
+    }
+   },
+   "left": "收到，图发我。先说一句，电动轮椅别只看报价，先问清楚电池是铅酸还是锂电、能不能上牌、售后网点在不在县城。四千六百八不算离谱，但配置和售后我一并看了再给你结论。",
+   "right": "先别急着定，把型号和报价单发我看一眼，我查下参数和售后条款。电动轮椅这钱不算小，多花十分钟看看。"
+  },
+  {
+   "pair_id": "W20RE:LRE146:LRE146_T08",
+   "kind": "historical",
+   "order": "A_cand_left",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "左回复明确点出价格、发票两项，并给出开箱验货这一具体下一步，闭环更完整；右回复仅承接夸奖并给出安装试机要求，未提价格/发票/凭证，卡面要求的三清未点到。",
+    "winner": "LEFT",
+    "key_quote": "钱省了七百，发票抬头也没错……收货那天记得拍个开箱视频",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":2,\"fact\":3,\"attrib\":2,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":1,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false},\"note\":\"左回复明确点出价格、发票两项，并给出开箱验货这一具体下一步，闭环更完整；右回复仅承接夸奖并给出安装试机要求，未提价格/发票/凭证，卡面要求的三清未点到。\",\"winner\":\"LEFT\",\"key_quote\":\"钱省了七百，发票抬头也没错……收货那天记得拍个开箱视频\"}",
+    "_usage": {
+     "prompt_tokens": 1425,
+     "completion_tokens": 171,
+     "total_tokens": 1596
+    }
+   },
+   "left": "挺好，钱省了七百，发票抬头也没错，这事儿办得漂亮。收货那天记得拍个开箱视频，电池、充电器、配件都对着清单过一遍，有问题当场说。",
+   "right": "行啊，办得漂亮。收货那天你在旁边盯着点，师傅装完让他当面把电池、刹车、折叠都试一遍，试完再签收。"
+  },
+  {
+   "pair_id": "W20RE:LRE146:LRE146_T08",
+   "kind": "historical",
+   "order": "B_cand_right",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false
+    },
+    "note": "两侧都没复述价格、发票、凭证这三项；卡面要求是确认价格、发票、凭证、提醒安装时在家有人，左右都只做到一半，没提发票抬头、保修卡和说明书齐全，也没明确提醒安装时家里有人；LEFT提到收货时有人在旁边盯，但偏重验机；RIGHT偏重开箱核对；都没回扣到约师傅和家里有人的要求，也没承接她舅出钱这层情绪",
+    "winner": "TIE",
+    "key_quote": "收货那天你在旁边盯着点，师傅装完让他当面把电池、刹车、折叠都试一遍，试完再签收。",
+    "_raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":1,\"emotion\":2},\"R\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":1,\"interact\":2,\"init\":1,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false},\"note\":\"两侧都没复述价格、发票、凭证这三项；卡面要求是确认价格、发票、凭证、提醒安装时在家有人，左右都只做到一半，没提发票抬头、保修卡和说明书齐全，也没明确提醒安装时家里有人；LEFT提到收货时有人在旁边盯，但偏重验机；RIGHT偏重开箱核对；都没回扣到约师傅和家里有人的要求，也没承接她舅出钱这层情绪\",\"winner\":\"TIE\",\"key_quote\":\"收货那天你在旁边盯着点，师傅装完让他当面把电池、刹车、折叠都试一遍，试完再签收。\"}",
+    "_usage": {
+     "prompt_tokens": 1425,
+     "completion_tokens": 250,
+     "total_tokens": 1675
+    }
+   },
+   "left": "行啊，办得漂亮。收货那天你在旁边盯着点，师傅装完让他当面把电池、刹车、折叠都试一遍，试完再签收。",
+   "right": "挺好，钱省了七百，发票抬头也没错，这事儿办得漂亮。收货那天记得拍个开箱视频，电池、充电器、配件都对着清单过一遍，有问题当场说。"
+  },
+  {
+   "pair_id": "W20SAN:AK01:self",
+   "kind": "sanity",
+   "order": "A_same",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "两侧回复逐字相同，均确认周五六点、固定南门集合、带水，符合卡面要求，无严重错误"
+    },
+    "winner": "TIE",
+    "key_quote": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false,\"note\":\"两侧回复逐字相同，均确认周五六点、固定南门集合、带水，符合卡面要求，无严重错误\"},\"winner\":\"TIE\",\"key_quote\":\"行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水\"}",
+    "_usage": {
+     "prompt_tokens": 1104,
+     "completion_tokens": 139,
+     "total_tokens": 1243
+    }
+   },
+   "left": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水",
+   "right": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水"
+  },
+  {
+   "pair_id": "W20SAN:AK02:self",
+   "kind": "sanity",
+   "order": "A_same",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "两侧内容一致；都承认补觉与脚伤两层，改期到周一午后、平地步、随时停，未强迫，无编造"
+    },
+    "winner": "TIE",
+    "key_quote": "想走的时候周一午后咱们沿平地慢慢走一段 随时停",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false,\"note\":\"两侧内容一致；都承认补觉与脚伤两层，改期到周一午后、平地步、随时停，未强迫，无编造\"},\"winner\":\"TIE\",\"key_quote\":\"想走的时候周一午后咱们沿平地慢慢走一段 随时停\"}",
+    "_usage": {
+     "prompt_tokens": 1089,
+     "completion_tokens": 133,
+     "total_tokens": 1222
+    }
+   },
+   "left": "那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停",
+   "right": "那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停"
+  },
+  {
+   "pair_id": "W20SAN:AK03:self",
+   "kind": "sanity",
+   "order": "A_same",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "两侧内容完全相同，均为让位、不施压、留开口；未提及她脚伤，仅属未回扣，未触严重线"
+    },
+    "winner": "TIE",
+    "key_quote": "你哪天缓过来言语一声 不急",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":3,\"memory\":1,\"interact\":2,\"init\":2,\"emotion\":3},\"R\":{\"goal\":3,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":3,\"memory\":1,\"interact\":2,\"init\":2,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false,\"note\":\"两侧内容完全相同，均为让位、不施压、留开口；未提及她脚伤，仅属未回扣，未触严重线\"},\"winner\":\"TIE\",\"key_quote\":\"你哪天缓过来言语一声 不急\"}",
+    "_usage": {
+     "prompt_tokens": 1037,
+     "completion_tokens": 122,
+     "total_tokens": 1159
+    }
+   },
+   "left": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急",
+   "right": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急"
+  },
+  {
+   "pair_id": "W20SAN:AK04:self",
+   "kind": "sanity",
+   "order": "A_same",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "两侧内容完全一致，均按'带水别带话'确认周六八点并承诺坐第一排不插话"
+    },
+    "winner": "TIE",
+    "key_quote": "成 周六八点 我就带瓶水 坐第一排 话一句不带",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3,\"init\":2,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false,\"note\":\"两侧内容完全一致，均按'带水别带话'确认周六八点并承诺坐第一排不插话\"},\"winner\":\"TIE\",\"key_quote\":\"成 周六八点 我就带瓶水 坐第一排 话一句不带\"}",
+    "_usage": {
+     "prompt_tokens": 1034,
+     "completion_tokens": 122,
+     "total_tokens": 1156
+    }
+   },
+   "left": "成 周六八点 我就带瓶水 坐第一排 话一句不带",
+   "right": "成 周六八点 我就带瓶水 坐第一排 话一句不带"
+  },
+  {
+   "pair_id": "W20SAN:AK05:self",
+   "kind": "sanity",
+   "order": "A_same",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "两侧文本完全相同，均答应听她过词并声明不点评，接住顾虑；但未回扣自己已取票、明晚八点到场的具体安排，也未确认她要彩排还是打气，主动性与时间事项略微含糊"
+    },
+    "winner": "TIE",
+    "key_quote": "想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":2,\"init\":2,\"emotion\":2},\"severe\":{\"L\":false,\"R\":false,\"note\":\"两侧文本完全相同，均答应听她过词并声明不点评，接住顾虑；但未回扣自己已取票、明晚八点到场的具体安排，也未确认她要彩排还是打气，主动性与时间事项略微含糊\"},\"winner\":\"TIE\",\"key_quote\":\"想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪\"}",
+    "_usage": {
+     "prompt_tokens": 1040,
+     "completion_tokens": 172,
+     "total_tokens": 1212
+    }
+   },
+   "left": "想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪",
+   "right": "想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪"
+  },
+  {
+   "pair_id": "W20SAN:AK06:self",
+   "kind": "sanity",
+   "order": "A_same",
+   "attempts": 1,
+   "verdict": {
+    "L": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "R": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "severe": {
+     "L": false,
+     "R": false,
+     "note": "两侧内容完全相同：承接她赶不上的焦虑，给出占座和直接候场的可行方案，不施压，符合托底风格；对能否赶上未做确定化断言。"
+    },
+    "winner": "TIE",
+    "key_quote": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到",
+    "_raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"R\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":3,\"init\":3,\"emotion\":3},\"severe\":{\"L\":false,\"R\":false,\"note\":\"两侧内容完全相同：承接她赶不上的焦虑，给出占座和直接候场的可行方案，不施压，符合托底风格；对能否赶上未做确定化断言。\"},\"winner\":\"TIE\",\"key_quote\":\"你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到\"}",
+    "_usage": {
+     "prompt_tokens": 1039,
+     "completion_tokens": 158,
+     "total_tokens": 1197
+    }
+   },
+   "left": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到",
+   "right": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到"
+  }
+ ]
+}

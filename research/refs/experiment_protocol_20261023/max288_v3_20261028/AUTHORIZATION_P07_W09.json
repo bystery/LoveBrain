@@ -1,0 +1,319 @@
+{
+ "kind": "authorization_p07_w09_expansion",
+ "authorization_id": "AUTH-P07-W09-20261028-01",
+ "registered_by": "watchdog30-20261028-065658 (continuous mainline push, user ruling: alive=keep pushing, automation is fuse only)",
+ "created": "2026-10-28T07:45+08:00",
+ "authority_source": "MASTER_EXECUTION_V3_288H.md §W09（W02 出口判定 PASS_WITH_CAVEATS=W02_EXIT_VERDICT.json 达标后进入）；用户指令：只要 alive 就一直推进主线",
+ "status": "ACTIVE",
+ "authorized": true,
+ "real_endpoint": "http://127.0.0.1:17770/v1",
+ "cycle_budget": {
+  "global_management_cap": 16384,
+  "note": "沿用 V3 既有 16,384 管理帽，不另加同额；本 scope 为其下的目的分账"
+ },
+ "scope": {
+  "experiment": "P07_W09_expansion",
+  "allowed_models": [
+   "dsf",
+   "hy3",
+   "qwen3.8-flash"
+  ],
+  "forbidden_models": [
+   "hy4-preview",
+   "gemini-3.8-flash"
+  ],
+  "model_policy": "hy4-preview 禁且不许 fallback；Gemini 槽 0；qwen3.8-flash 每 alias 所有角色合计≤3 并发；整批比较同基座；空返=一次失败不自动重试；同模型连续两次失败暂停派发（探针门控恢复）；45→120→240 SLA 阶梯禁止"
+ },
+ "design": {
+  "cells": "4故事(I1,I2,I3,I4) × 4反馈(positive,hesitant,busy,disengage) × 2臂(reference_product_v1, v6_integrated) = 32 轨迹 × 4轮 = 128 harness + ≤128 对方模拟",
+  "turns": 4,
+  "runner": "tools/run_p07_pilot.py（FEEDBACKS 已扩 busy/disengage：busy=ADJUSTED+may_decline、disengage=CLOSED+may_decline，CLOSED 消费语义已离线验证 effective=False）",
+  "neg_controls": "4故事全跑：每场景 4 探针（接受尊重邀请/越界强推/无回复事件/泛化忽略）= 16 控制；失效判定只看 flags 值=True；环境失败如实报告不计模拟器失效",
+  "review": "16 组成对轨迹；修偏置后评审器（独立性纪律块已过人工强弱对 gate）；每对 ≥2 排序、维度级对比、双序一致方向才出判决；qwen3.8-flash purpose=trajectory_review",
+  "statistics": "交流动作兑现/具体回应入口/依据反馈调节/误解恢复/合理邀约到确认/正确不回/事实主体承诺错误；模拟器自报情绪分不当唯一效果分",
+  "repeat_policy": "预登记重复独立计费；r1 因环境失败 incomplete 原样保留，不换 ID 补跑",
+  "phases": [
+   {
+    "id": "a",
+    "cells": "I1,I3 × 4反馈 × 2臂 = 16 轨迹",
+    "est_calls": "64 harness + ≤64 sim + 8 negctl = ≤136"
+   },
+   {
+    "id": "b",
+    "cells": "I2,I4 × busy,disengage × 2臂 = 8 轨迹",
+    "est_calls": "32 harness + ≤32 sim = ≤64"
+   },
+   {
+    "id": "c",
+    "cells": "I2,I4 × positive,hesitant × 2臂（4轮新格，与 W02 的 3 轮 pilot 不同条件）= 8 轨迹",
+    "est_calls": "32 harness + ≤32 sim = ≤64"
+   }
+  ],
+  "budget_check": "计划 128+128+16+32=304；cap=304=计划（提前终止就少花不补满）；W02 pilot 的 96 已封存为独立证据，不混账"
+ },
+ "halt_rules": "两连续 sim 环境失败自动暂停该进程内派发；跨进程恢复先探针；评审与 sim 共享 alias 并发帽 3；负对照 ≥2 旗标=True 停发正式轨迹原样记录",
+ "honest_boundary": "分profile审核的 16 组对判词按双序一致才出判决；I4hes 类单序情形记 unknown；模拟器 state_delta 自报不作独立质量分；真人愿发与真实关系成功仍 unknown",
+ "repeats_plan_a2": {
+  "kind": "pre_registered_completion_wave_a2",
+  "registered_at": "2026-10-28T08:28+08:00",
+  "registered_by": "watchdog30-20261028-065658",
+  "context": "W09-a 进程内按模型政策暂停（v6 侧 I1hes/I1busy 两连续 sim 环境失败）；探针 3794ms OK 门控恢复",
+  "repeat_units": [
+   {
+    "trajectory_id": "I3__fbdisengage__reference_product_v1__r2",
+    "pairs_with": "I3__fbdisengage__v6_integrated__r1(未开始)",
+    "reason": "r1 incomplete(sim 3/4)",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbhesitant__v6_integrated__r2",
+    "pairs_with": "I1__fbhesitant__reference_product_v1__r1(complete)",
+    "reason": "r1 incomplete(sim 2/4)",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbbusy__v6_integrated__r2",
+    "pairs_with": "I1__fbbusy__reference_product_v1__r1(complete)",
+    "reason": "r1 incomplete(sim 1/4)",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbdisengage__v6_integrated__r1",
+    "pairs_with": "I1__fbdisengage__reference_product_v1__r1(complete)",
+    "reason": "未开始（HALT 前未派）",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbpositive__v6_integrated__r1",
+    "pairs_with": "I3__fbpositive__reference_product_v1__r1(complete)",
+    "reason": "未开始",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbhesitant__v6_integrated__r1",
+    "pairs_with": "I3__fbhesitant__reference_product_v1__r1(complete)",
+    "reason": "未开始",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbbusy__v6_integrated__r1",
+    "pairs_with": "I3__fbbusy__reference_product_v1__r1(complete)",
+    "reason": "未开始",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbdisengage__v6_integrated__r1",
+    "pairs_with": "见 r2 行配对",
+    "reason": "未开始",
+    "est_calls": 6
+   }
+  ],
+  "est_calls_total": 48,
+  "budget_check": "账本 started=82+探针1+48=131 ≤ cap 304；sim 只在实际发送轮发生，预计少于 est",
+  "incomplete_r1_preserved": "I1hes/I1busy/I3dis 的 r1 incomplete 原样保留，不换 ID 补跑语义=预登记重复独立计费"
+ },
+ "repeats_plan_a3": {
+  "kind": "pre_registered_completion_wave_a3",
+  "registered_at": "2026-10-28T08:45+08:00",
+  "registered_by": "watchdog30-20261028-065658",
+  "context": "a2 双段并发时 v6 侧 4 轨迹全部断在 sim（150s 超时）；单独探针 OK；phase-a REF 侧串行 30+ sim 全成功 ⇒ 执行策略改为单进程串行，本波为全部 7 个剩余单元一次性串行进程",
+  "execution": "单进程 --repeat 3 + 精确 skip 清单，只派 7 个目标单元；进程内 2 连续 sim 失败仍自动暂停，剩余单元留 a4",
+  "repeat_units": [
+   {
+    "trajectory_id": "I1__fbhesitant__v6_integrated__r3",
+    "reason": "r1,r2 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbbusy__v6_integrated__r3",
+    "reason": "r1,r2 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbpositive__v6_integrated__r2",
+    "reason": "r1 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbhesitant__v6_integrated__r2",
+    "reason": "r1 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbdisengage__v6_integrated__r1",
+    "reason": "未开始",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbbusy__v6_integrated__r1",
+    "reason": "未开始",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbdisengage__v6_integrated__r1",
+    "reason": "未开始",
+    "est_calls": 6
+   }
+  ],
+  "est_calls_total": 42,
+  "budget_check": "账本 started≈108+42=150 ≤ cap 304",
+  "lesson_recorded": "qwen3.8-flash sim：单进程串行稳定（REF 侧 30+ 次成功）；并发双进程段复现劣化；后续 b/c 相一律串行"
+ },
+ "repeats_plan_a4": {
+  "kind": "pre_registered_completion_wave_a4",
+  "registered_at": "2026-10-28T08:22+08:00",
+  "registered_by": "watchdog30-20261028-065658",
+  "context": "a3 因 skip 漏项失误未跑任何目标单元且覆盖损毁 I1pos_v6 r1（详见 W09_DISPATCH_INCIDENT_20261028.json）；a4=修正后全部剩余单元，单进程串行+防覆盖护栏兜底",
+  "repeat_units": [
+   {
+    "trajectory_id": "I1__fbpositive__v6_integrated__r3",
+    "reason": "r1 被事故覆盖损毁、r2 计划外消耗，按预登记重复补干净 r3",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbhesitant__v6_integrated__r3",
+    "reason": "r1,r2 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbbusy__v6_integrated__r3",
+    "reason": "r1,r2 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbdisengage__v6_integrated__r1",
+    "reason": "未开始",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbpositive__v6_integrated__r2",
+    "reason": "r1 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbhesitant__v6_integrated__r2",
+    "reason": "r1 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbbusy__v6_integrated__r1",
+    "reason": "未开始",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbdisengage__v6_integrated__r1",
+    "reason": "未开始",
+    "est_calls": 6
+   }
+  ],
+  "est_calls_total": 48,
+  "budget_check": "账本 started≈118（含 a3 误耗3笔如实已记）+48=166 ≤ cap 304",
+  "execution": "--repeat 3 + 全枚举 skip（16 个非目标 (cell,rep) 全部列入）；TRACE 防覆盖护栏为第二道兜底",
+  "incident_ref": "W09_DISPATCH_INCIDENT_20261028.json"
+ },
+ "env_v2_1_note": "2026-10-28 08:55 环境补丁 v2.1（run_p07_pilot.py）：上一轮 delivery_failed 以类型化 own_events 进下一轮 ctx（FIX-4 证据：发送失败后轨迹内无修复，因模型不知道自己上轮哑了）。两臂同获此数据；已有 REF 8 轨迹 delivery_failed=0，实际不受影响，可比性保持。",
+ "sim_halt_state": "2026-10-28 08:30 起 qwen3.8-flash sim 真实请求持续 150s 超时（REF 侧 34 次 sim 全成于健康窗；v6 侧自 08:30 后跨 3 波/串行并行两模式全失败；探针 3 次 OK 但真实请求失败=探针失去预测效力）。sim 派发全面暂停，剩余单元待真实恢复信号（以一笔真实 sim 成功为准，不以探针为准）。",
+ "repeats_plan_a5": {
+  "kind": "pre_registered_completion_wave_a5",
+  "registered_at": "2026-10-28T09:05+08:00",
+  "registered_by": "watchdog30-20261028-065658",
+  "context": "a4 两单元(I1pos r3/I1hes r3)仍断于 sim 劣化窗；09:05 真实负载恢复门 OK（tools/probe_real_sim.py，931 字符真实 B3 请求 16.8s，替代三次失效的玩具探针）后恢复；恢复信号规则改为：真实负载探针成功才派发",
+  "repeat_units": [
+   {
+    "trajectory_id": "I1__fbpositive__v6_integrated__r4",
+    "reason": "r1 事故损毁 r2 计划外 r3 劣化断",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbhesitant__v6_integrated__r4",
+    "reason": "r1,r2,r3 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbbusy__v6_integrated__r3",
+    "reason": "r1,r2 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbdisengage__v6_integrated__r1",
+    "reason": "未开始",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbpositive__v6_integrated__r2",
+    "reason": "r1 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbhesitant__v6_integrated__r2",
+    "reason": "r1 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbbusy__v6_integrated__r1",
+    "reason": "未开始",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbdisengage__v6_integrated__r1",
+    "reason": "未开始",
+    "est_calls": 6
+   }
+  ],
+  "est_calls_total": 48,
+  "budget_check": "账本 started≈125+48=173 ≤ cap 304",
+  "execution": "单进程串行 --repeat 4 + 全枚举 skip(24 项)+防覆盖护栏；a4 已消耗的 I1pos r3/I1hes r3 incomplete 原样保留"
+ },
+ "env_v2_2_note": "2026-10-28 09:20：sim 挂死根因=上游 qwen 对历史中\"——\"的生成挂死缺陷（v6 风格 32% 消息含——故臂相关）；修复=build_b3_simulator_request 历史嵌入归一化 ——→—（仅 sim 渲染，双臂同规则，不改产文/评分）。详见 W09_SIM_HANG_ROOT_CAUSE.json。",
+ "repeats_plan_a6": {
+  "kind": "pre_registered_completion_wave_a6",
+  "registered_at": "2026-10-28T09:22+08:00",
+  "registered_by": "watchdog30-20261028-065658",
+  "context": "a5 两单元仍挂（根因未修时）；根因修复后重派，r 号顺延",
+  "repeat_units": [
+   {
+    "trajectory_id": "I1__fbpositive__v6_integrated__r5",
+    "reason": "r1 事故 r2 计划外 r3,r4 劣化/挂死",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbhesitant__v6_integrated__r5",
+    "reason": "r1-r4 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbbusy__v6_integrated__r3",
+    "reason": "r1,r2 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I1__fbdisengage__v6_integrated__r1",
+    "reason": "未开始",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbpositive__v6_integrated__r2",
+    "reason": "r1 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbhesitant__v6_integrated__r2",
+    "reason": "r1 incomplete",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbbusy__v6_integrated__r1",
+    "reason": "未开始",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I3__fbdisengage__v6_integrated__r1",
+    "reason": "未开始",
+    "est_calls": 6
+   }
+  ],
+  "est_calls_total": 48,
+  "budget_check": "账本 started≈137+48=185 ≤ cap 304（含 6 笔诊断调用如实入账）",
+  "execution": "单进程串行 --repeat 5 + 全枚举 skip + 防覆盖护栏；环境 v2.2 生效"
+ }
+}

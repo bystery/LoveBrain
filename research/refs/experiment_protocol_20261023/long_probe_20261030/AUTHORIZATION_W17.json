@@ -1,0 +1,43 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-W17-20261102-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30常设授权+2026-11-02全面授权重申",
+ "phase": "W17",
+ "budget_ledger": "logs/auth_budget/AUTH-W17-20261102-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 144
+ },
+ "scope": {
+  "purpose": "W17 单冠军合并确认批（W17_SINGLE_CHAMPION_DESIGN_20261102.md 判据冻结）：r9_slim vs b_norecap on E189/E190/E195/E199/E207/E208，144 attempts。MERGE=r9_slim 与 b_norecap 能否合并为单冠军（G1 九维最差>=-0.3+G2 T07-12 keep>=0.95x+G3 severe 亲读不升）；G1 in [-0.5,-0.3) 且成本显著低→不合并登记分区；G1<-0.5 或 G2 破→维持双冠军。离线事实：72 位中 71 位 b_norecap≡v0（扩窗仅 E189_T12 触发），本批实质=最小事件窗 vs r9_slim。并行执行器 --workers。评审另册",
+  "route": "two_arm_batch_144",
+  "total_attempts": 144,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "W17": "BATCH-W17-MERGE-20261102"
+  },
+  "episodes": [],
+  "cards": "benchmark/stories_v2/wave3/GRADING_CARDS_W17.json",
+  "plan_sha256": "6a0a3d2be504e44292da6a5adc0fd30ba583d2f7570a1508099d5f1640f985cb"
+ },
+ "frozen_bindings": {
+  "W17": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/W17.INTERLEAVE_PLAN.json",
+   "plan_sha256": "6a0a3d2be504e44292da6a5adc0fd30ba583d2f7570a1508099d5f1640f985cb",
+   "batch_id": "BATCH-W17-MERGE-20261102",
+   "cards_file": "benchmark/stories_v2/wave3/GRADING_CARDS_W17.json",
+   "attempts": 144,
+   "parent": "action_policy_r9_slim",
+   "candidate": "window_expand_b_norecap",
+   "parent_identity_sha256": "2099c12f55337dd7dcfac0327cdd9411f7e5de2cdaa0a7083498bab6d12c9c03",
+   "candidate_identity_sha256": "ccf0f8fca5148d9f276fad2bb6fe6acef2e1c9db4c58d86f21ab37398e6b7076"
+  }
+ }
+}

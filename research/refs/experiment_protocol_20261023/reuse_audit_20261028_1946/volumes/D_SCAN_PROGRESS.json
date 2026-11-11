@@ -1,0 +1,65 @@
+{
+  "volume": "D:/",
+  "start": "2026-10-28T19:47:44.747044+08:00",
+  "kind": "all_accessible_directory_metadata_scan_not_all_file_contents",
+  "directories_enumerated": 239640,
+  "files_seen": 1397721,
+  "related_files": 167007,
+  "related_dirs": 38407,
+  "reparse_dirs_skipped": 5,
+  "sealed_dirs_not_entered": 0,
+  "errors": 4,
+  "error_samples": [
+    {
+      "path": "D:/System Volume Information",
+      "error": "[WinError 5] 拒绝访问。: 'D:/System Volume Information'"
+    },
+    {
+      "path": "D:/MySQL\\MySQL Server 8.4\\Data\\performance_schema",
+      "error": "[WinError 5] 拒绝访问。: 'D:/MySQL\\\\MySQL Server 8.4\\\\Data\\\\performance_schema'"
+    },
+    {
+      "path": "D:/MySQL\\MySQL Server 8.4\\Data\\#innodb_temp",
+      "error": "[WinError 5] 拒绝访问。: 'D:/MySQL\\\\MySQL Server 8.4\\\\Data\\\\#innodb_temp'"
+    },
+    {
+      "path": "D:/MySQL\\MySQL Server 8.4\\Data\\#innodb_redo",
+      "error": "[WinError 5] 拒绝访问。: 'D:/MySQL\\\\MySQL Server 8.4\\\\Data\\\\#innodb_redo'"
+    }
+  ],
+  "reparse_samples": [
+    "D:/TeamWorkspace\\products\\LoveBrain",
+    "D:/PAPER\\CVPR9-5\\batches",
+    "D:/lovebrain-arena\\isol_runs\\20261021_160056\\attacker_run\\evil_link",
+    "D:/lovebrain-arena\\isol_runs\\20261021_155732\\attacker_run\\evil_link",
+    "D:/butler_acceptance\\runs\\fullflow-20261020-02\\workspaces\\butler-fix\\source\\case54_daniu_review_pack\\code_v9_baseline"
+  ],
+  "root_project_dirs": [
+    "D:/LoveBrain",
+    "D:/lovebrain-arena",
+    "D:/LoveBrain-arena-e",
+    "D:/桌面\\工作信息\\LoveBrain",
+    "D:/桌面\\工作信息\\SKILL\\恋爱\\lovebrain",
+    "D:/桌面\\工作信息\\SKILL\\恋爱\\原始历史skills\\lovebrain",
+    "D:/桌面\\工作信息\\SKILL\\恋爱\\原始历史skills\\skill-lovebrain",
+    "D:/桌面\\工作信息\\SKILL\\恋爱\\原始历史skills\\skill-lovebrain2",
+    "D:/tmp\\lovebrain_repro",
+    "D:/tmp\\u6\\out\\com\\lovebrain",
+    "D:/Temp\\kcprobe\\com\\lovebrain",
+    "D:/Temp\\kcout\\com\\lovebrain",
+    "D:/Temp\\kcbefore\\com\\lovebrain",
+    "D:/Temp\\kcbad2\\com\\lovebrain",
+    "D:/Temp\\kcafter\\com\\lovebrain",
+    "D:/TeamWorkspace-controlled\\2026-10-08-瘦身\\LoveBrain-prewave-test-results",
+    "D:/TeamWorkspace-controlled\\2026-10-08-瘦身\\LoveBrain-reference-v131",
+    "D:/TeamWorkspace-controlled\\2026-10-08-瘦身\\product-tree\\_temp\\gates106\\HEAD\\app\\src\\test\\java\\com\\lovebrain",
+    "D:/TeamWorkspace-controlled\\2026-10-08-瘦身\\product-tree\\_temp\\ci-36019334520\\logcat\\home\\runner\\work\\LoveBrain",
+    "D:/TeamWorkspace-controlled\\2026-10-08-瘦身\\product-tree\\_archive\\2026-10-03\\benchmark\\src\\androidTest\\java\\com\\lovebrain",
+    "D:/TeamWorkspace-controlled\\2026-10-08-瘦身\\product-tree\\_archive\\2026-10-03\\abandoned-kr-split-1d233c68\\app\\src\\main\\java\\com\\lovebrain",
+    "D:/TeamWorkspace\\team\\projects\\lovebrain",
+    "D:/TeamWorkspace\\products\\LoveBrain",
+    "D:/resume_manager\\.research-cache\\github\\LoveBrain",
+    "D:/guanjia-harness\\sandboxes\\phase3_CHALLENGE_01_LOVEBRAIN",
+    "D:/guanjia-harness\\sandboxes\\rtb_phase3_LOVEBRAIN"
+  ]
+}

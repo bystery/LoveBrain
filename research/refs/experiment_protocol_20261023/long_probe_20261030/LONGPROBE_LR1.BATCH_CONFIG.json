@@ -1,0 +1,15 @@
+{
+ "batch_id": "BATCH-LONGRANGE-LR1-E061-20261031",
+ "arm_map": {
+  "parent": "action_policy_r9_slim",
+  "candidate": "v0_minimal_events"
+ },
+ "episode_order": [
+  {
+   "episode": "E061",
+   "arm_order": "parent_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+ "recall_capable": false
+}

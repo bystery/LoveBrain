@@ -1,0 +1,1793 @@
+{
+  "real_network_calls": 0,
+  "before": {
+    "tools/exam_interleave_plan.py": "15060cfc04547f35b6cff768106b724f20241764cf9ac07737eff259f03d2acb",
+    "arena/isolation/trusted_controller.py": "0ddc0614ae34aa874f272310b8f01923d3b0126ef16eb5625dce03daed15f23e",
+    "tools/exam_layered_score.py": "0917c6e3137298e3d71fde351b13e2d526679adb7d390c03c71b5b9128035ec2",
+    "arena/lb_scorer.py": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+    "candidates/reference_product_v1/mechanism/mechanism.py": "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba",
+    "candidates/v2_recall/mechanism/mechanism.py": "e823cc3225679c86f22077642df3408553eb1e65aaad560433d5afa9476541f8",
+    "candidates/v3_system_slim/mechanism/mechanism.py": "a5574885703f48c63cea5d5e05ce59a97d861eeaafdf21f83358c46bcef879c3"
+  },
+  "checks": [
+    {
+      "name": "r1_case_id_hit_wrong_reply_not_inherited",
+      "pass": true,
+      "detail": "R1.tampered_reply_unmatched PASS"
+    },
+    {
+      "name": "r1_correct_replacement_also_invalidates_old_fail",
+      "pass": true,
+      "detail": "R1.correct_replacement_unmatched PASS"
+    },
+    {
+      "name": "r1_slot_swap_invalidates_other_slots",
+      "pass": true,
+      "detail": "R1.slot_isolation PASS"
+    },
+    {
+      "name": "r1_corrupt_hash_in_annotation_file_denied",
+      "pass": true,
+      "detail": "R1.hash_tamper_denied PASS"
+    },
+    {
+      "name": "r1_no_annotations_file_means_all_unrated",
+      "pass": true,
+      "detail": "R1.no_file_all_unrated PASS (turns=24)"
+    },
+    {
+      "name": "b_full_context_matches",
+      "pass": true,
+      "detail": "B.full_context_match PASS"
+    },
+    {
+      "name": "b_same_output_case_content_drift_denied",
+      "pass": true,
+      "detail": "B.case_content_drift_denied PASS"
+    },
+    {
+      "name": "b_wrong_run_or_harness_identity_denied",
+      "pass": true,
+      "detail": "B.wrong_run_or_harness_denied PASS"
+    },
+    {
+      "name": "b_annotation_missing_context_binding_unverified",
+      "pass": true,
+      "detail": "B.missing_context_unverified PASS"
+    },
+    {
+      "name": "b_missing_case_input_context_denied",
+      "pass": true,
+      "detail": "B.missing_case_input_context_denied PASS"
+    },
+    {
+      "name": "b_real_annotations_bound_and_run_verified",
+      "pass": true,
+      "detail": "B.real_annotations_bound PASS bound=22 rated=21 drift_honored=0"
+    },
+    {
+      "name": "b_backup_derived_primary_not_inherited",
+      "pass": true,
+      "detail": "B.backup_derived_primary_unrated PASS edge=0 coverage=0.875"
+    },
+    {
+      "name": "r2_tri_any_pass_unknown_when_backup_unrated",
+      "pass": true,
+      "detail": "R2.tri_any_pass PASS (unknown/true/false 三态)"
+    },
+    {
+      "name": "r2_tri_backup_severe_unknown_when_partial",
+      "pass": true,
+      "detail": "R2.tri_backup_severe PASS"
+    },
+    {
+      "name": "r2_real_exam_coverage_and_invariants",
+      "pass": true,
+      "detail": "R2.coverage PASS primary=20/21 alop_true=20 sev_true=1 sev_unknown=23 gate=False"
+    },
+    {
+      "name": "r2_lower_bound_severe_rate",
+      "pass": true,
+      "detail": "R2.lower_bound PASS severe_error_backup_lower_bound_rate=0.042"
+    },
+    {
+      "name": "c1_recall_fact_reaches_prompt",
+      "pass": true,
+      "detail": "t06_prompt_has=杯底/刻字/不刻+【回忆】"
+    },
+    {
+      "name": "c2_no_recall_false_positive",
+      "pass": true,
+      "detail": "recall_only_on_turn=6"
+    },
+    {
+      "name": "c3_zero_overlap_no_injection",
+      "pass": true,
+      "detail": "zero_overlap_skipped"
+    },
+    {
+      "name": "c4_recall_bypass_injects_ongoing",
+      "pass": true,
+      "detail": "v2_ongoing_injected=True base=False"
+    },
+    {
+      "name": "c5_e003_untouched",
+      "pass": true,
+      "detail": "e003_prompts_identical(8 轮)"
+    },
+    {
+      "name": "c6_no_cross_message_recall_activation",
+      "pass": true,
+      "detail": "P1 false_positive_blocked=True last_marker_still_hits=True"
+    },
+    {
+      "name": "c7_no_dormant_whole_dump",
+      "pass": true,
+      "detail": "P2 extras=1 cap=2 relevant_included=True"
+    },
+    {
+      "name": "c8_total_new_injection_budget",
+      "pass": true,
+      "detail": "P3 recall_seg_utf16=1307 new_seg_est=1307 cap=1800"
+    },
+    {
+      "name": "c9_restore_keeps_recall_wrapper",
+      "pass": true,
+      "detail": "P4 restore_wrapper_active=True recall_still_fires=True"
+    },
+    {
+      "name": "c10_positive_photo_exhibit_domain",
+      "pass": true,
+      "detail": "P_positive[photo] recall_body_ok extras=1"
+    },
+    {
+      "name": "c11_positive_business_trip_domain",
+      "pass": true,
+      "detail": "P_positive[business-trip] recall_body_ok extras=1"
+    },
+    {
+      "name": "c12_reviewer_20_extras_probe",
+      "pass": true,
+      "detail": "R3 reviewer_probe extras_selector=20 extras_in_prompt=4 recall_seg_utf16=161 new_seg_est=681 cap=1800"
+    },
+    {
+      "name": "c13_utf16_truncate_unit",
+      "pass": true,
+      "detail": "C unit tail=head=600 emoji @1200码元, BMP 100字, 无半截代理"
+    },
+    {
+      "name": "c14_reviewer_emoji_run_turn_budget",
+      "pass": true,
+      "detail": "C emoji recall_seg_utf16=1307 emoji_payload=1200 cap=1800 obeyed"
+    },
+    {
+      "name": "c15_joint_squeeze_bmp_plus_emoji",
+      "pass": true,
+      "detail": "C joint held=4/4 new_seg_est=1800 recall_seg=1216 cap=1800"
+    }
+  ],
+  "probes": {
+    "live_branch": {
+      "fake_http_dispatches": 48,
+      "ledger": {
+        "attempt_started": 48,
+        "attempt_completed": 48,
+        "attempt_failed": 0
+      },
+      "reported_real_model_calls": 0,
+      "output_exists_after_default_return": false,
+      "note": "Real live branch, external fake HTTP; actual network calls=0"
+    },
+    "insufficient_budget": {
+      "fake_http_dispatches": 8,
+      "ledger": {
+        "attempt_started": 8,
+        "attempt_completed": 8,
+        "attempt_failed": 0
+      },
+      "stopped": {
+        "reason": "predecessor_or_dispatch_failure",
+        "seq": 9,
+        "arm": "parent",
+        "episode": "E001",
+        "turn": 5,
+        "detail": "第 5 轮执行失败: HOST_EXCEPTION: RuntimeError: gateway generate failed: budget refused: 额度拒绝：授权 AUTH-OFFLINE-REVIEW-insufficient-07c5df1d 已用 8/8 | frame={'error': 'HOST_EXCEPTION', 'detail': 'RuntimeError: "
+      }
+    },
+    "cross_arm_length_delta": {
+      "reported_added": 0,
+      "candidate_recall_utf16": 2005,
+      "rows": [
+        {
+          "case_id": "X_T01",
+          "cand_utf16": 2005,
+          "parent_utf16": 5000,
+          "added_utf16": 0,
+          "has_recall": true
+        }
+      ]
+    }
+  },
+  "capture": {
+    "mode": "capture",
+    "adapter": "openai_compat",
+    "execution_entry": "IsolatedRun (begin_run/step_one_turn/finish_run 逐 slot)",
+    "guards_applied": true,
+    "attempts_planned": 48,
+    "residents": 6,
+    "dispatched_slots": 48,
+    "runs_done": 6,
+    "ledger_kinds": {
+      "attempt_started": 48,
+      "attempt_completed": 48,
+      "attempt_failed": 0
+    },
+    "attempt_started": 48,
+    "attempt_completed": 48,
+    "attempt_failed": 0,
+    "execution_order_verified": true,
+    "dispatch_bijection": true,
+    "per_key_dispatch": {
+      "parent/E001": 8,
+      "candidate/E001": 8,
+      "candidate/E002": 8,
+      "parent/E002": 8,
+      "parent/E003": 8,
+      "candidate/E003": 8
+    },
+    "state_isolated": true,
+    "distinct_run_ids": [
+      "iso_20261024_114453_9c20d6",
+      "iso_20261024_114454_1445c6",
+      "iso_20261024_114454_d2c0a7",
+      "iso_20261024_114454_fe15ae",
+      "iso_20261024_114454_fe7958",
+      "iso_20261024_114455_a76a0e"
+    ],
+    "recall_seg_max_utf16": 0,
+    "recall_seg_cap": 1800,
+    "recall_seg_ok": true,
+    "combined_newctx_max_utf16": 0,
+    "combined_newctx_cap": 1800,
+    "combined_newctx_ok": true,
+    "combined_newctx_detail": [
+      {
+        "case_id": "E001_T01",
+        "cand_utf16": 771,
+        "parent_utf16": 771,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E001"
+      },
+      {
+        "case_id": "E001_T02",
+        "cand_utf16": 793,
+        "parent_utf16": 793,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E001"
+      },
+      {
+        "case_id": "E001_T03",
+        "cand_utf16": 851,
+        "parent_utf16": 851,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E001"
+      },
+      {
+        "case_id": "E001_T04",
+        "cand_utf16": 818,
+        "parent_utf16": 818,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E001"
+      },
+      {
+        "case_id": "E001_T05",
+        "cand_utf16": 770,
+        "parent_utf16": 770,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E001"
+      },
+      {
+        "case_id": "E001_T06",
+        "cand_utf16": 713,
+        "parent_utf16": 713,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E001"
+      },
+      {
+        "case_id": "E001_T07",
+        "cand_utf16": 765,
+        "parent_utf16": 765,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E001"
+      },
+      {
+        "case_id": "E001_T08",
+        "cand_utf16": 782,
+        "parent_utf16": 782,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E001"
+      },
+      {
+        "case_id": "E002_T01",
+        "cand_utf16": 672,
+        "parent_utf16": 672,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E002"
+      },
+      {
+        "case_id": "E002_T02",
+        "cand_utf16": 958,
+        "parent_utf16": 958,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E002"
+      },
+      {
+        "case_id": "E002_T03",
+        "cand_utf16": 1080,
+        "parent_utf16": 1080,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E002"
+      },
+      {
+        "case_id": "E002_T04",
+        "cand_utf16": 870,
+        "parent_utf16": 870,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E002"
+      },
+      {
+        "case_id": "E002_T05",
+        "cand_utf16": 1055,
+        "parent_utf16": 1055,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E002"
+      },
+      {
+        "case_id": "E002_T06",
+        "cand_utf16": 949,
+        "parent_utf16": 949,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E002"
+      },
+      {
+        "case_id": "E002_T07",
+        "cand_utf16": 755,
+        "parent_utf16": 755,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E002"
+      },
+      {
+        "case_id": "E002_T08",
+        "cand_utf16": 841,
+        "parent_utf16": 841,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E002"
+      },
+      {
+        "case_id": "E003_T01",
+        "cand_utf16": 623,
+        "parent_utf16": 623,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E003"
+      },
+      {
+        "case_id": "E003_T02",
+        "cand_utf16": 915,
+        "parent_utf16": 915,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E003"
+      },
+      {
+        "case_id": "E003_T03",
+        "cand_utf16": 916,
+        "parent_utf16": 916,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E003"
+      },
+      {
+        "case_id": "E003_T04",
+        "cand_utf16": 1022,
+        "parent_utf16": 1022,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E003"
+      },
+      {
+        "case_id": "E003_T05",
+        "cand_utf16": 833,
+        "parent_utf16": 833,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E003"
+      },
+      {
+        "case_id": "E003_T06",
+        "cand_utf16": 853,
+        "parent_utf16": 853,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E003"
+      },
+      {
+        "case_id": "E003_T07",
+        "cand_utf16": 787,
+        "parent_utf16": 787,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E003"
+      },
+      {
+        "case_id": "E003_T08",
+        "cand_utf16": 966,
+        "parent_utf16": 966,
+        "added_utf16": 0,
+        "has_recall": false,
+        "episode": "E003"
+      }
+    ],
+    "boundary_problems": [],
+    "authorization_id": "AUTH-REHEARSAL-20261024114453",
+    "stopped": null,
+    "runs": [
+      {
+        "arm": "parent",
+        "episode": "E001",
+        "candidate": "reference_product_v1",
+        "run_id": "iso_20261024_114453_9c20d6",
+        "status": "DONE",
+        "turns_done": 8
+      },
+      {
+        "arm": "candidate",
+        "episode": "E001",
+        "candidate": "v2_recall",
+        "run_id": "iso_20261024_114454_fe15ae",
+        "status": "DONE",
+        "turns_done": 8
+      },
+      {
+        "arm": "candidate",
+        "episode": "E002",
+        "candidate": "v2_recall",
+        "run_id": "iso_20261024_114454_1445c6",
+        "status": "DONE",
+        "turns_done": 8
+      },
+      {
+        "arm": "parent",
+        "episode": "E002",
+        "candidate": "reference_product_v1",
+        "run_id": "iso_20261024_114454_d2c0a7",
+        "status": "DONE",
+        "turns_done": 8
+      },
+      {
+        "arm": "parent",
+        "episode": "E003",
+        "candidate": "reference_product_v1",
+        "run_id": "iso_20261024_114454_fe7958",
+        "status": "DONE",
+        "turns_done": 8
+      },
+      {
+        "arm": "candidate",
+        "episode": "E003",
+        "candidate": "v2_recall",
+        "run_id": "iso_20261024_114455_a76a0e",
+        "status": "DONE",
+        "turns_done": 8
+      }
+    ],
+    "exec_events": [
+      {
+        "seq": 1,
+        "arm": "parent",
+        "episode": "E001",
+        "turn": 1,
+        "case_id": "E001_T01",
+        "run_id": "iso_20261024_114453_9c20d6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 2,
+        "arm": "candidate",
+        "episode": "E001",
+        "turn": 1,
+        "case_id": "E001_T01",
+        "run_id": "iso_20261024_114454_fe15ae",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 3,
+        "arm": "parent",
+        "episode": "E001",
+        "turn": 2,
+        "case_id": "E001_T02",
+        "run_id": "iso_20261024_114453_9c20d6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 4,
+        "arm": "candidate",
+        "episode": "E001",
+        "turn": 2,
+        "case_id": "E001_T02",
+        "run_id": "iso_20261024_114454_fe15ae",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 5,
+        "arm": "parent",
+        "episode": "E001",
+        "turn": 3,
+        "case_id": "E001_T03",
+        "run_id": "iso_20261024_114453_9c20d6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 6,
+        "arm": "candidate",
+        "episode": "E001",
+        "turn": 3,
+        "case_id": "E001_T03",
+        "run_id": "iso_20261024_114454_fe15ae",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 7,
+        "arm": "parent",
+        "episode": "E001",
+        "turn": 4,
+        "case_id": "E001_T04",
+        "run_id": "iso_20261024_114453_9c20d6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 8,
+        "arm": "candidate",
+        "episode": "E001",
+        "turn": 4,
+        "case_id": "E001_T04",
+        "run_id": "iso_20261024_114454_fe15ae",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 9,
+        "arm": "parent",
+        "episode": "E001",
+        "turn": 5,
+        "case_id": "E001_T05",
+        "run_id": "iso_20261024_114453_9c20d6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 10,
+        "arm": "candidate",
+        "episode": "E001",
+        "turn": 5,
+        "case_id": "E001_T05",
+        "run_id": "iso_20261024_114454_fe15ae",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 11,
+        "arm": "parent",
+        "episode": "E001",
+        "turn": 6,
+        "case_id": "E001_T06",
+        "run_id": "iso_20261024_114453_9c20d6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 12,
+        "arm": "candidate",
+        "episode": "E001",
+        "turn": 6,
+        "case_id": "E001_T06",
+        "run_id": "iso_20261024_114454_fe15ae",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 13,
+        "arm": "parent",
+        "episode": "E001",
+        "turn": 7,
+        "case_id": "E001_T07",
+        "run_id": "iso_20261024_114453_9c20d6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 14,
+        "arm": "candidate",
+        "episode": "E001",
+        "turn": 7,
+        "case_id": "E001_T07",
+        "run_id": "iso_20261024_114454_fe15ae",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 15,
+        "arm": "parent",
+        "episode": "E001",
+        "turn": 8,
+        "case_id": "E001_T08",
+        "run_id": "iso_20261024_114453_9c20d6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 16,
+        "arm": "candidate",
+        "episode": "E001",
+        "turn": 8,
+        "case_id": "E001_T08",
+        "run_id": "iso_20261024_114454_fe15ae",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 17,
+        "arm": "candidate",
+        "episode": "E002",
+        "turn": 1,
+        "case_id": "E002_T01",
+        "run_id": "iso_20261024_114454_1445c6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 18,
+        "arm": "parent",
+        "episode": "E002",
+        "turn": 1,
+        "case_id": "E002_T01",
+        "run_id": "iso_20261024_114454_d2c0a7",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 19,
+        "arm": "candidate",
+        "episode": "E002",
+        "turn": 2,
+        "case_id": "E002_T02",
+        "run_id": "iso_20261024_114454_1445c6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 20,
+        "arm": "parent",
+        "episode": "E002",
+        "turn": 2,
+        "case_id": "E002_T02",
+        "run_id": "iso_20261024_114454_d2c0a7",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 21,
+        "arm": "candidate",
+        "episode": "E002",
+        "turn": 3,
+        "case_id": "E002_T03",
+        "run_id": "iso_20261024_114454_1445c6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 22,
+        "arm": "parent",
+        "episode": "E002",
+        "turn": 3,
+        "case_id": "E002_T03",
+        "run_id": "iso_20261024_114454_d2c0a7",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 23,
+        "arm": "candidate",
+        "episode": "E002",
+        "turn": 4,
+        "case_id": "E002_T04",
+        "run_id": "iso_20261024_114454_1445c6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 24,
+        "arm": "parent",
+        "episode": "E002",
+        "turn": 4,
+        "case_id": "E002_T04",
+        "run_id": "iso_20261024_114454_d2c0a7",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 25,
+        "arm": "candidate",
+        "episode": "E002",
+        "turn": 5,
+        "case_id": "E002_T05",
+        "run_id": "iso_20261024_114454_1445c6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 26,
+        "arm": "parent",
+        "episode": "E002",
+        "turn": 5,
+        "case_id": "E002_T05",
+        "run_id": "iso_20261024_114454_d2c0a7",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 27,
+        "arm": "candidate",
+        "episode": "E002",
+        "turn": 6,
+        "case_id": "E002_T06",
+        "run_id": "iso_20261024_114454_1445c6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 28,
+        "arm": "parent",
+        "episode": "E002",
+        "turn": 6,
+        "case_id": "E002_T06",
+        "run_id": "iso_20261024_114454_d2c0a7",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 29,
+        "arm": "candidate",
+        "episode": "E002",
+        "turn": 7,
+        "case_id": "E002_T07",
+        "run_id": "iso_20261024_114454_1445c6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 30,
+        "arm": "parent",
+        "episode": "E002",
+        "turn": 7,
+        "case_id": "E002_T07",
+        "run_id": "iso_20261024_114454_d2c0a7",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 31,
+        "arm": "candidate",
+        "episode": "E002",
+        "turn": 8,
+        "case_id": "E002_T08",
+        "run_id": "iso_20261024_114454_1445c6",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 32,
+        "arm": "parent",
+        "episode": "E002",
+        "turn": 8,
+        "case_id": "E002_T08",
+        "run_id": "iso_20261024_114454_d2c0a7",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 33,
+        "arm": "parent",
+        "episode": "E003",
+        "turn": 1,
+        "case_id": "E003_T01",
+        "run_id": "iso_20261024_114454_fe7958",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 34,
+        "arm": "candidate",
+        "episode": "E003",
+        "turn": 1,
+        "case_id": "E003_T01",
+        "run_id": "iso_20261024_114455_a76a0e",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 35,
+        "arm": "parent",
+        "episode": "E003",
+        "turn": 2,
+        "case_id": "E003_T02",
+        "run_id": "iso_20261024_114454_fe7958",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 36,
+        "arm": "candidate",
+        "episode": "E003",
+        "turn": 2,
+        "case_id": "E003_T02",
+        "run_id": "iso_20261024_114455_a76a0e",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 37,
+        "arm": "parent",
+        "episode": "E003",
+        "turn": 3,
+        "case_id": "E003_T03",
+        "run_id": "iso_20261024_114454_fe7958",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 38,
+        "arm": "candidate",
+        "episode": "E003",
+        "turn": 3,
+        "case_id": "E003_T03",
+        "run_id": "iso_20261024_114455_a76a0e",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 39,
+        "arm": "parent",
+        "episode": "E003",
+        "turn": 4,
+        "case_id": "E003_T04",
+        "run_id": "iso_20261024_114454_fe7958",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 40,
+        "arm": "candidate",
+        "episode": "E003",
+        "turn": 4,
+        "case_id": "E003_T04",
+        "run_id": "iso_20261024_114455_a76a0e",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 41,
+        "arm": "parent",
+        "episode": "E003",
+        "turn": 5,
+        "case_id": "E003_T05",
+        "run_id": "iso_20261024_114454_fe7958",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 42,
+        "arm": "candidate",
+        "episode": "E003",
+        "turn": 5,
+        "case_id": "E003_T05",
+        "run_id": "iso_20261024_114455_a76a0e",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 43,
+        "arm": "parent",
+        "episode": "E003",
+        "turn": 6,
+        "case_id": "E003_T06",
+        "run_id": "iso_20261024_114454_fe7958",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 44,
+        "arm": "candidate",
+        "episode": "E003",
+        "turn": 6,
+        "case_id": "E003_T06",
+        "run_id": "iso_20261024_114455_a76a0e",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 45,
+        "arm": "parent",
+        "episode": "E003",
+        "turn": 7,
+        "case_id": "E003_T07",
+        "run_id": "iso_20261024_114454_fe7958",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 46,
+        "arm": "candidate",
+        "episode": "E003",
+        "turn": 7,
+        "case_id": "E003_T07",
+        "run_id": "iso_20261024_114455_a76a0e",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 47,
+        "arm": "parent",
+        "episode": "E003",
+        "turn": 8,
+        "case_id": "E003_T08",
+        "run_id": "iso_20261024_114454_fe7958",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      },
+      {
+        "seq": 48,
+        "arm": "candidate",
+        "episode": "E003",
+        "turn": 8,
+        "case_id": "E003_T08",
+        "run_id": "iso_20261024_114455_a76a0e",
+        "attempt_started": true,
+        "score10": 8.33,
+        "veto": null
+      }
+    ],
+    "real_model_calls": 0,
+    "network": "disabled (fake urlopen in-process)",
+    "out_base": "refs\\experiment_protocol_20261023\\wiring_slim_independent_review_20261024\\capture"
+  },
+  "independent_http_dispatches": [
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E001_T01",
+      "run_id": "iso_20261024_114453_9c20d6"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E001_T01",
+      "run_id": "iso_20261024_114454_fe15ae"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E001_T02",
+      "run_id": "iso_20261024_114453_9c20d6"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E001_T02",
+      "run_id": "iso_20261024_114454_fe15ae"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E001_T03",
+      "run_id": "iso_20261024_114453_9c20d6"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E001_T03",
+      "run_id": "iso_20261024_114454_fe15ae"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E001_T04",
+      "run_id": "iso_20261024_114453_9c20d6"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E001_T04",
+      "run_id": "iso_20261024_114454_fe15ae"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E001_T05",
+      "run_id": "iso_20261024_114453_9c20d6"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E001_T05",
+      "run_id": "iso_20261024_114454_fe15ae"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E001_T06",
+      "run_id": "iso_20261024_114453_9c20d6"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E001_T06",
+      "run_id": "iso_20261024_114454_fe15ae"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E001_T07",
+      "run_id": "iso_20261024_114453_9c20d6"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E001_T07",
+      "run_id": "iso_20261024_114454_fe15ae"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E001_T08",
+      "run_id": "iso_20261024_114453_9c20d6"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E001_T08",
+      "run_id": "iso_20261024_114454_fe15ae"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E002_T01",
+      "run_id": "iso_20261024_114454_1445c6"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E002_T01",
+      "run_id": "iso_20261024_114454_d2c0a7"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E002_T02",
+      "run_id": "iso_20261024_114454_1445c6"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E002_T02",
+      "run_id": "iso_20261024_114454_d2c0a7"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E002_T03",
+      "run_id": "iso_20261024_114454_1445c6"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E002_T03",
+      "run_id": "iso_20261024_114454_d2c0a7"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E002_T04",
+      "run_id": "iso_20261024_114454_1445c6"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E002_T04",
+      "run_id": "iso_20261024_114454_d2c0a7"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E002_T05",
+      "run_id": "iso_20261024_114454_1445c6"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E002_T05",
+      "run_id": "iso_20261024_114454_d2c0a7"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E002_T06",
+      "run_id": "iso_20261024_114454_1445c6"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E002_T06",
+      "run_id": "iso_20261024_114454_d2c0a7"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E002_T07",
+      "run_id": "iso_20261024_114454_1445c6"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E002_T07",
+      "run_id": "iso_20261024_114454_d2c0a7"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E002_T08",
+      "run_id": "iso_20261024_114454_1445c6"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E002_T08",
+      "run_id": "iso_20261024_114454_d2c0a7"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E003_T01",
+      "run_id": "iso_20261024_114454_fe7958"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E003_T01",
+      "run_id": "iso_20261024_114455_a76a0e"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E003_T02",
+      "run_id": "iso_20261024_114454_fe7958"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E003_T02",
+      "run_id": "iso_20261024_114455_a76a0e"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E003_T03",
+      "run_id": "iso_20261024_114454_fe7958"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E003_T03",
+      "run_id": "iso_20261024_114455_a76a0e"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E003_T04",
+      "run_id": "iso_20261024_114454_fe7958"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E003_T04",
+      "run_id": "iso_20261024_114455_a76a0e"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E003_T05",
+      "run_id": "iso_20261024_114454_fe7958"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E003_T05",
+      "run_id": "iso_20261024_114455_a76a0e"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E003_T06",
+      "run_id": "iso_20261024_114454_fe7958"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E003_T06",
+      "run_id": "iso_20261024_114455_a76a0e"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E003_T07",
+      "run_id": "iso_20261024_114454_fe7958"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E003_T07",
+      "run_id": "iso_20261024_114455_a76a0e"
+    },
+    {
+      "candidate": "reference_product_v1",
+      "case_id": "E003_T08",
+      "run_id": "iso_20261024_114454_fe7958"
+    },
+    {
+      "candidate": "v2_recall",
+      "case_id": "E003_T08",
+      "run_id": "iso_20261024_114455_a76a0e"
+    }
+  ],
+  "independent_order_matches_plan": true,
+  "reports": {
+    "out_dir": "refs\\experiment_protocol_20261023\\wiring_slim_independent_review_20261024\\capture\\_reports",
+    "mode": "capture",
+    "authorization_id": "AUTH-REHEARSAL-20261024114453",
+    "arm_mapping": {
+      "parent": "reference_product_v1",
+      "candidate": "v2_recall"
+    },
+    "parent": {
+      "program_mean10": 8.33,
+      "semantic": {
+        "pass": 0,
+        "edge": 0,
+        "fail": 0,
+        "unrated": 24
+      }
+    },
+    "candidate": {
+      "program_mean10": 8.33,
+      "semantic": {
+        "pass": 0,
+        "edge": 0,
+        "fail": 0,
+        "unrated": 24
+      }
+    },
+    "paired_program_winner_counts": {
+      "parent": 0,
+      "candidate": 0,
+      "tie": 24
+    },
+    "all_semantic_unrated_without_annotations": true,
+    "turns_parent": 24,
+    "turns_candidate": 24,
+    "combined_newctx_max_utf16": 0,
+    "combined_newctx_cap": 1800,
+    "combined_newctx_ok": true,
+    "paired": [
+      {
+        "case_id": "E001_T01",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T02",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T03",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T04",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T05",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T06",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T07",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E001_T08",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T01",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T02",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T03",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T04",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T05",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T06",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T07",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E002_T08",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T01",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T02",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T03",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T04",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T05",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T06",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T07",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      },
+      {
+        "case_id": "E003_T08",
+        "status": "paired",
+        "parent_program10": 8.33,
+        "candidate_program10": 8.33,
+        "parent_veto": null,
+        "candidate_veto": null,
+        "parent_primary_semantic": "unrated",
+        "candidate_primary_semantic": "unrated",
+        "program_winner": "tie",
+        "combined_newctx_added_utf16": 0
+      }
+    ]
+  },
+  "fault5": {
+    "ledger": {
+      "attempt_started": 5,
+      "attempt_completed": 4,
+      "attempt_failed": 1
+    },
+    "stopped": {
+      "reason": "predecessor_or_dispatch_failure",
+      "seq": 5,
+      "arm": "parent",
+      "episode": "E001",
+      "turn": 3,
+      "detail": "第 3 轮执行失败: HOST_EXCEPTION: RuntimeError: gateway generate failed: upstream failed: simulated 5xx at dispatch 5 | frame={'error': 'HOST_EXCEPTION', 'detail': 'RuntimeError: gateway generate failed: ups"
+    },
+    "fake_http_dispatches": 5
+  },
+  "memory_replay": [
+    {
+      "episode": "E001",
+      "files_equal": true
+    },
+    {
+      "episode": "E002",
+      "files_equal": true
+    },
+    {
+      "episode": "E003",
+      "files_equal": true
+    }
+  ],
+  "slim_replay": [
+    {
+      "case_id": "E001_T01",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E001_T02",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E001_T03",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E001_T04",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E001_T05",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E001_T06",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E001_T07",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E001_T08",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E002_T01",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E002_T02",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E002_T03",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E002_T04",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E002_T05",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E002_T06",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E002_T07",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E002_T08",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E003_T01",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E003_T02",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E003_T03",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E003_T04",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E003_T05",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E003_T06",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E003_T07",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    },
+    {
+      "case_id": "E003_T08",
+      "user_prompt_equal": true,
+      "system_utf16_parent": 8295,
+      "system_utf16_slim": 2369
+    }
+  ],
+  "after": {
+    "tools/exam_interleave_plan.py": "15060cfc04547f35b6cff768106b724f20241764cf9ac07737eff259f03d2acb",
+    "arena/isolation/trusted_controller.py": "0ddc0614ae34aa874f272310b8f01923d3b0126ef16eb5625dce03daed15f23e",
+    "tools/exam_layered_score.py": "0917c6e3137298e3d71fde351b13e2d526679adb7d390c03c71b5b9128035ec2",
+    "arena/lb_scorer.py": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+    "candidates/reference_product_v1/mechanism/mechanism.py": "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba",
+    "candidates/v2_recall/mechanism/mechanism.py": "e823cc3225679c86f22077642df3408553eb1e65aaad560433d5afa9476541f8",
+    "candidates/v3_system_slim/mechanism/mechanism.py": "a5574885703f48c63cea5d5e05ce59a97d861eeaafdf21f83358c46bcef879c3"
+  },
+  "watched_source_unchanged": true,
+  "checks_passed": 31,
+  "checks_total": 31
+}

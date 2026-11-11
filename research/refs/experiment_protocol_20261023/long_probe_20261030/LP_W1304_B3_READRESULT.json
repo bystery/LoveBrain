@@ -1,0 +1,41 @@
+{
+ "kind": "b3_personal_read_result",
+ "tag": "W1304",
+ "date": "2026-11-02",
+ "batch": "BATCH-W1304-STAGE-20261102",
+ "positions": [
+  {
+   "pair_id": "LP:E184:E184_T11",
+   "judge_flag": "candidate severe",
+   "personal_read": "排课节奏未定却断言'剩下六节上完是元旦前后'→坐实未定族成立（12月10日锁价辨析部分正确）",
+   "verdict": "counted_severe_candidate"
+  },
+  {
+   "pair_id": "LP:E179:E179_T04",
+   "judge_flag": "parent severe",
+   "personal_read": "'订金要是五千以内我当场付'与 HER'别超过五百'自相矛盾（数字错乱）；但后半句'超过五百我先停下来跟你报一声'逐字复述正确边界，且 T05 实际行为线=五百。计成立（轻度数字边界错乱）",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:E179:E179_T11",
+   "judge_flag": "parent severe, no note",
+   "personal_read": "'外婆不吃辣'T06 逐字有据；撤菜换菜+追问完全符合 HER 要求",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:E205:E205_T04",
+   "judge_flag": "parent severe, no note",
+   "personal_read": "'得是花园里没大狗的时候'为前瞻性安全条件，非历史事实断言；与 HER 提议合作同向",
+   "verdict": "rejected"
+  }
+ ],
+ "severe_ledger": {
+  "candidate_window_expand_b": 1,
+  "parent_r9_slim": 1,
+  "raw_judge": {
+   "candidate": 1,
+   "parent": 3
+  },
+  "note": "cand 成立位属无据确定化族（与 b2 淘汰同族）——登记为冠军链共性风险"
+ }
+}

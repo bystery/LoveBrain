@@ -1,0 +1,34 @@
+{
+ "ack_id": "GIA-20261109-ANNOTATOR-B8",
+ "date": "2026-11-10",
+ "batch": "phase3-batch2-SELECTION-wave5_selection",
+ "role": "gold_annotator",
+ "session_id": "ANNOTATOR-B8",
+ "note": "重派会话记录（覆盖同名旧文件）",
+ "assigned_eids": ["E373", "E375", "E376", "E377", "E378"],
+ "declarations": {
+  "no_run_results_read": true,
+  "no_logs_read": true,
+  "no_candidates_read": true,
+  "no_judgment_or_audit_docs_read": true,
+  "no_story_batch_reports_read": true,
+  "no_gold_sidecar_read": true,
+  "no_other_episode_reference_or_audit_read": true,
+  "read_only_owned_episode_files": true,
+  "specs_read": [
+   "refs/benchmark_v1_20261107/phase3/SELECTION_ANNOTATOR_BRIEF.md",
+   "refs/benchmark_v1_20261107/phase2/GOLD_ANNOTATION_GUIDE_V1.md",
+   "refs/benchmark_v1_20261107/phase2/ATOMIC_ASSERTION_GUIDE_V1.md",
+   "benchmark/stories_v2/GOLD_SCHEMA.md",
+   "refs/benchmark_v1_20261107/phase2/TOPIC_RUBRIC_V1.md(T08/T10)"
+  ],
+  "tools_read_for_gate_compliance": [
+   "tools/validate_story_v2.py",
+   "tools/build_gold_sidecar.py(QC/enrich 段)",
+   "tools/check_gold_b3_w5sel.py(自查门禁参照)"
+  ],
+  "no_targeted_hardening": true,
+  "quote_strict_verification_before_delivery": true,
+  "verification_scripts_in_system_temp_dir_only": true
+ }
+}

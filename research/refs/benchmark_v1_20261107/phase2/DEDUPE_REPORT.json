@@ -1,0 +1,54 @@
+{
+ "kind": "benchmark_v1_phase2_dedupe_report",
+ "generated": "2026-11-08",
+ "wave4_scan": {
+  "kind": "wave_skeleton_dedupe",
+  "wave": "wave4_dev",
+  "isolated": false,
+  "total_scanned": 222,
+  "wave_stories": 38,
+  "near_dup_clusters_all": [
+   {
+    "ids": [
+     "E333",
+     "E334"
+    ],
+    "max_jaccard": 0.71
+   },
+   {
+    "ids": [
+     "E335",
+     "E336"
+    ],
+    "max_jaccard": 0.71
+   }
+  ],
+  "near_dup_clusters_involving_wave": [
+   {
+    "ids": [
+     "E333",
+     "E334"
+    ],
+    "max_jaccard": 0.71
+   },
+   {
+    "ids": [
+     "E335",
+     "E336"
+    ],
+    "max_jaccard": 0.71
+   }
+  ],
+  "note": "近重判据与 story_skeleton_dedupe 相同：同域且主题 Jaccard>=0.6"
+ },
+ "corpus_baseline": {
+  "ledger": "refs/experiment_protocol_20261023/global_harness_program_20261030/W03-06_SKELETON_DEDUPE_20261031.json",
+  "old_corpus_total": 184,
+  "old_near_dup_clusters": 0
+ },
+ "conclusion": "222 篇（184 旧+38 新）同域主题 Jaccard>=0.6 扫描：仅 2 簇=两对 T10 反事实孪生（设计内同题），意外近重 0",
+ "twins_by_design": [
+  "E333~E334 (LG-T10-G1)",
+  "E335~E336 (LG-T10-G2)"
+ ]
+}

@@ -1,0 +1,352 @@
+{
+ "kind": "call_accounting_reconciliation",
+ "date": "2026-10-28",
+ "authorization_id": "AUTH-P06-RECOVERY-20261027-01",
+ "generated_by": "main-20261028-002629 (MAX-288 V3 FIRST_8H_WORK_ORDER §A)",
+ "counting_rule": "物理开始数=网关 attempt_started 逐事件计数；distinct attempt_id 数只用于对齐预算预留（首版脚本曾把 distinct 当物理数，已在账本以 correction 事件更正）",
+ "sources": {
+  "budget_ledger": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-RECOVERY-20261027-01.jsonl",
+  "budget_ledger_lines": 39,
+  "gateway_events": "D:\\lovebrain-arena\\logs\\p06_recovery_review_20261027\\REVIEW_GATEWAY.jsonl",
+  "gateway_event_lines": 54
+ },
+ "budget_logical_reservations": 18,
+ "budget_event_kinds": {
+  "authorization_scope": 1,
+  "attempt_started": 18,
+  "attempt_completed": 17,
+  "attempt_failed": 1,
+  "accounting_reconciliation": 1,
+  "authorization_closed": 1
+ },
+ "gateway_physical_starts": 27,
+ "gateway_distinct_attempt_ids_with_starts": 18,
+ "gateway_event_kinds": {
+  "attempt_started": 27,
+  "attempt_completed": 17,
+  "attempt_failed": 10
+ },
+ "undercount_physical_vs_logical": 9,
+ "reused_attempt_ids": {
+  "p06rec:FP001-interaction:1793113707:3": {
+   "gateway_physical_starts": 4,
+   "budget_reservations": 1,
+   "undercount_for_this_unit": 3,
+   "gateway_events": [
+    {
+     "line": 7,
+     "sha256_16": "07c953b0d3eccdc2",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:10:10",
+     "pid": 61936
+    },
+    {
+     "line": 8,
+     "sha256_16": "f529b473ed3a04a6",
+     "kind": "attempt_failed",
+     "ts": "2026-10-27 23:10:55",
+     "pid": 61936
+    },
+    {
+     "line": 9,
+     "sha256_16": "a7c23b38a24fc6e9",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:10:58",
+     "pid": 61936
+    },
+    {
+     "line": 10,
+     "sha256_16": "b6cc96e9b50cf2f9",
+     "kind": "attempt_failed",
+     "ts": "2026-10-27 23:11:43",
+     "pid": 61936
+    },
+    {
+     "line": 11,
+     "sha256_16": "80a3828d6d2ceca5",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:11:49",
+     "pid": 61936
+    },
+    {
+     "line": 12,
+     "sha256_16": "33e45cec3cb12dd6",
+     "kind": "attempt_failed",
+     "ts": "2026-10-27 23:12:34",
+     "pid": 61936
+    },
+    {
+     "line": 13,
+     "sha256_16": "c668b69bffcec331",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:12:43",
+     "pid": 61936
+    },
+    {
+     "line": 14,
+     "sha256_16": "ada3c6e1bf07bb16",
+     "kind": "attempt_failed",
+     "ts": "2026-10-27 23:13:28",
+     "pid": 61936
+    }
+   ],
+   "budget_events": [
+    {
+     "line": 6,
+     "sha256_16": "122a5e55028936da",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:10:10",
+     "pid": 61936
+    },
+    {
+     "line": 7,
+     "sha256_16": "be40cadfb8ff8582",
+     "kind": "attempt_failed",
+     "ts": "2026-10-27 23:13:28",
+     "pid": null
+    }
+   ]
+  },
+  "p06rec:FP001-task:1793113707:2": {
+   "gateway_physical_starts": 2,
+   "budget_reservations": 1,
+   "undercount_for_this_unit": 1,
+   "gateway_events": [
+    {
+     "line": 3,
+     "sha256_16": "8b404386a59fcff3",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:08:48",
+     "pid": 61936
+    },
+    {
+     "line": 4,
+     "sha256_16": "8eb46e13b70a4257",
+     "kind": "attempt_failed",
+     "ts": "2026-10-27 23:09:33",
+     "pid": 61936
+    },
+    {
+     "line": 5,
+     "sha256_16": "03f658c549f9bc67",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:09:36",
+     "pid": 61936
+    },
+    {
+     "line": 6,
+     "sha256_16": "c10767056cb43327",
+     "kind": "attempt_completed",
+     "ts": "2026-10-27 23:10:10",
+     "pid": 61936
+    }
+   ],
+   "budget_events": [
+    {
+     "line": 4,
+     "sha256_16": "7b6bdd20f9942853",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:08:48",
+     "pid": 61936
+    },
+    {
+     "line": 5,
+     "sha256_16": "8ed5525dc0717381",
+     "kind": "attempt_completed",
+     "ts": "2026-10-27 23:10:10",
+     "pid": null
+    }
+   ]
+  },
+  "p06rec:FP001-task:q120:2": {
+   "gateway_physical_starts": 4,
+   "budget_reservations": 1,
+   "undercount_for_this_unit": 3,
+   "gateway_events": [
+    {
+     "line": 17,
+     "sha256_16": "19b8caa250fa0d13",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:15:46",
+     "pid": 62848
+    },
+    {
+     "line": 18,
+     "sha256_16": "b3bb6310b0feec2e",
+     "kind": "attempt_failed",
+     "ts": "2026-10-27 23:17:46",
+     "pid": 62848
+    },
+    {
+     "line": 19,
+     "sha256_16": "2a8f8f4b81df1a5a",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:17:49",
+     "pid": 62848
+    },
+    {
+     "line": 20,
+     "sha256_16": "998fe414d4b34ea8",
+     "kind": "attempt_failed",
+     "ts": "2026-10-27 23:19:49",
+     "pid": 62848
+    },
+    {
+     "line": 21,
+     "sha256_16": "2877b34295c37dfd",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:19:55",
+     "pid": 62848
+    },
+    {
+     "line": 22,
+     "sha256_16": "f6952dfdfdeafc36",
+     "kind": "attempt_failed",
+     "ts": "2026-10-27 23:21:55",
+     "pid": 62848
+    },
+    {
+     "line": 23,
+     "sha256_16": "f870e6d87ba22029",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:22:04",
+     "pid": 62848
+    },
+    {
+     "line": 24,
+     "sha256_16": "cc3b36c65c303ec0",
+     "kind": "attempt_completed",
+     "ts": "2026-10-27 23:22:23",
+     "pid": 62848
+    }
+   ],
+   "budget_events": [
+    {
+     "line": 10,
+     "sha256_16": "f2b3f8ac22b0c382",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:15:46",
+     "pid": 62848
+    },
+    {
+     "line": 11,
+     "sha256_16": "ae67ce7762f40f39",
+     "kind": "attempt_completed",
+     "ts": "2026-10-27 23:22:23",
+     "pid": null
+    }
+   ]
+  },
+  "p06rec:FP001-task:small12:5": {
+   "gateway_physical_starts": 2,
+   "budget_reservations": 1,
+   "undercount_for_this_unit": 1,
+   "gateway_events": [
+    {
+     "line": 35,
+     "sha256_16": "94ca5462d2544e35",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:26:48",
+     "pid": 57416
+    },
+    {
+     "line": 36,
+     "sha256_16": "e45e39cc92046222",
+     "kind": "attempt_failed",
+     "ts": "2026-10-27 23:28:48",
+     "pid": 57416
+    },
+    {
+     "line": 37,
+     "sha256_16": "a9c70a2c7a4ef76b",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:28:51",
+     "pid": 57416
+    },
+    {
+     "line": 38,
+     "sha256_16": "e4f2a3823352fb68",
+     "kind": "attempt_completed",
+     "ts": "2026-10-27 23:29:16",
+     "pid": 57416
+    }
+   ],
+   "budget_events": [
+    {
+     "line": 22,
+     "sha256_16": "05593c0cc5684964",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:26:48",
+     "pid": 57416
+    },
+    {
+     "line": 23,
+     "sha256_16": "54b56c408ccdf5a4",
+     "kind": "attempt_completed",
+     "ts": "2026-10-27 23:29:16",
+     "pid": null
+    }
+   ]
+  },
+  "p06rec:FP005-task:small12:8": {
+   "gateway_physical_starts": 2,
+   "budget_reservations": 1,
+   "undercount_for_this_unit": 1,
+   "gateway_events": [
+    {
+     "line": 43,
+     "sha256_16": "4532bec3d0484ab8",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:29:44",
+     "pid": 57416
+    },
+    {
+     "line": 44,
+     "sha256_16": "6267fcdf7cb6052c",
+     "kind": "attempt_failed",
+     "ts": "2026-10-27 23:31:44",
+     "pid": 57416
+    },
+    {
+     "line": 45,
+     "sha256_16": "383998bfdfb02569",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:31:47",
+     "pid": 57416
+    },
+    {
+     "line": 46,
+     "sha256_16": "9efe08996be70a2b",
+     "kind": "attempt_completed",
+     "ts": "2026-10-27 23:32:31",
+     "pid": 57416
+    }
+   ],
+   "budget_events": [
+    {
+     "line": 28,
+     "sha256_16": "170f07a12b8655c9",
+     "kind": "attempt_started",
+     "ts": "2026-10-27 23:29:44",
+     "pid": 57416
+    },
+    {
+     "line": 29,
+     "sha256_16": "c9356be654c09767",
+     "kind": "attempt_completed",
+     "ts": "2026-10-27 23:32:31",
+     "pid": null
+    }
+   ]
+  }
+ },
+ "gateway_attempt_ids_missing_from_budget": [],
+ "budget_attempt_ids_missing_from_gateway": [],
+ "management_account_physical_total": 27,
+ "disposition": {
+  "old_scope": "停止派发；authorization_closed 收口退休，剩余额度不再使用",
+  "no_fabrication": "不回填任何伪造的'请求前已预留'历史事件；漏计以 accounting_reconciliation(_correction) 补充记录登记",
+  "successful_responses": "已成功响应保留探索用，不因记账错误删除",
+  "no_refund_no_makeup": "差额 9 次按已消耗计（含超时），不退款、不换 ID 补跑"
+ }
+}

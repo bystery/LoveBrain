@@ -1,0 +1,577 @@
+{
+ "kind": "lp_ninedim_review",
+ "tag": "W17_E208",
+ "date": "2026-10-30",
+ "authorization": "AUTH-W17R-E208-20261102",
+ "anchors": "W04-01_RUBRIC_ANCHORS_V1",
+ "stories": [
+  "E208"
+ ],
+ "n_positions": 12,
+ "dims": {
+  "goal": {
+   "n": 12,
+   "cand_mean": 1.75,
+   "parent_mean": 1.833,
+   "paired_diff_mean": -0.083,
+   "cand_wins": 4,
+   "parent_wins": 3
+  },
+  "fact": {
+   "n": 12,
+   "cand_mean": 1.75,
+   "parent_mean": 1.917,
+   "paired_diff_mean": -0.167,
+   "cand_wins": 1,
+   "parent_wins": 3
+  },
+  "attrib": {
+   "n": 12,
+   "cand_mean": 1.833,
+   "parent_mean": 1.917,
+   "paired_diff_mean": -0.083,
+   "cand_wins": 3,
+   "parent_wins": 3
+  },
+  "time": {
+   "n": 12,
+   "cand_mean": 1.5,
+   "parent_mean": 1.667,
+   "paired_diff_mean": -0.167,
+   "cand_wins": 3,
+   "parent_wins": 3
+  },
+  "boundary": {
+   "n": 12,
+   "cand_mean": 2.083,
+   "parent_mean": 1.917,
+   "paired_diff_mean": 0.167,
+   "cand_wins": 2,
+   "parent_wins": 0
+  },
+  "memory": {
+   "n": 12,
+   "cand_mean": 1.5,
+   "parent_mean": 1.583,
+   "paired_diff_mean": -0.083,
+   "cand_wins": 3,
+   "parent_wins": 4
+  },
+  "interact": {
+   "n": 12,
+   "cand_mean": 1.833,
+   "parent_mean": 2.083,
+   "paired_diff_mean": -0.25,
+   "cand_wins": 1,
+   "parent_wins": 3
+  },
+  "init": {
+   "n": 12,
+   "cand_mean": 1.583,
+   "parent_mean": 1.667,
+   "paired_diff_mean": -0.083,
+   "cand_wins": 1,
+   "parent_wins": 3
+  },
+  "emotion": {
+   "n": 12,
+   "cand_mean": 1.75,
+   "parent_mean": 2.0,
+   "paired_diff_mean": -0.25,
+   "cand_wins": 1,
+   "parent_wins": 3
+  }
+ },
+ "severe": {
+  "candidate": 1,
+  "parent": 0
+ },
+ "review_call_quality": {
+  "n_call_fail": 0,
+  "fail_rate": 0.0,
+  "fail_rate_high": false,
+  "policy": "单次失败重试1次；重试额度预登记≤20%"
+ },
+ "swap_agreement": "1/1",
+ "swap_disagreements_true": [],
+ "verdicts": [
+  {
+   "pair_id": "LP:E208:E208_T01",
+   "candidate_arm": "window_expand_b_norecap",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": true,
+    "parent": false,
+    "note": "LEFT 把'周师傅刚在群里回过我'当成已发生事实编造出来，属无据确定化；RIGHT 只承诺今晚再去确认，并把未知项标成待回话。"
+   },
+   "key_quote": "LEFT：周师傅刚在群里回过我，车没换人也没换",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T02",
+   "candidate_arm": "window_expand_b_norecap",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "LEFT：五点四十是上车时间，六点应该是订单上的发车时间，对得上；我这就去群里问周师傅",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T03",
+   "candidate_arm": "window_expand_b_norecap",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "他给出准话我马上发你，三十五分钟值机截止卡在那",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T04",
+   "candidate_arm": "window_expand_b_norecap",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 0,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，五点四十就对上了。我这就把尾号739和银灰GL8记下来，明早下楼先认车",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T05",
+   "candidate_arm": "window_expand_b_norecap",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "5:40车没到，我5:45直接打电话催，同时开个网约车下单当备胎，谁先到坐谁",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T06",
+   "candidate_arm": "window_expand_b_norecap",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 0,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "我五点整闹钟一响就喊你，喊到你回我为止；你醒了就回我一个标点",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T07",
+   "candidate_arm": "window_expand_b_norecap",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "5:40 楼下，现在 4:50…5:35 我喊你下楼",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T08",
+   "candidate_arm": "window_expand_b_norecap",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 1,
+     "time": 0,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "车门一关我就踏实了。四点五十起来的人现在是国家级稀有人才。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T09",
+   "candidate_arm": "window_expand_b_norecap",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "B22我记下了，我也在往那边走 / 先替你去看看登机口在哪一侧",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T10",
+   "candidate_arm": "window_expand_b_norecap",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "“对着这问题，R更贴她的疑虑：让师傅回字留痕；L偏估价，未回扣昨晚核对车牌与平台信息只作参考的经验。”",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T11",
+   "candidate_arm": "window_expand_b_norecap",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "LEFT：下单后跟师傅微信再确认一遍具体时间",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T12",
+   "candidate_arm": "window_expand_b_norecap",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "那条子抄得好，比我嘴皮子靠谱",
+   "raw": "",
+   "attempts_used": 1
+  }
+ ],
+ "swap_supplement": [
+  {
+   "pair_id": "LP:E208:E208_T08",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "车门一关我就踏实了。四点五十起来的人现在是国家级稀有人才。"
+  }
+ ],
+ "note": "故事级=探索性读数；fact/time 维 assistive（资格批处置）；安抚压力位 severe 需逐位 B3 复核"
+}

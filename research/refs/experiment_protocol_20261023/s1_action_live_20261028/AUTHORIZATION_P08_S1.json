@@ -1,0 +1,78 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-P08-S1-20261028-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户持续执行授权（AGENTS.md §0：修复后推进主线，不每 48 次索取口令）＋ MAX-288 本周期 16,384 管理帽；本单是截止日主轨的有限目的登记，不是新增总帽，也不是支出目标。",
+ "phase": "P08-S1",
+ "budget_ledger": "logs/auth_budget/AUTH-P08-S1-20261028-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 96
+ },
+ "api_config": "api_cfg:openai_compat_stream_true_v1(include_usage gated)；本批两臂同端点/model/温度/流式配置；不与任何旧非流式表拼接。",
+ "scope": {
+  "purpose": "固定连续故事两臂真实对照：reference_product_v1 vs action_policy_r1，4 故事(E024/E027/E031/E034)×12 位×2 臂=96 次真实生成。测五项目标行动/合同修订是否带来真实质量收益（目标让位与推进、接钩子、失败修复、无据编造、合法不回）。不是资格探针，不用于裁判调用。",
+  "stage": "S1",
+  "experiment": "P08_harness_action_policy_real_compare",
+  "allowed_models": [
+   "dsf"
+  ],
+  "forbidden_models": [
+   "gemini-3.8-flash",
+   "hy4-preview"
+  ],
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "positions_per_arm": 48,
+  "total_attempts": 96,
+  "batch_ids": [
+   "BATCH-S1-ACTION-20261028"
+  ],
+  "episodes": [
+   "E024",
+   "E027",
+   "E031",
+   "E034"
+  ],
+  "episode_turns": {
+   "E024": 12,
+   "E027": 12,
+   "E031": 12,
+   "E034": 12
+  },
+  "cards": "benchmark/stories_v2/stage2/GRADING_CARDS_E024_E027_E031_E034.json",
+  "arms": [
+   "reference_product_v1",
+   "action_policy_r1"
+  ],
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "judge_separate": "质量评审另建 judge scope；本单只覆盖 harness 生成，不自动触发裁判调用。",
+  "closed_history_not_reused": "AUTH-P06-*、AUTH-P07-V2/W09/W03VAL、AUTH-EXAM1/AUTH-V5/AUTH-R2/AUTH-C4 等旧单不复活、不挪用、不抵扣。",
+  "new_cycle_cap": 16384,
+  "phase_cap": 96,
+  "not_a_spending_target": true
+ },
+ "frozen_bindings": {
+  "S1": {
+   "plan_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/S1_ACTION/INTERLEAVE_PLAN.json",
+   "plan_sha256": "19053ee7a20e3a697caf22de2ff1b53239fa1b1947388303476263f46a622d55",
+   "batch_id": "BATCH-S1-ACTION-20261028",
+   "cards_file": "benchmark/stories_v2/stage2/GRADING_CARDS_E024_E027_E031_E034.json",
+   "cards_sha256": "078f6d3d552fc36bc9ecd2fcc5e633fef973206caee430e7cbfe714d63ad1bb7",
+   "attempts": 96,
+   "parent": "reference_product_v1",
+   "candidate": "action_policy_r1",
+   "parent_identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "candidate_identity_sha256": "6e450c8f607b9c255171ec9c40c1c4f731461d0ae8b16b045ac7549665b2a46b"
+  }
+ },
+ "execution_entry": "tools/run_max288_batch.py",
+ "execution_entry_sha256": "908d58695cccdac8be6d261894b47037367f1802de40d46e1f0eb8ffdbf2c685",
+ "notes": "一物理请求一 attempt、事前占额，失败/空返/超时照样记账；不补配对、不改 nonce 重跑；live 输出目录已有 turn_* 即拒绝覆盖；先 precheck 后 capture 后 live。",
+ "registered_at": "2026-10-28T12:35:19"
+}

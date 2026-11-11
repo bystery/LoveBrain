@@ -1,0 +1,10 @@
+{
+ "candidate": "v6_goal_context",
+ "role": "candidate",
+ "parent": "v5_purpose_aligned",
+ "output_contract": null,
+ "mechanism_flags": {
+  "action_layer": true
+ },
+ "note": "MAX-288 V2 P05-A：目标/行动与自然互动分支。基座=v5_purpose_aligned 闭包（四 system 资产自带副本，身份独立）。真实差异在 user 侧本轮装配，零额外调用：(1) 目标作用域 ACTIVE/ADJUSTED 生效、CLOSED/COMPLETED/EXPIRED/PAUSED 不生效、expiry<now 失效、goal_history 可恢复；(2) 机制检测本轮 HER 最近消息的显式收尾/拒绝/忙碌/暂缓/积极/含糊信号，显式拒绝或忙碌时邀约能力不出现、目标只能暂缓，含糊给多动作不自动降温，不按单个词路由；(3) 每轮只展示 2—5 个适用动作能力（承接/展开/反抛/轻试探/自我表达/深聊/转场/邀约/收尾/停），非全菜单；(4) analysis 记录 signal/goal_category/action_taken/anchor/hook，消费端校验枚举、anchor 属于本轮、hook.text 逐字出现在最终可发文本，只记审计不罚分、不二次调用。诚实边界：不证明更会聊；真实质量由 P06 同批对照判定；显式短语检测不覆盖反讽/绕弯/上下文否定，语义仍由模型判断。output_contract 沿用父本 legacy 不声明（response 四风格 + directions 四方向不变）。"
+}

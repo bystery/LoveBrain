@@ -1,0 +1,923 @@
+{
+  "generated_answers": 192,
+  "raw_judge_records": 251,
+  "assessed_after_existing_null_slot_repair": 212,
+  "assessed_by_kind": {
+    "control": 36,
+    "primary": 154,
+    "repeat": 22
+  },
+  "null_slot_repaired_ids": [
+    "P06N0095",
+    "P06N0116",
+    "P06N0012"
+  ],
+  "published_result_records": 230,
+  "published_result_assessed": 209,
+  "raw_primary_coverage_denominator": 192,
+  "semantic_packet_nodes_total": 215,
+  "semantic_primary_nodes": 191,
+  "semantic_repeat_nodes": 24,
+  "one_unparseable_generation_excluded_from_semantic_packet": true,
+  "protocol": [
+    {
+      "batch": "A",
+      "arm": "parent",
+      "generated": 32,
+      "protocol_vetoes": 0,
+      "valid_json": 32,
+      "veto_rows": []
+    },
+    {
+      "batch": "A",
+      "arm": "candidate",
+      "generated": 32,
+      "protocol_vetoes": 0,
+      "valid_json": 32,
+      "veto_rows": []
+    },
+    {
+      "batch": "B",
+      "arm": "parent",
+      "generated": 32,
+      "protocol_vetoes": 0,
+      "valid_json": 32,
+      "veto_rows": []
+    },
+    {
+      "batch": "B",
+      "arm": "candidate",
+      "generated": 32,
+      "protocol_vetoes": 3,
+      "valid_json": 31,
+      "veto_rows": [
+        {
+          "batch": "B",
+          "arm": "candidate",
+          "case_id": "E007_T04",
+          "veto": "json_schema_broken",
+          "path": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E007\\out\\turn_04_E007_T04",
+          "raw_sha256": "4a70c11ff11405750900ed38de2628c8e73b4575ac2af5eb6a5026c4cc398e85"
+        },
+        {
+          "batch": "B",
+          "arm": "candidate",
+          "case_id": "E007_T05",
+          "veto": "json_schema_broken",
+          "path": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E007\\out\\turn_05_E007_T05",
+          "raw_sha256": "21c88243c751822324e59fd33a4bed95d853f14c4dc8df65fea3d6b99115ce7b"
+        },
+        {
+          "batch": "B",
+          "arm": "candidate",
+          "case_id": "E012_T02",
+          "veto": "json_schema_broken",
+          "path": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E012\\out\\turn_02_E012_T02",
+          "raw_sha256": "691ed58925c222062038282bcfe5fbe99a507905ca1e40de908c295993f37d6f"
+        }
+      ]
+    },
+    {
+      "batch": "C",
+      "arm": "parent",
+      "generated": 32,
+      "protocol_vetoes": 3,
+      "valid_json": 32,
+      "veto_rows": [
+        {
+          "batch": "C",
+          "arm": "parent",
+          "case_id": "E006_T07",
+          "veto": "illegal_source_id:t6_1",
+          "path": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E006\\out\\turn_07_E006_T07",
+          "raw_sha256": "dd41da6924b525582400e6e2075e1d8f80dab3402644ec7291cdb0eac94a0154"
+        },
+        {
+          "batch": "C",
+          "arm": "parent",
+          "case_id": "E008_T06",
+          "veto": "json_schema_broken",
+          "path": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E008\\out\\turn_06_E008_T06",
+          "raw_sha256": "eb1caf4b42981b77760671ce424f1141989b50ef51f925a6676582c72bd3c094"
+        },
+        {
+          "batch": "C",
+          "arm": "parent",
+          "case_id": "E012_T08",
+          "veto": "json_schema_broken",
+          "path": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E012\\out\\turn_08_E012_T08",
+          "raw_sha256": "1dfb09366ce0dfc18e370c3ee20f7e11759536d89485a825f4ea2cd33dc4d7ad"
+        }
+      ]
+    },
+    {
+      "batch": "C",
+      "arm": "candidate",
+      "generated": 32,
+      "protocol_vetoes": 2,
+      "valid_json": 32,
+      "veto_rows": [
+        {
+          "batch": "C",
+          "arm": "candidate",
+          "case_id": "E007_T05",
+          "veto": "json_schema_broken",
+          "path": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E007\\out\\turn_05_E007_T05",
+          "raw_sha256": "2075c7d7b5629a073aeffcd35a67059566d1d4f746338d6108e45b98c86b7243"
+        },
+        {
+          "batch": "C",
+          "arm": "candidate",
+          "case_id": "E008_T01",
+          "veto": "json_schema_broken",
+          "path": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E008\\out\\turn_01_E008_T01",
+          "raw_sha256": "73a9b9b1eea6487cb4a5dc0b628837ef3b7177c9485f3a3cbce8b1b514bdaec2"
+        }
+      ]
+    }
+  ],
+  "major_or_critical_claims_primary": 4,
+  "major_or_critical_claims_backups": 34,
+  "major_details": [
+    {
+      "node_id": "P06N0011",
+      "slot": "directions[1]",
+      "claim": {
+        "quote": "那家我上次去人挺多",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "以确定姿态断言ME亲历去过该汤锅店且人多，输入材料无依据，触犯§0-7亲历核验与禁止编造汤锅细节要求；依V1_1 §2a备选槽压制至<=2（实判1分）"
+      }
+    },
+    {
+      "node_id": "P06N0013",
+      "slot": "directions[2]",
+      "claim": {
+        "quote": "确实有点扫兴",
+        "type": "观点",
+        "support": "supported",
+        "evidence_ids": [
+          "E008_T08#m0"
+        ],
+        "evidence_quote": "周三改不了了 我临时要监考 你别等我 你先约别人也行",
+        "severity": "major",
+        "reason": "直接表达负面扫兴情绪，违背了别赌气别阴阳、接住安抚的指导原则"
+      }
+    },
+    {
+      "node_id": "P06N0013",
+      "slot": "directions[3]",
+      "claim": {
+        "quote": "那我这周末先跟朋友约一场",
+        "type": "新提议",
+        "support": "conflict",
+        "evidence_ids": [
+          "E008_T08#m0"
+        ],
+        "evidence_quote": "周三改不了了 我临时要监考 你别等我 你先约别人也行",
+        "severity": "major",
+        "reason": "明确违背失败条件：把对方说的'约别人也行'当真去约别人晾着她"
+      }
+    },
+    {
+      "node_id": "P06N0017",
+      "slot": "directions[1]",
+      "claim": {
+        "quote": "他们现场音量不大，跟那种一直炸的场子不一样。",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "以确定姿态断言现场音量不大，材料中无该乐队现场音量数据支持，存在误导对方的风险，按手册规则备选扣分且factuality<=2"
+      }
+    },
+    {
+      "node_id": "P06N0021",
+      "slot": "directions[3]",
+      "claim": {
+        "quote": "周六定下来跟我说",
+        "type": "事实",
+        "support": "conflict",
+        "evidence_ids": [
+          "E012_T06#m0"
+        ],
+        "evidence_quote": "其实周六我去得成",
+        "severity": "major",
+        "reason": "对方已明确表达'其实周六我去得成'，此处仍断言周六未定并要求对方'定下来跟我说'，属于关键状态判定错误与怀疑反复确认，触发联动规则打低分"
+      }
+    },
+    {
+      "node_id": "P06N0026",
+      "slot": "directions[3]",
+      "claim": {
+        "quote": "你想好了跟我说一声就行，不急。",
+        "type": "事实",
+        "support": "conflict",
+        "evidence_ids": [
+          "E007_T05#m0"
+        ],
+        "evidence_quote": "其实除了livehouse 你周末还打算干嘛呀",
+        "severity": "major",
+        "reason": "完全忽视对方最新提出的日常安排提问，依然滞留在上一轮的livehouse邀约决策中，答非所问且被旧目标绑架"
+      }
+    },
+    {
+      "node_id": "P06N0038",
+      "slot": "directions[0]",
+      "claim": {
+        "quote": "到底什么事啊，你先说说",
+        "type": "疑问",
+        "support": "conflict",
+        "evidence_ids": [
+          "E006_T01#m0",
+          "E006_T03#m0"
+        ],
+        "evidence_quote": "今天方案又被甲方打回来了 改了三版 我真的有点顶不住",
+        "severity": "major",
+        "reason": "完全遗忘了昨晚刚倾诉过的改稿打回与审美被当众否定的核心前情，表现出完全失忆"
+      }
+    },
+    {
+      "node_id": "P06N0040",
+      "slot": "directions[1]",
+      "claim": {
+        "quote": "你平时想吃的时候一般是什么节奏，周末还是随便哪天下班？",
+        "type": "疑问",
+        "support": "conflict",
+        "evidence_ids": [
+          "E012_T05#m0"
+        ],
+        "evidence_quote": "你昨天那个'走啊我请你'搞得我压力好大 我又不是非得去",
+        "severity": "major",
+        "reason": "完全无视对方表达的压力与抗拒，不仅没认领责任，反而继续追问吃这顿饭的具体时间节奏，严重违背当前目标并侵犯边界"
+      }
+    },
+    {
+      "node_id": "P06N0052",
+      "slot": "response.warm",
+      "claim": {
+        "quote": "正好我也想再去",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "以确定姿态断言ME曾经去过该店（'再去'），输入材料中无亲历证据，触发§0-7亲历断言规则；备选槽依§2a限制factuality≤2"
+      }
+    },
+    {
+      "node_id": "P06N0052",
+      "slot": "directions[0]",
+      "claim": {
+        "quote": "那家我确实还想去一次",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "断言ME亲历（'还想去一次'意指此前去过），输入材料无据，依§2a备选槽限制factuality≤2；且完全回避了敲定时间的动作"
+      }
+    },
+    {
+      "node_id": "P06N0057",
+      "slot": "primary",
+      "claim": {
+        "quote": "那就周六见",
+        "type": "事实",
+        "support": "conflict",
+        "evidence_ids": [
+          "E012_T08#m0"
+        ],
+        "evidence_quote": "周六挺好的 下次可以不只在饭点见 也行 我先这样 困了",
+        "severity": "major",
+        "reason": "当前时间为2026-11-14周六22:30，对方发来的是周六当晚聚餐后的正面反馈与道晚安，回复却把周六当成未来待赴约的安排断言‘那就周六见’，与时间状态和已知事实严重冲突。"
+      }
+    },
+    {
+      "node_id": "P06N0057",
+      "slot": "response.warm",
+      "claim": {
+        "quote": "周六见",
+        "type": "事实",
+        "support": "conflict",
+        "evidence_ids": [
+          "E012_T08#m0"
+        ],
+        "evidence_quote": "周六挺好的 下次可以不只在饭点见 也行 我先这样 困了",
+        "severity": "major",
+        "reason": "周六聚餐已结束，断言‘周六见’存在时间状态错误，依据V1_1 §2a压制至<=2。"
+      }
+    },
+    {
+      "node_id": "P06N0057",
+      "slot": "directions[0]",
+      "claim": {
+        "quote": "周六见",
+        "type": "事实",
+        "support": "conflict",
+        "evidence_ids": [
+          "E012_T08#m0"
+        ],
+        "evidence_quote": "周六挺好的 下次可以不只在饭点见 也行 我先这样 困了",
+        "severity": "major",
+        "reason": "同存在时间状态误判，依据V1_1 §2a压制至<=2。"
+      }
+    },
+    {
+      "node_id": "P06N0060",
+      "slot": "directions[2]",
+      "claim": {
+        "quote": "我这人容易把话说太满 你提醒得对 我改",
+        "type": "观点",
+        "support": "supported",
+        "evidence_ids": [
+          "E012_T04#m1"
+        ],
+        "evidence_quote": "周六我可能有点事 你先别把话说这么满",
+        "severity": "major",
+        "reason": "违背'别过度道歉'的要求，态度过度严肃认错，加重了对话沉重感"
+      }
+    },
+    {
+      "node_id": "P06N0065",
+      "slot": "directions[0]",
+      "claim": {
+        "quote": "那你中午最后点的哪家？",
+        "type": "事实",
+        "support": "conflict",
+        "evidence_ids": [
+          "E012_T02#m1"
+        ],
+        "evidence_quote": "还没 在纠结点哪家",
+        "severity": "major",
+        "reason": "对方纠结点餐是昨晚20:43的事情，且生硬转移话题完全回避了当面指出的边界不适反馈"
+      }
+    },
+    {
+      "node_id": "P06N0065",
+      "slot": "directions[3]",
+      "claim": {
+        "quote": "不聊吃了，你这两天忙什么项目",
+        "type": "新提议",
+        "support": "supported",
+        "evidence_ids": [
+          "E012_T05#m0"
+        ],
+        "evidence_quote": "你昨天那个'走啊我请你'搞得我压力好大 我又不是非得去",
+        "severity": "major",
+        "reason": "生硬转移话题，回避了直面不适的必须动作，易给对方冷处理或赌气的负面感受"
+      }
+    },
+    {
+      "node_id": "P06N0069",
+      "slot": "directions[3]",
+      "claim": {
+        "quote": "你定你的，定了跟我说一声就行",
+        "type": "事实",
+        "support": "conflict",
+        "evidence_ids": [
+          "E007_T05#m0"
+        ],
+        "evidence_quote": "其实除了livehouse 你周末还打算干嘛呀",
+        "severity": "major",
+        "reason": "无视当轮对方挪开话题的动作，执着于抓着上一轮邀约的定夺，属于被旧目标绑架且反向操作，因备选联动规则将目标与交互等维度降至<=1分。"
+      }
+    },
+    {
+      "node_id": "P06N0075",
+      "slot": "primary",
+      "claim": {
+        "quote": "小林是朋友介绍认识的",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "题面未提供ME认识小林的场景，确定断言'小林是朋友介绍认识的'触碰了'把不是读书会、我们是××认识的当作已核实事实给出'的明确禁止条件。"
+      }
+    },
+    {
+      "node_id": "P06N0075",
+      "slot": "response.bad_boy",
+      "claim": {
+        "quote": "小林是朋友介绍的",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "材料未交代ME与小林如何认识，断言'小林是朋友介绍的'属于无据既成断言，按§2a限制factuality≤2，因违背卡片禁止项判1分。"
+      }
+    },
+    {
+      "node_id": "P06N0075",
+      "slot": "response.playful",
+      "claim": {
+        "quote": "小林是朋友介绍认识的",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "编造了ME认识小林的场景，违背卡片明确禁止项，按§2a限制打分。"
+      }
+    },
+    {
+      "node_id": "P06N0075",
+      "slot": "response.warm",
+      "claim": {
+        "quote": "小林是朋友介绍认识的",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "断言ME与小林是通过朋友介绍认识，在输入材料中无据，按§2a限制打分。"
+      }
+    },
+    {
+      "node_id": "P06N0075",
+      "slot": "directions[0]",
+      "claim": {
+        "quote": "小林是朋友介绍认识的",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "ME认识小林的方式题面未给，构成无据既成断言，按§2a限制打分。"
+      }
+    },
+    {
+      "node_id": "P06N0077",
+      "slot": "response.warm",
+      "claim": {
+        "quote": "你第一次去这种场子",
+        "type": "事实",
+        "support": "conflict",
+        "evidence_ids": [
+          "initial_kb"
+        ],
+        "evidence_quote": "喜欢后摇和现场音乐，讨厌太吵的金属",
+        "severity": "major",
+        "reason": "违背对方长期喜欢现场音乐的已知偏好，凭空断言对方是新手，触发 §2a 备选槽压制至 1 分"
+      }
+    },
+    {
+      "node_id": "P06N0082",
+      "slot": "response.warm",
+      "claim": {
+        "quote": "你挑的地方你更熟",
+        "type": "事实",
+        "support": "conflict",
+        "evidence_ids": [
+          "E012_T03#m0"
+        ],
+        "evidence_quote": "对了你上次提过的那家汤锅 我一直想吃 要不找个时间一起去",
+        "severity": "major",
+        "reason": "汤锅是ME之前提过的，HER只是提议去吃，归属错误且与历史冲突；按V1_1规则备选打分压至<=2"
+      }
+    },
+    {
+      "node_id": "P06N0093",
+      "slot": "directions[2]",
+      "claim": {
+        "quote": "我其实挺久没进livehouse了",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "材料中无任何关于ME多久没去livehouse的记录，属于确定姿态捏造ME亲历，触发V1_1压分"
+      }
+    },
+    {
+      "node_id": "P06N0101",
+      "slot": "primary",
+      "claim": {
+        "quote": "全程没什么炸的地方",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "输入材料与历史中未提及具体乐队名称及现场表现，以确定姿态断言现场/曲目全程音量特性，属于无据既成事实断言"
+      }
+    },
+    {
+      "node_id": "P06N0101",
+      "slot": "response.playful",
+      "claim": {
+        "quote": "那支最大的动静就是结尾爆发一下，前面都挺乖的。",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "无据断言具体乐队现场编排与音量起伏细节，触犯无据断言现场特性规则；依V1_1 §2a备选槽扣至1分"
+      }
+    },
+    {
+      "node_id": "P06N0101",
+      "slot": "directions[0]",
+      "claim": {
+        "quote": "整场都是慢慢铺开的那种。",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "以确定姿态虚构该乐队现场铺陈风格，无材料依据；依V1_1 §2a备选槽扣至1分"
+      }
+    },
+    {
+      "node_id": "P06N0132",
+      "slot": "primary",
+      "claim": {
+        "quote": "那家我也还想再去",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [
+          "E012_T03#m0"
+        ],
+        "evidence_quote": "对了你上次提过的那家汤锅 我一直想吃 要不找个时间一起去",
+        "severity": "major",
+        "reason": "输入材料仅有HER提到ME提过汤锅，无ME去过该店的亲历记录，按V1_1 §0-7判定为无据亲历断言，依据§2a触发factuality压制至<=1"
+      }
+    },
+    {
+      "node_id": "P06N0132",
+      "slot": "directions[1]",
+      "claim": {
+        "quote": "那家挺火的，去晚了要排队，最好早点去",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "输入材料中无该店排队或火爆信息，属编造细节，且回避了对方一起去的邀约回应；依据V1_1 §2a备选槽同类主张factuality压制至<=2（实判1分）"
+      }
+    },
+    {
+      "node_id": "P06N0132",
+      "slot": "directions[2]",
+      "claim": {
+        "quote": "正好我也想再去吃一次",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [
+          "E012_T03#m0"
+        ],
+        "evidence_quote": "对了你上次提过的那家汤锅 我一直想吃 要不找个时间一起去",
+        "severity": "major",
+        "reason": "无ME去过该店证据，'再去吃一次'构成无据亲历断言，依据V1_1 §2a备选槽压制至<=2（实判2分）"
+      }
+    },
+    {
+      "node_id": "P06N0148",
+      "slot": "directions[0]",
+      "claim": {
+        "quote": "监考具体是哪天？",
+        "type": "疑问",
+        "support": "conflict",
+        "evidence_ids": [
+          "E008_T08#m0"
+        ],
+        "evidence_quote": "周三改不了了 我临时要监考",
+        "severity": "major",
+        "reason": "对方已在当前句首明确指出'周三改不了了 我临时要监考'，追问具体哪天暴露出对当前核心时间状态信息的忽略，且容易带来查岗质问感"
+      }
+    },
+    {
+      "node_id": "P06N0167",
+      "slot": "directions[3]",
+      "claim": {
+        "quote": "周六前我先去踩个点看看菜单",
+        "type": "新提议",
+        "support": "conflict",
+        "evidence_ids": [
+          "E012_T06#m0"
+        ],
+        "evidence_quote": "其实周六我去得成 就是吃个饭而已别搞得像面试",
+        "severity": "major",
+        "reason": "在对方明确强调'就是吃个饭而已别搞得像面试'后仍提出提前踩点看菜单，极其用力过猛并违背对方划定的边界"
+      }
+    },
+    {
+      "node_id": "P06N0198",
+      "slot": "response.warm",
+      "claim": {
+        "quote": "周六见",
+        "type": "事实",
+        "support": "conflict",
+        "evidence_ids": [
+          "E012_T08#m0"
+        ],
+        "evidence_quote": "周六挺好的 下次可以不只在饭点见 也行 我先这样 困了",
+        "severity": "major",
+        "reason": "当前时间为2026-11-14周六夜间，周六见面已结束且对方正在进行事后反馈，回复却断言‘周六见’，存在严重时间状态错乱（依据V1_1 §2a压制相关维度分）。"
+      }
+    },
+    {
+      "node_id": "P06N0214",
+      "slot": "directions[0]",
+      "claim": {
+        "quote": "那家锅底挺冲的",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "材料中完全没有该汤锅店口味或锅底的具体信息，违背了禁止编造汤锅店细节的约束，触发备选major压分规则。"
+      }
+    },
+    {
+      "node_id": "P06N0214",
+      "slot": "directions[1]",
+      "claim": {
+        "quote": "那附近晚上挺热闹",
+        "type": "事实",
+        "support": "unknown",
+        "evidence_ids": [],
+        "evidence_quote": "",
+        "severity": "major",
+        "reason": "材料中无该店位置及周边环境的信息，违背了禁止编造具体位置与细节的约束，触发备选major压分规则。"
+      }
+    },
+    {
+      "node_id": "P06N0213",
+      "slot": "directions[2]",
+      "claim": {
+        "quote": "约了三次都没成",
+        "type": "事实",
+        "support": "conflict",
+        "evidence_ids": [
+          "E008_T05#m0",
+          "E008_T06#m1",
+          "E008_T08#m0"
+        ],
+        "evidence_quote": "之前说的咖啡只能改期了",
+        "severity": "major",
+        "reason": "历史上咖啡之约仅周末改期与周三改期两次落空，断言三次与已知事实冲突，触发联动扣分"
+      }
+    },
+    {
+      "node_id": "P06N0213",
+      "slot": "directions[2]",
+      "claim": {
+        "quote": "你要是不太想出来直说，我不介意",
+        "type": "观点",
+        "support": "conflict",
+        "evidence_ids": [
+          "E008_T08#m0"
+        ],
+        "evidence_quote": "周三改不了了 我临时要监考 你别等我 你先约别人也行",
+        "severity": "major",
+        "reason": "直接违背卡片明确禁止的'赌气阴阳'与摊牌施压"
+      }
+    }
+  ],
+  "decision_flags_as_existing_analyzer": {
+    "A": {
+      "g1_data_integrity": false,
+      "g2_major_not_worse": true,
+      "g3_strict_usable": true,
+      "g2b_protocol_veto_not_worse": true,
+      "strict_usable_rate_parent": 0.8621,
+      "strict_usable_rate_candidate": 0.9259,
+      "veto_parent": 0,
+      "veto_candidate": 0,
+      "wins_candidate": 1,
+      "ties": 22,
+      "wins_parent": 1,
+      "incomparable": 8,
+      "dim_deltas_candidate_minus_baseline": {
+        "goal": -0.003,
+        "factuality": 0.0,
+        "attribution": 0.0,
+        "time_state": 0.0,
+        "boundary": -0.074,
+        "memory_use": 0.048,
+        "interaction": -0.003,
+        "initiative": 0.078,
+        "emotion_relation": -0.04
+      },
+      "benefit_dims": [],
+      "harm_dims": [],
+      "preliminary": "unknown_blocked",
+      "requires_worker_primary_read": true,
+      "note": "机械套用 P06_DECISION_RULES；最终判决须 worker 亲读原文、控制与复评后落笔"
+    },
+    "B": {
+      "g1_data_integrity": false,
+      "g2_major_not_worse": true,
+      "g3_strict_usable": true,
+      "g2b_protocol_veto_not_worse": true,
+      "strict_usable_rate_parent": 0.7586,
+      "strict_usable_rate_candidate": 0.9565,
+      "veto_parent": 0,
+      "veto_candidate": 2,
+      "wins_candidate": 1,
+      "ties": 20,
+      "wins_parent": 0,
+      "incomparable": 10,
+      "dim_deltas_candidate_minus_baseline": {
+        "goal": 0.06,
+        "factuality": 0.069,
+        "attribution": 0.034,
+        "time_state": 0.214,
+        "boundary": 0.034,
+        "memory_use": 0.091,
+        "interaction": 0.06,
+        "initiative": 0.35,
+        "emotion_relation": 0.06
+      },
+      "benefit_dims": [
+        "time_state",
+        "initiative"
+      ],
+      "harm_dims": [],
+      "preliminary": "unknown_blocked",
+      "requires_worker_primary_read": true,
+      "note": "机械套用 P06_DECISION_RULES；最终判决须 worker 亲读原文、控制与复评后落笔"
+    },
+    "C": {
+      "g1_data_integrity": false,
+      "g2_major_not_worse": true,
+      "g3_strict_usable": true,
+      "g2b_protocol_veto_not_worse": true,
+      "strict_usable_rate_parent": 0.7391,
+      "strict_usable_rate_candidate": 0.8696,
+      "veto_parent": 3,
+      "veto_candidate": 2,
+      "wins_candidate": 2,
+      "ties": 15,
+      "wins_parent": 0,
+      "incomparable": 12,
+      "dim_deltas_candidate_minus_baseline": {
+        "goal": 0.087,
+        "factuality": 0.261,
+        "attribution": 0.043,
+        "time_state": 0.0,
+        "boundary": 0.043,
+        "memory_use": 0.278,
+        "interaction": 0.043,
+        "initiative": 0.333,
+        "emotion_relation": 0.0
+      },
+      "benefit_dims": [
+        "factuality",
+        "memory_use",
+        "initiative"
+      ],
+      "harm_dims": [],
+      "preliminary": "unknown_blocked",
+      "requires_worker_primary_read": true,
+      "note": "机械套用 P06_DECISION_RULES；最终判决须 worker 亲读原文、控制与复评后落笔"
+    }
+  },
+  "important_analyzer_limit": "strict_usable increments on no claims marked major, WITHOUT requiring protocol acceptance or even a goal/quality pass threshold; do not label task success.",
+  "ledger_audit": [
+    {
+      "name": "AUTH-P06-FASTSCREEN-DSF-20261027-01.jsonl",
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 3,
+        "attempt_completed": 2,
+        "attempt_failed": 1,
+        "authorization_closed": 1
+      },
+      "unresolved_attempts": [],
+      "closed": true
+    },
+    {
+      "name": "AUTH-P06-FASTSCREEN-HY3-20261027-01.jsonl",
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 3,
+        "attempt_completed": 1,
+        "attempt_failed": 2,
+        "authorization_closed": 1
+      },
+      "unresolved_attempts": [],
+      "closed": true
+    },
+    {
+      "name": "AUTH-P06-FASTSCREEN-LOW-DSF-20261027-01.jsonl",
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 1,
+        "attempt_completed": 1,
+        "authorization_closed": 1
+      },
+      "unresolved_attempts": [],
+      "closed": true
+    },
+    {
+      "name": "AUTH-P06-FASTSCREEN-LOW-HY3-20261027-01.jsonl",
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 1,
+        "attempt_failed": 1,
+        "authorization_closed": 1
+      },
+      "unresolved_attempts": [],
+      "closed": true
+    },
+    {
+      "name": "AUTH-P06-FASTSCREEN-LOW-QWEN3_8-FLASH-20261027-01.jsonl",
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 1,
+        "attempt_completed": 1,
+        "authorization_closed": 1
+      },
+      "unresolved_attempts": [],
+      "closed": true
+    },
+    {
+      "name": "AUTH-P06-FASTSCREEN-QWEN3_8-FLASH-20261027-01.jsonl",
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 3,
+        "attempt_completed": 2,
+        "attempt_failed": 1,
+        "authorization_closed": 1
+      },
+      "unresolved_attempts": [],
+      "closed": true
+    },
+    {
+      "name": "AUTH-P06-JUDGE-20261027-01.jsonl",
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 35,
+        "attempt_completed": 31,
+        "attempt_failed": 2
+      },
+      "unresolved_attempts": [
+        "judge:P06:P06N0032:primary:31",
+        "judge:P06:P06N0033:primary:32"
+      ],
+      "closed": false
+    },
+    {
+      "name": "AUTH-P06-JUDGE-GEM-20261027-01.jsonl",
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 251,
+        "attempt_completed": 212,
+        "attempt_failed": 39
+      },
+      "unresolved_attempts": [],
+      "closed": false
+    },
+    {
+      "name": "AUTH-P06-JUDGE-QWEN-20261027-01.jsonl",
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 3,
+        "attempt_failed": 3,
+        "dispatch_refused_duplicate": 1
+      },
+      "unresolved_attempts": [],
+      "closed": false
+    },
+    {
+      "name": "AUTH-P06-JUDGE-QWEN-20261027-02.jsonl",
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 2,
+        "attempt_failed": 2
+      },
+      "unresolved_attempts": [],
+      "closed": false
+    },
+    {
+      "name": "AUTH-P06-MAX288V2-20261027-01.jsonl",
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 192,
+        "attempt_completed": 192
+      },
+      "unresolved_attempts": [],
+      "closed": false
+    },
+    {
+      "name": "AUTH-P06-PAIRED-QWEN-20261027-01.jsonl",
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 2,
+        "attempt_failed": 2,
+        "authorization_closed": 1
+      },
+      "unresolved_attempts": [],
+      "closed": true
+    }
+  ],
+  "model_calls_this_audit": 0
+}

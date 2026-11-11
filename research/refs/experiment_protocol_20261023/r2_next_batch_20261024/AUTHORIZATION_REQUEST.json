@@ -1,0 +1,38 @@
+{
+  "authorization_id": "AUTH-R2-CTX-20261024-01",
+  "authorized": false,
+  "status": "PENDING_USER_APPROVAL",
+  "kind": "single_merged_authorization_request",
+  "requested_by": "worker (复核+推进主线连续执行单 WORKER_NEXT_BATCH_REVISED §4/§5)",
+  "why_single_request": "旧 AUTH-V3-DELETION-20261024-01 已 authorization_closed(48/48 耗尽,不得复活/挪用/补跑)。本'复核+推进'指导书未明示追加 48 次真实生成额度,worker 不自行补造许可;此处一次性请求覆盖整批的唯一额度,批准前不发起任何真实调用,同时全部离线工作已先完成。",
+  "grant_instruction": "若批准,请将 authorized 改为 true、status 改为 ACTIVE、granted_by/approval_text 记录用户明确同意原文与时间,并保持 real_endpoint 与 max_attempts 逐字不变;budget_ledger 指向新建的空账本文件。",
+  "scope": {
+    "batch_id": "BATCH-R2-CTX-20261024",
+    "arms": ["reference_product_v1", "v4_intent_context_r2"],
+    "episodes": ["E007", "E010", "E012"],
+    "attempts_per_arm": 24,
+    "total_hard_cap": 48,
+    "third_arm": false,
+    "auto_judge": false,
+    "no_auto_retry": true,
+    "no_makeup_pairing": true,
+    "fail_fast_on_transmission_error": true
+  },
+  "real_endpoint": {
+    "api_base": "http://127.0.0.1:17770/v1",
+    "model": "dsf",
+    "temperature": 0.7,
+    "max_attempts": 48
+  },
+  "frozen_bindings": {
+    "plan": "refs/experiment_protocol_20261023/r2_next_batch_20261024/INTERLEAVE_PLAN.json",
+    "parent_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+    "candidate_identity_sha256": "见 INTERLEAVE_PLAN.json frozen.identity_closure.candidate（r2=eaf6d267…17 文件闭包）",
+    "cards_path": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+    "input_fairness_capture": "E007/E010/E012 双方均消费公开种子、私密邀约目标不再常驻种子（离线 probe+reference vs r2 双校,real_model_calls=0）"
+  },
+  "budget_ledger": "logs/auth_budget/AUTH-R2-CTX-20261024-01.jsonl",
+  "scheduling": "tools/exam_interleave_plan.execute_plan(mode=live) 逐 slot 交错;整批 ensure_batch(48) 首发预检;fail_fast;no_makeup_pairing;no_auto_retry",
+  "selection_criteria_pre_registered": "质量收益路线:核心互动/事实能力实质改善且其它关键维度无实质退化;效率收益路线:质量在预定可接受范围内相当而总资源/等待/维护复杂度实质改善即支持开发保留,不要求回复更短。严重事实/状态错误或首选交付退化不得被省 token 抵消。三故事均公开开发集,不据此称泛化或生产冠军。",
+  "notes": "授权级持久账本以 authorization_id 为键;换 run/进程/文件路径不获新额度;CLOSED/超额拒绝。真实调用 48 硬上限;不含 judge/第三臂/旧回忆批额度。批准前该文件 authorized=false,任何 execute_plan(mode=live) 都会被 validate_authorization_doc 拒绝。"
+}

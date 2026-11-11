@@ -1,0 +1,258 @@
+{
+  "new_model_calls": 0,
+  "priority": "quality first; cost and latency secondary",
+  "warning": "program score is not reply quality; disjoint story sets are not a version ranking",
+  "historical_results": [
+    {
+      "experiment": "v3_system_slim",
+      "batch": "v3_deletion_live_20261024",
+      "arms": {
+        "parent": {
+          "n": 24,
+          "episodes": [
+            "parent_E004",
+            "parent_E005",
+            "parent_E006"
+          ],
+          "program_score10_mean": 10.0,
+          "program_veto_count": 0,
+          "reply_quality_common_benchmark": null,
+          "KB_recoverable_completeness": null,
+          "KB_supported_precision": null,
+          "goal_success_rate_validated": null,
+          "personal_willingness": null
+        },
+        "candidate": {
+          "n": 24,
+          "episodes": [
+            "candidate_E004",
+            "candidate_E005",
+            "candidate_E006"
+          ],
+          "program_score10_mean": 9.583333333333334,
+          "program_veto_count": 1,
+          "reply_quality_common_benchmark": null,
+          "KB_recoverable_completeness": null,
+          "KB_supported_precision": null,
+          "goal_success_rate_validated": null,
+          "personal_willingness": null
+        }
+      }
+    },
+    {
+      "experiment": "v4_intent_context_r2",
+      "batch": "r2_ctx_live_20261024",
+      "arms": {
+        "parent": {
+          "n": 24,
+          "episodes": [
+            "parent_E007",
+            "parent_E010",
+            "parent_E012"
+          ],
+          "program_score10_mean": 9.583333333333334,
+          "program_veto_count": 1,
+          "reply_quality_common_benchmark": null,
+          "KB_recoverable_completeness": null,
+          "KB_supported_precision": null,
+          "goal_success_rate_validated": null,
+          "personal_willingness": null
+        },
+        "candidate": {
+          "n": 24,
+          "episodes": [
+            "candidate_E007",
+            "candidate_E010",
+            "candidate_E012"
+          ],
+          "program_score10_mean": 9.860833333333334,
+          "program_veto_count": 0,
+          "reply_quality_common_benchmark": null,
+          "KB_recoverable_completeness": null,
+          "KB_supported_precision": null,
+          "goal_success_rate_validated": null,
+          "personal_willingness": null
+        }
+      }
+    },
+    {
+      "experiment": "v5_purpose_aligned",
+      "batch": "v5_ctx_live_20261025",
+      "arms": {
+        "parent": {
+          "n": 24,
+          "episodes": [
+            "parent_E007",
+            "parent_E008",
+            "parent_E009"
+          ],
+          "program_score10_mean": 9.51375,
+          "program_veto_count": 1,
+          "reply_quality_common_benchmark": null,
+          "KB_recoverable_completeness": null,
+          "KB_supported_precision": null,
+          "goal_success_rate_validated": null,
+          "personal_willingness": null
+        },
+        "candidate": {
+          "n": 24,
+          "episodes": [
+            "candidate_E007",
+            "candidate_E008",
+            "candidate_E009"
+          ],
+          "program_score10_mean": 9.583333333333334,
+          "program_veto_count": 1,
+          "reply_quality_common_benchmark": null,
+          "KB_recoverable_completeness": null,
+          "KB_supported_precision": null,
+          "goal_success_rate_validated": null,
+          "personal_willingness": null
+        }
+      }
+    },
+    {
+      "experiment": "v5_new_story",
+      "batch": "newstory96_live_20261026",
+      "arms": {
+        "parent": {
+          "n": 48,
+          "episodes": [
+            "parent_P001",
+            "parent_P002",
+            "parent_P003",
+            "parent_P004",
+            "parent_P005",
+            "parent_P006"
+          ],
+          "program_score10_mean": 9.791666666666666,
+          "program_veto_count": 1,
+          "reply_quality_common_benchmark": null,
+          "KB_recoverable_completeness": null,
+          "KB_supported_precision": null,
+          "goal_success_rate_validated": null,
+          "personal_willingness": null
+        },
+        "candidate": {
+          "n": 48,
+          "episodes": [
+            "candidate_P001",
+            "candidate_P002",
+            "candidate_P003",
+            "candidate_P004",
+            "candidate_P005",
+            "candidate_P006"
+          ],
+          "program_score10_mean": 9.51375,
+          "program_veto_count": 2,
+          "reply_quality_common_benchmark": null,
+          "KB_recoverable_completeness": null,
+          "KB_supported_precision": null,
+          "goal_success_rate_validated": null,
+          "personal_willingness": null
+        }
+      }
+    },
+    {
+      "experiment": "C4_A",
+      "batch": "c4_sweep_a_orig_vs_goal_live_20261026",
+      "arms": {
+        "parent": {
+          "n": 32,
+          "episodes": [
+            "parent_E006",
+            "parent_E007",
+            "parent_E008",
+            "parent_E012"
+          ],
+          "program_score10_mean": 9.0625,
+          "program_veto_count": 3,
+          "reply_quality_common_benchmark": null,
+          "KB_recoverable_completeness": null,
+          "KB_supported_precision": null,
+          "goal_success_rate_validated": null,
+          "personal_willingness": null
+        },
+        "candidate": {
+          "n": 32,
+          "episodes": [
+            "candidate_E006",
+            "candidate_E007",
+            "candidate_E008",
+            "candidate_E012"
+          ],
+          "program_score10_mean": 9.9478125,
+          "program_veto_count": 0,
+          "reply_quality_common_benchmark": null,
+          "KB_recoverable_completeness": null,
+          "KB_supported_precision": null,
+          "goal_success_rate_validated": null,
+          "personal_willingness": null
+        }
+      }
+    },
+    {
+      "experiment": "C4_B",
+      "batch": "c4_sweep_b_v5_vs_mem_live_20261026",
+      "arms": {
+        "parent": {
+          "n": 32,
+          "episodes": [
+            "parent_E006",
+            "parent_E007",
+            "parent_E008",
+            "parent_E012"
+          ],
+          "program_score10_mean": 9.9478125,
+          "program_veto_count": 0,
+          "reply_quality_common_benchmark": null,
+          "KB_recoverable_completeness": null,
+          "KB_supported_precision": null,
+          "goal_success_rate_validated": null,
+          "personal_willingness": null
+        },
+        "candidate": {
+          "n": 32,
+          "episodes": [
+            "candidate_E006",
+            "candidate_E007",
+            "candidate_E008",
+            "candidate_E012"
+          ],
+          "program_score10_mean": 9.0103125,
+          "program_veto_count": 3,
+          "reply_quality_common_benchmark": null,
+          "KB_recoverable_completeness": null,
+          "KB_supported_precision": null,
+          "goal_success_rate_validated": null,
+          "personal_willingness": null
+        }
+      }
+    }
+  ],
+  "datasets": [
+    {
+      "group": "E001-E003",
+      "stories": 3,
+      "requests": 24,
+      "turns_with_nonempty_program_gold": 0,
+      "episodes_with_nonempty_program_gold": 0,
+      "role": "exposed development; not independent heldout"
+    },
+    {
+      "group": "E004-E012",
+      "stories": 9,
+      "requests": 72,
+      "turns_with_nonempty_program_gold": 0,
+      "episodes_with_nonempty_program_gold": 0,
+      "role": "exposed development; not independent heldout"
+    },
+    {
+      "group": "P001-P006",
+      "stories": 6,
+      "requests": 48,
+      "role": "developer-authored exposed new-story experiment",
+      "ineffective_ADJUSTED_intent_positions": 14
+    }
+  ]
+}

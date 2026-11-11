@@ -1,0 +1,41 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W22FASTLANE",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W22FASTLANE_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w22_fastlane_live_20261104",
+ "n_queued": 1,
+ "queue": [
+  {
+   "pair_id": "LP:LRE117:LRE117_T34",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T34",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT把未知的转账状态当已确认之外还含糊回避核对，并以'让她真扫、我笑纳'表达收下阿蕾的钱，与'阿蕾那份不收钱'的既有约定相悖，属无据确定化与边界失守",
+   "key_quote": "转了两笔八十，一分没差。阿蕾差点扫码那下我愣是没敢说话，怕她真付了还得退。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

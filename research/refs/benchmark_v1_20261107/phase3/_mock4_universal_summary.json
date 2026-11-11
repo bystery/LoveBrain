@@ -1,0 +1,58 @@
+{
+ "universal_version": "universal_scorer_v1",
+ "guards_version": "semantic_guards_v1",
+ "per_arm": {
+  "COT": {
+   "n_turns": 12,
+   "parse_ok_rate": 1.0,
+   "contract_ok_rate_own_layer": 1.0,
+   "valid_reply_rate": 1.0,
+   "no_reply_rate": 0.0,
+   "severe_error_rate": 0.0,
+   "cancel_affirm_violation_turns": 0,
+   "required_hits": 0,
+   "required_total": 0,
+   "required_NA_turns": 12,
+   "tokens_total": 21295
+  },
+  "CURRENT": {
+   "n_turns": 12,
+   "parse_ok_rate": 1.0,
+   "contract_ok_rate_own_layer": 0.0,
+   "valid_reply_rate": 1.0,
+   "no_reply_rate": 0.0,
+   "severe_error_rate": 1.0,
+   "cancel_affirm_violation_turns": 0,
+   "required_hits": 0,
+   "required_total": 0,
+   "required_NA_turns": 12,
+   "tokens_total": 54433
+  },
+  "DIRECT": {
+   "n_turns": 12,
+   "parse_ok_rate": 1.0,
+   "contract_ok_rate_own_layer": 1.0,
+   "valid_reply_rate": 1.0,
+   "no_reply_rate": 0.0,
+   "severe_error_rate": 0.0,
+   "cancel_affirm_violation_turns": 0,
+   "required_hits": 0,
+   "required_total": 0,
+   "required_NA_turns": 12,
+   "tokens_total": 20383
+  },
+  "LEGACY_COMPAT_R9": {
+   "n_turns": 12,
+   "parse_ok_rate": 1.0,
+   "contract_ok_rate_own_layer": 0.0,
+   "valid_reply_rate": 1.0,
+   "no_reply_rate": 0.0,
+   "severe_error_rate": 0.0,
+   "cancel_affirm_violation_turns": 0,
+   "required_hits": 0,
+   "required_total": 0,
+   "required_NA_turns": 12,
+   "tokens_total": 105020
+  }
+ }
+}

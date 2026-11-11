@@ -1,0 +1,28 @@
+{
+ "batch_id": "BATCH-C4-A-ORIG-VS-GOAL-20261026",
+ "arm_map": {
+  "parent": "reference_product_v1",
+  "candidate": "goal_action_v1"
+ },
+ "episode_order": [
+  {
+   "episode": "E006",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E008",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E012",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E007",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+ "recall_capable": false,
+ "design_note": "C4 机制筛选·臂批A（执行书§4原式四臂凑法之一）：原版 reference_product_v1 vs 目标动作候选 goal_action_v1，4开发故事×8位=32位×2臂=64次。批B（v5 vs evidence_memory_v1）跑同样 32 个位点，四臂各自在同一批题面上各跑一次=128，与执行书公式逐字一致——撤销侧线先前登记的『v5 为锚、原版臂缺席』偏差。卡集为新建合并件（03/04 选取 + 05 r2 覆盖），逐字回核与 deep-equal 未改写断言见 .PROVENANCE.json。"
+}

@@ -1,0 +1,83 @@
+{
+ "count": 10,
+ "anomalies": [
+  {
+   "kind": "slot_equals_primary",
+   "slot": "directions[0]",
+   "batch": "A",
+   "case_id": "E007_T07",
+   "arm": "parent"
+  },
+  {
+   "kind": "unrecognized_response_keys",
+   "keys_repr": [
+    "'bad_boys'"
+   ],
+   "batch": "B",
+   "case_id": "E007_T05",
+   "arm": "candidate"
+  },
+  {
+   "kind": "directions_len",
+   "len": 3,
+   "batch": "B",
+   "case_id": "E012_T02",
+   "arm": "candidate"
+  },
+  {
+   "kind": "slot_equals_primary",
+   "slot": "directions[0]",
+   "batch": "B",
+   "case_id": "E012_T06",
+   "arm": "parent"
+  },
+  {
+   "kind": "slot_empty_string",
+   "slot": "directions[3]",
+   "batch": "C",
+   "case_id": "E007_T03",
+   "arm": "candidate"
+  },
+  {
+   "kind": "slot_equals_primary",
+   "slot": "directions[0]",
+   "batch": "C",
+   "case_id": "E007_T04",
+   "arm": "parent"
+  },
+  {
+   "kind": "unrecognized_response_keys",
+   "keys_repr": [
+    "'bad_style'"
+   ],
+   "batch": "C",
+   "case_id": "E007_T05",
+   "arm": "candidate"
+  },
+  {
+   "kind": "unrecognized_response_keys",
+   "keys_repr": [
+    "'bad_bo'"
+   ],
+   "batch": "C",
+   "case_id": "E008_T01",
+   "arm": "candidate"
+  },
+  {
+   "kind": "directions_len",
+   "len": 5,
+   "batch": "C",
+   "case_id": "E008_T06",
+   "arm": "parent"
+  },
+  {
+   "kind": "unrecognized_response_keys",
+   "keys_repr": [
+    "'bad_man'"
+   ],
+   "batch": "C",
+   "case_id": "E012_T08",
+   "arm": "parent"
+  }
+ ]
+}

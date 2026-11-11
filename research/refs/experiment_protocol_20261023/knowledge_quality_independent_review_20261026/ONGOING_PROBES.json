@@ -1,0 +1,31 @@
+{
+  "actual_baseline_requests": 32,
+  "actual_baseline_requests_with_ongoing_section": 0,
+  "controls": [
+    {
+      "item_name": "约饭（时间待定）",
+      "message": "饭什么时候吃",
+      "keywords": [
+        "饭时间待定"
+      ],
+      "signals": {
+        "realMessageEvidence": false,
+        "replyDirectiveRelevant": false,
+        "persistentIntentRelevant": false
+      }
+    },
+    {
+      "item_name": "计划骑车",
+      "message": "周末骑车吧",
+      "keywords": [
+        "骑车"
+      ],
+      "signals": {
+        "realMessageEvidence": true,
+        "replyDirectiveRelevant": false,
+        "persistentIntentRelevant": false
+      }
+    }
+  ],
+  "limit": "Signal controls only, not whole-selector or exact historical replay. No required-retrieval denominator has been established."
+}

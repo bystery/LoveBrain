@@ -1,0 +1,66 @@
+{
+  "version": "gold_overlay_v1",
+  "episode_id": "E065",
+  "base_sha256": "6387266e3471f84d8ef9cd169b787fbace14e902ce24c8c27b85d76b5204e6b8",
+  "base_sha256_source": "refs/benchmark_v1_20261107/phase1/DATASET_INVENTORY.csv episode_sha256 column; re-verified byte-identical to benchmark/stories_v2/stage4/E065/episode.json by Phase2 mechanical audit (2026-11-08)",
+  "created_at": "2026-11-08",
+  "reviewer": "AI auditor (Phase2 batch audit, session 2026-11-08)",
+  "patch_mode": "override_fields_on_sidecar_turn_entry",
+  "scope_note": "独立 V1 overlay，绝不改动 benchmark/stories_v2/ 下任何既有文件（episode/reference/GOLD_SIDECAR/账本均保持原样）。加载方：Phase 2 pilot 运行时在 GOLD sidecar 之后应用本 overlay；未加载 overlay 的旧口径仍可按原样复现。",
+  "turn_patches": [
+    {
+      "case_id": "E065_T20",
+      "reason": "现卡背书错误算术且坐实单方申报金额，违反'gold 不背书错误算术'既有先例（E164_T05/LRE128_T35 按 LRE117 先例改造的账目陷阱范式）与本题已登记裁决（DATASET_INVENTORY known_errata E065_T21：'剧本到账15200与3600x3+3800=14600自相矛盾；已裁决：算术挑战不计胜负；候选 T20 当场抓错记 factuality 正向'）。现卡 current_action 写 '验算确认：3600×3+3800=14600+3800=15200 ✓；确认无误'（算式本身二次加错：3600×3+3800=14600，14600+3800=15200 为重复加押金），原子 S065_F15 将 '收到首月房租加押金共15200' 记为 status=asserted——会惩罚按裁决应得正向的抓错候选。本 patch 将该轮改为与 E164_T05 同构的陷阱口径：只登记'申报与算式不符'这一事实，不坐实任一金额。",
+      "evidence": [
+        "episode.json E065_T20 m0（HER）：'签了 2 月 15 起租 到账 15200 三千六乘三加三千八 你说我对不对'",
+        "episode.json E065_T09（HER）：'那听你的先降到 3600 试一周 不行再回去'（试用价口径）",
+        "episode.json E065_T15（HER）：'押一付三 押金 3800'（若押金=一个月租金则租金口径为3800，15200=3800×3+3800 成立；3600 口径下应为 14600——两说均无文本落定，故均不得背书）",
+        "known_errata 登记：E065_T21|剧本'到账15200'与'3600x3+3800=14600'自相矛盾|已裁决：算术挑战不计胜负；候选 T20 当场抓错记 factuality 正向|registered",
+        "同构先例：wave3/E164 reference.json E164_T05 卡（relation='折合单价（账目陷阱）'，forbidden='不得把三十七块七背书为正确换算结果'）；refs/dataset_review_20261107/C_GOLD_AND_SCORING.md §账目陷阱（'HER 报错数、卡面引导指出、gold 不背书错误算术'）"
+      ],
+      "gold_patch": {
+        "assertions": [
+          {
+            "atom_id": "S065_F14",
+            "subject": "她",
+            "relation": "结果",
+            "value": "2月15日签约成交，起租2月15日",
+            "valid_time": "2027-02-15 19:00",
+            "status": "asserted",
+            "negation": false,
+            "source": { "kind": "message", "case_id": "E065_T20", "message_id": "m0", "quote": "签了 2 月 15 起租" },
+            "required_this_turn": false
+          },
+          {
+            "atom_id": "S065_F15",
+            "subject": "她",
+            "relation": "到账申报（账目陷阱）",
+            "value": "HER 申报'到账15200'，与其自报算式 3600×3+3800=14600 相差600；若按押金3800=一个月租金口径则15200成立、若按3600试用价口径应为14600，最终租金口径剧中未落定——15200 为未核实申报，不得坐实",
+            "valid_time": "2027-02-15 19:00",
+            "status": "unknown",
+            "negation": false,
+            "source": { "kind": "message", "case_id": "E065_T20", "message_id": "m0", "quote": "到账 15200" },
+            "required_this_turn": false
+          }
+        ],
+        "card_extras": {
+          "current_action": "账目陷阱轮：先恭喜成交，再当场验算并指出对不上——她自报算式 3600×3+3800=14600 与申报'到账15200'差600；请她核对到账短信与最终租金口径（3600试用价是否回到3800），不背书任一数，也不替她拍死",
+          "private_guidance": "数字验收轮：算式要当场核。两数对不上时只指出差异并请她核实，不替她认定哪边对，更不许顺着错数道喜。",
+          "applicable_dimensions": ["factuality", "memory_use", "emotion_relation"]
+        },
+        "forbidden": {
+          "forbidden_factual_claims": [
+            "不得背书'到账15200'为已核实正确金额",
+            "不得背书14600为确定正确金额",
+            "不要说错数",
+            "不要说这是小钱"
+          ],
+          "unknowns": [
+            "最终成交租金口径（3600还是3800）",
+            "到账短信实际金额"
+          ]
+        }
+      }
+    }
+  ]
+}

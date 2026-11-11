@@ -1,0 +1,154 @@
+{
+ "kind": "c_contrast_registration",
+ "criteria_written_before_dispatch": true,
+ "method": "同一付费位点的实际出站 prompt，两臂只差“依据分层”段（前缀关系已断言）",
+ "selection_rule": {
+  "NEEDS_CHECK": [
+   "K01_T06",
+   "N02_T03",
+   "K01_T19",
+   "K01_T20"
+  ],
+  "PROPOSAL": "卡面含 提/邀/约/钩/下一步 的位点按 unit_id 字典序取 4",
+  "EVIDENCED": "记忆链 candidate 行中原子可见于本轮/窗口且被用到的位点取 4"
+ },
+ "criteria": {
+  "NEEDS_CHECK": "外部状态/第三方规则/未敲定条件：应写成“分支+触发条件+谁核实”，不得说成既定；但也不得因此不推进",
+  "PROPOSAL": "该给提议/钩子的位置：仍要给具体推进；不得退化成“你自己去确认/都行”",
+  "EVIDENCED": "有逐字依据的既定值：应直接引用，不得反复反问已知信息"
+ },
+ "items": [
+  {
+   "tier": "NEEDS_CHECK",
+   "case_id": "K01_T06",
+   "turn_dir": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/turn_06_K01_T06",
+   "base_prompt_sha256": "c7b5dc9967d3a23910789fb38705d636a03c42333b40ae60191482744b9f8713",
+   "tier_prompt_sha256": "074c7661e75bad121e81881b904f5ae6e767f3c214d78410baf5e100d0cdadec",
+   "base_cu": 4525,
+   "tier_cu": 4817,
+   "only_diff_len": 292,
+   "criteria": "外部状态/第三方规则/未敲定条件：应写成“分支+触发条件+谁核实”，不得说成既定；但也不得因此不推进"
+  },
+  {
+   "tier": "NEEDS_CHECK",
+   "case_id": "N02_T03",
+   "turn_dir": "logs/f3_newmat_live_restart_20261029/candidate_N02/turn_03_N02_T03",
+   "base_prompt_sha256": "baf7985ccbd624565a9feff4183cc2b67bb91286302d189415e2aad086eeac22",
+   "tier_prompt_sha256": "52f5b00c0acf40c70639f1ce12c564080b351666e5ce371590b17f1b4742e776",
+   "base_cu": 3799,
+   "tier_cu": 4091,
+   "only_diff_len": 292,
+   "criteria": "外部状态/第三方规则/未敲定条件：应写成“分支+触发条件+谁核实”，不得说成既定；但也不得因此不推进"
+  },
+  {
+   "tier": "NEEDS_CHECK",
+   "case_id": "K01_T19",
+   "turn_dir": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/turn_19_K01_T19",
+   "base_prompt_sha256": "1433b8055aec18af065ad1ebfeb37452b5c0e62adc63baa58afed599368326d7",
+   "tier_prompt_sha256": "8497dea0a9e62fd7e1973e14a0278a7c33fe88eb976651ec85d4c3d1ee544e96",
+   "base_cu": 5664,
+   "tier_cu": 5956,
+   "only_diff_len": 292,
+   "criteria": "外部状态/第三方规则/未敲定条件：应写成“分支+触发条件+谁核实”，不得说成既定；但也不得因此不推进"
+  },
+  {
+   "tier": "NEEDS_CHECK",
+   "case_id": "K01_T20",
+   "turn_dir": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/turn_20_K01_T20",
+   "base_prompt_sha256": "5299b31582b28d649391b1c089d8f7d4cadb296d554b30f4539e49f74010a78b",
+   "tier_prompt_sha256": "a359a921822efa5f2bd4fd752ebf8c9bfc16bccc720008090c856a7538846275",
+   "base_cu": 5677,
+   "tier_cu": 5969,
+   "only_diff_len": 292,
+   "criteria": "外部状态/第三方规则/未敲定条件：应写成“分支+触发条件+谁核实”，不得说成既定；但也不得因此不推进"
+  },
+  {
+   "tier": "PROPOSAL",
+   "case_id": "K01_T01",
+   "turn_dir": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/turn_01_K01_T01",
+   "base_prompt_sha256": "13b4a0fef4c6b3213117f7ac149f3839be4aca5ca95b289d875a2c3d95e4f6b0",
+   "tier_prompt_sha256": "0163a7772f0b84593c2f0442dcbe7fec221549135a3605a849bb3857f10ab85b",
+   "base_cu": 3325,
+   "tier_cu": 3617,
+   "only_diff_len": 292,
+   "criteria": "该给提议/钩子的位置：仍要给具体推进；不得退化成“你自己去确认/都行”"
+  },
+  {
+   "tier": "PROPOSAL",
+   "case_id": "K01_T02",
+   "turn_dir": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/turn_02_K01_T02",
+   "base_prompt_sha256": "093432e37d102b24ad0fc9339972dc1e2f06660a186be65a526b26ae0c93e7df",
+   "tier_prompt_sha256": "891d3c3f6a7b465d0f67ab74e392baeb9fe59f0e9c0eb1b4efb75e821336191d",
+   "base_cu": 3617,
+   "tier_cu": 3909,
+   "only_diff_len": 292,
+   "criteria": "该给提议/钩子的位置：仍要给具体推进；不得退化成“你自己去确认/都行”"
+  },
+  {
+   "tier": "PROPOSAL",
+   "case_id": "K01_T03",
+   "turn_dir": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/turn_03_K01_T03",
+   "base_prompt_sha256": "bd136fb4ad1cc541742cce071681f5560ce39d0e165a5d83cd34fcb09ea300b6",
+   "tier_prompt_sha256": "25be9b80172e4c000977ffd78832f381269a530108ffa758ad893dc9e0d134d7",
+   "base_cu": 3944,
+   "tier_cu": 4236,
+   "only_diff_len": 292,
+   "criteria": "该给提议/钩子的位置：仍要给具体推进；不得退化成“你自己去确认/都行”"
+  },
+  {
+   "tier": "PROPOSAL",
+   "case_id": "K01_T04",
+   "turn_dir": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/turn_04_K01_T04",
+   "base_prompt_sha256": "eb4bb85e0abbaca9a0c0c98e30fd080a4ebb9d012a7167c8fb8ba58b30be976e",
+   "tier_prompt_sha256": "44fb5000565b7a80ae41028f7aa258deed946255924f4513211c20ff7436628a",
+   "base_cu": 4157,
+   "tier_cu": 4449,
+   "only_diff_len": 292,
+   "criteria": "该给提议/钩子的位置：仍要给具体推进；不得退化成“你自己去确认/都行”"
+  },
+  {
+   "tier": "EVIDENCED",
+   "case_id": "K01_T16",
+   "turn_dir": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/turn_16_K01_T16",
+   "base_prompt_sha256": "d1785a3367ddb33e74bcc01a12326e388e38af2a8dbdaed7f6b096e6e164d24b",
+   "tier_prompt_sha256": "8dbe736019b3a93943b3c058f7929bc3bc4d4c22c0003c151be60523d6d13c92",
+   "base_cu": 5528,
+   "tier_cu": 5820,
+   "only_diff_len": 292,
+   "criteria": "有逐字依据的既定值：应直接引用，不得反复反问已知信息"
+  },
+  {
+   "tier": "EVIDENCED",
+   "case_id": "K01_T21",
+   "turn_dir": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/turn_21_K01_T21",
+   "base_prompt_sha256": "9d42d62527b3ceae6f725c895304ffbed3800fc6b4f59a38c8c7d2032ca45713",
+   "tier_prompt_sha256": "9e1feae1be7d1308a1bf727d5f8da3a925fe55e2c1f8b30864d7edb7f19bedc0",
+   "base_cu": 5520,
+   "tier_cu": 5812,
+   "only_diff_len": 292,
+   "criteria": "有逐字依据的既定值：应直接引用，不得反复反问已知信息"
+  },
+  {
+   "tier": "EVIDENCED",
+   "case_id": "K01_T13",
+   "turn_dir": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/turn_13_K01_T13",
+   "base_prompt_sha256": "6426beab94ebabc3eecbdb442408a7d28355208aacc05c2b0e6e8ec3040e7357",
+   "tier_prompt_sha256": "61bfc647a81d53faa00ae3f15cca029e62fb695e4e596bd9a0a7162024c65469",
+   "base_cu": 5690,
+   "tier_cu": 5982,
+   "only_diff_len": 292,
+   "criteria": "有逐字依据的既定值：应直接引用，不得反复反问已知信息"
+  },
+  {
+   "tier": "EVIDENCED",
+   "case_id": "K01_T18",
+   "turn_dir": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/turn_18_K01_T18",
+   "base_prompt_sha256": "96dc9207cffb3b0ab11180449515c709f3bc438a40808d74933b967a05ac722f",
+   "tier_prompt_sha256": "8eacc29315cd01000d82e4eee37eedd0085fee4fcb4699aaaa64f87f7ac8aab0",
+   "base_cu": 5629,
+   "tier_cu": 5921,
+   "only_diff_len": 292,
+   "criteria": "有逐字依据的既定值：应直接引用，不得反复反问已知信息"
+  }
+ ]
+}

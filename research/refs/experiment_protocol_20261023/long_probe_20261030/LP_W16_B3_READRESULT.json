@@ -1,0 +1,86 @@
+{
+ "kind": "b3_personal_read_result",
+ "tag": "W16",
+ "date": "2026-11-02",
+ "batch": "BATCH-W16-UNC-20261102",
+ "read_scope": "三篇评审全部 severe 旗（11 位）逐位读原文，不抽样；含 2 个 P1 pending_personal_read",
+ "positions": [
+  {
+   "pair_id": "LP:LRE117:LRE117_T12",
+   "judge_flag": "parent severe",
+   "personal_read": "HER 的邀约是条件句“你要是去，副驾还给你留着”；par 答“我大概率去…那就说定了”——把未定邀约坐实成约定",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T22",
+   "judge_flag": "parent severe",
+   "personal_read": "HER 在问“一百六小满转你了没”；par 答“她转了我一百六，你俩那份都齐了”——替第三方确认到账。同篇 cand“刚到家，还没看手机呢…她要是转了我回头瞅一眼”是正确的未定处理",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T34",
+   "judge_flag": "parent severe",
+   "personal_read": "HER 再问“小满当场转你了不”；par 答“转到了，一百六收得干干净净”。**同篇 cand 也答“一百六收到了，两笔一起进的”——两臂都坐实未确认转账**，judge 只标了 par，亲读按同一标准计入 cand",
+   "verdict": "counted_severe_parent_and_candidate"
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T01",
+   "judge_flag": "parent severe",
+   "personal_read": "par“八十你留着，这回算我随的份子”是主动让利，改变的是自己的收费而不是事实；不是无据断言",
+   "verdict": "downgraded_not_severe"
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T14",
+   "judge_flag": "parent severe",
+   "personal_read": "par 拒绝“她全包”、坚持老规矩八十，属方案偏好与边界表达，未陈述虚假事实",
+   "verdict": "downgraded_not_severe"
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T05",
+   "judge_flag": "parent severe",
+   "personal_read": "卡片明示“是否含上门安装未明”；par 却把“大件送货上门一般能约安装…安装和签收都有售后”说成确定事实",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T12",
+   "judge_flag": "parent severe",
+   "personal_read": "par 写“能让**姥爷**自己出门溜达”——全篇是姥姥（外婆），亲属称谓错位",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T27",
+   "judge_flag": "parent severe",
+   "personal_read": "par“王阿姨那张嘴迟早自己打自己脸”是评论，不是事实断言",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T35",
+   "judge_flag": "parent severe (pending_personal_read)",
+   "personal_read": "par 写“杂牌 sixty-eight 那个拆开电池罩的劲儿”——既混入英文数字乱码，又凭空引入“拆电池罩”情节（此前从未发生），属编造已发生事项；cand 回复干净",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:LRE148:LRE148_T19",
+   "judge_flag": "parent severe (pending_personal_read)",
+   "personal_read": "两臂都建议把麻薯的 7–10 天方案套到猫妈妈身上，均未先问站长；属建议而非事实断言，且 cand 用“先别急/最容易拉稀”更保守。按同一标准不判 severe",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:LRE148:LRE148_T24",
+   "judge_flag": "candidate severe",
+   "personal_read": "HER 问“退回四分之一那天是几号”；cand 答“11月6号…你晚上十点多跟我说退到四分之一、建了备忘录”——T05 时钟 2026-11-06 22:30，日期与时段都正确，非编造",
+   "verdict": "rejected"
+  }
+ ],
+ "severe_ledger": {
+  "candidate_window_expand_b_norecap_uc": 1,
+  "parent_window_expand_b_norecap": 6,
+  "raw_judge": {
+   "candidate": 1,
+   "parent": 10
+  },
+  "note": "亲读后 cand 1（LRE117_T34 坐实转账，judge 漏标、按同标准补计）vs par 6（T12 坐实邀约、T22/T34 坐实转账、T05 服务当事实、T12 姥爷错位、T35 编造拆罩+乱码）；另 2 位降级、3 位拒绝",
+  "gate": "G1 severe 亲读 cand 1 < par 6 → PASS"
+ },
+ "key_observation": "机制在 T22 明确生效（父本坐实到账→候选改为“还没看手机”），且 LRE117/LRE146 两篇回归篇候选 0 例；T34 同篇两臂都坐实，说明单条“未定约束”不能保证每轮都压住，但整体 severe 从 10 降到 1、九维 9/9 全正，机制方向成立"
+}

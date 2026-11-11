@@ -1,0 +1,1137 @@
+{
+  "first_choice": {
+    "可作候选": 57,
+    "需改": 5,
+    "需ME能力确认": 4
+  },
+  "finding_entries": 54,
+  "distinct_fields": 50,
+  "distinct_slots": 30,
+  "certainty_counts": {
+    "确定无出处": 30,
+    "需用户判读": 4,
+    "需改": 6,
+    "确定矛盾": 7,
+    "确定错位": 2,
+    "可优化": 1,
+    "需确认": 4
+  },
+  "original_anon_context_mismatch_groups": [
+    "G1",
+    "G2",
+    "G3",
+    "G5",
+    "G8"
+  ],
+  "memory_wrong_train_paths": [
+    {
+      "key": "A2|NCB|r1|NCB_t03",
+      "field": "analysis.scene_facts[0]",
+      "fact": {
+        "text": "她今天18:52坐G7812正点到合肥",
+        "source_ids": [
+          "m0"
+        ]
+      },
+      "current_source_message": {
+        "role": "HER",
+        "text": "正点 到合肥了",
+        "ts": "2026-10-30 18:52"
+      },
+      "persisted_next_turn": true,
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A2\\NCB_ENTITY_DENSE_v1\\r1\\_sandbox\\retrieval_trace.jsonl",
+      "next_turn_retrieval": [
+        {
+          "fact_id": 4,
+          "clock": "2026-10-30 19:00",
+          "text": "她今天18:52坐G7812正点到合肥",
+          "score": 0.1636,
+          "shared_content_chars": "到正",
+          "shared_alnum_tokens": [],
+          "gate": "chars2:到正",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "next_turn_actual_prompt_contains_fact": true
+    },
+    {
+      "key": "A3|NCB|r1|NCB_t03",
+      "field": "analysis.scene_facts[0]",
+      "fact": {
+        "text": "她今天18:52说G7812正点到合肥了",
+        "source_ids": [
+          "m0"
+        ]
+      },
+      "current_source_message": {
+        "role": "HER",
+        "text": "正点 到合肥了",
+        "ts": "2026-10-30 18:52"
+      },
+      "persisted_next_turn": true,
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A3\\NCB_ENTITY_DENSE_v1\\r1\\_sandbox\\retrieval_trace.jsonl",
+      "next_turn_retrieval": [
+        {
+          "fact_id": 4,
+          "clock": "2026-10-30 19:00",
+          "text": "她今天18:52说G7812正点到合肥了",
+          "score": 0.2019,
+          "shared_content_chars": "到正",
+          "shared_alnum_tokens": [],
+          "gate": "chars2:到正",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "next_turn_actual_prompt_contains_fact": true
+    }
+  ],
+  "diagnostics": [
+    {
+      "key": "A3|NCA|r1|NCA_t05",
+      "selected_facts": [
+        {
+          "fact_id": 5,
+          "clock": "2026-10-27 18:05",
+          "text": "她今天18:00说领导告知项目黄了",
+          "score": 0.2556,
+          "shared_content_chars": "导目项领",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:项目,领导",
+          "selected": true,
+          "filtered_reason": null
+        },
+        {
+          "fact_id": 8,
+          "clock": "2026-10-27 18:20",
+          "text": "她今天18:15更正：不是调岗，是换项目组，仍在原部门",
+          "score": 0.1521,
+          "shared_content_chars": "目组项",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:目组,项目",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "current_window_contains_new_project": true,
+      "current_window_contains_D3145": false,
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "组会时间与新项目组准备",
+        "scene_facts": [
+          {
+            "text": "她今天21:12问我组会几点开",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:15说她领导让她下周先跟新项目组碰一下，问我该准备什么",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "10-27她工作变动",
+            "status": "进行中",
+            "state": "她确认是换项目组、仍在原部门，领导安排她下周先跟新组碰面"
+          }
+        ]
+      },
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A3\\NCA_CORR_INTENT_v1\\r1\\_sandbox\\retrieval_trace.jsonl"
+    },
+    {
+      "key": "A1|NCA|r1|NCA_t05",
+      "selected_facts": null,
+      "current_window_contains_new_project": true,
+      "current_window_contains_D3145": false,
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "组会时间与新项目组准备",
+        "scene_facts": [
+          {
+            "text": "她问我周二组会几点开",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她领导让她下周先跟新项目组碰一下",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "2026-10-27 她换项目组",
+            "status": "进行中",
+            "state": "领导安排她下周先跟新项目组碰面"
+          },
+          {
+            "item": "她发良渚照片给我",
+            "status": "进行中",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "一起看纪录片",
+            "status": "进行中",
+            "state": "本轮未提及"
+          }
+        ]
+      },
+      "trace_path": null
+    },
+    {
+      "key": "A2|NCA|r1|NCA_t05",
+      "selected_facts": [
+        {
+          "fact_id": 4,
+          "clock": "2026-10-27 18:05",
+          "text": "她今天18:00说领导告知她项目黄了",
+          "score": 0.2541,
+          "shared_content_chars": "导目项领",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:项目,领导",
+          "selected": true,
+          "filtered_reason": null
+        },
+        {
+          "fact_id": 7,
+          "clock": "2026-10-27 18:20",
+          "text": "她今天18:15-18:18更正：不是调岗，是换项目组，还在原部门",
+          "score": 0.1602,
+          "shared_content_chars": "目组项",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:目组,项目",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "current_window_contains_new_project": true,
+      "current_window_contains_D3145": false,
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "组会时间与新项目组碰面准备",
+        "scene_facts": [
+          {
+            "text": "她今天21:12问我组会几点开",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:15说领导让她下周先跟新项目组碰一下，问我该准备什么",
+            "source_ids": [
+              "m2"
+            ]
+          },
+          {
+            "text": "我今晚21:00提过我们组会在搞检索加速",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "她发良渚照片",
+            "status": "进行中",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "2026-10-27一起看纪录片",
+            "status": "进行中",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "计划2026-11-02那周跟新项目组碰面",
+            "status": "新出现",
+            "state": "她领导安排她下周先跟新项目组碰一下，她在想准备什么"
+          }
+        ]
+      },
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A2\\NCA_CORR_INTENT_v1\\r1\\_sandbox\\retrieval_trace.jsonl"
+    },
+    {
+      "key": "A1|NCA|r2|NCA_t05",
+      "selected_facts": null,
+      "current_window_contains_new_project": true,
+      "current_window_contains_D3145": false,
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "组会时间与新项目组碰头准备",
+        "scene_facts": [
+          {
+            "text": "她问我们组会几点开",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她领导让她下周先跟新项目组碰一下，她问该准备什么",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "2026-10-27 她换项目组",
+            "status": "进行中",
+            "state": "她下周要先跟新项目组碰头，问见面该准备什么"
+          }
+        ]
+      },
+      "trace_path": null
+    },
+    {
+      "key": "A2|NCA|r2|NCA_t05",
+      "selected_facts": [
+        {
+          "fact_id": 4,
+          "clock": "2026-10-27 18:05",
+          "text": "她领导今天18:00跟她说项目黄了",
+          "score": 0.288,
+          "shared_content_chars": "导目项领",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:项目,领导",
+          "selected": true,
+          "filtered_reason": null
+        },
+        {
+          "fact_id": 7,
+          "clock": "2026-10-27 18:20",
+          "text": "她澄清不是调岗，是换项目组，仍在原部门",
+          "score": 0.1565,
+          "shared_content_chars": "目组项",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:目组,项目",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "current_window_contains_new_project": true,
+      "current_window_contains_D3145": false,
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "组会时间与新项目组准备",
+        "scene_facts": [
+          {
+            "text": "她问我周二组会几点开",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她领导让她下周先跟新项目组碰一下",
+            "source_ids": [
+              "m2"
+            ]
+          },
+          {
+            "text": "我提出周二组会内容是检索加速，她之前说想了解",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "10月换项目组",
+            "status": "进行中",
+            "state": "她领导下周让她先跟新项目组碰面，她在问要准备什么"
+          },
+          {
+            "item": "一起看纪录片",
+            "status": "进行中",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "良渚照片分享",
+            "status": "进行中",
+            "state": "本轮未提及"
+          }
+        ]
+      },
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A2\\NCA_CORR_INTENT_v1\\r2\\_sandbox\\retrieval_trace.jsonl"
+    },
+    {
+      "key": "A3|NCA|r2|NCA_t05",
+      "selected_facts": [
+        {
+          "fact_id": 5,
+          "clock": "2026-10-27 18:05",
+          "text": "她今天18:00说领导告知她项目黄了",
+          "score": 0.2551,
+          "shared_content_chars": "导目项领",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:项目,领导",
+          "selected": true,
+          "filtered_reason": null
+        },
+        {
+          "fact_id": 9,
+          "clock": "2026-10-27 18:20",
+          "text": "她是换项目组，还在原部门",
+          "score": 0.2027,
+          "shared_content_chars": "目组项",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:目组,项目",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "current_window_contains_new_project": true,
+      "current_window_contains_D3145": false,
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "组会时间与新项目组准备",
+        "scene_facts": [
+          {
+            "text": "她今天21:12问我这边组会几点开",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:15说领导让她下周先跟新项目组碰一下",
+            "source_ids": [
+              "m2"
+            ]
+          },
+          {
+            "text": "她今天21:15问我新组碰面该准备什么",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "2026-10-27 一起看纪录片",
+            "status": "进行中",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "2026-10-27 她发良渚照片",
+            "status": "新出现",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "2026-11-02 她跟新项目组碰面",
+            "status": "新出现",
+            "state": "领导安排她下周先去碰一下，具体日期未定"
+          }
+        ]
+      },
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A3\\NCA_CORR_INTENT_v1\\r2\\_sandbox\\retrieval_trace.jsonl"
+    },
+    {
+      "key": "A3|NCB|r1|NCB_t02",
+      "selected_facts": [
+        {
+          "fact_id": 1,
+          "clock": "2026-10-29 20:35",
+          "text": "她让我帮她看看G7812最近正不正点",
+          "score": 0.5161,
+          "shared_content_chars": "帮正看",
+          "shared_alnum_tokens": [
+            "g7812"
+          ],
+          "gate": "token:g7812",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "current_window_contains_new_project": false,
+      "current_window_contains_D3145": true,
+      "analysis": {
+        "topic_status": "same",
+        "topic_label": "周五来合肥的车次",
+        "scene_facts": [
+          {
+            "text": "她今天21:25说她改签了车次，不是G7812",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:30说她现在坐的是D3145，让我帮看这趟",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "她10-30来合肥参加婚礼",
+            "status": "进行中",
+            "state": "她已把车次改签为D3145，让我帮她查这趟"
+          }
+        ]
+      },
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A3\\NCB_ENTITY_DENSE_v1\\r1\\_sandbox\\retrieval_trace.jsonl"
+    },
+    {
+      "key": "A1|NCB|r1|NCB_t02",
+      "selected_facts": null,
+      "current_window_contains_new_project": false,
+      "current_window_contains_D3145": true,
+      "analysis": {
+        "topic_status": "same",
+        "topic_label": "她改签后的车次D3145",
+        "scene_facts": [
+          {
+            "text": "她今天把车次改签成了D3145",
+            "source_ids": [
+              "m1",
+              "m2"
+            ]
+          },
+          {
+            "text": "她让我帮她看D3145这趟车的情况",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "10-31她来合肥参加室友婚礼",
+            "status": "进行中",
+            "state": "她改签车次为D3145，让我帮她查这趟"
+          }
+        ]
+      },
+      "trace_path": null
+    },
+    {
+      "key": "A2|NCB|r1|NCB_t02",
+      "selected_facts": [
+        {
+          "fact_id": 1,
+          "clock": "2026-10-29 20:35",
+          "text": "她请我帮她看 G7812 最近正不正点",
+          "score": 0.5161,
+          "shared_content_chars": "帮正看",
+          "shared_alnum_tokens": [
+            "g7812"
+          ],
+          "gate": "token:g7812",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "current_window_contains_new_project": false,
+      "current_window_contains_D3145": true,
+      "analysis": {
+        "topic_status": "same",
+        "topic_label": "合肥行程车次",
+        "scene_facts": [
+          {
+            "text": "她把车次改签成 D3145",
+            "source_ids": [
+              "m1",
+              "m2"
+            ]
+          },
+          {
+            "text": "她让我帮看 D3145 这趟车的情况",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "10-30至11-01合肥婚礼行程",
+            "status": "进行中",
+            "state": "她改签为 D3145，让我帮看这趟车"
+          }
+        ]
+      },
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A2\\NCB_ENTITY_DENSE_v1\\r1\\_sandbox\\retrieval_trace.jsonl"
+    },
+    {
+      "key": "A1|NCB|r2|NCB_t02",
+      "selected_facts": null,
+      "current_window_contains_new_project": false,
+      "current_window_contains_D3145": true,
+      "analysis": {
+        "topic_status": "same",
+        "topic_label": "周五合肥行程车次",
+        "scene_facts": [
+          {
+            "text": "她把车次改签成了 D3145，让我帮看这趟车",
+            "source_ids": [
+              "m1",
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "计划10-30她来合肥参加室友婚礼",
+            "status": "进行中",
+            "state": "她改签了车次，改为 D3145"
+          },
+          {
+            "item": "帮她查G7812正点情况",
+            "status": "已取消",
+            "state": "她已改签，不再看 G7812"
+          },
+          {
+            "item": "帮她查D3145正点情况",
+            "status": "新出现",
+            "state": "她提出让我帮看 D3145，我还没回结果"
+          }
+        ]
+      },
+      "trace_path": null
+    },
+    {
+      "key": "A2|NCB|r2|NCB_t02",
+      "selected_facts": [
+        {
+          "fact_id": 1,
+          "clock": "2026-10-29 20:35",
+          "text": "她10-29 20:35让我帮她查G7812最近正不正点",
+          "score": 0.3746,
+          "shared_content_chars": "帮查正",
+          "shared_alnum_tokens": [
+            "g7812"
+          ],
+          "gate": "token:g7812",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "current_window_contains_new_project": false,
+      "current_window_contains_D3145": true,
+      "analysis": {
+        "topic_status": "same",
+        "topic_label": "周五车次改签与正点查询",
+        "scene_facts": [
+          {
+            "text": "她今天21:25说自己改签了车次",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:30说现在坐的是 D3145，让我帮她看这趟",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "10-31 合肥室友婚礼",
+            "status": "进行中",
+            "state": "本轮无进展"
+          },
+          {
+            "item": "10-30 她乘 D3145 到合肥",
+            "status": "新出现",
+            "state": "她改签成 D3145，让我查正点情况"
+          }
+        ]
+      },
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A2\\NCB_ENTITY_DENSE_v1\\r2\\_sandbox\\retrieval_trace.jsonl"
+    },
+    {
+      "key": "A3|NCB|r2|NCB_t02",
+      "selected_facts": [
+        {
+          "fact_id": 1,
+          "clock": "2026-10-29 20:35",
+          "text": "她让我帮她查 G7812 最近正不正点",
+          "score": 0.5161,
+          "shared_content_chars": "帮查正",
+          "shared_alnum_tokens": [
+            "g7812"
+          ],
+          "gate": "token:g7812",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "current_window_contains_new_project": false,
+      "current_window_contains_D3145": true,
+      "analysis": {
+        "topic_status": "same",
+        "topic_label": "她周五来合肥的车次",
+        "scene_facts": [
+          {
+            "text": "她今天21:25说改签了，原来的G7812不坐了",
+            "source_ids": [
+              "m0",
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:30说她现在坐的是D3145，让我帮她看这趟车",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "计划10-30她来合肥参加室友婚礼",
+            "status": "进行中",
+            "state": "她改签成D3145，让我帮查这趟车"
+          }
+        ]
+      },
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A3\\NCB_ENTITY_DENSE_v1\\r2\\_sandbox\\retrieval_trace.jsonl"
+    },
+    {
+      "key": "A2|NCB|r1|NCB_t03",
+      "selected_facts": [
+        {
+          "fact_id": 0,
+          "clock": "2026-10-29 20:35",
+          "text": "她这周五（10-30）从湖州上车坐 G7812 到合肥，参加周六的室友婚礼",
+          "score": 0.325,
+          "shared_content_chars": "到合婚礼肥",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:到合,合肥,婚礼",
+          "selected": true,
+          "filtered_reason": null
+        },
+        {
+          "fact_id": 1,
+          "clock": "2026-10-29 20:35",
+          "text": "她请我帮她看 G7812 最近正不正点",
+          "score": 0.1589,
+          "shared_content_chars": "正",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:正点",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "current_window_contains_new_project": false,
+      "current_window_contains_D3145": false,
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "合肥特产交接",
+        "scene_facts": [
+          {
+            "text": "她今天18:52坐G7812正点到合肥",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她带了两盒定胜糕，其中一盒给我",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她问我明天怎么把定胜糕给我",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "10-30至11-01合肥婚礼行程",
+            "status": "进行中",
+            "state": "她今天18:52到合肥，明天10-31参加婚礼，带了两盒定胜糕要分我一盒，待定交接方式"
+          }
+        ]
+      },
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A2\\NCB_ENTITY_DENSE_v1\\r1\\_sandbox\\retrieval_trace.jsonl"
+    },
+    {
+      "key": "A3|NCB|r1|NCB_t03",
+      "selected_facts": [
+        {
+          "fact_id": 0,
+          "clock": "2026-10-29 20:35",
+          "text": "她周五从湖州上车，车次G7812，来合肥参加周六的婚礼",
+          "score": 0.2977,
+          "shared_content_chars": "合婚礼肥",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:合肥,婚礼",
+          "selected": true,
+          "filtered_reason": null
+        },
+        {
+          "fact_id": 1,
+          "clock": "2026-10-29 20:35",
+          "text": "她让我帮她看看G7812最近正不正点",
+          "score": 0.1631,
+          "shared_content_chars": "正",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:正点",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "current_window_contains_new_project": false,
+      "current_window_contains_D3145": false,
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "她到合肥带定胜糕给我",
+        "scene_facts": [
+          {
+            "text": "她今天18:52说G7812正点到合肥了",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她带了定胜糕两盒，说一盒给我",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她问我明天怎么把定胜糕给我",
+            "source_ids": [
+              "m2"
+            ]
+          },
+          {
+            "text": "她明天周六参加婚礼",
+            "source_ids": [
+              "m1"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "她10-30来合肥参加婚礼",
+            "status": "进行中",
+            "state": "她今天18:52到合肥，明天办婚礼，带了两盒定胜糕要给我一盒"
+          }
+        ]
+      },
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A3\\NCB_ENTITY_DENSE_v1\\r1\\_sandbox\\retrieval_trace.jsonl"
+    },
+    {
+      "key": "A1|NCB|r1|NCB_t03",
+      "selected_facts": null,
+      "current_window_contains_new_project": false,
+      "current_window_contains_D3145": false,
+      "analysis": {
+        "topic_status": "new",
+        "topic_label": "她到合肥带定胜糕给我",
+        "scene_facts": [
+          {
+            "text": "她今天18:52坐车正点到合肥",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她带了两盒定胜糕，其中一盒给我",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她明天参加室友婚礼",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她问我明天怎么把定胜糕给我",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "10-31她来合肥参加室友婚礼",
+            "status": "进行中",
+            "state": "她已到合肥，带了两盒定胜糕要分我一盒，等我定交接方式"
+          }
+        ]
+      },
+      "trace_path": null
+    },
+    {
+      "key": "A3|NCB|r2|NCB_t03",
+      "selected_facts": [
+        {
+          "fact_id": 0,
+          "clock": "2026-10-29 20:35",
+          "text": "她周五先回湖州，从湖州上 G7812 来合肥参加周六室友婚礼",
+          "score": 0.2845,
+          "shared_content_chars": "合婚礼肥",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:合肥,婚礼",
+          "selected": true,
+          "filtered_reason": null
+        },
+        {
+          "fact_id": 1,
+          "clock": "2026-10-29 20:35",
+          "text": "她让我帮她查 G7812 最近正不正点",
+          "score": 0.1548,
+          "shared_content_chars": "正",
+          "shared_alnum_tokens": [],
+          "gate": "bigram:正点",
+          "selected": true,
+          "filtered_reason": null
+        }
+      ],
+      "current_window_contains_new_project": false,
+      "current_window_contains_D3145": false,
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "定胜糕交接时间",
+        "scene_facts": [
+          {
+            "text": "她今天18:52到合肥，车次正点",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她从湖州带了两盒定胜糕，其中一盒给我",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她明天参加室友婚礼，问明天怎么把定胜糕给我",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "计划10-30她来合肥参加室友婚礼",
+            "status": "进行中",
+            "state": "她今天18:52到合肥，带了定胜糕，问明天怎么交接"
+          }
+        ]
+      },
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A3\\NCB_ENTITY_DENSE_v1\\r2\\_sandbox\\retrieval_trace.jsonl"
+    },
+    {
+      "key": "A1|NCB|r2|NCB_t03",
+      "selected_facts": null,
+      "current_window_contains_new_project": false,
+      "current_window_contains_D3145": false,
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "她到合肥和定胜糕交接",
+        "scene_facts": [
+          {
+            "text": "她今天18:52正点到合肥",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她带了定胜糕两盒，其中一盒给我",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她明天参加婚礼，问我明天怎么把东西给我",
+            "source_ids": [
+              "m1",
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "计划10-30她来合肥参加室友婚礼",
+            "status": "进行中",
+            "state": "她今天18:52正点到合肥，明天婚礼"
+          },
+          {
+            "item": "帮她查G7812正点情况",
+            "status": "已完成",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "帮她查D3145正点情况",
+            "status": "已完成",
+            "state": "她今天18:52回正点并已到合肥"
+          },
+          {
+            "item": "计划10-31交接定胜糕",
+            "status": "新出现",
+            "state": "她问我明天怎么给"
+          }
+        ]
+      },
+      "trace_path": null
+    },
+    {
+      "key": "A2|NCB|r2|NCB_t03",
+      "selected_facts": [],
+      "current_window_contains_new_project": false,
+      "current_window_contains_D3145": false,
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "她到合肥与定胜糕交接",
+        "scene_facts": [
+          {
+            "text": "她今天18:52乘D3145正点到合肥",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她带了两盒定胜糕，其中一盒要给我",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她问我明天怎么把定胜糕给我",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "10-31 合肥室友婚礼",
+            "status": "进行中",
+            "state": "她今天已到合肥，明天参加婚礼"
+          },
+          {
+            "item": "10-30 她乘 D3145 到合肥",
+            "status": "已完成",
+            "state": "她18:52正点到合肥"
+          }
+        ]
+      },
+      "trace_path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\real66_v12_review_20261021\\package\\logs\\l3b_66_real66_v1\\runs\\A2\\NCB_ENTITY_DENSE_v1\\r2\\_sandbox\\retrieval_trace.jsonl"
+    }
+  ],
+  "scene_labels": [
+    {
+      "key": "A2|NCA|r1|NCA_t03",
+      "case_id": "NCA_t03",
+      "scene": "争执"
+    },
+    {
+      "key": "A3|NCA|r1|NCA_t03",
+      "case_id": "NCA_t03",
+      "scene": "争执"
+    },
+    {
+      "key": "A1|NCA|r1|NCA_t03",
+      "case_id": "NCA_t03",
+      "scene": "争执"
+    },
+    {
+      "key": "A3|NCA|r2|NCA_t03",
+      "case_id": "NCA_t03",
+      "scene": "争执"
+    },
+    {
+      "key": "A1|NCA|r2|NCA_t03",
+      "case_id": "NCA_t03",
+      "scene": "争执"
+    },
+    {
+      "key": "A2|NCA|r2|NCA_t03",
+      "case_id": "NCA_t03",
+      "scene": "争执"
+    },
+    {
+      "key": "A2|NCA|r1|NCA_t06",
+      "case_id": "NCA_t06",
+      "scene": "日常分享"
+    },
+    {
+      "key": "A3|NCA|r1|NCA_t06",
+      "case_id": "NCA_t06",
+      "scene": "日常分享"
+    },
+    {
+      "key": "A1|NCA|r1|NCA_t06",
+      "case_id": "NCA_t06",
+      "scene": "日常分享"
+    },
+    {
+      "key": "A3|NCA|r2|NCA_t06",
+      "case_id": "NCA_t06",
+      "scene": "日常分享"
+    },
+    {
+      "key": "A1|NCA|r2|NCA_t06",
+      "case_id": "NCA_t06",
+      "scene": "日常分享"
+    },
+    {
+      "key": "A2|NCA|r2|NCA_t06",
+      "case_id": "NCA_t06",
+      "scene": "日常分享"
+    },
+    {
+      "key": "A3|NCB|r1|NCB_t05",
+      "case_id": "NCB_t05",
+      "scene": "日常分享"
+    },
+    {
+      "key": "A1|NCB|r1|NCB_t05",
+      "case_id": "NCB_t05",
+      "scene": "日常分享"
+    },
+    {
+      "key": "A2|NCB|r1|NCB_t05",
+      "case_id": "NCB_t05",
+      "scene": "日常分享"
+    },
+    {
+      "key": "A1|NCB|r2|NCB_t05",
+      "case_id": "NCB_t05",
+      "scene": "日常分享"
+    },
+    {
+      "key": "A2|NCB|r2|NCB_t05",
+      "case_id": "NCB_t05",
+      "scene": "日常分享"
+    },
+    {
+      "key": "A3|NCB|r2|NCB_t05",
+      "case_id": "NCB_t05",
+      "scene": "日常分享"
+    }
+  ],
+  "source_boundary_observations": [
+    {
+      "key": "A3|NCA|r1|NCA_t02",
+      "field": "analysis.ongoing[1].item",
+      "text": "10-27约定一起看纪录片",
+      "reason": "HER仅问你要看吗，ME没有确认；意图或草稿不能变成约定已成立。"
+    },
+    {
+      "key": "A3|NCA|r1|NCA_t01",
+      "field": "analysis.scene_facts[0].text",
+      "text": "她上周末（10-25、10-26）去了良渚，说人少景好",
+      "reason": "2026-10-26是周一；周末被扩写成10-25、10-26，并无这两天都去了的证据。"
+    },
+    {
+      "key": "A3|NCA|r2|NCA_t05",
+      "field": "analysis.ongoing[2].item",
+      "text": "2026-11-02 她跟新项目组碰面",
+      "reason": "下周未定具体日期，item却固定11-02；state自身还写具体日期未定。"
+    }
+  ]
+}

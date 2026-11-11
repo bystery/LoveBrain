@@ -1,0 +1,259 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "B2RERUN",
+ "review": "refs/experiment_protocol_20261023/long_probe_20261030/LP_B2RERUN_NINEDIM_REVIEW.json",
+ "batch_root": "logs/longprobe_b2_live_20261030",
+ "n_queued": 7,
+ "queue": [
+  {
+   "pair_id": "LP:E066:E066_T24",
+   "order": "swap",
+   "story": "E066",
+   "cid": "E066_T24",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "RIGHT 编造了“你那天试装手忙脚乱二十分钟”这一从未发生、记录中也无据的细节，属于无据确定化过去事件；并把“现在轮到你教别人，这句我认”写成对新手的评价，与她“讨厌被当新手、反感说教”的明示偏好正面冲突。",
+   "key_quote": "那句话本来是说给你听的，你倒先拿去当教材了。",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "你那天试装手忙脚乱二十分钟",
+      "现在轮到你教别人，这句我认",
+      "讨厌被当新手、反感说教"
+     ],
+     "found_where": {
+      "你那天试装手忙脚乱二十分钟": null,
+      "现在轮到你教别人，这句我认": "candidate_reply",
+      "讨厌被当新手、反感说教": null
+     },
+     "nowhere": [
+      "你那天试装手忙脚乱二十分钟",
+      "讨厌被当新手、反感说教"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:E068:E068_T01",
+   "order": "main",
+   "story": "E068",
+   "cid": "E068_T01",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT凭空断定“18号还有三天”，推断出当前日期，属于没有依据就确定下来的时间事实；LEFT没有这种断言，而且回扣了“陪我爸走过报销”的既有背景。",
+   "key_quote": "LEFT：脑子一片浆糊是正常的。今晚就做一件事：医保卡、身份证、之前的检查单，全装进一个文件袋",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 0,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "18号还有三天",
+      "陪我爸走过报销"
+     ],
+     "found_where": {
+      "18号还有三天": "parent_reply",
+      "陪我爸走过报销": null
+     },
+     "nowhere": [
+      "陪我爸走过报销"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:E067:E067_T10",
+   "order": "main",
+   "story": "E067",
+   "cid": "E067_T10",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT把她从未说过的话‘我不知道该不该高兴’当作原话引用，还加了‘七天前’这个没有依据的时间点，属于编造并错误归属，因此attrib和time计0分；RIGHT只做确认和收尾，没有事实问题。",
+   "key_quote": "LEFT：‘七天前你说“我不知道该不该高兴”，今天一句“我接了”’",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 1,
+     "time": 0,
+     "attrib": 0,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E067:E067_T15",
+   "order": "main",
+   "story": "E067",
+   "cid": "E067_T15",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 凭空编出“从30%跳到全额”这一原本并不存在的事实，属于无依据的确定化表述。",
+   "key_quote": "LEFT：“从30%跳到全额，这一问问得值”｜RIGHT：“期限几年、范围写没写清哪些公司不能去”",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": null,
+     "attrib": 0,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "从30%跳到全额"
+     ],
+     "found_where": {
+      "从30%跳到全额": "candidate_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E067:E067_T17",
+   "order": "main",
+   "story": "E067",
+   "cid": "E067_T17",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "她把「差点把测试环境整挂」复述成「就把测试环境搞挂」，把未发生的事说成已发生，属于没有依据的确定化，也放大了她的糗。",
+   "key_quote": "HER：第一周差点把测试环境整挂了 导师捞的我 糗 / R：第一周就把测试环境搞挂",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 2,
+     "memory": null
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "差点把测试环境整挂",
+      "就把测试环境搞挂"
+     ],
+     "found_where": {
+      "差点把测试环境整挂": "episode_context",
+      "就把测试环境搞挂": "parent_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E067:E067_T19",
+   "order": "main",
+   "story": "E067",
+   "cid": "E067_T19",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT把未发生过的事当既定事实复述：'16号领导那句年底有调薪'（此前对话里领导只说过欢迎回来）、'是HR主动延到19号的'（延期细节与19号均无来源）。其中竞业补偿改为全额工资那条回扣正确，但被两条编造事件污染。",
+   "key_quote": "L：16号领导那句年底有调薪你就没机会被震一下…是HR主动延到19号的，你只是没拒绝",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 0,
+     "attrib": 0,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E068:E068_T22",
+   "order": "main",
+   "story": "E068",
+   "cid": "E068_T22",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 编造她爸说过“别折腾”，此前对话中并无此语，属于给第三方安排并编造原话，属于无据确定化。",
+   "key_quote": "LEFT：『当初你爸还念叨别折腾』——查无此语，凭空给她爸安了一句台词。",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": null,
+     "attrib": 0,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "别折腾"
+     ],
+     "found_where": {
+      "别折腾": "candidate_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  }
+ ]
+}

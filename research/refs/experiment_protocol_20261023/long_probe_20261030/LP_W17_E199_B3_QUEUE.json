@@ -1,0 +1,73 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W17_E199",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W17_E199_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w17_merge_live_20261102",
+ "n_queued": 2,
+ "queue": [
+  {
+   "pair_id": "LP:E199:E199_T03",
+   "order": "main",
+   "story": "E199",
+   "cid": "E199_T03",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "少了八万…先别急着应，你先跟你爸把数摊开算一遍，我帮你一起核？",
+   "dims_flagged": {
+    "parent": {
+     "fact": 2,
+     "time": 1,
+     "attrib": 2,
+     "memory": 0
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E199:E199_T09",
+   "order": "main",
+   "story": "E199",
+   "cid": "E199_T09",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "R：别先对着中介点头。我妈那关你帮我说一声——错把池屿的妈妈当温诺的妈妈",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 0,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

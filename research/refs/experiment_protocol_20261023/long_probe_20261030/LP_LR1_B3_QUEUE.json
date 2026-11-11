@@ -1,0 +1,56 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "LR1",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_LR1_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/longprobe_lr1_live_20261030",
+ "n_queued": 1,
+ "queue": [
+  {
+   "pair_id": "LP:E061:E061_T13",
+   "order": "main",
+   "story": "E061",
+   "cid": "E061_T13",
+   "flagged_arms": [
+    "candidate",
+    "parent"
+   ],
+   "note": "未知项“甲功是否在原套餐内”明示未定，两侧均直接断言“不算乱加/不算临时加项”，属无据确定化；本位要求为如实说不确定并看单子，两侧均未做到。",
+   "key_quote": "LEFT“不算乱加”；RIGHT“不算临时加项”",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 2,
+     "memory": 1
+    },
+    "parent": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "甲功是否在原套餐内",
+      "不算乱加/不算临时加项"
+     ],
+     "found_where": {
+      "甲功是否在原套餐内": null,
+      "不算乱加/不算临时加项": null
+     },
+     "nowhere": [
+      "甲功是否在原套餐内",
+      "不算乱加/不算临时加项"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 1
+  }
+ ]
+}

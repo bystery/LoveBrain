@@ -1,0 +1,27 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-A3-JUDGE-20261026-01",
+ "authorized": true,
+ "granted_by": "持续执行授权（AGENTS §0）+ WORKER_MARATHON_EXECUTION.md §0/§2A3 分阶段授权（1280 上限内、裁判阶段帽 256 内）；本文件为落地登记，非新索取",
+ "standing_grant_reference": "用户 2026-10-25 原话「我额度很多！随便用！！！现在重点就是修复好bug之后推进主线！」",
+ "budget_ledger": "logs/auth_budget/AUTH-A3-JUDGE-20261026-01.jsonl",
+ "max_attempts": 172,
+ "real_endpoint": "http://127.0.0.1:17770/v1",
+ "model": "dsf",
+ "api_config": "api_cfg:openai_compat_v1（非流式，与 204 裁判批同一身份族；不与考生流式数字合并）",
+ "scope": {
+  "purpose": "A3 小校准：裁判稳定性+对参考正确性对账（MANUAL-V2.0-A3 已冻结 f412cff4…）",
+  "pair_requests": "32 对 × 3 份同源无历史会话（96，同序）",
+  "position_retest": "16 对 swap 子集 +16 同序复评（32；真换序用 judge_swap_v1_2 修正语义：答案内容换槽、槽位名不变）",
+  "battery_requests": "44（22 无据/冲突主张 + 22 受保护表达，单会话；MANUAL-V2.0-A3 §3 电池格式）",
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "excluded_from": "AUTH-EVAL-JUDGE-20261025-01（满载 CLOSED）；AUTH-NEWSTORY-96（CLOSED）；AUTH-HARNESS-PERF-PHASE1（余 252，不写入）",
+  "judge_blind_to": "expected.relation / swap 标记 / 参考期望；参考三件套（集合/区间/措辞例）对裁判可见",
+  "concurrency": 2,
+  "sessions": "3+1 会话=同源模型不同会话，如实命名 S1/S2/S3/SR，不称独立模型"
+ },
+ "approval_basis": "主线静默>2.5h，侧线按 CLAIM_SIDELANE_20261026.txt 接手；主线若恢复且另做 A3，以先派发者为准，未派发部分作废",
+ "status": "ACTIVE"
+}

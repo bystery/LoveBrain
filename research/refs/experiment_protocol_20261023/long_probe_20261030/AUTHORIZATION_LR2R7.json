@@ -1,0 +1,45 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-LR2R7-RECALL-20261101-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30地狱级常设授权（AUTH-GLOBAL-CONTINUOUS-20261030-01）；LR2 预注册条件唤回条款触发（两臂 T25+ 窗口保持率同落 <80%，miss 亲读分类证实双臂真丢失 42-61% 同型）",
+ "phase": "W10-04_LR2_conditional_r7_recall",
+ "budget_ledger": "logs/auth_budget/AUTH-LR2R7-RECALL-20261101-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 96
+ },
+ "scope": {
+  "purpose": "LR2 预注册条件唤回：r7_supersede(lineage-full 簿记层) vs r9_slim 在 LRE060(40轮) 判 基座族 vs 簿记层——若 r7 也塌=滑窗/基座结构问题；若 r7 撑住=r9_slim 瘦身砍掉关键簿记。判据=LR2_W12_BATCH_DESIGN §1.2 + LONGPROBE_LR2_PREREGISTRATION",
+  "route": "two_arm_batch_80",
+  "total_attempts": 80,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "LR2R7": "BATCH-LONGRANGE-LR2R7-LRE060-20261101"
+  },
+  "episodes": [
+   "LRE060"
+  ],
+  "cards": "benchmark/stories_v2/wave1_ext/GRADING_CARDS_W12.json",
+  "preregistration": "refs/experiment_protocol_20261023/long_probe_20261030/LONGPROBE_LR2_PREREGISTRATION.json"
+ },
+ "frozen_bindings": {
+  "LR2R7": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/LONGPROBE_LR2R7.INTERLEAVE_PLAN.json",
+   "plan_sha256": "0b0321cecfb06189b027d9a9128f3c9ab955fd51b9f7ee28afb55547b1591e25",
+   "batch_id": "BATCH-LONGRANGE-LR2R7-LRE060-20261101",
+   "cards_file": "benchmark/stories_v2/wave1_ext/GRADING_CARDS_W12.json",
+   "attempts": 80,
+   "parent": "action_policy_r9_slim",
+   "candidate": "action_policy_r7_supersede",
+   "parent_identity_sha256": "2099c12f55337dd7dcfac0327cdd9411f7e5de2cdaa0a7083498bab6d12c9c03",
+   "candidate_identity_sha256": "17a26224b27b52deefb497b45e31f5e4eedefb18249f23dd5f3550a274ba1164"
+  }
+ }
+}

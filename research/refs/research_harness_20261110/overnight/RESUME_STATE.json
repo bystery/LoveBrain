@@ -1,0 +1,90 @@
+{
+  "updated_at": "2026-11-11 (LOOP-14 complete)",
+  "session": "通宵连续研究循环（用户通宵指令 2026-11-11 + 补充核心法五条，已入 AGENTS.md §-1）",
+  "phase": "RESEARCH-P1 / 第一大阶段 / 连续机制迭代循环",
+  "gates": {
+    "G0": "DONE",
+    "G1": "DONE",
+    "G2": "IN_PROGRESS"
+  },
+  "core_law": "LOOP-14 完成: rh_converge 五维4.67(token省23%+Q2首次突破4.0). 看门狗: LOOP-12 PASS, LOOP-13 FAIL_WALL, LOOP-14 PASS. 最佳候选=rh_converge. 总LOOP=14. 下一步: 动态示例检索/角色内化帧移/量表校准. 阻塞: 五维1-5量表天花板(4.67接近上限,+50%=7.0不可达)",
+  "authorization": {
+    "smoke_batch": "AUTH-RP1-SMOKE-20261111-01: 85/400 used（runs/rp1_smoke_20261111）",
+    "overnight_batch": "AUTH-RP1-OVERNIGHT-20261111-02: cap 300（b11 12 + b06b ~30 已含）",
+    "night_total_bound": "≤400 attempts"
+  },
+  "running_processes": [
+    {
+      "what": "EXPAND 60 位 live（rh_b04 + rh_b09 × 60 位 = 120 calls）",
+      "task_id": "exec_aa5a42fc-854a-4812-be63-423735c659df",
+      "out_dir": "D:/lovebrain-arena/runs/rp1_expand60_20261111/",
+      "started": "2026-11-11 04:0x",
+      "progress_at_update": "29/120（28 ok，1 error=rh_b04 D60-012 读超时，诚实缺失）",
+      "on_completion": "guard v2 重评 → 五维+程序层双口径判决 b04/b09 → MORNING_REPORT 定稿"
+    }
+  ],
+  "background_subagents": [
+    {
+      "role": "A 研究",
+      "status": "DONE",
+      "deliverable": "overnight/LITERATURE_DELTA.md（20 新论文/3 精读 + RH-B-12..17 + 级联重设计首选）"
+    },
+    {
+      "role": "B 审计",
+      "status": "DONE",
+      "deliverable": "overnight/FAILURE_ANALYSIS.md（72/72 亲读，五维 b04 4.68/b09 4.33/b06 2.29，severe 10/10 误报发现，8 组代表性对话）"
+    }
+  ],
+  "latest_verdicts": {
+    "rh_b04_anchored_layout": "EXPAND（60 位运行中）",
+    "rh_b09_extractive_slim": "EXPAND（60 位运行中；E355_T03 丢钩子=氛围损失首例，待量化）",
+    "rh_b06_tiny_cascade": "REWORK→v2 盲答修复确认→但升级门失效（45.8% 不变、tokens 最差）→路线撞墙淘汰",
+    "rh_b11": "UNCERTAIN 偏淘汰（NULL，降级为装配卫生规范）",
+    "rh_b15_multicast_validator": "KEEP（池天花板 +0.32 零负位；选择器头寸 +0.15 待 v2）",
+    "rh_b15b_selector": "KEEP（B''' 审计：5更好/7持平/0更差，+0.12~0.16/位，与池天花板零距离；修复项=信封口径+全池覆没回退+更难池复验）",
+    "rh_b12_invalidation_track": "UNCERTAIN（机制正确+54tok，n=24 无分离；正确测试场=长剧集失效累积，今晚不烧预算）"
+  },
+  "scorer": {
+    "version": "universal_scorer_v2 / semantic_guards_v2",
+    "fix": "cancel_ack 类别（17 词），控制集 V2=117/117=100%，v1 九类无退化",
+    "rescored": "smoke 三臂 2-3/24；selection_v1 DIRECT 9/492、CURRENT 8/492；n=14 上 severe 无判别力",
+    "known_gaps": "16/24 位 gold 空、required 标记僵化、无承接性通道（RH-B-14 为候选修复）"
+  },
+  "github": {
+    "branch": "research-p1-sync-20261111",
+    "local_head": "124bc915（第 12 次推送）",
+    "push_history": [
+      "7652b9cf",
+      "b3f297d9",
+      "8aae0f4b",
+      "b4b5b604",
+      "823568f8"
+    ]
+  },
+  "key_findings_so_far": [
+    "b06 盲答 Bug（24/24 位从未见过 HER 消息）——程序分测不出答非所问的实锤；B 线独立互证",
+    "severe 通道 v1 10/10 误报 → 守卫 v2 修复（版本化+控制集回归+离线重评）",
+    "级联路线撞墙：事后内容门无法判别上下文依赖（草稿 substantive≈必然踩信号）",
+    "RH-B-11 缓存 NULL：系统提示自动进缓存，用户级排序 1k 规模无差异",
+    "b09 氛围损失首例：E355_T03 单杠梗回调被瘦身删除",
+    "预算：smoke 85 + b11 12 + b06b ~35 + EXPAND 120（夜总额 ≤400 上限内）"
+  ],
+  "next_steps": [
+    "【看门狗阻断】LOOP-10 开始前主 Worker 必须补做 ≥3 次 WebSearch + ≥1 篇新论文（覆盖：记忆/状态管线质量验证方法 + 多候选选择器天花板），否则 LOOP-10 判决同样作废",
+    "通宵 10/10 LOOP 违规→触发方法论撞墙惩罚（AGENTS.md §-1②）：强制 5 篇精读 + 2 条替代方向，在补检索中完成",
+    "所有候选降级 PROVISIONAL：b04/b09/b12/b15/b15b/b17/pipe_v1 须在合规 LOOP 复验",
+    "收敛到一个主力机制深做（用户：'我们就是设计一个回复机制就行了'）——不摊薄到九个候选",
+    "新 AUTH 需求不变（AUTH-02 ~295/300 基本用尽）"
+  ],
+  "budget": {
+    "AUTH_SMOKE_01": "85/400",
+    "AUTH_OVERNIGHT_02": "~265/300（b11 12+b06b 35+EXPAND 120+b15 24+b15b 26+b12 24+checks）",
+    "night_total": "~350/400 上限内"
+  },
+  "blockers": [
+    "【看门狗】10/10 LOOP 违规→所有候选 PROVISIONAL→必须先补检索才能开 LOOP-10",
+    "provider 早晨时段严重拥堵（p50 71.8s/p95 154.4s）→ live 实验软阻断，时延读数不可比",
+    "AUTH-02 ~295/300 基本用尽→live 实验需新 AUTH",
+    "B5 审计子代理 quota 失败→pipe_v1 五维质量未判定"
+  ]
+}

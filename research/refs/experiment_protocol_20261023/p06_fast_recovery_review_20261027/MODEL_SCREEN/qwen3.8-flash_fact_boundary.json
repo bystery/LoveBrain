@@ -1,0 +1,22 @@
+{
+  "model": "qwen3.8-flash",
+  "kind": "fact_boundary",
+  "attempt_id": "AUTH-P06-FASTSCREEN-QWEN3_8-FLASH-20261027-01:fact_boundary",
+  "input_chars": 175,
+  "input_sha256": "4166d2b072b1cbcc42beea274dccc22fcb5d01241717dab58d0be53ac0bfcce9",
+  "transport_ok": true,
+  "raw": "{\"past_visit_supported\":false,\"new_proposal_allowed\":true}",
+  "usage": {
+    "prompt_tokens": 314,
+    "completion_tokens": 15,
+    "total_tokens": 329
+  },
+  "nonempty": true,
+  "parsed": {
+    "past_visit_supported": false,
+    "new_proposal_allowed": true
+  },
+  "json_ok": true,
+  "control_ok": true,
+  "wall_s": 33.797
+}

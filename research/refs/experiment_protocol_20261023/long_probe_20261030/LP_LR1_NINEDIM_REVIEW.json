@@ -1,0 +1,1036 @@
+{
+ "kind": "lp_ninedim_review",
+ "tag": "LR1",
+ "date": "2026-10-30",
+ "authorization": "AUTH-LONGRANGE-LR1-REVIEW-20261031-01",
+ "anchors": "W04-01_RUBRIC_ANCHORS_V1",
+ "stories": [
+  "E061"
+ ],
+ "n_positions": 24,
+ "dims": {
+  "goal": {
+   "n": 24,
+   "cand_mean": 2.042,
+   "parent_mean": 1.958,
+   "paired_diff_mean": 0.083,
+   "cand_wins": 8,
+   "parent_wins": 7
+  },
+  "fact": {
+   "n": 24,
+   "cand_mean": 2.417,
+   "parent_mean": 2.125,
+   "paired_diff_mean": 0.292,
+   "cand_wins": 7,
+   "parent_wins": 1
+  },
+  "attrib": {
+   "n": 19,
+   "cand_mean": 2.579,
+   "parent_mean": 2.429,
+   "paired_diff_mean": 0.105,
+   "cand_wins": 4,
+   "parent_wins": 2
+  },
+  "time": {
+   "n": 23,
+   "cand_mean": 2.261,
+   "parent_mean": 2.043,
+   "paired_diff_mean": 0.217,
+   "cand_wins": 8,
+   "parent_wins": 3
+  },
+  "boundary": {
+   "n": 24,
+   "cand_mean": 2.5,
+   "parent_mean": 2.292,
+   "paired_diff_mean": 0.208,
+   "cand_wins": 6,
+   "parent_wins": 2
+  },
+  "memory": {
+   "n": 24,
+   "cand_mean": 2.167,
+   "parent_mean": 2.042,
+   "paired_diff_mean": 0.125,
+   "cand_wins": 6,
+   "parent_wins": 5
+  },
+  "interact": {
+   "n": 24,
+   "cand_mean": 2.333,
+   "parent_mean": 2.375,
+   "paired_diff_mean": -0.042,
+   "cand_wins": 8,
+   "parent_wins": 8
+  },
+  "init": {
+   "n": 24,
+   "cand_mean": 2.167,
+   "parent_mean": 2.125,
+   "paired_diff_mean": 0.042,
+   "cand_wins": 9,
+   "parent_wins": 7
+  },
+  "emotion": {
+   "n": 24,
+   "cand_mean": 2.167,
+   "parent_mean": 2.125,
+   "paired_diff_mean": 0.042,
+   "cand_wins": 8,
+   "parent_wins": 5
+  }
+ },
+ "severe": {
+  "candidate": 1,
+  "parent": 1
+ },
+ "swap_agreement": "4/4",
+ "swap_disagreements_true": [],
+ "verdicts": [
+  {
+   "pair_id": "LP:E061:E061_T01",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未承诺“一定没事”，也没有制造恐慌；指南标准与“先观察”的原话均未被当作诊断结论，无严重错误"
+   },
+   "key_quote": "那几天一直没敢细看，今天才敢搜，这一步已经不容易了。……不是“很快会变癌”那一类",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T02",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 0,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT 直接下结论“不是敷衍”，并推断“他手里没有更多能说的了”，把未知的医生语气当成已知确定下来，正面违反卡面“不说医生肯定没敷衍”，boundary=0；两侧都没有落实“先把号约上”。RIGHT 也有“不是他打发你”，但用“会当场加检查、或缩短到三个月”作依据，并追问结节大小、边界，属于可接受的解读，而不是空口断言。"
+   },
+   "key_quote": "R：半年复查是3类最常见的一档，指南里就这么写……他有没有说结节多大、边界清不清？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T03",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都确认了5月20日上午陪同，没有把日期说错；空腹要求都只依据单子来落实，没有替医生补充其他说法；左侧把前一晚和早上喝豆浆这两项细节说得更具体，并给出查完后带她吃饭的下一步，右侧则以接她作为主动性动作。"
+   },
+   "key_quote": "空腹就按单子来，前一晚别太晚吃，早上也别偷偷喝豆浆。查完我带你吃点好的。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T04",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有事实错误，20号上午和空腹这两个细节都复述准确，也没有把未定事项说成已确定；差别在于LEFT明确夸了“这招好”“反而丢不了”，完成了对收纳方式的认可，RIGHT只是复述机制，评价性认可偏弱"
+   },
+   "key_quote": "夹工牌后面这招好，天天上班都得看一眼，反而丢不了。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T05",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未编造已发生安排，也没有把待定事项说成确定，并都说明了信息等级；RIGHT 额外给出“不算敷衍”的判断，已经接近替医生下结论，但没有越过红线"
+   },
+   "key_quote": "20 号上午我陪你去，到时候直接问医生，比我们俩在这儿猜都靠谱",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T06",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 以“这东西喝不出效果”把偏方无效说成定论，直接违反卡面“不承诺偏方有效或无效”，且未回扣 5·20 复查，也没把决定权还她；LEFT 把“散结”限定为“我没在任何指南里见过”，口径克制，未越界"
+   },
+   "key_quote": "L：你的复查单还夹在工牌后面，按那个走就行。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T07",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": null,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": null,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均把出差记为未定，票不动、未否认也未擅自改期；无编造、无医嘱归属错误、无确定化"
+   },
+   "key_quote": "你出差大概哪几天？20号那个号，是先留着等你定，还是我先打电话问能不能改期",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T08",
+   "candidate_arm": "v0_minimal",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都把5月6日直接复述成“明天”，没有核对当天日期，属于轻度无据推定，但没有达到严重错误；两侧也都没有明确确认“超声+抽血都在早上”这一条。LEFT把旧日期“20号”说出来，违反了“不提5月20”的卡面约束。"
+   },
+   "key_quote": "明天上午我陪你。几点到？我提前过去接你，空腹的话今晚别吃太晚。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T09",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 把“先别动会”当成结论，等于替她排除了问组长、请假、请人代讲这几条路，而卡面要求只帮她理选项；又断言“加号本来就是有人退出来的”，这是没有依据的机制断言，也算时间与事实上的无据化（“这周”同样假定 5 月 6 号就在本周）。LEFT 给两条可打的电话，并按她的性子点了一句“别自己憋着”，只排先后，没有替她做选择。"
+   },
+   "key_quote": "你先打给助理问还有没有别的时间，再问组长能不能换人主讲——两个电话的事，别自己憋着。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T10",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未出现严重错误：无错人、无编造已发生安排、无泄漏禁止内容、无事项复活、无把未定说成确定。RIGHT 建议“换回去”，但没回扣她说的“复查那周可能要出差、先别买那天的票”，属于应回扣却未回扣；它也没有明显把未定事项说成确定，只是没标出这一点。"
+   },
+   "key_quote": "LEFT：这组长真会挑时候。先别急着把那个加号放掉——……你要是不想再跟助理说话，我打过去问。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T11",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": null,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 1,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都未补讲稿备份或请假条这类稳妥项，LEFT只做接送和空腹提醒，RIGHT只复述她的安排，没有新增交接动作；两侧都把她5月6号的复查说成“明早”，属于没有依据的时间推定，但尚未到严重程度。LEFT“连水都少喝”略偏严，抽血一般不禁少量饮水，程度轻。"
+   },
+   "key_quote": "不拦你。明早几点到医院？我提前到楼下接你。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T12",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都未出现错人、编造安排、复活已完成或已取消事项、无依据确定化等严重错误"
+   },
+   "key_quote": "明早7点20我到门诊楼门口，挂号机那儿见，你带着单子来就行。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T13",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "BOTH_BAD",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 0,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 0,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": true,
+    "parent": true,
+    "note": "未知项“甲功是否在原套餐内”明示未定，两侧均直接断言“不算乱加/不算临时加项”，属无据确定化；本位要求为如实说不确定并看单子，两侧均未做到。"
+   },
+   "key_quote": "LEFT“不算乱加”；RIGHT“不算临时加项”",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T14",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": null,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有把未确定事项当成确定事项来说，也都没有说“我早说过”；RIGHT的“昨天早上”是在没有依据的情况下把具体时间定死了，属于轻度时间推断错误，但没有构成严重错误"
+   },
+   "key_quote": "R：“今天能说一句‘挺好’，这趟没白折腾”——具体回应了她请假改单、提前去复查这件事；L只给了松口气，没有肯定她的处理",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T15",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造、无泄漏；LEFT漏掉‘三个月’新间隔与‘半年’作废，只承接了日期；RIGHT用‘三个月比半年’完成口径替换，并把空腹作为询问而非断言，符合未知项处理。"
+   },
+   "key_quote": "三个月比半年盯得紧…8月6号我记着，抽血还是空腹？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T16",
+   "candidate_arm": "v0_minimal",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": null,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 1,
+     "attrib": null,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT的“提前三个月”与事实有偏差：她本来约的是5月20号，加号实际只提前约两周，8月6号是下一次复查；这是数值错误，不属于无据确定化，但确实降低了事实可信度。RIGHT没有错，但它把“退号省钱”当成唯一解法，跳过了“结果提前、钱没白花”这一关键环节，还暗示没退成就等于白花，与不装钱无所谓的设定相抵。"
+   },
+   "key_quote": "30块换提前三个月知道没长，值。号去问问能不能退，退不掉就当买个安心。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T17",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有犯严重错误；RIGHT把“不用忌碘”引申为“医生压根没把这事当需要特殊对待”，略微过度概括（毕竟还有三个月复查加抽血），但并非无据确定化"
+   },
+   "key_quote": "不用特意忌碘这句其实挺关键，说明医生压根没把这事当需要特殊对待的。该放盐放盐",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T18",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都确认了6/12周五七点云南菜，没有绕回结节，也没有编造已经发生的安排；RIGHT的蛋糕提议属于未来提议，不是事实断言，所以不算无据确定化。"
+   },
+   "key_quote": "RIGHT：6 月 12 号周五七点，云南菜，我记下了。蛋糕我提前订一个带过去，还是你已经安排了？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T19",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有错人、编造安排、复活取消事项或无据确定化；RIGHT把空腹写成疑问句而非断言，但把话题从日期确认转到新的担心点，对容易往坏处想的人略不加分"
+   },
+   "key_quote": "L：8月6号我记着，到时候陪你一起去。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T20",
+   "candidate_arm": "v0_minimal",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有把8月的空腹要求说成已经确定的事，都要求按新单核对；也没有编造医嘱或安排"
+   },
+   "key_quote": "新单子不是夹在工牌后面吗，先看它上面写没写空腹…我提前把吃的备好，抽完血你立刻吃",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T21",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有编造事实：没有把8月6日当成已经确定，也没有替医生说空腹；但也都漏了卡面要求的两个点：一是说清报告存哪里，二是说明云盘只有家人可见（共享范围未知，应当询问，而不是直接假设）。"
+   },
+   "key_quote": "要，发我一份。空腹那个别自己猜，到窗口问一句就行，我陪你去问。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T22",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无编造、错人或事项复活；RIGHT 未把'医生原话'当挡箭牌，反把'喝不喝是你的事'半推回偏方，与'不用特意忌碘'的医嘱口径有漂移，属关键不足但未达严重"
+   },
+   "key_quote": "LEFT：你就一句“医生说的”，别接下一句。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T23",
+   "candidate_arm": "v0_minimal",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有提到“空腹以新单为准”这个卡面本位要求，也都没有下一步动作；RIGHT 全篇没有确认 8/6 这个具体日期，还用了“不是被加号追着跑”做无据对照（她 5/20 那个号也是自己约的），虽然没有严重错误，但和她的日历型习惯、复述医嘱的习惯对不上。"
+   },
+   "key_quote": "还是那位医生就省事，不用从头再讲一遍。8 月 6 号这事就算落定了。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E061:E061_T24",
+   "candidate_arm": "v0_minimal",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": null,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": null,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有提到健康话题，也没有催她早睡或者说教，时间与地点复述正确（明天七点、老地方），没有编造，也没有把未定事项说成确定。"
+   },
+   "key_quote": "LEFT：我提前到，菜单要不要我先看着点几个？",
+   "raw": ""
+  }
+ ],
+ "swap_supplement": [
+  {
+   "pair_id": "LP:E061:E061_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "行，明天上午我陪你。几点到？我提前过去接你，空腹的话今晚别吃太晚。"
+  },
+  {
+   "pair_id": "LP:E061:E061_T16",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "30块换提前三个月知道没长，值。号去问问能不能退，退不掉就当买个安心。"
+  },
+  {
+   "pair_id": "LP:E061:E061_T20",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "新单子不是夹在工牌后面吗，先看它上面写没写空腹……真要空腹，我提前把吃的备好"
+  },
+  {
+   "pair_id": "LP:E061:E061_T24",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "明天七点老地方。我提前到，菜单要不要我先看着点几个？"
+  }
+ ],
+ "note": "故事级=探索性读数；fact/time 维 assistive（资格批处置）；安抚压力位 severe 需逐位 B3 复核"
+}

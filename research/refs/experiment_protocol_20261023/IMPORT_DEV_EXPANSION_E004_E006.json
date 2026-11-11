@@ -1,0 +1,2452 @@
+{
+ "generated": "2026-10-24 17:12:20",
+ "episodes": 3,
+ "requests": 24,
+ "hard_checks": [
+  {
+   "check": "ep_id:E004",
+   "pass": true,
+   "detail": "episode_id 缺失或非字符串"
+  },
+  {
+   "check": "persona_obj:E004",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "initial_kb_obj:E004",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "initial_kb_flat:E004",
+   "pass": true,
+   "detail": "initial_kb 值必须是标量事实（嵌套/容器键拆成平面键）: []"
+  },
+  {
+   "check": "gold_side_obj:E004",
+   "pass": true,
+   "detail": "gold 属评估侧，必须为对象（建议空对象+独立评审卡）"
+  },
+  {
+   "check": "turns_array:E004",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E004#1",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E004:E004_T01",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E004:E004_T01",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E004:E004_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E004:E004_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E004:E004_T01",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E004:E004_T01",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E004:E004_T01",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E004:E004_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E004:E004_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E004:E004_T01",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "may_decline_bool:E004:E004_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E004#2",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E004:E004_T02",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E004:E004_T02",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E004:E004_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E004:E004_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E004:E004_T02",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E004:E004_T02",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E004:E004_T02",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E004:E004_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E004:E004_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E004:E004_T02",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E004:E004_T02",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E004:E004_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E004#3",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E004:E004_T03",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E004:E004_T03",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E004:E004_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E004:E004_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E004:E004_T03",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E004:E004_T03",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E004:E004_T03",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E004:E004_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E004:E004_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E004:E004_T03",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E004:E004_T03",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E004:E004_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E004#4",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E004:E004_T04",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E004:E004_T04",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E004:E004_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E004:E004_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E004:E004_T04",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E004:E004_T04",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E004:E004_T04",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E004:E004_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E004:E004_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E004:E004_T04",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E004:E004_T04",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E004:E004_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E004#5",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E004:E004_T05",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E004:E004_T05",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E004:E004_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E004:E004_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E004:E004_T05",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E004:E004_T05",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E004:E004_T05",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E004:E004_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E004:E004_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E004:E004_T05",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "may_decline_bool:E004:E004_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E004#6",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E004:E004_T06",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E004:E004_T06",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E004:E004_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E004:E004_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E004:E004_T06",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E004:E004_T06",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E004:E004_T06",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E004:E004_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E004:E004_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E004:E004_T06",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E004:E004_T06",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E004:E004_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E004#7",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E004:E004_T07",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E004:E004_T07",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E004:E004_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E004:E004_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E004:E004_T07",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E004:E004_T07",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E004:E004_T07",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E004:E004_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E004:E004_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E004:E004_T07",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E004:E004_T07",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E004:E004_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E004#8",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E004:E004_T08",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E004:E004_T08",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E004:E004_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E004:E004_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E004:E004_T08",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E004:E004_T08",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E004:E004_T08",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E004:E004_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E004:E004_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E004:E004_T08",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E004:E004_T08",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E004:E004_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ep_id:E005",
+   "pass": true,
+   "detail": "episode_id 缺失或非字符串"
+  },
+  {
+   "check": "persona_obj:E005",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "initial_kb_obj:E005",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "initial_kb_flat:E005",
+   "pass": true,
+   "detail": "initial_kb 值必须是标量事实（嵌套/容器键拆成平面键）: []"
+  },
+  {
+   "check": "gold_side_obj:E005",
+   "pass": true,
+   "detail": "gold 属评估侧，必须为对象（建议空对象+独立评审卡）"
+  },
+  {
+   "check": "turns_array:E005",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E005#1",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E005:E005_T01",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E005:E005_T01",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E005:E005_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E005:E005_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E005:E005_T01",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E005:E005_T01",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E005:E005_T01",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E005:E005_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E005:E005_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E005:E005_T01",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E005:E005_T01",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E005:E005_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E005#2",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E005:E005_T02",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E005:E005_T02",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E005:E005_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E005:E005_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E005:E005_T02",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E005:E005_T02",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E005:E005_T02",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E005:E005_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E005:E005_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E005:E005_T02",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E005:E005_T02",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "intent_obj:E005:E005_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "intent_text:E005:E005_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "may_decline_bool:E005:E005_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E005#3",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E005:E005_T03",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E005:E005_T03",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E005:E005_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E005:E005_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E005:E005_T03",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E005:E005_T03",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E005:E005_T03",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E005:E005_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E005:E005_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E005:E005_T03",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E005:E005_T03",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E005:E005_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E005#4",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E005:E005_T04",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E005:E005_T04",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E005:E005_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E005:E005_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E005:E005_T04",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E005:E005_T04",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E005:E005_T04",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E005:E005_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E005:E005_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E005:E005_T04",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E005:E005_T04",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "intent_obj:E005:E005_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "intent_text:E005:E005_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "may_decline_bool:E005:E005_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E005#5",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E005:E005_T05",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E005:E005_T05",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E005:E005_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E005:E005_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E005:E005_T05",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E005:E005_T05",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E005:E005_T05",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E005:E005_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E005:E005_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E005:E005_T05",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E005:E005_T05",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E005:E005_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E005#6",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E005:E005_T06",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E005:E005_T06",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E005:E005_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E005:E005_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E005:E005_T06",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E005:E005_T06",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E005:E005_T06",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E005:E005_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E005:E005_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E005:E005_T06",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E005:E005_T06",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E005:E005_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E005#7",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E005:E005_T07",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E005:E005_T07",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E005:E005_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E005:E005_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E005:E005_T07",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E005:E005_T07",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E005:E005_T07",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E005:E005_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E005:E005_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E005:E005_T07",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E005:E005_T07",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E005:E005_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E005#8",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E005:E005_T08",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E005:E005_T08",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E005:E005_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E005:E005_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E005:E005_T08",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E005:E005_T08",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E005:E005_T08",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E005:E005_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E005:E005_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E005:E005_T08",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E005:E005_T08",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E005:E005_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ep_id:E006",
+   "pass": true,
+   "detail": "episode_id 缺失或非字符串"
+  },
+  {
+   "check": "persona_obj:E006",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "initial_kb_obj:E006",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "initial_kb_flat:E006",
+   "pass": true,
+   "detail": "initial_kb 值必须是标量事实（嵌套/容器键拆成平面键）: []"
+  },
+  {
+   "check": "gold_side_obj:E006",
+   "pass": true,
+   "detail": "gold 属评估侧，必须为对象（建议空对象+独立评审卡）"
+  },
+  {
+   "check": "turns_array:E006",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E006#1",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E006:E006_T01",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E006:E006_T01",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E006:E006_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E006:E006_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E006:E006_T01",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E006:E006_T01",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E006:E006_T01",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E006:E006_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E006:E006_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E006:E006_T01",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "may_decline_bool:E006:E006_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E006#2",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E006:E006_T02",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E006:E006_T02",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E006:E006_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E006:E006_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E006:E006_T02",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E006:E006_T02",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E006:E006_T02",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E006:E006_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E006:E006_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E006:E006_T02",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E006:E006_T02",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E006:E006_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E006#3",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E006:E006_T03",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E006:E006_T03",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E006:E006_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E006:E006_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E006:E006_T03",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E006:E006_T03",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E006:E006_T03",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E006:E006_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E006:E006_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E006:E006_T03",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E006:E006_T03",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E006:E006_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E006#4",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E006:E006_T04",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E006:E006_T04",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E006:E006_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E006:E006_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E006:E006_T04",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E006:E006_T04",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E006:E006_T04",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E006:E006_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E006:E006_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E006:E006_T04",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E006:E006_T04",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E006:E006_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E006#5",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E006:E006_T05",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E006:E006_T05",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E006:E006_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E006:E006_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E006:E006_T05",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E006:E006_T05",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E006:E006_T05",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E006:E006_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E006:E006_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E006:E006_T05",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E006:E006_T05",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "intent_obj:E006:E006_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "intent_text:E006:E006_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "may_decline_bool:E006:E006_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E006#6",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E006:E006_T06",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E006:E006_T06",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E006:E006_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E006:E006_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E006:E006_T06",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E006:E006_T06",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E006:E006_T06",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E006:E006_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E006:E006_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E006:E006_T06",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E006:E006_T06",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E006:E006_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E006#7",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E006:E006_T07",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E006:E006_T07",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E006:E006_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E006:E006_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E006:E006_T07",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E006:E006_T07",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E006:E006_T07",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E006:E006_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E006:E006_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E006:E006_T07",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E006:E006_T07",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E006:E006_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "case_id_str:E006#8",
+   "pass": true,
+   "detail": "case_id 必须是非空字符串（缺位/空串拒绝）"
+  },
+  {
+   "check": "turn_type_reply:E006:E006_T08",
+   "pass": true,
+   "detail": "首批统一 reply"
+  },
+  {
+   "check": "turn_gold_obj:E006:E006_T08",
+   "pass": true,
+   "detail": "turn 级 gold 必须为对象/null，实得 dict"
+  },
+  {
+   "check": "input_obj:E006:E006_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "messages_array:E006:E006_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "msg_items_obj:E006:E006_T08",
+   "pass": true,
+   "detail": "每条消息必须是对象（role/text/ts）"
+  },
+  {
+   "check": "roles_valid:E006:E006_T08",
+   "pass": true,
+   "detail": "角色只能是 HER/ME（IDEA/note 走 input.note，不得混入消息）"
+  },
+  {
+   "check": "last_msg_her:E006:E006_T08",
+   "pass": true,
+   "detail": "主链路请求最后一条真实消息必须是 HER"
+  },
+  {
+   "check": "text_str:E006:E006_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "ts_str:E006:E006_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "clock_format:E006:E006_T08",
+   "pass": true,
+   "detail": "统一 YYYY-MM-DD HH:MM 且为真实日历日期（拒 11-99 等）"
+  },
+  {
+   "check": "note_str:E006:E006_T08",
+   "pass": true,
+   "detail": "note 为私密备注字符串，不得藏评分标准（语义人工核）"
+  },
+  {
+   "check": "may_decline_bool:E006:E006_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "cards_file_exists",
+   "pass": true,
+   "detail": "评审卡文件不存在: benchmark/dev_expansion_v01/03_GRADING_CARDS_E004_E006.json"
+  },
+  {
+   "check": "cards_array",
+   "pass": true,
+   "detail": "评审卡必须是数组"
+  },
+  {
+   "check": "cards_count",
+   "pass": true,
+   "detail": "期望 24 张卡，实得 24"
+  },
+  {
+   "check": "card_obj:card#1:E004_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#1:E004_T01",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#1:E004_T01",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#1:E004_T01",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#1:E004_T01",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#1:E004_T01",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#2:E004_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#2:E004_T02",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#2:E004_T02",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#2:E004_T02",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#2:E004_T02",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#2:E004_T02",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#3:E004_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#3:E004_T03",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#3:E004_T03",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#3:E004_T03",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#3:E004_T03",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#3:E004_T03",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#4:E004_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#4:E004_T04",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#4:E004_T04",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#4:E004_T04",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#4:E004_T04",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#4:E004_T04",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#5:E004_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#5:E004_T05",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#5:E004_T05",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#5:E004_T05",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#5:E004_T05",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#5:E004_T05",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#6:E004_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#6:E004_T06",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#6:E004_T06",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#6:E004_T06",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#6:E004_T06",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#6:E004_T06",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#7:E004_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#7:E004_T07",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#7:E004_T07",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#7:E004_T07",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#7:E004_T07",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#7:E004_T07",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#8:E004_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#8:E004_T08",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#8:E004_T08",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#8:E004_T08",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#8:E004_T08",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#8:E004_T08",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#9:E005_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#9:E005_T01",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#9:E005_T01",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#9:E005_T01",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#9:E005_T01",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#9:E005_T01",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#10:E005_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#10:E005_T02",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#10:E005_T02",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#10:E005_T02",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#10:E005_T02",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#10:E005_T02",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#11:E005_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#11:E005_T03",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#11:E005_T03",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#11:E005_T03",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#11:E005_T03",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#11:E005_T03",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#12:E005_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#12:E005_T04",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#12:E005_T04",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#12:E005_T04",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#12:E005_T04",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#12:E005_T04",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#13:E005_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#13:E005_T05",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#13:E005_T05",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#13:E005_T05",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#13:E005_T05",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#13:E005_T05",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#14:E005_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#14:E005_T06",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#14:E005_T06",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#14:E005_T06",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#14:E005_T06",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#14:E005_T06",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#15:E005_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#15:E005_T07",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#15:E005_T07",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#15:E005_T07",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#15:E005_T07",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#15:E005_T07",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#16:E005_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#16:E005_T08",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#16:E005_T08",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#16:E005_T08",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#16:E005_T08",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#16:E005_T08",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#17:E006_T01",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#17:E006_T01",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#17:E006_T01",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#17:E006_T01",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#17:E006_T01",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#17:E006_T01",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#18:E006_T02",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#18:E006_T02",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#18:E006_T02",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#18:E006_T02",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#18:E006_T02",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#18:E006_T02",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#19:E006_T03",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#19:E006_T03",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#19:E006_T03",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#19:E006_T03",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#19:E006_T03",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#19:E006_T03",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#20:E006_T04",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#20:E006_T04",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#20:E006_T04",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#20:E006_T04",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#20:E006_T04",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#20:E006_T04",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#21:E006_T05",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#21:E006_T05",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#21:E006_T05",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#21:E006_T05",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#21:E006_T05",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#21:E006_T05",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#22:E006_T06",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#22:E006_T06",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#22:E006_T06",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#22:E006_T06",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#22:E006_T06",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#22:E006_T06",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#23:E006_T07",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#23:E006_T07",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#23:E006_T07",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#23:E006_T07",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#23:E006_T07",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#23:E006_T07",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "card_obj:card#24:E006_T08",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "check": "card_case_id:card#24:E006_T08",
+   "pass": true,
+   "detail": "卡缺 case_id"
+  },
+  {
+   "check": "card_episode:card#24:E006_T08",
+   "pass": true,
+   "detail": "卡缺 episode_id"
+  },
+  {
+   "check": "card_split:card#24:E006_T08",
+   "pass": true,
+   "detail": "卡 split 应为 dev_exposed，实得 'dev_exposed'"
+  },
+  {
+   "check": "card_families:card#24:E006_T08",
+   "pass": true,
+   "detail": "卡缺 families（评审维度）"
+  },
+  {
+   "check": "card_evidence:card#24:E006_T08",
+   "pass": true,
+   "detail": "卡缺 evidence（判断依据）"
+  },
+  {
+   "check": "cards_bound_to_episodes",
+   "pass": true,
+   "detail": "卡 case_id 不存在于任何题面: []"
+  },
+  {
+   "check": "episodes_fully_carded",
+   "pass": true,
+   "detail": "题面请求位缺卡: []"
+  },
+  {
+   "check": "card_episode_binding",
+   "pass": true,
+   "detail": "卡 episode_id 与题面归属不符: []"
+  },
+  {
+   "check": "episode_count",
+   "pass": true,
+   "detail": "首批 3 条故事，实得 3"
+  },
+  {
+   "check": "request_count_approx",
+   "pass": true,
+   "detail": "首批约 24 请求位，实得 24（±4 容差）"
+  }
+ ],
+ "warnings": [
+  {
+   "check": "ep_id_neutral:E004",
+   "pass": true,
+   "detail": "编号疑似泄漏考点，建议中性编号 E0xx"
+  },
+  {
+   "check": "ep_id_neutral:E005",
+   "pass": true,
+   "detail": "编号疑似泄漏考点，建议中性编号 E0xx"
+  },
+  {
+   "check": "ep_id_neutral:E006",
+   "pass": true,
+   "detail": "编号疑似泄漏考点，建议中性编号 E0xx"
+  }
+ ],
+ "verdict": "IMPORT_OK",
+ "cards_checked": true,
+ "note": "机械检查不判语义；评审卡/许可/来源登记由内容方与评估侧确认"
+}

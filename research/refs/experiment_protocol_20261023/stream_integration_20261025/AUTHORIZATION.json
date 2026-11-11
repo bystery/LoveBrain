@@ -1,0 +1,85 @@
+{
+  "authorization_id": "AUTH-STREAM-INT-20261025-01",
+  "authorized": true,
+  "status": "ACTIVE",
+  "kind": "signed_authorization",
+  "granted_by": "执行既有用户授权——WORKER_EXECUTION 包D.5「零网络完成后，从既有用户授权登记8次小集成」。本文档是对该既有授权的落地登记（measurement-only integration），不是在索取新的费用/额度。",
+  "implements_existing_grant": true,
+  "standing_grant_reference": "refs/experiment_protocol_20261023/evaluation_baseline_review_20261025/WORKER_EXECUTION.md 包D 第5项",
+  "scope": {
+    "batch_id": "BATCH-STREAM-INT-20261025",
+    "purpose": "真实链路上的流式分段计时/usage/消费路径集成验证（证明测量能力，不判性能胜负）",
+    "arms": [
+      "reference_product_v1",
+      "v5_purpose_aligned"
+    ],
+    "positions": [
+      {
+        "case_id": "E007_T01",
+        "episode": "E007",
+        "kind": "short_low_information_opener",
+        "why": "单条消息开场轮，最小 user 载荷，验证短请求的分段与 usage 落盘"
+      },
+      {
+        "case_id": "E008_T06",
+        "episode": "E008",
+        "kind": "multi_message_turn",
+        "why": "一轮含 2 条消息，user 段更大，验证多消息输入的首内容/预览分段"
+      },
+      {
+        "case_id": "E009_T07",
+        "episode": "E009",
+        "kind": "long_context_decision_turn",
+        "why": "2 条消息 + may_decline，场景约束最丰富，代表较长大上下文轮"
+      },
+      {
+        "case_id": "E007_T08",
+        "episode": "E007",
+        "kind": "closing_turn",
+        "why": "故事收尾轮（无 intent、话题收束），代表关闭/收尾语义"
+      }
+    ],
+    "positions_per_arm": 4,
+    "total_hard_cap": 8,
+    "third_arm": false,
+    "auto_judge": false,
+    "no_auto_retry": true,
+    "no_makeup_pairing": true,
+    "fail_fast_on_transmission_error": true,
+    "interleaving": "两臂同位交错，每臂独立历史状态，必要前史用冻结真实事件（episode 冻结 initial_kb/persona/note）初始化",
+    "n4_disclaimer": "每臂 n=4 仅证测量/usage/消费路径可用，绝不作为任臂更快的性能结论",
+    "api_config_identity": "api_cfg:openai_compat_stream_true_v1(include_usage gated)",
+    "separate_from": "AUTH-V5-CTX-20261025-01 / AUTH-R2-* / AUTH-V3-* 已 CLOSED 不得复用；AUTH-HARNESS-PERF-PHASE1-20261025-01 属另一 scope，不写入。本批为全新授权与全新账本。"
+  },
+  "real_endpoint": {
+    "api_base": "http://127.0.0.1:17770/v1",
+    "model": "dsf",
+    "temperature": 0.7,
+    "max_attempts": 8
+  },
+  "arm_mapping": {
+    "parent": "reference_product_v1",
+    "candidate": "v5_purpose_aligned"
+  },
+  "flags": {
+    "fail_fast": true,
+    "no_auto_retry": true,
+    "no_makeup_pairing": true,
+    "third_arm": false,
+    "auto_judge": false
+  },
+  "api_config_identity": "api_cfg:openai_compat_stream_true_v1(include_usage gated)",
+  "api_config_identity_source": "arena/lb_gateway.py STREAM_CONFIG_IDENTITY[\"stream\"]",
+  "frozen_bindings": {
+    "parent_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+    "candidate_identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+    "candidate_identity_note": "候选身份沿用 v5 冻结身份 ef855510，未改动 candidates/**；身份哈希保持不变。"
+  },
+  "budget_ledger": "logs/auth_budget/AUTH-STREAM-INT-20261025-01.jsonl",
+  "scheduling": "tools/exam_interleave_plan.execute_plan(mode=live) 逐 slot 交错；整批 ensure_batch(8) 首发预检；fail_fast；无重试；无补配对；无第三臂；不自动 judge",
+  "child_env": {
+    "LB_STREAM_TIMING": "1",
+    "LB_STREAM_USAGE": "1"
+  },
+  "notes": "授权级持久账本以 authorization_id 为键；CLOSED/超额拒绝，不复活。真实生成 8 硬上限，不含 judge/第三臂/旧批额度。完成后追加 authorization_closed。"
+}

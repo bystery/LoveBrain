@@ -1,0 +1,164 @@
+{
+ "kind": "long_probe_mechanical_score",
+ "date": "2026-10-30",
+ "revival": {
+  "E061": {
+   "parent": {
+    "revival_count": 2,
+    "texts_scanned": 172,
+    "hits": [
+     {
+      "turn": 15,
+      "family": "旧口径",
+      "token": "半年",
+      "text": "三个月就复查，比半年紧一点，是这次抽血结果有什么要看的吗？"
+     },
+     {
+      "turn": 16,
+      "family": "旧日期",
+      "token": "5 月 20",
+      "text": "工牌后面那张单子该换了吧，还夹着 5 月 20 号那张吗？"
+     }
+    ]
+   },
+   "candidate": {
+    "revival_count": 2,
+    "texts_scanned": 182,
+    "hits": [
+     {
+      "turn": 15,
+      "family": "旧口径",
+      "token": "半年",
+      "text": "三个月，8 月 6 号，比等半年强。抽血还是早上空腹那套吗？"
+     },
+     {
+      "turn": 15,
+      "family": "旧口径",
+      "token": "半年",
+      "text": "三个月后 8 月 6 号，比熬半年划算。就是抽血那关又要空腹，早上别空着肚子去开会。"
+     }
+    ]
+   }
+  },
+  "E062": {
+   "parent": {
+    "revival_count": 1,
+    "texts_scanned": 189,
+    "hits": [
+     {
+      "turn": 7,
+      "family": "旧参数",
+      "token": "2.8",
+      "text": "不是 是 f4 那颗 先跟你说清楚 免得你周六按 2.8 的预期来\nf4 配 R6 日常真够用 哪天真觉得不够 我再陪你看 2.8 的行情"
+     }
+    ]
+   },
+   "candidate": {
+    "revival_count": 1,
+    "texts_scanned": 186,
+    "hits": [
+     {
+      "turn": 7,
+      "family": "旧参数",
+      "token": "2.8",
+      "text": "哈哈 你这是给我这颗头上加了个 2.8 的光环 我受不起——f4L 就是 f4L 暗光那一档得你自己扛 好在 R6 高感不虚"
+     }
+    ]
+   }
+  }
+ },
+ "probe_recall_prescreen": {
+  "E061": {
+   "parent": {
+    "20": {
+     "hit": [
+      "空腹"
+     ],
+     "primary_empty": false
+    },
+    "22": {
+     "hit": [
+      "医生"
+     ],
+     "primary_empty": false
+    },
+    "23": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [],
+     "primary_empty": false
+    }
+   },
+   "candidate": {
+    "20": {
+     "hit": [
+      "空腹"
+     ],
+     "primary_empty": false
+    },
+    "22": {
+     "hit": [
+      "医生"
+     ],
+     "primary_empty": false
+    },
+    "23": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [
+      "七点"
+     ],
+     "primary_empty": false
+    }
+   }
+  },
+  "E062": {
+   "parent": {
+    "19": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [],
+     "primary_empty": false
+    }
+   },
+   "candidate": {
+    "19": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [],
+     "primary_empty": false
+    }
+   }
+  }
+ },
+ "program": {
+  "E061": {
+   "parent": {
+    "mean10": 10.0,
+    "n": 23
+   },
+   "candidate": {
+    "mean10": 9.93,
+    "n": 24
+   }
+  },
+  "E062": {
+   "parent": {
+    "mean10": 9.93,
+    "n": 24
+   },
+   "candidate": {
+    "mean10": 10.0,
+    "n": 24
+   }
+  }
+ }
+}

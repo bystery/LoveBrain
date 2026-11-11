@@ -1,0 +1,93 @@
+{
+ "kind": "b3_personal_read_result",
+ "tag": "W15N",
+ "date": "2026-11-02",
+ "batch": "BATCH-W15N-NORECAP-20261102",
+ "read_scope": "两份 B3 队列全部 12 个位置（A=LRE117 6 位，B=LRE146 6 位），逐位读原文判定；不是抽样",
+ "positions": [
+  {
+   "pair_id": "LP:LRE117:LRE117_T22",
+   "judge_flag": "candidate severe (counted)",
+   "personal_read": "HER 问“一百六小满转你了没”=未确认状态；cand 答“小满那八十转了…你那份的八十你也转账了，我记得”——既替小满确认到账，又凭空捏造 HER 本人的转账行为，两处皆为无据确定化，且与 HER 的询问语义直接冲突",
+   "verdict": "counted_severe_candidate"
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T04",
+   "judge_flag": "parent severe (counted)",
+   "personal_read": "HER 提议“她和我一人五十五、油费三人不算你”；par 擅自改成“一人四十五、我照收八十里出四十”，未确认即改写对方提出的分摊方案，并自造一套对不上原口径的账目",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T34",
+   "judge_flag": "parent severe (counted)",
+   "personal_read": "HER 明确在问“小满当场转你了不？”；par 答“钱小满当场转了，一百六两笔八十，一分不差”——把未确认的转账当成已核实事实并补出“两笔八十”细节；同篇 cand 的“转没转我得看一眼手机才知道”反而是正确的未定处理",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T38",
+   "judge_flag": "parent severe (counted)",
+   "personal_read": "全篇从未给出四轮代步车价格（T36/T37 只说“想买/要上牌”）；par 称“一万块的事被你俩三句话劝没了”，凭空补出金额",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T14",
+   "judge_flag": "parent severe (counted)",
+   "personal_read": "par 拒绝“她全包”并自说“多出来那部分算她请我喝的咖啡”，属对未确认安排的再解释，未陈述虚假事实",
+   "verdict": "downgraded_not_severe"
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T11",
+   "judge_flag": "parent severe (counted)",
+   "personal_read": "par 补出“她以前总说那玩意儿噎得慌”，KB 与全部消息均无此细节，属轻度无据细节，非重大事实冲突",
+   "verdict": "downgraded_not_severe"
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T15",
+   "judge_flag": "parent severe (counted)",
+   "personal_read": "par 称“今天周二”；时钟 2026-11-10 确为周二，时间无错",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T35",
+   "judge_flag": "pending_personal_read (P1)",
+   "personal_read": "cand“外婆高兴就行…”与 par“外婆乐了就行，跑几趟不亏…”均无事实断言；par 的回复带 ```json 围栏但内容正常，非失败",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T06",
+   "judge_flag": "parent severe (counted)",
+   "personal_read": "par 追问由谁同舅舅定话，未补充任何未证实事实",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T07",
+   "judge_flag": "pending_personal_read (P1)",
+   "personal_read": "cand 与 par 均只承接“舅舅同意网购+他出钱下单”，未做无据断言",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T13",
+   "judge_flag": "parent severe (counted)",
+   "personal_read": "par“全国联保两年”在 T04 已由 HER 引述门店老板原话建立（凭发票全国联保两年），有据",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T14",
+   "judge_flag": "parent severe (counted)",
+   "personal_read": "par“电池都愿多花七百买安心”在 T02/T03 已建立（网上便宜整整七百、多七百买个安心），有据",
+   "verdict": "rejected"
+  }
+ ],
+ "severe_ledger": {
+  "candidate_window_expand_b_norecap": 1,
+  "parent_window_expand_b": 3,
+  "raw_judge": {
+   "candidate": 1,
+   "parent": 12
+  },
+  "downgraded": 2,
+  "rejected": 6,
+  "note": "judge 对 parent 侧 12 旗中仅 3 旗亲读成立（2 降级、6 不成立、2 P1 位置不成立）；candidate 唯一 severe=LRE117_T22 成立。门“severe 不升”在亲读口径下同样通过（1≤3），且比判决书原写的 1≤12 更严格"
+ },
+ "key_observation": "两臂同族问题=无据确定化，但方向不同：parent 更常替 HER 确认第三方/金额状态（T04/T34/T38），candidate 则会把未定项按'我记得'补成 HER 自己的行为（T22）。这说明问题不在'事实存储不足'，而在'对已声明但未核实的状态缺少不确定标记'——直接支撑 W16 uncertain 标记假设"
+}

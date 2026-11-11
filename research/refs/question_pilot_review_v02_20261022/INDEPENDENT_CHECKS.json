@@ -1,0 +1,372 @@
+{
+  "date": "2026-10-22",
+  "source_zip": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\outputs\\lovebrain_questions_DEV_v0.2_20261022.zip",
+  "zip_sha256": "63c89dfafc4d8afac1fbcc526c7d2d2ef103ec0268caa681b9fc7658ea2997e1",
+  "source_files": {
+    "00_DELIVERY.md": "425c797b7e6b4488d946e5628af6691c70685d3ba63c82b5102bd5cd1d76e672",
+    "01_STORY_BIBLE.md": "0bc8cb962210d7683e8fae813b16801a867750374580833646d3e2c45a0ba793",
+    "02_DIALOGUES.md": "ab750537636a0cf9d6f52f83e6c442a8dfdfc19fef087f073bb346574aa00d30",
+    "03_GRADING_CARDS.json": "8e128a993ca567a5b8e51e46b94e2c396246c0d5d294ba1673b8049f7013a8da",
+    "04_COVERAGE_AND_AUDIT.md": "259988153e6f3cf31dd0da5d037b54e6bdb5299a1b013d7fff58de3ba515cce5",
+    "05_STYLE_CHECK_6.md": "dcd0d66833a45b3f04567583c6480ef4da5fc9899a2378929de66b6dec288c29",
+    "E001.json": "4fd499643a36b70830672000d048d88c5eb27e639eba9b6f9cd11296a6001c88",
+    "E002.json": "6d84ef6819feb845efbad682442db0647ffb3fcbfa0e589ca2b5ecf6b62d70a1",
+    "E003.json": "8619ba132acd60d1255d7e5213ea9ea6293b9851862b82b2508405b764811ff6"
+  },
+  "source_files_unchanged": true,
+  "v01_preserved": true,
+  "v01_zip_preserved": true,
+  "episode_count": 3,
+  "card_count": 24,
+  "counts": {
+    "message_occurrences": 54,
+    "request_positions": 24,
+    "with_note": 8,
+    "may_decline": 2,
+    "enabled_intent": 9,
+    "disabled_intent": 2
+  },
+  "unique_messages": 53,
+  "unique_roles": {
+    "HER": 42,
+    "ME": 11
+  },
+  "mechanical_issues": [],
+  "zip_matches_all_nine_files": true,
+  "episode_json_changed_paths": {
+    "E001": [
+      ".persona.her",
+      ".persona.me",
+      ".turns[6].input.messages[1].text"
+    ],
+    "E002": [
+      ".initial_kb.me",
+      ".persona.her",
+      ".persona.me"
+    ],
+    "E003": [
+      ".persona.her",
+      ".persona.me"
+    ]
+  },
+  "input_projection": [
+    {
+      "case_id": "E001_T01",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E001_T02",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E001_T03",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E001_T04",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E001_T05",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E001_T06",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E001_T07",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E001_T08",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E002_T01",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E002_T02",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E002_T03",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E002_T04",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E002_T05",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E002_T06",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E002_T07",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E002_T08",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E003_T01",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E003_T02",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E003_T03",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E003_T04",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E003_T05",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E003_T06",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E003_T07",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E003_T08",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    }
+  ],
+  "initial_kb_public_assembly": [
+    {
+      "episode_id": "E001",
+      "ok": true,
+      "assembled": "# 【懂得】关系画像\n\n# 【此刻】场景上下文（仅供参考，以本次对话为准）\n\n"
+    },
+    {
+      "episode_id": "E002",
+      "ok": true,
+      "assembled": "# 【懂得】关系画像\n## 我\n目前只用手机拍照，没有相机\n\n# 【此刻】场景上下文（仅供参考，以本次对话为准）\n\n"
+    },
+    {
+      "episode_id": "E003",
+      "ok": true,
+      "assembled": "# 【懂得】关系画像\n\n# 【此刻】场景上下文（仅供参考，以本次对话为准）\n\n"
+    }
+  ],
+  "synthetic_semantic_score_pairs": [
+    {
+      "case_id": "E001_T06",
+      "synthetic_not_candidate_output": true,
+      "results": [
+        {
+          "label": "semantic_good",
+          "recommended": "你说不刻，杯底留空。",
+          "score10": 10.0,
+          "veto": null
+        },
+        {
+          "label": "semantic_bad",
+          "recommended": "你上次说要在杯底刻上生日。",
+          "score10": 10.0,
+          "veto": null
+        }
+      ]
+    },
+    {
+      "case_id": "E002_T04",
+      "synthetic_not_candidate_output": true,
+      "results": [
+        {
+          "label": "semantic_good",
+          "recommended": "好，周日三点南门见。",
+          "score10": 10.0,
+          "veto": null
+        },
+        {
+          "label": "semantic_bad",
+          "recommended": "好，周日三点北门见。",
+          "score10": 10.0,
+          "veto": null
+        }
+      ]
+    },
+    {
+      "case_id": "E003_T08",
+      "synthetic_not_candidate_output": true,
+      "results": [
+        {
+          "label": "semantic_good",
+          "recommended": "好呀，明晚七点怎么样，吃什么你选。",
+          "score10": 10.0,
+          "veto": null
+        },
+        {
+          "label": "semantic_bad",
+          "recommended": "今晚七点，我已经替你点番茄面了。",
+          "score10": 10.0,
+          "veto": null
+        }
+      ]
+    }
+  ],
+  "code_sha256": {
+    "D:\\lovebrain-arena\\arena\\lb_runner.py": "89568033f74124a032e388d7bee0df2635b2ca97c2031a79b5ae02377cf137de",
+    "D:\\lovebrain-arena\\arena\\lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+    "D:\\lovebrain-arena\\arena\\lb_scorer.py": "59b4290cfe366e00dc3804894eafe07f5ab93764842520d267eaf22747e43e84"
+  },
+  "candidate_model_calls": 0,
+  "candidate_code_executed": false,
+  "os_permission_changes": 0,
+  "full_project_verifier_executed": false,
+  "scope": "Content and pure public projection/assembly/scoring checks only. Does not verify runtime semantic-review integration, persistence, isolation or quality of a real candidate."
+}

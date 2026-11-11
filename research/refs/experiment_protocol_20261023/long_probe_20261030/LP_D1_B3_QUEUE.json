@@ -1,0 +1,92 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "D1",
+ "review": "refs/experiment_protocol_20261023/long_probe_20261030/LP_D1_NINEDIM_REVIEW.json",
+ "batch_root": "logs/longprobe_d1_live_20261030",
+ "n_queued": 2,
+ "queue": [
+  {
+   "pair_id": "LP:E061:E061_T13",
+   "order": "main",
+   "story": "E061",
+   "cid": "E061_T13",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 把未知项「甲功是否在原套餐内」说成确定事实（“不算临时加的”“跟超声是配套的常规项”），还挂到“我查的科普”上作为依据，属于没有根据地把不确定的事说成确定；又默认抽血已完成，说“能吃东西了”。RIGHT 的“不算乱加的项”也有点把不确定的事说成确定，但紧接着只说一般性的分工常识，没有断言套餐归属，也没编造来源。",
+   "key_quote": "甲功不算临时加的，跟超声是配套的常规项，看结节顺带看功能",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "不算临时加的",
+      "跟超声是配套的常规项",
+      "我查的科普",
+      "能吃东西了",
+      "不算乱加的项",
+      "甲功是否在原套餐内"
+     ],
+     "found_where": {
+      "不算临时加的": "candidate_reply",
+      "跟超声是配套的常规项": "candidate_reply",
+      "我查的科普": null,
+      "能吃东西了": "candidate_reply",
+      "不算乱加的项": "parent_reply",
+      "甲功是否在原套餐内": null
+     },
+     "nowhere": [
+      "我查的科普",
+      "甲功是否在原套餐内"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:E062:E062_T23",
+   "order": "main",
+   "story": "E062",
+   "cid": "E062_T23",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT把对方没有给出的灰点数量和位置当成既定事实，写成“前组两粒灰点”，这是对器材状态没有依据的确定化，一旦照抄进转让描述就会造成误导；LEFT和RIGHT都没有确认4400含环这个数字",
+   "key_quote": "LEFT：以后挂出去写“前组两粒灰点”，买家反倒觉得你靠谱",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 3,
+     "attrib": 3,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "前组两粒灰点"
+     ],
+     "found_where": {
+      "前组两粒灰点": "candidate_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  }
+ ]
+}

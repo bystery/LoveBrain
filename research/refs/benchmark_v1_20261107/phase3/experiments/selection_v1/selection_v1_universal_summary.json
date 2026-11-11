@@ -1,0 +1,58 @@
+{
+ "universal_version": "universal_scorer_v1",
+ "guards_version": "semantic_guards_v1",
+ "per_arm": {
+  "COT": {
+   "n_turns": 492,
+   "parse_ok_rate": 0.998,
+   "contract_ok_rate_own_layer": 0.998,
+   "valid_reply_rate": 0.9919,
+   "no_reply_rate": 0.0061,
+   "severe_error_rate": 0.0163,
+   "cancel_affirm_violation_turns": 7,
+   "required_hits": 50,
+   "required_total": 232,
+   "required_NA_turns": 297,
+   "tokens_total": 774677
+  },
+  "CURRENT": {
+   "n_turns": 492,
+   "parse_ok_rate": 1.0,
+   "contract_ok_rate_own_layer": 1.0,
+   "valid_reply_rate": 1.0,
+   "no_reply_rate": 0.0,
+   "severe_error_rate": 0.0183,
+   "cancel_affirm_violation_turns": 9,
+   "required_hits": 50,
+   "required_total": 232,
+   "required_NA_turns": 296,
+   "tokens_total": 2035800
+  },
+  "DIRECT": {
+   "n_turns": 492,
+   "parse_ok_rate": 1.0,
+   "contract_ok_rate_own_layer": 1.0,
+   "valid_reply_rate": 0.9919,
+   "no_reply_rate": 0.0081,
+   "severe_error_rate": 0.0224,
+   "cancel_affirm_violation_turns": 11,
+   "required_hits": 49,
+   "required_total": 232,
+   "required_NA_turns": 294,
+   "tokens_total": 727982
+  },
+  "LEGACY": {
+   "n_turns": 478,
+   "parse_ok_rate": 1.0,
+   "contract_ok_rate_own_layer": 0.9979,
+   "valid_reply_rate": 0.9895,
+   "no_reply_rate": 0.0105,
+   "severe_error_rate": 0.0146,
+   "cancel_affirm_violation_turns": 6,
+   "required_hits": 38,
+   "required_total": 220,
+   "required_NA_turns": 294,
+   "tokens_total": 3275890
+  }
+ }
+}

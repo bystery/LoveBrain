@@ -1,0 +1,41 @@
+{
+ "generated_at": "2026-10-24T12:29:18",
+ "content_revision": "r2-20261024 (复核 §4 公平性收口)",
+ "note": "v0_minimal_events 最小 harness 对照冻结(§C/§4)。自包含简单事件记忆；共享 rc/build_system_prompt 走父本闭包；system 与 v3 逐字节相等(守卫 test_v0_minimal g)。对外信息(意图/知识/时间/来源)已与父本对齐后再谈内部组织差异——报告口径为『精简system+简单历史与上下文架构』，非纯记忆消融。",
+ "offline_fixtures": "tools/test_v0_minimal.py 12/12 PASS；含真 intent 启停/替换、initial_kb+persona 种子、当前 clock、逐条消息 ts 与稳定 source alias(m0/m1)+canonical_id_map、超预算单条旧史省略而当前输入完整保留",
+ "parent_superset_in_closure": true,
+ "fairness_fix": {
+  "before": "有效 intent/initial_kb/clock/消息 ts/当前来源标签均未进入请求；『关闭意图』夹具只测 note；历史用轮序号无法区分同轮各条；单条2000码元旧史致历史段2009>1400",
+  "after": "复用父本块 build_intent_block/build_advisor_note_block/build_timestamp_prompt，逐字同格式；传入同一允许的 initial_kb+persona+clock+消息 ts；当前窗口逐条 m-alias + 稳定 source_id + canonical_id_map；历史段严格≤MAX_EVENT_HISTORY_CU，连最近一条旧史超限时省略之，当前输入独立整段完整保留",
+  "kept": "简单事件记忆不变：模型回复=草稿永不写回、无 topic/ongoing/scene 多层摘要/反思/辅助生成、snapshot/restore/故事隔离保留"
+ },
+ "identities": {
+  "reference_product_v1": {
+   "identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "file_count": 9
+  },
+  "v2_recall": {
+   "identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "file_count": 17
+  },
+  "v3_system_slim": {
+   "identity_sha256": "c1944e1d931c0747856ed48e7b9161c34e266f6d1da950d97145055d8839f3ac",
+   "file_count": 17
+  },
+  "v0_minimal_events": {
+   "identity_sha256": "94611447720138ade1f43cced82df2a1c793191b88b24f918835f5c95800ef6e",
+   "file_count": 17
+  }
+ },
+ "mechanism_diff": {
+  "reference_product_v1": "重 system+原多层记忆",
+  "v3_system_slim": "精简 system+原多层记忆(B 线只动 system)",
+  "v0_minimal_events": "精简 system+简单事件记忆(C 线只动记忆，无 topic/ongoing/scene 摘要/反思/辅助生成)"
+ },
+ "real_experiment_hypotheses": [
+  "C1 日常承接轮 v0≈v2/原版",
+  "C2 跨话题长事项续存/回忆提问/主动推进 v0 应显著弱(复杂度价值)",
+  "C3 v0 输入更短更快更可维护"
+ ],
+ "offline_mock_note": "mock mean_score 非质量；允许真实对照失败，不为其加回原版层级"
+}

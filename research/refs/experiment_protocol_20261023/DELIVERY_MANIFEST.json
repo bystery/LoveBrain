@@ -1,0 +1,62 @@
+{
+  "scope": "Role clarification and handoff revision; no harness or scorer code changes; no real generation calls",
+  "documents": [
+    {
+      "name": "EXPERIMENT_PROTOCOL.md",
+      "bytes": 17351,
+      "sha256": "d4d1553a5430793617a12659cdb25bccbf620b6df079a4d07bd06d9aeeb484e5",
+      "role": "execution_handoff"
+    },
+    {
+      "name": "TRAINING_SESSION_START_PROMPT.md",
+      "bytes": 5636,
+      "sha256": "9daa2ee1ebec727b4c93964e22e7d80f09522870047dbf90519262eb5b4e2049",
+      "role": "execution_handoff"
+    },
+    {
+      "name": "REVIEW_DISPOSITION.md",
+      "bytes": 3999,
+      "sha256": "8c3350a572dbebf9f394b0ac55559464065e79ef6a9c76fc551fdf5f4f9f4abc",
+      "role": "execution_handoff"
+    },
+    {
+      "name": "INDEPENDENT_REVIEW.md",
+      "bytes": 23686,
+      "sha256": "0764276f45b01b55bf75525ad4ee5d746df59dc0765f4e16ac660094452e500d",
+      "role": "reference_review"
+    }
+  ],
+  "public_pilot": {
+    "stories": {
+      "E001": 8,
+      "E002": 8,
+      "E003": 8
+    },
+    "positions": 24,
+    "cards": 24,
+    "all_cards_split": [
+      "dev_exposed"
+    ]
+  },
+  "real_model_calls": 0,
+  "sealed_bank_read": false,
+  "revision": 2,
+  "updated_at": "2026-10-23T15:01:10.318324+08:00",
+  "previous_deliveries": [
+    {
+      "revision": 1,
+      "documents": [
+        {
+          "name": "EXPERIMENT_PROTOCOL.md",
+          "bytes": 13900,
+          "sha256": "e6cb4993621417433c19cc1d4019aeed6430b5c53599ae33841868eee1656b5f"
+        },
+        {
+          "name": "TRAINING_SESSION_START_PROMPT.md",
+          "bytes": 3910,
+          "sha256": "86ee85bd84f49bdf98eee1dbae22c7fdcc94b2618a35ad791e1220ab1b7d6e31"
+        }
+      ]
+    }
+  ]
+}

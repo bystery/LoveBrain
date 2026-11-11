@@ -1,0 +1,19 @@
+{
+ "batch_id": "BATCH-LONGPROBE-E3VSREF-20261030",
+ "arm_map": {
+  "parent": "reference_product_v1",
+  "candidate": "action_policy_r4_guard_e3"
+ },
+ "episode_order": [
+  {
+   "episode": "E061",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E062",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+ "recall_capable": false
+}

@@ -1,0 +1,19 @@
+{
+ "batch_id": "BATCH-LONGRANGE-LR2-LRE060LRE048-20261101",
+ "arm_map": {
+  "parent": "action_policy_r9_slim",
+  "candidate": "v0_minimal_events"
+ },
+ "episode_order": [
+  {
+   "episode": "LRE060",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "LRE048",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/wave1_ext/GRADING_CARDS_W12.json",
+ "recall_capable": false
+}

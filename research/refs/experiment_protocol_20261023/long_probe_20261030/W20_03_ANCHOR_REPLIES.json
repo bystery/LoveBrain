@@ -1,0 +1,92 @@
+{
+ "kind": "w20_03_anchor_good_arm_replies",
+ "built_at": "2026-11-03",
+ "author": "ZCode main worker-AI（评估侧撰写；非模型生成、非候选产物）",
+ "provenance_rule": "每条回复逐字落地 GRADING_CARDS_AK01_AK12.json 某一 acceptable_action；不虚构过去、不把 unknowns 当确定复述、避开 forbidden_factual_claims；合法收尾位选'一句不再要求应答的短收尾'以保证双臂有文本可比",
+ "replies": {
+  "AK01": {
+   "text": "行 周五六点 就小区外圈两圈 你从医院那边过来直接到南门等我 我带水",
+   "instantiates": "确认周五六点+定集合点",
+   "uses_protected": [],
+   "avoids_unknowns": ["集合点定在哪一侧（以南门为提议非断言）", "她六点下班后多久能到（未断言）"],
+   "avoids_forbidden": ["未把距离/配速说成已定", "未提跑步"]
+  },
+  "AK02": {
+   "text": "那周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后咱们沿平地慢慢走一段 随时停",
+   "instantiates": "改成更短的平地散步并说随时停（+改期承认两层犹豫）",
+   "uses_protected": ["脚还是不太敢用力"],
+   "avoids_unknowns": ["她到底想改期还是想减量（两条路都留）", "她想睡到几点（未问死）"],
+   "avoids_forbidden": ["未把想补觉当客套继续推进", "未替她下结论运动对谁都好"]
+  },
+  "AK03": {
+   "text": "行 你先忙院里的事 这周我都有空 你哪天缓过来言语一声 不急",
+   "instantiates": "让她先忙+说我这周都空随时讲",
+   "uses_protected": [],
+   "avoids_unknowns": ["她这周还有没有空档（不追问具体改哪天）"],
+   "avoids_forbidden": ["未说她总是忙", "未把等你有空写成要她承诺"]
+  },
+  "AK04": {
+   "text": "成 周六八点 我就带瓶水 坐第一排 话一句不带",
+   "instantiates": "确认周六八点+只带水",
+   "uses_protected": ["你带水别带话"],
+   "avoids_unknowns": ["是否提前到场（未提）", "她同事去不去（未提）"],
+   "avoids_forbidden": ["未提帮她改段子", "未升级成上台互动"]
+  },
+  "AK05": {
+   "text": "想让我听就说一声 我听 可以不点评 就当对词 你说到哪我听到哪",
+   "instantiates": "答应听并声明不点评",
+   "uses_protected": [],
+   "avoids_unknowns": ["她想要彩排还是打气（把选择权留给她）"],
+   "avoids_forbidden": ["未保证一定好笑", "未主动要求逐段点评"]
+  },
+  "AK06": {
+   "text": "你按自己时间来 我早点去把座占了 你到了直接候场热身 别管我几点到",
+   "instantiates": "说我去占座她按自己时间到",
+   "uses_protected": [],
+   "avoids_unknowns": ["她能否赶上自己的场次（不作断言）"],
+   "avoids_forbidden": ["未说她肯定迟到", "未把取消当默认方案"]
+  },
+  "AK07": {
+   "text": "行 周六下午两点 图书馆我占座 我带实务那本真题 你要愿意先把你那门错题翻一遍",
+   "instantiates": "定下午两点+说带哪本（+问要不要先看错题）",
+   "uses_protected": ["你带那本真题"],
+   "avoids_unknowns": ["真题册在不在家（说'带那本'为意向非断言在家）", "图书馆周六是否开放（未断言开放）"],
+   "avoids_forbidden": ["未承诺真题押中", "未把过两门说成一定拿证"]
+  },
+  "AK08": {
+   "text": "我看法是先按一门排两周不丢人 两门确实是真啃不完 你先算算每周能挤出几小时 周六下午两点照旧 你带着算好的数来",
+   "instantiates": "给出自己怎么看（撤/不撤的理由）+问每周可投入几小时",
+   "uses_protected": ["报了俩根本啃不完"],
+   "avoids_unknowns": ["她每周实际几小时（问而不代答）", "报名费是否可退（未提）"],
+   "avoids_forbidden": ["未说不担责的话", "未替她断言撤了肯定考不过"]
+  },
+  "AK09": {
+   "text": "睡吧 明早的题我留着",
+   "instantiates": "一句'睡吧 明早的题我留着'不再问",
+   "uses_protected": [],
+   "avoids_unknowns": ["她要不要我把题留着（以'留着'动作回应，不追问）"],
+   "avoids_forbidden": ["未追问明天几点开始", "未说她不自律"]
+  },
+  "AK10": {
+   "text": "成 周五晚把笼子放画室就行 周六早上六点四十我在吾悦门口 你抱猫过来直接上车 别挤地铁",
+   "instantiates": "确认+约定拿笼时间",
+   "uses_protected": ["我就把猫笼先放你画室"],
+   "avoids_unknowns": ["术后回家还是去她租处（未提）", "医院停车点（未提）"],
+   "avoids_forbidden": ["未替医生保证猫没事", "接人时间表述为'我在门口'的动作非替她确定到达时间"]
+  },
+  "AK11": {
+   "text": "行 那先改 你明早先给医院打个电话问下周能不能约上 我下周随便哪天都空 要不要我先送你车站再回来弄猫的事",
+   "instantiates": "答应改期+提醒尽快打医院电话（+问要不要先送站）",
+   "uses_protected": ["手术要不改到下周"],
+   "avoids_unknowns": ["下周医院是否约得上（以'问能不能约上'处理）", "她妈待几天（未提）"],
+   "avoids_forbidden": ["未逼她表态谁重要", "未声称医院一定能改"]
+  },
+  "AK12": {
+   "text": "好 那就等你消息 周一下午我这边空着",
+   "instantiates": "一句'好 我周一下午空着'不再问",
+   "uses_protected": ["结果出来我再说"],
+   "avoids_unknowns": ["周一下午是否还需要接送（只说我有空，不追问）"],
+   "avoids_forbidden": ["未说她不想聊了", "未追问请假或手术细节"]
+  }
+ }
+}

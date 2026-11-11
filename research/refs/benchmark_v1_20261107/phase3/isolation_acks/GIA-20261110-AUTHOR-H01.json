@@ -1,0 +1,32 @@
+{
+  "role": "story_author",
+  "session": "AUTHOR-H01",
+  "gia_id": "GIA-20261110-AUTHOR-H01",
+  "segment": "H",
+  "created_at": "2026-11-10",
+  "declarations": {
+    "no_dev_content_read": true,
+    "no_selection_content_read": true,
+    "no_run_results_read": true,
+    "no_audit_reports_read": true,
+    "holdout_vault": true
+  },
+  "allowed_reads": [
+    "HOLDOUT_AUTHOR_BRIEF.md",
+    "NEW_STORY_SPEC_V1.md",
+    "TOPIC_RUBRIC_V1.md",
+    "E117/episode.json (structure sample only)",
+    "NAME_POOL_V1.json (assigned name rows)"
+  ],
+  "forbidden_reads_acknowledged": [
+    "wave4_dev/",
+    "wave5_selection/",
+    "stage/wave episode texts (except E117 structure sample)",
+    "logs/",
+    "candidates/",
+    "audit/judgment/reconciliation docs",
+    "GOLD_SIDECAR/",
+    "B line"
+  ],
+  "scope": "E401-E410, 10 HOLDOUT stories, T01x5 + T02x5"
+}

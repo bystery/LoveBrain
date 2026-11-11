@@ -1,0 +1,38 @@
+{
+  "gia_id": "GIA-20261110-AUTHOR-H04",
+  "role": "story_author",
+  "segment": "H",
+  "session": "AUTHOR-H04",
+  "created_at": "2026-11-10",
+  "declarations": {
+    "no_dev_role_served": true,
+    "no_forbidden_material_read": true,
+    "only_writing_to_vault": true,
+    "names_from_pool_only": true
+  },
+  "holdout_vault": true,
+  "assignment": {
+    "topic": "T03",
+    "stories": ["E431","E432","E433","E434","E435","E436","E437","E438","E439","E440"],
+    "turns_per_story": 12,
+    "kind": "standard_12t"
+  },
+  "allowed_reads": [
+    "refs/benchmark_v1_20261107/phase3/HOLDOUT_AUTHOR_BRIEF.md",
+    "refs/benchmark_v1_20261107/phase1/NEW_STORY_SPEC_V1.md",
+    "refs/benchmark_v1_20261107/phase2/TOPIC_RUBRIC_V1.md",
+    "benchmark/stories_v2/wave3/E117/episode.json",
+    "refs/benchmark_v1_20261107/phase3/NAME_POOL_V1.json"
+  ],
+  "forbidden_reads_declared": [
+    "benchmark/stories_v2/wave4_dev/",
+    "benchmark/stories_v2/wave5_selection/",
+    "stage/wave story texts (except E117 structure sample)",
+    "logs/",
+    "candidates/",
+    "audit/judgment/reconciliation docs",
+    "GOLD_SIDECAR/",
+    "B line"
+  ],
+  "vault_path": "D:/lovebrain-arena_holdout_vault/wave6_holdout/"
+}

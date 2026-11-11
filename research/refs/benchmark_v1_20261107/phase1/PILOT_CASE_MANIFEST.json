@@ -1,0 +1,64 @@
+{
+  "manifest_version": "pilot_case_manifest_v1",
+  "episodes": {
+    "E032": {
+      "episode_path": "benchmark/stories_v2/stage2/E032/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": "EXPOSED",
+      "b_line_member": false,
+      "policy_problems": []
+    },
+    "E037": {
+      "episode_path": "benchmark/stories_v2/stage3/E037/episode.json",
+      "turn_count": 8,
+      "custody_lifecycle": "EXPOSED",
+      "b_line_member": false,
+      "policy_problems": []
+    },
+    "E191": {
+      "episode_path": "benchmark/stories_v2/wave3/E191/episode.json",
+      "turn_count": 12,
+      "custody_lifecycle": "EXPOSED",
+      "b_line_member": false,
+      "policy_problems": []
+    },
+    "LRE117": {
+      "episode_path": "benchmark/stories_v2/wave3_ext/LRE117/episode.json",
+      "turn_count": 40,
+      "custody_lifecycle": "EXPOSED",
+      "b_line_member": false,
+      "policy_problems": []
+    }
+  },
+  "rotation": {
+    "DIRECT": [
+      "E032",
+      "E037",
+      "E191",
+      "LRE117"
+    ],
+    "COT": [
+      "E037",
+      "E191",
+      "LRE117",
+      "E032"
+    ],
+    "LEGACY": [
+      "E191",
+      "LRE117",
+      "E032",
+      "E037"
+    ],
+    "CURRENT": [
+      "LRE117",
+      "E032",
+      "E037",
+      "E191"
+    ]
+  },
+  "planned_positions": {
+    "per_arm": 72,
+    "four_arm_total": 288,
+    "note": "含连接冒烟与可能的内部附加调用时实际 attempts 可更高，上限=授权 cap，超额停批"
+  }
+}

@@ -1,0 +1,1656 @@
+{
+ "kind": "memory_engine_kpis_v2",
+ "date": "2026-10-31",
+ "runs": [
+  {
+   "batch": "B1",
+   "story": "E063",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    6,
+    7,
+    10
+   ],
+   "added_f_total": 33,
+   "facts_store_end": 43,
+   "capture_ratio": 2.2,
+   "overstore_ratio": 2.87,
+   "correction_update_hits": "2/3",
+   "updates_at_corr": [
+    {
+     "turn": 6,
+     "applied_in_window": 3
+    },
+    {
+     "turn": 7,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 10,
+     "applied_in_window": 0
+    }
+   ],
+   "updates_applied_total": 6,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "B1",
+   "story": "E063",
+   "arm": "parent",
+   "notes_format": "b0_flat",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    6,
+    7,
+    10
+   ],
+   "writeback_ok": "24/24",
+   "recent_rate": 1.0,
+   "scene_injection_rate": 1.0,
+   "scene_coverage": [
+    {
+     "turn": 1,
+     "scene_facts": 3,
+     "facts_cum": 2
+    },
+    {
+     "turn": 2,
+     "scene_facts": 2,
+     "facts_cum": 4
+    },
+    {
+     "turn": 3,
+     "scene_facts": 3,
+     "facts_cum": 5
+    },
+    {
+     "turn": 4,
+     "scene_facts": 1,
+     "facts_cum": 5
+    },
+    {
+     "turn": 5,
+     "scene_facts": 2,
+     "facts_cum": 5
+    },
+    {
+     "turn": 6,
+     "scene_facts": 2,
+     "facts_cum": 6
+    },
+    {
+     "turn": 7,
+     "scene_facts": 2,
+     "facts_cum": 7
+    },
+    {
+     "turn": 8,
+     "scene_facts": 2,
+     "facts_cum": 8
+    },
+    {
+     "turn": 9,
+     "scene_facts": 3,
+     "facts_cum": 8
+    },
+    {
+     "turn": 10,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 11,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 12,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 13,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 14,
+     "scene_facts": 1,
+     "facts_cum": 10
+    },
+    {
+     "turn": 15,
+     "scene_facts": 2,
+     "facts_cum": 11
+    },
+    {
+     "turn": 16,
+     "scene_facts": 2,
+     "facts_cum": 11
+    },
+    {
+     "turn": 17,
+     "scene_facts": 2,
+     "facts_cum": 12
+    },
+    {
+     "turn": 18,
+     "scene_facts": 2,
+     "facts_cum": 13
+    },
+    {
+     "turn": 19,
+     "scene_facts": 2,
+     "facts_cum": 13
+    },
+    {
+     "turn": 20,
+     "scene_facts": 1,
+     "facts_cum": 13
+    },
+    {
+     "turn": 21,
+     "scene_facts": 2,
+     "facts_cum": 14
+    },
+    {
+     "turn": 22,
+     "scene_facts": 2,
+     "facts_cum": 15
+    },
+    {
+     "turn": 23,
+     "scene_facts": 1,
+     "facts_cum": 15
+    },
+    {
+     "turn": 24,
+     "scene_facts": 2,
+     "facts_cum": 15
+    }
+   ]
+  },
+  {
+   "batch": "B1",
+   "story": "E064",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    4,
+    7,
+    16
+   ],
+   "added_f_total": 46,
+   "facts_store_end": 58,
+   "capture_ratio": 3.07,
+   "overstore_ratio": 3.87,
+   "correction_update_hits": "3/3",
+   "updates_at_corr": [
+    {
+     "turn": 4,
+     "applied_in_window": 2
+    },
+    {
+     "turn": 7,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 16,
+     "applied_in_window": 1
+    }
+   ],
+   "updates_applied_total": 7,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "B1",
+   "story": "E064",
+   "arm": "parent",
+   "notes_format": "b0_flat",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    4,
+    7,
+    16
+   ],
+   "writeback_ok": "24/24",
+   "recent_rate": 1.0,
+   "scene_injection_rate": 1.0,
+   "scene_coverage": [
+    {
+     "turn": 1,
+     "scene_facts": 3,
+     "facts_cum": 2
+    },
+    {
+     "turn": 2,
+     "scene_facts": 2,
+     "facts_cum": 4
+    },
+    {
+     "turn": 3,
+     "scene_facts": 2,
+     "facts_cum": 5
+    },
+    {
+     "turn": 4,
+     "scene_facts": 2,
+     "facts_cum": 6
+    },
+    {
+     "turn": 5,
+     "scene_facts": 2,
+     "facts_cum": 7
+    },
+    {
+     "turn": 6,
+     "scene_facts": 2,
+     "facts_cum": 7
+    },
+    {
+     "turn": 7,
+     "scene_facts": 2,
+     "facts_cum": 8
+    },
+    {
+     "turn": 8,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 9,
+     "scene_facts": 1,
+     "facts_cum": 10
+    },
+    {
+     "turn": 10,
+     "scene_facts": 3,
+     "facts_cum": 10
+    },
+    {
+     "turn": 11,
+     "scene_facts": 2,
+     "facts_cum": 10
+    },
+    {
+     "turn": 12,
+     "scene_facts": 2,
+     "facts_cum": 10
+    },
+    {
+     "turn": 13,
+     "scene_facts": 2,
+     "facts_cum": 10
+    },
+    {
+     "turn": 14,
+     "scene_facts": 2,
+     "facts_cum": 11
+    },
+    {
+     "turn": 15,
+     "scene_facts": 2,
+     "facts_cum": 11
+    },
+    {
+     "turn": 16,
+     "scene_facts": 2,
+     "facts_cum": 12
+    },
+    {
+     "turn": 17,
+     "scene_facts": 1,
+     "facts_cum": 12
+    },
+    {
+     "turn": 18,
+     "scene_facts": 3,
+     "facts_cum": 13
+    },
+    {
+     "turn": 19,
+     "scene_facts": 2,
+     "facts_cum": 14
+    },
+    {
+     "turn": 20,
+     "scene_facts": 2,
+     "facts_cum": 14
+    },
+    {
+     "turn": 21,
+     "scene_facts": 1,
+     "facts_cum": 14
+    },
+    {
+     "turn": 22,
+     "scene_facts": 2,
+     "facts_cum": 15
+    },
+    {
+     "turn": 23,
+     "scene_facts": 2,
+     "facts_cum": 15
+    },
+    {
+     "turn": 24,
+     "scene_facts": 2,
+     "facts_cum": 15
+    }
+   ]
+  },
+  {
+   "batch": "B1",
+   "story": "E065",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 16,
+   "correction_turns": [
+    9,
+    12,
+    14
+   ],
+   "added_f_total": 38,
+   "facts_store_end": 49,
+   "capture_ratio": 2.38,
+   "overstore_ratio": 3.06,
+   "correction_update_hits": "2/3",
+   "updates_at_corr": [
+    {
+     "turn": 9,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 12,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 14,
+     "applied_in_window": 0
+    }
+   ],
+   "updates_applied_total": 6,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "B1",
+   "story": "E065",
+   "arm": "parent",
+   "notes_format": "b0_flat",
+   "turns_measured": 24,
+   "facts_gt_message_source": 16,
+   "correction_turns": [
+    9,
+    12,
+    14
+   ],
+   "writeback_ok": "24/24",
+   "recent_rate": 1.0,
+   "scene_injection_rate": 1.0,
+   "scene_coverage": [
+    {
+     "turn": 1,
+     "scene_facts": 3,
+     "facts_cum": 2
+    },
+    {
+     "turn": 2,
+     "scene_facts": 2,
+     "facts_cum": 3
+    },
+    {
+     "turn": 3,
+     "scene_facts": 2,
+     "facts_cum": 3
+    },
+    {
+     "turn": 4,
+     "scene_facts": 2,
+     "facts_cum": 4
+    },
+    {
+     "turn": 5,
+     "scene_facts": 2,
+     "facts_cum": 4
+    },
+    {
+     "turn": 6,
+     "scene_facts": 2,
+     "facts_cum": 4
+    },
+    {
+     "turn": 7,
+     "scene_facts": 1,
+     "facts_cum": 4
+    },
+    {
+     "turn": 8,
+     "scene_facts": 1,
+     "facts_cum": 5
+    },
+    {
+     "turn": 9,
+     "scene_facts": 1,
+     "facts_cum": 6
+    },
+    {
+     "turn": 10,
+     "scene_facts": 1,
+     "facts_cum": 6
+    },
+    {
+     "turn": 11,
+     "scene_facts": 2,
+     "facts_cum": 7
+    },
+    {
+     "turn": 12,
+     "scene_facts": 3,
+     "facts_cum": 8
+    },
+    {
+     "turn": 13,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 14,
+     "scene_facts": 2,
+     "facts_cum": 10
+    },
+    {
+     "turn": 15,
+     "scene_facts": 2,
+     "facts_cum": 12
+    },
+    {
+     "turn": 16,
+     "scene_facts": 1,
+     "facts_cum": 13
+    },
+    {
+     "turn": 17,
+     "scene_facts": 1,
+     "facts_cum": 13
+    },
+    {
+     "turn": 18,
+     "scene_facts": 2,
+     "facts_cum": 13
+    },
+    {
+     "turn": 19,
+     "scene_facts": 2,
+     "facts_cum": 13
+    },
+    {
+     "turn": 20,
+     "scene_facts": 3,
+     "facts_cum": 15
+    },
+    {
+     "turn": 21,
+     "scene_facts": 2,
+     "facts_cum": 16
+    },
+    {
+     "turn": 22,
+     "scene_facts": 2,
+     "facts_cum": 16
+    },
+    {
+     "turn": 23,
+     "scene_facts": 2,
+     "facts_cum": 16
+    },
+    {
+     "turn": 24,
+     "scene_facts": 3,
+     "facts_cum": 16
+    }
+   ]
+  },
+  {
+   "batch": "B2",
+   "story": "E066",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    7,
+    11,
+    12
+   ],
+   "added_f_total": 37,
+   "facts_store_end": 47,
+   "capture_ratio": 2.47,
+   "overstore_ratio": 3.13,
+   "correction_update_hits": "2/3",
+   "updates_at_corr": [
+    {
+     "turn": 7,
+     "applied_in_window": 2
+    },
+    {
+     "turn": 11,
+     "applied_in_window": 2
+    },
+    {
+     "turn": 12,
+     "applied_in_window": 0
+    }
+   ],
+   "updates_applied_total": 5,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "B2",
+   "story": "E066",
+   "arm": "parent",
+   "notes_format": "b0_flat",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    7,
+    11,
+    12
+   ],
+   "writeback_ok": "24/24",
+   "recent_rate": 1.0,
+   "scene_injection_rate": 1.0,
+   "scene_coverage": [
+    {
+     "turn": 1,
+     "scene_facts": 3,
+     "facts_cum": 1
+    },
+    {
+     "turn": 2,
+     "scene_facts": 1,
+     "facts_cum": 2
+    },
+    {
+     "turn": 3,
+     "scene_facts": 2,
+     "facts_cum": 3
+    },
+    {
+     "turn": 4,
+     "scene_facts": 2,
+     "facts_cum": 4
+    },
+    {
+     "turn": 5,
+     "scene_facts": 2,
+     "facts_cum": 4
+    },
+    {
+     "turn": 6,
+     "scene_facts": 2,
+     "facts_cum": 5
+    },
+    {
+     "turn": 7,
+     "scene_facts": 2,
+     "facts_cum": 6
+    },
+    {
+     "turn": 8,
+     "scene_facts": 1,
+     "facts_cum": 7
+    },
+    {
+     "turn": 9,
+     "scene_facts": 3,
+     "facts_cum": 7
+    },
+    {
+     "turn": 10,
+     "scene_facts": 2,
+     "facts_cum": 7
+    },
+    {
+     "turn": 11,
+     "scene_facts": 2,
+     "facts_cum": 8
+    },
+    {
+     "turn": 12,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 13,
+     "scene_facts": 2,
+     "facts_cum": 10
+    },
+    {
+     "turn": 14,
+     "scene_facts": 2,
+     "facts_cum": 11
+    },
+    {
+     "turn": 15,
+     "scene_facts": 3,
+     "facts_cum": 11
+    },
+    {
+     "turn": 16,
+     "scene_facts": 2,
+     "facts_cum": 12
+    },
+    {
+     "turn": 17,
+     "scene_facts": 3,
+     "facts_cum": 13
+    },
+    {
+     "turn": 18,
+     "scene_facts": 3,
+     "facts_cum": 13
+    },
+    {
+     "turn": 19,
+     "scene_facts": 2,
+     "facts_cum": 13
+    },
+    {
+     "turn": 20,
+     "scene_facts": 2,
+     "facts_cum": 13
+    },
+    {
+     "turn": 21,
+     "scene_facts": 2,
+     "facts_cum": 14
+    },
+    {
+     "turn": 22,
+     "scene_facts": 2,
+     "facts_cum": 15
+    },
+    {
+     "turn": 23,
+     "scene_facts": 2,
+     "facts_cum": 15
+    },
+    {
+     "turn": 24,
+     "scene_facts": 2,
+     "facts_cum": 15
+    }
+   ]
+  },
+  {
+   "batch": "B2",
+   "story": "E067",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 12,
+   "correction_turns": [
+    7,
+    11,
+    12
+   ],
+   "added_f_total": 32,
+   "facts_store_end": 42,
+   "capture_ratio": 2.67,
+   "overstore_ratio": 3.5,
+   "correction_update_hits": "3/3",
+   "updates_at_corr": [
+    {
+     "turn": 7,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 11,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 12,
+     "applied_in_window": 1
+    }
+   ],
+   "updates_applied_total": 4,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "B2",
+   "story": "E067",
+   "arm": "parent",
+   "notes_format": "b0_flat",
+   "turns_measured": 23,
+   "facts_gt_message_source": 12,
+   "correction_turns": [
+    7,
+    11,
+    12
+   ],
+   "writeback_ok": "23/23",
+   "recent_rate": 1.0,
+   "scene_injection_rate": 1.0,
+   "scene_coverage": [
+    {
+     "turn": 1,
+     "scene_facts": 2,
+     "facts_cum": 1
+    },
+    {
+     "turn": 2,
+     "scene_facts": 3,
+     "facts_cum": 2
+    },
+    {
+     "turn": 3,
+     "scene_facts": 2,
+     "facts_cum": 3
+    },
+    {
+     "turn": 4,
+     "scene_facts": 3,
+     "facts_cum": 4
+    },
+    {
+     "turn": 5,
+     "scene_facts": 1,
+     "facts_cum": 5
+    },
+    {
+     "turn": 6,
+     "scene_facts": 1,
+     "facts_cum": 5
+    },
+    {
+     "turn": 7,
+     "scene_facts": 2,
+     "facts_cum": 6
+    },
+    {
+     "turn": 8,
+     "scene_facts": 2,
+     "facts_cum": 6
+    },
+    {
+     "turn": 9,
+     "scene_facts": 3,
+     "facts_cum": 6
+    },
+    {
+     "turn": 10,
+     "scene_facts": 1,
+     "facts_cum": 7
+    },
+    {
+     "turn": 11,
+     "scene_facts": 1,
+     "facts_cum": 8
+    },
+    {
+     "turn": 12,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 13,
+     "scene_facts": 2,
+     "facts_cum": 10
+    },
+    {
+     "turn": 14,
+     "scene_facts": 3,
+     "facts_cum": 10
+    },
+    {
+     "turn": 15,
+     "scene_facts": 2,
+     "facts_cum": 10
+    },
+    {
+     "turn": 16,
+     "scene_facts": 2,
+     "facts_cum": 11
+    },
+    {
+     "turn": 17,
+     "scene_facts": 2,
+     "facts_cum": 11
+    },
+    {
+     "turn": 18,
+     "scene_facts": 2,
+     "facts_cum": 12
+    },
+    {
+     "turn": 19,
+     "scene_facts": 1,
+     "facts_cum": 12
+    },
+    {
+     "turn": 20,
+     "scene_facts": 2,
+     "facts_cum": 12
+    },
+    {
+     "turn": 21,
+     "scene_facts": 2,
+     "facts_cum": 12
+    },
+    {
+     "turn": 23,
+     "scene_facts": 2,
+     "facts_cum": 12
+    },
+    {
+     "turn": 24,
+     "scene_facts": 1,
+     "facts_cum": 12
+    }
+   ]
+  },
+  {
+   "batch": "B2",
+   "story": "E068",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 13,
+   "correction_turns": [
+    5,
+    10,
+    11
+   ],
+   "added_f_total": 39,
+   "facts_store_end": 51,
+   "capture_ratio": 3.0,
+   "overstore_ratio": 3.92,
+   "correction_update_hits": "3/3",
+   "updates_at_corr": [
+    {
+     "turn": 5,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 10,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 11,
+     "applied_in_window": 1
+    }
+   ],
+   "updates_applied_total": 5,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "B2",
+   "story": "E068",
+   "arm": "parent",
+   "notes_format": "b0_flat",
+   "turns_measured": 23,
+   "facts_gt_message_source": 13,
+   "correction_turns": [
+    5,
+    10,
+    11
+   ],
+   "writeback_ok": "23/23",
+   "recent_rate": 1.0,
+   "scene_injection_rate": 1.0,
+   "scene_coverage": [
+    {
+     "turn": 1,
+     "scene_facts": 3,
+     "facts_cum": 2
+    },
+    {
+     "turn": 2,
+     "scene_facts": 1,
+     "facts_cum": 3
+    },
+    {
+     "turn": 3,
+     "scene_facts": 2,
+     "facts_cum": 4
+    },
+    {
+     "turn": 4,
+     "scene_facts": 2,
+     "facts_cum": 4
+    },
+    {
+     "turn": 5,
+     "scene_facts": 1,
+     "facts_cum": 5
+    },
+    {
+     "turn": 6,
+     "scene_facts": 2,
+     "facts_cum": 5
+    },
+    {
+     "turn": 7,
+     "scene_facts": 3,
+     "facts_cum": 5
+    },
+    {
+     "turn": 8,
+     "scene_facts": 3,
+     "facts_cum": 6
+    },
+    {
+     "turn": 9,
+     "scene_facts": 2,
+     "facts_cum": 6
+    },
+    {
+     "turn": 10,
+     "scene_facts": 2,
+     "facts_cum": 7
+    },
+    {
+     "turn": 11,
+     "scene_facts": 2,
+     "facts_cum": 8
+    },
+    {
+     "turn": 12,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 14,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 15,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 16,
+     "scene_facts": 2,
+     "facts_cum": 10
+    },
+    {
+     "turn": 17,
+     "scene_facts": 2,
+     "facts_cum": 11
+    },
+    {
+     "turn": 18,
+     "scene_facts": 3,
+     "facts_cum": 11
+    },
+    {
+     "turn": 19,
+     "scene_facts": 2,
+     "facts_cum": 11
+    },
+    {
+     "turn": 20,
+     "scene_facts": 3,
+     "facts_cum": 12
+    },
+    {
+     "turn": 21,
+     "scene_facts": 1,
+     "facts_cum": 12
+    },
+    {
+     "turn": 22,
+     "scene_facts": 1,
+     "facts_cum": 13
+    },
+    {
+     "turn": 23,
+     "scene_facts": 2,
+     "facts_cum": 13
+    },
+    {
+     "turn": 24,
+     "scene_facts": 3,
+     "facts_cum": 13
+    }
+   ]
+  },
+  {
+   "batch": "C1",
+   "story": "E063",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    6,
+    7,
+    10
+   ],
+   "added_f_total": 32,
+   "facts_store_end": 45,
+   "capture_ratio": 2.13,
+   "overstore_ratio": 3.0,
+   "correction_update_hits": "2/3",
+   "updates_at_corr": [
+    {
+     "turn": 6,
+     "applied_in_window": 2
+    },
+    {
+     "turn": 7,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 10,
+     "applied_in_window": 0
+    }
+   ],
+   "updates_applied_total": 6,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "C1",
+   "story": "E063",
+   "arm": "parent",
+   "notes_format": "b0_flat",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    6,
+    7,
+    10
+   ],
+   "writeback_ok": "24/24",
+   "recent_rate": 1.0,
+   "scene_injection_rate": 1.0,
+   "scene_coverage": [
+    {
+     "turn": 1,
+     "scene_facts": 4,
+     "facts_cum": 2
+    },
+    {
+     "turn": 2,
+     "scene_facts": 2,
+     "facts_cum": 4
+    },
+    {
+     "turn": 3,
+     "scene_facts": 3,
+     "facts_cum": 5
+    },
+    {
+     "turn": 4,
+     "scene_facts": 2,
+     "facts_cum": 5
+    },
+    {
+     "turn": 5,
+     "scene_facts": 2,
+     "facts_cum": 5
+    },
+    {
+     "turn": 6,
+     "scene_facts": 2,
+     "facts_cum": 6
+    },
+    {
+     "turn": 7,
+     "scene_facts": 3,
+     "facts_cum": 7
+    },
+    {
+     "turn": 8,
+     "scene_facts": 2,
+     "facts_cum": 8
+    },
+    {
+     "turn": 9,
+     "scene_facts": 1,
+     "facts_cum": 8
+    },
+    {
+     "turn": 10,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 11,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 12,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 13,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 14,
+     "scene_facts": 1,
+     "facts_cum": 10
+    },
+    {
+     "turn": 15,
+     "scene_facts": 3,
+     "facts_cum": 11
+    },
+    {
+     "turn": 16,
+     "scene_facts": 2,
+     "facts_cum": 11
+    },
+    {
+     "turn": 17,
+     "scene_facts": 2,
+     "facts_cum": 12
+    },
+    {
+     "turn": 18,
+     "scene_facts": 2,
+     "facts_cum": 13
+    },
+    {
+     "turn": 19,
+     "scene_facts": 2,
+     "facts_cum": 13
+    },
+    {
+     "turn": 20,
+     "scene_facts": 1,
+     "facts_cum": 13
+    },
+    {
+     "turn": 21,
+     "scene_facts": 2,
+     "facts_cum": 14
+    },
+    {
+     "turn": 22,
+     "scene_facts": 2,
+     "facts_cum": 15
+    },
+    {
+     "turn": 23,
+     "scene_facts": 2,
+     "facts_cum": 15
+    },
+    {
+     "turn": 24,
+     "scene_facts": 2,
+     "facts_cum": 15
+    }
+   ]
+  },
+  {
+   "batch": "C1",
+   "story": "E064",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    4,
+    7,
+    16
+   ],
+   "added_f_total": 36,
+   "facts_store_end": 50,
+   "capture_ratio": 2.4,
+   "overstore_ratio": 3.33,
+   "correction_update_hits": "2/3",
+   "updates_at_corr": [
+    {
+     "turn": 4,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 7,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 16,
+     "applied_in_window": 0
+    }
+   ],
+   "updates_applied_total": 7,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "C1",
+   "story": "E064",
+   "arm": "parent",
+   "notes_format": "b0_flat",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    4,
+    7,
+    16
+   ],
+   "writeback_ok": "24/24",
+   "recent_rate": 1.0,
+   "scene_injection_rate": 1.0,
+   "scene_coverage": [
+    {
+     "turn": 1,
+     "scene_facts": 3,
+     "facts_cum": 2
+    },
+    {
+     "turn": 2,
+     "scene_facts": 2,
+     "facts_cum": 4
+    },
+    {
+     "turn": 3,
+     "scene_facts": 2,
+     "facts_cum": 5
+    },
+    {
+     "turn": 4,
+     "scene_facts": 2,
+     "facts_cum": 6
+    },
+    {
+     "turn": 5,
+     "scene_facts": 1,
+     "facts_cum": 7
+    },
+    {
+     "turn": 6,
+     "scene_facts": 2,
+     "facts_cum": 7
+    },
+    {
+     "turn": 7,
+     "scene_facts": 2,
+     "facts_cum": 8
+    },
+    {
+     "turn": 8,
+     "scene_facts": 2,
+     "facts_cum": 9
+    },
+    {
+     "turn": 9,
+     "scene_facts": 2,
+     "facts_cum": 10
+    },
+    {
+     "turn": 10,
+     "scene_facts": 3,
+     "facts_cum": 10
+    },
+    {
+     "turn": 11,
+     "scene_facts": 2,
+     "facts_cum": 10
+    },
+    {
+     "turn": 12,
+     "scene_facts": 2,
+     "facts_cum": 10
+    },
+    {
+     "turn": 13,
+     "scene_facts": 2,
+     "facts_cum": 10
+    },
+    {
+     "turn": 14,
+     "scene_facts": 2,
+     "facts_cum": 11
+    },
+    {
+     "turn": 15,
+     "scene_facts": 2,
+     "facts_cum": 11
+    },
+    {
+     "turn": 16,
+     "scene_facts": 1,
+     "facts_cum": 12
+    },
+    {
+     "turn": 17,
+     "scene_facts": 2,
+     "facts_cum": 12
+    },
+    {
+     "turn": 18,
+     "scene_facts": 3,
+     "facts_cum": 13
+    },
+    {
+     "turn": 19,
+     "scene_facts": 2,
+     "facts_cum": 14
+    },
+    {
+     "turn": 20,
+     "scene_facts": 2,
+     "facts_cum": 14
+    },
+    {
+     "turn": 21,
+     "scene_facts": 2,
+     "facts_cum": 14
+    },
+    {
+     "turn": 22,
+     "scene_facts": 2,
+     "facts_cum": 15
+    },
+    {
+     "turn": 23,
+     "scene_facts": 2,
+     "facts_cum": 15
+    },
+    {
+     "turn": 24,
+     "scene_facts": 3,
+     "facts_cum": 15
+    }
+   ]
+  },
+  {
+   "batch": "D1",
+   "story": "E061",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 19,
+   "correction_turns": [
+    8,
+    15
+   ],
+   "added_f_total": 34,
+   "facts_store_end": 42,
+   "capture_ratio": 1.79,
+   "overstore_ratio": 2.21,
+   "correction_update_hits": "2/2",
+   "updates_at_corr": [
+    {
+     "turn": 8,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 15,
+     "applied_in_window": 2
+    }
+   ],
+   "updates_applied_total": 5,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "D1",
+   "story": "E061",
+   "arm": "parent",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 19,
+   "correction_turns": [
+    8,
+    15
+   ],
+   "added_f_total": 27,
+   "facts_store_end": 35,
+   "capture_ratio": 1.42,
+   "overstore_ratio": 1.84,
+   "correction_update_hits": "2/2",
+   "updates_at_corr": [
+    {
+     "turn": 8,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 15,
+     "applied_in_window": 1
+    }
+   ],
+   "updates_applied_total": 4,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "D1",
+   "story": "E062",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 20,
+   "correction_turns": [
+    7,
+    10
+   ],
+   "added_f_total": 24,
+   "facts_store_end": 38,
+   "capture_ratio": 1.2,
+   "overstore_ratio": 1.9,
+   "correction_update_hits": "1/2",
+   "updates_at_corr": [
+    {
+     "turn": 7,
+     "applied_in_window": 0
+    },
+    {
+     "turn": 10,
+     "applied_in_window": 1
+    }
+   ],
+   "updates_applied_total": 3,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "D1",
+   "story": "E062",
+   "arm": "parent",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 20,
+   "correction_turns": [
+    7,
+    10
+   ],
+   "added_f_total": 33,
+   "facts_store_end": 47,
+   "capture_ratio": 1.65,
+   "overstore_ratio": 2.35,
+   "correction_update_hits": "1/2",
+   "updates_at_corr": [
+    {
+     "turn": 7,
+     "applied_in_window": 0
+    },
+    {
+     "turn": 10,
+     "applied_in_window": 1
+    }
+   ],
+   "updates_applied_total": 3,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "E1",
+   "story": "E065",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 16,
+   "correction_turns": [
+    9,
+    12,
+    14
+   ],
+   "added_f_total": 37,
+   "facts_store_end": 52,
+   "capture_ratio": 2.31,
+   "overstore_ratio": 3.25,
+   "correction_update_hits": "2/3",
+   "updates_at_corr": [
+    {
+     "turn": 9,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 12,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 14,
+     "applied_in_window": 0
+    }
+   ],
+   "updates_applied_total": 6,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "E1",
+   "story": "E065",
+   "arm": "parent",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 16,
+   "correction_turns": [
+    9,
+    12,
+    14
+   ],
+   "added_f_total": 37,
+   "facts_store_end": 51,
+   "capture_ratio": 2.31,
+   "overstore_ratio": 3.19,
+   "correction_update_hits": "2/3",
+   "updates_at_corr": [
+    {
+     "turn": 9,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 12,
+     "applied_in_window": 2
+    },
+    {
+     "turn": 14,
+     "applied_in_window": 0
+    }
+   ],
+   "updates_applied_total": 6,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "E1",
+   "story": "E066",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    7,
+    11,
+    12
+   ],
+   "added_f_total": 38,
+   "facts_store_end": 48,
+   "capture_ratio": 2.53,
+   "overstore_ratio": 3.2,
+   "correction_update_hits": "2/3",
+   "updates_at_corr": [
+    {
+     "turn": 7,
+     "applied_in_window": 2
+    },
+    {
+     "turn": 11,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 12,
+     "applied_in_window": 0
+    }
+   ],
+   "updates_applied_total": 6,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "E1",
+   "story": "E066",
+   "arm": "parent",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    7,
+    11,
+    12
+   ],
+   "added_f_total": 35,
+   "facts_store_end": 45,
+   "capture_ratio": 2.33,
+   "overstore_ratio": 3.0,
+   "correction_update_hits": "2/3",
+   "updates_at_corr": [
+    {
+     "turn": 7,
+     "applied_in_window": 2
+    },
+    {
+     "turn": 11,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 12,
+     "applied_in_window": 0
+    }
+   ],
+   "updates_applied_total": 7,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  }
+ ]
+}

@@ -1,0 +1,55 @@
+{
+  "authorization_id": "AUTH-V5-CTX-20261025-01",
+  "authorized": true,
+  "status": "CLOSED",
+  "kind": "signed_authorization",
+  "granted_by": "user natural-language approval 2026-10-25 09:37 (Asia/Shanghai)",
+  "approval_text": "批准 BATCH-V5-CTX-20261025：原版 reference_product_v1 vs v5_purpose_aligned，候选冻结身份 ef855510，E007/E008/E009各8位×2臂，最多48次真实生成。固定17770/v1、dsf、温度0.7，失败停批，无重试、补跑、第三臂或自动judge。",
+  "scope": {
+    "batch_id": "BATCH-V5-CTX-20261025",
+    "arms": [
+      "reference_product_v1",
+      "v5_purpose_aligned"
+    ],
+    "episodes": [
+      "E007",
+      "E008",
+      "E009"
+    ],
+    "attempts_per_arm": 24,
+    "total_hard_cap": 48,
+    "third_arm": false,
+    "auto_judge": false,
+    "no_auto_retry": true,
+    "no_makeup_pairing": true,
+    "fail_fast_on_transmission_error": true,
+    "separate_from": "AUTH-R2-CTX-20261024-01（已 authorization_closed，48/48 耗尽，不得复活/挪用/补跑）"
+  },
+  "real_endpoint": {
+    "api_base": "http://127.0.0.1:17770/v1",
+    "model": "dsf",
+    "temperature": 0.7,
+    "max_attempts": 48
+  },
+  "frozen_bindings": {
+    "plan": "refs/experiment_protocol_20261023/v5_next_batch_20261025/INTERLEAVE_PLAN.json",
+    "parent_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+    "candidate_identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+    "candidate_mechanism_sha256": "422ec2277b7a6d7801f61c8c17701f1fa3d7a8cda8d8ed01aef6c9101b32e2cf",
+    "candidate_format_sha256": "fe5221b5bdc4c00a5e8837841140e778fc7052ab38ac8043f8f4d1f16d007eb0",
+    "candidate_identity_note": "v5_purpose_aligned 整套用途对齐新身份(继承 r2 三护栏+目标作用域+简单事件记忆;analysis→{}删未消费摘要;通用事实/行动边界), 独立复核 v5_independent_review_20261025 已签收 ef855510…、无文件漂移。非 r2 37076a76。",
+    "cards_path": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+    "input_fairness_capture": "E007/E008/E009 双方逐轮收到公开种子、旧永久邀约目标未残留、妹妹归属保留、修电脑既有承诺无日期(reference vs v5 完整值 capture 双校, real_model_calls=0)"
+  },
+  "budget_ledger": "logs/auth_budget/AUTH-V5-CTX-20261025-01.jsonl",
+  "scheduling": "tools/exam_interleave_plan.execute_plan(mode=live) 逐 slot 交错;整批 ensure_batch(48) 首发预检;fail_fast;no_makeup_pairing;no_auto_retry",
+  "selection_criteria_pre_registered": "质量收益路线:核心互动/事实/归属/事项状态能力实质改善且其它关键维度无实质退化;效率收益路线:质量在预定可接受范围内相当而总资源/等待/维护复杂度实质改善即支持开发保留。省token但等待更长须明确交易,不把省量统称提速。严重事实/状态错误或首选交付退化不被省token抵消。归因诚实:本批整套v5对原版,不单独宣称删analysis或某条护栏因果;不把不同故事上r2与v5数字相减。E008/E009为新增公开实跑覆盖、非未见泛化。空analysis遵守率是实现遵从、非聊天胜负。",
+  "notes": "授权级持久账本以 authorization_id 为键;换 run/进程/文件路径不获新额度;CLOSED/超额拒绝。真实调用 48 硬上限;不含 judge/第三臂/旧批额度。完成或 fail-fast 停止后追加 authorization_closed。",
+  "closed_reason": "48/48 真实生成额度耗尽且 0 传输失败；批次已由 execute_plan 正常收口（logs/v5_ctx_live_20261025.DONE.json），按执行书 §6.1 关闭本授权。账本已追加 authorization_closed，本额度不可复活/挪用/补跑。",
+  "closure_evidence": {
+    "ledger": "logs/auth_budget/AUTH-V5-CTX-20261025-01.jsonl",
+    "done_marker": "logs/v5_ctx_live_20261025.DONE.json",
+    "independent_recompute": "refs/experiment_protocol_20261023/v5_next_batch_20261025/V5_INDEPENDENT_RESULTS.json",
+    "verdict": "refs/experiment_protocol_20261023/v5_next_batch_20261025/V5_VERDICT.md"
+  }
+}

@@ -1,0 +1,428 @@
+{
+ "E061": {
+  "story": "E061",
+  "arm": "candidate",
+  "turns_dumped": 24,
+  "facts_final_n": 41,
+  "gt_n": 19,
+  "capture": "18/19",
+  "capture_rate": 0.95,
+  "capture_detail": [
+   {
+    "fid": "S061_F01",
+    "turn": 1,
+    "relation": "病情",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.65
+   },
+   {
+    "fid": "S061_F02",
+    "turn": 2,
+    "relation": "建议",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.8
+   },
+   {
+    "fid": "S061_F03",
+    "turn": 3,
+    "relation": "安排",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.8
+   },
+   {
+    "fid": "S061_F04",
+    "turn": 3,
+    "relation": "要求",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.75
+   },
+   {
+    "fid": "S061_F05",
+    "turn": 5,
+    "relation": "查证",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.61
+   },
+   {
+    "fid": "S061_F06",
+    "turn": 6,
+    "relation": "主张",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.95
+   },
+   {
+    "fid": "S061_F07",
+    "turn": 7,
+    "relation": "未定",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.82
+   },
+   {
+    "fid": "S061_F08",
+    "turn": 8,
+    "relation": "更正",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.73
+   },
+   {
+    "fid": "S061_F09",
+    "turn": 8,
+    "relation": "更正",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.78
+   },
+   {
+    "fid": "S061_F10",
+    "turn": 9,
+    "relation": "冲突",
+    "captured": true,
+    "latency_turns": -1,
+    "best_overlap": 0.61
+   },
+   {
+    "fid": "S061_F11",
+    "turn": 11,
+    "relation": "决定",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.88
+   },
+   {
+    "fid": "S061_F12",
+    "turn": 13,
+    "relation": "加项",
+    "captured": true,
+    "latency_turns": -5,
+    "best_overlap": 0.62
+   },
+   {
+    "fid": "S061_F13",
+    "turn": 14,
+    "relation": "结果",
+    "captured": true,
+    "latency_turns": -13,
+    "best_overlap": 0.6
+   },
+   {
+    "fid": "S061_F14",
+    "turn": 15,
+    "relation": "更正",
+    "captured": false,
+    "latency_turns": null,
+    "best_overlap": 0.0
+   },
+   {
+    "fid": "S061_F15",
+    "turn": 17,
+    "relation": "口径",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 1.0
+   },
+   {
+    "fid": "S061_F16",
+    "turn": 17,
+    "relation": "偏方收束",
+    "captured": true,
+    "latency_turns": -11,
+    "best_overlap": 0.75
+   },
+   {
+    "fid": "S061_F17",
+    "turn": 18,
+    "relation": "安排",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.81
+   },
+   {
+    "fid": "S061_F18",
+    "turn": 19,
+    "relation": "状态更新",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.86
+   },
+   {
+    "fid": "S061_F19",
+    "turn": 21,
+    "relation": "存档",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.75
+   }
+  ],
+  "latency_turns_list": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   -1,
+   0,
+   -5,
+   -13,
+   0,
+   -11,
+   0,
+   0,
+   0
+  ],
+  "precision_class": {
+   "gt": 18,
+   "seed": 15,
+   "unmatched": 8
+  },
+  "unmatched_sample": [
+   {
+    "fid": "f_0011",
+    "text": "她把复查改到了 5 月 6 号上午（原 5 月 20 号作废），超声和抽血都在早上",
+    "st": "confirmed"
+   },
+   {
+    "fid": "f_0014",
+    "text": "她把工牌后面的复查单换成了8月6号的新单，旧单归档",
+    "st": "confirmed"
+   },
+   {
+    "fid": "f_0015",
+    "text": "我查到的口径是3类结节常规先观察6到12个月，非医生意见，以面诊为准",
+    "st": "confirmed"
+   },
+   {
+    "fid": "f_0019",
+    "text": "医生助理来电话说有加号，问她5月6号上午能不能来，她答应了",
+    "st": "confirmed"
+   },
+   {
+    "fid": "f_0024",
+    "text": "她明早7点半到医院，在挂号机取号",
+    "st": "confirmed"
+   },
+   {
+    "fid": "f_0029",
+    "text": "她说 5 月 20 号那个号白约了，亏了 30 块挂号费",
+    "st": "confirmed"
+   },
+   {
+    "fid": "f_0039",
+    "text": "她提前挂上了8月6号的号，还是同一位医生",
+    "st": "confirmed"
+   },
+   {
+    "fid": "f_0040",
+    "text": "明天（2026-06-12）七点老地方见面，她下班直接过去",
+    "st": "confirmed"
+   }
+  ],
+  "corrections_superseded": "0/3",
+  "corrections_detail": [
+   {
+    "fid": "S061_F08",
+    "turn": 8,
+    "value": "复查改到5月6日上午（加号成功）",
+    "update_recorded": false
+   },
+   {
+    "fid": "S061_F09",
+    "turn": 8,
+    "value": "5月6日当天超声和抽血都安排在早上",
+    "update_recorded": false
+   },
+   {
+    "fid": "S061_F14",
+    "turn": 15,
+    "value": "随访间隔改为3个月，下次8月6日，还要抽血",
+    "update_recorded": false
+   }
+  ]
+ },
+ "E067": {
+  "story": "E067",
+  "arm": "candidate",
+  "turns_dumped": 24,
+  "facts_final_n": 39,
+  "gt_n": 12,
+  "capture": "8/12",
+  "capture_rate": 0.67,
+  "capture_detail": [
+   {
+    "fid": "S067_F01",
+    "turn": 1,
+    "relation": "事件",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.83
+   },
+   {
+    "fid": "S067_F02",
+    "turn": 2,
+    "relation": "结构",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.84
+   },
+   {
+    "fid": "S067_F03",
+    "turn": 3,
+    "relation": "知识",
+    "captured": true,
+    "latency_turns": 1,
+    "best_overlap": 0.67
+   },
+   {
+    "fid": "S067_F04",
+    "turn": 4,
+    "relation": "期限",
+    "captured": false,
+    "latency_turns": null,
+    "best_overlap": 0.0
+   },
+   {
+    "fid": "S067_F05",
+    "turn": 5,
+    "relation": "知识",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.65
+   },
+   {
+    "fid": "S067_F06",
+    "turn": 7,
+    "relation": "更正",
+    "captured": false,
+    "latency_turns": null,
+    "best_overlap": 0.0
+   },
+   {
+    "fid": "S067_F07",
+    "turn": 10,
+    "relation": "决策",
+    "captured": true,
+    "latency_turns": -9,
+    "best_overlap": 0.79
+   },
+   {
+    "fid": "S067_F08",
+    "turn": 11,
+    "relation": "更正",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.65
+   },
+   {
+    "fid": "S067_F09",
+    "turn": 12,
+    "relation": "更正",
+    "captured": false,
+    "latency_turns": null,
+    "best_overlap": 0.0
+   },
+   {
+    "fid": "S067_F10",
+    "turn": 13,
+    "relation": "知识",
+    "captured": false,
+    "latency_turns": null,
+    "best_overlap": 0.0
+   },
+   {
+    "fid": "S067_F11",
+    "turn": 16,
+    "relation": "事件",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.7
+   },
+   {
+    "fid": "S067_F12",
+    "turn": 18,
+    "relation": "收尾",
+    "captured": true,
+    "latency_turns": 0,
+    "best_overlap": 0.8
+   }
+  ],
+  "latency_turns_list": [
+   0,
+   0,
+   1,
+   0,
+   -9,
+   0,
+   0,
+   0
+  ],
+  "precision_class": {
+   "gt": 9,
+   "seed": 24,
+   "unmatched": 6
+  },
+  "unmatched_sample": [
+   {
+    "fid": "f_0012",
+    "text": "答复截止 12 月 19 日（原 12 月 15 日下午六点，HR 主动延期）",
+    "st": "confirmed"
+   },
+   {
+    "fid": "f_0015",
+    "text": "新 offer 的竞业补偿为月薪 30%，补 6 个月",
+    "st": "confirmed"
+   },
+   {
+    "fid": "f_0023",
+    "text": "她细看 offer 邮件，职级写的是 P6+ 而非 P6，之前看岔了",
+    "st": "confirmed"
+   },
+   {
+    "fid": "f_0025",
+    "text": "新 offer 的 base 实际是 2 万 45，她此前看成了 2 万 4",
+    "st": "confirmed"
+   },
+   {
+    "fid": "f_0026",
+    "text": "她明天去原司提离职流程（2026-12-21）",
+    "st": "completed"
+   },
+   {
+    "fid": "f_0036",
+    "text": "她转正答辩通过，以 P6+ 顺利转正",
+    "st": "confirmed"
+   }
+  ],
+  "corrections_superseded": "0/3",
+  "corrections_detail": [
+   {
+    "fid": "S067_F06",
+    "turn": 7,
+    "value": "回复期限延至12月19日18点",
+    "update_recorded": false
+   },
+   {
+    "fid": "S067_F08",
+    "turn": 11,
+    "value": "职级从P6更正为P6+（邮件确认）",
+    "update_recorded": false
+   },
+   {
+    "fid": "S067_F09",
+    "turn": 12,
+    "value": "base实为2.45万（她之前看错）",
+    "update_recorded": false
+   }
+  ]
+ }
+}

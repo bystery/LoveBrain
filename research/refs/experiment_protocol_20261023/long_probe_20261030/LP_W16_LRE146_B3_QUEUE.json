@@ -1,0 +1,143 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W16_LRE146",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W16_LRE146_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w16_unc_live_20261102",
+ "n_queued": 4,
+ "queue": [
+  {
+   "pair_id": "LP:LRE146:LRE146_T35",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T35",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT出现无据确定化/疑似编造：以英文字数混入且引入此前对话未提及的“杂牌拆电池罩”情节，属编造已发生事项",
+   "key_quote": "接口严丝合缝最省心。姥姥愿意自己出门，这一百八就没白花。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "杂牌拆电池罩"
+     ],
+     "found_where": {
+      "杂牌拆电池罩": null
+     },
+     "nowhere": [
+      "杂牌拆电池罩"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T05",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T05",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT将'大件送货上门一般能约安装''安装和签收都有售后'等未核实的旗舰店服务当作可确定的事实给出，而卡面明示'是否含上门安装未明'，属无据确定化；LEFT虽也未查证，但用'可以让''先看说明书'等不确定表述，且要求先截图核实。",
+   "key_quote": "LEFT：安装可以让门店师傅上门，或者你看说明书调好再给姥姥演示一遍；RIGHT：一般能约安装时间……安装和签收都有售后",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T12",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T12",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "LEFT：值就对了。姥姥能自己出门溜达，比啥都强；RIGHT误作“姥爷”",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 0,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T27",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T27",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "你链接一发，剩下让人家自己比，做得对。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

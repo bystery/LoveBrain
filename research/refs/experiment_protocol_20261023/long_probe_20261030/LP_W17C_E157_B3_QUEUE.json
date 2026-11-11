@@ -1,0 +1,41 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W17C_E157",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W17C_E157_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w17c_merge_live_20261103",
+ "n_queued": 1,
+ "queue": [
+  {
+   "pair_id": "LP:E157:E157_T06",
+   "order": "main",
+   "story": "E157",
+   "cid": "E157_T06",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "活动还办不办没人说准，别把下周的周末再押上去——等官方明确写了恢复时间再说",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

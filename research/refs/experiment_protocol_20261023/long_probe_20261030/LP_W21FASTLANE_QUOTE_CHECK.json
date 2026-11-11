@@ -1,0 +1,2374 @@
+{
+ "kind": "quote_hard_check",
+ "review": "LP_W21FASTLANE_NINEDIM_REVIEW.json",
+ "batch_dirs": [
+  "logs/w21_fastlane_live_20261104"
+ ],
+ "summary": {
+  "n": 50,
+  "empty_quote": 2,
+  "strict_hit": 42,
+  "loose_hit": 42,
+  "severe_unverified": 1,
+  "class_counts": {
+   "note_like": 1,
+   "fragments_all_hit": 3,
+   "fragments_miss": 4,
+   "no_hit": 0
+  }
+ },
+ "strict_rate": 0.84,
+ "hard_hallucination": [
+  {
+   "pair_id": "LP:E157:E157_T02",
+   "class": "fragments_all_hit",
+   "quote": "单品立减、旧机另算，这俩确实是两笔账，你别混着算……这单就先别定",
+   "loose": false
+  },
+  {
+   "pair_id": "LP:E157:E157_T03",
+   "class": "fragments_miss",
+   "quote": "官方小程序那个结果多半只代表'官方渠道不收你这台'，跟商场活动能不能补贴是两回事",
+   "loose": false
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T10",
+   "class": "fragments_miss",
+   "quote": "单号不急，先忙婚礼 / 别站门口回消息了",
+   "loose": false
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T19",
+   "class": "fragments_all_hit",
+   "quote": "笋干我看见了。米酒放左角……你们上车吧，这就出发了。",
+   "loose": false
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T21",
+   "class": "fragments_miss",
+   "quote": "四点半酒店门口，我不提前，慢点开；绕了一圈又回车上，跟着咱们返程",
+   "loose": false
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T23",
+   "class": "note_like",
+   "quote": "LEFT：'我这周去不了——车得跑临州，我爸妈那边也早说好要用'",
+   "loose": false
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T31",
+   "class": "fragments_all_hit",
+   "quote": "行，那我走滨江路，上回那条我熟……我把导航改过来。",
+   "loose": false
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T36",
+   "class": "fragments_miss",
+   "quote": "三百二我这边记的也是这个数，那顿就别再单算",
+   "loose": false
+  }
+ ],
+ "verdicts_annotated": [
+  {
+   "pair_id": "LP:E157:E157_T01",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "商场说的“小一千”，是补贴直接减现还是给券？这两种差得有点远。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:E157:E157_T02",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "单品立减、旧机另算，这俩确实是两笔账，你别混着算……这单就先别定",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": false,
+    "loose": false,
+    "where": null,
+    "class": "fragments_all_hit"
+   }
+  },
+  {
+   "pair_id": "LP:E157:E157_T03",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "官方小程序那个结果多半只代表'官方渠道不收你这台'，跟商场活动能不能补贴是两回事",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": false,
+    "loose": false,
+    "where": null,
+    "class": "fragments_miss"
+   }
+  },
+  {
+   "pair_id": "LP:E157:E157_T04",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "门店能现场评估的是旧机估价，不一定能推翻补贴名单",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:E157:E157_T05",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "下周六几点开门？要排的话得起早，你把开门时间和要带的材料列个清单",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:E157:E157_T06",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "先别再跑门店了，等官方通知出来再说。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:E157:E157_T07",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "明天有空我陪你先去验一趟，能走补贴就走，走不了再拿这张报价去比双十一",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:E157:E157_T08",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "恢复出厂前我帮你核一下备份有没有漏，别到了店里才发现少东西",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:E157:E157_T09",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "周六你先排号验机、备份确认好再恢复出厂，弄完给我信儿，我提前去占位。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:E157:E157_T10",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "六百三，还多三十，这波是你自己跑出来的。手一抖那段我能想象，现在新机在手上，魂可以回来了。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:E157:E157_T11",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "办完当场对着小票核一遍实抵金额，你这次多那三十就是核出来的",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:E157:E157_T12",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "UNPARSEABLE",
+   "dims": {
+    "candidate": {},
+    "parent": {}
+   },
+   "severe": {
+    "candidate": null,
+    "parent": null,
+    "note": ""
+   },
+   "key_quote": "",
+   "raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":3",
+   "attempts_used": 2,
+   "quote_check": {
+    "strict": null,
+    "loose": null,
+    "where": null,
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T01",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误；右侧补充后备箱余量提醒属合理告知，七点半与已知'周六上午'不冲突但为新增细节"
+   },
+   "key_quote": "空着，位置给你留。周六早上七点半地下车库B口，老地方。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T02",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "你上车前跟我说一声，我把后备箱清出个位置，鱼干到了直接放。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T03",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "八点半我先把后备箱腾一块出来，米酒玻璃瓶你拿布袋裹一下",
+   "raw": "",
+   "attempts_used": 2,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T04",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "老规矩一人八十，两个人我收一百六，别拿三个人平摊来算",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T05",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "纸箱我周六早上挪后备箱，右后座留给小满。喜糖寄快递这主意好。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T06",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "收到，八点整，小区门口见。我把后备箱先腾一下，鱼干和米酒都放得下。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T07",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，那就还是八十，八点整小区门口。纸箱我也不用挪了，省事。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T08",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 2,
+     "memory": 0,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "豆浆正好，我还没吃早饭。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T09",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，你盯着导航看路况，滨江路要是也堵，随时跟我说，我拐老街那条。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T10",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无越界或错项；RIGHT 多了“别站门口回消息”的关心与具体动作，略增情绪与主动性"
+   },
+   "key_quote": "单号不急，先忙婚礼 / 别站门口回消息了",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": false,
+    "loose": false,
+    "where": null,
+    "class": "fragments_miss"
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T11",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "收到，四点半酒店门口，我车就停大堂那一侧。散席人多，别落下东西。",
+   "raw": "",
+   "attempts_used": 2,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T12",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "温泉小镇那个市集具体哪天，你把日子发我，我好定要不要跑一趟。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T13",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "盒子没压坏说明寄得稳当。小满那事也让她别挂心上，她没坐成车，我油费也没亏",
+   "raw": "",
+   "attempts_used": 2,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T14",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": "RIGHT把旧八十规矩套到小满全包的新说法上，与卡面要求的“确认旧五十五口径不再沿用”相悖，且自行确定八点整集合（未知项）"
+   },
+   "key_quote": "她全包我反倒不好接，还是老规矩",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T15",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": "右侧把待澄清的“老时间”直接当八点确定复述，属于无依据的确定化；左侧先反问确认是八点还是八点半，符合卡面要求"
+   },
+   "key_quote": "14 号周六还是八点、小区门口？",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T16",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "UNPARSEABLE",
+   "dims": {
+    "candidate": {},
+    "parent": {}
+   },
+   "severe": {
+    "candidate": null,
+    "parent": null,
+    "note": ""
+   },
+   "key_quote": "",
+   "raw": "{\"L\":{\"goal\":3,\"fact\":2,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":2",
+   "attempts_used": 2,
+   "quote_check": {
+    "strict": null,
+    "loose": null,
+    "where": null,
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T17",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均正确承接阿蕾取消，费用回滚两人各八十，纸箱不必挪动；无编造、无无据确定化。差异仅在R复述'改了两回'的口径，均属合理。"
+   },
+   "key_quote": "行，俩人，一人八十，周六八点老地方",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T18",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "箱子放脚边可以，但别堆到她自己腿伸不直，晕车更难受。喜糖她执意带就带，后备箱还有地方。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T19",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "笋干我看见了。米酒放左角……你们上车吧，这就出发了。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": false,
+    "loose": false,
+    "where": null,
+    "class": "fragments_all_hit"
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T20",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，我带你们抄老路绕过去，这截我熟。小满靠着别动，晕车别硬撑，难受就说。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T21",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "四点半酒店门口，我不提前，慢点开；绕了一圈又回车上，跟着咱们返程",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": false,
+    "loose": false,
+    "where": null,
+    "class": "fragments_miss"
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T22",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "钱我还没收到，也不急，等她方便再说",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T23",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 2,
+     "time": 0,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": true,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "LEFT：'我这周去不了——车得跑临州，我爸妈那边也早说好要用'",
+   "raw": "",
+   "attempts_used": 1,
+   "severe_unverified": true,
+   "quote_check": {
+    "strict": false,
+    "loose": false,
+    "where": null,
+    "class": "note_like"
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T24",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "28号我空着，就按原计划走。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T25",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "五十五那笔没定过，是小满那天自己提的，后来她不去了就翻了。",
+   "raw": "",
+   "attempts_used": 2,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T26",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "八十一个人，二十八号老时间老地方。五十五那页就当没见过。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T27",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，真空包成那样应该就没事了。28号早上给她塞后备箱",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T28",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，九点一刻就九点一刻，晚点走我还多睡会儿。小满九点才下班，那她自己直接过来，还是我去哪儿接她？",
+   "raw": "",
+   "attempts_used": 2,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T29",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均锁定九点一刻、无旧时间复活，无严重错误"
+   },
+   "key_quote": "九点一刻，记下了。她九点能下来正好，我不往前赶。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T30",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "米酒先放着，等下我帮你搬。小满那盒喜糖当心别压着。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T31",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，那我走滨江路，上回那条我熟……我把导航改过来。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": false,
+    "loose": false,
+    "where": null,
+    "class": "fragments_all_hit"
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T32",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "米酒就按阿姨说的先给一罐，另一罐我给你看着",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_pare",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T33",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "临州站绕进去接人得等，回来的点就说不准了。你先问一句她几点到站，早到就顺，等太久的就算了。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T34",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "不过也确实该在车身上贴个价目表",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T35",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "第二罐留着过年正好，到时候我再跑一趟也不麻烦。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T36",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "三百二我这边记的也是这个数，那顿就别再单算",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": false,
+    "loose": false,
+    "where": null,
+    "class": "fragments_miss"
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T37",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未把未定日期当确定，也无编造安排；LEFT 略短、未明确回留档期，RIGHT 有具体下一步但把'提前定'复述成对方口径、略加强调"
+   },
+   "key_quote": "提前半个月打招呼，小满这回倒是学乖了。日子定了没？",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T38",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "不嫌烦。鱼干、米酒、两袋干货，都是回临州顺手的事，你排好哪趟给我。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T39",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "周六上午我一般往临州跑，顺路拐一下就到，你放着我过去拿。",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T40",
+   "candidate_arm": "window_expand_b_norecap_uc_retry",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "先说清楚三件事：哪天的市集、摆在哪个位置、车尾箱朝哪边开",
+   "raw": "",
+   "attempts_used": 1,
+   "quote_check": {
+    "strict": true,
+    "loose": true,
+    "where": "reply_cand",
+    "class": null
+   }
+  }
+ ]
+}

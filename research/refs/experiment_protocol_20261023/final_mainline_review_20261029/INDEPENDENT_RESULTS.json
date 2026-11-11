@@ -1,0 +1,454 @@
+{
+  "new_model_calls": 0,
+  "batches": [
+    {
+      "batch": "S1",
+      "ledger": {
+        "authorization_scope": 1,
+        "attempt_started": 96,
+        "attempt_completed": 96
+      },
+      "aggregate_rc": 0,
+      "binding": {
+        "status": "VERIFIED_ALL",
+        "binding_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/S1_SCORE_BINDING.json",
+        "digest_sha256": "4741e9e8ed4cfe7eeb34ff1dd990aceb8b3b99ee836d1042a2161baf96f93cf4",
+        "scores_declared_digest": "4741e9e8ed4cfe7eeb34ff1dd990aceb8b3b99ee836d1042a2161baf96f93cf4",
+        "verified_positions": 48,
+        "rejected_positions": 0,
+        "rejected_detail": {},
+        "binding_positions_not_in_skeleton": 0,
+        "checked_fields": [
+          "run_id",
+          "case_input_sha256",
+          "raw_reply_sha256",
+          "primary_sha256",
+          "raw_file_sha256（磁盘上的 reply_raw.txt）"
+        ]
+      },
+      "paired": {
+        "wins_candidate": 32,
+        "wins_parent": 4,
+        "ties": 12,
+        "n": 48
+      },
+      "paired_same_as_worker": true,
+      "unjudged": [],
+      "dimension_keys": [
+        "boundary",
+        "emotion_relation",
+        "factuality",
+        "goal",
+        "initiative",
+        "interaction",
+        "memory_use",
+        "time_state"
+      ]
+    },
+    {
+      "batch": "S2",
+      "ledger": {
+        "authorization_scope": 1,
+        "attempt_started": 24,
+        "attempt_completed": 24
+      },
+      "aggregate_rc": 0,
+      "binding": {
+        "status": "VERIFIED_ALL",
+        "binding_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/S2_SCORE_BINDING.json",
+        "digest_sha256": "320bfc41846af50033ba200fe3b482ae184bd2ed5220cd7ddba3196738c21e99",
+        "scores_declared_digest": "320bfc41846af50033ba200fe3b482ae184bd2ed5220cd7ddba3196738c21e99",
+        "verified_positions": 12,
+        "rejected_positions": 0,
+        "rejected_detail": {},
+        "binding_positions_not_in_skeleton": 0,
+        "checked_fields": [
+          "run_id",
+          "case_input_sha256",
+          "raw_reply_sha256",
+          "primary_sha256",
+          "raw_file_sha256（磁盘上的 reply_raw.txt）"
+        ]
+      },
+      "paired": {
+        "wins_candidate": 9,
+        "wins_parent": 0,
+        "ties": 1,
+        "n": 10
+      },
+      "paired_same_as_worker": true,
+      "unjudged": [
+        "AK09_T01",
+        "AK12_T01"
+      ],
+      "dimension_keys": [
+        "boundary",
+        "emotion_relation",
+        "factuality",
+        "goal",
+        "initiative",
+        "interaction",
+        "memory_use",
+        "time_state"
+      ]
+    },
+    {
+      "batch": "S2R",
+      "ledger": {
+        "authorization_scope": 1,
+        "attempt_started": 24,
+        "attempt_completed": 24
+      },
+      "aggregate_rc": 0,
+      "binding": {
+        "status": "VERIFIED_ALL",
+        "binding_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/S2R_SCORE_BINDING.json",
+        "digest_sha256": "ddd271834647a518dd3dae83205feb36da101af02c2accbcf6e71226de67facb",
+        "scores_declared_digest": "ddd271834647a518dd3dae83205feb36da101af02c2accbcf6e71226de67facb",
+        "verified_positions": 12,
+        "rejected_positions": 0,
+        "rejected_detail": {},
+        "binding_positions_not_in_skeleton": 0,
+        "checked_fields": [
+          "run_id",
+          "case_input_sha256",
+          "raw_reply_sha256",
+          "primary_sha256",
+          "raw_file_sha256（磁盘上的 reply_raw.txt）"
+        ]
+      },
+      "paired": {
+        "wins_candidate": 7,
+        "wins_parent": 0,
+        "ties": 3,
+        "n": 10
+      },
+      "paired_same_as_worker": true,
+      "unjudged": [
+        "AK09_T01",
+        "AK12_T01"
+      ],
+      "dimension_keys": [
+        "boundary",
+        "emotion_relation",
+        "factuality",
+        "goal",
+        "initiative",
+        "interaction",
+        "memory_use",
+        "time_state"
+      ]
+    },
+    {
+      "batch": "S3",
+      "ledger": {
+        "authorization_scope": 1,
+        "attempt_started": 24,
+        "attempt_completed": 24
+      },
+      "aggregate_rc": 0,
+      "binding": {
+        "status": "VERIFIED_ALL",
+        "binding_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/S3_SCORE_BINDING.json",
+        "digest_sha256": "f17d21a00c7b104745cec6c37732f847bfd544ff20bc38d922ec1015adc920a7",
+        "scores_declared_digest": "f17d21a00c7b104745cec6c37732f847bfd544ff20bc38d922ec1015adc920a7",
+        "verified_positions": 12,
+        "rejected_positions": 0,
+        "rejected_detail": {},
+        "binding_positions_not_in_skeleton": 0,
+        "checked_fields": [
+          "run_id",
+          "case_input_sha256",
+          "raw_reply_sha256",
+          "primary_sha256",
+          "raw_file_sha256（磁盘上的 reply_raw.txt）"
+        ]
+      },
+      "paired": {
+        "wins_candidate": 2,
+        "wins_parent": 3,
+        "ties": 5,
+        "n": 10
+      },
+      "paired_same_as_worker": true,
+      "unjudged": [
+        "AK09_T01",
+        "AK12_T01"
+      ],
+      "dimension_keys": [
+        "boundary",
+        "emotion_relation",
+        "factuality",
+        "goal",
+        "initiative",
+        "interaction",
+        "memory_use",
+        "time_state"
+      ]
+    },
+    {
+      "batch": "D1",
+      "ledger": {
+        "authorization_scope": 1,
+        "attempt_started": 32,
+        "attempt_completed": 32
+      },
+      "aggregate_rc": 0,
+      "binding": {
+        "status": "VERIFIED_ALL",
+        "binding_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/D1_SCORE_BINDING.json",
+        "digest_sha256": "a46c71174c8d34b6380fb19eca80886718ec8f327613fa7471acb5f1d9e41c15",
+        "scores_declared_digest": "a46c71174c8d34b6380fb19eca80886718ec8f327613fa7471acb5f1d9e41c15",
+        "verified_positions": 16,
+        "rejected_positions": 0,
+        "rejected_detail": {},
+        "binding_positions_not_in_skeleton": 0,
+        "checked_fields": [
+          "run_id",
+          "case_input_sha256",
+          "raw_reply_sha256",
+          "primary_sha256",
+          "raw_file_sha256（磁盘上的 reply_raw.txt）"
+        ]
+      },
+      "paired": {
+        "wins_candidate": 5,
+        "wins_parent": 3,
+        "ties": 5,
+        "n": 13
+      },
+      "paired_same_as_worker": true,
+      "unjudged": [
+        "D01_T08",
+        "D02_T06",
+        "D02_T08"
+      ],
+      "dimension_keys": [
+        "attribution",
+        "boundary",
+        "emotion_relation",
+        "factuality",
+        "goal",
+        "initiative",
+        "interaction",
+        "memory_use",
+        "time_state"
+      ]
+    },
+    {
+      "batch": "R3A",
+      "ledger": {
+        "authorization_scope": 1,
+        "attempt_started": 48,
+        "attempt_completed": 48
+      },
+      "aggregate_rc": 0,
+      "binding": {
+        "status": "VERIFIED_ALL",
+        "binding_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/R3A_SCORE_BINDING.json",
+        "digest_sha256": "ea0489d10641e44dd50e769015cb517b583de20ddfd441c59ead9690e0a6c202",
+        "scores_declared_digest": "ea0489d10641e44dd50e769015cb517b583de20ddfd441c59ead9690e0a6c202",
+        "verified_positions": 24,
+        "rejected_positions": 0,
+        "rejected_detail": {},
+        "binding_positions_not_in_skeleton": 0,
+        "checked_fields": [
+          "run_id",
+          "case_input_sha256",
+          "raw_reply_sha256",
+          "primary_sha256",
+          "raw_file_sha256（磁盘上的 reply_raw.txt）"
+        ]
+      },
+      "paired": {
+        "wins_candidate": 0,
+        "wins_parent": 1,
+        "ties": 20,
+        "n": 21
+      },
+      "paired_same_as_worker": true,
+      "unjudged": [
+        "D01_T08",
+        "D02_T06",
+        "D02_T08"
+      ],
+      "dimension_keys": [
+        "attribution",
+        "boundary",
+        "emotion_relation",
+        "factuality",
+        "goal",
+        "initiative",
+        "interaction",
+        "memory_use",
+        "time_state"
+      ]
+    },
+    {
+      "batch": "R3B",
+      "ledger": {
+        "authorization_scope": 1,
+        "attempt_started": 12,
+        "attempt_completed": 12
+      },
+      "aggregate_rc": 0,
+      "binding": {
+        "status": "VERIFIED_ALL",
+        "binding_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/R3B_SCORE_BINDING.json",
+        "digest_sha256": "69bc724fbbd2fa61c37ef496883360826bd21f88f9d9a1cfe04bc2e7abc0e055",
+        "scores_declared_digest": "69bc724fbbd2fa61c37ef496883360826bd21f88f9d9a1cfe04bc2e7abc0e055",
+        "verified_positions": 6,
+        "rejected_positions": 0,
+        "rejected_detail": {},
+        "binding_positions_not_in_skeleton": 0,
+        "checked_fields": [
+          "run_id",
+          "case_input_sha256",
+          "raw_reply_sha256",
+          "primary_sha256",
+          "raw_file_sha256（磁盘上的 reply_raw.txt）"
+        ]
+      },
+      "paired": {
+        "wins_candidate": 1,
+        "wins_parent": 0,
+        "ties": 5,
+        "n": 6
+      },
+      "paired_same_as_worker": true,
+      "unjudged": [],
+      "dimension_keys": [
+        "boundary",
+        "emotion_relation",
+        "factuality",
+        "goal",
+        "initiative",
+        "memory_use",
+        "time_state"
+      ]
+    }
+  ],
+  "core_action_cases": [
+    {
+      "batch": "D1",
+      "case": "D01_T08",
+      "arm": "reference_product_v1",
+      "primary": "行，睡吧。",
+      "action": null,
+      "decline_reason": null
+    },
+    {
+      "batch": "D1",
+      "case": "D01_T08",
+      "arm": "action_policy_r2",
+      "primary": null,
+      "action": "no_reply",
+      "decline_reason": "她说困了要躺下、不聊了，明确收尾，本轮安静收住，不再多推一句。"
+    },
+    {
+      "batch": "D1",
+      "case": "D02_T06",
+      "arm": "reference_product_v1",
+      "primary": "睡吧，周末的事等你妈好点再说。",
+      "action": null,
+      "decline_reason": null
+    },
+    {
+      "batch": "D1",
+      "case": "D02_T06",
+      "arm": "action_policy_r2",
+      "primary": null,
+      "action": "no_reply",
+      "decline_reason": "她已明确说困了要先不聊，且我上一句已经道过晚安，这会儿再发消息只是打扰。"
+    },
+    {
+      "batch": "D1",
+      "case": "D02_T08",
+      "arm": "reference_product_v1",
+      "primary": "行，做饭去吧。周日我按时到。",
+      "action": null,
+      "decline_reason": null
+    },
+    {
+      "batch": "D1",
+      "case": "D02_T08",
+      "arm": "action_policy_r2",
+      "primary": null,
+      "action": "no_reply",
+      "decline_reason": "她说要去给孩子做饭、不聊了，我已经道过晚安，这轮安静收住最合适。"
+    },
+    {
+      "batch": "R3A",
+      "case": "D01_T08",
+      "arm": "action_policy_r2",
+      "primary": null,
+      "action": "no_reply",
+      "decline_reason": "她说躺了不聊了，安静收住不打扰，话头留到下次她开口"
+    },
+    {
+      "batch": "R3A",
+      "case": "D01_T08",
+      "arm": "action_policy_r3",
+      "primary": "电源扛住了就行，这一天算没白折腾。躺着吧，晚安。",
+      "action": null,
+      "decline_reason": null
+    },
+    {
+      "batch": "R3A",
+      "case": "D02_T06",
+      "arm": "action_policy_r2",
+      "primary": null,
+      "action": "no_reply",
+      "decline_reason": "她已说困了先不聊，且我已回「行你先歇着」，本轮安静收住，等她再开口。"
+    },
+    {
+      "batch": "R3A",
+      "case": "D02_T06",
+      "arm": "action_policy_r3",
+      "primary": "行，周末等你妈状态稳了再说，教练那二手车的话别往心里搁，先睡。",
+      "action": null,
+      "decline_reason": null
+    },
+    {
+      "batch": "R3A",
+      "case": "D02_T08",
+      "arm": "action_policy_r2",
+      "primary": null,
+      "action": "no_reply",
+      "decline_reason": "她已明确收尾（接了娃要去做饭），且我上一句已经自然道过晚安，再发就是多余。"
+    },
+    {
+      "batch": "R3A",
+      "case": "D02_T08",
+      "arm": "action_policy_r3",
+      "primary": "熄一次火也照样补上了，周日这一趟没白跑。快去做饭吧，娃等着呢。",
+      "action": null,
+      "decline_reason": null
+    }
+  ],
+  "binding_guard_rc": 0,
+  "output_parity_rc": 0,
+  "output_parity": {
+    "raw_files": 260,
+    "old_sendable": 246,
+    "new_sendable": 247,
+    "extension_recoveries": 1,
+    "both_fail": 13,
+    "regressions": 0,
+    "invariant_failures": 0,
+    "pass": true
+  },
+  "paired_observations": 130,
+  "unique_case_ids": 82,
+  "scored_pairs": 118,
+  "excluded_pairs": 12,
+  "total_starts": 260,
+  "total_completed": 260,
+  "sources": {
+    "tools\\aggregate_s1_scorecard.py": "3a62efea50cb3b82b6e49677c3457005b72c6fd00ec4e79de02b7545485f2a59",
+    "tools\\output_repair.py": "42c82cd2222124a0727ab0e58b429e934fb30d5d00f4c2e8b3d3c85663f0a261",
+    "tools\\normalize_reply_contract.py": "427fd5a6f845e22ae963cb23617b1c7d8ff1c4e6e2961867d0b6fe18a905e5ba",
+    "candidates\\action_policy_r2\\mechanism\\mechanism.py": "24ae2791abc297f21c2a373c411f18d90ea908f1b8bf8402431f90a9c654ecbf",
+    "candidates\\action_policy_r3\\mechanism\\mechanism.py": "ff0d64b7f5414d684460f80939ffc2d32afc027c65f0dec6f2c2150023b19e85"
+  }
+}

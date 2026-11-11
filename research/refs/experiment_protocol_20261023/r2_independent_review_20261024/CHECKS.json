@@ -1,0 +1,383 @@
+{
+  "real_model_calls": 0,
+  "checks": {
+    "frozen_files_match": true,
+    "expected_arms_and_stories": true,
+    "request_is_pending_not_authorized": true,
+    "old_budget_closed_at_48": true,
+    "new_real_budget_absent": true,
+    "old_24_pairs_raw_and_input_hashes_bound": true,
+    "r2_fixtures_7": true,
+    "pending_authorization_rejected": true,
+    "same_path_capture_48": true,
+    "actual_captured_48_seed_values_fair": true
+  },
+  "frozen_drift": [],
+  "old_authorization_events": {
+    "authorization_scope": 1,
+    "attempt_started": 48,
+    "attempt_completed": 48,
+    "authorization_closed": 1
+  },
+  "candidate_identity": "eaf6d267a1b7c05ff3fafa7852aa29368f6b204b45ce469d164bbb5359d9ca75",
+  "fixture_results": [
+    {
+      "name": "g0_system_equals_v3",
+      "ok": true,
+      "detail": "system PASS: r2 build_system_prompt 与 v3 逐字节相等(2598 码元)"
+    },
+    {
+      "name": "r2_media_honest_when_no_image",
+      "ok": true,
+      "detail": "media PASS: 仅文字分享→声明无画面且禁止评价构图"
+    },
+    {
+      "name": "r2_media_with_real_image",
+      "ok": true,
+      "detail": "media PASS: 有图→按真实张数表达并附带"
+    },
+    {
+      "name": "r2_source_rule_lists_only_current_ids",
+      "ok": true,
+      "detail": "source PASS: analysis 来源限定当前 id、历史仅供回扣（治 E006_T02）"
+    },
+    {
+      "name": "r2_time_scope_guard_present",
+      "ok": true,
+      "detail": "time PASS: 跨日不继承旧空闲、职业不证明亲历（治 E005_T06）"
+    },
+    {
+      "name": "carry_goal_on_off_replace",
+      "ok": true,
+      "detail": "goal PASS: 启用进请求、关闭清空、替换不留旧目标"
+    },
+    {
+      "name": "carry_plans_persist_and_draft_not_committed",
+      "ok": true,
+      "detail": "boundary PASS: 关闭目标≠删已确认事项; 草稿不写回"
+    }
+  ],
+  "pending_auth_rejection": "PlanError: 授权无效，零派发拒绝: 授权 AUTH-R2-CTX-20261024-01 不处于 authorized=true（实为 False，status='PENDING_USER_APPROVAL'）——关闭/超额授权不得复活",
+  "seed_results": [
+    {
+      "arm": "parent",
+      "case_id": "E007_T01",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T02",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T03",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T04",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T05",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T06",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T07",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E007_T08",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E010_T01",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E010_T02",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E010_T03",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E010_T04",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E010_T05",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E010_T06",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E010_T07",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E010_T08",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E012_T01",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E012_T02",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E012_T03",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E012_T04",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E012_T05",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E012_T06",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E012_T07",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "parent",
+      "case_id": "E012_T08",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T01",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T02",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T03",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T04",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T05",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T06",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T07",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E007_T08",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E010_T01",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E010_T02",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E010_T03",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E010_T04",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E010_T05",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E010_T06",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E010_T07",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E010_T08",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E012_T01",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E012_T02",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E012_T03",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E012_T04",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E012_T05",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E012_T06",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E012_T07",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    },
+    {
+      "arm": "candidate",
+      "case_id": "E012_T08",
+      "missing_seed": [],
+      "permanent_private_goal_present": false
+    }
+  ],
+  "issues": [
+    {
+      "id": "OLD_PAIRING_SIDE_ERRORS",
+      "evidence": {
+        "E004_T08": {
+          "supports": "original",
+          "rationale": "原版首选失败：无图却称‘照片看着挺有意思’；v3 首选仅‘图收到了’未评价画面→首选层 v3 略优，但 v3 备选假评构图",
+          "parent_veto": null,
+          "candidate_veto": null
+        },
+        "E006_T02": {
+          "supports": "candidate",
+          "rationale": "原版正文可但整份来源契约失败(见下)；v3 正文可、仅 analysis 引用 t1_0",
+          "parent_veto": null,
+          "candidate_veto": "illegal_source_id:t1_0"
+        },
+        "E004_T07": {
+          "supports": "both",
+          "rationale": "时间有准信再说；原版‘排班’措辞未必贴设计岗，不单独判假",
+          "parent_veto": null,
+          "candidate_veto": null
+        }
+      },
+      "impact": "support counts not accepted; original paid artifacts remain usable"
+    },
+    {
+      "id": "TIME_SCOPE_WORDING",
+      "present": true,
+      "impact": "message timestamp is not necessarily the date referred to by the event; rewrite before live"
+    }
+  ],
+  "semantic_quality_not_proven_by_capture": true
+}

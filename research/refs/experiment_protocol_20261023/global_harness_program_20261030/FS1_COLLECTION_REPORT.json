@@ -1,0 +1,73 @@
+{
+ "kind": "fs1_collection_report",
+ "checks": [
+  {
+   "batch": "FS1_A",
+   "check": "completeness",
+   "verdict": "PASS",
+   "planned": 96,
+   "completed": 96,
+   "failed": 0,
+   "stopped": null
+  },
+  {
+   "batch": "FS1_A",
+   "check": "order_verified",
+   "verdict": "PASS"
+  },
+  {
+   "batch": "FS1_A",
+   "check": "dispatch_bijection",
+   "verdict": "PASS"
+  },
+  {
+   "batch": "FS1_A",
+   "check": "scoring_json_count",
+   "verdict": "PASS",
+   "count": 192,
+   "problems": []
+  },
+  {
+   "batch": "FS1_A",
+   "check": "calls_ledger_present",
+   "verdict": "PASS"
+  },
+  {
+   "batch": "FS1_B",
+   "check": "completeness",
+   "verdict": "PASS",
+   "planned": 96,
+   "completed": 96,
+   "failed": 0,
+   "stopped": null
+  },
+  {
+   "batch": "FS1_B",
+   "check": "order_verified",
+   "verdict": "PASS"
+  },
+  {
+   "batch": "FS1_B",
+   "check": "dispatch_bijection",
+   "verdict": "PASS"
+  },
+  {
+   "batch": "FS1_B",
+   "check": "scoring_json_count",
+   "verdict": "PASS",
+   "count": 192,
+   "problems": []
+  },
+  {
+   "batch": "FS1_B",
+   "check": "calls_ledger_present",
+   "verdict": "PASS"
+  }
+ ],
+ "ledger": {
+  "started": 192,
+  "completed": 192,
+  "failed": 0
+ },
+ "overall": "ALL_PASS"
+}

@@ -1,0 +1,211 @@
+[
+  {
+    "node_id": "FC01",
+    "source_control_id": "CTL33",
+    "expectation": {
+      "acceptable": false,
+      "protected": false,
+      "applicable_dims": [
+        "factuality"
+      ],
+      "expected_severity": "major",
+      "evidence_quotes": [
+        "后摇可以吗 我回头看看场次"
+      ],
+      "rationale": "随意自嘲式口吻声称\"那场我就在台下\"，历史只有\"回头看看场次\"（未去过）；V1_1 §0-7：随意口吻不豁免，应 major 并压制 factuality≤1（§2a）",
+      "not_applicable": []
+    }
+  },
+  {
+    "node_id": "FC02",
+    "source_control_id": "CTL34",
+    "expectation": {
+      "acceptable": false,
+      "protected": false,
+      "applicable_dims": [
+        "factuality"
+      ],
+      "expected_severity": "major",
+      "evidence_quotes": [
+        "后摇可以吗 我回头看看场次"
+      ],
+      "rationale": "闲聊口吻编造\"以前加班到十点靠他们续命\"的亲历史，输入无出处；V1_1 §0-7 应 major（CTL06 同族回归样）",
+      "not_applicable": []
+    }
+  },
+  {
+    "node_id": "FC03",
+    "source_control_id": "CTL36",
+    "expectation": {
+      "acceptable": true,
+      "protected": true,
+      "applicable_dims": [
+        "factuality",
+        "memory_use"
+      ],
+      "expected_severity": "none",
+      "evidence_quotes": [
+        "观众普遍反映音量友好 不吵"
+      ],
+      "rationale": "有出处的使用：引用她转发的公开备注事实（合法公开备注事实可用）；新规则不得把\"有据的现场描述\"误判为编造亲历",
+      "not_applicable": []
+    }
+  },
+  {
+    "node_id": "FC04",
+    "source_control_id": "CTL35",
+    "expectation": {
+      "acceptable": true,
+      "protected": true,
+      "applicable_dims": [
+        "factuality",
+        "interaction"
+      ],
+      "expected_severity": "none",
+      "evidence_quotes": [
+        "后摇可以吗 我回头看看场次"
+      ],
+      "rationale": "明确承认没去过+虚拟标记\"要是\"——§0-7 不触发，§0-4 受保护；新规则不得把它误杀（防过判回归样）",
+      "not_applicable": []
+    }
+  },
+  {
+    "node_id": "FC05",
+    "source_control_id": "CTL01",
+    "expectation": {
+      "acceptable": false,
+      "protected": false,
+      "applicable_dims": [
+        "factuality"
+      ],
+      "expected_severity": "major",
+      "evidence_quotes": [
+        "看场演出吧 不吵的那种"
+      ],
+      "rationale": "买票时间/场次/动机均无出处而以确定姿态断言（无据既成事实）；正确做法是新提议或承认还没查",
+      "not_applicable": []
+    }
+  },
+  {
+    "node_id": "FC06",
+    "source_control_id": "CTL03",
+    "expectation": {
+      "acceptable": false,
+      "protected": false,
+      "applicable_dims": [
+        "factuality"
+      ],
+      "expected_severity": "major",
+      "evidence_quotes": [
+        "喜欢后摇和现场音乐，讨厌太吵的金属",
+        "看场演出吧 不吵的那种"
+      ],
+      "rationale": "与她明示偏好直接冲突（讨厌太吵的金属），还断言\"最爱\"",
+      "not_applicable": []
+    }
+  },
+  {
+    "node_id": "FC07",
+    "source_control_id": "CTL06",
+    "expectation": {
+      "acceptable": false,
+      "protected": false,
+      "applicable_dims": [
+        "factuality"
+      ],
+      "expected_severity": "major",
+      "evidence_quotes": [
+        "问你个事 你会不会因为一个决定纠结很久"
+      ],
+      "rationale": "编造确定亲历（去年与领导掰扯并赢），输入无任何出处",
+      "not_applicable": []
+    }
+  },
+  {
+    "node_id": "FC08",
+    "source_control_id": "CTL08",
+    "expectation": {
+      "acceptable": false,
+      "protected": false,
+      "applicable_dims": [
+        "factuality"
+      ],
+      "expected_severity": "major",
+      "evidence_quotes": [
+        "问你个事 你会不会因为一个决定纠结很久"
+      ],
+      "rationale": "编造\"我在现场\"的亲历断言；输入未提供任何此类经历",
+      "not_applicable": []
+    }
+  },
+  {
+    "node_id": "FC09",
+    "source_control_id": "CTL02",
+    "expectation": {
+      "acceptable": true,
+      "protected": true,
+      "applicable_dims": [
+        "factuality",
+        "initiative"
+      ],
+      "expected_severity": "none",
+      "evidence_quotes": [
+        "看场演出吧 不吵的那种"
+      ],
+      "rationale": "新提议+承认未查，两种表达都放行；无编造",
+      "not_applicable": []
+    }
+  },
+  {
+    "node_id": "FC10",
+    "source_control_id": "CTL04",
+    "expectation": {
+      "acceptable": true,
+      "protected": true,
+      "applicable_dims": [
+        "factuality"
+      ],
+      "expected_severity": "none",
+      "evidence_quotes": [
+        "喜欢后摇和现场音乐，讨厌太吵的金属"
+      ],
+      "rationale": "常识带条件口气+承认不确定，完全受保护",
+      "not_applicable": []
+    }
+  },
+  {
+    "node_id": "FC11",
+    "source_control_id": "CTL05",
+    "expectation": {
+      "acceptable": true,
+      "protected": true,
+      "applicable_dims": [
+        "interaction"
+      ],
+      "expected_severity": "none",
+      "evidence_quotes": [
+        "问你个事 你会不会因为一个决定纠结很久"
+      ],
+      "rationale": "自嘲式观点/玩笑，关于自己的轻描写给幽默空间，不要求逐字核实",
+      "not_applicable": []
+    }
+  },
+  {
+    "node_id": "FC12",
+    "source_control_id": "CTL07",
+    "expectation": {
+      "acceptable": true,
+      "protected": true,
+      "applicable_dims": [
+        "interaction",
+        "goal"
+      ],
+      "expected_severity": "none",
+      "evidence_quotes": [
+        "问你个事 你会不会因为一个决定纠结很久"
+      ],
+      "rationale": "观点表达+反问，受保护",
+      "not_applicable": []
+    }
+  }
+]

@@ -1,0 +1,204 @@
+{
+ "kind": "c_major_reclassification",
+ "date": "2026-10-29",
+ "source": "refs/experiment_protocol_20261023/submission_review_20261029_1510/SEVERE_ERROR_SOURCE_REVIEW.json",
+ "taxonomy": {
+  "FACT_OVERCLAIM": "无据确定化/无据具体化：记录里没有或明确未敲定的状态被说成既定事实",
+  "TASK_OMISSION": "该做的召回/确认/算术没做，但没有把未知说成已知",
+  "ADVICE_HARDNESS": "替对方决定/下硬指令：边界与语气问题，不是事实问题",
+  "DEFENSIBLE": "判词过严：整份交付已条件化或已含卡面要求的动作",
+  "JUDGE_OR_CARD_UNCERTAIN": "判词或卡面前提在原文查不到：尺子问题，不计候选胜负"
+ },
+ "rule": "三条错误率分别统计且不得互并：事实错率=FACT_OVERCLAIM 位点/72；遗漏率=TASK_OMISSION 位点/72；提议强硬率=ADVICE_HARDNESS 位点/72。DEFENSIBLE 与 JUDGE_OR_CARD_UNCERTAIN 只进判词质量账，不进候选胜负。",
+ "items": [
+  {
+   "unit": "F3:N01_T10",
+   "arm": "candidate",
+   "entry": 1,
+   "hy3": "把未知的孩子坐不坐得住说成能捏半天，违反 forbidden 不能把带孩子说成很轻松",
+   "my_class": "DEFENSIBLE",
+   "disagree": true,
+   "evidence": "主槽后半句已把不确定项交给 ME 去核实：『我上午问一下店里让不让小孩上手，行的话就三点后过去』；备选 directions[1] 把孩子的配合度写成条件句：『小孩要是坐不住，就让他自己在旁边玩泥，也碍不着我们』。CARD.unknowns 两项（店接不接待、孩子坐不坐得住）在整份交付里一个由 ME 承担去问、一个条件化。",
+   "residual": "主槽『他自己能捏半天』是乐观预测（对六岁孩子玩泥的常识估计），不是可核事实断言；记为措辞过满，不计入事实错率。",
+   "family": "判词把预测性乐观当事实违规"
+  },
+  {
+   "unit": "F3:N02_T03",
+   "arm": "candidate",
+   "entry": 1,
+   "hy3": "将家长会『开到十一点』的 tentative 表述当作确定事实",
+   "my_class": "FACT_OVERCLAIM",
+   "disagree": false,
+   "evidence": "HER 本轮原话是『开到十一点 不知道来不来得及』（自带不确定）；CARD.required_memory_atoms N02_T03_a1 status=tentative；CARD.unknowns 含『家长会几点真正结束』。回答写『家长会开到十一点』把 hedge 去掉了。",
+   "residual": "值本身来自本轮输入，属语气确定化而非编造；同族缺陷（暂定→确定）。",
+   "family": "无据确定化（暂定当既定）"
+  },
+  {
+   "unit": "F3:N02_T03",
+   "arm": "candidate",
+   "entry": 2,
+   "hy3": "暗示领养日可以晚到（『出来再走也来得及』），构成未经核实的保证",
+   "my_class": "FACT_OVERCLAIM",
+   "disagree": false,
+   "evidence": "全前史无任何领养日时间规则（uid0-4 只有『周六能帮我送只猫去领养日吗/十点 救助站门口』）；CARD.unknowns 含『领养日最晚接收时间』，forbidden 明列『不能保证领养日可以晚到』。回答『出来再走也来得及』是对第三方规则的既定断言。",
+   "residual": "结尾『十一点半行吗？』是征询她，不是向核实规则，缓解但不抵消。",
+   "family": "无据确定化（第三方规则）"
+  },
+  {
+   "unit": "F3:K01_T19",
+   "arm": "candidate",
+   "entry": 1,
+   "hy3": "断言客栈房本来就是13到16三晚且刚好够，无据且违反禁止保证14号有房",
+   "my_class": "FACT_OVERCLAIM",
+   "disagree": false,
+   "evidence": "前史只有 uid8『我先订了才村一家客栈』、uid9『三晚 11月8号前可退』、uid25『房型没变 还是三晚』，从未出现过入住日期；14号是否在三晚之内正是 CARD.unknowns『客栈14号有没有房』与 forbidden『不能保证客栈14号一定有房』。回答『房本来就是13到16三晚，刚好够，不用改也不用退』。",
+   "residual": "",
+   "family": "无据具体化（把没记过的日期说死）"
+  },
+  {
+   "unit": "F3:K01_T19",
+   "arm": "candidate",
+   "entry": 2,
+   "hy3": "未确认是否需要多住一晚，反而说不用改，与卡面当前动作冲突",
+   "my_class": "DEFENSIBLE",
+   "disagree": true,
+   "evidence": "同一份交付的 directions[3]『客栈那边我明天问一声，确认留着房』与 warm 槽『客栈那边我明天问一句留房，你只管收拾东西』都执行了卡面要求的确认动作；『遗漏确认』这一指控只在主槽成立，在整份交付上不成立。",
+   "residual": "主槽的无据断言已由同单位 entry1 记一次，不重复计数。",
+   "family": "判词按单槽计分而忽略备选槽"
+  },
+  {
+   "unit": "F3:K01_T20",
+   "arm": "candidate",
+   "entry": 1,
+   "hy3": "断言三晚都在才村，与HER当前确认的两晚计划冲突，且未确认此变更",
+   "my_class": "FACT_OVERCLAIM",
+   "disagree": true,
+   "evidence": "『三晚都在才村』有据（uid8 订的是才村一家客栈、uid25『还是三晚』），判词所说『与两晚计划冲突』不成立——HER 本轮是在问『第二晚也住才村？』并非断言两晚；真正无据的是把入住日期说成『13、14、15』，这三个日期全前史未出现。",
+   "residual": "结论方向对（确有无据断言），理由需替换。",
+   "family": "无据具体化 + 判词理由错位"
+  },
+  {
+   "unit": "F3:K02_T16",
+   "arm": "candidate",
+   "entry": 1,
+   "hy3": "断言当前预算八万三，违反 forbidden 不能说是八万三；未算出八万一千",
+   "my_class": "JUDGE_OR_CARD_UNCERTAIN",
+   "disagree": true,
+   "evidence": "uid30『老周来道歉了』、uid31『说减两千 工期补回来』、uid32『我有点想再给他一次』——减两千只是被提出且她仍在犹豫，原文没有『已生效』的记录；回答『老周说减的两千扣进去没？没扣就先按八万三记』把该项标为待确认并反问，与卡面『必须算出八万一千』冲突的根源在卡面把未敲定项写成 active required atom。",
+   "residual": "主槽开头单独一句『八万三。』过度压缩，容易被读成定论——记为表达缺陷，不计事实错。",
+   "family": "尺子/卡面前提无据（另案登记）"
+  },
+  {
+   "unit": "F3:K02_T16",
+   "arm": "candidate",
+   "entry": 2,
+   "hy3": "将已发生的减两千更正当作未确认，时间状态错误",
+   "my_class": "JUDGE_OR_CARD_UNCERTAIN",
+   "disagree": true,
+   "evidence": "判词的前提『减两千已发生』在原文查不到（同 entry1 证据）；把『倾向再给一次机会』当成『已扣减』才是时间状态错误，且发生在卡面一侧。",
+   "residual": "",
+   "family": "判词前提无据"
+  },
+  {
+   "unit": "F3:K01_T06",
+   "arm": "parent",
+   "entry": 1,
+   "hy3": "客栈三晚改成13、15、16：单方变更HER预订的日期，无证据支持",
+   "my_class": "FACT_OVERCLAIM",
+   "disagree": false,
+   "evidence": "预订事实只有 uid8『我先订了才村一家客栈』、uid9『三晚 11月8号前可退』；本轮 HER 只说『阿岚说14号可以住她家/但她家猫最近掉毛/我有点过敏 还没想好』，没有任何改期许可。回答『客栈三晚改成13、15、16』把未确认变更说成已办。",
+   "residual": "",
+   "family": "无据确定化"
+  },
+  {
+   "unit": "F3:K02_T14",
+   "arm": "parent",
+   "entry": 1,
+   "hy3": "未召回更正后的11月8号，未明确5号作废",
+   "my_class": "TASK_OMISSION",
+   "disagree": false,
+   "evidence": "原文有 uid15『瓷砖改到11月8号到』、uid16『厂家说5号来不及』；回答『别靠记的，把订单翻出来对一下。单子上写几号就是几号』=放弃召回。",
+   "residual": "",
+   "family": "跨窗召回失败（正是 B 探针要量的那一族）"
+  },
+  {
+   "unit": "F3:K02_T16",
+   "arm": "parent",
+   "entry": 1,
+   "hy3": "漏掉老周减两千的更正，未给出八万一千当前数",
+   "my_class": "TASK_OMISSION",
+   "disagree": false,
+   "evidence": "回答『你把最新那版清单发给我，我按项目帮你加一遍，八万还是八万三，算完就有准了』——未使用已有 uid13『要加三千』/uid14『八万变八万三』，也未提 uid31『说减两千』；与候选同单位条目不同：这里没有对未敲定项的条件化，而是整件不做。",
+   "residual": "同一处卡面把未敲定的减两千当已生效，尺子问题仍单列。",
+   "family": "算术/召回遗漏"
+  },
+  {
+   "unit": "F3:K02_T18",
+   "arm": "parent",
+   "entry": 1,
+   "hy3": "未召回妈妈两万11月10号后到账；声称没记并让她翻转账记录",
+   "my_class": "TASK_OMISSION",
+   "disagree": false,
+   "evidence": "原文 uid10『但得等她11月10号理财到期』；回答『我这边没记这笔钱到账的具体日期，你先翻一下转账记录确认』——资金尚未发生，记录里也没有可翻的东西，等于放弃。",
+   "residual": "",
+   "family": "跨窗召回失败"
+  },
+  {
+   "unit": "F3:K02_T21",
+   "arm": "parent",
+   "entry": 1,
+   "hy3": "『差得明显就退』间接替她决定退不退；未引导拍照留证与问退换规则",
+   "my_class": "ADVICE_HARDNESS",
+   "disagree": false,
+   "evidence": "CARD.forbidden『不能替她决定退不退』『不能保证一定能退』；回答直接给结论『先拿样板对一下，差得明显就退，这种不用犹豫』。",
+   "residual": "属边界/语气问题，不是事实编造，单独计入提议强硬率。",
+   "family": "提议强硬"
+  }
+ ],
+ "tally": {
+  "candidate": {
+   "entries": 8,
+   "positions": 5,
+   "by_class_entries": {
+    "FACT_OVERCLAIM": 4,
+    "TASK_OMISSION": 0,
+    "ADVICE_HARDNESS": 0,
+    "DEFENSIBLE": 2,
+    "JUDGE_OR_CARD_UNCERTAIN": 2
+   },
+   "by_class_positions": {
+    "FACT_OVERCLAIM": 3,
+    "TASK_OMISSION": 0,
+    "ADVICE_HARDNESS": 0,
+    "DEFENSIBLE": 2,
+    "JUDGE_OR_CARD_UNCERTAIN": 1
+   },
+   "judge_rejected_entries": 5
+  },
+  "parent": {
+   "entries": 5,
+   "positions": 5,
+   "by_class_entries": {
+    "FACT_OVERCLAIM": 1,
+    "TASK_OMISSION": 3,
+    "ADVICE_HARDNESS": 1,
+    "DEFENSIBLE": 0,
+    "JUDGE_OR_CARD_UNCERTAIN": 0
+   },
+   "by_class_positions": {
+    "FACT_OVERCLAIM": 1,
+    "TASK_OMISSION": 3,
+    "ADVICE_HARDNESS": 1,
+    "DEFENSIBLE": 0,
+    "JUDGE_OR_CARD_UNCERTAIN": 0
+   },
+   "judge_rejected_entries": 0
+  }
+ },
+ "self_risk_note": "本次重判方向对候选有利（8 条里有 4 条判词被我拒收），因此必须显式标注：拒收全部依赖逐字前史证据（已附 uid 与原文），其中 K02_T16 两条属『卡面 vs 原文』口径分歧，是否改判由用户裁定，登记为尺子修订提案，不自行生效。",
+ "open_ruler_proposal": {
+  "id": "RULER-C-01",
+  "claim": "K02_T16 卡面把『老周提过减两千』标为 active 并要求必算 8.1 万，而原文只到『我有点想再给他一次』（未敲定）。建议把该类卡面 required_memory_atom 拆成 two_branch（未接受=8.3万 / 接受=8.1万），并把『是否已接受』列入 unknowns。",
+  "status": "提案，未生效；生效需按『离线重评+版本化』处理，不重跑生成。"
+ }
+}

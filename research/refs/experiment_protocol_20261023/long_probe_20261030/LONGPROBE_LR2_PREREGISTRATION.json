@@ -1,0 +1,48 @@
+{
+ "kind": "longprobe_lr2_preregistration",
+ "date": "2026-11-01",
+ "batch_id": "BATCH-LONGRANGE-LR2-LRE060LRE048-20261101",
+ "design_doc": "refs/experiment_protocol_20261023/global_harness_program_20261030/LR2_W12_BATCH_DESIGN_20261101.md",
+ "hypothesis": {
+  "H_LR2_main": "v0 原文窗随故事长度线性增长，T25+ 段最老事实滑出窗口，窗口保持率显著低于 r9_slim 投影簿记，长剧域优势反转",
+  "H_LR2_null": "v0 窗继续扩容保持 >=90% 且九维不劣 → v0 使用域扩至全长度"
+ },
+ "arms": {
+  "parent": "action_policy_r9_slim",
+  "candidate": "v0_minimal_events"
+ },
+ "episodes": ["LRE060_40turns", "LRE048_32turns"],
+ "material_provenance": {
+  "LRE060": "wave1_ext 原位续写自 E060（T1-T12 逐字保留，validate 1/1 PASS，语义审查 0 阻塞 5 条瑕疵登记）",
+  "LRE048": "wave1_ext 原位续写自 E048（T1-T12 逐字保留，validate 1/1 PASS，语义审查 0 阻塞 2 条瑕疵登记）"
+ },
+ "thresholds_frozen": {
+  "v0_keep_gt24_domain": [
+   "T25-32 段窗口保持率 >= 0.90",
+   "保护维 goal/boundary/initiative 最差 >= -0.5",
+   "severe(candidate) <= severe(parent)",
+   "九维无任何维 <= -0.5",
+   "prompt usage 仍 <= r9_slim"
+  ],
+  "v0_eliminate_gt24_domain": [
+   "T25-32 段窗口保持率 < 0.80",
+   "或任一保护维 <= -0.5",
+   "或 severe(candidate) > severe(parent) 且差 >= 2 位"
+  ],
+  "uncertainty_band": "保持率 0.80-0.90 或 severe 打平但九维互有胜负 → 报'保留不确定'，v0 使用域维持 <=24 轮不动，不补跑到赢",
+  "veto_rule": "机械层任一臂 veto 率 >= 3x 另一臂（n>=72）→ 只记账不判语义",
+  "conditional_r7_recall": "仅当两臂 T25+ 段窗口保持率同落 < 0.80 时，另立 AUTH 单加派 r7 臂小批判基座族 vs 簿记层"
+ },
+ "measurement": {
+  "window_keep": "tools/measure_lr2_window_keep.py（确定性 GT 匹配 + miss 清单亲读复核，不自动判死）",
+  "nine_dim": "tools/run_lp_review_generic.py 产出 LP_LR2_NINEDIM_REVIEW.json + B3 队列",
+  "segment_anchors": [6, 12, 18, 24, 32, 40]
+ },
+ "discipline": {
+  "no_retry": true,
+  "no_makeup": true,
+  "fail_fast": true,
+  "uncertainty_not_pass": true,
+  "story_nested_report": "72 位嵌套于 2 故事，按故事分层报告，不套 N=72 独立样本口径"
+ }
+}

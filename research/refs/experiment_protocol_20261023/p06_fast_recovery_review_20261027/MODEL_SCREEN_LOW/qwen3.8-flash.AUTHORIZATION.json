@@ -1,0 +1,24 @@
+{
+  "authorization_id": "AUTH-P06-FASTSCREEN-LOW-QWEN3_8-FLASH-20261027-01",
+  "authorized": true,
+  "status": "ACTIVE",
+  "authorization_basis": "User explicitly requests fast dsf/hy3/qwen3.8-flash, three concurrent each; hy4-preview forbidden; standing permission for real experiments.",
+  "real_endpoint": {
+    "api_base": "http://127.0.0.1:17770/v1",
+    "model": "qwen3.8-flash",
+    "temperature": 0.7,
+    "max_attempts": 1
+  },
+  "scope": {
+    "scope_id": "AUTH-P06-FASTSCREEN-LOW-QWEN3_8-FLASH-20261027-01",
+    "purpose": "Low-load control: 1 representative-input diagnostic; new concurrency condition, not retry/score replacement.",
+    "model": "qwen3.8-flash",
+    "endpoint": "http://127.0.0.1:17770/v1",
+    "per_model_max_concurrency": 1,
+    "forbidden_models": [
+      "hy4-preview"
+    ],
+    "transport_timeout_s": 35
+  },
+  "budget_ledger": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-FASTSCREEN-LOW-QWEN3_8-FLASH-20261027-01.jsonl"
+}

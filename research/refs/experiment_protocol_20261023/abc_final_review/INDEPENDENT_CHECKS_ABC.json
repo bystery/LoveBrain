@@ -1,0 +1,1212 @@
+{
+ "generated_at": "2026-10-24T00:49:30",
+ "batch": "MERGED_ABC_20261023",
+ "real_model_calls": 0,
+ "original_experiment_artifacts_overwritten": false,
+ "authorization_status": "AUTH-EXAM1-20261023-01 closed; no new auth issued; all offline",
+ "reviewer_round2_items": {
+  "A_execution_chain_and_guards": "FIXED",
+  "B_annotation_context_binding": "FIXED",
+  "B_backup_derived_primary_attribution": "FIXED",
+  "C_utf16_budget_units": "FIXED",
+  "plan_sentence_1_no_cross_arm_visibility": "FIXED",
+  "plan_sentence_2_both_pass_no_observed_advantage": "FIXED",
+  "plan_sentence_3_new_batch_reslot_review_not_stop": "FIXED",
+  "plan_sentence_4_no_retry_no_makeup_severe_unified": "FIXED"
+ },
+ "current_identity": {
+  "reference_product_v1": {
+   "identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "closure": [
+    "reference_product_v1"
+   ],
+   "file_count": 9
+  },
+  "v2_recall": {
+   "identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "closure": [
+    "v2_recall",
+    "reference_product_v1"
+   ],
+   "file_count": 17
+  }
+ },
+ "frozen_config_files_count": 22,
+ "frozen_config_files": {
+  "benchmark/episodes/E001.json": "4fd499643a36b70830672000d048d88c5eb27e639eba9b6f9cd11296a6001c88",
+  "benchmark/episodes/E002.json": "6d84ef6819feb845efbad682442db0647ffb3fcbfa0e589ca2b5ecf6b62d70a1",
+  "benchmark/episodes/E003.json": "8619ba132acd60d1255d7e5213ea9ea6293b9851862b82b2508405b764811ff6",
+  "benchmark/dev_pilot_v02/03_GRADING_CARDS.json": "8e128a993ca567a5b8e51e46b94e2c396246c0d5d294ba1673b8049f7013a8da",
+  "benchmark/rubric.md": "0b96fc5b0d8bf325ff225bed912fc616437b81782a2ebb19c178f1be6f2e1e86",
+  "benchmark/annotations/exam1_20261023_semantic.json": "bc39a3a3812dc3c4ac8f453eec99f6c4e11e19c5164f69e9deb3a52be4596a2f",
+  "arena/lb_scorer.py": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+  "arena/protocol_public.py": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7",
+  "arena/lb_gateway.py": "a1f46a632d76a5e4759b5d15f6cc8872ec9aee2eee491b638d864f3198de07b6",
+  "arena/lb_runner.py": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+  "arena/lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+  "arena/api_candidate.py": "4eb1487886dae385078b87eb2f671e91f0b59fc63e38c917c49abb07ac9fdf54",
+  "arena/isolation/trusted_controller.py": "fd0cd621e2c181d451601c0e59ad496c1522e62693484c6c0d2dfec91a4a6391",
+  "arena/isolation/host_runtime.py": "bc1c11240feca92536e0607abbcb26262cd4388a4f8db9a860eb0c07ee1194bd",
+  "arena/isolation/_candidate_host.py": "8fada64f5d3012733100e9537685c8f490fc877ba603a47137f8c020923368a5",
+  "arena/isolation/authorization_budget.py": "aef5b5735c37d082c7fdfe3e0d5967ec7045e77a41a4f6483fceb6a73efec568",
+  "tools/api_trial.py": "eb2c6b91faec14aa559859d1c3171d9152e030747db63006ab38f8c1c8b29b85",
+  "tools/exam_layered_score.py": "fe57b668d41430c62e11f13223ca1ef472e622863943ce8f577ceb63b3e8d610",
+  "tools/build_semantic_annotations.py": "77da2b27017ea0e8c4e907c6698fdab153ac1bf88c2a64c7e97e7e86a5b5bb4e",
+  "tools/freeze_identity.py": "ca08af7a51bdd53067e127358f39a7091fb15b6ba780b838ef0dc6b889593ec9",
+  "tools/exam_interleave_plan.py": "efc78d5ed245ae111738c01247bd7bc1e2d2d2d16ed15cdb546a401fbf3102ca",
+  "tools/rescore_offline.py": "62300c04b7501c1eae8b9ce5d3faa09c92a7f73eed0990ba610c03e31156a836"
+ },
+ "reviewer_reproductions": {
+  "A": {
+   "reviewer_probe": [
+    "把父本 E001 T02 改成重复 T01 → 旧 rehearsal 仍报 order_ok",
+    "计划填全 0 候选冻结身份 → 旧 rehearsal 仍报 closure_ok",
+    "rehearsal 直接 run_turn+MockGateway，绕开预算/网关/账本/评分/边界"
+   ],
+   "execute_plan_checks": [
+    {
+     "check": "a_capture_full_chain",
+     "verdict": "PASS",
+     "detail": "capture 48 started/48 completed/0 failed via IsolatedRun, bodies_ok, real_calls=0"
+    },
+    {
+     "check": "a_mock_same_entry",
+     "verdict": "PASS",
+     "detail": "mock 走同一 execute_plan，48/48，real_calls=0"
+    },
+    {
+     "check": "a_fail_fast_ledger_and_no_makeup",
+     "verdict": "PASS",
+     "detail": "fail-fast 5 started/4 completed/1 failed，停批不补配对，real_calls=0"
+    },
+    {
+     "check": "a_reject_duplicate_zero_dispatch",
+     "verdict": "PASS",
+     "detail": "reject-duplicate PASS（派发前拒：臂/故事 ('parent', 'E001') 轮次不连续：重复=[1] 缺=[2]; 配对缺臂：E001_T02=['）"
+    },
+    {
+     "check": "a_reject_bad_freeze_identity",
+     "verdict": "PASS",
+     "detail": "reject-bad-freeze PASS：candidate 身份漂移：声明 0000000000000000… 实为 36dc54d6220c8099…"
+    },
+    {
+     "check": "a_reject_missing_turn_and_order",
+     "verdict": "PASS",
+     "detail": "reject-missing-turn PASS：attempts=47 应为 48; seq 非 1..N 唯一：[]; 臂/故事 ('candidate', 'E00"
+    },
+    {
+     "check": "a_state_isolation_observable",
+     "verdict": "PASS",
+     "detail": "state_isolation PASS 6 distinct run_id + 6 sentinel（两臂/故事互不串）"
+    },
+    {
+     "check": "a_live_refused_without_auth",
+     "verdict": "PASS",
+     "detail": "live-refused PASS：live 需用户有效新授权单，本演练工具不自动发起真实调用"
+    }
+   ],
+   "execution_entry": "IsolatedRun（宿主+TrustedProxy+ModelGateway 账本+可信侧评分+泄漏/白名单）",
+   "real_model_calls": 0,
+   "conclusion": "A 已修：execute_plan 复用正式执行链，validate_plan+verify_frozen_identity 派发前拒；capture 48 started/48 completed/0 failed；fail-fast 5/4/1 且 candidate 未补跑；6 独立 run_id 隔离。",
+   "artifacts": {
+    "EXECUTE_CAPTURE": {
+     "mode": "capture",
+     "adapter": "openai_compat",
+     "execution_entry": "IsolatedRun",
+     "guards_applied": true,
+     "attempts_planned": 48,
+     "runs_planned": 6,
+     "runs_done": 6,
+     "ledger_kinds": {
+      "attempt_started": 48,
+      "attempt_completed": 48,
+      "attempt_failed": 0
+     },
+     "attempt_started": 48,
+     "attempt_completed": 48,
+     "attempt_failed": 0,
+     "state_isolated": true,
+     "distinct_run_ids": [
+      "iso_20261024_003133_c24d39",
+      "iso_20261024_003134_7a3062",
+      "iso_20261024_003135_380d8f",
+      "iso_20261024_003135_de3a82",
+      "iso_20261024_003136_89e7db",
+      "iso_20261024_003137_4059a5"
+     ],
+     "newseg_max_utf16": 0,
+     "newseg_cap": 1800,
+     "newseg_ok": true,
+     "boundary_problems": [],
+     "stopped": null,
+     "runs": [
+      {
+       "arm": "parent",
+       "episode": "E001",
+       "candidate": "reference_product_v1",
+       "status": "DONE",
+       "run_id": "iso_20261024_003133_c24d39",
+       "turns": 8,
+       "complete": true
+      },
+      {
+       "arm": "candidate",
+       "episode": "E001",
+       "candidate": "v2_recall",
+       "status": "DONE",
+       "run_id": "iso_20261024_003134_7a3062",
+       "turns": 8,
+       "complete": true
+      },
+      {
+       "arm": "candidate",
+       "episode": "E002",
+       "candidate": "v2_recall",
+       "status": "DONE",
+       "run_id": "iso_20261024_003135_380d8f",
+       "turns": 8,
+       "complete": true
+      },
+      {
+       "arm": "parent",
+       "episode": "E002",
+       "candidate": "reference_product_v1",
+       "status": "DONE",
+       "run_id": "iso_20261024_003135_de3a82",
+       "turns": 8,
+       "complete": true
+      },
+      {
+       "arm": "parent",
+       "episode": "E003",
+       "candidate": "reference_product_v1",
+       "status": "DONE",
+       "run_id": "iso_20261024_003136_89e7db",
+       "turns": 8,
+       "complete": true
+      },
+      {
+       "arm": "candidate",
+       "episode": "E003",
+       "candidate": "v2_recall",
+       "status": "DONE",
+       "run_id": "iso_20261024_003137_4059a5",
+       "turns": 8,
+       "complete": true
+      }
+     ],
+     "real_model_calls": 0,
+     "network": "disabled (fake urlopen in-process)",
+     "out_base": "C:\\Users\\abyss\\AppData\\Local\\Temp\\ep_capture_4t_ydqqn"
+    },
+    "EXECUTE_FAILFAST": {
+     "mode": "capture",
+     "adapter": "openai_compat",
+     "execution_entry": "IsolatedRun",
+     "guards_applied": true,
+     "attempts_planned": 48,
+     "runs_planned": 6,
+     "runs_done": 0,
+     "ledger_kinds": {
+      "attempt_started": 5,
+      "attempt_completed": 4,
+      "attempt_failed": 1
+     },
+     "attempt_started": 5,
+     "attempt_completed": 4,
+     "attempt_failed": 1,
+     "state_isolated": false,
+     "distinct_run_ids": [],
+     "newseg_max_utf16": 0,
+     "newseg_cap": 1800,
+     "newseg_ok": true,
+     "boundary_problems": [],
+     "stopped": {
+      "reason": "transport_or_run_failure",
+      "arm": "parent",
+      "episode": "E001",
+      "detail": "RuntimeError: 第 5 轮执行失败: HOST_EXCEPTION: RuntimeError: gateway generate failed: upstream failed: simulated 5xx at dispatch 5 | frame={'error': 'HOST_EXCEPTION', 'detail': 'RuntimeError: gateway generate failed: ups"
+     },
+     "runs": [
+      {
+       "arm": "parent",
+       "episode": "E001",
+       "candidate": "reference_product_v1",
+       "status": "FAILED",
+       "error": "RuntimeError: 第 5 轮执行失败: HOST_EXCEPTION: RuntimeError: gateway generate failed: upstream failed: simulated 5xx at dispatch 5 | frame={'error': 'HOST_EXCEPTION', 'detail': 'RuntimeError: gateway generate failed: ups"
+      }
+     ],
+     "real_model_calls": 0,
+     "network": "disabled (fake urlopen in-process)",
+     "out_base": "C:\\Users\\abyss\\AppData\\Local\\Temp\\ep_capture_v0dlh5a2"
+    },
+    "REJECT_DUPLICATE": {
+     "rejected": true,
+     "msg": "rejected: 臂/故事 ('parent', 'E001') 轮次不连续：重复=[1] 缺=[2]; 配对缺臂：E001_T02=['candidate']"
+    },
+    "REJECT_BAD_FREEZE": {
+     "rejected": true,
+     "msg": "rejected: candidate 身份漂移：声明 0000000000000000… 实为 36dc54d6220c8099…"
+    }
+   }
+  },
+  "B": {
+   "reviewer_probe": "保持原输出，给批注设无关 run_id / 全 0 harness / 错误 case hash → 旧仍匹配",
+   "annotations_total": 23,
+   "all_annotations_have_context_binding": true,
+   "provenance_forced_unrated": [
+    "E001_T04",
+    "E003_T04"
+   ],
+   "primary_coverage_ratio": 0.875,
+   "primary_semantic_edge": 0,
+   "conclusion": "B 已修：_match_annotation 加 run/身份/题面内容三绑，缺上下文=未验证拒绝；E001_T04/E003_T04 primary→unrated（备选问题不再移给首选），edge=0，primary_coverage_ratio 0.958→0.875。"
+  },
+  "C": {
+   "reviewer_probe": "run_turn 归档含 1200 个 🎂，仅 emoji 占 2400 码元 > 声明 1800",
+   "c12_20_extras": {
+    "check": "c12_reviewer_20_extras_probe",
+    "verdict": "PASS",
+    "detail": "R3 reviewer_probe extras_selector=20 extras_in_prompt=4 recall_seg_utf16=161 new_seg_est=681 cap=1800"
+   },
+   "c14_emoji_run_turn": {
+    "check": "c14_reviewer_emoji_run_turn_budget",
+    "verdict": "PASS",
+    "detail": "C emoji recall_seg_utf16=1307 emoji_payload=1200 cap=1800 obeyed"
+   },
+   "c15_joint_squeeze": {
+    "check": "c15_joint_squeeze_bmp_plus_emoji",
+    "verdict": "PASS",
+    "detail": "C joint held=4/4 new_seg_est=1800 recall_seg=1216 cap=1800"
+   },
+   "conclusion": "C 已修：候选侧 utf16_truncate_head/tail 按码元截断、不切代理对；recall 段 + extras + 段头/提示/分隔最终 ≤ MAX_NEW_CONTEXT_CHARS=1800（取消旧 +400/2200 混称）。"
+  }
+ },
+ "suites": {
+  "baseline_parity": {
+   "path": "refs/arena_v1/baseline_parity_fixtures.json",
+   "sha256_16": "8a98bc31d6339ed1",
+   "checks": [
+    {
+     "id": "B-T01",
+     "capability": "静态装配：header 逐字/IDEA 不占号/别名映射",
+     "multi_turn": false,
+     "evidence": "ChatTranscriptBlock.kt L43-63 + PromptByteFreezeBaselineTest"
+    },
+    {
+     "id": "B-T02",
+     "capability": "输出解析：JSON 转义防注入/围栏完整",
+     "multi_turn": false,
+     "evidence": "ChatTranscriptBlock.kt L14-17, L69-84"
+    },
+    {
+     "id": "B-T03",
+     "capability": "静态装配：>60 掐尾+注记+编号重起（多轮长会话）",
+     "multi_turn": true,
+     "evidence": "ChatTranscriptBlock.kt L46-50, L66-68 + AppConfig.kt L70"
+    },
+    {
+     "id": "B-T04",
+     "capability": "意图：有效性判据四态 + 区块逐字",
+     "multi_turn": false,
+     "evidence": "Models.kt L446-447 + IntentIdeaBlock.kt L30-33 + IntentPolicyTest"
+    },
+    {
+     "id": "B-T05",
+     "capability": "军师备注：逐字全量/空正文不留空标题",
+     "multi_turn": false,
+     "evidence": "IntentIdeaBlock.kt L36, L44-54"
+    },
+    {
+     "id": "B-T06",
+     "capability": "场景：收尾词表冻结 + 优先级碰撞",
+     "multi_turn": false,
+     "evidence": "CurrentSceneInjection.kt L16-18, L38-46 + SceneChainInjectionTest"
+    },
+    {
+     "id": "B-T07",
+     "capability": "场景：认错只看 ME 本人（SpeakerSubject 语义）",
+     "multi_turn": false,
+     "evidence": "CurrentSceneInjection.kt L19, L49-51 + SpeakerSubjectRegressionTest"
+    },
+    {
+     "id": "B-T08",
+     "capability": "场景：无真实消息→空 + 默认链全分支",
+     "multi_turn": false,
+     "evidence": "CurrentSceneInjection.kt L30-33, L60-68"
+    },
+    {
+     "id": "B-T09",
+     "capability": "场景块：标题逐字/空场景省略",
+     "multi_turn": false,
+     "evidence": "CurrentSceneInjection.kt L75-78"
+    },
+    {
+     "id": "B-T10",
+     "capability": "纠正：瞬时 mute 判定矩阵（8 组合）",
+     "multi_turn": false,
+     "evidence": "MemoryCorrectionPolicy.kt L22-34 + Test L23-39"
+    },
+    {
+     "id": "B-T11",
+     "capability": "纠正：四动作文案互异/失败文案不撞车",
+     "multi_turn": false,
+     "evidence": "MemoryCorrectionPolicy.kt L41-53 + Test L57-76"
+    },
+    {
+     "id": "B-T12",
+     "capability": "纠正：RoundCorrectionStore 副本语义 + remove 二次（多步）",
+     "multi_turn": true,
+     "evidence": "MemoryCorrectionPolicy.kt L62-81 + Test L81-107"
+    },
+    {
+     "id": "B-T13",
+     "capability": "纠正：revision 单调（save/undo/再 save 多轮）+ 库不在",
+     "multi_turn": true,
+     "evidence": "KnowledgeMemoryStore.kt L39-51, L72-110 + 单调性承诺"
+    },
+    {
+     "id": "B-T14",
+     "capability": "纠正：写失败不写 revision + 坏 JSON 恢复（异常/恢复）",
+     "multi_turn": true,
+     "evidence": "KnowledgeMemoryStore.kt L118-134 + AtomicWriteRegressionTest"
+    },
+    {
+     "id": "B-T15",
+     "capability": "ongoing：空 plan→空结果",
+     "multi_turn": false,
+     "evidence": "OngoingContextSelector.kt L108-109 + Test L55-61"
+    },
+    {
+     "id": "B-T16",
+     "capability": "ongoing：首见不相关不注入（默认拒绝）",
+     "multi_turn": false,
+     "evidence": "OngoingContextSelector.kt L25-33 + Test L73-84"
+    },
+    {
+     "id": "B-T17",
+     "capability": "ongoing：冷却中且不相关不注入（多轮）",
+     "multi_turn": true,
+     "evidence": "OngoingContextSelector.kt L176-187 + Test L88-100"
+    },
+    {
+     "id": "B-T18",
+     "capability": "ongoing：滑窗撤除/整词命中",
+     "multi_turn": false,
+     "evidence": "OngoingContextSelector.kt L234-241 + Test L112-138"
+    },
+    {
+     "id": "B-T19",
+     "capability": "ongoing：意图/想法注入但不伪造证据（多轮冷却账本）",
+     "multi_turn": true,
+     "evidence": "OngoingContextSelector.kt L77-79, L147-166, L379-397 + Test L147-198"
+    },
+    {
+     "id": "B-T20",
+     "capability": "ongoing：日期临近不单独授权 + eventDate 提取",
+     "multi_turn": false,
+     "evidence": "OngoingContextSelector.kt L335-347 + Test L198-210"
+    },
+    {
+     "id": "B-T21",
+     "capability": "ongoing：DORMANT 5 轮推导与复活（多轮）",
+     "multi_turn": true,
+     "evidence": "OngoingContextSelector.kt L128-139 + Test L214-243"
+    },
+    {
+     "id": "B-T22",
+     "capability": "ongoing：FINISHED/CANCELLED 永不注入",
+     "multi_turn": false,
+     "evidence": "OngoingContextSelector.kt L161-164 + Test L247-271"
+    },
+    {
+     "id": "B-T23",
+     "capability": "ongoing：plan 解析（itemId 前缀/chain）+ 状态推导",
+     "multi_turn": false,
+     "evidence": "OngoingContextSelector.kt L300-333"
+    },
+    {
+     "id": "B-T24",
+     "capability": "ongoing：证据轮独立于注入轮（不误入 DORMANT，多轮）",
+     "multi_turn": true,
+     "evidence": "OngoingContextSelector.kt L124-127, L370-377"
+    },
+    {
+     "id": "B-T25",
+     "capability": "ongoing：fail-closed + 冷却文件损坏恢复（异常/恢复）",
+     "multi_turn": true,
+     "evidence": "OngoingContextSelector.kt L100-102, L362-367"
+    },
+    {
+     "id": "B-T26",
+     "capability": "时效常量：2h/2 条/60 条/冷却 3/休眠 5 冻结",
+     "multi_turn": false,
+     "evidence": "AppConfig.kt L61-70 + OngoingContextSelector.kt L407-412"
+    }
+   ],
+   "failed": 0
+  },
+  "baseline_parity_extra": {
+   "path": "logs/baseline_parity_extra_result_ABC.json",
+   "sha256_16": "d50750ec728a7048",
+   "checks": [
+    {
+     "check": "e1_by_blocks_under_budget_passthrough",
+     "verdict": "PASS",
+     "detail": "short_passthrough=True"
+    },
+    {
+     "check": "e2_by_blocks_knowledge_tail_trim",
+     "verdict": "PASS",
+     "detail": "kb_tail_trim fired len=9017 cap=9000 slack_ok(<40)"
+    },
+    {
+     "check": "e3_by_blocks_chat_head_trim_whole_lines",
+     "verdict": "PASS",
+     "detail": "chat_head_trim fired len=148 fences_intact=True"
+    },
+    {
+     "check": "e4_utf16_len_counts_surrogate_pairs",
+     "verdict": "PASS",
+     "detail": "utf16_len ok"
+    },
+    {
+     "check": "e5_correction_wrong_skips_profile_line",
+     "verdict": "PASS",
+     "detail": "PROFILE wrong filtered replacement injected"
+    },
+    {
+     "check": "e6_correction_muted_skips_active_mention",
+     "verdict": "PASS",
+     "detail": "MUTED item filtered passive_marker present"
+    },
+    {
+     "check": "e7_correction_wrong_person_isolates",
+     "verdict": "PASS",
+     "detail": "WRONG_PERSON isolated"
+    },
+    {
+     "check": "e8_correction_finished_removes_ongoing",
+     "verdict": "PASS",
+     "detail": "FINISHED removed from active list"
+    },
+    {
+     "check": "e9_timestamp_block_exact_string",
+     "verdict": "PASS",
+     "detail": "timestamp exact match, 5 behavioral clauses present"
+    },
+    {
+     "check": "e10_run_turn_uses_by_blocks_and_timestamp",
+     "verdict": "PASS",
+     "detail": "run_turn via by_blocks, ts_new_format, order_ok"
+    },
+    {
+     "check": "e11_by_blocks_emoji_utf16_boundary",
+     "verdict": "PASS",
+     "detail": "e11 emoji_boundary fired len=9017 cap=9000 no_lone_surrogate=True"
+    }
+   ],
+   "failed": 0
+  },
+  "baseline_carryover": {
+   "path": "logs/baseline_carryover_result.json",
+   "sha256_16": "88847a046f5438a6",
+   "checks": [
+    {
+     "check": "t1_second_prompt_reads_writeback",
+     "verdict": "PASS",
+     "detail": "p2_reads_recent+scene+topic+ongoing, p3_reads_p2, turnCount=3"
+    },
+    {
+     "check": "t2_new_story_clears",
+     "verdict": "PASS",
+     "detail": "new_story_no_leak"
+    },
+    {
+     "check": "t3_snapshot_restore_keeps_memory",
+     "verdict": "PASS",
+     "detail": "restore_keeps_recent+scene"
+    },
+    {
+     "check": "t4_invalid_source_rejected",
+     "verdict": "PASS",
+     "detail": "invalid_source_rejected"
+    },
+    {
+     "check": "t5_no_analysis_writes_nothing",
+     "verdict": "PASS",
+     "detail": "no_analysis_no_write"
+    },
+    {
+     "check": "t6_terminal_not_revived_and_filler_skipped",
+     "verdict": "PASS",
+     "detail": "terminal_not_revived, filler_skipped"
+    },
+    {
+     "check": "t7_topic_rotation_clears_moment",
+     "verdict": "PASS",
+     "detail": "rotate_archives_and_clears"
+    },
+    {
+     "check": "t8_same_shape_rounds_all_recorded",
+     "verdict": "PASS",
+     "detail": "same_shape_rounds_kept, idempotent_on_resubmit"
+    },
+    {
+     "check": "t9_rotation_archives_conversation_body",
+     "verdict": "PASS",
+     "detail": "archive_has_topic_states_transcript"
+    }
+   ],
+   "failed": 0
+  },
+  "v2_recall": {
+   "path": "logs/v2_recall_result_ABC.json",
+   "sha256_16": "37b3f138cc0e74a1",
+   "checks": [
+    {
+     "check": "c1_recall_fact_reaches_prompt",
+     "verdict": "PASS",
+     "detail": "t06_prompt_has=杯底/刻字/不刻+【回忆】"
+    },
+    {
+     "check": "c2_no_recall_false_positive",
+     "verdict": "PASS",
+     "detail": "recall_only_on_turn=6"
+    },
+    {
+     "check": "c3_zero_overlap_no_injection",
+     "verdict": "PASS",
+     "detail": "zero_overlap_skipped"
+    },
+    {
+     "check": "c4_recall_bypass_injects_ongoing",
+     "verdict": "PASS",
+     "detail": "v2_ongoing_injected=True base=False"
+    },
+    {
+     "check": "c5_e003_untouched",
+     "verdict": "PASS",
+     "detail": "e003_prompts_identical(8 轮)"
+    },
+    {
+     "check": "c6_no_cross_message_recall_activation",
+     "verdict": "PASS",
+     "detail": "P1 false_positive_blocked=True last_marker_still_hits=True"
+    },
+    {
+     "check": "c7_no_dormant_whole_dump",
+     "verdict": "PASS",
+     "detail": "P2 extras=1 cap=2 relevant_included=True"
+    },
+    {
+     "check": "c8_total_new_injection_budget",
+     "verdict": "PASS",
+     "detail": "P3 recall_seg_utf16=1307 new_seg_est=1307 cap=1800"
+    },
+    {
+     "check": "c9_restore_keeps_recall_wrapper",
+     "verdict": "PASS",
+     "detail": "P4 restore_wrapper_active=True recall_still_fires=True"
+    },
+    {
+     "check": "c10_positive_photo_exhibit_domain",
+     "verdict": "PASS",
+     "detail": "P_positive[photo] recall_body_ok extras=1"
+    },
+    {
+     "check": "c11_positive_business_trip_domain",
+     "verdict": "PASS",
+     "detail": "P_positive[business-trip] recall_body_ok extras=1"
+    },
+    {
+     "check": "c12_reviewer_20_extras_probe",
+     "verdict": "PASS",
+     "detail": "R3 reviewer_probe extras_selector=20 extras_in_prompt=4 recall_seg_utf16=161 new_seg_est=681 cap=1800"
+    },
+    {
+     "check": "c13_utf16_truncate_unit",
+     "verdict": "PASS",
+     "detail": "C unit tail=head=600 emoji @1200码元, BMP 100字, 无半截代理"
+    },
+    {
+     "check": "c14_reviewer_emoji_run_turn_budget",
+     "verdict": "PASS",
+     "detail": "C emoji recall_seg_utf16=1307 emoji_payload=1200 cap=1800 obeyed"
+    },
+    {
+     "check": "c15_joint_squeeze_bmp_plus_emoji",
+     "verdict": "PASS",
+     "detail": "C joint held=4/4 new_seg_est=1800 recall_seg=1216 cap=1800"
+    }
+   ],
+   "failed": 0
+  },
+  "annotation_binding": {
+   "path": "logs/annotation_binding_result.json",
+   "sha256_16": "eaaf0fe581d67b25",
+   "checks": [
+    {
+     "check": "r1_case_id_hit_wrong_reply_not_inherited",
+     "verdict": "PASS",
+     "detail": "R1.tampered_reply_unmatched PASS"
+    },
+    {
+     "check": "r1_correct_replacement_also_invalidates_old_fail",
+     "verdict": "PASS",
+     "detail": "R1.correct_replacement_unmatched PASS"
+    },
+    {
+     "check": "r1_slot_swap_invalidates_other_slots",
+     "verdict": "PASS",
+     "detail": "R1.slot_isolation PASS"
+    },
+    {
+     "check": "r1_corrupt_hash_in_annotation_file_denied",
+     "verdict": "PASS",
+     "detail": "R1.hash_tamper_denied PASS"
+    },
+    {
+     "check": "r1_no_annotations_file_means_all_unrated",
+     "verdict": "PASS",
+     "detail": "R1.no_file_all_unrated PASS (turns=24)"
+    },
+    {
+     "check": "b_full_context_matches",
+     "verdict": "PASS",
+     "detail": "B.full_context_match PASS"
+    },
+    {
+     "check": "b_same_output_case_content_drift_denied",
+     "verdict": "PASS",
+     "detail": "B.case_content_drift_denied PASS"
+    },
+    {
+     "check": "b_wrong_run_or_harness_identity_denied",
+     "verdict": "PASS",
+     "detail": "B.wrong_run_or_harness_denied PASS"
+    },
+    {
+     "check": "b_annotation_missing_context_binding_unverified",
+     "verdict": "PASS",
+     "detail": "B.missing_context_unverified PASS"
+    },
+    {
+     "check": "b_real_annotations_bound_and_run_verified",
+     "verdict": "PASS",
+     "detail": "B.real_annotations_bound PASS bound=22 rated=21 drift_honored=0"
+    },
+    {
+     "check": "b_backup_derived_primary_not_inherited",
+     "verdict": "PASS",
+     "detail": "B.backup_derived_primary_unrated PASS edge=0 coverage=0.875"
+    },
+    {
+     "check": "r2_tri_any_pass_unknown_when_backup_unrated",
+     "verdict": "PASS",
+     "detail": "R2.tri_any_pass PASS (unknown/true/false 三态)"
+    },
+    {
+     "check": "r2_tri_backup_severe_unknown_when_partial",
+     "verdict": "PASS",
+     "detail": "R2.tri_backup_severe PASS"
+    },
+    {
+     "check": "r2_real_exam_coverage_and_invariants",
+     "verdict": "PASS",
+     "detail": "R2.coverage PASS primary=20/21 alop_true=20 sev_true=1 sev_unknown=23 gate=False"
+    },
+    {
+     "check": "r2_lower_bound_severe_rate",
+     "verdict": "PASS",
+     "detail": "R2.lower_bound PASS severe_error_backup_lower_bound_rate=0.042"
+    }
+   ],
+   "failed": 0
+  },
+  "identity_closure": {
+   "path": "logs/identity_closure_result.json",
+   "sha256_16": "45c44fc93065bf38",
+   "checks": [
+    {
+     "check": "r51_closure_orders_self_then_parent",
+     "verdict": "PASS",
+     "detail": "R51.closure_order PASS ['v2_recall', 'reference_product_v1']"
+    },
+    {
+     "check": "r51_parent_files_included_in_v2_manifest",
+     "verdict": "PASS",
+     "detail": "R51.parent_in_closure PASS (parent=9 merged=17)"
+    },
+    {
+     "check": "r51_tampering_parent_flips_v2_identity",
+     "verdict": "PASS",
+     "detail": "R51.parent_tamper_flips_identity PASS (before=36dc54d6220c… after=be0dbf8fd2a3…)"
+    },
+    {
+     "check": "r51_tampering_child_flips_own_identity",
+     "verdict": "PASS",
+     "detail": "R51.child_tamper PASS"
+    },
+    {
+     "check": "r51_v2_params_declares_role_candidate_with_parent",
+     "verdict": "PASS",
+     "detail": "R51.params PASS role=candidate parent=reference_product_v1"
+    },
+    {
+     "check": "r51_baseline_self_closure",
+     "verdict": "PASS",
+     "detail": "R51.baseline_self_only PASS"
+    }
+   ],
+   "failed": 0
+  },
+  "note_lcs_diagnostic": {
+   "path": "logs/note_lcs_diag_result.json",
+   "sha256_16": "4affa52dd58d2a87",
+   "checks": [
+    {
+     "check": "r4_reviewer_legit_quote_not_penalized",
+     "verdict": "PASS",
+     "detail": "R4.legit_quote PASS score10=10.00 max_lcs=max_lcs=0.61 pool=1"
+    },
+    {
+     "check": "r4_short_reply_exempt",
+     "verdict": "PASS",
+     "detail": "R4.short_exempt PASS evidence=skipped_short(max=8)"
+    },
+    {
+     "check": "r4_verbatim_copy_hit_diagnostic_but_no_deduction",
+     "verdict": "PASS",
+     "detail": "R4.hit_no_deduction PASS score10=10.00 evidence=max_lcs=1.00 pool=1"
+    },
+    {
+     "check": "r4_privacy_leak_undetected_by_lcs",
+     "verdict": "PASS",
+     "detail": "R4.privacy_leak_via_lcs PASS score10=10.00 diag.pass=True"
+    }
+   ],
+   "failed": 0
+  },
+  "execute_plan": {
+   "path": "logs/execute_plan_result.json",
+   "sha256_16": "55ed69062fa062f8",
+   "checks": [
+    {
+     "check": "a_capture_full_chain",
+     "verdict": "PASS",
+     "detail": "capture 48 started/48 completed/0 failed via IsolatedRun, bodies_ok, real_calls=0"
+    },
+    {
+     "check": "a_mock_same_entry",
+     "verdict": "PASS",
+     "detail": "mock 走同一 execute_plan，48/48，real_calls=0"
+    },
+    {
+     "check": "a_fail_fast_ledger_and_no_makeup",
+     "verdict": "PASS",
+     "detail": "fail-fast 5 started/4 completed/1 failed，停批不补配对，real_calls=0"
+    },
+    {
+     "check": "a_reject_duplicate_zero_dispatch",
+     "verdict": "PASS",
+     "detail": "reject-duplicate PASS（派发前拒：臂/故事 ('parent', 'E001') 轮次不连续：重复=[1] 缺=[2]; 配对缺臂：E001_T02=['）"
+    },
+    {
+     "check": "a_reject_bad_freeze_identity",
+     "verdict": "PASS",
+     "detail": "reject-bad-freeze PASS：candidate 身份漂移：声明 0000000000000000… 实为 36dc54d6220c8099…"
+    },
+    {
+     "check": "a_reject_missing_turn_and_order",
+     "verdict": "PASS",
+     "detail": "reject-missing-turn PASS：attempts=47 应为 48; seq 非 1..N 唯一：[]; 臂/故事 ('candidate', 'E00"
+    },
+    {
+     "check": "a_state_isolation_observable",
+     "verdict": "PASS",
+     "detail": "state_isolation PASS 6 distinct run_id + 6 sentinel（两臂/故事互不串）"
+    },
+    {
+     "check": "a_live_refused_without_auth",
+     "verdict": "PASS",
+     "detail": "live-refused PASS：live 需用户有效新授权单，本演练工具不自动发起真实调用"
+    }
+   ],
+   "failed": 0
+  }
+ },
+ "total_offline_checks": 94,
+ "source_stability": [
+  {
+   "rel": "logs/exam1_20261023/E001/turn_01_E001_T01/calls.json",
+   "sha256": "d872272f949a1db33c5ff7955c263c76a6d7d75253f19ccbc61dacd8cbbdfe31",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_02_E001_T02/calls.json",
+   "sha256": "64a1f626dfb4880a68cc4082c8ed5c6410bda36983c6e511fa0fd951436638ae",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_03_E001_T03/calls.json",
+   "sha256": "3fef40c581771f9af0df8be369258111d8de9d13d4c72d021472baf866382fc7",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_04_E001_T04/calls.json",
+   "sha256": "78ddec662871e3ca83f4d6473c5ed1f982166e1ea2d5f1a11f2f7513c8b213ea",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_05_E001_T05/calls.json",
+   "sha256": "e21c878ae3370f574396a4cdbe6f50087cd909ecb7e96ca83404b9f1480cc8d4",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_06_E001_T06/calls.json",
+   "sha256": "75e697261e81ea5537967b835a50e397f09e816ed3741b6457b6981b686888c2",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_07_E001_T07/calls.json",
+   "sha256": "d80c96748fd254ce4382e3253ace24c4332e0a8760eaaccee627cda0334304c9",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_08_E001_T08/calls.json",
+   "sha256": "dadcfd28b11671feb46ff4911360d090c06c2827379ddfb38f6712ce3a823fd4",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_01_E002_T01/calls.json",
+   "sha256": "930d36ca1cfaa69a3dccc7e35d35cf7822533bd29c014a1117d6233a9d2c5089",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_02_E002_T02/calls.json",
+   "sha256": "80a9b546bde9c0ff27ad5395461c3e7de54bfbd4f7fc8192b4b4ede5f07ad8ad",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_03_E002_T03/calls.json",
+   "sha256": "f75f54b0ed2a2409946566d2b86d81f5d1006c8bc338962813ddb8df83412275",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_04_E002_T04/calls.json",
+   "sha256": "a2dd8f0f24b09fd79153f4e01e5567a42b4ee049bef25abda7b8d43a6a44eb60",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_05_E002_T05/calls.json",
+   "sha256": "7c348160ad33fe4338e40bec59d2769db25a7a362ee7644647dc0253b6988e39",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_06_E002_T06/calls.json",
+   "sha256": "2ce9d0464ac4e014d092d9fbff4bd231e83e2e6ddee05dc1721a8eb99190eebd",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_07_E002_T07/calls.json",
+   "sha256": "5c17433108c0bdea80e74f6e8b337ea4d6de74633df9300edbf7139cff1c9bef",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_08_E002_T08/calls.json",
+   "sha256": "dbfc004848c46115b0762b8c80c3dc31c2b6ca3c50888669a80b2f298b9362ec",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_01_E003_T01/calls.json",
+   "sha256": "1954c80fc8f4720a0b0ab5aa080b02b5cade10b26c144b01385cd01f98f0e96b",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_02_E003_T02/calls.json",
+   "sha256": "cb068eae342f888fa8a4b80a26442e0818eecf7438cf92977d24d5ee45038455",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_03_E003_T03/calls.json",
+   "sha256": "aa11cf0a6ed4e3398849bdd31737d199c4cc18f4b9e6c5fb6d6e7e532de9099a",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_04_E003_T04/calls.json",
+   "sha256": "a32b1f00d61e180f474daf56a26871335557c5adeb7cdc98bd4ab051cad2b2db",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_05_E003_T05/calls.json",
+   "sha256": "83daee186a78367207797c3d29bc3a9328d8ffb6c60ab3ba573a2b1132859baa",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_06_E003_T06/calls.json",
+   "sha256": "815ce13540997751cbaaa055bad5a80d91cc968d9e35a5978e9069e41728a32a",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_07_E003_T07/calls.json",
+   "sha256": "5ed629a9760e18fde25f6105e573208cb0483ef08ff85f3762680dbf2f00ddcb",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_08_E003_T08/calls.json",
+   "sha256": "e2cbff5504b77d46c6216ce78b6b9b132535d1c544918b9f39107a461942388d",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_01_E001_T01/manifest.json",
+   "sha256": "dc1bfc5f54c6f2dbef2ee5d800aa668dd4c64ee01db33466c24bfeaf81545d43",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_02_E001_T02/manifest.json",
+   "sha256": "6118dafc517d92582df240818d96f14a43f910bdd50c87e6405325135f4d3c54",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_03_E001_T03/manifest.json",
+   "sha256": "b635d754d9c5e5c4405dd61b2c2eff54bb236b1ed4ddfdf4ba03263799e38d3f",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_04_E001_T04/manifest.json",
+   "sha256": "ff117639377150c2680dc9608996451338f48d432f32e2cc6f7c55ac223a5d94",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_05_E001_T05/manifest.json",
+   "sha256": "47b16700a1177257adc5995d8f16b0e5018abdbf362664887120983669207c9d",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_06_E001_T06/manifest.json",
+   "sha256": "58feb9ad29a07748f706c7d4f250f387769ef1eaf4df6c3e294cc3886b2fba90",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_07_E001_T07/manifest.json",
+   "sha256": "1ff9c76825c5e128e7fd0caaea4f5fd51dc0e08e71b70421b45e8a31859c5f68",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_08_E001_T08/manifest.json",
+   "sha256": "48f8ebc380913737620eabc732faf2d3b79a001e07b88af86c78e8f4b24d47a5",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_01_E002_T01/manifest.json",
+   "sha256": "452b9f3a6d3bd87feeb61de38cca3064daa0063b2a4e3afa2b624e7725235a74",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_02_E002_T02/manifest.json",
+   "sha256": "c7f60eac72ee9b15ddd78365f7f9c895dba393f3e368df9e70bb72a3981b13ff",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_03_E002_T03/manifest.json",
+   "sha256": "98d39e6254037e331a416cfe7ec2308219019a3c80eb8ff12809ab8eb9b00c68",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_04_E002_T04/manifest.json",
+   "sha256": "f468c605e4ad4acd4cd4b1d95d9aee99cfdb6ad25466d613aabc6b9f76529b44",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_05_E002_T05/manifest.json",
+   "sha256": "e4f01bff914d28cc364031525284fec80cc9c2f8b96d018e9cba1598c0ef85fd",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_06_E002_T06/manifest.json",
+   "sha256": "c4c21e233d2bba9f2155fa39a0a4af870ce5911041ee80d58832eb35e5ce4e8f",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_07_E002_T07/manifest.json",
+   "sha256": "18ed347c9472930c8365daa66004ed751ce83c7891450d9ba5ed3c423696eb45",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_08_E002_T08/manifest.json",
+   "sha256": "ff90707881870c2e9c7f9fd0e444f9bf2711e6c6ca1c06afb25eb894b7dd2424",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_01_E003_T01/manifest.json",
+   "sha256": "2b5214ddfe05af6b6ff263b55f32c8b395bdffd89df5bff3593fd0bdc72439f1",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_02_E003_T02/manifest.json",
+   "sha256": "fd6110a58c04e1e691875b90f9cde67c6d502e3a3d999a8ecda233a2b9f504dd",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_03_E003_T03/manifest.json",
+   "sha256": "84225318659a15a23c6af73a35f4171322b3e845c7cdb0f985c9a394f619c3ff",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_04_E003_T04/manifest.json",
+   "sha256": "9e5aed67f2d3498a582533e989c7e305e3d99bb2f91f109727e9bd6b029d91f3",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_05_E003_T05/manifest.json",
+   "sha256": "ebf38bf1b5fafd3fd777e234f9f06bd0042af9de9b9417fb2666c9722e0dfb76",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_06_E003_T06/manifest.json",
+   "sha256": "265dd652876f028cbe2979f14366b4f151db01cd216bedfee5ccda047e5b2759",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_07_E003_T07/manifest.json",
+   "sha256": "cd5f7189c1318ed0bb3e0f3029d468993d78aee4fe8154d9968233797fcf3bb9",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_08_E003_T08/manifest.json",
+   "sha256": "b05f542c8c6f3ae83e78af4852f35d7225e39da77581b7e17814d2e78b940a46",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_01_E001_T01/scoring.json",
+   "sha256": "8fc79a06294a55a937ce08be2b39626e730d9cf67163ee41740bc7626c253b35",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_02_E001_T02/scoring.json",
+   "sha256": "6784596b655cd2a8a2423cb29e8a2ad1e8db300c6f4ca6ff155b554e6b0b2090",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_03_E001_T03/scoring.json",
+   "sha256": "6784596b655cd2a8a2423cb29e8a2ad1e8db300c6f4ca6ff155b554e6b0b2090",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_04_E001_T04/scoring.json",
+   "sha256": "50c3bd32372fadafc50d17617e7ee58aa6beec7a6a2d7a4965d738cf257425d0",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_05_E001_T05/scoring.json",
+   "sha256": "32ae0712f92fc72eb035e91108423eb2dad981e416920ea4dfbc6c18f054a2f2",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_06_E001_T06/scoring.json",
+   "sha256": "a2a3a31099ada5cb288037b3e95231b67368bfcb6d87af7d311ff2d34b5a3b1b",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_07_E001_T07/scoring.json",
+   "sha256": "f247756c28a2b6ed8d62f3071cc4bd5b6c3140491e50eb64b6723a2482b25061",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E001/turn_08_E001_T08/scoring.json",
+   "sha256": "6b804322e2f30498b28ad654013323f773563b1b2f7fb47e2d59db6935ad8133",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_01_E002_T01/scoring.json",
+   "sha256": "418176a69766679171746e4d2a83e242bb418fc02ab10ad0d3a25537a47ae285",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_02_E002_T02/scoring.json",
+   "sha256": "b29e96fe62efe1236fd48c8f676eb2b11812e10dc1ff5da5e0722dfae5a30585",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_03_E002_T03/scoring.json",
+   "sha256": "d5b0c1d55cb64d5c4b6a88aea8952eb39d06b2115df6b3f009d7d23d5c5db44a",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_04_E002_T04/scoring.json",
+   "sha256": "7943a44818af631169e2b61df15192616adfdcb62869db1e5d8bf48de6dea541",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_05_E002_T05/scoring.json",
+   "sha256": "eb722d3701d8c86446cc9df0ee85af4baf894a74b0622966439f4205274034b4",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_06_E002_T06/scoring.json",
+   "sha256": "da05e6420bba1551aa871d0c537cbedf5c4f9d80146b4817fe4d4f42688cedae",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_07_E002_T07/scoring.json",
+   "sha256": "2ec42a2f75c5b043a4a3f8fe90cbc806090324cd342a7a046f576388eb146228",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E002/turn_08_E002_T08/scoring.json",
+   "sha256": "8e0ee32e497b103c64577caafad2fc3945d164155becab5cd2094945a827904e",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_01_E003_T01/scoring.json",
+   "sha256": "415a1c9dd6335edd1c203b77ae3be8b5c6fd07d5f96815044bae7bba45824982",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_02_E003_T02/scoring.json",
+   "sha256": "db96cb203154d3a28dd83bdb021cd86b318444c773f88311af8057496310ff1a",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_03_E003_T03/scoring.json",
+   "sha256": "b2feefa4086fdb567a3f60e811e8861d3754b765550df44f7c25e233ea942097",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_04_E003_T04/scoring.json",
+   "sha256": "f4fc0bebd134bb5077526d2305d426702c206a319afaf60e55d2b44929e10029",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_05_E003_T05/scoring.json",
+   "sha256": "29a32f681f1dcfe09781e3e390d396be004517df1ff038a032968919c95d8511",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_06_E003_T06/scoring.json",
+   "sha256": "2a3ace7532dde6971e2692972bfff9a14d81626560799b2e9c65a57222ae0459",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_07_E003_T07/scoring.json",
+   "sha256": "843f10da0913c56d32124f6ed6dadb5bece7f4ee2c5a2370f7b4c688d298a551",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/E003/turn_08_E003_T08/scoring.json",
+   "sha256": "63eca996285a8c1337f43c75fc4c4bad0fc4949f4102d6b7d407cb11bab16e5f",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/LAYERED_SCORE.json",
+   "sha256": "26175054666b8513477f166ed99ceadf5949c6600aefc2c9d4f3ce2ba446596f",
+   "modified_by_this_batch": false
+  },
+  {
+   "rel": "logs/exam1_20261023/LAYERED_SCORE_v05.json",
+   "sha256": "ec0c40678f414ba0bf10d7b78e1346ca4e592bb6203f7cc363d406ea399b94fb",
+   "modified_by_this_batch": false
+  }
+ ]
+}

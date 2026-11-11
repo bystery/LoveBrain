@@ -1,0 +1,56 @@
+{
+  "new_real_model_calls": 0,
+  "network_blocked": true,
+  "probes": {
+    "top_level_no_reply_with_body": {
+      "direct": [
+        "send",
+        "你好",
+        "ok"
+      ],
+      "after_common_normalizer": [
+        "send",
+        "你好",
+        "ok"
+      ]
+    },
+    "top_level_no_reply_without_body": {
+      "direct": [
+        "delivery_failed",
+        "",
+        "empty_or_unlicensed_no_reply"
+      ],
+      "after_common_normalizer": [
+        "delivery_failed",
+        "",
+        "empty_or_unlicensed_no_reply"
+      ]
+    },
+    "analysis_close_with_body": {
+      "direct": [
+        "delivery_failed",
+        "",
+        "action_conflict:no_reply_with_body"
+      ],
+      "after_common_normalizer": [
+        "delivery_failed",
+        "",
+        "action_conflict:no_reply_with_body"
+      ]
+    },
+    "sim_wait_next_turn": {
+      "harness_calls": 2,
+      "second_input_roles": [
+        "ME"
+      ],
+      "finding": "sim wait causes another harness request without a new HER input; valid only if explicitly registered as proactive-clock action"
+    }
+  },
+  "action_policy_offline": {
+    "exit_code": 0,
+    "output": "APR_CONTRACT_PASS 10/10 (T1 load, T2 contract+yield, T3 may_decline=False, T4 cap_rules, T5 in T2, T6 ablation anchor, T7 consumer anchors, T8 hook+grounding, T9 own_events render, T10 note untouched)\n",
+    "original_params_sha256": "7e4d1e52b946b852e9e0486ac4203a535473fd1a499896f72510a3865e3a397c",
+    "original_params_unchanged": true,
+    "params_test_writes_redirected_to_temp": true
+  }
+}

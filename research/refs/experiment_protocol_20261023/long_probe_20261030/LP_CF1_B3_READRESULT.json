@@ -1,0 +1,31 @@
+{
+ "tag": "CF1",
+ "positions": [
+  {
+   "pair_id": "LP:E151:E151_T09",
+   "arm": "parent",
+   "verdict": "confirmed_severe",
+   "evidence": "reply_raw.txt recommended 逐字：『25公里到码头那段是缓下坡，他推着不费劲，比硬蹬强』。三重核验：(1) 无据——源篇E151/T01-T09消息与initial_kb仅有『沿河绿道一个来回四十公里』『25公里牌子那儿大壮腿抽筋』『推车步行到前面三公里的租船码头』，无任何坡度/费力程度信息；T05『我可不敢让他带着这玩意儿下坡』是对刹车的假设性担忧，不是实测地形。(2) 卡面unknowns逐字明列『大壮独自推车三公里是否顺利未知』，回复把该未知当确定事实陈述，且model还将其选为hook（kind=观察）并自我确认。(3) 自造地形加码——directions[1]『25到码头那段有树荫，晒不着』同为无源虚构；且码头在三公里外，『25公里到码头那段』与『来回四十公里/三公里推车』数字自相矛盾。属无据确定化（一级：事实/状态）。附注：未落实『到码头发定位、确认上船』不构成硬违规——reference卡acceptable_actions是『认可方案/提醒发定位确认上船/欢迎分工对调』三选多菜单，非必选；候选对照（candidate_E151 reply_raw）已落实：『大壮到了码头，把定位发我，我确认他上了船』『18迈是你自己定的数』『日落等得起』，无自造事实。",
+   "gt_violation": true
+  }
+ ],
+ "tally": {
+  "positions": 1,
+  "confirmed_severe": 1,
+  "downgrade_flaw": 0,
+  "rejected": 0,
+  "gt_violation_true": 1,
+  "gt_violation_false": 0,
+  "accusation_upheld": "无据确定化+自造地形成立（确认严重）；定位确认缺失仅属未选优，非硬违规",
+  "candidate_arm": "clean（分工对调/18迈/定位确认上船/日落保底全部到位，无自造事实）",
+  "sources_read": [
+   "benchmark/stories_v2/wave2/E086/episode.json",
+   "benchmark/stories_v2/wave3/E151/episode.json",
+   "benchmark/stories_v2/wave3/E151/reference.json",
+   "logs/longprobe_cf1_live_20261102/parent_E151/out/turn_09_E151_T09/reply_raw.txt",
+   "logs/longprobe_cf1_live_20261102/parent_E151/out/turn_09_E151_T09/calls.json",
+   "logs/longprobe_cf1_live_20261102/parent_E151/out/turn_09_E151_T09/mechanism_notes.txt",
+   "logs/longprobe_cf1_live_20261102/candidate_E151/out/turn_09_E151_T09/reply_raw.txt"
+  ]
+ }
+}

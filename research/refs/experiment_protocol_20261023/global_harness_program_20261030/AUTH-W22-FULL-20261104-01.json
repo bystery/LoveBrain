@@ -1,0 +1,43 @@
+{
+ "document_type": "FULL_BATCH_AUTHORIZATION",
+ "authorization_id": "AUTH-W22-FULL-20261104-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "max_attempts": 464,
+ "authorized_by": "常设授权 AUTH-GLOBAL-CONTINUOUS-20261030-01；判据冻结 W22_01_ATTR_DESIGN_20261104.md；快车道 G0 PASS",
+ "authorized_at": "2026-11-04T08:00:00+08:00",
+ "scope_note": "W22-01 全量批：uc_attr(归属锚定) vs uc，464 attempts；G1 主假设=归因错位族 severe cand<par；无重试另册",
+ "scope": {
+  "scope_id": "full_w22_uc_attr",
+  "purpose": "W22-01 全量批 464 attempts：归属锚定单变量 vs uc；判据冻结",
+  "automatic_candidate_generations": true,
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "model_alias": "dsf"
+ },
+ "budget_authority": "logs/auth_budget/AUTH-W22-FULL-20261104-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 464
+ },
+ "rules": [
+  "no_retry/no_makeup",
+  "fail_fast=true",
+  "live 独占 6 流",
+  "不碰 b_line/封板题"
+ ],
+ "frozen_bindings": {
+  "W22_FULL": {
+   "batch_id": "BATCH-W22-FULL-20261104",
+   "plan_sha256": "bd8e3d27e4138891ac4c6f353ce183e28ab8dd077ec61e9729825808864e6713",
+   "attempts": 464,
+   "parent": "window_expand_b_norecap_uc",
+   "candidate": "window_expand_b_norecap_uc_attr",
+   "cards_file": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+   "parent_identity_sha256": "5b3266a91350d66a799f2d3c53274168f9c9b1d16a81f26d8b7193e1847c13df",
+   "candidate_identity_sha256": "29ae441893119b7393510e651f61a0a667544e854903191f0831e1368a1cac94"
+  }
+ },
+ "budget_ledger": "logs/auth_budget/AUTH-W22-FULL-20261104-01.jsonl"
+}

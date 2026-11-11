@@ -1,0 +1,1040 @@
+{
+  "snapshot_local_time": "2026-10-26T01:50:34.049925",
+  "real_model_calls": 0,
+  "budgets": {
+    "AUTH-NEWSTORY-96-20261026-01": {
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 40,
+        "attempt_completed": 39
+      },
+      "pending_attempt_ids": [
+        "iso_20261026_012947_278fbf_g0004"
+      ],
+      "unique_started": 40,
+      "duplicate_start_count": 0,
+      "last_ts": "2026-10-26 01:50:15"
+    },
+    "AUTH-EVAL-JUDGE-20261025-01": {
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 204,
+        "attempt_completed": 200,
+        "attempt_failed": 3
+      },
+      "pending_attempt_ids": [
+        "judge:R2:M015:primary:68"
+      ],
+      "unique_started": 204,
+      "duplicate_start_count": 0,
+      "last_ts": "2026-10-26 01:14:52"
+    },
+    "AUTH-STREAM-INT-20261025-01": {
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 8,
+        "attempt_completed": 8,
+        "authorization_closed": 1
+      },
+      "pending_attempt_ids": [],
+      "unique_started": 8,
+      "duplicate_start_count": 0,
+      "last_ts": "2026-10-26 01:22:24"
+    },
+    "AUTH-HARNESS-PERF-PHASE1-20261025-01": {
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 4,
+        "attempt_completed": 4
+      },
+      "pending_attempt_ids": [],
+      "unique_started": 4,
+      "duplicate_start_count": 0,
+      "last_ts": "2026-10-25 11:05:10"
+    }
+  },
+  "newstory_frozen": {
+    "plan_sha256": "cc19ab7daeb3fb05ac54cac6f5d0e2043fff7efb3a27d7a86e0e93ea14f23d5f",
+    "checked": 50,
+    "mismatches": []
+  },
+  "available_newstory_outputs": [
+    {
+      "case": "turn_01_P001_T01",
+      "run": "candidate_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 15898.3,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_02_P001_T02",
+      "run": "candidate_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 53823.7,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_03_P001_T03",
+      "run": "candidate_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 13267.0,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_04_P001_T04",
+      "run": "candidate_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 60840.2,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_05_P001_T05",
+      "run": "candidate_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 16963.1,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_06_P001_T06",
+      "run": "candidate_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 72717.0,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_07_P001_T07",
+      "run": "candidate_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 55079.4,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_08_P001_T08",
+      "run": "candidate_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 23225.5,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_01_P002_T01",
+      "run": "candidate_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 25347.4,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_02_P002_T02",
+      "run": "candidate_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 12161.3,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_03_P002_T03",
+      "run": "candidate_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 83177.3,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_04_P002_T04",
+      "run": "candidate_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 12024.1,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_05_P002_T05",
+      "run": "candidate_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 38879.8,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_06_P002_T06",
+      "run": "candidate_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 14694.0,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_07_P002_T07",
+      "run": "candidate_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 21202.9,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_08_P002_T08",
+      "run": "candidate_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 17389.9,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_01_P003_T01",
+      "run": "candidate_P003",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 13339.8,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_02_P003_T02",
+      "run": "candidate_P003",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 19520.8,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_03_P003_T03",
+      "run": "candidate_P003",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 21085.5,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_01_P001_T01",
+      "run": "parent_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 13726.8,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_02_P001_T02",
+      "run": "parent_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 16198.1,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_03_P001_T03",
+      "run": "parent_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 12781.1,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_04_P001_T04",
+      "run": "parent_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 31837.3,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_05_P001_T05",
+      "run": "parent_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 13626.5,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_06_P001_T06",
+      "run": "parent_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 12512.3,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_07_P001_T07",
+      "run": "parent_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 30438.3,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_08_P001_T08",
+      "run": "parent_P001",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 11252.0,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_01_P002_T01",
+      "run": "parent_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 10851.6,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_02_P002_T02",
+      "run": "parent_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 16155.8,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_03_P002_T03",
+      "run": "parent_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 34203.8,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_04_P002_T04",
+      "run": "parent_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 35556.4,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_05_P002_T05",
+      "run": "parent_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 14948.4,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_06_P002_T06",
+      "run": "parent_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 21399.8,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_07_P002_T07",
+      "run": "parent_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 42799.5,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_08_P002_T08",
+      "run": "parent_P002",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 17441.9,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_01_P003_T01",
+      "run": "parent_P003",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 17381.5,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_02_P003_T02",
+      "run": "parent_P003",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 21021.5,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_03_P003_T03",
+      "run": "parent_P003",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 39305.2,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    },
+    {
+      "case": "turn_04_P003_T04",
+      "run": "parent_P003",
+      "stream": true,
+      "usage_source": "api_usage",
+      "first_usable_ms": null,
+      "first_preview_ms": 29608.1,
+      "all_ready_ms": null,
+      "pre_request_ms": 0.0
+    }
+  ],
+  "swap_probe": {
+    "normal": {
+      "evidence": {
+        "fixture": true
+      },
+      "answers": {
+        "甲": {
+          "primary": "LEFT-A"
+        },
+        "乙": {
+          "primary": "RIGHT-B"
+        }
+      }
+    },
+    "swapped": {
+      "evidence": {
+        "fixture": true
+      },
+      "answers": {
+        "乙": {
+          "primary": "RIGHT-B"
+        },
+        "甲": {
+          "primary": "LEFT-A"
+        }
+      }
+    },
+    "mapping_equal": true,
+    "insertion_order_normal": [
+      "甲",
+      "乙"
+    ],
+    "insertion_order_swapped": [
+      "乙",
+      "甲"
+    ]
+  },
+  "normalization_probe": {
+    "before": {
+      "parsed": {
+        "goal": {
+          "甲": 1,
+          "乙": 3,
+          "action_basis": {
+            "甲": "A",
+            "乙": "B"
+          }
+        },
+        "insufficient_info": {
+          "甲": "ok",
+          "乙": "wrong"
+        },
+        "protocol_anomaly": {
+          "甲": "none",
+          "乙": "missing_slot"
+        },
+        "claims": [],
+        "pref": "甲"
+      }
+    },
+    "after": {
+      "parsed": {
+        "goal": {
+          "action_basis": {
+            "甲": "A"
+          },
+          "甲": 1
+        },
+        "insufficient_info": {
+          "甲": "ok"
+        },
+        "protocol_anomaly": {
+          "甲": "none"
+        },
+        "claims": [],
+        "pref": "乙"
+      }
+    }
+  },
+  "reference_stats": {
+    "claims_total": 1064,
+    "human_reviewed": 17,
+    "constructed_reference": 39,
+    "mechanical_only": 1008,
+    "disputed": 5,
+    "reference_unsupported_claims": 13,
+    "reference_protected_claims": 1048
+  },
+  "goal_calibration": {
+    "dev": {
+      "agreement": {
+        "R1-R2": {
+          "n": 78,
+          "exact": 68,
+          "adjacent_within1": 77,
+          "exact_percent": 0.8718,
+          "adjacent_percent": 0.9872
+        },
+        "R1-R3": {
+          "n": 78,
+          "exact": 65,
+          "adjacent_within1": 77,
+          "exact_percent": 0.8333,
+          "adjacent_percent": 0.9872
+        },
+        "R2-R3": {
+          "n": 80,
+          "exact": 71,
+          "adjacent_within1": 80,
+          "exact_percent": 0.8875,
+          "adjacent_percent": 1.0
+        }
+      },
+      "vs_reference": {
+        "available": false,
+        "reason": "参考侧 goal_reference.goal 为目标文字描述（6 个 dev 节点），无数值金标；数字正确率不可测，不冒充。接地探索见 action_range / forbidden_hits。"
+      },
+      "qualification": {
+        "fact_detection": "insufficient_evidence",
+        "free_expression_false_kill": "not_qualified",
+        "insufficient_info": "not_qualified",
+        "goal_agreement": "qualified",
+        "goal_vs_reference_numeric": "not_available_no_numeric_reference",
+        "attribution": "insufficient_evidence",
+        "order_sensitivity": "insufficient_evidence",
+        "per_rater_detail": {
+          "fact_detection": {
+            "R1": "insufficient_evidence",
+            "R2": "insufficient_evidence",
+            "R3": "insufficient_evidence"
+          },
+          "free_expression_false_kill": {
+            "R1": "not_qualified",
+            "R2": "not_qualified",
+            "R3": "not_qualified"
+          },
+          "insufficient_info": {
+            "R1": "not_qualified",
+            "R2": "not_qualified",
+            "R3": "qualified"
+          },
+          "goal_agreement": {
+            "R1-R2": "qualified",
+            "R1-R3": "qualified",
+            "R2-R3": "qualified"
+          }
+        },
+        "note": "qualified 维才可 AI 辅助批量复核；not_qualified/insufficient_evidence 维度转证据复核或保留未评，不阻塞资源/协议结论，也不得偷过质量晋级。资格按评审者分母计（不是主张×3 并池）。"
+      }
+    },
+    "validation": {
+      "agreement": {
+        "R1-R2": {
+          "n": 38,
+          "exact": 32,
+          "adjacent_within1": 38,
+          "exact_percent": 0.8421,
+          "adjacent_percent": 1.0
+        },
+        "R1-R3": {
+          "n": 32,
+          "exact": 28,
+          "adjacent_within1": 32,
+          "exact_percent": 0.875,
+          "adjacent_percent": 1.0
+        },
+        "R2-R3": {
+          "n": 30,
+          "exact": 27,
+          "adjacent_within1": 30,
+          "exact_percent": 0.9,
+          "adjacent_percent": 1.0
+        }
+      },
+      "vs_reference": {
+        "available": false,
+        "reason": "参考侧 goal_reference.goal 为目标文字描述（6 个 dev 节点），无数值金标；数字正确率不可测，不冒充。接地探索见 action_range / forbidden_hits。"
+      },
+      "qualification": {
+        "fact_detection": "insufficient_evidence",
+        "free_expression_false_kill": "insufficient_evidence",
+        "insufficient_info": "insufficient_evidence",
+        "goal_agreement": "qualified",
+        "goal_vs_reference_numeric": "not_available_no_numeric_reference",
+        "attribution": "insufficient_evidence",
+        "order_sensitivity": "insufficient_evidence",
+        "per_rater_detail": {
+          "fact_detection": {
+            "R1": "insufficient_evidence",
+            "R2": "insufficient_evidence",
+            "R3": "insufficient_evidence"
+          },
+          "free_expression_false_kill": {
+            "R1": "insufficient_evidence",
+            "R2": "insufficient_evidence",
+            "R3": "insufficient_evidence"
+          },
+          "insufficient_info": {
+            "R1": "insufficient_evidence",
+            "R2": "insufficient_evidence",
+            "R3": "insufficient_evidence"
+          },
+          "goal_agreement": {
+            "R1-R2": "qualified",
+            "R1-R3": "qualified",
+            "R2-R3": "qualified"
+          }
+        },
+        "note": "qualified 维才可 AI 辅助批量复核；not_qualified/insufficient_evidence 维度转证据复核或保留未评，不阻塞资源/协议结论，也不得偷过质量晋级。资格按评审者分母计（不是主张×3 并池）。"
+      }
+    }
+  },
+  "newstories": [
+    {
+      "episode": "P001",
+      "n": 8,
+      "notes_nonempty": 8,
+      "intent_enabled": 4
+    },
+    {
+      "episode": "P002",
+      "n": 8,
+      "notes_nonempty": 8,
+      "intent_enabled": 4
+    },
+    {
+      "episode": "P003",
+      "n": 8,
+      "notes_nonempty": 8,
+      "intent_enabled": 5
+    },
+    {
+      "episode": "P004",
+      "n": 8,
+      "notes_nonempty": 8,
+      "intent_enabled": 3
+    },
+    {
+      "episode": "P005",
+      "n": 8,
+      "notes_nonempty": 8,
+      "intent_enabled": 6
+    },
+    {
+      "episode": "P006",
+      "n": 8,
+      "notes_nonempty": 8,
+      "intent_enabled": 6
+    }
+  ],
+  "enabled_but_ineffective_intents": [
+    {
+      "case_id": "P001_T03",
+      "intent": {
+        "enabled": true,
+        "text": "她对骑车有兴趣但要'看状态'；把'想约骑'降级成暂定，别催",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P001_T07",
+      "intent": {
+        "enabled": true,
+        "text": "她愿配合看排班；把话头保持开放，先不锁定",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P002_T02",
+      "intent": {
+        "enabled": true,
+        "text": "她反应淡；把'想组局'降级成不催，有再说",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P002_T07",
+      "intent": {
+        "enabled": true,
+        "text": "她愿进群局；把话头保持为多人局，先别谈单独",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P003_T02",
+      "intent": {
+        "enabled": true,
+        "text": "她降了温；把调情收一点，别升级",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P003_T05",
+      "intent": {
+        "enabled": true,
+        "text": "她从玩笑切到情绪；把调情换成陪伴",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P004_T02",
+      "intent": {
+        "enabled": true,
+        "text": "她反应淡；先收回一点，别趁势往前",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P004_T07",
+      "intent": {
+        "enabled": true,
+        "text": "她在表态；陪她聊这点，别当推进窗口",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P005_T03",
+      "intent": {
+        "enabled": true,
+        "text": "她要先歇；把这次深聊放慢、留到下次",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P005_T05",
+      "intent": {
+        "enabled": true,
+        "text": "她也交底了；陪她把这层想清楚，不替她决定",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P005_T08",
+      "intent": {
+        "enabled": true,
+        "text": "她开放下次深聊但没定；保持开放，不锁定",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P006_T03",
+      "intent": {
+        "enabled": true,
+        "text": "她安了个你没说过的话；先弄清事实，不编也不硬顶",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P006_T06",
+      "intent": {
+        "enabled": true,
+        "text": "她在交底；陪她把这点聊开，不评判不代决定",
+        "status": "ADJUSTED"
+      }
+    },
+    {
+      "case_id": "P006_T07",
+      "intent": {
+        "enabled": true,
+        "text": "她给个'嗯'；不用再加码",
+        "status": "ADJUSTED"
+      }
+    }
+  ],
+  "branch_predicates": {
+    "P001-BP1": [
+      {
+        "outcome_id": "P001-BP1-C1",
+        "priority": 1,
+        "when": {
+          "any": [
+            {
+              "type": "question_count_ge",
+              "n": 2
+            },
+            {
+              "type": "len_gt",
+              "n": 80
+            }
+          ]
+        }
+      },
+      {
+        "outcome_id": "P001-BP1-C3",
+        "priority": 2,
+        "when": {
+          "all": [
+            {
+              "type": "question_count_eq",
+              "n": 0
+            },
+            {
+              "type": "len_le",
+              "n": 25
+            }
+          ]
+        }
+      }
+    ],
+    "P001-BP2": [
+      {
+        "outcome_id": "P001-BP2-D1",
+        "priority": 1,
+        "when": {
+          "any": [
+            {
+              "type": "contains_any",
+              "items": [
+                "就这么定了",
+                "已经约好",
+                "那说定了",
+                "必须",
+                "肯定要来",
+                "非去不可"
+              ]
+            },
+            {
+              "type": "question_count_ge",
+              "n": 2
+            }
+          ]
+        }
+      }
+    ],
+    "P002-BP1": [
+      {
+        "outcome_id": "P002-BP1-C1",
+        "priority": 1,
+        "when": {
+          "any": [
+            {
+              "type": "contains_any",
+              "items": [
+                "到底去不去",
+                "说定了",
+                "就这么约",
+                "必须",
+                "别随便啊"
+              ]
+            },
+            {
+              "type": "question_count_ge",
+              "n": 2
+            }
+          ]
+        }
+      }
+    ],
+    "P002-BP2": [
+      {
+        "outcome_id": "P002-BP2-D1",
+        "priority": 1,
+        "when": {
+          "any": [
+            {
+              "type": "contains_any",
+              "items": [
+                "我还是要去",
+                "我这就过去",
+                "帮你搬定了",
+                "我已经出发",
+                "搬什么公司 我来"
+              ]
+            },
+            {
+              "type": "question_count_ge",
+              "n": 2
+            }
+          ]
+        }
+      },
+      {
+        "outcome_id": "P002-BP2-D3",
+        "priority": 2,
+        "when": {
+          "any": [
+            {
+              "type": "contains_any",
+              "items": [
+                "行吧",
+                "算了",
+                "哦这样",
+                "随便你",
+                "没事没事"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "P004-BP1": [
+      {
+        "outcome_id": "P004-BP1-C1",
+        "priority": 1,
+        "when": {
+          "any": [
+            {
+              "type": "contains_any",
+              "items": [
+                "到底给不给",
+                "不发就不理你",
+                "必须发",
+                "现在就发"
+              ]
+            },
+            {
+              "type": "question_count_ge",
+              "n": 2
+            }
+          ]
+        }
+      }
+    ],
+    "P004-BP2": [
+      {
+        "outcome_id": "P004-BP2-D1",
+        "priority": 1,
+        "when": {
+          "any": [
+            {
+              "type": "contains_any",
+              "items": [
+                "那算了",
+                "行吧",
+                "你是不是也",
+                "其实你也想",
+                "别嘴硬"
+              ]
+            },
+            {
+              "type": "question_count_ge",
+              "n": 2
+            }
+          ]
+        }
+      }
+    ],
+    "P006-BP1": [
+      {
+        "outcome_id": "P006-BP1-C1",
+        "priority": 1,
+        "when": {
+          "any": [
+            {
+              "type": "contains_any",
+              "items": [
+                "对啊我常",
+                "我经常去",
+                "我爸也常带我",
+                "我上次就是"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "P006-BP2": [
+      {
+        "outcome_id": "P006-BP2-D1",
+        "priority": 1,
+        "when": {
+          "any": [
+            {
+              "type": "contains_any",
+              "items": [
+                "那我陪你去",
+                "一起去吧",
+                "就约周六",
+                "我已经订好",
+                "我来接你"
+              ]
+            },
+            {
+              "type": "question_count_ge",
+              "n": 2
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "D5": {
+    "started": 8,
+    "completed": 8,
+    "consumption_stamps": 8,
+    "state_isolated_flag": false
+  }
+}

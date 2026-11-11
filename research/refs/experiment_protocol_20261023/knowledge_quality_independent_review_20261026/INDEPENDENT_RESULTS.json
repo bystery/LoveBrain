@@ -1,0 +1,39 @@
+{
+  "observable_states": 46,
+  "c4_states": 16,
+  "c4_representations": {
+    "real_event_log": 12,
+    "base64_file_tree": 4
+  },
+  "c4_event_retention": {
+    "C2": {
+      "matched": 45,
+      "expected": 45
+    },
+    "v5": {
+      "matched": 45,
+      "expected": 45
+    },
+    "C3": {
+      "matched": 45,
+      "expected": 45
+    }
+  },
+  "semantic_contradictions_passing_lexical_gate": 3,
+  "packet": {
+    "nodes": 128,
+    "nonempty_backups": 841,
+    "bindings_verified": 128
+  },
+  "C3_final_fact_semantic_pilot": {
+    "records": 17,
+    "content_supported": 16,
+    "unsupported_subject_resolution": 1,
+    "supported_but_citations_need_prior_context": 2
+  },
+  "ongoing_prompt_observation": {
+    "requests": 32,
+    "ongoing_section": 0
+  },
+  "model_calls": 0
+}

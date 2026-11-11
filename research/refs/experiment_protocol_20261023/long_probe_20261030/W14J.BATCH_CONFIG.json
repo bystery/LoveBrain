@@ -1,0 +1,27 @@
+{
+ "batch_id": "BATCH-W14J-LONG4-20261102",
+ "arm_map": {
+  "parent": "window_expand_b",
+  "candidate": "window_expand_b2"
+ },
+ "episode_order": [
+  {
+   "episode": "LRE121",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "LRE127",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "LRE145",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "LRE146",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W14.json",
+ "recall_capable": false
+}

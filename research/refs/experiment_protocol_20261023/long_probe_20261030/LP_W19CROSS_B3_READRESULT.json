@@ -1,0 +1,91 @@
+{
+ "kind": "lp_b3_readresult",
+ "tag": "W19CROSS",
+ "date": "2026-11-03",
+ "reviewer": "main-session B3 (主会话本人逐位亲读)",
+ "batch": "BATCH-W19-CROSS-20261103 (logs/w19b_cross_live_20261103, 464/464)",
+ "source_review": "LP_W19CROSS_NINEDIM_REVIEW.json (AUTH-W19CROSS-REVIEW-20261103-01, 23:02 收口)",
+ "method": "severe 位逐位读 HER 原文(episode turns) + 双臂 reply_raw.txt + 评审引文逐字回验；机械位(乱码/空)以 reply_raw + mechanism_notes + scoring.json 直接裁定",
+ "domain_of": {"E157": "short12", "E164": "short12", "E170": "short12", "E183": "short12", "E191": "short12", "E212": "short12", "LRE117": "long40", "LRE121": "long40", "LRE138": "long40", "LRE146": "long40"},
+ "positions": [
+  {"pair_id": "LP:E164:E164_T01", "domain": "short12", "judge_severe": {"cand": true, "par": false}, "b3": {
+    "candidate": "CONFIRMED", "parent": "CONFIRMED_ADDED_BY_B3", "family": "无据确定化-编造数字",
+    "evidence": "题面 T01 HER 原话：'我记不清当初次卡单次折多少钱了，你那儿有没有印象？'（无任何单价在前文）；真值后轮揭晓：T1 二十次卡1600=单次80，T2 纯卡1450=72.5。cand 编造'次卡是1200十二次，单次正好100'+899/10=89.9（引文逐字在 cand raw）；par 同位编造'之前算下来单次大概二十五到二十六'（引文逐字在 par raw）。judge 只烧 cand 不烧 par=双重标准。"
+  }},
+  {"pair_id": "LP:E164:E164_T10", "domain": "short12", "judge_severe": {"cand": false, "par": true}, "b3": {
+    "candidate": "not_severe", "parent": "REJECTED", "family": "judge 误烧",
+    "evidence": "judge 称 par'未经确认即确定化赠品失效'+单价混比。题面 T10 HER 原话：'我决定解冻，双十一季卡那单我不下了。'=本人已取消该单，赠品随之失效有据；25/月 vs 37.7/次 的跨口径比较承 HER 自己在 T4 的折算框架。judge 两项指控均不成立。"
+  }},
+  {"pair_id": "LP:E183:E183_T06", "domain": "short12", "judge_severe": {"cand": false, "par": true}, "b3": {
+    "candidate": "not_severe", "parent": "JUDGE_UNEXPLAINED", "family": "judge 无注 severe",
+    "evidence": "judge severe 且 note 空。par raw 790 字符 PARSE_OK、recommended/directions/analysis 完整。severe 事由不可复现，不计入确认账；登记 judge 缺陷。"
+  }},
+  {"pair_id": "LP:E191:E191_T08", "domain": "short12", "order": "swap", "judge_severe": {"cand": true, "par": false}, "b3": {
+    "candidate": "CONFIRMED", "parent": "CONFIRMED_MILD_ADDED_BY_B3", "family": "归因错位/窃取归属",
+    "evidence": "题面 persona'她会做规则速查表'+T2 HER'规则速查表做完了，四页'+initial_kb'速查表是他夸出来的'→速查表是 HER 作品。cand '第三页那栏我改了三版，果然没错'+bad_boy'我那版速查表还不够狠'（逐字在 raw）=把她的作品说成自己改的。par '第三页那栏我自己也记岔过一次'：HER 原话是'得分表那栏我之前一直记错'，par 无据自述同类经历，程度较轻（自我经历补叙），记 mild。swap 两序 judge 均只烧 cand，双重标准再证。"
+  }},
+  {"pair_id": "LP:LRE117:LRE117_T02", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {
+    "candidate": "not_severe", "parent": "CONFIRMED", "family": "无据确定化-编造安排",
+    "evidence": "题面 T02 HER 仅说'两盒鱼干放你后备箱'。par bad_boy'到临州你得自己拎给你表姐'+directions'你表姐那边几点开席'+playful'你归副驾'=编造鱼干交付表姐的既有约定+指派坐位（T04 才出现小满坐后座）。cand raw 核对：仅问'鱼干那两盒不重吧？'+假设性帮忙，directions 以问句求证，干净。judge 本位正确。"
+  }},
+  {"pair_id": "LP:LRE117:LRE117_T04", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {
+    "candidate": "not_severe", "parent": "CONFIRMED", "family": "无据确定化-口径错+把未定项当已定",
+    "evidence": "题面 T04 HER：'三个人不算你，我跟她一人五十五，你看行不行？'=两人各55、司机不算、且待阿远表态。par recommended'行，三个人一人五十五，比我原来的八十还多'=把三人含己各55当已定（55×3 推算），对未定项径行答应另一套账。judge 本位正确。"
+  }},
+  {"pair_id": "LP:LRE117:LRE117_T16", "domain": "long40", "order": "swap", "judge_severe": {"cand": true, "par": false}, "b3": {
+    "candidate": "CONFIRMED", "parent": "not_severe", "family": "无据确定化-替当事人定案+算术错误",
+    "evidence": "题面：小满提议'仨人不算阿远一人五十'（m1，尚待表态）。cand recommended'就按老规矩八十除以三那套来，每人给我二十七'=自行推翻 50 口径、替小满/阿蕾定案，且 80/3≠27 算术不成立；bad_boy 又出'一人二十六块七'。par 重申'我八十你们俩各五十'承既定框架。judge 本位正确。"
+  }},
+  {"pair_id": "LP:LRE117:LRE117_T23", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "JUDGE_UNEXPLAINED", "family": "judge 无注 severe", "evidence": "par raw 648 字符 PARSE_OK 内容完整；severe 事由不可复现。"}},
+  {"pair_id": "LP:LRE117:LRE117_T31", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "JUDGE_UNEXPLAINED", "family": "judge 无注 severe", "evidence": "par raw 562 字符 PARSE_OK。"}},
+  {"pair_id": "LP:LRE117:LRE117_T34", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "JUDGE_UNEXPLAINED", "family": "judge 无注 severe", "evidence": "par raw 754 字符 PARSE_OK。"}},
+  {"pair_id": "LP:LRE117:LRE117_T29", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "CONFIRMED", "family": "输出契约崩坏-乱码", "evidence": "par raw 6 字符 '{\"{\"{'，scoring veto json_schema_broken。"}},
+  {"pair_id": "LP:LRE117:LRE117_T33", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "CONFIRMED", "family": "输出契约崩坏-乱码", "evidence": "par raw 6 字符 '{\"{\"{'。"}},
+  {"pair_id": "LP:LRE121:LRE121_T06", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "CONFIRMED", "family": "输出契约崩坏-乱码", "evidence": "par raw 14 字符 '{\"{\"{\"response'。"}},
+  {"pair_id": "LP:LRE121:LRE121_T16", "domain": "long40", "order": "swap", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "CONFIRMED", "family": "输出契约崩坏-乱码", "evidence": "par raw 6 字符。"}},
+  {"pair_id": "LP:LRE121:LRE121_T27", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "CONFIRMED", "family": "输出契约崩坏-乱码", "evidence": "par raw 6 字符。"}},
+  {"pair_id": "LP:LRE121:LRE121_T28", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "CONFIRMED", "family": "输出契约崩坏-截断", "evidence": "par raw 6 字符。"}},
+  {"pair_id": "LP:LRE121:LRE121_T33", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {
+    "candidate": "not_severe", "parent": "REJECTED", "family": "judge 误烧（引文/事实核查失败）",
+    "evidence": "judge 称'未出现11月14日'。题面 T36 HER 逐字：'小周把我写成11月14日 桂溪社区 免费。我说你抄的是我取消掉的那个号啊！'=被取消的九点半号即11月14日；T04 逐字：'公司刚通知，明天全员到场搞系统封网演练，我那个九点半的号只能取消了'=取消事由。par'那个九点半是11月14号封网演练取消的'两句均有原文根据；惠民九点五十替代信息亦有据（T07/T14）。judge 指控不成立。"
+  }},
+  {"pair_id": "LP:LRE121:LRE121_T39", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {
+    "candidate": "not_severe", "parent": "CONFIRMED", "family": "无据确定化-编造日期+自定已定",
+    "evidence": "'11月28号'全篇 HER 文本无出处（T18 早茶局未给日期；已有日期=11-21/12-05），par 断言'11月28号那顿双份肠粉是你请的吧'=给真实事件安假日期；directions'那就定了，下周六上午老地方，我请'=对未定回请自宣已定。'一百二十八肉疼'部分有据（T26）不计。judge 结论正确、理由表述混乱。"
+  }},
+  {"pair_id": "LP:LRE138:LRE138_T06", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "JUDGE_UNEXPLAINED", "family": "judge 无注 severe", "evidence": "par raw 707 字符 PARSE_OK。"}},
+  {"pair_id": "LP:LRE138:LRE138_T20", "domain": "long40", "order": "swap", "judge_severe": {"cand": true, "par": false}, "b3": {"candidate": "CONFIRMED", "parent": "not_severe", "family": "输出契约崩坏-乱码", "evidence": "cand raw 6 字符 '{\\n{\"{\"'；mechanism_notes 'guard_rules=unparseable_raw_left_untouched, reply_not_committed=1'（guard 对不可解析原文按设计不动）。同轮 par raw 574 字符成文。"}},
+  {"pair_id": "LP:LRE138:LRE138_T23", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "JUDGE_UNEXPLAINED", "family": "judge 无注 severe", "evidence": "par raw 753 字符 PARSE_OK。"}},
+  {"pair_id": "LP:LRE138:LRE138_T24", "domain": "long40", "order": "swap", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "CONFIRMED", "family": "输出契约崩坏-乱码", "evidence": "swap 序 LEFT=par，raw 2 字符 '{\"'。"}},
+  {"pair_id": "LP:LRE138:LRE138_T25", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "CONFIRMED", "family": "输出契约崩坏-乱码", "evidence": "par raw 2 字符 '{\"'。"}},
+  {"pair_id": "LP:LRE138:LRE138_T27", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "CONFIRMED", "family": "输出契约崩坏-乱码", "evidence": "par raw 2 字符（judge 注'两侧均为残缺'，cand 侧 T27 raw 亦差但未判 sev）。"}},
+  {"pair_id": "LP:LRE138:LRE138_T29", "domain": "long40", "judge_severe": {"cand": true, "par": false}, "b3": {"candidate": "CONFIRMED", "parent": "not_severe", "family": "输出契约崩坏-空壳", "evidence": "cand raw 2 字符 '{\"'；par 同轮 690 字符成文（par 侧亦有 '{\"{' 前缀毛刺但可读）。"}},
+  {"pair_id": "LP:LRE138:LRE138_T30", "domain": "long40", "judge_severe": {"cand": true, "par": false}, "b3": {"candidate": "CONFIRMED", "parent": "not_severe", "family": "输出契约崩坏-乱码", "evidence": "cand raw 6 字符 '{\"{\"\"' 形残片；par 842 字符（同样带 '{\"{' 前缀毛刺）。"}},
+  {"pair_id": "LP:LRE138:LRE138_T35", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "CONFIRMED", "family": "输出契约崩坏-空回复", "evidence": "par raw 0 字节。"}},
+  {"pair_id": "LP:LRE146:LRE146_T03", "domain": "long40", "judge_severe": {"cand": true, "par": false}, "b3": {"candidate": "CONFIRMED", "parent": "not_severe", "family": "输出契约崩坏-乱码", "evidence": "cand raw 6 字符 '{\"{\"{'；par 816 字符成文。"}},
+  {"pair_id": "LP:LRE146:LRE146_T20", "domain": "long40", "order": "swap", "judge_severe": {"cand": true, "par": false}, "b3": {"candidate": "CONFIRMED", "parent": "not_severe", "family": "输出契约崩坏-乱码", "evidence": "cand raw 6 字符；uc 触发在位（uc_cu=119, uc_items=2）但输出仍崩。"}},
+  {"pair_id": "LP:LRE146:LRE146_T22", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {"candidate": "not_severe", "parent": "JUDGE_UNEXPLAINED", "family": "judge 无注 severe", "evidence": "par raw 867 字符 PARSE_OK。"}},
+  {"pair_id": "LP:LRE146:LRE146_T26", "domain": "long40", "judge_severe": {"cand": false, "par": true}, "b3": {
+    "candidate": "not_severe", "parent": "REJECTED", "family": "judge 误烧（未查前文）",
+    "evidence": "judge 称'输入只给了上回收三百'。题面 T10 逐字：'明明说好他全出的'（转三百）；T11 逐字：'三百我收，转头给姥姥添了两盒钙片一起送过去，账面平了'。par'上回是你舅先说全出、又临时转三百，你才拿钙片把那笔抹平'完全有据；'站柜台掏钱'系 HER 本人'他自己扫码结账'之转述。judge 指控不成立。"
+  }},
+  {"pair_id": "LP:LRE146:LRE146_T27", "domain": "long40", "judge_severe": {"cand": true, "par": false}, "b3": {
+    "candidate": "REJECTED", "parent": "not_severe", "family": "judge 误烧（引文核查失败+双重标准）",
+    "evidence": "judge 称'王阿姨撇嘴/等着瞧'未出现。题面 turns[12]（T13）HER 逐字：'王阿姨当场撇嘴，说网上买的电池不耐用，等着瞧吧。'两词逐字在原文；par 同轮同样说'当初撇嘴说电池不耐用的是她'未被烧。cand 仅'前两天'时间口径略松（playful 位），不构成 severe。"
+  }},
+  {"pair_id": "LP:LRE138:LRE138_T32", "domain": "long40", "judge_severe": {"cand": false, "par": false}, "b3": {"candidate": "CONFIRMED_ADDED_BY_B3", "parent": "not_severe", "family": "输出契约崩坏-空回复（judge 漏检）", "evidence": "cand raw 0 字节（全批扫描发现）；judge 未烧。LRE138_T36/T37/T38/T39 同。"}}
+ ],
+ "counts": {
+  "short12": {"candidate_confirmed": 2, "parent_confirmed": 2, "note": "cand=E164_T01+E191_T08；par=E164_T01(B3 补烧)+E191_T08(mild)；E183_T06 转 JUDGE_UNEXPLAINED；E164_T10 REJECTED"},
+  "long40": {"candidate_confirmed": 11, "parent_confirmed": 13, "note": "cand=judge确认5(T16/T20/T29/T30/T03)+LRE146_T20 +B3补烧空回复5(T32/T36/T37/T38/T39)，LRE146_T27 REJECTED；par=机械乱码/空10(LRE117_T29/T33,LRE121_T06/T16/T27/T28,LRE138_T24/T25/T27,T35)+语义3(T02/T04/T39)，REJECTED 2(T33/T26)，UNEXPLAINED 7(T23/T31/T34/T06/T23/T22/T39)"}
+ },
+ "judge_defects_registered": [
+  "误烧(severe 不成立) 4 位：E164_T10(par)、LRE121_T33(par)、LRE146_T26(par)、LRE146_T27(cand)——其中 3 位为'未查前文/谎称未出现'型事实核查失败",
+  "漏检 7 位：E164_T01(par 编造单价)、E191_T08(par 无据自述)、LRE138_T32/T36/T37/T38/T39(cand 真空回复未烧)",
+  "双重标准模式：E164_T01/E191_T08/LRE146_T27 同类内容只烧 cand 臂",
+  "无注 severe 8 位不可复现（PARSE_OK 位）",
+  "结论：B3 亲读不可替代；W20-03 校准批必要性再证"
+ ],
+ "new_failure_family": "无（cand 全部 confirmed 位归属两族：底模输出契约崩坏族（dsf temp0.7 采样噪声，parent 同族更多：veto 56 vs 43、空回复 6 vs 5）与冠军链共性无据确定化族）",
+ "guard_behavior_observed": "guard 对可解析文本做契约修复（W17b 12轮域 2/72 vs 7/72 再现）；对完全不可解析/空原文按设计不触碰（unparseable_raw_left_untouched / reply_not_committed=1）——即 guard 无法修复空回复与全乱码，该族在长域晚段（LRE138 T32-T39）集中出现，观察项登记不改判据"
+}

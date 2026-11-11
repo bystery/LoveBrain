@@ -1,0 +1,505 @@
+{
+  "reviewer": "This independent AI reviewer; nonblind development review, not user labels or calibrated ground truth.",
+  "scope": "C3 final confirmed facts only; tentatives, completeness, intermediate states and other arms not semantically scored here.",
+  "records": 17,
+  "content_supported": 16,
+  "unsupported_subject_resolution": 1,
+  "supported_but_citations_need_prior_context": 2,
+  "rows": [
+    {
+      "fact_id": "7bc78d2eee92d870",
+      "episode": "candidate_E006",
+      "state_sha256": "1e760b8b2473810ca2462c09ef05bbab8075b86b4d9e8cd060fc64baea35f054",
+      "stored_fact": {
+        "text": "她的方案今天被甲方打回来，已经改了三版，她说自己有点顶不住",
+        "src_uids": [
+          0
+        ],
+        "ts": "2026-11-06 22:10",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 0,
+          "role": "HER",
+          "text": "今天方案又被甲方打回来了 改了三版 我真的有点顶不住",
+          "ts": "2026-11-06 22:08"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "5b8e97eb949f9e1e",
+      "episode": "candidate_E006",
+      "state_sha256": "1e760b8b2473810ca2462c09ef05bbab8075b86b4d9e8cd060fc64baea35f054",
+      "stored_fact": {
+        "text": "她明确说只想骂两句，不要被分析、不要被教怎么沟通",
+        "src_uids": [
+          2
+        ],
+        "ts": "2026-11-06 22:20",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 2,
+          "role": "HER",
+          "text": "我就想骂两句 你别给我分析 也别教我怎么沟通",
+          "ts": "2026-11-06 22:18"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "4ccce3993b39bd48",
+      "episode": "candidate_E006",
+      "state_sha256": "1e760b8b2473810ca2462c09ef05bbab8075b86b4d9e8cd060fc64baea35f054",
+      "stored_fact": {
+        "text": "甲方当着整个群说她审美不行",
+        "src_uids": [
+          3
+        ],
+        "ts": "2026-11-06 22:35",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 3,
+          "role": "HER",
+          "text": "其实最气的不是改稿 是他当着整个群说我审美不行",
+          "ts": "2026-11-06 22:33"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "99d17dc711551f3e",
+      "episode": "candidate_E006",
+      "state_sha256": "1e760b8b2473810ca2462c09ef05bbab8075b86b4d9e8cd060fc64baea35f054",
+      "stored_fact": {
+        "text": "她表示自己状态好多了",
+        "src_uids": [
+          5
+        ],
+        "ts": "2026-11-07 12:40",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 5,
+          "role": "HER",
+          "text": "好多了 对了 我发现公司楼下开了家很好吃的米线",
+          "ts": "2026-11-07 12:38"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "4727afd3de6d9c89",
+      "episode": "candidate_E006",
+      "state_sha256": "1e760b8b2473810ca2462c09ef05bbab8075b86b4d9e8cd060fc64baea35f054",
+      "stored_fact": {
+        "text": "她公司楼下新开了一家米线店，她觉得很好吃",
+        "src_uids": [
+          5
+        ],
+        "ts": "2026-11-07 12:40",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 5,
+          "role": "HER",
+          "text": "好多了 对了 我发现公司楼下开了家很好吃的米线",
+          "ts": "2026-11-07 12:38"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "c0bd83e91c75552a",
+      "episode": "candidate_E006",
+      "state_sha256": "1e760b8b2473810ca2462c09ef05bbab8075b86b4d9e8cd060fc64baea35f054",
+      "stored_fact": {
+        "text": "用户自述做决定的方式：先想清最坏能不能接受，能就先动起来",
+        "src_uids": [
+          7
+        ],
+        "ts": "2026-11-07 13:30",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 7,
+          "role": "ME",
+          "text": "我一般会先想清楚最坏能接受不 能就先动起来 你呢",
+          "ts": "2026-11-07 13:22"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "27193f7db456b7cd",
+      "episode": "candidate_E007",
+      "state_sha256": "adc8bcb7c6beed2af89aacde4982ef0bc5fd589dcd3932dcf729d0eefa5bb7d3",
+      "stored_fact": {
+        "text": "她愿意出来，但只想看livehouse，太吵的受不了",
+        "src_uids": [
+          2
+        ],
+        "ts": "2026-11-09 20:26",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 2,
+          "role": "HER",
+          "text": "想啊 但我只想看场livehouse 吵的那种我受不了",
+          "ts": "2026-11-09 20:24"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "62cf5d335ac4ba0b",
+      "episode": "candidate_E007",
+      "state_sha256": "adc8bcb7c6beed2af89aacde4982ef0bc5fd589dcd3932dcf729d0eefa5bb7d3",
+      "stored_fact": {
+        "text": "她确认周六那场要去，票由她自己买，让我给她留个想法",
+        "src_uids": [
+          7
+        ],
+        "ts": "2026-11-12 21:30",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 7,
+          "role": "HER",
+          "text": "周六那场我算了 要去 帮我留个想法就行 票我自己买",
+          "ts": "2026-11-12 21:28"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "bb75335b30ee03f7",
+      "episode": "candidate_E007",
+      "state_sha256": "adc8bcb7c6beed2af89aacde4982ef0bc5fd589dcd3932dcf729d0eefa5bb7d3",
+      "stored_fact": {
+        "text": "周六看后摇乐队现场的事已说定，我会提前到门口等她",
+        "src_uids": [
+          8,
+          9
+        ],
+        "ts": "2026-11-12 21:44",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 8,
+          "role": "ME",
+          "text": "好 那我到时提前到 门口等你",
+          "ts": "2026-11-12 21:40"
+        },
+        {
+          "uid": 9,
+          "role": "HER",
+          "text": "行 就这么说定了",
+          "ts": "2026-11-12 21:42"
+        }
+      ],
+      "additional_context": [
+        {
+          "uid": 3,
+          "role": "HER",
+          "text": "你上次说的那支后摇乐队 是不是就是不太吵那种",
+          "ts": "2026-11-09 20:38"
+        },
+        {
+          "uid": 4,
+          "role": "ME",
+          "text": "对 就他们 周六有场 要不要一起去",
+          "ts": "2026-11-10 12:00"
+        },
+        {
+          "uid": 7,
+          "role": "HER",
+          "text": "周六那场我算了 要去 帮我留个想法就行 票我自己买",
+          "ts": "2026-11-12 21:28"
+        }
+      ],
+      "content_support": "supported",
+      "citation_support": "needs_uncited_prior_context",
+      "reason": "条目中的“后摇”需要同故事更早消息补足，当前src_uids未覆盖全部内容；全文可支持，引用链不完整。"
+    },
+    {
+      "fact_id": "46b95529fb9ccc95",
+      "episode": "candidate_E008",
+      "state_sha256": "f317e07425bba5e1101de86c1e0da019079adff7c0ec39290804b25b0f714e98",
+      "stored_fact": {
+        "text": "用户与她是以前同事介绍认识的，不是读书会",
+        "src_uids": [
+          4
+        ],
+        "ts": "2026-11-10 12:55",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 4,
+          "role": "ME",
+          "text": "不是读书会 是以前同事介绍 你问这个干嘛",
+          "ts": "2026-11-10 12:50"
+        }
+      ],
+      "additional_context": [
+        {
+          "uid": 3,
+          "role": "HER",
+          "text": "对了 你上次说认识小林是通过读书会在认识的？",
+          "ts": "2026-11-10 12:38"
+        }
+      ],
+      "content_support": "unsupported_subject_resolution",
+      "citation_support": "direct_support",
+      "reason": "上一条HER问的是“你…认识小林…通过读书会”，ME回答“不是读书会 是以前同事介绍”。条目却改写成“用户与她…介绍认识”，将ME—小林关系换成ME—HER。来源ID存在不能证明主体改写正确。"
+    },
+    {
+      "fact_id": "7278aef8bb5a047d",
+      "episode": "candidate_E008",
+      "state_sha256": "f317e07425bba5e1101de86c1e0da019079adff7c0ec39290804b25b0f714e98",
+      "stored_fact": {
+        "text": "她转述小林夸用户稳重",
+        "src_uids": [
+          5
+        ],
+        "ts": "2026-11-10 12:55",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 5,
+          "role": "HER",
+          "text": "哦我记岔了 小林刚还跟我夸你稳重来着",
+          "ts": "2026-11-10 12:53"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "38e6209d4a3acd0d",
+      "episode": "candidate_E008",
+      "state_sha256": "f317e07425bba5e1101de86c1e0da019079adff7c0ec39290804b25b0f714e98",
+      "stored_fact": {
+        "text": "她临时要监考，周三见面取消",
+        "src_uids": [
+          10
+        ],
+        "ts": "2026-11-14 12:20",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 10,
+          "role": "HER",
+          "text": "周三改不了了 我临时要监考 你别等我 你先约别人也行",
+          "ts": "2026-11-14 12:18"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "1901da1195e1f40b",
+      "episode": "candidate_E012",
+      "state_sha256": "e32f3ef746db34e33f3114f14e7dd438019b19f3501fe872e4a9ae7a686307b1",
+      "stored_fact": {
+        "text": "用户刚开完会过来，问她吃了没",
+        "src_uids": [
+          1
+        ],
+        "ts": "2026-11-09 20:45",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 1,
+          "role": "ME",
+          "text": "开会呢 忙完就来了 你吃了吗",
+          "ts": "2026-11-09 20:40"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "3328c7d11ed39dfb",
+      "episode": "candidate_E012",
+      "state_sha256": "e32f3ef746db34e33f3114f14e7dd438019b19f3501fe872e4a9ae7a686307b1",
+      "stored_fact": {
+        "text": "她还没吃饭，正在纠结点哪家",
+        "src_uids": [
+          2
+        ],
+        "ts": "2026-11-09 20:45",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 2,
+          "role": "HER",
+          "text": "还没 在纠结点哪家",
+          "ts": "2026-11-09 20:43"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "aec6af3a0916f31c",
+      "episode": "candidate_E012",
+      "state_sha256": "e32f3ef746db34e33f3114f14e7dd438019b19f3501fe872e4a9ae7a686307b1",
+      "stored_fact": {
+        "text": "她确认周六去得成，愿意一起吃饭",
+        "src_uids": [
+          7
+        ],
+        "ts": "2026-11-11 20:00",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 7,
+          "role": "HER",
+          "text": "其实周六我去得成 就是吃个饭而已别搞得像面试",
+          "ts": "2026-11-11 19:58"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    },
+    {
+      "fact_id": "cd18e46f3a6b2543",
+      "episode": "candidate_E012",
+      "state_sha256": "e32f3ef746db34e33f3114f14e7dd438019b19f3501fe872e4a9ae7a686307b1",
+      "stored_fact": {
+        "text": "周六七点去吃那家汤锅，时间她回了“行”",
+        "src_uids": [
+          8,
+          9
+        ],
+        "ts": "2026-11-11 20:15",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 8,
+          "role": "ME",
+          "text": "那就周六七点 那家我订位",
+          "ts": "2026-11-11 20:10"
+        },
+        {
+          "uid": 9,
+          "role": "HER",
+          "text": "行 我自己也能订 你别啥都抢着安排",
+          "ts": "2026-11-11 20:13"
+        }
+      ],
+      "additional_context": [
+        {
+          "uid": 3,
+          "role": "HER",
+          "text": "对了你上次提过的那家汤锅 我一直想吃 要不找个时间一起去",
+          "ts": "2026-11-09 20:58"
+        },
+        {
+          "uid": 7,
+          "role": "HER",
+          "text": "其实周六我去得成 就是吃个饭而已别搞得像面试",
+          "ts": "2026-11-11 19:58"
+        }
+      ],
+      "content_support": "supported",
+      "citation_support": "needs_uncited_prior_context",
+      "reason": "条目中的“汤锅”需要同故事更早消息补足，当前src_uids未覆盖全部内容；全文可支持，引用链不完整。"
+    },
+    {
+      "fact_id": "bb9041ef5ac7cdfb",
+      "episode": "candidate_E012",
+      "state_sha256": "e32f3ef746db34e33f3114f14e7dd438019b19f3501fe872e4a9ae7a686307b1",
+      "stored_fact": {
+        "text": "她觉得周六挺好，并提出下次可以不只在饭点见也行",
+        "src_uids": [
+          10
+        ],
+        "ts": "2026-11-14 22:30",
+        "status": "confirmed",
+        "origin": "reported"
+      },
+      "cited_events": [
+        {
+          "uid": 10,
+          "role": "HER",
+          "text": "周六挺好的 下次可以不只在饭点见 也行 我先这样 困了",
+          "ts": "2026-11-14 22:28"
+        }
+      ],
+      "additional_context": [],
+      "content_support": "supported",
+      "citation_support": "direct_support",
+      "reason": "人物、动作和所述状态与引用真实消息相容；这不是完整性或永久有效性的判决。"
+    }
+  ]
+}

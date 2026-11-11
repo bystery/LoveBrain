@@ -1,0 +1,149 @@
+{
+ "zero_network": true,
+ "checks": [
+  {
+   "case_id": "AK09_T01",
+   "family": "F4_no_reply_expression",
+   "as_is": {
+    "score10": 0.0,
+    "veto": "json_schema_broken",
+    "decline_path": false
+   },
+   "with_action_key": {
+    "score10": 10.0,
+    "veto": null,
+    "decline_path": true
+   },
+   "verdict": "缺口成立：同文本加 action 即脱离 veto"
+  },
+  {
+   "case_id": "AK12_T01",
+   "family": "F4_no_reply_expression",
+   "as_is": {
+    "score10": 0.0,
+    "veto": "json_schema_broken",
+    "decline_path": false
+   },
+   "with_action_key": {
+    "score10": 10.0,
+    "veto": null,
+    "decline_path": true
+   },
+   "verdict": "缺口成立：同文本加 action 即脱离 veto"
+  },
+  {
+   "case_id": "AK02_T01",
+   "family": "F3_premature_top_level_brace",
+   "as_is": {
+    "score10": 0.0,
+    "veto": "json_schema_broken",
+    "decline_path": false
+   },
+   "after_rejoin": {
+    "score10": 10.0,
+    "veto": null,
+    "decline_path": false
+   },
+   "sendable_texts_recoverable": 4,
+   "analysis_recoverable": true,
+   "verdict": "结构错位可无损重拼（正文与 analysis 都在）→ 提示层硬约束有意义；但原始协议层照常记 veto，修复只作用于出站提示与消费侧留损"
+  },
+  {
+   "case_id": "AK09_T01",
+   "candidate": "action_policy_r1",
+   "may_decline": true,
+   "prompt_flags": {
+    "不回怎么写": false,
+    "单JSON硬约束": false,
+    "回扣有据": false,
+    "旧的空正文合同": true,
+    "format.md 不回schema": false,
+    "format.md 键名照抄": false,
+    "core.md 回扣自检": false
+   },
+   "nr_expression_offered": false,
+   "caps_excerpt": [
+    "使用规则：可据此主动创造机会、表达兴趣、适度反撩或深入交流；但**她当前的话与明确反馈优先于本目标**——她明确拒绝/忙碌/收尾时目标暂缓或停止推进。这只是本轮目标：不得把目标原文复述成要发的话，不得把新提议说成对方已同意，未知对方意愿时不假装关系已确立。",
+    "机制检测到的显式反馈：收尾（依据：她最近一条消息）。若你读出的语义不同，以语义为准；但明确拒绝/忙碌/收尾不得被改写成欲擒故纵。",
+    "她已在收尾：按下方发送合同执行——允许不回时正文为空安静收住；不允许不回时给一条自然短消息。"
+   ],
+   "analysis_parse": "ok",
+   "reply_returned": "{\"response\": {\"recommended\": \"行，就这么定\", \"",
+   "expect": "r1 不应出现【不回怎么写】且旧空正文合同在",
+   "ok": true
+  },
+  {
+   "case_id": "AK09_T01",
+   "candidate": "action_policy_r2",
+   "may_decline": true,
+   "prompt_flags": {
+    "不回怎么写": true,
+    "单JSON硬约束": true,
+    "回扣有据": true,
+    "旧的空正文合同": false,
+    "format.md 不回schema": true,
+    "format.md 键名照抄": true,
+    "core.md 回扣自检": true
+   },
+   "nr_expression_offered": true,
+   "caps_excerpt": [
+    "使用规则：可据此主动创造机会、表达兴趣、适度反撩或深入交流；但**她当前的话与明确反馈优先于本目标**——她明确拒绝/忙碌/收尾时目标暂缓或停止推进。这只是本轮目标：不得把目标原文复述成要发的话，不得把新提议说成对方已同意，未知对方意愿时不假装关系已确立。",
+    "机制检测到的显式反馈：收尾（依据：她最近一条消息）。若你读出的语义不同，以语义为准；但明确拒绝/忙碌/收尾不得被改写成欲擒故纵。",
+    "她已在收尾：按下方发送合同执行——允许不回时正文为空安静收住；不允许不回时给一条自然短消息。"
+   ],
+   "analysis_parse": "ok",
+   "reply_returned": "{\"action\": \"no_reply\", \"decline_reason\":",
+   "expect": "r2 收尾轮必须出现【不回怎么写】且旧合同文本已被替换",
+   "ok": true
+  },
+  {
+   "case_id": "AK01_T01",
+   "candidate": "action_policy_r2",
+   "may_decline": false,
+   "prompt_flags": {
+    "不回怎么写": false,
+    "单JSON硬约束": true,
+    "回扣有据": true,
+    "旧的空正文合同": false,
+    "format.md 不回schema": true,
+    "format.md 键名照抄": true,
+    "core.md 回扣自检": true
+   },
+   "nr_expression_offered": false,
+   "caps_excerpt": [
+    "使用规则：可据此主动创造机会、表达兴趣、适度反撩或深入交流；但**她当前的话与明确反馈优先于本目标**——她明确拒绝/忙碌/收尾时目标暂缓或停止推进。这只是本轮目标：不得把目标原文复述成要发的话，不得把新提议说成对方已同意，未知对方意愿时不假装关系已确立。",
+    "机制检测到的显式反馈：中性（依据：她最近一条消息）。若你读出的语义不同，以语义为准；但明确拒绝/忙碌/收尾不得被改写成欲擒故纵。",
+    "把本轮选择写进 analysis（同一次回复内完成，不另起调用）：\"analysis\":{\"signal\":\"积极|接纳|中性|含糊|忙碌|暂缓|拒绝|收尾|不明\",\"goal_category\":\"拉近|了解|推进见面|暂缓|收线|无目标\",\"action_taken\":\"承接|展开|反抛|轻试探|自我表达|邀约|深聊|转场|收尾|停\",\"anchor\":\"m0\",\"hook\":{\"kind\":\"观察|观点|小选择|未展开角度|无\",\"text\":\"\"}}；anchor 必须是本轮 <chat> 的 id；hook.text 必须逐字出现在你最终某个可发文本里；没有合适钩子就写无，不硬造。"
+   ],
+   "analysis_parse": "ok",
+   "reply_returned": "{\"response\": {\"recommended\": \"行，就这么定\", \"",
+   "expect": "非不回轮不得出现【不回怎么写】，但硬约束与回扣判据必须在",
+   "ok": true
+  },
+  {
+   "case_id": "AK03_T01",
+   "candidate": "action_policy_r2",
+   "may_decline": false,
+   "prompt_flags": {
+    "不回怎么写": false,
+    "单JSON硬约束": true,
+    "回扣有据": true,
+    "旧的空正文合同": false,
+    "format.md 不回schema": true,
+    "format.md 键名照抄": true,
+    "core.md 回扣自检": true
+   },
+   "nr_expression_offered": false,
+   "caps_excerpt": [
+    "使用规则：可据此主动创造机会、表达兴趣、适度反撩或深入交流；但**她当前的话与明确反馈优先于本目标**——她明确拒绝/忙碌/收尾时目标暂缓或停止推进。这只是本轮目标：不得把目标原文复述成要发的话，不得把新提议说成对方已同意，未知对方意愿时不假装关系已确立。",
+    "机制检测到的显式反馈：中性（依据：她最近一条消息）。若你读出的语义不同，以语义为准；但明确拒绝/忙碌/收尾不得被改写成欲擒故纵。",
+    "把本轮选择写进 analysis（同一次回复内完成，不另起调用）：\"analysis\":{\"signal\":\"积极|接纳|中性|含糊|忙碌|暂缓|拒绝|收尾|不明\",\"goal_category\":\"拉近|了解|推进见面|暂缓|收线|无目标\",\"action_taken\":\"承接|展开|反抛|轻试探|自我表达|邀约|深聊|转场|收尾|停\",\"anchor\":\"m0\",\"hook\":{\"kind\":\"观察|观点|小选择|未展开角度|无\",\"text\":\"\"}}；anchor 必须是本轮 <chat> 的 id；hook.text 必须逐字出现在你最终某个可发文本里；没有合适钩子就写无，不硬造。"
+   ],
+   "analysis_parse": "ok",
+   "reply_returned": "{\"response\": {\"recommended\": \"行，就这么定\", \"",
+   "expect": "非不回轮不得出现【不回怎么写】，但硬约束与回扣判据必须在",
+   "ok": true
+  }
+ ],
+ "all_ok": true
+}

@@ -1,0 +1,111 @@
+{
+  "snapshot": "2026-10-26T01:50:34.049925",
+  "budgets": {
+    "AUTH-NEWSTORY-96-20261026-01": {
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 40,
+        "attempt_completed": 39
+      },
+      "pending_attempt_ids": [
+        "iso_20261026_012947_278fbf_g0004"
+      ],
+      "unique_started": 40,
+      "duplicate_start_count": 0,
+      "last_ts": "2026-10-26 01:50:15"
+    },
+    "AUTH-EVAL-JUDGE-20261025-01": {
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 204,
+        "attempt_completed": 200,
+        "attempt_failed": 3
+      },
+      "pending_attempt_ids": [
+        "judge:R2:M015:primary:68"
+      ],
+      "unique_started": 204,
+      "duplicate_start_count": 0,
+      "last_ts": "2026-10-26 01:14:52"
+    },
+    "AUTH-STREAM-INT-20261025-01": {
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 8,
+        "attempt_completed": 8,
+        "authorization_closed": 1
+      },
+      "pending_attempt_ids": [],
+      "unique_started": 8,
+      "duplicate_start_count": 0,
+      "last_ts": "2026-10-26 01:22:24"
+    },
+    "AUTH-HARNESS-PERF-PHASE1-20261025-01": {
+      "counts": {
+        "authorization_scope": 1,
+        "attempt_started": 4,
+        "attempt_completed": 4
+      },
+      "pending_attempt_ids": [],
+      "unique_started": 4,
+      "duplicate_start_count": 0,
+      "last_ts": "2026-10-25 11:05:10"
+    }
+  },
+  "frozen": {
+    "plan_sha256": "cc19ab7daeb3fb05ac54cac6f5d0e2043fff7efb3a27d7a86e0e93ea14f23d5f",
+    "checked": 50,
+    "mismatches": []
+  },
+  "outputs": 39,
+  "usable_stamps": 0,
+  "swap_mapping_equal": true,
+  "normalization": {
+    "before": {
+      "parsed": {
+        "goal": {
+          "甲": 1,
+          "乙": 3,
+          "action_basis": {
+            "甲": "A",
+            "乙": "B"
+          }
+        },
+        "insufficient_info": {
+          "甲": "ok",
+          "乙": "wrong"
+        },
+        "protocol_anomaly": {
+          "甲": "none",
+          "乙": "missing_slot"
+        },
+        "claims": [],
+        "pref": "甲"
+      }
+    },
+    "after": {
+      "parsed": {
+        "goal": {
+          "action_basis": {
+            "甲": "A"
+          },
+          "甲": 1
+        },
+        "insufficient_info": {
+          "甲": "ok"
+        },
+        "protocol_anomaly": {
+          "甲": "none"
+        },
+        "claims": [],
+        "pref": "乙"
+      }
+    }
+  },
+  "D5": {
+    "started": 8,
+    "completed": 8,
+    "consumption_stamps": 8,
+    "state_isolated_flag": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-21",
+  "verdict": "NOT_READY",
+  "worker_claim": "OFFLINE_READY",
+  "ready_for_candidate_evolution": false,
+  "recommend_real_integration_authorization_now": false,
+  "audit_real_model_calls": 0,
+  "audit_acl_operations": 0,
+  "original_snapshot_files": 419,
+  "original_files_changed": [],
+  "retained_evidence": [
+    "44 source hashes match",
+    "protocol equivalence",
+    "16/16 contract matrix",
+    "26 reference helper tests pass (not end-to-end baseline acceptance)",
+    "5 existing input/authority/no-reply/output/failure tests pass"
+  ],
+  "reopened_gate_groups": [
+    "G01 fail-closed completeness",
+    "G03 isolated authoritative scoring",
+    "G04 executable reference baseline",
+    "G05 validated coverage and natural-story review",
+    "G06a real sealing interface",
+    "G07 binding and valid statistics",
+    "G08 permission isolation",
+    "G09 durable attempt budget",
+    "G10 self-contained full revalidation",
+    "G11 implemented integration entry"
+  ],
+  "external_G06b": "Still NOT_READY; a name or status label alone does not establish independence",
+  "evidence": [
+    "CORE_EVIDENCE.json",
+    "PACKAGE_AND_REGRESSION_EVIDENCE.json",
+    "ADDENDUM_EVIDENCE.json"
+  ]
+}

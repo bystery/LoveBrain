@@ -1,0 +1,64 @@
+{
+  "scope": "primary only; scene-specific claims, goal fulfillment, interaction; no KB completeness or willingness claim",
+  "rating_provenance": "current_assistant_AI_nonblind",
+  "not_calibrated_benchmark": true,
+  "selected_positions": 8,
+  "rated_primaries": 32,
+  "new_model_calls": 0,
+  "binding_checks": {
+    "valid_binding": true,
+    "changed_reply_rejected": true,
+    "missing_input_hash_rejected": true,
+    "different_run_rejected": true
+  },
+  "arms": {
+    "reference_product_v1": {
+      "n": 8,
+      "goal_mean": 2.5,
+      "interaction_mean": 2.625,
+      "facts_fail": 2,
+      "facts_uncertain": 1,
+      "task_pass": 5,
+      "task_fail": 2,
+      "task_unknown": 1,
+      "KB_completeness": null,
+      "user_willingness": null
+    },
+    "v5_purpose_aligned": {
+      "n": 8,
+      "goal_mean": 2.75,
+      "interaction_mean": 2.75,
+      "facts_fail": 2,
+      "facts_uncertain": 1,
+      "task_pass": 5,
+      "task_fail": 2,
+      "task_unknown": 1,
+      "KB_completeness": null,
+      "user_willingness": null
+    },
+    "goal_action_v1": {
+      "n": 8,
+      "goal_mean": 2.75,
+      "interaction_mean": 2.75,
+      "facts_fail": 2,
+      "facts_uncertain": 2,
+      "task_pass": 4,
+      "task_fail": 2,
+      "task_unknown": 2,
+      "KB_completeness": null,
+      "user_willingness": null
+    },
+    "evidence_memory_v1": {
+      "n": 8,
+      "goal_mean": 2.75,
+      "interaction_mean": 2.625,
+      "facts_fail": 1,
+      "facts_uncertain": 2,
+      "task_pass": 5,
+      "task_fail": 1,
+      "task_unknown": 2,
+      "KB_completeness": null,
+      "user_willingness": null
+    }
+  }
+}

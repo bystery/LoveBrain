@@ -1,0 +1,1525 @@
+[
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-A3-JUDGE-20261026-01.jsonl",
+    "authorization_id": "AUTH-A3-JUDGE-20261026-01",
+    "scope": {
+      "battery_requests": "44（22 无据/冲突主张 + 22 受保护表达，单会话；MANUAL-V2.0-A3 §3 电池格式）",
+      "concurrency": 2,
+      "excluded_from": "AUTH-EVAL-JUDGE-20261025-01（满载 CLOSED）；AUTH-NEWSTORY-96（CLOSED）；AUTH-HARNESS-PERF-PHASE1（余 252，不写入）",
+      "fail_fast": true,
+      "judge_blind_to": "expected.relation / swap 标记 / 参考期望；参考三件套（集合/区间/措辞例）对裁判可见",
+      "no_makeup": true,
+      "no_retry": true,
+      "pair_requests": "32 对 × 3 份同源无历史会话（96，同序）",
+      "position_retest": "16 对 swap 子集 +16 同序复评（32；真换序用 judge_swap_v1_2 修正语义：答案内容换槽、槽位名不变）",
+      "purpose": "A3 小校准：裁判稳定性+对参考正确性对账（MANUAL-V2.0-A3 已冻结 f412cff4…）",
+      "sessions": "3+1 会话=同源模型不同会话，如实命名 S1/S2/S3/SR，不称独立模型"
+    },
+    "max_attempts": 172,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 172,
+      "attempt_failed": 4,
+      "attempt_completed": 168,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-C4-SCREEN-20261026-01.jsonl",
+    "authorization_id": "AUTH-C4-SCREEN-20261026-01",
+    "scope": {
+      "arm_pairing": {
+        "sweep_a_orig_vs_goal": "reference_product_v1(parent) vs goal_action_v1(candidate)",
+        "sweep_b_v5_vs_mem": "v5_purpose_aligned(parent) vs evidence_memory_v1(candidate)"
+      },
+      "arms": [
+        "reference_product_v1",
+        "v5_purpose_aligned",
+        "goal_action_v1",
+        "evidence_memory_v1"
+      ],
+      "automatic_judge": false,
+      "batches": [
+        "sweep_a_orig_vs_goal",
+        "sweep_b_v5_vs_mem"
+      ],
+      "cards": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json（32 张新建合并卡：03/04 选取 + 05 r2 覆盖 E007_T03/E008_T03；逐字回核与未改写断言见 .PROVENANCE.json；卡 split=dev_exposed、review_status 原样，不冒充人工认证）",
+      "comparability_note": "每臂状态只由自身历史演进、两批不共享 resident，故位点级四臂可比；批内交错为逐 slot parent_first/candidate_first 交替（E006/E012 父先，E008/E007 候选先）",
+      "episodes": [
+        "E006",
+        "E007",
+        "E008",
+        "E012"
+      ],
+      "fail_fast": true,
+      "interleaving": "逐 slot 交错、两臂独立 resident 状态、整批预检后原子占额",
+      "no_makeup": true,
+      "no_retry": true,
+      "perf_ledger_untouched": "AUTH-HARNESS-PERF-PHASE1-20261025-01（used 4/256）本批不写入；考生运行桶与评估桶分账",
+      "positions_per_arm": 32,
+      "purpose": "C4 机制筛选：四臂（原版/v5/目标动作候选/证据记忆候选）在 4 条开发故事×8 位的同一 32 个位点上各跑一次，共 128 次；与执行书 §4 公式逐字一致，无臂缺席、无偏差",
+      "stage_cap_reference": "WORKER_MARATHON_EXECUTION.md §0 表『机制筛选 128』",
+      "stream_identity_separate_from": "AUTH-V5/AUTH-R2/AUTH-V3/AUTH-NEWSTORY-96/AUTH-STREAM-INT/AUTH-EVAL-JUDGE/AUTH-A3-JUDGE 均已 CLOSED，不得复用额度或冒充同一配置身份",
+      "third_arm": false
+    },
+    "max_attempts": 128,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 128,
+      "attempt_completed": 128,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-EVAL-JUDGE-20261025-01.jsonl",
+    "authorization_id": "AUTH-EVAL-JUDGE-20261025-01",
+    "scope": {
+      "automatic_candidate_generations": false,
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "model_alias": "dsf",
+      "purpose": "judge calibration: 60 pairs x R1/R2/R3 + 12 repeat_same + 12 repeat_swapped = 204 attempts; non-streaming identity api_cfg:openai_compat_stream_false_v1; temperature 0.7; model alias dsf; fail fast, no retry, no refill",
+      "raters_note": "R1/R2/R3 = same model service, same prompt, different sessions; NOT three independent models",
+      "scope_id": "evaluation_judge_calibration_v1_1"
+    },
+    "max_attempts": 204,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 204,
+      "attempt_completed": 200,
+      "attempt_failed": 3,
+      "attempt_settled_unknown": 1,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-EXAM1-20261023-01.jsonl",
+    "authorization_id": "AUTH-EXAM1-20261023-01",
+    "scope": null,
+    "max_attempts": 24,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 24,
+      "attempt_completed": 24,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-G11-STANDIN-105911de45.jsonl",
+    "authorization_id": "AUTH-G11-STANDIN-105911de45",
+    "scope": null,
+    "max_attempts": 12,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 7,
+      "attempt_completed": 7
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-G11-STANDIN-110222a48f.jsonl",
+    "authorization_id": "AUTH-G11-STANDIN-110222a48f",
+    "scope": null,
+    "max_attempts": 12,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 7,
+      "attempt_completed": 7
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-G11-STANDIN-1242037f81.jsonl",
+    "authorization_id": "AUTH-G11-STANDIN-1242037f81",
+    "scope": null,
+    "max_attempts": 12,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 7,
+      "attempt_completed": 7
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-G11-STANDIN-165652c2a3.jsonl",
+    "authorization_id": "AUTH-G11-STANDIN-165652c2a3",
+    "scope": null,
+    "max_attempts": 12,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 7,
+      "attempt_completed": 7
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-G11-STANDIN-170157d404.jsonl",
+    "authorization_id": "AUTH-G11-STANDIN-170157d404",
+    "scope": null,
+    "max_attempts": 12,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 7,
+      "attempt_completed": 7
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-G11-STANDIN-170718a43d.jsonl",
+    "authorization_id": "AUTH-G11-STANDIN-170718a43d",
+    "scope": null,
+    "max_attempts": 12,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 7,
+      "attempt_completed": 7
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-G11-STANDIN-2017359087.jsonl",
+    "authorization_id": "AUTH-G11-STANDIN-2017359087",
+    "scope": null,
+    "max_attempts": 12,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 7,
+      "attempt_completed": 7
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-HARNESS-PERF-PHASE1-20261025-01.jsonl",
+    "authorization_id": "AUTH-HARNESS-PERF-PHASE1-20261025-01",
+    "scope": {
+      "allowed_work": [
+        "up to 4 transport timing capability probes",
+        "192 paired public-development generations in four frozen 48-attempt batches",
+        "up to 32 independently authored validation generations after development retention",
+        "up to 8 integration-check generations after deterministic replay passes"
+      ],
+      "automatic_judge_generations": false,
+      "candidate_and_episode_identities": "freeze each child manifest before its dispatch; no silent substitution",
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "models": [
+        "dsf"
+      ],
+      "no_unbounded_retry": true,
+      "objective": "Optimize full LoveBrain harness quality, reliability, end-to-end latency and cost together",
+      "phase_id": "HARNESS-PERF-PHASE1-20261025",
+      "public_episodes": [
+        "E007",
+        "E008",
+        "E009",
+        "E010",
+        "E011",
+        "E012"
+      ],
+      "third_party_messaging": false
+    },
+    "max_attempts": 256,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 4,
+      "attempt_completed": 4
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-004106_a739.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-004106_a739",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-004257_2b3f.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-004257_2b3f",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-010245_d6cf.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-010245_d6cf",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-011513_43a7.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-011513_43a7",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-011712_17b9.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-011712_17b9",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-105916_4471.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-105916_4471",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-110226_87a8.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-110226_87a8",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-124207_3f02.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-124207_3f02",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-162856_77c6.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-162856_77c6",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-164300_8900.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-164300_8900",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-165511_0d0f.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-165511_0d0f",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-170038_2128.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-170038_2128",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-170418_8ed3.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-170418_8ed3",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-170601_5752.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-170601_5752",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-172418_b2f3.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-172418_b2f3",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-201153_f236.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-201153_f236",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-201300_4d84.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-201300_4d84",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-201424_5f37.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-201424_5f37",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-201617_15f2.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-201617_15f2",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-MATRIX-keyed-201818_55cd.jsonl",
+    "authorization_id": "AUTH-MATRIX-keyed-201818_55cd",
+    "scope": null,
+    "max_attempts": 2,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-NEWSTORY-96-20261026-01.jsonl",
+    "authorization_id": "AUTH-NEWSTORY-96-20261026-01",
+    "scope": {
+      "api_config": "api_cfg:openai_compat_stream_true_v1(include_usage gated)——与 D5 验证的共同流式身份；不与历史非流式数字合并",
+      "arms": [
+        "reference_product_v1",
+        "v5_purpose_aligned"
+      ],
+      "automatic_judge": false,
+      "batch_id": "BATCH-NEWSTORY-96-20261026",
+      "episodes": [
+        "P001",
+        "P002",
+        "P003",
+        "P004",
+        "P005",
+        "P006"
+      ],
+      "fail_fast": true,
+      "interleaving": "六故事分块交错（parent_first/candidate_first 交替），同故事时间连续，两臂独立状态",
+      "no_makeup": true,
+      "no_retry": true,
+      "positions_per_arm": 48,
+      "purpose": "独立新故事检验（评审器留出代理性质）：保留候选 v5 vs 原版在未见过的新 6 故事上的对照；覆盖目标/情绪/钩子/深聊；正向能力首测",
+      "separate_from": "AUTH-V5/AUTH-R2/AUTH-V3/AUTH-STREAM-INT 均已 CLOSED 不得复用；AUTH-HARNESS-PERF-PHASE1（余252）与 AUTH-EVAL-JUDGE（满载）不写入",
+      "third_arm": false
+    },
+    "max_attempts": 96,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 96,
+      "attempt_completed": 96,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-FASTSCREEN-DSF-20261027-01.jsonl",
+    "authorization_id": "AUTH-P06-FASTSCREEN-DSF-20261027-01",
+    "scope": {
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "forbidden_models": [
+        "hy4-preview"
+      ],
+      "model": "dsf",
+      "per_model_max_concurrency": 3,
+      "purpose": "Exactly 3 diagnostic requests, not P06 ratings; no retry, no candidate generation.",
+      "scope_id": "AUTH-P06-FASTSCREEN-DSF-20261027-01",
+      "transport_timeout_s": 35
+    },
+    "max_attempts": 3,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 3,
+      "attempt_completed": 2,
+      "attempt_failed": 1,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-FASTSCREEN-HY3-20261027-01.jsonl",
+    "authorization_id": "AUTH-P06-FASTSCREEN-HY3-20261027-01",
+    "scope": {
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "forbidden_models": [
+        "hy4-preview"
+      ],
+      "model": "hy3",
+      "per_model_max_concurrency": 3,
+      "purpose": "Exactly 3 diagnostic requests, not P06 ratings; no retry, no candidate generation.",
+      "scope_id": "AUTH-P06-FASTSCREEN-HY3-20261027-01",
+      "transport_timeout_s": 35
+    },
+    "max_attempts": 3,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 3,
+      "attempt_completed": 1,
+      "attempt_failed": 2,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-FASTSCREEN-LOW-DSF-20261027-01.jsonl",
+    "authorization_id": "AUTH-P06-FASTSCREEN-LOW-DSF-20261027-01",
+    "scope": {
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "forbidden_models": [
+        "hy4-preview"
+      ],
+      "model": "dsf",
+      "per_model_max_concurrency": 1,
+      "purpose": "Low-load control: 1 representative-input diagnostic; new concurrency condition, not retry/score replacement.",
+      "scope_id": "AUTH-P06-FASTSCREEN-LOW-DSF-20261027-01",
+      "transport_timeout_s": 35
+    },
+    "max_attempts": 1,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-FASTSCREEN-LOW-HY3-20261027-01.jsonl",
+    "authorization_id": "AUTH-P06-FASTSCREEN-LOW-HY3-20261027-01",
+    "scope": {
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "forbidden_models": [
+        "hy4-preview"
+      ],
+      "model": "hy3",
+      "per_model_max_concurrency": 1,
+      "purpose": "Low-load control: 1 representative-input diagnostic; new concurrency condition, not retry/score replacement.",
+      "scope_id": "AUTH-P06-FASTSCREEN-LOW-HY3-20261027-01",
+      "transport_timeout_s": 35
+    },
+    "max_attempts": 1,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_failed": 1,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-FASTSCREEN-LOW-QWEN3_8-FLASH-20261027-01.jsonl",
+    "authorization_id": "AUTH-P06-FASTSCREEN-LOW-QWEN3_8-FLASH-20261027-01",
+    "scope": {
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "forbidden_models": [
+        "hy4-preview"
+      ],
+      "model": "qwen3.8-flash",
+      "per_model_max_concurrency": 1,
+      "purpose": "Low-load control: 1 representative-input diagnostic; new concurrency condition, not retry/score replacement.",
+      "scope_id": "AUTH-P06-FASTSCREEN-LOW-QWEN3_8-FLASH-20261027-01",
+      "transport_timeout_s": 35
+    },
+    "max_attempts": 1,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 1,
+      "attempt_completed": 1,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-FASTSCREEN-QWEN3_8-FLASH-20261027-01.jsonl",
+    "authorization_id": "AUTH-P06-FASTSCREEN-QWEN3_8-FLASH-20261027-01",
+    "scope": {
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "forbidden_models": [
+        "hy4-preview"
+      ],
+      "model": "qwen3.8-flash",
+      "per_model_max_concurrency": 3,
+      "purpose": "Exactly 3 diagnostic requests, not P06 ratings; no retry, no candidate generation.",
+      "scope_id": "AUTH-P06-FASTSCREEN-QWEN3_8-FLASH-20261027-01",
+      "transport_timeout_s": 35
+    },
+    "max_attempts": 3,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 3,
+      "attempt_completed": 2,
+      "attempt_failed": 1,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-JUDGE-20261027-01.jsonl",
+    "authorization_id": "AUTH-P06-JUDGE-20261027-01",
+    "scope": {
+      "automatic_candidate_generations": false,
+      "automatic_judge_generations": true,
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "failure_policy": "Failure consumes quota. No retries, no refill, stop on transport failure. Invalid semantic response is preserved as unassessed, not regenerated.",
+      "gate_before_dispatch": "Freeze nodes, controls, cards, V1.1 manual, private bindings, dispatch plan and input hashes; verify all three harness batches DONE 64/64 first.",
+      "model_alias": "dsf",
+      "purpose": "P06 three two-arm batches (A base-vs-v5, B base-vs-v6g, C base-vs-v6i), primary answers + fixed repeats + authored development controls; advisory nine-dimensional review, NOT personal willingness prediction, NOT product integration.",
+      "scope_id": "p06_quality_judge_20261027_v1",
+      "temperature": 0.7
+    },
+    "max_attempts": 256,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 35,
+      "attempt_completed": 31,
+      "attempt_failed": 2,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-JUDGE-GEM-20261027-01.jsonl",
+    "authorization_id": "AUTH-P06-JUDGE-GEM-20261027-01",
+    "scope": {
+      "automatic_candidate_generations": false,
+      "automatic_judge_generations": true,
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "failure_policy": "Failure consumes quota. No retries, no refill, stop on transport failure. Invalid semantic response is preserved as unassessed, not regenerated.",
+      "gate_before_dispatch": "Freeze nodes, controls, cards, V1.1 manual, private bindings, dispatch plan and input hashes; verify all three harness batches DONE 64/64 first.",
+      "model_alias": "gemini-3.8-flash",
+      "purpose": "P06 three two-arm batches (A base-vs-v5, B base-vs-v6g, C base-vs-v6i), primary answers + fixed repeats + authored development controls; advisory nine-dimensional review, NOT personal willingness prediction, NOT product integration.",
+      "scope_id": "p06_quality_judge_20261027_v1",
+      "temperature": 0.7
+    },
+    "max_attempts": 256,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 251,
+      "attempt_completed": 212,
+      "attempt_failed": 39,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-JUDGE-QWEN-20261027-01.jsonl",
+    "authorization_id": "AUTH-P06-JUDGE-QWEN-20261027-01",
+    "scope": {
+      "automatic_candidate_generations": false,
+      "automatic_judge_generations": true,
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "failure_policy": "Failure consumes quota. No retries, no refill, stop on transport failure. Invalid semantic response is preserved as unassessed, not regenerated.",
+      "gate_before_dispatch": "Freeze nodes, controls, cards, V1.1 manual, private bindings, dispatch plan and input hashes; verify all three harness batches DONE 64/64 first.",
+      "model_alias": "qwen3.8-flash",
+      "purpose": "P06 three two-arm batches (A base-vs-v5, B base-vs-v6g, C base-vs-v6i), primary answers + fixed repeats + authored development controls; advisory nine-dimensional review, NOT personal willingness prediction, NOT product integration.",
+      "scope_id": "p06_quality_judge_20261027_v1",
+      "temperature": 0.7
+    },
+    "max_attempts": 256,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 3,
+      "attempt_failed": 3,
+      "dispatch_refused_duplicate": 1,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-JUDGE-QWEN-20261027-02.jsonl",
+    "authorization_id": "AUTH-P06-JUDGE-QWEN-20261027-02",
+    "scope": {
+      "automatic_candidate_generations": false,
+      "automatic_judge_generations": true,
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "failure_policy": "Failure consumes quota. No retries, no refill, stop on transport failure. Invalid semantic response is preserved as unassessed, not regenerated.",
+      "gate_before_dispatch": "Freeze nodes, controls, cards, V1.1 manual, private bindings, dispatch plan and input hashes; verify all three harness batches DONE 64/64 first.",
+      "model_alias": "qwen3.8-flash",
+      "purpose": "P06 three two-arm batches (A base-vs-v5, B base-vs-v6g, C base-vs-v6i), primary answers + fixed repeats + authored development controls; advisory nine-dimensional review, NOT personal willingness prediction, NOT product integration.",
+      "scope_id": "p06_quality_judge_20261027_v1",
+      "temperature": 0.7
+    },
+    "max_attempts": 256,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 2,
+      "attempt_failed": 2,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-MAX288V2-20261027-01.jsonl",
+    "authorization_id": "AUTH-P06-MAX288V2-20261027-01",
+    "scope": {
+      "arms": [
+        "reference_product_v1",
+        "v5_purpose_aligned",
+        "v6_goal_context",
+        "v6_integrated"
+      ],
+      "automatic_judge": false,
+      "baseline_repeat": "同一 reference_product_v1 身份在三批各出现一次，用于各自严格配对；A/B/C 跨批横比只作探索。",
+      "batch_ids": {
+        "A_BASE_VS_V5": "BATCH-P06-A-BASE-VS-V5-20261027",
+        "B_BASE_VS_V6G": "BATCH-P06-B-BASE-VS-V6G-20261027",
+        "C_BASE_VS_V6I": "BATCH-P06-C-BASE-VS-V6I-20261027"
+      },
+      "batches": [
+        "A_BASE_VS_V5",
+        "B_BASE_VS_V6G",
+        "C_BASE_VS_V6I"
+      ],
+      "cards": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+      "episodes": [
+        "E006",
+        "E007",
+        "E008",
+        "E012"
+      ],
+      "fail_fast": true,
+      "judge_separate": "P06 质量评审另建 judge scope 的有限授权；本单只覆盖 harness 生成，不自动触发裁判。",
+      "new_cycle_cap": 16384,
+      "no_makeup": true,
+      "no_retry": true,
+      "not_a_spending_target": true,
+      "perf_ledger_untouched": "AUTH-HARNESS-PERF-PHASE1-20261025-01 used 4/256 不动；P06 生成另账，不拿旧性能余额抵扣。",
+      "phase_p06_harness_ceiling": 192,
+      "positions_per_arm_per_batch": 32,
+      "purpose": "P06 首轮真实新机制对照：三批两臂×4故事×8位=192 次真实生成；不是四臂 128 随机实验，不伪报同一随机比较。",
+      "route": "three_two_arm_batches_192",
+      "stream_identity_separate_from": "AUTH-V5-CTX / AUTH-R2-CTX / AUTH-V3-DELETION / AUTH-NEWSTORY-96 / AUTH-STREAM-INT / AUTH-C4-SCREEN / AUTH-QUALITY-PANEL / AUTH-A3-JUDGE / AUTH-EVAL-JUDGE 均 CLOSED，不复活、不复用。",
+      "total_attempts": 192
+    },
+    "max_attempts": 192,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 192,
+      "attempt_completed": 192,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-PAIRED-QWEN-20261027-01.jsonl",
+    "authorization_id": "AUTH-P06-PAIRED-QWEN-20261027-01",
+    "scope": {
+      "api_base": "http://127.0.0.1:17770/v1",
+      "automatic_candidate_generations": false,
+      "dispatch_plan_sha256": "09646371122c0bb690bce95dbf06f288c2915576ac644c474394329cdc6ebba2",
+      "forbidden_models": [
+        "hy4-preview"
+      ],
+      "max_concurrency": 3,
+      "model": "qwen3.8-flash",
+      "purpose": "96 complete paired existing-answer units +12 development controls+12 swaps; not Gemini refill and no candidate regeneration.",
+      "scope_id": "AUTH-P06-PAIRED-QWEN-20261027-01"
+    },
+    "max_attempts": 120,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 2,
+      "attempt_failed": 2,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-RECOVERY-20261027-01.jsonl",
+    "authorization_id": "AUTH-P06-RECOVERY-20261027-01",
+    "scope": {
+      "allowed_models": [
+        "dsf",
+        "qwen3.8-flash"
+      ],
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "experiment": "P06_recovery_short_review",
+      "forbidden_models": [
+        "gemini-3.8-flash",
+        "hy3",
+        "hy4-preview"
+      ]
+    },
+    "max_attempts": 243,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 18,
+      "attempt_completed": 17,
+      "attempt_failed": 1,
+      "accounting_reconciliation": 1,
+      "authorization_closed": 1,
+      "accounting_reconciliation_correction": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P07-PILOT-20261027-01.jsonl",
+    "authorization_id": "AUTH-P07-PILOT-20261027-01",
+    "scope": {
+      "allowed_models": [
+        "dsf",
+        "hy3",
+        "qwen3.8-flash"
+      ],
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "experiment": "P07_closed_loop_pilot",
+      "forbidden_models": [
+        "gemini-3.8-flash",
+        "hy4-preview"
+      ]
+    },
+    "max_attempts": 48,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 8,
+      "attempt_completed": 7,
+      "attempt_failed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P07-PILOT-20261027-02.jsonl",
+    "authorization_id": "AUTH-P07-PILOT-20261027-02",
+    "scope": {
+      "allowed_models": [
+        "dsf",
+        "hy3",
+        "qwen3.8-flash"
+      ],
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "experiment": "P07_closed_loop_pilot",
+      "forbidden_models": [
+        "gemini-3.8-flash",
+        "hy4-preview"
+      ]
+    },
+    "max_attempts": 96,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 24,
+      "attempt_completed": 23,
+      "attempt_failed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P07-V2-20261028-01.jsonl",
+    "authorization_id": "AUTH-P07-V2-20261028-01",
+    "scope": {
+      "allowed_models": [
+        "dsf",
+        "hy3",
+        "qwen3.8-flash"
+      ],
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "experiment": "P07_closed_loop_v2",
+      "forbidden_models": [
+        "gemini-3.8-flash",
+        "hy4-preview"
+      ]
+    },
+    "max_attempts": 96,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 86,
+      "attempt_failed": 19,
+      "attempt_completed": 67
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P07-W09-20261028-01.jsonl",
+    "authorization_id": "AUTH-P07-W09-20261028-01",
+    "scope": {
+      "allowed_models": [
+        "dsf",
+        "hy3",
+        "qwen3.8-flash"
+      ],
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "experiment": "P07_closed_loop_v2",
+      "forbidden_models": [
+        "gemini-3.8-flash",
+        "hy4-preview"
+      ]
+    },
+    "max_attempts": 304,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 142,
+      "attempt_completed": 125,
+      "attempt_failed": 17,
+      "batch_rejected": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P08-D1-20261028-01.jsonl",
+    "authorization_id": "AUTH-P08-D1-20261028-01",
+    "scope": {
+      "allowed_models": [
+        "dsf"
+      ],
+      "arms": [
+        "reference_product_v1",
+        "action_policy_r2"
+      ],
+      "automatic_judge": false,
+      "batch_ids": [
+        "BATCH-D1-GENERAL-20261028"
+      ],
+      "cards": "benchmark/stories_v2/stageD/GRADING_CARDS_D01_D02.json",
+      "closed_history_not_reused": "AUTH-P06-*、AUTH-P07-V2/W09/W03VAL、AUTH-EXAM1/AUTH-V5/AUTH-R2/AUTH-C4 等旧单不复活、不挪用、不抵扣。",
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "episode_turns": {
+        "D01": 8,
+        "D02": 8
+      },
+      "episodes": [
+        "D01",
+        "D02"
+      ],
+      "experiment": "P08_harness_action_policy_real_compare",
+      "fail_fast": true,
+      "forbidden_models": [
+        "gemini-3.8-flash",
+        "hy4-preview"
+      ],
+      "judge_separate": "质量评审另建 judge scope；本单只覆盖 harness 生成，不自动触发裁判调用。",
+      "new_cycle_cap": 16384,
+      "no_makeup": true,
+      "no_retry": true,
+      "not_a_spending_target": true,
+      "phase_cap": 32,
+      "positions_per_arm": 16,
+      "purpose": "候选冻结后的新材料前瞻复验：2 新故事×8 位×2 臂=32 次真实生成；出题方看不到候选资产与故障原句，审题卡在运行前冻结。只能标注为前瞻/候选盲化，不声称独立封存。",
+      "stage": "D1",
+      "total_attempts": 32
+    },
+    "max_attempts": 32,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 32,
+      "attempt_completed": 32
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P08-R3A-20261028-01.jsonl",
+    "authorization_id": "AUTH-P08-R3A-20261028-01",
+    "scope": {
+      "allowed_models": [
+        "dsf"
+      ],
+      "arms": [
+        "action_policy_r2",
+        "action_policy_r3"
+      ],
+      "automatic_judge": false,
+      "batch_ids": [
+        "BATCH-R3A-DECLINE-20261028"
+      ],
+      "cards": "benchmark/stories_v2/stageD/GRADING_CARDS_R3_DECLINE.json",
+      "closed_history_not_reused": "AUTH-P06-*、AUTH-P07-V2/W09/W03VAL、AUTH-EXAM1/AUTH-V5/AUTH-R2/AUTH-C4 等旧单不复活、不挪用、不抵扣。",
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "episode_turns": {
+        "AK09": 1,
+        "AK12": 1,
+        "D01": 8,
+        "D02": 8,
+        "D03": 6
+      },
+      "episodes": [
+        "D01",
+        "D02",
+        "D03",
+        "AK09",
+        "AK12"
+      ],
+      "experiment": "P08_harness_action_policy_real_compare",
+      "fail_fast": true,
+      "forbidden_models": [
+        "gemini-3.8-flash",
+        "hy4-preview"
+      ],
+      "judge_separate": "质量评审另建 judge scope；本单只覆盖 harness 生成，不自动触发裁判调用。",
+      "new_cycle_cap": 16384,
+      "no_makeup": true,
+      "no_retry": true,
+      "not_a_spending_target": true,
+      "phase_cap": 48,
+      "positions_per_arm": 24,
+      "purpose": "过度沉默修复（FIX-9）的同一计划内修复前后对照：parent=action_policy_r2（修复前）、candidate=action_policy_r3（新身份）。D01/D02 全 16 位 + D03 定向复验 6 位 + AK09/AK12 合法不回对照 2 位 = 24 位×2 臂=48 次真实生成。只回答三件事：(1) 她报成果/问主意/受了委屈的格子是否不再不回；(2) 她明确'别等/结果出来我再说'的格子是否仍允许不回；(3) 其余位点是否因收窄而不回语义被破坏、或退化。父臂不是复用 D1 旧答卷，而是本计划内新生成，确保同条件配对。",
+      "stage": "R3A",
+      "total_attempts": 48
+    },
+    "max_attempts": 48,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 24,
+      "attempt_completed": 23
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P08-R3B-20261028-01.jsonl",
+    "authorization_id": "AUTH-P08-R3B-20261028-01",
+    "scope": {
+      "allowed_models": [
+        "dsf"
+      ],
+      "arms": [
+        "reference_product_v1",
+        "action_policy_r3"
+      ],
+      "automatic_judge": false,
+      "batch_ids": [
+        "BATCH-R3B-D03-CONTROL-20261028"
+      ],
+      "cards": "benchmark/stories_v2/stageD/GRADING_CARDS_R3_DECLINE.json",
+      "closed_history_not_reused": "AUTH-P06-*、AUTH-P07-V2/W09/W03VAL、AUTH-EXAM1/AUTH-V5/AUTH-R2/AUTH-C4 等旧单不复活、不挪用、不抵扣。",
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "episode_turns": {
+        "D03": 6
+      },
+      "episodes": [
+        "D03"
+      ],
+      "experiment": "P08_harness_action_policy_real_compare",
+      "fail_fast": true,
+      "forbidden_models": [
+        "gemini-3.8-flash",
+        "hy4-preview"
+      ],
+      "judge_separate": "质量评审另建 judge scope；本单只覆盖 harness 生成，不自动触发裁判调用。",
+      "new_cycle_cap": 16384,
+      "no_makeup": true,
+      "no_retry": true,
+      "not_a_spending_target": true,
+      "phase_cap": 12,
+      "positions_per_arm": 6,
+      "purpose": "D03 定向复验材料上的两臂真实对照：reference_product_v1 vs action_policy_r3，6 位×2 臂=12 次新生成。只回答一件事：在新题面上，r3 与忠实原版谁更符合卡面（含 3 个必须接住格与 2 个可以不回格）。D03 由实施 worker 撰写、作者知道答案，只能证伪'FIX-9 只在原三格成立'，不构成泛化样本。",
+      "stage": "R3B",
+      "total_attempts": 12
+    },
+    "max_attempts": 12,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 12,
+      "attempt_completed": 12
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P08-S1-20261028-01.jsonl",
+    "authorization_id": "AUTH-P08-S1-20261028-01",
+    "scope": {
+      "allowed_models": [
+        "dsf"
+      ],
+      "arms": [
+        "reference_product_v1",
+        "action_policy_r1"
+      ],
+      "automatic_judge": false,
+      "batch_ids": [
+        "BATCH-S1-ACTION-20261028"
+      ],
+      "cards": "benchmark/stories_v2/stage2/GRADING_CARDS_E024_E027_E031_E034.json",
+      "closed_history_not_reused": "AUTH-P06-*、AUTH-P07-V2/W09/W03VAL、AUTH-EXAM1/AUTH-V5/AUTH-R2/AUTH-C4 等旧单不复活、不挪用、不抵扣。",
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "episode_turns": {
+        "E024": 12,
+        "E027": 12,
+        "E031": 12,
+        "E034": 12
+      },
+      "episodes": [
+        "E024",
+        "E027",
+        "E031",
+        "E034"
+      ],
+      "experiment": "P08_harness_action_policy_real_compare",
+      "fail_fast": true,
+      "forbidden_models": [
+        "gemini-3.8-flash",
+        "hy4-preview"
+      ],
+      "judge_separate": "质量评审另建 judge scope；本单只覆盖 harness 生成，不自动触发裁判调用。",
+      "new_cycle_cap": 16384,
+      "no_makeup": true,
+      "no_retry": true,
+      "not_a_spending_target": true,
+      "phase_cap": 96,
+      "positions_per_arm": 48,
+      "purpose": "固定连续故事两臂真实对照：reference_product_v1 vs action_policy_r1，4 故事(E024/E027/E031/E034)×12 位×2 臂=96 次真实生成。测五项目标行动/合同修订是否带来真实质量收益（目标让位与推进、接钩子、失败修复、无据编造、合法不回）。不是资格探针，不用于裁判调用。",
+      "stage": "S1",
+      "total_attempts": 96
+    },
+    "max_attempts": 96,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 96,
+      "attempt_completed": 96
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P08-S2-20261028-01.jsonl",
+    "authorization_id": "AUTH-P08-S2-20261028-01",
+    "scope": {
+      "allowed_models": [
+        "dsf"
+      ],
+      "arms": [
+        "reference_product_v1",
+        "action_policy_r1"
+      ],
+      "automatic_judge": false,
+      "batch_ids": [
+        "BATCH-S2-ANCHORS-20261028"
+      ],
+      "cards": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+      "closed_history_not_reused": "AUTH-P06-*、AUTH-P07-V2/W09/W03VAL、AUTH-EXAM1/AUTH-V5/AUTH-R2/AUTH-C4 等旧单不复活、不挪用、不抵扣。",
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "episode_turns": {
+        "AK01": 1,
+        "AK02": 1,
+        "AK03": 1,
+        "AK04": 1,
+        "AK05": 1,
+        "AK06": 1,
+        "AK07": 1,
+        "AK08": 1,
+        "AK09": 1,
+        "AK10": 1,
+        "AK11": 1,
+        "AK12": 1
+      },
+      "episodes": [
+        "AK01",
+        "AK02",
+        "AK03",
+        "AK04",
+        "AK05",
+        "AK06",
+        "AK07",
+        "AK08",
+        "AK09",
+        "AK10",
+        "AK11",
+        "AK12"
+      ],
+      "experiment": "P08_harness_action_policy_real_compare",
+      "fail_fast": true,
+      "forbidden_models": [
+        "gemini-3.8-flash",
+        "hy4-preview"
+      ],
+      "judge_separate": "质量评审另建 judge scope；本单只覆盖 harness 生成，不自动触发裁判调用。",
+      "new_cycle_cap": 16384,
+      "no_makeup": true,
+      "no_retry": true,
+      "not_a_spending_target": true,
+      "phase_cap": 24,
+      "positions_per_arm": 12,
+      "purpose": "目标反馈锚点两臂真实对照：12 个独立锚点×2 臂=24 次真实生成。每个锚点都是当前目标真实生效/调整/让位/关闭的机会，正向试探受保护、明确拒绝不硬推。单列统计，不并进 S1 故事均分。",
+      "stage": "S2",
+      "total_attempts": 24
+    },
+    "max_attempts": 24,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 24,
+      "attempt_completed": 24
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P08-S2R-20261028-01.jsonl",
+    "authorization_id": "AUTH-P08-S2R-20261028-01",
+    "scope": {
+      "allowed_models": [
+        "dsf"
+      ],
+      "arms": [
+        "reference_product_v1",
+        "action_policy_r2"
+      ],
+      "automatic_judge": false,
+      "batch_ids": [
+        "BATCH-S2R-FIX-20261028"
+      ],
+      "cards": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+      "closed_history_not_reused": "AUTH-P06-*、AUTH-P07-V2/W09/W03VAL、AUTH-EXAM1/AUTH-V5/AUTH-R2/AUTH-C4 等旧单不复活、不挪用、不抵扣。",
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "episode_turns": {
+        "AK01": 1,
+        "AK02": 1,
+        "AK03": 1,
+        "AK04": 1,
+        "AK05": 1,
+        "AK06": 1,
+        "AK07": 1,
+        "AK08": 1,
+        "AK09": 1,
+        "AK10": 1,
+        "AK11": 1,
+        "AK12": 1
+      },
+      "episodes": [
+        "AK01",
+        "AK02",
+        "AK03",
+        "AK04",
+        "AK05",
+        "AK06",
+        "AK07",
+        "AK08",
+        "AK09",
+        "AK10",
+        "AK11",
+        "AK12"
+      ],
+      "experiment": "P08_harness_action_policy_real_compare",
+      "fail_fast": true,
+      "forbidden_models": [
+        "gemini-3.8-flash",
+        "hy4-preview"
+      ],
+      "judge_separate": "质量评审另建 judge scope；本单只覆盖 harness 生成，不自动触发裁判调用。",
+      "new_cycle_cap": 16384,
+      "no_makeup": true,
+      "no_retry": true,
+      "not_a_spending_target": true,
+      "phase_cap": 24,
+      "positions_per_arm": 12,
+      "purpose": "故障族修复后真实复验（截止执行单 §C）：同一 12 锚点×2 臂=24 次新生成。candidate=action_policy_r2（新身份，含 FIX-6 不回表达/FIX-7 单 JSON 硬约束/FIX-8 回扣有据）；parent=reference_product_v1 在本批同条件重跑，保证配对不是跨批拼接。只回答两件事：(1) 已定位故障族（AK02 提前闭合、AK09/AK12 不回无法表达、键名写坏、directions 超槽）是否消失；(2) 9 个非收尾位点是否因'允许不回'而退化（积极互动不得被保守化换掉）。S2 的已付费答卷只作修复前对照分列，不套用为本批成绩。",
+      "stage": "S2R",
+      "total_attempts": 24
+    },
+    "max_attempts": 24,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 24,
+      "attempt_completed": 24
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P08-S3-20261028-01.jsonl",
+    "authorization_id": "AUTH-P08-S3-20261028-01",
+    "scope": {
+      "allowed_models": [
+        "dsf"
+      ],
+      "arms": [
+        "v6_integrated",
+        "action_policy_r1"
+      ],
+      "automatic_judge": false,
+      "batch_ids": [
+        "BATCH-S3-ATTRIB-20261028"
+      ],
+      "cards": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+      "closed_history_not_reused": "AUTH-P06-*、AUTH-P07-V2/W09/W03VAL、AUTH-EXAM1/AUTH-V5/AUTH-R2/AUTH-C4 等旧单不复活、不挪用、不抵扣。",
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "episode_turns": {
+        "AK01": 1,
+        "AK02": 1,
+        "AK03": 1,
+        "AK04": 1,
+        "AK05": 1,
+        "AK06": 1,
+        "AK07": 1,
+        "AK08": 1,
+        "AK09": 1,
+        "AK10": 1,
+        "AK11": 1,
+        "AK12": 1
+      },
+      "episodes": [
+        "AK01",
+        "AK02",
+        "AK03",
+        "AK04",
+        "AK05",
+        "AK06",
+        "AK07",
+        "AK08",
+        "AK09",
+        "AK10",
+        "AK11",
+        "AK12"
+      ],
+      "experiment": "P08_harness_action_policy_real_compare",
+      "fail_fast": true,
+      "forbidden_models": [
+        "gemini-3.8-flash",
+        "hy4-preview"
+      ],
+      "judge_separate": "质量评审另建 judge scope；本单只覆盖 harness 生成，不自动触发裁判调用。",
+      "new_cycle_cap": 16384,
+      "no_makeup": true,
+      "no_retry": true,
+      "not_a_spending_target": true,
+      "phase_cap": 24,
+      "positions_per_arm": 12,
+      "purpose": "父子归因：v6_integrated vs action_policy_r1 在同 12 锚点上的新增 24 次生成，用来区分『五修订的增量』与『v6 本身相对原版的增量』。action 侧 12 次是新生成、重新计费，不假装复用 S2 答卷。",
+      "stage": "S3",
+      "total_attempts": 24
+    },
+    "max_attempts": 24,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 24,
+      "attempt_completed": 24
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-QUALITY-PANEL-20261027-01.jsonl",
+    "authorization_id": "AUTH-QUALITY-PANEL-20261027-01",
+    "scope": {
+      "automatic_candidate_generations": false,
+      "automatic_judge_generations": true,
+      "endpoint": "http://127.0.0.1:17770/v1",
+      "failure_policy": "Failure consumes quota. No retries or automatic refill; stop on transport/audit failure. Invalid semantic response is preserved as unassessed, not regenerated.",
+      "gate_before_dispatch": "Freeze reference cards, review manual, schema, controls and full dispatch plan. Existing packet is ready; missing references are work to finish, not missing human approval.",
+      "model_alias": "dsf",
+      "purpose": "Existing C4 128 answer sets plus 13 fixed repeats and 32 authored development controls; advisory nine-dimensional review, NOT personal willingness prediction.",
+      "scope_id": "quality_panel_semantic_review_20261027_v1",
+      "temperature": 0.7
+    },
+    "max_attempts": 192,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 173,
+      "attempt_completed": 173,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-R2-CTX-20261024-01.jsonl",
+    "authorization_id": "AUTH-R2-CTX-20261024-01",
+    "scope": {
+      "arms": [
+        "reference_product_v1",
+        "v4_intent_context_r2"
+      ],
+      "attempts_per_arm": 24,
+      "auto_judge": false,
+      "batch_id": "BATCH-R2-CTX-20261024",
+      "episodes": [
+        "E007",
+        "E010",
+        "E012"
+      ],
+      "fail_fast_on_transmission_error": true,
+      "no_auto_retry": true,
+      "no_makeup_pairing": true,
+      "separate_from": "AUTH-V3-DELETION-20261024-01（已 authorization_closed，48/48 耗尽，不得复活/挪用/补跑）",
+      "third_arm": false,
+      "total_hard_cap": 48
+    },
+    "max_attempts": 48,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 48,
+      "attempt_completed": 48,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-STREAM-INT-20261025-01.jsonl",
+    "authorization_id": "AUTH-STREAM-INT-20261025-01",
+    "scope": {
+      "api_config_identity": "api_cfg:openai_compat_stream_true_v1(include_usage gated)",
+      "arms": [
+        "reference_product_v1",
+        "v5_purpose_aligned"
+      ],
+      "auto_judge": false,
+      "batch_id": "BATCH-STREAM-INT-20261025",
+      "fail_fast_on_transmission_error": true,
+      "interleaving": "两臂同位交错，每臂独立历史状态，必要前史用冻结真实事件（episode 冻结 initial_kb/persona/note）初始化",
+      "n4_disclaimer": "每臂 n=4 仅证测量/usage/消费路径可用，绝不作为任臂更快的性能结论",
+      "no_auto_retry": true,
+      "no_makeup_pairing": true,
+      "positions": [
+        {
+          "case_id": "E007_T01",
+          "episode": "E007",
+          "kind": "short_low_information_opener",
+          "why": "单条消息开场轮，最小 user 载荷，验证短请求的分段与 usage 落盘"
+        },
+        {
+          "case_id": "E008_T06",
+          "episode": "E008",
+          "kind": "multi_message_turn",
+          "why": "一轮含 2 条消息，user 段更大，验证多消息输入的首内容/预览分段"
+        },
+        {
+          "case_id": "E009_T07",
+          "episode": "E009",
+          "kind": "long_context_decision_turn",
+          "why": "2 条消息 + may_decline，场景约束最丰富，代表较长大上下文轮"
+        },
+        {
+          "case_id": "E007_T08",
+          "episode": "E007",
+          "kind": "closing_turn",
+          "why": "故事收尾轮（无 intent、话题收束），代表关闭/收尾语义"
+        }
+      ],
+      "positions_per_arm": 4,
+      "purpose": "真实链路上的流式分段计时/usage/消费路径集成验证（证明测量能力，不判性能胜负）",
+      "separate_from": "AUTH-V5-CTX-20261025-01 / AUTH-R2-* / AUTH-V3-* 已 CLOSED 不得复用；AUTH-HARNESS-PERF-PHASE1-20261025-01 属另一 scope，不写入。本批为全新授权与全新账本。",
+      "third_arm": false,
+      "total_hard_cap": 8
+    },
+    "max_attempts": 8,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 8,
+      "attempt_completed": 8,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-TEST-CAPTURE-20261022200918.jsonl",
+    "authorization_id": "AUTH-TEST-CAPTURE-20261022200918",
+    "scope": null,
+    "max_attempts": 24,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 24,
+      "attempt_completed": 24
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-TEST-CAPTURE-20261022200945.jsonl",
+    "authorization_id": "AUTH-TEST-CAPTURE-20261022200945",
+    "scope": null,
+    "max_attempts": 24,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 24,
+      "attempt_completed": 24
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-TEST-CAPTURE-20261022201015.jsonl",
+    "authorization_id": "AUTH-TEST-CAPTURE-20261022201015",
+    "scope": null,
+    "max_attempts": 24,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 24,
+      "attempt_completed": 24
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-TEST-CAPTURE-20261023004014.jsonl",
+    "authorization_id": "AUTH-TEST-CAPTURE-20261023004014",
+    "scope": null,
+    "max_attempts": 24,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 24,
+      "attempt_completed": 24
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-V3-DELETION-20261024-01.jsonl",
+    "authorization_id": "AUTH-V3-DELETION-20261024-01",
+    "scope": {
+      "arms": [
+        "reference_product_v1",
+        "v3_system_slim"
+      ],
+      "batch_id": "BATCH-V3-DELETION-20261024",
+      "episodes": [
+        "E004",
+        "E005",
+        "E006"
+      ],
+      "separate_from": "AUTH-EXAM1-20261023-01(已关闭,旧回忆先导24次,不可挪用)"
+    },
+    "max_attempts": 48,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 48,
+      "attempt_completed": 48,
+      "authorization_closed": 1
+    }
+  },
+  {
+    "path": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-V5-CTX-20261025-01.jsonl",
+    "authorization_id": "AUTH-V5-CTX-20261025-01",
+    "scope": {
+      "arms": [
+        "reference_product_v1",
+        "v5_purpose_aligned"
+      ],
+      "attempts_per_arm": 24,
+      "auto_judge": false,
+      "batch_id": "BATCH-V5-CTX-20261025",
+      "episodes": [
+        "E007",
+        "E008",
+        "E009"
+      ],
+      "fail_fast_on_transmission_error": true,
+      "no_auto_retry": true,
+      "no_makeup_pairing": true,
+      "separate_from": "AUTH-R2-CTX-20261024-01（已 authorization_closed，48/48 耗尽，不得复活/挪用/补跑）",
+      "third_arm": false,
+      "total_hard_cap": 48
+    },
+    "max_attempts": 48,
+    "events": {
+      "authorization_scope": 1,
+      "attempt_started": 48,
+      "attempt_completed": 48,
+      "authorization_closed": 1
+    }
+  }
+]

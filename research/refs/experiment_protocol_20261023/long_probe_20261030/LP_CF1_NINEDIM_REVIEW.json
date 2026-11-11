@@ -1,0 +1,3815 @@
+{
+ "kind": "lp_ninedim_review",
+ "tag": "CF1",
+ "date": "2026-10-30",
+ "authorization": "AUTH-CF1-REVIEW-20261102-01",
+ "anchors": "W04-01_RUBRIC_ANCHORS_V1",
+ "stories": [
+  "E149",
+  "E150",
+  "E151",
+  "E152",
+  "E153",
+  "E154",
+  "E155",
+  "E156"
+ ],
+ "n_positions": 96,
+ "dims": {
+  "goal": {
+   "n": 96,
+   "cand_mean": 2.146,
+   "parent_mean": 2.292,
+   "paired_diff_mean": -0.146,
+   "cand_wins": 31,
+   "parent_wins": 42
+  },
+  "fact": {
+   "n": 96,
+   "cand_mean": 2.656,
+   "parent_mean": 2.698,
+   "paired_diff_mean": -0.042,
+   "cand_wins": 11,
+   "parent_wins": 15
+  },
+  "attrib": {
+   "n": 94,
+   "cand_mean": 2.777,
+   "parent_mean": 2.777,
+   "paired_diff_mean": 0.0,
+   "cand_wins": 7,
+   "parent_wins": 7
+  },
+  "time": {
+   "n": 91,
+   "cand_mean": 2.435,
+   "parent_mean": 2.505,
+   "paired_diff_mean": -0.077,
+   "cand_wins": 15,
+   "parent_wins": 20
+  },
+  "boundary": {
+   "n": 95,
+   "cand_mean": 2.716,
+   "parent_mean": 2.663,
+   "paired_diff_mean": 0.053,
+   "cand_wins": 15,
+   "parent_wins": 10
+  },
+  "memory": {
+   "n": 93,
+   "cand_mean": 2.312,
+   "parent_mean": 2.417,
+   "paired_diff_mean": -0.097,
+   "cand_wins": 24,
+   "parent_wins": 27
+  },
+  "interact": {
+   "n": 96,
+   "cand_mean": 2.188,
+   "parent_mean": 2.573,
+   "paired_diff_mean": -0.385,
+   "cand_wins": 10,
+   "parent_wins": 44
+  },
+  "init": {
+   "n": 96,
+   "cand_mean": 2.25,
+   "parent_mean": 2.229,
+   "paired_diff_mean": 0.021,
+   "cand_wins": 34,
+   "parent_wins": 31
+  },
+  "emotion": {
+   "n": 96,
+   "cand_mean": 2.125,
+   "parent_mean": 2.531,
+   "paired_diff_mean": -0.406,
+   "cand_wins": 14,
+   "parent_wins": 42
+  }
+ },
+ "severe": {
+  "candidate": 0,
+  "parent": 1
+ },
+ "swap_agreement": "7/8",
+ "swap_disagreements_true": [
+  {
+   "pair_id": "LP:E153:E153_T08",
+   "main_winner": "parent",
+   "swap_winner": "candidate",
+   "agree": false,
+   "quote": "RIGHT：她主动来问你，这一步挺难得的。／LEFT：你让她把说明书或机身标签拍给我，我照她那台说。"
+  }
+ ],
+ "verdicts": [
+  {
+   "pair_id": "LP:E149:E149_T01",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方都正确指出11月8日伴娘、11月7日发车与11月2日婚礼的矛盾，并据此提出核对订单，没有把未定事项当成确定的事来说，也没有编造安排；但都直接拒绝了聊发型，没有接住她抢到车和头回当伴娘的兴奋。"
+   },
+   "key_quote": "你刚说11月8号当伴娘？雨桐的婚礼不是11月2号吗？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E149:E149_T02",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都未出现严重错误；LEFT对日期的说法已用“我印象里”作了限定，并让她核对订单，不属于无据确定化；RIGHT未核对日期，把7号、8号的行程当成稳当的计划来夸，属关键遗漏，但未编造安排。"
+   },
+   "key_quote": "LEFT：把请柬或订单翻出来看一眼日子。你假报的是7号8号，我印象里雨桐那场是11月2号。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E149:E149_T03",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": null,
+     "memory": 2,
+     "interact": 1,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": null,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未编造或泄漏内容；但都漏了AA细节的回应与“周六见”缺具体日期的提醒，也都没把11月1号火锅与后面取礼服、出发的行程对一下，时间维度都停在表面。"
+   },
+   "key_quote": "周日锅我刷，排骨你带——除了排骨还想吃啥，我一块儿备上，这回不糊弄。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E149:E149_T04",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT抓住关键矛盾：她自己说过11月1号是周日，彩排定在周日下午三点，而顺风车11月7号早上才走，因此她“7点20的车中午到、时间富余”的推算并不成立；LEFT直接指出日期对不上，并给出“翻原话看日期”的具体下一步。RIGHT顺着她错误的推算确认“十二点多到、时间够打盹”，等于为不能成立的行程做了错误确认，且两人都没落实把订单详情截图核一遍；RIGHT在集合点走法上给出了具体动作，但核心事实判断错误。"
+   },
+   "key_quote": "周日是11月1号，你的车7号才走，彩排跟这趟车对不上。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E149:E149_T05",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有编造事实或把错误信息当成已发生的事来叙述。L 只承接了'明早7:20、集合点'这一项，完全没有触及请假7/8与明日出发的冲突，也没做'哪些还能动、哪些必须今晚动'的分层；R 做了今晚/明早的分层，但把礼服（约11/5取、婚礼11/2）判为'明早再改，来得及'，而明早7:20她就发车离城，所以这个时间可行性存疑，属于时间排序上的实质瑕疵，还不到严重错误。"
+   },
+   "key_quote": "今晚只办一件：明天7:20那趟车，问清楚集合点；请假和礼服明早再改，来得及",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E149:E149_T06",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排、泄漏或事项复活；LEFT倾向与场景要求的“先电话后补文字”相反，RIGHT符合但未处理组长补短信这条线"
+   },
+   "key_quote": "RIGHT：打。十点半不算半夜，明早的班等不到明天再说。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E149:E149_T07",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": null,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": null,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排；RIGHT“都清了”略有笼统（组长审批与下周日顶班仍未知），属轻微概括而非无据确定化"
+   },
+   "key_quote": "假请了没用上，最后正好拿去还人情，一天没浪费",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E149:E149_T08",
+   "candidate_arm": "window_expand_b",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未误用或编造事实；未出现把未定事项当作确定事实来复述的情况。RIGHT 说“五个钟头”是根据她自己说的“7:20 发车、中午十二点多到”推算出的时长，没有断言具体的到达时刻。"
+   },
+   "key_quote": "LEFT：到青川是先补觉还是先去看场地？／RIGHT：五个钟头，闭眼睡一觉，到青川再跟我说一声。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E149:E149_T09",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": null,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": null,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都把“明早11点前到”说成准数，未标顺丰送达时间不确定；均无错人、无编造已发生安排、无越界。"
+   },
+   "key_quote": "你现在把快递单号存好，明早九点看一眼物流就行。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E149:E149_T10",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有把未定的事项当作已定；8号顶班结束的钟点、退款到账时间都未编造。共同缺口是没提5号原单退款是否到账（属于可接受动作，不是硬性要求）。LEFT没有回应她那句“食言”，少了台阶。"
+   },
+   "key_quote": "明天先把伴娘当好，别熬太晚。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E149:E149_T11",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造安排、无无据确定化；LEFT 覆盖头饰、连夜折腾、雨桐那句三项，RIGHT 只接头饰与堵门红包，漏掉敬酒落泪与执行力肯定。"
+   },
+   "key_quote": "头饰先别急着摘。你连夜折腾还能站到最后，雨桐那句话不是客套。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E149:E149_T12",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造或把未定事项说成确定；8号周日的火锅之约表述与事实一致。"
+   },
+   "key_quote": "备忘录那条我信——你连头饰都记着跟雨桐磨，这回是真记牢了",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E150:E150_T01",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方均无严重错误；均未复述11月15日具体日期，也未问包车集合地点，时间与集合细节略欠，但无编造"
+   },
+   "key_quote": "四十别自己先垫，到时候我转你",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E150:E150_T02",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未把未定事项当作已确定，也未出现错人或编造；8点集合属熟人例外范围"
+   },
+   "key_quote": "新杆子都给我留好了，我还能说不去？行，11月15号八点山脚，我准时到。四十我这就转你。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E150:E150_T03",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人/编造已发生安排/事项复活/无据确定化；改期与22号均为提议非事实断言。"
+   },
+   "key_quote": "别急着说黄。盘点又不是你能改的，那就改期，包车那边我去说，你挑个能歇的周日。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E150:E150_T04",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都给了22号的准话，也没有出现严重错误；但两侧都漏掉了卡面要求的“肯定她组织改期投票、及时救场”这句，都没确认集合地点是否仍是山脚，也没有推动下一步。"
+   },
+   "key_quote": "22号行。八点对我来说算早起，但新杖都给我留着了，这个面子得给。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E150:E150_T05",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未把未定的包车拼成当成已定，也没有编造已经发生的安排；LEFT 兼顾攻略和拼车两件事，并主动提出帮忙，正面回应了卡面里“别一个人扛全部”和她怕麻烦别人的性格，RIGHT 只盯攻略，并关心她熬夜，同样得体，但帮助范围窄一些。"
+   },
+   "key_quote": "攻略和拼车别一个人扛，忙不过来喊我一声",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E150:E150_T06",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未出现错人、编造已发生安排、无据确定化；费用由40改为32的算术正确，未把未知的表弟体力当作已知"
+   },
+   "key_quote": "行，加人还降价，这波不亏。表弟平时爬山吗，别走到半路还要人抬。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E150:E150_T07",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": null,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未把未定事项当作确定事项复述：都确认22号局已定、盘点取消属实；RIGHT补算了32比40少8元，正确；只问了15号打算怎么安排，没有替她决定加场"
+   },
+   "key_quote": "22号照旧，人多了一个，摊的还少了八块，你这波不亏。倒是15号白空出来一天，你打算睡过去还是怎么着？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E150:E150_T08",
+   "candidate_arm": "window_expand_b",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造安排或复活已取消事项；R 未接住'维持22号'的拍板，也没肯定她的体面，只抓了踩点这一个动作，属于关键承接缺失而非严重错误"
+   },
+   "key_quote": "22号不动就对了，来回折腾才真难看。明天我跟你一块去？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E150:E150_T09",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有严重错误：都没有编造安排，都没有误判事项状态，也都接住了改线这件事；不过两侧都没提到要把封路和西线方案同步到群里，这也是卡面要求的动作"
+   },
+   "key_quote": "你亲自上去把封路这事踩清楚了，总比一群人八点到山脚干瞪眼强。西线爬升比经典环线难多少？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E150:E150_T10",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 1,
+     "init": 3,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造、无无据确定化；公交与十几块口径均按她所述复述，未把未知班次当既定"
+   },
+   "key_quote": "公交更省事，人少了反而清爽。哪趟车定了告诉我一声，我提前把站点看好",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E150:E150_T11",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无事实错误；RIGHT把'改五回'的功劳正确归给小满，并把集合时间地点复述一遍作为确认；LEFT未回扣'改五回'，也未回敬小满，只靠八点这个梗接住了话。"
+   },
+   "key_quote": "这卡我不收——改五回还得挨个去说清楚的是你。周日八点山脚，我到。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E150:E150_T12",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未把栈道修复时间当成已知事实；RIGHT“那根新的本来就是给我的”引入了背景未提的“新杖”细节，属玩笑语境下的轻度无据，不构成严重错误。"
+   },
+   "key_quote": "栈道通了喊我，八点我认。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E151:E151_T01",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有把未定事项当成确定事项；左侧把出发时间定为两点半，并断言‘够赶在日落前’，但日落时间并未核实，属于轻微没有依据的确定判断，尚未达到严重程度"
+   },
+   "key_quote": "出发时间按堤上日落倒推，别追着太阳跑；补胎工具和一条内胎我带着",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E151:E151_T02",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 1,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排或确定化未定事项；烤肠摊周日是否出摊两侧均未标注，RIGHT的『烤肠和日落都不耽误』略带预设但未构成无据确定化"
+   },
+   "key_quote": "RIGHT：按四十公里算，三点前出发，四点半到堤，烤肠和日落都不耽误",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E151:E151_T03",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "左侧存在自相矛盾：先说“路线缩到二十五公里”，随后又讲“四十公里不会因为他想跟就变短”，同一份方案里前后冲突；且把“跟不上就原地等”直接安排给大壮，没有替乔乔挡住“别让发小觉得被嫌弃”这条边界。右侧没有事实问题，但通篇没有回扣“四点半前到堤、日落”这条时间硬约束。"
+   },
+   "key_quote": "你只管跟他说带，规矩我立。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E151:E151_T04",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 1,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 漏掉卡面核心：没有把“绿道不通车、中途没有退路”这句话郑重传给大壮，反而用“谁想冲谁去前面等”默许队伍拉开，与乔乔强调的“丑话说前头”和押队看人直接相抵触；也没追问大壮车况这个最大未知项。"
+   },
+   "key_quote": "掉队超过二十分钟全体折返，绿道不通车，这条得先说死",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E151:E151_T05",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有把已经发生的事编造成事实，也没有错认人物。LEFT把“得换”说成定论：她只说“磨得跟纸一样”，刹车皮是否真要换新仍未知，LEFT却没看车就下了结论；还说“车库里有备用的”，这属于没有依据的断言。RIGHT则用“基本得换皮”先保留余地，又分了型号对得上、对不上两种情况，还先要照片再判断，把不确定性交代得比较清楚。"
+   },
+   "key_quote": "RIGHT：“型号对得上就直接换，对不上就只能调间隙、限速……你今晚拍张刹车夹器那侧的照片给我”",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E151:E151_T06",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 1,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无无据确定化；周日凌晨天气均未提及，属未知项，不扣分。"
+   },
+   "key_quote": "RIGHT：行，刹车这关算过了。剩下那一半，我明早出发前替大壮再捏一遍",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E151:E151_T07",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造安排、泄漏隐私或事项状态错乱；18迈定速均应下，无无据确定化"
+   },
+   "key_quote": "补给减半那半包先别扔，他能跟到堤上就给他补回来——烤肠摊五点收，够他吃。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E151:E151_T08",
+   "candidate_arm": "window_expand_b",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未给出下游码头游船的水路退场选项，这是本位的核心缺口；LEFT还漏掉时间账（日落17:48、四点半前到堤）与退意回应，RIGH用“不是骑不了，是盐和水没跟上”替大壮留了面子，正对乔乔护短的边界，但没有核实抽筋缓解程度就说“还赶得上”，属于轻度过早断言，未到严重档"
+   },
+   "key_quote": "别慌，抽筋不是骑不了，是盐和水没跟上……真蹬不动就掉头，不硬撑。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E151:E151_T09",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 0,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": "RIGHT 把地形说成'25公里到码头那段是缓下坡，他推着不费劲'——这属于把明确未知的事项（大壮独自推车三公里是否顺利）当成已知确定事实来讲，而且自造了地形，属于无据确定化；另外没有落实'到码头发定位、确认上船'这一核验动作。LEFT 分工对调、18迈（她自己定的数）、定位确认上船、日落保底全部到位，按派工单口吻收尾，没有硬伤。"
+   },
+   "key_quote": "LEFT：就两条——18迈是你自己定的数，别骑着骑着上头；大壮到了码头，把定位发我，我确认他上了船。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E151:E151_T10",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造、无泄漏；时间与事项状态一致"
+   },
+   "key_quote": "大壮那句「水路骑行第一人」我认，退得比骑得还体面。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E151:E151_T11",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有事实错误；换车flag（未来提议）没有被当作确定事项复述，也没有编造安排"
+   },
+   "key_quote": "大壮这波挺争气——红包备注还写“押队费”，说明他没觉得丢人。你妈那句夸，比日落值钱吧。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E151:E151_T12",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有严重错误；共同缺口是“四十公里缺一人但总算骑完”这个收尾结论都没落定，LEFT 把“车况检查”具体落成清单，还定了到场时间，实质推进更强；RIGHT 只回了发小条款，但更简短。"
+   },
+   "key_quote": "一，周三几点，我提前十分钟到食堂；二，车况检查清单我今晚整理一版发群里",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E152:E152_T01",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造或复活事项；LEFT在合同打孔规定未知时直接按“得打孔”推进，属轻度无据，未达严重；RIGHT直接取消海底捞，改写了她“受助必找补”的交换方式，非事实错误。"
+   },
+   "key_quote": "LEFT：海底捞先记着，等装完再说；RIGHT：板子你扶，螺丝你递",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E152:E152_T02",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "十分钟够久了，再站下去该舍不得关灯了。学新菜这句我记着了",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E152:E152_T03",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 1,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都未按卡面要求接住“陪球输三局请奶茶抵工费”的玩笑：LEFT 直接略过；RIGHT 明确回绝并划清人情账，与栗子“受助必找补、不愿白使唤人”的人设相冲突。但两侧都没有出现错认人物、编造已发生安排或复活已完成事项的问题。"
+   },
+   "key_quote": "奶茶抵工费这事免了，上回海底捞已经结清",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E152:E152_T04",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方都没有编造安排、没有复述不确定事项，也没有擅自承诺去小雨家；LEFT没有接住“置物架装完”这一完成状态，也没有夸一句，RIGHT在边界上把本该由房东处理的门锁揽进了自己的清单，属轻微越界"
+   },
+   "key_quote": "RIGHT：“装完啦，那架子你自己立的？可以。单子我挑着接……水龙头先别自己拆，关个角阀看看”",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E152:E152_T05",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有错误归因、编造安排或把未定事项当成确定事实：R 提到『新菜那事还算不算数』是询问，不是断言；L 的『看房东多久上门』是观察，不是承诺房东的响应速度。无严重错误。"
+   },
+   "key_quote": "不嫌你烦。想喊就喊，我耳朵不关机，就是手不一定跟着动。单子撕了也好，明天报修完跟我说一声",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E152:E152_T06",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都守住了边界：把'借朋友'改成按急活标准判断，并给出正当路径；没有编造已发生的安排，也没有把未定事项说成确定。"
+   },
+   "key_quote": "六箱书这份我认。但书架是常规活，不是随手能搭把手的急活，让她找师傅更稳。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E152:E152_T07",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未错认人物，也未编造安排；LEFT虽未达到严重错误，但以'周末我看看时间过去'软性松动拒绝，且'删到只剩真弄不了的'与原规矩'大活找师傅'正好相反"
+   },
+   "key_quote": "但我周末闲不闲，你别替我定。清单先发我看看……超纲的让她找师傅。你要真来打下手，那说好——扶电钻归你。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E152:E152_T08",
+   "candidate_arm": "window_expand_b",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未越界，也未替小雨接活；LEFT 结尾“你要真觉得欠我什么”略显记账，RIGHT 用带话和球场化解小雨的尴尬，落点更实"
+   },
+   "key_quote": "活儿交给平台是对的，我人没躲——改天球场上她赢我两局，就当见过面了",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E152:E152_T09",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人/编造安排/泄漏隐私/事项复活；RIGHT把小雨花掉的四十块平台费说成'你省下的'属轻微归属滑移，且未点明三项全修、分文不收的履约结果，均未达严重级"
+   },
+   "key_quote": "看吧，这活儿本来就该他干。师傅还夸你扶钻稳，下回装宜家柜是不是能自己上手了。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E152:E152_T10",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有出现错人、编造已发生的安排或把未定事项当成确定的事实；电钻“落”与“借”的说法也都处理妥当，没有被当成确定事实来复述"
+   },
+   "key_quote": "小雨想抄让她排队，先吃饭，再看你家墙",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E152:E152_T11",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有错人、编造、泄漏或把未定事项说成确定；海底捞时间未定，双方都没有自行补充具体时刻，因此不构成无依据的确定化。LEFT 用“我也记一笔、剩下那顿先欠着”接住她认真平账的态度，并把条件落在他自己的规矩上（等她自己会拧螺丝），下一步清楚；RIGHT 的“手艺该涨价了”把这个人情账重新折算成买卖，冲淡了她“两顿才勉强平账”里那份认真，也没有接着往下安排，只留了“锅底你定”，主动性偏弱。"
+   },
+   "key_quote": "明晚到，说定了。账你算得这么细，那我也记一笔：剩下那顿先欠着",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E152:E152_T12",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无事项复活；对'谁家动锤子先请火锅'按约定提议承接，未当既定事实强行断言"
+   },
+   "key_quote": "散会。这条我记下了——以后谁家动锤子，先凑一桌。扶墙那段慢点，别真撞门框上。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E153:E153_T01",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "右侧把'你能忍住没去动她那台仪器'当成已发生的事来夸，但她的原话里没有这个情节，属于轻度编造人物行为；左侧没接她的悔意，右侧则完全没落到'药量的事得回医生'和可执行的下一步。"
+   },
+   "key_quote": "降压药能不能减，看的是连着几天的血压数值，不是直播间一句话，这个得让医生看记录",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E153:E153_T02",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有编造安排，也没有把“专家”身份说成已经确定的事实；RIGHT 用“一般答不上来”来标记不确定性，L 的“你不会真去收的”属于人设可推出的判断，不是事实断言"
+   },
+   "key_quote": "仪器先别动……不如周六那堂课你陪着听，就问那个“专家”一句在哪个医院出诊，直播间一般答不上来",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E153:E153_T03",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都判断出'没收'会适得其反，没有替医生下结论，也没有编造未发生的安排；区别在于左侧给出了可执行的下周安排，右侧共情更充分但没有下一步"
+   },
+   "key_quote": "电话先别打了，周五回去吃饭，仪器的事一个字别提，先坐下来吃",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E153:E153_T04",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT无据断言'今天周日'（对话只显示周五晚饭、周六课表），属未经验证的时间事实；且把'怎么挂'整个推给明天，没给公众号/导诊台路径。RIGHT路线给全、用'有的要先签约'正确标注不确定，但漏了带血压记录与高血压病史，且提出'替你妈约号'有替她包办之嫌（妈妈是否同意未知）。两侧均未把十一月体检报告未出这一状态回扣。"
+   },
+   "key_quote": "R：社区医院公众号能约，现场导诊台也能挂，不过慢病门诊有的要先签约家庭医生",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E153:E153_T05",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造安排、事项复活或无据确定化；RIGHT 对周四班表明确标'还没定'，属恰当不确定。"
+   },
+   "key_quote": "你要真绷不住了，就说去交费，出来在我这儿站两分钟——具体的脱身办法，把'怕吵架'接住了",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E153:E153_T06",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无编造已发生安排、无错人、未把未知项（恢复剂量时点、理疗仪处置）确定化；RIGHT“药得恢复”为医生建议的复述，属合理转述而非无据确定化。"
+   },
+   "key_quote": "医生那句其实留了个台阶：按摩放松可以，药得恢复。你顺着这个说，别提直播间",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E153:E153_T07",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都无错人、无编造安排、无完成事项复活、无无据确定化；剂量恢复时间均留白未定死。共同缺口：妈妈主动停听直播课这一让步，两侧都没回扣。"
+   },
+   "key_quote": "你妈那句“它让我睡得踏实”，说明她要留的其实不是仪器，是那点踏实。仪器放着就放着，按摩放松本来也不冲突",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E153:E153_T08",
+   "candidate_arm": "window_expand_b",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方均未替医生下结论、未涉及疗效判断，无严重错误；LEFT把'说明书上多是二三十分钟'当成通用断言，未就型号差异标注不确定，也无下一步；RIGHT先划清'纯使用层面'的边界，标出各家型号不同，并给出拍说明书或机身标签的具体下一步，还补充了发麻发红就停的观察点。"
+   },
+   "key_quote": "各家型号不一样，你让她把说明书或机身标签拍给我，我照她那台说。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E153:E153_T09",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都未复述使用频率、未越界替医生判断；LEFT额外给出可执行的器械使用提示，RIGHT只做到解读与收束，缺少下一步"
+   },
+   "key_quote": "她自己愿意按说明书来,比谁劝都管用",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E153:E153_T10",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": null,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未替茶定性、未越界替医生拍板，无严重错误；RIGHT 用标签上的“不能替代药物”落实药不能停，并以理疗仪说明书这一真实先例回扣，护栏更完整。"
+   },
+   "key_quote": "这茶包装上写的是药还是食品，有没有“不能替代药物”那行字",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E153:E153_T11",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方都只完成了‘接住话术生效’这一半，没有把‘一片药不能停’复述成母女共同底线，也没有顺势把‘头晕心慌马上停’这个信号回扣给社区医生；但都未出现错人、编造或把‘先不买’说成永不买的无据确定化。"
+   },
+   "key_quote": "不是你把她说服的，是她自己想通了。你那句“不拦你买”起的作用，比拦着更大。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E153:E153_T12",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两边都没有严重错误：没有替医生下结论，没有把未定事项当确定复述，也没有违背小满不愿正面冲突的边界。LEFT用一句问话直接把周六的时间定下来，对“只是路过”这个玩笑回应得干脆；RIGHT笑纳认可的口气更足（“正大光明去喝汤”），但把“下周六排班我看一眼，定了跟你说”推到后面，答应赴约这件事反而变得含糊，主动推进的力度不如LEFT。"
+   },
+   "key_quote": "路过就路过，我演得像。陈皮汤我敢喝，下周六几点？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E154:E154_T01",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排或泄漏隐私；LEFT 的“第三次搬家车不够装”与已知的“车迟到三小时”有出入，属于记忆细节被改写，但不构成严重错误"
+   },
+   "key_quote": "LEFT：你先跟车主问清车厢多大、能装多少方，再跟小冉对一下谁家东西多",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E154:E154_T02",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 1,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排、事项复活或无据确定化；LEFT 只回应借物，未回应 8:30 装车与 22 号安排，也未确认细节是否齐整，未用上自己搬家的经验，主动性偏弱"
+   },
+   "key_quote": "北门货车停得下吗，要不要提前跟物业说一声？我搬第三次的时候车晚了三个小时",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E154:E154_T03",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 3,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未先认可她的懊恼，也未把小冉续租定性为正当变故，都直接跳到算账；R 还断言“师傅22号单不止你这一趟”，这是未获证实的第三方事实"
+   },
+   "key_quote": "再在小区群发一条：22号8:30北门到对面小区，半车190；两条都走不通，再包整车",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E154:E154_T04",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没提 22 号死线与留余量（卡面明确要求），都偏离“小件自运可行”的锚点，但都是基于她自己报的数字给结论，不算编造；RIGHT 漏掉她上一条“周六取推车和纸箱”的请求，没回扣；RIGHT 也没承接“听着就累”的体力情绪。"
+   },
+   "key_quote": "六趟你算的是路上四十分钟，可实际上下楼搬箱子一趟就得一个多小时……推车和纸箱我给你留着，周六来拿",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E154:E154_T05",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造、无泄漏、无事项复活；陌生拼单未拍板均按不确定处理，未把'等消息'当已成"
+   },
+   "key_quote": "L：今晚就跟车主把话说死：20号中午前给准话，定不了我就按260包车。70块买的是不用抓瞎，值",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E154:E154_T06",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均正确纠正退订窗口（22号8:30往前推24小时即21号早8:30，而非她以为的21号晚上），无错人、无编造、无确定化未知项"
+   },
+   "key_quote": "R：周六推车和纸箱我给你备好，捆扎带也一起拿上——把卡面要求的取物确认做实了；L只提捆扎带，未回扣推车纸箱",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E154:E154_T07",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 1,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 1,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT 自行补充了对话中不存在的当前时间（“现在快六点半了”），并把“明早 8:30”当成确定时间；这属于没有依据的细节，不算严重错误，但时间和事实两个维度要扣分。两侧都没有直接回应“两条拼车道同时断”带来的懊恼。"
+   },
+   "key_quote": "260这单锁着，搬完、周一照常上班，这钱花得值",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E154:E154_T08",
+   "candidate_arm": "window_expand_b",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 1,
+     "init": 3,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都无严重错误。RIGHT 里出现的“北门”是提议的见面地点，不是事实断言，不构成编造；但它没有回应“小冉主动请假搭手”这一本轮核心节点，也没有确认 70 块差价这笔账，两个本位要求都落空了。"
+   },
+   "key_quote": "70 块买个稳，这账算得对…小冉这姑娘是真处得，说请假就请假",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E154:E154_T09",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无误人、无编造已发生安排、无事项复活；左侧自带捆扎带且对管饭给出延后处理，更贴合她的边界；右侧搬运手法具体且提醒别自己动，但未提捆扎带或手套，并自行指定北门（未证实的会合点，属计划细节非事实断言）"
+   },
+   "key_quote": "行，8:30 我到楼下。捆扎带我带上，抬之前先捆两道，拐角好抓。饭的事搬完再说，先干活。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E154:E154_T10",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": null,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排或完成事项复活；仅覆盖度差异，不构成严重错误"
+   },
+   "key_quote": "师傅一分没加，你还给人买了两瓶水，讲究。床垫最后是怎么弄上去的？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E154:E154_T11",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造或泄漏；266/76 账目核对无误。共同短板：都没接住“这周还推车”把时间定下来，反而都让对方不急，等于让她的还人情意愿一直拖着。"
+   },
+   "key_quote": "多花那 76 换的是八点半车准点到、一趟拉完，不冤。推车和捆扎带不急……",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E154:E154_T12",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方均无错人、编造或复活已完成事项；时间（周六中午）与门牌（东侧单元1201）复述准确"
+   },
+   "key_quote": "R：三个人吃饭我总不能空手去，带点啥你说一句。／L：推车是借的、饭我照吃，两码事。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E155:E155_T01",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 1,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无事实编造或错人；RIGHT的“三天内提走”属建议话术，非对已定事项的断言，未构成无据确定化"
+   },
+   "key_quote": "谁先掏钱算谁的，后头那个也不得罪。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E155:E155_T02",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有编造安排、错认人物或把未定事项说成确定；周六交割是否顺利，双方都留了余地"
+   },
+   "key_quote": "今天在群里把这一句说清楚，让他回个'行'，周六真有变化，你也有话接。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E155:E155_T03",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都点破'下周再说'没有截止日即等于没有承诺，也都给出问准日期的下一步；无人名或时间错置，没有编造已发生的安排，也未把口头顺延当作已确定的事项复述。"
+   },
+   "key_quote": "'下周再说'最容易拖成下下周还是这句，得问出个具体哪天来拉，问日期不问钱",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E155:E155_T04",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两边都没有错认人、编造已经发生的安排，也没有无据确定化；LEFT把整单直接判定为“黄了”，违背了“定性为暂停而非失败、给她留重启口子”的要求，但没有构成严重错误"
+   },
+   "key_quote": "RIGHT：黄的是表姑妈这一头，不是整单……三叔等的是车库腾空，不是非得九百",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E155:E155_T05",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT说“上一单黄就黄在这句没写”是把没有依据的因果关系当成结论；实际原因是表姑妈推迟、顾不过来，所以这只能算事实层面的瑕疵，还够不上严重错误。LEFT的丑话条款把现状、价格、自提、违约处理都写全了，更贴合卡面；RIGHT的丑话缺少“定金不退、过期重挂”这一层，还少提了自提和750价格"
+   },
+   "key_quote": "定金200锁货，周六上午10点前拉走付尾款550，过了点定金不退，我重新挂",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E155:E155_T06",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错认人物、编造已发生安排或把未定事项说成确定；定金与尾款均为提议而非事实断言"
+   },
+   "key_quote": "尾款写清“月底发工资后哪天之前来拉”，过了那天床垫另卖、定金不退",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E155:E155_T07",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无误判事实、无编造安排、无确定化未知项；表弟妹月底是否补款在两侧都未被断言。"
+   },
+   "key_quote": "剩一件没写进去的——哪天来拉。尾款到账那天就得把拉货日子定死，不然车库还得替她看着。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E155:E155_T08",
+   "candidate_arm": "window_expand_b",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有做到：没有提醒她先问表弟妹能否提前补款、也没有建议把三叔和表弟妹两头的账摊开来说；R的\"25号准收尾款\"带有替表弟妹做保证的色彩，但她并没有答应提前付"
+   },
+   "key_quote": "25号前床垫不能动；25号表弟妹没补尾款，老同事要是还等着，就归他",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E155:E155_T09",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造或把未定事项说成确定；R的“没在群里催她”略有简化，车库腾空属于合理推断，三叔的酒为反问式提醒，并非事实断言。"
+   },
+   "key_quote": "只把话摊开、给个期限，她第二天一早就把钱转了，这比追着问体面多了",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E155:E155_T10",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有出现错误归属、编造安排或泄漏隐私；右侧“这钱不是跑腿费”只是用重新定义的说法，稍有偏差，但并非编造事实"
+   },
+   "key_quote": "收下，回头拿这钱给他换瓶酒送回去，正好抵他那句留一瓶好酒",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E155:E155_T11",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无泄漏；元旦赴约都以未来口吻提及，未做确定化断言。"
+   },
+   "key_quote": "元旦那顿螺蛳好好去吃。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E155:E155_T12",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都无错人、无编造已发生安排、无泄漏、无无据确定化；好酒数量属玩笑建议，不是事实断言"
+   },
+   "key_quote": "三叔那句“下回有闲置的先问苗苗”，比酒值钱。两瓶起步吧，一瓶算跑腿，一瓶算他当着全群给你挂的匾。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E156:E156_T01",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都未编造已发生安排、也未把未定事项当确定复述，均无严重错误。LEFT：接住奶茶赌约，并把首晚二十道拆成“今晚十道、明早通勤十道”，给了最小可完成单元和“按题型归类”的具体下一步，回扣了他错题本齐全这一背景；不足是没提“先试一周、周日复盘再定稿”，节奏收得比半格多。RIGHT：只做表面承接，“做到哪算哪”把二十道的框架整个消解掉，没有替代结构，也没提试运行或复盘，对三分钟热度选手等于拆掉唯一的支架，主动性偏弱。"
+   },
+   "key_quote": "今晚先别硬啃二十道——第一章挑十道出来，找找手感，剩下十道明天通勤上做",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E156:E156_T02",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无无据确定化；表见代理的认定说法都准确"
+   },
+   "key_quote": "三个要件：无权限、有外观、相对人善意无过失。明晚十点前，你把这三个词对着错题对一遍。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E156:E156_T03",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有错认人物、编造已发生安排或泄漏隐私；审计加班、错题抄本、表见代理卡点都取自已知背景或她的原话，无据确定化未出现。"
+   },
+   "key_quote": "RIGHT：把我错题抄走这步，比刷十道新题值钱……'稳了'先别急着定，等审计那波加班过去再说。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E156:E156_T04",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 未出现严重错误；但擅自把“欠账”改为“暂停”，相当于降低要求，越过“节奏的事等她周末再议”的边界，违反本位“准欠账但不降价”的要求。"
+   },
+   "key_quote": "欠着不算断更，算记账，我这儿有账本。今晚五道已经够了，睡。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E156:E156_T05",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未编造安排或复活事项；LEFT把“奶茶我照买，双份”改成“奶茶我买”，轻微改写了她自己立的flag，并加上“等交底稿再喝”的附加条件，属于轻度越界，未达严重。"
+   },
+   "key_quote": "行，暂停一周，我不劝。错题本我收着不动，奶茶双份记你账上。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E156:E156_T06",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方均未推进度、未问归期，也未把暂停说成放弃；均未编造安排。共同不足：都没有明确应下“自己按节奏做题、错题本留位置”，只完成了接住和挂账两项。"
+   },
+   "key_quote": "电梯里还能背两个名词，说明你没断线，只是换了个地方跑。奶茶账你记着就好，别记成欠条。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E156:E156_T07",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都明确认定‘这不算断更’，并把三步（早上发、中午做、晚上对答案）复述成可以执行的版本；没有编造安排，也没有把暂停说成放弃。LEFT用‘奶茶账先冻着’呼应她此前说的‘奶茶照买双份’，并顺势减轻压力，但与她原先说的‘照买双份’略有出入，语气像在劝她；RIGHT用‘只是换个跑法’直接回应她怕丢人、怕被说放弃的心理，再加一句‘我八点发？’把下一步定到具体时刻，主动性更强。"
+   },
+   "key_quote": "这不叫断更，只是换个跑法。我八点发？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E156:E156_T08",
+   "candidate_arm": "window_expand_b",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有出现错人、编造安排、事项复活或无据确定化；LEFT 把‘表见代理’的坑点归到她的判断力上，并给出明天出题的下一步；RIGHT 只承接了‘做贼’的玩笑，没有给明天动作。"
+   },
+   "key_quote": "表见代理那个坑你能自己认出来，说明不是背答案，是真会判了。明天那道我挑个更阴的",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E156:E156_T09",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有编造事实，没有复活已经取消的事项，也没有把未定事项当作确定事实来复述；两边都只是对“下周”做安排，没有承诺正式版能一步到位。"
+   },
+   "key_quote": "RIGHT：六道全是蹲出来的知识，比坐着硬背的记得牢——把六道存稿定性为真实成果；LEFT 说“审计老师那句夸，比六道题值钱”，反而压低了六道题的分量。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E156:E156_T10",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有严重错误：左侧如实说明自己只懂经济法，不假装懂财管，既没有编造安排，也没有把未定事项说成确定；右侧说的“经济法一道没丢”可以由“错三道全是财管”推出，并非编造。"
+   },
+   "key_quote": "三道财管的题干发我，财管我不敢装懂，咱俩一起抠，错在哪儿比错几道重要",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E156:E156_T11",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无无据确定化；触发条件双方都未当成已定死的事实复述"
+   },
+   "key_quote": "LEFT：周日复盘我把它写进错题本第一页；触发条件写清楚点：连续加班三天自动切，还是你自己喊停？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E156:E156_T12",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都无错人、无编造已发生安排、无泄漏、无无据确定化；LEFT 漏掉对“奶茶本周她请”认账和对“从没真正断过”的定论，RIGHT 把“明天带”改成“周六带”，并且漏得更多。"
+   },
+   "key_quote": "LEFT：'表见代理'那页你随便抄，但别折角，那页是我去年卡了三回才啃下来的。八月考场见。",
+   "raw": ""
+  }
+ ],
+ "swap_supplement": [
+  {
+   "pair_id": "LP:E149:E149_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "坐稳了就别再回头算账了。五个钟头，闭眼睡一觉，到青川再跟我说一声。"
+  },
+  {
+   "pair_id": "LP:E150:E150_T08",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "22号不动就对了，来回折腾才真难看。明天我跟你一块去？"
+  },
+  {
+   "pair_id": "LP:E151:E151_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "弄完让他试骑两百米，能蹬就慢起步，我把速度压到12，到堤上还赶得上。真蹬不动就掉头，不硬撑。"
+  },
+  {
+   "pair_id": "LP:E152:E152_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "四十块俩师傅一小时，这价我认，比请我便宜，还不用欠人情……活儿交给平台是对的，我人没躲"
+  },
+  {
+   "pair_id": "LP:E153:E153_T08",
+   "main_winner": "parent",
+   "swap_winner": "candidate",
+   "agree": false,
+   "quote": "RIGHT：她主动来问你，这一步挺难得的。／LEFT：你让她把说明书或机身标签拍给我，我照她那台说。"
+  },
+  {
+   "pair_id": "LP:E154:E154_T08",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "70 块买个稳，这账算得对……小冉这姑娘是真处得，说请假就请假。"
+  },
+  {
+   "pair_id": "LP:E155:E155_T08",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "25号前床垫不能动；25号表弟妹没补尾款，老同事要是还等着，就归他"
+  },
+  {
+   "pair_id": "LP:E156:E156_T08",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "表见代理那个坑你能自己认出来，说明不是背答案，是真会判了"
+  }
+ ],
+ "note": "故事级=探索性读数；fact/time 维 assistive（资格批处置）；安抚压力位 severe 需逐位 B3 复核"
+}

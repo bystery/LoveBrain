@@ -1,0 +1,56 @@
+{
+ "batch_id": "BATCH-V3-DELETION-20261024",
+ "status": "AWAITING_AUTHORIZATION(无匹配新授权；本文件只是待批准的调用清单，不含任何真实调用)",
+ "generated_at": "2026-10-24T17:13:27",
+ "hypothesis": "资产删减：精简system(v3_system_slim) vs 原版重system(reference_product_v1)；记忆/题/卡/采样全同，仅system变；测意图/事实/互动是否变差、主动性/调侃/推进是否改善、真实token/时延",
+ "primary_variable": "仅 system 资产(test_v3_slim_replay 24/24 装配逐字同，父system8295→v3 2598码元,-68.7%)",
+ "arm_map": {
+  "parent": "reference_product_v1",
+  "candidate": "v3_system_slim"
+ },
+ "episodes": [
+  "E004",
+  "E005",
+  "E006"
+ ],
+ "episodes_note": "修订版公开开发集 r2-20261024(NODE_REVIEW逐节点修过时间线/正向位/种子偏好/不回量尺)，两臂同一修订版；非泛化未见集 | r3: E004 偏好种子已映射到 initial_kb.me 并验证两臂出站收到完整值(甜剧很少看)",
+ "total_attempts": 48,
+ "cards": "benchmark/dev_expansion_v01/03_GRADING_CARDS_E004_E006.json (24张,含正向intent位)",
+ "frozen_identity_sha256": {
+  "parent": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+  "candidate": "c1944e1d931c0747856ed48e7b9161c34e266f6d1da950d97145055d8839f3ac"
+ },
+ "plan_file": "refs/experiment_protocol_20261023/v3_deletion_20261024/INTERLEAVE_PLAN.json (含逐slot attempts + 冻结config_files全hash)",
+ "scheduling": "tools/exam_interleave_plan.execute_plan(mode=live) 逐slot交错；执行序与attempt从真实网关事件核验；--batch-config 正式入口已接通(E004-6/v3，非旧v2/E001)",
+ "budget": {
+  "authorization_level": true,
+  "separate_from_48_recall": true,
+  "note": "AUTH-EXAM1-20261023-01 已CLOSED(24/24)属旧回忆批,不得挪用为v3;本批需全新、逐字绑定端点/model/temp、max_attempts>=48 的授权,execute_plan首发前整批ensure_batch(48)预检,不足零派发",
+  "fail_fast": true,
+  "no_makeup_pairing": true,
+  "no_auto_retry": true
+ },
+ "zero_network_rehearsal_done": "修订版48槽capture已跑通:48/48/0, order_ok, bijection, 隔离;parent system 8295 vs v3 2598 码元实测达出站;24位全为修订E004-6;recall段0(如实N/A);intent/种子/时间线标记均入请求;真实调用0",
+ "approval_natural_language": "批准执行 BATCH-V3-DELETION-20261024：对 reference_product_v1 vs v3_system_slim 在修订版 E004/E005/E006 上跑满 48 次真实调用，固定端点 http://127.0.0.1:17770/v1 model=dsf temperature=0.7，逐slot交错、fail-fast、不补配对、整批48预检、独立于旧回忆预算。worker 据此生成授权单并跑批，跑完连续交：逐位真实答卷+语义/互动初审+匿名重点组+污染/token/时延+保留或淘汰结论。",
+ "on_approval_worker_will": [
+  "写授权单JSON(符合validate_authorization_doc逐字绑定+账本级budget_ledger)，用 execute_plan(mode=live) 跑满48",
+  "reports_from_batch 出两臂分层+配对(程序/语义三态/覆盖率/token/时延)",
+  "对48个非空位次+全部备选实际填语义/互动/严重错误/理由(§6,不再交空表)",
+  "登记简洁判决:首选逐位语义胜负/双方不好、严重错误/无关回提、真实token/时延;质量相当而token更低也可保留",
+  "不自动追加旧回忆48、不自动加v0第三臂、不加judge调用"
+ ],
+ "attempts_summary": {
+  "per_episode": 8,
+  "arms": 2,
+  "episodes": 3,
+  "total": 48
+ },
+ "seed_fix_verified": {
+  "case": "E004_T03",
+  "value_present_in": [
+   "parent",
+   "candidate"
+  ],
+  "full_seed": "平时更爱烧脑悬疑，甜剧很少看，但真感兴趣的话愿意陪喜欢的人试一次"
+ }
+}

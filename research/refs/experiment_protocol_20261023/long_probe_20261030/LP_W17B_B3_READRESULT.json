@@ -1,0 +1,57 @@
+{
+ "kind": "b3_personal_read_result",
+ "tag": "W17B",
+ "date": "2026-11-03",
+ "batch": "BATCH-W17B-GUARD-20261102",
+ "read_scope": "六篇评审全部 severe 旗（7 位，全部在 parent 侧）逐位读原文",
+ "positions": [
+  {
+   "pair_id": "LP:E189:E189_T11",
+   "judge_flag": "parent severe",
+   "personal_read": "T06 时钟 2026-11-08、T11 为 2026-11-23（相隔 15 天）；par 说“你十天前忍的那一下”，时间跨度错 5 天",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:E190:E190_T12",
+   "judge_flag": "parent severe",
+   "personal_read": "HER 只说“考前一晚再全流程彩排一次”；par 直接“彩排定考前一晚七点，自习室我来订”——把未商定的时间与场地当成已定事项",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:E190:E190_T03",
+   "judge_flag": "parent severe",
+   "personal_read": "时钟 2026-11-05 23:10，par 说“十一点多了”正确，未编造时间",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:E195:E195_T02",
+   "judge_flag": "parent severe",
+   "personal_read": "HER 在 T01 明说“物业在群里发通知”，par“群里那通知我看了”有据；仅“照昨天说的”措辞含糊，非事实编造",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:E195:E195_T05",
+   "judge_flag": "parent severe",
+   "personal_read": "par 给的是引路与喂食方案（“放一点点引路的”），属建议不是既成事实",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:E208:E208_T04",
+   "judge_flag": "parent severe",
+   "personal_read": "par“他要真磨蹭到五十才到”是假设句；尾号/车型均来自 HER 原话",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:E189:E189_T06",
+   "judge_flag": "parent severe",
+   "personal_read": "par“材料写完的进度我记着”是承接表态，未补出具体进度或事实",
+   "verdict": "rejected"
+  }
+ ],
+ "severe_ledger": {
+  "candidate_window_expand_b_norecap_guard": 0,
+  "parent_window_expand_b_norecap": 2,
+  "raw_judge": {"candidate": 0, "parent": 7},
+  "note": "亲读后 cand 0 vs par 2（E189_T11 时间跨度、E190_T12 擅自定时定场）；5 位拒绝"
+ }
+}

@@ -1,0 +1,43 @@
+{
+  "kind": "quality_first_deadline_queue",
+  "date": "2026-10-28",
+  "user_deadline_date": "2026-10-29",
+  "exact_deadline_time": "not_provided",
+  "internal_first_complete_review_target": "2026-10-28 22:00 Asia/Shanghai",
+  "quality_bar": "UNCHANGED; deadline is not evidence of acceptance",
+  "new_budget_added": 0,
+  "tasks": [
+    {
+      "id": "A",
+      "work": "现场增量、候选冻结、四故事题卡和真实capture",
+      "state": "READY"
+    },
+    {
+      "id": "B",
+      "work": "原版对action_policy_r1固定故事96生成+反馈24生成",
+      "state": "PENDING_A"
+    },
+    {
+      "id": "C",
+      "work": "全部首选和非空备选证据质量审查、必要机制修复与实跑复验",
+      "state": "READY_WHEN_FIRST_ANSWERS_ARRIVE"
+    },
+    {
+      "id": "D",
+      "work": "冻结后新材料32生成；条件允许父子归因24生成",
+      "state": "PENDING_B_C"
+    },
+    {
+      "id": "E",
+      "work": "按不降低的标准作通过/退修/淘汰判决，交可复现实物",
+      "state": "PENDING_EVIDENCE"
+    }
+  ],
+  "long_term_backlog": "D:/lovebrain-arena/refs/experiment_protocol_20261023/morning_resume_v4_20261028/MASTER_EXECUTION_V4_288H.md",
+  "hold": [
+    "old W09 catch-up waves",
+    "product integration",
+    "new infrastructure",
+    "blanket rerating of old results"
+  ]
+}

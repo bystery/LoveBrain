@@ -1,0 +1,15 @@
+{
+ "batch_id": "BATCH-FLREG-E061-20261101",
+ "arm_map": {
+  "parent": "action_policy_r9_slim",
+  "candidate": "fact_ledger_v1"
+ },
+ "episode_order": [
+  {
+   "episode": "E061",
+   "arm_order": "parent_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+ "recall_capable": false
+}

@@ -1,0 +1,266 @@
+{
+ "F4:K01_P1_leave": {
+  "channel": "knowledge",
+  "story": "K01",
+  "case_id": "K01_P1_leave",
+  "a_side": "on",
+  "b_side": "off",
+  "signal": null,
+  "removed_blocks": [
+   {
+    "mark": "【相关已确认事实",
+    "chars": 505,
+    "sha256": "c7422383c3cb40255b79a39a065238b6da8dc3684155e597584e8e5b67c49ccc"
+   },
+   {
+    "mark": "【暂定事项",
+    "chars": 280,
+    "sha256": "bf8d60866ed27d53a2cb347fb47544ba5980c692e5d3dd2c4e84e842f4a0f63a"
+   },
+   {
+    "mark": "【最近状态变更",
+    "chars": 162,
+    "sha256": "ecc06bb7d3a9129a70ee63fa611d3fab7dc0ceb782fb366142aca8d8acb1f24f"
+   }
+  ],
+  "on_prompt_sha256": "d9244f8abc45285b0fbaeda5e5a9cf9cb2872117cfd4baef75430e7a7947e7b2",
+  "off_prompt_sha256": "c4e92cffcb073b93d101f8cfdc8cfb8936f3bf4fcbbabc8c17e9deb347920cb0"
+ },
+ "F4:K02_P1_budget": {
+  "channel": "knowledge",
+  "story": "K02",
+  "case_id": "K02_P1_budget",
+  "a_side": "off",
+  "b_side": "on",
+  "signal": null,
+  "removed_blocks": [
+   {
+    "mark": "【相关已确认事实",
+    "chars": 309,
+    "sha256": "32fe142a676dfa52e2063992b69d3b248312efa33fa43c7b9bcac40781df50fc"
+   },
+   {
+    "mark": "【暂定事项",
+    "chars": 281,
+    "sha256": "b2ac2bb2711f08a6ad5020b8ce831472d206a926ba011b7c1f3ed2ad4b5ae919"
+   },
+   {
+    "mark": "【最近状态变更",
+    "chars": 144,
+    "sha256": "70ffa02a8f6a647990f6d5f43eb9ef64f58ab194d8caa8644261561666a7e3ab"
+   }
+  ],
+  "on_prompt_sha256": "1fa0dcceea91c09df0867b1385267ef9fe68f6d18aea4fda2accb28d1e6c8c23",
+  "off_prompt_sha256": "4666eb9adaff9979b8d110345f4e13282fa5a27edcafaf684d21ea04db13d3da"
+ },
+ "F4:N01_A1_positive": {
+  "channel": "action",
+  "story": "N01",
+  "case_id": "N01_A1_positive",
+  "a_side": "on",
+  "b_side": "off",
+  "signal": null,
+  "removed_blocks": [
+   {
+    "mark": "【本轮可用动作",
+    "chars": 956,
+    "sha256": "644b120d4714f1d085c0fbdd40e8cdd849266ca6cbd87dfbb5c2f021618c3882"
+   }
+  ],
+  "on_prompt_sha256": "35b3fb1e4d1785109846e851e94e88caaa8b9d484f204f0e2993d2fab093da9b",
+  "off_prompt_sha256": "332644f7037a17e48696c09f34361176ce8a3a4cbf702c2a93db08ad06360f5d"
+ },
+ "F4:N02_A1_positive": {
+  "channel": "action",
+  "story": "N02",
+  "case_id": "N02_A1_positive",
+  "a_side": "off",
+  "b_side": "on",
+  "signal": null,
+  "removed_blocks": [
+   {
+    "mark": "【本轮可用动作",
+    "chars": 956,
+    "sha256": "644b120d4714f1d085c0fbdd40e8cdd849266ca6cbd87dfbb5c2f021618c3882"
+   }
+  ],
+  "on_prompt_sha256": "1d7a17930a5b678a44c523e56848bf377acf3ef5686dcc8f1600b71e020f35dd",
+  "off_prompt_sha256": "72236989c79a19bf8c844b83ee9094eda6a2a06e78e8031c46ec2a2538352281"
+ },
+ "F4:K01_P2_refund": {
+  "channel": "knowledge",
+  "story": "K01",
+  "case_id": "K01_P2_refund",
+  "a_side": "on",
+  "b_side": "off",
+  "signal": null,
+  "removed_blocks": [
+   {
+    "mark": "【相关已确认事实",
+    "chars": 526,
+    "sha256": "a4cc9d863ffc0b4162adbe9dbcd44689f11a3aa20d3705031ef7fe2f4ea8a025"
+   },
+   {
+    "mark": "【暂定事项",
+    "chars": 280,
+    "sha256": "bf8d60866ed27d53a2cb347fb47544ba5980c692e5d3dd2c4e84e842f4a0f63a"
+   },
+   {
+    "mark": "【最近状态变更",
+    "chars": 162,
+    "sha256": "ecc06bb7d3a9129a70ee63fa611d3fab7dc0ceb782fb366142aca8d8acb1f24f"
+   }
+  ],
+  "on_prompt_sha256": "3432faf15d8c8edc9fea71b6c9d43f36794bacfdfb9db39576203e08b67aeac4",
+  "off_prompt_sha256": "3eea44850ae7dae7624c0f5873ed4591cebbd52cd3a2abf68963b398541a74d8"
+ },
+ "F4:K01_P3_rail": {
+  "channel": "knowledge",
+  "story": "K01",
+  "case_id": "K01_P3_rail",
+  "a_side": "off",
+  "b_side": "on",
+  "signal": null,
+  "removed_blocks": [
+   {
+    "mark": "【相关已确认事实",
+    "chars": 302,
+    "sha256": "154342fae4d1ceafb2cf14de1800a2a1e601a38f1e803ac9eb0d33153e91af77"
+   },
+   {
+    "mark": "【暂定事项",
+    "chars": 280,
+    "sha256": "bf8d60866ed27d53a2cb347fb47544ba5980c692e5d3dd2c4e84e842f4a0f63a"
+   },
+   {
+    "mark": "【最近状态变更",
+    "chars": 162,
+    "sha256": "ecc06bb7d3a9129a70ee63fa611d3fab7dc0ceb782fb366142aca8d8acb1f24f"
+   }
+  ],
+  "on_prompt_sha256": "6ceb13c4019e55de4ad9307fe4246f00045b80973c710c967b5625379061e057",
+  "off_prompt_sha256": "b82c345dfe79485c01b760d267258eaf6fb5d4226bc491e088fa0507560ca5ce"
+ },
+ "F4:K02_P2_tile": {
+  "channel": "knowledge",
+  "story": "K02",
+  "case_id": "K02_P2_tile",
+  "a_side": "on",
+  "b_side": "off",
+  "signal": null,
+  "removed_blocks": [
+   {
+    "mark": "【相关已确认事实",
+    "chars": 504,
+    "sha256": "899d5d3bb71af2b187d5f616026f5c6ab470c1dbba14e896d882e018f25e0c87"
+   },
+   {
+    "mark": "【暂定事项",
+    "chars": 281,
+    "sha256": "b2ac2bb2711f08a6ad5020b8ce831472d206a926ba011b7c1f3ed2ad4b5ae919"
+   },
+   {
+    "mark": "【最近状态变更",
+    "chars": 144,
+    "sha256": "70ffa02a8f6a647990f6d5f43eb9ef64f58ab194d8caa8644261561666a7e3ab"
+   }
+  ],
+  "on_prompt_sha256": "c76a6b14a68f087108e899bf7bb4ed0718c8e56cf8223998dad9fd9045f7c407",
+  "off_prompt_sha256": "a543d0e4727fa013f7ab170526aebe72a92559444c2ada458acfdb44f229581b"
+ },
+ "F4:K02_P3_measure": {
+  "channel": "knowledge",
+  "story": "K02",
+  "case_id": "K02_P3_measure",
+  "a_side": "off",
+  "b_side": "on",
+  "signal": null,
+  "removed_blocks": [
+   {
+    "mark": "【相关已确认事实",
+    "chars": 537,
+    "sha256": "1ba1944d235f20bff3e38270ca37f10b6241e69dbb3168636f0bc82f4d4de7be"
+   },
+   {
+    "mark": "【暂定事项",
+    "chars": 281,
+    "sha256": "b2ac2bb2711f08a6ad5020b8ce831472d206a926ba011b7c1f3ed2ad4b5ae919"
+   },
+   {
+    "mark": "【最近状态变更",
+    "chars": 144,
+    "sha256": "70ffa02a8f6a647990f6d5f43eb9ef64f58ab194d8caa8644261561666a7e3ab"
+   }
+  ],
+  "on_prompt_sha256": "db3ed509ed213b226da38f22c0eda632018287fb9c4fe3f816c296fb3d205693",
+  "off_prompt_sha256": "17cd4784c30c51146a0f9b1e129fb8b24e72c96c7ff90b4326e15ef022b309dd"
+ },
+ "F4:N01_A2_ambiguous": {
+  "channel": "action",
+  "story": "N01",
+  "case_id": "N01_A2_ambiguous",
+  "a_side": "on",
+  "b_side": "off",
+  "signal": null,
+  "removed_blocks": [
+   {
+    "mark": "【本轮可用动作",
+    "chars": 1037,
+    "sha256": "9235bdb444c08c6ffa6cae16010110159439cdc3065f26e535c4f03c4e876af7"
+   }
+  ],
+  "on_prompt_sha256": "26237b1f5e7f5e7f7f05fade29d1836a3da15e9cc89d1a8411550441cb02f0d4",
+  "off_prompt_sha256": "e2071b6b474ffff569bb0d00899c6c048a6601f124d007f1f7cb3b5267001882"
+ },
+ "F4:N01_A3_busy": {
+  "channel": "action",
+  "story": "N01",
+  "case_id": "N01_A3_busy",
+  "a_side": "off",
+  "b_side": "on",
+  "signal": null,
+  "removed_blocks": [
+   {
+    "mark": "【本轮可用动作",
+    "chars": 956,
+    "sha256": "644b120d4714f1d085c0fbdd40e8cdd849266ca6cbd87dfbb5c2f021618c3882"
+   }
+  ],
+  "on_prompt_sha256": "717194d8e1906707eba705ac8f46806a7b34c1dd0f7a4b42198d521931bd7db8",
+  "off_prompt_sha256": "6ff6d9a8cc898771d7719e7c9e797621f250bbd1dd3ee047966749638424a5cc"
+ },
+ "F4:N02_A2_ambiguous": {
+  "channel": "action",
+  "story": "N02",
+  "case_id": "N02_A2_ambiguous",
+  "a_side": "on",
+  "b_side": "off",
+  "signal": null,
+  "removed_blocks": [
+   {
+    "mark": "【本轮可用动作",
+    "chars": 960,
+    "sha256": "00c85d043ed4b8ab0178c397fef60f2632d14286ebdc64edcb78649371d14d50"
+   }
+  ],
+  "on_prompt_sha256": "eef1862110dd0a2273c41db2fc4e7127e02926495464112c32842ad81b8b5435",
+  "off_prompt_sha256": "723f85148065e573e0480a9d868e709bfdc7071bbd4d6b1d98b5b88a672d0c92"
+ },
+ "F4:N02_A3_busy": {
+  "channel": "action",
+  "story": "N02",
+  "case_id": "N02_A3_busy",
+  "a_side": "off",
+  "b_side": "on",
+  "signal": null,
+  "removed_blocks": [
+   {
+    "mark": "【本轮可用动作",
+    "chars": 956,
+    "sha256": "644b120d4714f1d085c0fbdd40e8cdd849266ca6cbd87dfbb5c2f021618c3882"
+   }
+  ],
+  "on_prompt_sha256": "0a3947e5237df61857c4da673bdc8fe9bdbe002381d672ec0ddaec0d4117130e",
+  "off_prompt_sha256": "364b264d9414b339bc641a38e93ea269931dbe21c43bc088a7c0138f093eca15"
+ }
+}

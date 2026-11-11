@@ -1,0 +1,48 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-SLIM-G1-20261031-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30地狱级常设授权（AUTH-GLOBAL-CONTINUOUS-20261030-01 登记件）；管理帽16384不变",
+ "phase": "W16-05_champion_challenge_tiering",
+ "budget_ledger": "logs/auth_budget/AUTH-SLIM-G1-20261031-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 64
+ },
+ "scope": {
+  "purpose": "W09-06 批A：r9_slim 行为验证。SEALED 池 stage3 四篇（更正/草稿边界/失落承接/暧昧启停，覆盖 r9_slim 差异面）。判据见 W09-06_FREEZE_RULING §批A",
+  "route": "one_two_arm_batch_64",
+  "total_attempts": 64,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "G1": "BATCH-SLIM-G1-E037E039E041E042-20261031"
+  },
+  "episodes": [
+   "E037",
+   "E039",
+   "E041",
+   "E042"
+  ],
+  "cards": "benchmark/stories_v2/stage3/GRADING_CARDS_STAGE3.json",
+  "preregistration": "refs/experiment_protocol_20261023/long_probe_20261030/LONGPROBE_G1_PREREGISTRATION.json"
+ },
+ "frozen_bindings": {
+  "G1": {
+   "plan_file": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LONGPROBE_G1.INTERLEAVE_PLAN.json",
+   "plan_sha256": "68fde4d70dc6792877a407bccd488ee8170a31af69478624a4a0a6f44e618152",
+   "batch_id": "BATCH-SLIM-G1-E037E039E041E042-20261031",
+   "cards_file": "benchmark/stories_v2/stage3/GRADING_CARDS_STAGE3.json",
+   "attempts": 64,
+   "parent": "action_policy_r7_supersede",
+   "candidate": "action_policy_r9_slim",
+   "parent_identity_sha256": "17a26224b27b52deefb497b45e31f5e4eedefb18249f23dd5f3550a274ba1164",
+   "candidate_identity_sha256": "2099c12f55337dd7dcfac0327cdd9411f7e5de2cdaa0a7083498bab6d12c9c03"
+  }
+ }
+}

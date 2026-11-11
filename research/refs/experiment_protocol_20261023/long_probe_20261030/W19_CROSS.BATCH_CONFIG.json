@@ -1,0 +1,18 @@
+{
+ "batch_id": "BATCH-W19-CROSS-20261103",
+ "arm_map": {"parent": "window_expand_b_norecap_uc", "candidate": "window_expand_b_norecap_uc_guard"},
+ "episode_order": [
+  {"episode": "E157", "arm_order": "parent_first"},
+  {"episode": "E164", "arm_order": "candidate_first"},
+  {"episode": "E170", "arm_order": "parent_first"},
+  {"episode": "E183", "arm_order": "candidate_first"},
+  {"episode": "E191", "arm_order": "parent_first"},
+  {"episode": "E212", "arm_order": "candidate_first"},
+  {"episode": "LRE117", "arm_order": "parent_first"},
+  {"episode": "LRE121", "arm_order": "candidate_first"},
+  {"episode": "LRE146", "arm_order": "parent_first"},
+  {"episode": "LRE138", "arm_order": "candidate_first"}
+ ],
+ "cards_path": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+ "recall_capable": false
+}

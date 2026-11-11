@@ -1,0 +1,1734 @@
+{
+ "schema": "lovebrain_global_research_state_v1",
+ "created_at": "2026-10-30T00:35:14.157023+08:00",
+ "overall": "REWORK_GLOBAL_OPTIMIZATION_CONTINUES",
+ "execution_status": "W22_full_verdict_DONE__dual_champions_retained__uc_attr_component_validated",
+ "main_incumbent": "双域冠军（2026-11-03 W17c 后）：>24轮域 window_expand_b_norecap_uc（W16 KEEP） / ≤24轮域 window_expand_b_norecap_guard（W17b+W17c MERGE，r9_slim 转历史）；历史 co-champion r7_supersede/window_expand_b 均转历史",
+ "not_promoted": [
+  "action_policy_r5_tier"
+ ],
+ "baselines": [
+  "reference_product_v1",
+  "v0_minimal_events (verify comparable scope before using)"
+ ],
+ "primary_metrics": [
+  "goal",
+  "factuality",
+  "attribution",
+  "time_state",
+  "boundary",
+  "memory_use",
+  "interaction",
+  "initiative",
+  "emotion_relation",
+  "positive_interaction_slices",
+  "knowledge_six_stage"
+ ],
+ "secondary_metrics": [
+  "actual_api_usage",
+  "known_price_cost",
+  "first_valid_usable_latency",
+  "completion_latency",
+  "reliability",
+  "complexity"
+ ],
+ "inherited_evidence": [
+  "F3 4 developer-exposed stories/72 pairs 38:10:24; ratings belong to r4",
+  "B 24 on/off real calls, worker all-slot grade not primary-only gold",
+  "C24+19: tiering not confirmed",
+  "F1 mixed older identities, not r4 baseline result",
+  "E3 71/72 replay-equivalent, 1 mechanical repair + local live regression"
+ ],
+ "current_batch": {
+  "batch_id": "BATCH-W18B-UCSUPP-20261103",
+  "status": "LIVE_COMPLETE_320of320_0_ERROR_REVIEWS_PENDING",
+  "verdict": "W18B 全量重跑完成（uc_supp vs uc，320 attempts，独占 6 路）；机械读数候选无整体优势（prompt 约 +1%，LRE121 候选 9 schema 失败/7.75 vs 8.50，LRE117 9.50 vs 8.50）；语义评审未开始；W17c 已 DONE_merge，W18 90/320 事故保留"
+ },
+ "prior_completed_batches": [
+  {
+   "batch_id": "BATCH-W17C-MERGE-20261103",
+   "status": "COMPLETE_MERGE",
+   "verdict": "W17c MERGE：≤24 域冠 window_expand_b_norecap_guard；r9_slim 转历史（W17C_MERGE_VERDICT_20261103.md）"
+  },
+  {
+   "batch_id": "BATCH-LD1-W13-20261102",
+   "status": "COMPLETE_KEEP",
+   "verdict": "LD1 域迁移终审 KEEP(LD1_VERDICT_20261102.md)：非搬家域 T25-32 真实保持 1.0/终态 425/430/成本−44%/保护维全过/severe 亲读 1≤1；FK-LR2-01 修复域无关成立"
+  },
+  {
+   "batch_id": "BATCH-W14J-SUPPRESS-20261102",
+   "status": "COMPLETE_ELIMINATED",
+   "verdict": "W14M-02 H_SUP_null→b2 淘汰(W14M02_JUDGMENT_VERDICT_20261102.md)"
+  }
+ ],
+ "processes_claimed_running_by_this_turn": [],
+ "new_real_model_calls_by_this_turn": 0,
+ "completed_new_research_tasks_by_this_turn": 0,
+ "next_actions": [
+  "迭代循环恢复：W21-02 下一批设计待用户裁决①(no_retry字口径)②(G3空回复门)后冻结判据→建账本→precheck→live 独占；评审管线接线建议按 W20-03 §4 逐项落实（引文硬校验必选）",
+  "W18-04（W18B）：live 已 320/320 完成、0 error；先做 W19-01 修评分器并离线重评，再评审+B3，最后按 G1-G4 判 uc_supp",
+  "W19-01：修复隔离路径 m_src 合法集（trusted_controller 继承 lb_runner prior_real_n 扩展）+ W17b/W17c/W18B 离线重评，零模型调用",
+  "W19-02：守卫扩展清洗 analysis.source_ids 的 m2 类格式错误，离线回放+单测；W19-03/04/05：单冠军跨域批、最终验收资产、judge 20 锚校准+exposure 账本（见 EVALUATION_BASELINE_AUDIT_20261103.md）",
+  "W17-03 已 DONE_merge：≤24 冠 guard；下一步设计 guard+uc 单构建组合（W19，待 W18B 结果后定）",
+  "并行口径：live 独占≈6 流、评审后置；W18 9 路并发 120s 超时事故为戒",
+  "评审基建：sidecar 断点续跑保留；watcher 不再与 live 并行"
+ ],
+ "product_integration": "RESUMED_VERSION_CLOSEOUT",
+ "historical_submission_deadline": "2026-10-29, not an acceptance override",
+ "checkpoint_rule": "When executing, persist actual task statuses/physical attempts/process identity and handoff; planning state is not experimental success",
+ "recovered_by": "main-zcode-20261030-0052",
+ "recovered_at": "2026-10-30T01:07:11+08:00",
+ "recovery_log": [
+  "refs/experiment_protocol_20261023/global_harness_program_20261030/W01_RECOVERY_LOG_20261030.md",
+  "2026-10-30T09:25:00+08:00: B1 review budget cap bug (74 vs 84 needed); direction data recovered; C1 auth fixed; staged results saved"
+ ],
+ "budget_state": {
+  "total_started_all_ledgers": 2726,
+  "ledgers": 79,
+  "closed": 36,
+  "open": 43,
+  "in_flight_attempts": 0,
+  "nominal_unused_reservation_in_open": 587,
+  "note": "开放=缺关单事件非缺终态；本轮不代关旧账本；管理帽16384不变；菜单帽非支出目标"
+ },
+ "dsf_endpoint_probe": {
+  "ts": "2026-10-30T02:09:01+08:00",
+  "result": "real generation OK (pong 21.9s)"
+ },
+ "first_scoped_authorization": "AUTH-W01-RECOVERY-20261030-01 (cap 0, zero-call, closed)",
+ "standing_authorization": "AUTH-GLOBAL-CONTINUOUS-20261030-01: 用户2026-10-30原话授予地狱级常设授权（不再逐步请示），登记件已关单；各批仍自建scope+cap，管理帽16384与菜单帽不变，hy4硬禁，每alias<=3",
+ "w03_01_census": {
+  "stories_31_350": "stage1(8,64)+stage2(16,192)+stageD(3,22)+final(4,72)=31篇350位；anchors 12条×1位另列",
+  "run_evidence": "31/43 目录有真实批证据（stage1 全8篇=P06；stage2 仅 E024/E027/E031/E034=P08-S1；final 4=F3）",
+  "independence": "全部 author_type=AI、dev_exposed=true、independent_review=false → 无未见验证资格故事，W13 需冻结后新流程",
+  "artifact": "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W03_CENSUS_20261030.json"
+ },
+ "fs1_preregistration": {
+  "file": "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W10-01_PREREGISTRATION_20261030.json",
+  "batches": [
+   "BATCH-FS1-A-E3VSREF-20261030 (B0 501bc426 vs E3 17fd2160, 96 attempts)",
+   "BATCH-FS1-B-BMINVSREF-20261030 (B0 vs Bmin eb35df9a, 96 attempts)"
+  ],
+  "stories": [
+   "E021",
+   "E026",
+   "E032",
+   "E033"
+  ],
+  "total_generation_attempts": 192,
+  "gates": "G1-G7 precheck + capture 先行；W04-03 评审资格核过前不判生死"
+ },
+ "story_pool_after_w0303": {
+  "ready_8": [
+   "E021",
+   "E022",
+   "E023",
+   "E025",
+   "E026",
+   "E030",
+   "E032",
+   "E033"
+  ],
+  "first4": [
+   "E021",
+   "E026",
+   "E032",
+   "E033"
+  ],
+  "errata": [
+   "E029-T07 时间视野跳变(12月时钟问九月假期)——后备池待修",
+   "E021 季候微注",
+   "E022 练习册微注"
+  ],
+  "backup_clean": [
+   "E028",
+   "E035",
+   "E036"
+  ]
+ },
+ "gateway_incident_20261030": "WorkBuddy 桌面端自动更新致 dsf 三腿全灭（加密令牌/安装目录清空/lite-wb 架构/11128 风控）；已修复并回写知识库（案例61/WORKBUDDY §2.1c）；网关探针 pong 21.9s",
+ "fs1_generation_result": {
+  "completion": "192/192 attempts, 0 failed, dispatch bijection ok (ledger closed)",
+  "FS1_A_E3_vs_B0": {
+   "program_mean10": "E3 10.0 vs B0 9.38",
+   "paired": "cand 3 / tie 45 / parent 0",
+   "cost": "prompt E3 289,628 vs B0 355,482 (-18.5%); completion 19,212 vs 14,333; latency p50 19.2s vs 22.9s (E3 faster), p95 62.7s vs 69.3s"
+  },
+  "FS1_B_Bmin_vs_B0": {
+   "see": "logs/fs1_b_live2_20261030/_reports/PAIRED_DIFF.json"
+  },
+  "semantic": "全部 unrated —— 九维语义评审=W04-03 下一动作（资格批先行）",
+  "outputs": "logs/fs1_a_live2_20261030/ logs/fs1_b_live2_20261030/（原始 raw 全保留）"
+ },
+ "fs1_generation": "FIRST_LOOP_VERDICT_ISSUED",
+ "updates": [
+  {
+   "ts": "2026-11-03T14:00:00+08:00",
+   "note": "W18B live 320/320 完成、0 error；机械读数不支持 uc_supp 整体更好；评测基准复核落盘 EVALUATION_BASELINE_AUDIT_20261103.md：judge 未校准/gold=0/隔离计分 bug/无 B 线/无用户偏好五缺口"
+  },
+  {
+   "ts": "2026-10-30T11:35:00+08:00",
+   "note": "W03-02 关单：E021-E044 24篇256证据卡达标（验收192-288）；W04-03 资格批28次派发中（AUTH-FS1-JUDGE-20261030-01）；九维评审工具 run_fs1_semantic_review.py 自检通过，资格一过即以 AUTH-FS1-JUDGE-20261030-02 派发；fs1_collect_check DONE 定位修复→ALL_PASS"
+  },
+  {
+   "ts": "2026-10-30T14:12:00+08:00",
+   "note": "首环判定落地：E3 九维全非负+severe 0/2+程序10.0/9.38+prompt-18.5%+p50-16.2% → KEEP（completion+34%交易已报告）；Bmin 8/9维为正+prompt-63.6%+severe 0/3，C2假设证伪、C3证实，C1阈值符号勘误双口径上报；新勘误E-MAT-E021-T07（时钟×卡面矛盾）；W16-05补给清单v0就绪"
+  },
+  {
+   "ts": "2026-10-30T14:30:00+08:00",
+   "note": "assertion_tiering 处置决策：guard_e3 已让无据确定化族在 FS1 96位归零（judge+亲读双通道），旧线假设暂不单独实现；若下一轮长知识剧复现该族即再武装（W16-05 v1 第9项改记 subsumed-pending-evidence）"
+  },
+  {
+   "ts": "2026-10-30T18:00:00+08:00",
+   "note": "W03-04 关单：8篇24轮长知识剧全绿（192位）；题材=甲状腺随访/镜头交易/驾考/猫医疗/房东出租/川西自驾/跳槽谈薪/住院陪护；长剧探针批65/96进行中"
+  },
+  {
+   "ts": "2026-10-30T19:30:00+08:00",
+   "note": "长剧探针收口：E3 九维全胜(interact+0.90/init+0.95)+程序10.0vs9.55+prompt-15.3%；真双序8/8一致；出窗探针E3回忆更深；无据确定化首个真实双杀(E061_T13安抚压力位,双臂同中,B3确认)→assertion_tiering再武装；E-MAT-E062-F06登记；LONGPROBE_VERDICT_20261030.md"
+  },
+  {
+   "ts": "2026-10-30T22:00:00+08:00",
+   "note": "B1(E063-E065)收口：144/144零失败；程序 parent10.0/cand9.98；更正链亲读：E063/E064双臂零复活；E065 parent 月租回退3800落合同(T15/T16真实复活×2)，candidate 零复活且抓住剧本算术矛盾(15200vs14600)——E-MAT-E065-T21登记；judge v2复验STILL_PARTIAL(prompt负例无效,停迭代)；B2已派发"
+  },
+  {
+   "ts": "2026-10-30T09:25:00+08:00",
+   "session": "main-zcode-20261030-0052",
+   "note": "B1 review partial (budget cap hit, direction data recovered); B2 gen/score/evidence done; C1 challenge dispatching (auth name fixed); staged results saved"
+  },
+  {
+   "ts": "2026-10-30T10:50:00+08:00",
+   "note": "B1 nine-dim review COMPLETE (all 9 dims positive, protection PASS, severe 1c/4p); C1 challenge 96/96 DONE (zero revivals both arms); C1 review + B2 review running in parallel"
+  },
+  {
+   "ts": "2026-10-30T11:25:00+08:00",
+   "note": "第二轮全部完成: B1/B2/C1三批九维评审全DONE；E3=KEEP确认；r5_tier全9维超过E3(CHALLENGE_SUCCESS)；报告落盘SECOND_ROUND_VERDICT_20261030.md"
+  },
+  {
+   "ts": "2026-10-30T12:10:00+08:00",
+   "note": "PROGRAM-LEVEL ERRATUM: severe arm-mapping inverted in 3 review scripts; fixed; 4 reports corrected in place (buggy values preserved); first-loop verdict re-run -> E3 ELIMINATE, Bmin ELIMINATE; C1 relabeled r5_tier-vs-B0; D1 true head-to-head (E3 vs r5_tier, E061/E062) dispatched"
+  },
+  {
+   "ts": "2026-10-31T01:35:00+08:00",
+   "note": "D1 complete: head-to-head tie, r5_tier challenge FAILED per prereg; champion slot VACANT; tiering v2 design registered; THIRD_ROUND_VERDICT_20261031.md written"
+  },
+  {
+   "ts": "2026-10-31T03:10:00+08:00",
+   "note": "FOURTH ROUND COMPLETE: E1 edge-but-severe-2/0; tiering line closed; cross-batch rates refute first-loop small-n ELIMINATE; E3 reinstated KEEP champion; harness frozen; 4-round verdict chain complete"
+  },
+  {
+   "ts": "2026-10-31T04:00:00+08:00",
+   "note": "W16-05 CLOSED with v3: b3_queue.py delivered+validated+wired; scorecard md synced; E066_T24 resolved (mapping-bug artifact); tiering line closed; program terminal state: E3 champion frozen"
+  },
+  {
+   "ts": "2026-10-31T04:20:00+08:00",
+   "note": "W05-05 DONE (output-grounding constraints design, 4-round evidence consolidated, zero model calls); b3_queue P1 audit completed 7/7 (all loose-quotes, zero hallucination); TASK_QUEUE backfilled 22 DONE; next=W05-02 ACCEPTED"
+  },
+  {
+   "ts": "2026-10-31T04:35:00+08:00",
+   "note": "W05-02 DONE: memory engine KPIs measured across 576 turns zero-call (Update 22/28 timely, guard counters all-zero, B0 writeback ~100%); content-level fidelity registered gap; correction-window finding feeds W05-03"
+  },
+  {
+   "ts": "2026-10-31T05:30:00+08:00",
+   "note": "W05-02 fidelity GAP CLOSED: F1 instrumented batch 96/96; content capture 30/31=96.8% (E061 100%, E067 91.7% 1 true miss F10); supersession dual-mode discovered (parallel-add stale coexistence = W05-03 design input); W05-03 set ACCEPTED"
+  },
+  {
+   "ts": "2026-10-31T06:30:00+08:00",
+   "note": "W05-03 r7_supersede built + offline replay validated (targeted supersession, zero collateral, replay reproduces live state exactly); F2 real batch dispatched (96 calls)"
+  },
+  {
+   "ts": "2026-10-31T06:00:00+08:00",
+   "note": "F2 live: r7 pass fired correctly on date-change (converged with explicit update) but showed 1 false positive (tire spec vs chain size - complementary digits); digit-conflict gate added and dual-validated offline (F1 true positive preserved, F2 false positive eliminated); F2 review dispatched"
+  },
+  {
+   "ts": "2026-10-31T07:00:00+08:00",
+   "note": "W05-03 COMPLETE: r7_supersede F2 first combat success (9-dim parity-positive, severe 0/2, structural fix verified offline+live); fixed-gate dual-validated; verdict = successor patch archived pending promotion"
+  },
+  {
+   "ts": "2026-10-31T07:20:00+08:00",
+   "note": "F3 complete: severe edge replicated (0/96 vs 3/96, 2/2 batches), veto watch resolved (prompt-identical, stochastic), dims parity = expected for hygiene fix. CHAMPION PROMOTED: action_policy_r7_supersede (auto-revert triggers registered). E3 -> predecessor."
+  },
+  {
+   "ts": "2026-10-31T07:50:00+08:00",
+   "note": "W06-02 DONE: goal-skill interface design (5-element mapping; 2 render gaps + 1 experimental tombstone; all deterministic zero-call flag-gated); W06-03 ACCEPTED with S1-S5 x feature matrix"
+  },
+  {
+   "ts": "2026-10-31T08:00:00+08:00",
+   "note": "W06 package first cycle COMPLETE: intent counterfactual S1-S5 all PASS (closing/adjust/feedback/no-goal/revival-trap all behave per contract); W06-03 DONE"
+  },
+  {
+   "ts": "2026-10-31T08:20:00+08:00",
+   "note": "W08-01 DONE: 48-turn positive-interaction annotation across 4 stories (3-axis labels + evidence); W08-02 ACCEPTED with design inputs ready"
+  },
+  {
+   "ts": "2026-10-31T08:30:00+08:00",
+   "note": "W08-02 DONE: hook taxonomy (5 types) + label-driven dispatch rules + style-matching matrix + 5 anti-patterns; W08-03 ACCEPTED"
+  },
+  {
+   "ts": "2026-10-31T08:40:00+08:00",
+   "note": "W08-03 DONE: 8 hook positions x 3 registers (catch/half-step/door-open) across E032/E029 ambiguity domains + 4 cross-cutting disciplines; W08-04 ACCEPTED"
+  },
+  {
+   "ts": "2026-10-31T08:50:00+08:00",
+   "note": "W08-04 DONE: deep-chat test design (3 positions x 3 registers: argument-exchange/vulnerability/emotional-shift)"
+  },
+  {
+   "ts": "2026-10-31T09:10:00+08:00",
+   "note": "W08-05 DONE (branch runs validate 3-register anchors, zero frame-break) + W08-06 DONE (positive capability table B0 vs r7). W08 package complete through 06."
+  },
+  {
+   "ts": "2026-10-31T09:30:00+08:00",
+   "note": "W08-05 deepchat wave DONE: 0-register trajectory damage confirmed (2+ turns), 1-register recoverable, champion never hits 0-register. W08 fully closed through deepchat wave."
+  },
+  {
+   "at": "2026-10-31T10:41:00+08:00",
+   "by": "main-zcode-20261030-0052",
+   "event": "W09 包全闭环 + W05-04/W03-05 收口 + G1 启动",
+   "details": [
+    "W05-04 DONE: 短故事域 Bmin 原文窗=更省等效架构(召回28/28持平,E3投影+16%零增益);窗口12轮不滑出;r7价值在长程/簿记/持久化;r8混合假设登记(W05-04_VERDICT_20261031.md)",
+    "W03-05 DONE: story_custody.py + STORY_CUSTODY_LEDGER.json(32注册/16 SEALED/16 EXPOSED/52事件);生成隔离铁律入协议",
+    "W03-06 PARTIAL: 32篇0近重簇;48/96/200分期规格+wave-1配额(W03-06_SKELETON_PLAN_20261031.md §4);正文待隔离会话",
+    "W09-02 PARTIAL: r9_slim(r7谱系SLIM,-235字/轮)重放PASS(状态零漂移/锚全过);行为验证=G1批",
+    "W09-03 DONE: v0_minimal_events(省63.6%同分9.79) vs r系 两实质架构同入口(W09-03_ARCH_COMPETITION)",
+    "W09-04 DONE: r10_compose三单变量门(全开=逐字节r7);CU预算耦合发现(净差≠毛成本);r链prompt由r1自装不经lb_assembly",
+    "W09-05 DONE: 层审计无安全移除项,不展平(W09-05_LAYER_AUDIT)",
+    "W09-06 DONE: 冻结3候选(r7/v0/r9_slim)+批A/B设计(W09-06_FREEZE_RULING)",
+    "G1 live 批启动: BATCH-SLIM-G1-E037E039E041E042-20261031, AUTH-SLIM-G1-20261031-01, 64 attempts, parent=r7(17a26224) vs candidate=r9_slim(2099c12f), out=logs/longprobe_g1_live_20261030"
+   ]
+  },
+  {
+   "at": "2026-10-31T12:30:00+08:00",
+   "by": "main-zcode-20261030-0052",
+   "event": "G1 完成+全审收口：r9_slim 升格共役冠军（瘦体优先）",
+   "details": [
+    "G1 64/64 零失败; 机械 32/32 全平零veto; 九维 severe 0/0 最差 init -0.097 (线 -0.5); B3 队列 0 位",
+    "成本: prompt -3.8% / p50 -28%; r9_slim 默认生成身份, r7 作废显式层保留; 回退触发器共同继承",
+    "等待期零调用收口: W14-01/W14-02工具/W15-01/W15-02/W16-01/W13-01/W11-05"
+   ]
+  },
+  {
+   "at": "2026-10-31T15:20:00+08:00",
+   "by": "main-zcode-20261030-0052",
+   "event": "LR1 完成全审：v0 长程风险未证伪，使用域扩至≤24轮；W10-05/06 本循环终局收口",
+   "details": [
+    "窗口保持率 T01-19 100% / T20-24 18/19；九维 8/9 正向（fact +0.292）；severe 1/1 双杀(E061_T13 基座族, B3 亲读逐字在案)",
+    "成本：v0 prompt −52.2% vs r9_slim；机械 24/24 全平零 veto",
+    "终局：r9_slim 默认身份 / r7 lineage-full / v0 KEEP ≤24轮域 / >24轮待素材"
+   ]
+  },
+  {
+   "at": "2026-10-31T16:40:00+08:00",
+   "by": "main-zcode-20261030-0052",
+   "event": "W14-05/06 收口：112 次连续生成零失败定界稳定性；Pareto 前沿=v0+r9_slim 两点",
+   "details": [
+    "唯一未决轴=>24 轮长剧域（待 wave 素材）",
+    "TASK_QUEUE 现仅剩隔离会话门后与条件任务"
+   ]
+  },
+  {
+   "at": "2026-10-31T17:30:00+08:00",
+   "by": "main-zcode-20261030-0052",
+   "event": "W15 交付线全收口：结果卷宗+可跑包( missing=0)+范围裁定",
+   "details": [
+    "W15-01..05 全 DONE；W15-06 待用户解除暂停（原产品只交接口/迁移/回退设计）",
+    "程序剩余：隔离门后（W03-06/W12）+条件任务（W14-04/W16-03）"
+   ]
+  },
+  {
+   "at": "2026-10-31T18:30:00+08:00",
+   "by": "main-zcode-20261030-0052",
+   "event": "全队列证据映射大清账：TASK_QUEUE 达 70 DONE；剩余 13 PLANNED 全部隔离/条件门后",
+   "details": [
+    "W07 包全清(三策略=三架构/混合场景素材位/预算曲线实测/冻结对照)",
+    "W02/W05-06/W06-04/05/06/W11-06/W14-02/W16-04/06 证据映射收口",
+    "W04-05=BLOCKED_ON_USER(AI不代投)；隔离门=W03-06/W12全部/W13-02..06",
+    "PARTIAL 10 项全部带恢复入口(审计 73/78 干净,缺口均为门控项)"
+   ]
+  },
+  {
+   "at": "2026-10-31T19:30:00+08:00",
+   "by": "main-zcode-20261030-0052",
+   "event": "W14-04 零调用分解(杠杆=缩短输入) + 管家T8过期关闭 + 隔离会话脚手架(模板+清单)",
+   "details": [
+    "TASK_QUEUE: 71 DONE；剩余 PLANNED 12 = 11 隔离门 + 1 条件门(W16-03)",
+    "W14-04: headers 逐毫秒同值→延迟差全在预读输入段(-24%)；输出tokens零相关→杠杆=缩短输入",
+    "隔离会话开工材料齐：_templates/ + GEN_CHECKLIST(白名单闭合+七步流程+验收红线)"
+   ]
+  },
+  {
+   "at": "2026-11-01T00:00:00+08:00",
+   "by": "isolation-continuation-20261101",
+   "event": "W03-06 wave-1 机械面收口：16 篇入账 SEALED，48/48 篇达成，薄域清零",
+   "details": [
+    "本会话为隔离生成会话：generation_isolation_ack 已记账本事件流(未读 logs/candidates/评审文档)",
+    "E045-E060 十六篇正文(前序隔离会话产出)补齐 STAGE1_MANIFEST(16条含sha256)；validate_story_v2 --stage wave1 --turns 12 --count 16 = 16/16 passed, 0 errors, 192 unique cases",
+    "story_custody.py 与 story_skeleton_dedupe.py 的 MANIFESTS 纳入 wave1/STAGE1_MANIFEST.json；seed 后账本 registered=48 SEALED=28 verify OK",
+    "去重普查 total=48 near_dup_clusters=0；薄域五域全部≥3(工作职场4/学习成长5/数码消费4/宠物4/家庭事务4)；domain 改用 manifest 显式字段",
+    "剩余=W03-06 语义审查(主程序会话,W03-03 同款)+wave-2(+48)；TASK_QUEUE W03-06 仍 PARTIAL 带 4 项证据新指针"
+   ]
+  },
+  {
+   "at": "2026-11-02T00:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "FLJUDGE 判决批 KEEP：window_expand_b 承接 FK-LR2-01 修复归属",
+   "details": [
+    "BATCH-FLJUDGE-LRE060LRE048-20261101 144/144 零失败(AUTH-FLJUDGE-20261101-01, cap168)；G1-G7 全过",
+    "窗口保持(T25-32): cand 1.0/1.0 vs parent 0.493/0.509；终态 T40 真实保持 0.987(22 miss 亲读=equivalent18/true_loss2/stale_legit2/artifact0)",
+    "九维(72判位): 保护维 goal -0.194/boundary +0.044/init +0.167 全过-0.5门; severe cand 1 vs parent 2; swap 5/8 如实登记(语义评审判别力有限,判决主证据为机械保持量级差)",
+    "成本: prompt 280,628 vs 482,846 = -41.9%, p50 时延持平(30.3s vs 30.7s); 程序分双臂 10.0",
+    "账本: LRE060/LRE048 追加 BATCH-FLJUDGE 消费记录(EXPOSED 不变, 72 events)"
+   ]
+  },
+  {
+   "at": "2026-11-02T01:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "FLJUDGE B3 亲读 3/3 rejected：评审 severe 全为误报+引文幻觉，实际双臂 severe 0/0，KEEP 判决不变",
+   "details": [
+    "LP_FLJUDGE_B3_READRESULT.json；判决文档 §6/§7 与 KNOWN_FAILURES 附记已回填",
+    "评审基建改进项登记：severe 判定须加引文逐字硬校验"
+   ]
+  },
+  {
+   "at": "2026-11-02T02:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "FLJUDGE 全案收口后开多轨：wave-3 首批 32 篇生成中+归一落地+W12-02 实测+W13-02 设计",
+   "details": [
+    "归一：13 篇其他→9 篇入具名域+新域兴趣社交(E024/025/027)启用，E044 留其他；dedupe 工具接映射(题目/manifest 哈希未动)，复跑 96 篇 0 近重簇",
+    "W3-T1：E117-E148 32 篇 4 隔离代理并行(每域配额见 W03-06_WAVE3_SKELETON_PLAN_20261102.md §1)，分片 manifest A-D，逐片校验",
+    "W12-01/03/04 按证据收口入 TASK_QUEUE(W12-04 留 PARTIAL 待 W13-02 覆盖条件接受)",
+    "B3 亲读 3/3 rejected 已回填判决与 KNOWN_FAILURES；评审引文幻觉列改进项"
+   ]
+  },
+  {
+   "at": "2026-11-02T03:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "W12-02 实测 PASS + FK-SCORE-01 评分器契约缺口发现并修复(4例历史误veto离线重评全清)",
+   "details": [
+    "checkpoint resume：字节级零差异/状态与 FLREGB 逐字一致，TASK_QUEUE W12-02 DONE",
+    "FK-SCORE-01：m_src[i](i<prior_real_n) 纳入合法引用集，runner 从评估侧真实计数；KNOWN_FAILURES 已登记；FLREG/FLREG2/FLJUDGE 判决附记勘误(结论均不变)",
+    "W3-T1 代理 B 完成(E125-E132 8/8 校验过)；A/C/D 在跑"
+   ]
+  },
+  {
+   "at": "2026-11-02T04:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "W3-T1 32 篇入库 SEALED（128 篇 0 近重簇）+ 语义审查 4 代理派发 + CF 孪生 8 篇生成中",
+   "details": [
+    "分片 A/B/C/D 合并 wave3/STAGE1_MANIFEST.json(32)；validate 32/32 passed(384 unique cases)；story_custody seed 32、verify OK",
+    "dedupe 复跑 total=128 near_dup=0；域分布：职16/学15/医13/运12/数12/家12/宠12/餐10/拼10/庭10/兴趣5/其他1",
+    "语义审查 4 代理（每 8 篇，reference-only 可直修+分片哈希重算）；CF 孪生代理 1/2（E149-E156）在跑"
+   ]
+  },
+  {
+   "at": "2026-11-02T05:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "W3-T1 收口全绿 + CF1 live 批点火",
+   "details": [
+    "语义审查 4 代理完成 32/32 可开测；episode 修复 5 篇(E119/E122/E124/E131/E132)+timeline/quote 级联+重验全过",
+    "CF 孪生 8 篇(E149-E156)入库(分册 STAGE1_MANIFEST_CF.json，不进 dedupe 域普查)；导出 benchmark/episodes + GRADING_CARDS_CF.json(96 卡)",
+    "CF1 三件套齐(BATCH_CONFIG/INTERLEAVE_PLAN sha a95da5ca…/AUTHORIZATION_CF1 frozen_bindings)，precheck G1-G7 过，live 192 attempts 后台跑",
+    "账本 80 events；wave3 40 篇 custody verify OK"
+   ]
+  },
+  {
+   "at": "2026-11-02T06:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "CF1 收批 192/192 零失败 + 跟随率测量=不确定带(0.681/0.698)",
+   "details": [
+    "cost: cand prompt 294,715 vs parent 605,349 (-51.3%)；program 9.9/9.9",
+    "CF 跟随率(CF_SENSITIVITY.json): parent 0.681/cand 0.698 均落 0.60-0.75 不确定带→不补跑；沿用率 0-1.7% ≪40% 红线→H_CF_null 不成立；亲读 negation/goal 五对基本 followed；E156 专名对照过；severe_candidates 空",
+    "度量口径登记：机械子集 0.39/0.43 主因'新值不出口'(E149 日期无关社交轮/E151 称谓行为跟随但 token 不命中)——度量法改进项，非属性错接",
+    "素材瑕疵：E149 孪生 T05 明天/后天措辞与 +1 天时间戳不一致（登记）"
+   ]
+  },
+  {
+   "at": "2026-11-02T07:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "CF1 B3 亲读：parent E151_T09 confirmed_severe，cand 臂干净，CF1 全案收口",
+   "details": [
+    "无据确定化同族再现身（parent），assertion_tiering 线继续；CF1 判决附记已回填"
+   ]
+  },
+  {
+   "at": "2026-11-02T08:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "T3 长剧 15/16 入账 SEALED（总库 153）+语义审查 5 代理+LD1 迁移判别批设计冻结",
+   "details": [
+    "16 篇长剧全部生成落地（3 个双篇代理撞输出上限→重组为单篇代理后补齐，LRE127 曾漏派已补 G4b）",
+    "15 篇 validate 1/1×15 全过、custody seed 13 新增、verify OK；构建残留已清",
+    "语义审查 R1-R5（每 3 篇）在跑；LD1 设计冻结（4 篇新长剧×2 臂=288 attempts，KEEP=非搬家域 T25+ 真实保持≥0.85+保护维≥-0.5）"
+   ]
+  },
+  {
+   "at": "2026-11-02T09:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "T3 审查 15/15 PASS + LRE128 T35 账目陷阱改造 + LD1 live 点火",
+   "details": [
+    "T3 语义审查收口：15 篇全 PASS（R1a/R1b/R2/R3/R4/R5，reference 直修~6 处+ts 级 2 处+跨年称呼 3 句，哈希全级联）",
+    "LRE128 T35'省60'实为超60→按 LRE117 先例改造为账目陷阱（HER 报错数，卡面引导指出，gold 不再背书错误算术）",
+    "LD1 素材导出（4 篇 flatten persona + 152 卡）+三件套+AUTH；G4b(LRE127) 生成中，落地后单审"
+   ]
+  },
+  {
+   "at": "2026-11-02T10:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "T2 24 篇审查收口全 PASS（账目陷阱改造×2）+总库 152 标准+16 长剧+8CF",
+   "details": [
+    "S1-S4：24/24 PASS；直修~20 reference 项+4 episode ts 项；E164_T05 与 LRE128_T35 同款账目陷阱改造（HER 报错数，卡面引导指出，gold 不背书错数）",
+    "终扫：56/56 validate、seed 刷新、verify OK、152 篇 0 近重簇",
+    "wave-3 进度：T1 32+T2 24+T3 16(长剧)+CF 8 = 80 篇新增；余 T4 收尾 32 篇→200",
+    "LD1 判别批 live 中(~77/304 时点)"
+   ]
+  },
+  {
+   "at": "2026-11-02T12:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "T4 32 篇生成+入库全绿：**200 篇目标达成**（184 标准+16 长剧，0 近重簇全域≥8）；T4 审查 S5-S8 派发",
+   "details": [
+    "T4 8 代理×4 篇零失败（逐篇落盘规格）；88/88 validate、seed 刷新、verify OK",
+    "dedupe：total=184 标准 0 近重簇；全域分布 职19/数19/运18/学18/家18/医18/餐17/宠17/拼16/庭15/兴8/其他1",
+    "总库=184 标准+16 长剧(wave3_ext)+8 反事实(CF)=208 条目；W03-06 扩库数据面达成，剩 T4 审查收口",
+    "LD1 判别批 live（~110/304 时点）"
+   ]
+  },
+  {
+   "at": "2026-11-02T13:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "**W03-06 扩库数据面收口：200 篇库全审完成**",
+   "details": [
+    "T4 32/32 审查 PASS（S5-S8）；全库终扫 88/88 validate、seed、verify OK、184 标准 0 近重簇",
+    "总库：184 标准 12 轮 + 16 长剧(8×40+8×32) + 8 反事实孪生 = 208 条目；200 篇目标达成",
+    "W03-06 剩余：模板库文档化（WAVE3_TEMPLATE_LIBRARY.md）与 E044 邻里域启用判断——非阻塞",
+    "在飞：LD1 域迁移判别批 live（AUTH-LD1 cap340）"
+   ]
+  },
+  {
+   "at": "2026-11-02T14:00:00+08:00",
+   "by": "main-continuation-20261101",
+   "event": "**LD1 域迁移终审 KEEP：window_expand_b 修复域无关成立，双冠军分工终审确认**",
+   "details": [
+    "304/304 零失败；T25-32 真实保持 1.0（parent 0.32-0.62 塌陷四域复现）；终态 425/430；成本 −44.0%",
+    "severe 初判 cand6/par2 经亲读修正为 1/1（4 误报+2 降级，CALL_FAIL 32 处致初判不可靠）；保护维全过",
+    "interact/emotion −0.234/−0.258 较 CF1 短剧收敛→支持短剧输出契约假设",
+    "LRE117/141/125/147 消费入账本（EXPOSED）；KNOWN_FAILURES FK-LR2-01 迁移终审回填"
+   ]
+  },
+  {
+   "ts": "2026-11-02 17:43",
+   "note": "W13-03 判决 DONE；W14J 评审运行中"
+  },
+  {
+   "ts": "2026-11-02 18:29",
+   "note": "W14M-02 判决：b2 淘汰（H_SUP_null）；W13-03 DONE（H_GEN 成立）"
+  },
+  {
+   "ts": "2026-11-02 20:20",
+   "note": "污染自查修正：main_incumbent 同步双域冠军；RUN_STATE.json(2026-10-27) 与 TASK_BOARD.md 标记为历史档"
+  },
+  {
+   "ts": "2026-11-02 20:34",
+   "note": "W13-04 DONE；b 连续两批对 r9_slim 9/9 维正→建议 ≤24轮已见域确认批评估冠军合并"
+  },
+  {
+   "ts": "2026-11-03T21:30:00+08:00",
+   "note": "评测基准修复收口：gold sidecar v2（2919/3102 位断言，fact_gold 实例化）、lb_scorer v0.9.3 接 gold（C14/C15，回归逐字一致）、B线盲测集 v2（24 篇全净，账本补录 54 条 exposure）、judge 锚点校准进行中；uc_guard 跨域批判决挂起为循环第一事；两份交接文档落盘（EXPLORATION_GUIDE + LOOP_PROMPT）"
+  },
+  {
+   "at": "2026-11-03T23:55:00+08:00",
+   "by": "main-zcode-w19cross-verdict",
+   "event": "uc_guard 跨域判决落盘：双域冠军保留",
+   "details": [
+    "W19-03 判决 DONE：long40 G3 空回复5!=0 破门 + G5 故事级翻转4/10 → 不宣布单冠军；short12 数字面全过(2<=2/九维全正/veto 9<=13/空0/prompt-0.56%)",
+    "B3 亲读 26 位引文逐字回验：judge 误烧4(三位原文逐字有据仍称未出现)/漏检7/无注severe8(PARSE_OK不可复现)/双标3",
+    "本判决零模型调用，未占 6 流，与 W20-03 校准批(旧窗口 23:31 起 AUTH-W20-JUDGE-CAL)零冲突",
+    "对账：TASK_QUEUE W20-05 补 DONE(两份交接文档 21:30 已落盘)"
+   ]
+  },
+  {
+   "at": "2026-11-03T23:59:00+08:00",
+   "by": "main-zcode-w20-wiring",
+   "event": "W20-03 接线收口：评测基准修复四件套全部完成，迭代循环恢复",
+   "details": [
+    "W20-03 DONE：judge 逐维资格表落盘（full: goal/time/interact/emotion；辅助: attrib+低证据 init/fact；disqualified: boundary/memory 器械效度不足须多轮素材补建 backlog）",
+    "W20 包全 DONE（01 gold/02 scorer/03 judge 校准/04 B线/05 开窗文档）——用户 2026-11-03 停机制设计先修基准的指令达成，循环恢复",
+    "挂起判决已清：uc_guard 跨域判决 23:55 已出（双冠军保留，见 w19_cross_verdict 节）",
+    "下一批 W21-02 设计草案已落盘（崩坏轮确定性重试方向推荐），冻结等用户两裁决：no_retry 字口径 + G3 空回复门",
+    "注：本窗口与前一窗口并行更新本文件，后写覆盖前写时以 TASK_QUEUE+磁盘工件为准互校"
+   ]
+  },
+  {
+   "at": "2026-11-04T00:20:00+08:00",
+   "by": "main-zcode-quote-wiring",
+   "event": "W20-03 §4-1 引文逐字硬校验接线完成（工具+评审驱动）",
+   "details": [
+    "新工具 tools/quote_hard_check.py（确定性零调用）：strict/loose + 分类（note_like=judge注记混入 / fragments_all_hit=省略号拼句片段全逐字 / fragments_miss=片段拼装改写可疑 / no_hit）；severe 引文不过→severe_unverified 强制 B3",
+    "已接线 run_lp_review_generic.py（落盘后自动跑，--quote-check-dirs 可指定多批目录，失败不阻断评审）",
+    "W19CROSS 回顾校验：221 引文 strict 166(75.1%)；note_like 9 / fragments_all_hit 24 / fragments_miss 22 / no_hit 0；severe_unverified 14（与 B3 亲读账一致）；产物 LP_W19CROSS_QUOTE_CHECK.json",
+    "backlog 登记 W21-03/04/05（素材补建/GT扩容/维度映射表）"
+   ]
+  },
+  {
+   "at": "2026-11-04T00:35:00+08:00",
+   "by": "main-zcode-fastlane-enable",
+   "event": "W19-06 快车道 G0 预登记启用（登记动作，零调用）",
+   "details": [
+    "FAST_LANE_DESIGN_20261103.md 按 §9 完成启用登记：W19-01 前置已满足、无并发 live/review；启用≠运行——任何候选走快车道仍需逐候选完成 plan mock 校验+AuthorizationBudget(scope=fastlane,cap=104,no_retry)+L0 三项（prompt等价/contract单测/mock replay）",
+    "与 W21-02 下一批衔接：候选判据冻结并过 L0 后，可先走快车道 G0 再进全量 232 位批",
+    "本窗口此前误报 FAST_LANE 文件缺失（find maxdepth=3 漏第4层），已更正"
+   ]
+  },
+  {
+   "at": "2026-11-04T00:55:00+08:00",
+   "by": "main-zcode-w21-build",
+   "event": "W21-02 判据冻结+候选构建完成（零调用）",
+   "details": [
+    "裁决①允许崩坏轮确定性重试（依据：no_retry 本意=不为赢重跑；评审管线已有同款有界重试先例 W20-03/114-160）；裁决②G3 改有效回复率门（依据：p≈0.21→重试残差 p²≈4%，零容忍对任何机制不可达，测量效度修正）——均为代裁、全文在案、用户可撤销",
+    "候选 window_expand_b_norecap_uc_retry 已建树：mechanism/ assets/ 与父本 uc 逐字节相同，IDENTITY/MECHANISM/params 三件更新（params.collapse_retry=1）",
+    "实施定案：冻结执行器不动，重试=外层 mini-batch（同题同臂重跑，独立授权头寸 ≤20%，合卷取首个可解析者）",
+    "下一步：retry 工具+单测（零调用）→ L0（prompt 等价/contract 单测/mock replay）→ 互斥检查+建账 → 派发"
+   ]
+  },
+  {
+   "at": "2026-11-04T01:05:00+08:00",
+   "by": "main-zcode-retry-detect",
+   "event": "崩坏重试工具 detect 模式落地并经 W19B 真实数据验证（零调用）",
+   "details": [
+    "tools/run_collapse_retry.py detect：崩坏=空或不可解析；W19B 实测 par 43(6空+37乱) / cand 37(5空+32乱)，与 B3 亲读账、scoring veto 账交叉对齐",
+    "重试域 vs guard 修复域切开：可解析但 schema 违规 par 10 / cand 1——guard 在修复域有效（10→1），崩坏域是 guard 盲区（本代重试假设的目标）",
+    "重试头寸核算：W19B 规模崩坏 80 位 ≤ 20%×464=92 ✓；快车道 104 base 期望崩坏 ~18 ≤ 20 ✓",
+    "dispatch 模式（IsolatedRun 状态重建+prompt 哈希等价硬校验后派发）为下一增量，判据已冻结不动"
+   ]
+  },
+  {
+   "at": "2026-11-04T01:30:00+08:00",
+   "by": "main-zcode-retry-dispatch",
+   "event": "崩坏重试 dispatch 模式 mock 全链路验证通过（零网络）",
+   "details": [
+    "IsolatedRun 状态走查架构实证：同宿主 7 轮假 urlopen 走查 + 第 8 轮单轮执行，重建 prompt 与基批逐字节一致（prompt_match=True）",
+    "账本分流实证：WALK-REHEARSAL 账本恰 7 次演练 attempt，MAIN 账本恰 1 次真实 attempt（reserve 语义=每真实 attempt 1 次，≤20% 头寸数学成立）",
+    "已知注记：mock 模式下 calls.json prompt_chars 记为 1（流式旗关闭所致），L0 巡检时以 user+system 字节比对为准并在真实模式复核 prompt_chars 记账",
+    "下一步：L0 三件全量（零调用）→ 互斥检查+真建账 → 快车道 G0 或直全量（判据已冻结）"
+   ]
+  },
+  {
+   "at": "2026-11-04T02:20:00+08:00",
+   "by": "main-zcode-l0",
+   "event": "W21-02 L0 三件推进：L0-2/L0-3 PASS，L0-1 修复后重跑中",
+   "details": [
+    "L0-3 快车道批配置+计划落盘（BATCH-W21-FASTLANE-20261104，E157+LRE117，104 attempts，candidate=uc_retry）并整批 mock 104/104 order=True 零真实调用",
+    "L0-2 身份闭合 6/6 PASS；emit 时 frozen identity 校验通过",
+    "L0-1 第一轮暴露两系统性 bug（同 story+arm 目录复用被 new 模式拒、演练账本首绑冲突）→ 已修（每崩坏位独立目录+独立演练账本）→ 后台重跑中",
+    "G0-1/G0-2 重试后口径修订登记于 W19-06（先于任何快车道运行，冻结时修订）",
+    "互斥检查通过：无 lovebrain live/review 在跑；派发前唯一剩余=L0-1 巡检全绿"
+   ]
+  },
+  {
+   "at": "2026-11-04T02:45:00+08:00",
+   "by": "main-zcode-fastlane-live",
+   "event": "快车道 G0 live 点火（本会话首次真实派发）",
+   "details": [
+    "precheck G1-G7 全绿：G1 plan_sha256 现场重算一致 / G2 批·两臂·卡一致 / G3 闭包+全文件重算 / G4 身份=授权 / G5 授权 cap104 / G6-G7 过",
+    "授权单构造四轮 schema 修正如实入档：frozen_bindings 结构化、max_attempts 入 real_endpoint、scope dict 化、bindings 双臂身份字段名对齐",
+    "live 6 流独占运行中；完成后流程=detect→真重试批(另册 cap20)→merge→G0 四门判→过闸进全量 232 位批"
+   ]
+  },
+  {
+   "at": "2026-11-04T03:05:00+08:00",
+   "by": "main-zcode-g0-gates",
+   "event": "快车道 G0 live 完美收批 + 三门已过，G0-3 评审索引运行中",
+   "details": [
+    "live 104/104 零失败；prompt 185527=185527 (+0.00%)——prompt 等价在真实调用上实证",
+    "崩坏 0/104（W19B 同素材 17.4%→本次 0，与波状诊断一致；如实注记不外推）",
+    "G0-1 ✓ (2≤6) G0-2 ✓ (0空) G0-4 ✓ (+0.00%, 0 额外调用)；剩 G0-3 severe B3 亲读",
+    "L2 评审 AUTH-W21-FASTLANE-REVIEW-20261104-01 后台运行（自动带引文逐字硬校验）"
+   ]
+  },
+  {
+   "at": "2026-11-04T03:20:00+08:00",
+   "by": "main-zcode-b3-g0",
+   "event": "G0-3 B3 亲读推进：E157 全读 + LRE117 热点位，cand 0 vs par 1",
+   "details": [
+    "E157 12 位双臂 severe 0/0；cand T11 轻微无据归因（多那三十是核出来的）记 note 不构成 severe",
+    "LRE117 老规矩口径题面锚定：一人八十（T01/T17/T26 逐字）——T04 par 说成俩人共八十=确认 mild severe；cand 同位正确引用一人八十",
+    "T34 双臂都保持未看手机的不确定（旧批 cand 同位确证化错误未复现——采样噪声直接证据）",
+    "余 36 位 LRE117 待评审索引后完成 G0-3"
+   ]
+  },
+  {
+   "at": "2026-11-04T03:40:00+08:00",
+   "by": "main-zcode-b3-flagged",
+   "event": "G0-3 旗位亲读完成（19/52），引文硬校验管线首次实战命中",
+   "details": [
+    "评审自动产出 QUOTE_CHECK：50 引文 strict 84%、no_hit=0、severe_unverified=1（T23 cand 空注 severe 被强制 B3）——今晚接线的硬校验在真实评审上生效",
+    "B3 裁决：par T14/T15 时间确定化 CONFIRMED（八点半 T02 逐字）；cand T23 CONFIRMED mild（无据自述+时间含混）；judge 一半指控 REJECTED 有据",
+    "累计 cand 1 vs par 3，门限暂满足但贴线；余 33 位 LRE117 深读前不落 G0 判决（冻结原文 52 位全覆盖）"
+   ]
+  },
+  {
+   "at": "2026-11-04T04:00:00+08:00",
+   "by": "main-zcode-g0-verdict",
+   "event": "快车道 G0 判决：FASTLANE_PASS（四门全过，B3 亲读 52/52 全覆盖）",
+   "details": [
+    "G0-3 终账 cand 1 vs par 5：par 5 例=口径/时间确定化既有族（T04/T06/T14/T15/T25，全部题面逐字反证）；cand 唯一 severe=T23 mild（无据自述），引文硬校验+judge 空注双通道拦截",
+    "judge 初判 2/5 漏 3——校准报告 severe 只作索引的结论三度成立",
+    "判决文书+亲读账落盘 long_probe_20261030；uc_retry 进全量 232 位批排队（判据 G1-G5+G3' 已冻结）",
+    "全量批待办：批配置/计划/授权（base 464+重试另册 92）→precheck→live（约 1-2h）"
+   ]
+  },
+  {
+   "at": "2026-11-04T04:35:00+08:00",
+   "by": "main-zcode-full-live",
+   "event": "W21-02 全量批 live 点火（464 attempts，本会话第二次真实派发）",
+   "details": [
+    "批配置/计划/授权/预检全链同构快车道流程；capture 回放 464/464（本批 mock 等价物）",
+    "precheck G1-G7 全绿（plan sha d41f23990a99a7ac、双臂身份=授权、cap464 余464）",
+    "互斥检查+网关探针通过后点火；live 6 流独占预计 1-2h",
+    "收批后流程=detect→重试另册(cap92)→merge→G1-G5+G3' 判决（判据全部冻结）"
+   ]
+  },
+  {
+   "at": "2026-11-04T05:05:00+08:00",
+   "by": "main-zcode-retry-fix",
+   "event": "重试首轮 0/12 失败根因定位（流式旗×假响应不兼容）并修复重跑",
+   "details": [
+    "根因：mock 冒烟未设流式旗全绿，真模式设 LB_STREAM_TIMING=1 → 流式客户端迭代假响应 _R 炸在走查首步（报错【第1轮】实为走查步）",
+    "修复：工具内一律非流式（pop 两 env；真步非流式=W20-03 先例，usage 照记）",
+    "记账诚实：首轮 12 次失败 attempt 已入另册账本（12/92），不删不改",
+    "全量 base 批成绩不变：464/464、prompt 821643=821643 (+0.00%)、崩坏 12/464=2.6%（par7/cand5 零空）"
+   ]
+  },
+  {
+   "at": "2026-11-04T05:30:00+08:00",
+   "by": "main-zcode-retry-v2",
+   "event": "重试 v2 完美收口：12/12 修复率 100%，全量评审点火",
+   "details": [
+    "重试 v2 12/12 ok+prompt_match=True（非流式修复后）；merge 12/12 resolved",
+    "重试后有效回复率双臂 232/232；另册账本实耗 24/92（12 失败+12 成功，如实记账）",
+    "全量评审后台运行（AUTH-W21-FULL-REVIEW-20261104-01 cap600，464 位 judge 索引+引文硬校验）；完成后 B3 亲读 severe 位→G1-G5+G3' 终判决"
+   ]
+  },
+  {
+   "at": "2026-11-04T05:50:00+08:00",
+   "by": "main-zcode-retry-b3",
+   "event": "12 个重试位新回复 B3 四族筛查全净（评审仍在跑）",
+   "details": [
+    "12 个重试新回复逐位四族筛查：0 severe，1 mild note（cand LRE138_T32 自述去年半决赛发虚=自我经历补叙）",
+    "重试产出质量干净+修复率 100% —— 重试机制首战双指标全绿",
+    "全量评审仍在后台（464 位 judge 索引）；完成后 severe 位终 B3 → G1-G5+G3' 判决"
+   ]
+  },
+  {
+   "at": "2026-11-04T05:48:02+08:00",
+   "by": "main-zcode-hotspot-preread",
+   "event": "全量批 11 个历史热点位 B3 预读完成（cand2/par2，时间戳校准注记）",
+   "details": [
+    "E191_T08 双臂都把 HER 的速查表说成自己所作（W19CROSS cand 同族复现+par 新犯）——归因错位族采样触雷",
+    "E164_T01 par 再编单价（47.4/六百多 vs 真值 72.5，与 W19CROSS 编的 25-26 不同数）——编造数字族采样变异实证",
+    "LRE121_T39 cand 回请方向倒置（HER 原话他还欠她）；E183_T03 双臂死守临界值不确定=教科书行为",
+    "预读账 cand2/par2；终账待评审索引（464 位）完成后全量对账，G0-3 判决纪律同样适用于全量 G1"
+   ]
+  },
+  {
+   "at": "2026-11-04T05:54:12+08:00",
+   "by": "main-zcode-w21-verdict",
+   "event": "W21-02 全量批判决落盘：双冠军保留，uc_retry 归档为候选，重试组件转正为评测基建",
+   "details": [
+    "G1-G4 全过 + G5 翻转 3/10 → 不宣布单冠军（冻结原文）；与 uc_guard 判决同构",
+    "重试机制实证：12/12 崩坏位修复、prompt 逐字节等价、双臂对称、24/92 如实记账——组件价值成立，转评测基建工具",
+    "B3 全覆盖：12 重试位筛查全净 + 11 热点位预读 + judge severe 位对账（judge 漏标 4 处补烧）",
+    "W21-02 DONE；下一轮从里程碑倒排（重试组件+判据模板已入基建）"
+   ]
+  },
+  {
+   "at": "2026-11-04T06:17:05+08:00",
+   "by": "main-zcode-w22-register",
+   "event": "W22 包登记：归因锚定候选（从里程碑/B3 账倒排）",
+   "details": [
+    "选题依据：归因错位族三批复现（W17c/W19CROSS/本批），冠军链共性族中唯一未被 uc（未定标记）/guard（契约修复）/retry（崩坏重试）覆盖者",
+    "W22-01 PLANNED：单变量=归因锚定注入（复用 uc 注入架构，≤120CU，无触发逐字节同父本）；判据预注册后走 L0→快车道 G0→全量（全套流程今晚已跑通三遍）",
+    "W21-03/04（判别素材补建/severe GT 扩容）保持 PLANNED，可与 W22-01 设计并行"
+   ]
+  },
+  {
+   "at": "2026-11-04T06:49:20+08:00",
+   "by": "main-zcode-w22-build",
+   "event": "W22-01 归属锚定候选构建完成+检测器单测 3/3（零调用）",
+   "details": [
+    "设计判据冻结（W22_01_ATTR_DESIGN_20261104.md）：G1 主假设=归因错位族 severe 计数 cand<par",
+    "候选树：mechanism=uc 原样+attribution_rules 纯函数+4c 注入；无触发时 prompt 与父本逐字节相同",
+    "检测器单测：E191_T02 速查表句正例触发（两批窃归因发生地）、E164 反例不触发、空输入过",
+    "下一步：L0 三件→互斥+建账→快车道 G0→全量（同构流程，全套验证门现成）"
+   ]
+  },
+  {
+   "at": "2026-11-04T07:18:11+08:00",
+   "by": "main-zcode-w22-live",
+   "event": "W22-01 快车道 live 点火（L0 三件全绿后）",
+   "details": [
+    "L0-1：E164 无触发 12/12 逐字节全同（硬门 PASS）；E191 差异位=归属锚定块本体（速查表句逐字引用）",
+    "L0-3：capture 104/104 order=True P52/C52；precheck G1-G7 全绿（plan sha 3310d4bd…）",
+    "live 104 attempts 运行中（AUTH-W22-FASTLANE-20261104-01）；收批后=detect(预期零崩坏)→触发面实测→评审→B3→G0 四门（G1 主假设=归因错位族 cand<par）"
+   ]
+  },
+  {
+   "at": "2026-11-04T07:34:57+08:00",
+   "by": "main-zcode-w22-g0",
+   "event": "W22-01 快车道 live 完美收批：锚定块实战数据全绿，评审索引运行中",
+   "details": [
+    "live 104/104 零失败；prompt +1.42%（18 触发轮×146CU，≤8% 门）；触发面 34.6% ∈(10,90%]",
+    "cand 零崩坏 0/52（parent 2）；G0-1 待 veto 细账、G0-2 ✓、G0-4 ✓",
+    "评审后台运行——G0-3 主假设检验：归因错位族 severe 计数 cand<par（速查表窃归因位 E191_T08 不在本批素材，LRE117 归因敏感轮=触发位）"
+   ]
+  },
+  {
+   "at": "2026-11-04T07:58:55+08:00",
+   "by": "main-zcode-w22-full-live",
+   "event": "W22-01 全量批 live 点火（464 attempts，本会话第三次真实派发）",
+   "details": [
+    "快车道 G0 PASS（四门+触发面 34.6%）；capture 回放 464/464；precheck G1-G7 全绿（plan sha bd8e3d27…）",
+    "互斥干净+网关 200 后点火；G1 主假设检验素材含 E191/E208 型位（归属锚定的直接战场）",
+    "收批后=评审→B3（归因错位族计数 cand<par？）→G1-G5 判决（判据冻结）"
+   ]
+  },
+  {
+   "at": "2026-11-04T08:17:36+08:00",
+   "by": "main-zcode-w22-preread",
+   "event": "主假设战场预读：E191_T08 双臂零窃归因（锚定块在场），LRE121_T39 待收批补读",
+   "details": [
+    "E191_T08（W19CROSS 窃归因原位+本日 W21FULL 双臂复现位）：本轮 cand【也标了红】并肩表述未窃作者权、par 自述算反+确认问句——双臂零窃归因",
+    "E191_T02：cand 整理表述未主张创作、par 默认 HER 所有权",
+    "LRE121_T39 未落盘（live LRE 段进行中），收批后补读；主假设终验=评审索引+全触发位亲读"
+   ]
+  },
+  {
+   "at": "2026-11-04T08:40:45+08:00",
+   "by": "main-zcode-w22-full-done",
+   "event": "W22 全量批 464/464 完美收批，终评审点火",
+   "details": [
+    "prompt +1.77% ≤5% ✓（锚定块成本）；program par 9.16 / cand 8.72（分层读不作门）",
+    "崩坏计数见 W22_FULL_RETRY_PLAN.json；评审后台（judge 索引+引文硬校验）",
+    "评审完成后：B3 主假设终读（归因错位族计数+E191_T08 复核+LRE121_T39 补读）→G1-G5 判决（判据冻结）"
+   ]
+  },
+  {
+   "at": "2026-11-04T08:47:56+08:00",
+   "by": "main-zcode-w22-t39",
+   "event": "主假设直接命中：LRE121_T39 归因方向修复（W22 cand vs W21FULL 倒置）",
+   "details": [
+    "W21FULL 同位 cand 回请倒置（confirmed severe）→ W22 本轮 cand【双份肠粉是我欠的】方向正确+主动分账（明年九月 wobble 记 note）；par 同位正确",
+    "E191_T08 双臂零窃归因 + LRE121_T39 方向修复 —— 两个直接战场位行为与锚定块在场一致相关",
+    "评审 6%（29/464）健康写账，ETA ~1.5h；终账=评审 severe 计数 + 触发位全读 → G1-G5 判决"
+   ]
+  },
+  {
+   "ts": "2026-11-04T10:30:00+08:00",
+   "note": "W22-01 全量批判决: DUAL_CHAMPIONS_RETAINED. G1-G4 PASS, G5 swap 7/22 FAIL. 主假设正面: 归因错位族 cand 0 < par 1 (LRE121_T39 par 归因错位, cand 方向正确). memory +0.202 九维最佳. 触发面 42.7%. uc_attr 保留为冠军链组件. 评审进程曾在 172/464 中断后续跑完成."
+  },
+  {
+   "ts": "2026-11-06T22:08:09+08:00",
+   "event": "VERSION_CLOSEOUT_FREEZE_20261106",
+   "mechanism_line": "FROZEN_FOR_CLOSEOUT",
+   "main_incumbent_unchanged": "双域冠军不变：>24轮域 window_expand_b_norecap_uc / ≤24轮域 window_expand_b_norecap_guard",
+   "b_line": "SEALED_UNTIL_FINAL_ACCEPTANCE",
+   "product_integration": "RESUMED_CLOSEOUT_20261106",
+   "note": "用户 2026-11-06 原话'全面8路并发 开始版本收口！！！全面执行'：机制线冻结收口（不再新开研究候选，只合并 KEEP 判决机制 guard/uc/b_norecap 家族，移植走 W15-06 三阶段 S1→S3）；W15 产品接入暂停解除；B 线 benchmark/b_line/ 保持物理封存留给 S3 全量前最终盲评一次性消费；收口指导书 refs/version_closeout_20261106/CLOSEOUT_GUIDE_20261106.md；工作包登记 TASK_QUEUE W23-01"
+  },
+  {
+   "ts": "2026-11-07T18:40:00+08:00",
+   "event": "W23_CLOSEOUT_ALL_DONE__EXTERNAL_AUDIT_VERIFICATION_COMPLETE",
+   "w23": "W23-01..04 全部 DONE（F1-F4 定向收尾批落 closeout-20261106@e2ebde1，CI #120 run 42359394997 本地 gh 复核 success）",
+   "audit_verification": "外部四轮审计数字核查完成：W22(JSON 11→22/veto 19→29/A族 0vs2/swap 7/22/KEEP_NO_PROMOTE)、W21/W17B/W17C/W16/W15N01/W14M02、FLJUDGE/LD1/CF1 prompt delta、gold sidecar 3102/2919(AI 断言非人工真值) 全部与本地判决书一致，无捏造；4 处口径修正(F4/F5 族名、T6 recap 措辞已修、冒号续行仅限冒号格式、b_line README 停留 v1)",
+   "report": "refs/version_closeout_20261106/X_HARNESS_RESTORE_AND_AUDIT_VERIFICATION_20261107.md",
+   "teamworkspace": "ACTIVE.md 基线对账 8cafeec→e2ebde1 已提交推送 61808d7",
+   "next": "用户真机验收(T6 清单：输入框/批量导入/长按➕/覆盖安装)→合并 main 发布 1.5.0；冠军晋级走 S1 shadow→S2→S3→B线一次性盲评→用户愿发，B 线仍封存"
+  },
+  {
+   "ts": "2026-11-07T20:05:00+08:00",
+   "event": "W24_STAGE_CLOSEOUT_ORGANIZE_AND_PAPER_DONE",
+   "w24_01_archive": "根目录 184→29 条目：130 ACL 快照+台账、14 历史 zip、草稿/缓存、_archive_v1、WORKER_HANDOFF_W22 移入 archive/20261107_root_cleanup/（只移不删，MANIFEST 在案）；tombstone/活动指针/B线/logs 原始答卷/两个中文批次目录不动；state_map_check.py 期望同步（含修正 2026-11-02 起已过期的 STATE_MAP/START_PROMPT 路径）复跑 0 MISMATCH",
+   "w24_02_paper": "PAPER.md + README.md 落盘（GitHub 展示门面）：数据集构成全部经本地复测（208 集/2944 库内轮/3102 gold 轮/6603 断言/100% valid_time/711 must-not-affirm/九维覆盖实测/12 域分布/custody 210 SEALED161）、判决数字经判决书原件核对；负结果（b2 淘汰、W22 阻断、CF1 不确定带）与诚实边界（gold=AI 断言、整体优于原版未证明、愿发未测）如实呈现",
+   "phase_note": "用户 2026-11-07 明确：当前只是阶段性收尾，评估标准和数据集改好之后肯定还要继续迭代——恢复入口 WORKER_CURRENT_RUNBOOK.json 不变，收口完成后按 PAPER.md §6 与 TASK_QUEUE 隔离/条件任务继续",
+   "deferred": "两个中文批次目录归档延迟到 closeout 合并后；GitHub arena 仓库同步走用户既有上传通道"
+  },
+  {
+   "ts": "2026-11-07T21:10:00+08:00",
+   "event": "W25_REVIEW_PACKAGE_SYNCED_TO_GITHUB",
+   "commit": "75ab97e48b88def5132eada5e3546fb592acfcf8",
+   "package": "refs/dataset_review_20261107/（REVIEW_INDEX+A/B/C/D/E/F+29样本+recompute_stats+SHA256SUMS）",
+   "sync_scope": "W24成果(PAPER/README/MANIFEST/state_map_check/状态JSON)+审查包+数据集核对（benchmark 内容与 15:48 同步一致，b_line 未增未删未读内容）+远端 W24 杂物镜像清理(34文件删除=本地归档镜像)",
+   "verification": "ls-remote main=75ab97e4；contents API 逐文件 size 核验通过（CRLF 归一化差值已解释）；logs/ACL快照内容/交付zip 按政策未上传",
+   "flag": "b_line 于 15:48 既有同步已被推上 GitHub（26 文件）——非本次行为；封存语义（不消费）未破坏，但公开可见性问题交用户裁决（是否从 main 删除/转私有；git 历史仍留存）"
+  },
+  {
+   "ts": "2026-11-07T23:35:00+08:00",
+   "event": "W26_BM1_PHASE1_DONE_OFFLINE_LIVE_BLOCKED",
+   "phase1": "四组对照系统建成（DIRECT/COT 轻量候选复用 run_episode 生命周期；LEGACY=r9_slim；CURRENT 双域分流）；mock/capture 16 管线全跑通（236 归一化行）；14/14 离线测试；capture 九项校验全 PASS；盲评包 12 位就绪",
+   "honest_findings": "①160 旧题复用预算不可信：实测 reusable=45（缺口 115，SEALED 161 是封存池不是复用池）；②CRITICAL：B 线 v2 成员 E048 经 LRE048 于 11-01 被 LR2/FLJUDGE 逐字消费，v2 重封未按谱系组过滤——B 线效力受损，处置选项已列（换篇重封 v3 / 显式折价绑定）；③LEGACY(r9_slim→r1 闭包)与 wave3+ dict persona 不兼容（E191/LRE117 崩溃，20/72 位有效），未修历史 harness",
+   "live": "USTC deepseek-flash-2 接入检查 BLOCKED（LB_API_KEY 未配置；旧 key 泄露须用户撤销重发）；cap 320 attempts 未消费；配 Key 后 four_arm_runner --mode live 一条命令补跑",
+   "deliver": "refs/benchmark_v1_20261107/phase1/（24 文件）；代码 tools/benchmark_v1/；Phase 2 队列 Q0-Q8",
+   "github": "commit SHA 见 W26-01 result_note 补记"
+  }
+ ],
+ "first_loop_verdict": {
+  "E3": "KEEP",
+  "Bmin": "REWORK-per-registered-letter (C1 threshold erratum; intent-level KEEP dual-reported)"
+ },
+ "long_probe": {
+  "verdict_phase1": "VERDICT_ISSUED (E061/E062: E3 won all 9 dims, diff +0.21 to +0.95; zero candidate revivals; parent had real revival E065)",
+  "b1_generation": {
+   "status": "DONE",
+   "attempts": 144,
+   "completed": 144,
+   "failed": 0,
+   "stories": [
+    "E063",
+    "E064",
+    "E065"
+   ]
+  },
+  "b1_mechanical_score": "DONE (LONGPROBE_SCORE_MECHANICAL_E063_E064_E065.json)",
+  "b1_evidence_read": "DONE (B1_EVIDENCE_READ_20261030.md): E065 parent revival x2 (T15/T16 rent 3800), candidate zero revivals + caught arithmetic error 15200 vs 14600; E-MAT-E065-T21 registered",
+  "b1_ninedim_review": {
+   "status": "COMPLETE",
+   "file": "LP_B1RERUN3_NINEDIM_REVIEW.json",
+   "stories": [
+    "E063",
+    "E064",
+    "E065"
+   ],
+   "positions": 72,
+   "dims": {
+    "goal": {
+     "diff": 0.736,
+     "cand": 2.722,
+     "parent": 1.986,
+     "protection": true,
+     "pass": true
+    },
+    "fact": {
+     "diff": 0.146,
+     "cand": 2.535,
+     "parent": 2.389
+    },
+    "attrib": {
+     "diff": 0.204,
+     "cand": 2.704,
+     "parent": 2.5
+    },
+    "time": {
+     "diff": 0.318,
+     "cand": 2.586,
+     "parent": 2.268
+    },
+    "boundary": {
+     "diff": 0.223,
+     "cand": 2.806,
+     "parent": 2.583,
+     "protection": true,
+     "pass": true
+    },
+    "memory": {
+     "diff": 0.857,
+     "cand": 2.529,
+     "parent": 1.672
+    },
+    "interact": {
+     "diff": 0.903,
+     "cand": 2.806,
+     "parent": 1.903
+    },
+    "init": {
+     "diff": 1.028,
+     "cand": 2.667,
+     "parent": 1.639,
+     "protection": true,
+     "pass": true
+    },
+    "emotion": {
+     "diff": 0.639,
+     "cand": 2.486,
+     "parent": 1.847
+    }
+   },
+   "severe": {
+    "candidate": 1,
+    "parent": 4
+   },
+   "swap_agreement": "11/12",
+   "verdict": "E3 WINS ALL 9 DIMENSIONS (diff +0.15 to +1.03); protection dims all PASS; severe 1c/4p (parent worse); swap agreement 11/12"
+  },
+  "b2_generation": {
+   "status": "DONE",
+   "attempts": 144,
+   "completed": 144,
+   "failed": 0,
+   "stories": [
+    "E066",
+    "E067",
+    "E068"
+   ]
+  },
+  "b2_mechanical_score": "DONE (LONGPROBE_SCORE_MECHANICAL_E066_E067_E068.json): E066 parent revival 3/cand 1, E067/E068 zero revivals; parent E067 had 2 veto cells (json_schema_broken)",
+  "b2_evidence_read": "PARTIAL: E066_T09 parent gave incorrect safety assurance about chain sizing",
+  "b2_ninedim_review": {
+   "status": "COMPLETE",
+   "file": "LP_B2RERUN_NINEDIM_REVIEW.json",
+   "stories": [
+    "E066",
+    "E067",
+    "E068"
+   ],
+   "positions": 72,
+   "dims": {
+    "goal": {
+     "diff": 0.569,
+     "cand": 2.611,
+     "parent": 2.042,
+     "protection": true,
+     "pass": true
+    },
+    "fact": {
+     "diff": -0.084,
+     "cand": 2.347,
+     "parent": 2.431
+    },
+    "attrib": {
+     "diff": -0.044,
+     "cand": 2.471,
+     "parent": 2.515
+    },
+    "time": {
+     "diff": 0.147,
+     "cand": 2.475,
+     "parent": 2.328
+    },
+    "boundary": {
+     "diff": -0.056,
+     "cand": 2.708,
+     "parent": 2.764,
+     "protection": true,
+     "pass": true
+    },
+    "memory": {
+     "diff": 0.681,
+     "cand": 2.507,
+     "parent": 1.826
+    },
+    "interact": {
+     "diff": 0.709,
+     "cand": 2.778,
+     "parent": 2.069
+    },
+    "init": {
+     "diff": 0.847,
+     "cand": 2.528,
+     "parent": 1.681,
+     "protection": true,
+     "pass": true
+    },
+    "emotion": {
+     "diff": 0.473,
+     "cand": 2.542,
+     "parent": 2.069
+    }
+   },
+   "severe": {
+    "candidate": 2,
+    "parent": 5
+   },
+   "swap_agreement": "12/12",
+   "verdict": "E3 7正2微负(均<0.1)；保护项全PASS；severe 2c/5p(parent更差)"
+  },
+  "c1_challenge_batch": {
+   "status": "DONE",
+   "champion": "E3",
+   "challenger": "r5_tier",
+   "stories": [
+    "E063",
+    "E064"
+   ],
+   "attempts": 96,
+   "auth_fix": "candidate name fixed r4_guard_e3 -> r5_tier",
+   "completed": 96,
+   "failed": 0,
+   "program_scores": {
+    "parent_mean10": 9.79,
+    "candidate_mean10": 9.93
+   },
+   "revival": {
+    "parent": 0,
+    "candidate": 0
+   },
+   "mechanical_score_file": "LONGPROBE_SCORE_MECHANICAL_E063_E064.json",
+   "actual_arms": {
+    "parent": "reference_product_v1 (B0)",
+    "candidate": "action_policy_r5_tier"
+   },
+   "label_erratum": "early report mislabeled parent as E3; manifest-verified parent=B0. C1 = r5_tier vs baseline direct batch."
+  },
+  "c1_ninedim_review": {
+   "status": "COMPLETE",
+   "file": "LP_C1_NINEDIM_REVIEW.json",
+   "stories": [
+    "E063",
+    "E064"
+   ],
+   "positions": 48,
+   "candidate": "r5_tier (action_policy_r5_tier)",
+   "parent": "E3 (action_policy_r4_guard_e3)",
+   "dims": {
+    "goal": {
+     "diff": 0.833,
+     "r5_tier": 2.833,
+     "E3": 2.0,
+     "protection": true,
+     "pass": true
+    },
+    "fact": {
+     "diff": 0.27,
+     "r5_tier": 2.708,
+     "E3": 2.438
+    },
+    "attrib": {
+     "diff": 0.343,
+     "r5_tier": 2.911,
+     "E3": 2.568
+    },
+    "time": {
+     "diff": 0.344,
+     "r5_tier": 2.523,
+     "E3": 2.179
+    },
+    "boundary": {
+     "diff": 0.25,
+     "r5_tier": 2.958,
+     "E3": 2.708,
+     "protection": true,
+     "pass": true
+    },
+    "memory": {
+     "diff": 0.916,
+     "r5_tier": 2.708,
+     "E3": 1.792
+    },
+    "interact": {
+     "diff": 1.105,
+     "r5_tier": 2.938,
+     "E3": 1.833
+    },
+    "init": {
+     "diff": 1.021,
+     "r5_tier": 2.625,
+     "E3": 1.604,
+     "protection": true,
+     "pass": true
+    },
+    "emotion": {
+     "diff": 0.729,
+     "r5_tier": 2.604,
+     "E3": 1.875
+    }
+   },
+   "severe": {
+    "r5_tier": 0,
+    "E3": 0
+   },
+   "swap_agreement": "7/8",
+   "verdict": "r5_tier beats B0 on all 9 dims (diff +0.25 to +1.11), severe 0/0, cheaper prompt; head-to-head vs E3 deferred to D1",
+   "parent_actual": "B0 (reference_product_v1)"
+  },
+  "c1_question": "Does r5_tier assertion_tiering eliminate comfort-pressure unfounded-certainty dual-kill (E061_T13 type)?",
+  "second_round_verdict": {
+   "file": "SECOND_ROUND_VERDICT_20261030.md",
+   "e3_keep_confirmed": true,
+   "r5_tier_challenges_e3": true,
+   "r5_tier_verdict": "CHALLENGE_SUCCESS - r5_tier全9维超过E3；建议第三轮扩大验证",
+   "next": "r5_tier第三轮(E061/E062/E065含已知无据确定化位) + B2微负维度B3证据读 + r5_tier vs B0直接对比"
+  },
+  "erratum_severe_swap": {
+   "id": "ERRATUM-SEVERE-SWAP-20261030",
+   "file": "W04-02_ERRATA_SEVERE_SWAP_20261030.md",
+   "severity": "program-level",
+   "scripts_fixed": [
+    "tools/run_fs1_semantic_review.py",
+    "tools/run_longprobe_review.py",
+    "tools/run_lp_review_generic.py"
+   ],
+   "corrected_reports": [
+    "W04-03_FS1_NINEDIM_REVIEW.json",
+    "LONGPROBE_NINEDIM_REVIEW.json",
+    "LP_B1RERUN3_NINEDIM_REVIEW.json",
+    "LP_B2RERUN_NINEDIM_REVIEW.json"
+   ],
+   "dims_winner_unaffected": true,
+   "severe_actual": {
+    "FS1-A": "E3 2 / B0 0 (E021_T07 material cell + E026_T05 real)",
+    "B1": "E3 4 / B0 1",
+    "B2": "E3 5 / B0 2",
+    "C1": "0/0",
+    "E061E062": "1/1 dual-kill unchanged"
+   },
+   "e3_severe_family": "fabrication-of-past-events (9 positions across B1+B2, all same family as E061_T13)",
+   "judge_misses_registered": [
+    "E065_T15/T16 question-form revival (mechanically proven, judge no flag)",
+    "E066_T09 parent safety error (judge fact=3)"
+   ]
+  },
+  "first_loop_verdict_corrected": {
+   "file": "W04-03_FIRST_LOOP_VERDICT.json (re-run by preregistered executor)",
+   "E3": "KEEP -> ELIMINATE (severe 2>0; material-excluded 1>0 also holds)",
+   "Bmin": "REWORK-dual -> ELIMINATE (severe 3>0 + C1/C2 failed)",
+   "artifact_note": "original KEEP was artifact of severe mapping bug"
+  },
+  "d1_head_to_head": {
+   "status": "COMPLETE",
+   "arms": {
+    "parent": "action_policy_r4_guard_e3 (E3 champion)",
+    "candidate": "action_policy_r5_tier (challenger)"
+   },
+   "stories": [
+    "E061",
+    "E062"
+   ],
+   "attempts": 96,
+   "auth": "AUTH-CHALLENGE-D1-20261030-01",
+   "plan_sha256": "4fdf91c33c433a42...",
+   "question": "TRUE head-to-head at the E061_T13 comfort-pressure dual-kill site: does assertion_tiering eliminate the family E3 systematically exhibits?",
+   "acceptance": "challenger reduces severe at E061_T13-type positions without protection-dim degradation",
+   "generation": "96/96 zero-fail; program E3 9.76 / r5_tier 9.97",
+   "mechanical": "revival flags 6, all exemption-adjudicated to zero true revivals both arms; probe E061_T24 only r5_tier recalled",
+   "ninedim": "ALL TIE (|diff|<=0.15); protections PASS; severe judge 2c/0p; swap 5/8",
+   "file": "LP_D1_NINEDIM_REVIEW.json",
+   "evidence_read": "D1_EVIDENCE_READ_20261031.md: E061_T13 dual-kill persists BOTH arms (r5_tier source-attribution grounded per initial_kb, judge asymmetry registered); E062_T23 r5_tier real severe (fabricated dust spots)"
+  },
+  "third_round_verdict": {
+   "file": "THIRD_ROUND_VERDICT_20261031.md",
+   "r5_tier_challenge": "FAILED per prereg (no head-to-head gain, severe increased, dual-kill mutated not eliminated); not eliminated (C1 vs-B0 sweep real)",
+   "champion_slot": "VACANT",
+   "e3_status": "corrected ELIMINATE stands",
+   "tiering_v2_design": [
+    "no source-wrapping of NEEDS_CHECK claims",
+    "no detail fabrication (dust-spot class)",
+    "keep attribution + recall strengths",
+    "E1 re-challenge batch on fresh stories"
+   ]
+  },
+  "e1_head_to_head": {
+   "status": "COMPLETE",
+   "arms": {
+    "parent": "E3",
+    "candidate": "r6_tier2"
+   },
+   "generation": "96/96 zero-fail; program tied 9.97/9.97 (E065), 9.93/9.93 (E066)",
+   "mechanical": "revival flags 23/18 (E065) all adjudicated zero-true (negotiation-token noise, symmetric); E066 0/1 contrast sentence",
+   "ninedim": {
+    "file": "LP_E1_NINEDIM_REVIEW.json",
+    "result": "r6_tier2 leads 7/9 dims (goal +0.417, init +0.404), 2 micro-negative; swap 8/8; severe 2c/0p",
+    "severe_notes": "E065_T24 vacancy-duration naming (v2 ban missed) + E066_T17 fabricated chain-installation"
+   },
+   "v2_mode_check": "source-wrapping fixed; detail-naming NOT fixed"
+  },
+  "fourth_round_verdict": {
+   "file": "FOURTH_ROUND_VERDICT_20261031.md",
+   "cross_batch_rates": {
+    "E3": "11/288=3.8%",
+    "B0": "6/192=3.1% (flag-only 1.6%)",
+    "Bmin": "3/48=6.2%",
+    "r5_tier": "2/48=4.2%",
+    "r6_tier2": "2/48=4.2%"
+   },
+   "finding": "fabrication family is base-model property, story-knowledge-pressure modulated, not harness-fixable; tiering line CLOSED",
+   "final": {
+    "E3": "KEEP reinstated champion (registered defect, dual-caliber preserved)",
+    "r5_tier/r6_tier2": "archived, not promoted, not eliminated",
+    "Bmin": "ELIMINATE",
+    "harness_frozen": "action_policy_r4_guard_e3 (17fd2160...)"
+   },
+   "mitigation": "detection-side (mechanical + B3) validated; post-gen self-check optional (not default, cost)"
+  },
+  "b3_prescreen_upgrade": {
+   "status": "DELIVERED",
+   "tool": "tools/b3_queue.py",
+   "wired": "run_lp_review_generic.py auto-emits LP_<tag>_B3_QUEUE.json after every review",
+   "validated": "5 historical reviews: 21 severe positions queued; P1 fragments all adjudicated as judge loose-quotes/paraphrases (zero real hallucinated quotes); E026_T05-class blind spot now structurally covered",
+   "queues": [
+    "W04-03_FS1_B3_QUEUE.json",
+    "LP_B1RERUN3_B3_QUEUE.json",
+    "LP_B2RERUN_B3_QUEUE.json",
+    "LP_D1_B3_QUEUE.json",
+    "LP_E1_B3_QUEUE.json"
+   ]
+  },
+  "w05_03_supersede": {
+   "status": "F2_COMPLETE_VERDICT_ISSUED",
+   "candidate": "action_policy_r7_supersede (identity 0e2d273a...)",
+   "design": "engine-side post-merge contradiction pass: cue(实际是/看错/改成/延期/作废...) + bigram(>=0.42, or >=0.30 same-subject) + same-subject gate downgrades old confirmed reported fact to superseded; seeds exempt; 1-old-per-new cap; auto_supersede logged",
+   "offline_validation": {
+    "replay": "F1 saved replies replayed through full run_turn with mock gateway (zero calls)",
+    "fidelity": "orig(E3) replay reproduces live F1 final state exactly (39/41 facts same status dist)",
+    "E067": "f_0009 (stale base 2.4万) downgraded superseded by f_0025; zero collateral; capture parity",
+    "E061": "zero firings = correct (no parallel-add residue; its corrections went explicit-update in-place path)",
+    "file": "W05-03_REPLAY_AB_E067.json / W05-03_REPLAY_AB_E061.json"
+   },
+   "f2_batch": "BATCH-SUPERSEDE-F2-E065E066-20261031, r7 vs E3 champion, 96 calls, revival stress test (rent chain/roadtrip corrections)",
+   "f2_live_results": {
+    "generation": "96/96 zero-fail; program E3 10.0 / r7 9.76 (r7 E065_T03 json_schema_broken veto x1, known stochastic contract family, unrelated to supersession)",
+    "mechanical": "revival flags E065 15/16 symmetric negotiation-token noise (same class as E1, exemption-adjudicated pattern); E066 0/1 contrast sentence",
+    "kpi": "E065/E066 both arms: guard 0/0, rej 0, corr 2/3; cap/over near-identical (W05-03_F2_KPI.json)",
+    "live_supersession": {
+     "E065": "0 firings (corrections via explicit update path - correct)",
+     "E066": "2 firings: f_0008 (date change) downgraded then same-turn explicit update restored with corrected text - dual-path converged correctly; f_0020 (tire spec) FALSE POSITIVE - chain size fact (换成 205/55 R16) downgraded the tire-spec fact despite complementary digits"
+    },
+    "gate_fix": "digit-conflict requirement added (old digit set must NOT be subset of new); re-import re (was silently swallowed)",
+    "fixed_gate_validation": "F2 outputs replay: f_0020 stays confirmed (false positive eliminated), E065 zero fire; F1 outputs replay: f_0009 still fires (true positive preserved) — W05-03_REPLAY_FIXED_GATE.json"
+   },
+   "ninedim": {
+    "file": "LP_F2_NINEDIM_REVIEW.json",
+    "result": "7pos/2micro-neg (all +/-0.17 noise), severe 0c/2p (E3 two fabricated rent numbers, r7 zero), protections PASS, swap 5/8",
+    "severe_notes": "E065_T08 E3 fabricates 3800; E065_T17 E3 fabricates 3600 - exactly the correction-chain family"
+   },
+   "verdict": {
+    "file": "W05-03_VERDICT_20261031.md",
+    "ruling": "r7_supersede(fixed-gate) = successor patch to E3, archived pending promotion; champion stays frozen E3 (single-batch noise-level delta per first-loop lesson); next long-drama batch on new stories to confirm before promotion"
+   },
+   "b3_queue_auto": "LP_F2_B3_QUEUE.json auto-produced by wired pipeline (P1=1) - first live validation",
+   "f3_confirmation": {
+    "status": "COMPLETE_PROMOTED",
+    "generation": "96/96 zero-fail; program E3 10.0 / r7 9.58 (r7 E062_T02+T17 json_schema vetoes x2 - stochastic, prompt sizes identical across arms)",
+    "ninedim": "7 dims micro-negative (worst interact -0.208), 2 positive; severe r7 0 / E3 1 (E062_T23 fabricated concession); protections PASS; swap 4/8",
+    "supersession_live": "E064 f_0016 surgery-date change: pass downgrade + explicit correct converged in-place; E062 zero fire (correct)",
+    "veto_watch": "RESOLVED - prompt_sum distributions identical across arms (6321/6322, 6334/6353); vetoes are base-model stochastic rolls"
+   }
+  },
+  "champion": {
+   "current": "action_policy_r7_supersede (0e2d273a...)",
+   "predecessor": "action_policy_r4_guard_e3 (17fd2160...) - lineage preserved",
+   "promoted_at": "2026-10-31T07:20:00+08:00",
+   "basis": "F3_PROMOTION_RULING_20261031.md: severe edge replicated 2/2 batches (0/96 vs 3/96) with causal mechanism; zero regression across 6 batch-passes; veto watch resolved",
+   "auto_revert_triggers": [
+    "any protection dim <= -0.5",
+    "r7 severe > control in a future batch",
+    "veto rate >=3x control with n>=192"
+   ]
+  },
+  "w06_intent": {
+   "cycle": "COMPLETE (01 scenarios -> 02 interface -> 03 counterfactual runs)",
+   "verdict": "S1-S5 ALL PASS (5/5): contract layer zero gaps under champion r7; tombstone rejected; r8_goalstage not built (no behavioral gap)",
+   "file": "W06-03_SCENARIO_VERDICT_20261031.md"
+  },
+  "w08_positive": {
+   "w08_01": {
+    "status": "DONE",
+    "file": "W08-01_POSITIVE_ANNOTATION_20261031.json",
+    "scope": "4 positive-interaction stories x 12 turns = 48 turns labeled (topic_state/engagement/exchange_need + evidence quotes)",
+    "key_input_for_w08_02": "all four transition/advance hooks initiated by HER; ME task = catch without over-pursuing or retreating"
+   },
+   "w08_05_06": {
+    "status": "DONE",
+    "branch_verdict": "E029 4/4 branches zero frame-break; register = style dial not quality dial; E032 tail-branch needs post-story HER scripts (W03-06 item)",
+    "capability_table": "W08-06 in W08-05 verdict §3: B0 weaknesses (hook-catch/revival) vs r7 strengths, all batch-evidenced"
+   },
+   "deepchat_wave": {
+    "status": "DONE",
+    "file": "W08-05_DEEPCHAT_VERDICT_20261031.md",
+    "finding": "0-register (diagnosis/steamroll) damage persists 2+ turns downstream (D1 cold deflection, D2 defensive-combative chain); 1-register recovers in 1-2 turns; 3-register zero frame-break; champion natural behavior never produces 0-register"
+   }
+  },
+  "fljudge_verdict": {
+   "batch": "BATCH-FLJUDGE-LRE060LRE048-20261101",
+   "date": "2026-11-02",
+   "decision": "KEEP",
+   "candidate": "window_expand_b",
+   "keep_true_t2532": 1.0,
+   "keep_true_final_t40": 0.987,
+   "ninedim_diff": {
+    "goal": -0.194,
+    "fact": 0.111,
+    "attrib": 0.029,
+    "time": 0.031,
+    "boundary": 0.044,
+    "memory": -0.07,
+    "interact": -0.181,
+    "init": 0.167,
+    "emotion": -0.153
+   },
+   "severe": {
+    "candidate": 1,
+    "parent": 2
+   },
+   "prompt_delta": -0.419,
+   "verdict_doc": "refs/experiment_protocol_20261023/long_probe_20261030/FLJUDGE_VERDICT_20261102.md"
+  },
+  "cf1_verdict": {
+   "batch": "BATCH-CF1-W13-20261102",
+   "date": "2026-11-02",
+   "decision": "UNCERTAIN",
+   "follow_rate": {
+    "parent": 0.681,
+    "candidate": 0.698
+   },
+   "old_reuse": {
+    "parent": 0.0,
+    "candidate": 0.017
+   },
+   "ninedim_diff": {
+    "goal": -0.146,
+    "fact": -0.042,
+    "attrib": 0.0,
+    "time": -0.077,
+    "boundary": 0.053,
+    "memory": -0.097,
+    "interact": -0.385,
+    "init": 0.021,
+    "emotion": -0.406
+   },
+   "severe": {
+    "candidate": 0,
+    "parent": 1
+   },
+   "swap_agree": "7/8",
+   "prompt_delta": -0.513,
+   "verdict_doc": "refs/experiment_protocol_20261023/long_probe_20261030/CF1_VERDICT_20261102.md",
+   "severe_final": "parent E151_T09 confirmed_severe(无据确定化,unknowns 明列未知被当确定事实);cand 0"
+  },
+  "ld1_verdict": {
+   "batch": "BATCH-LD1-W13-20261102",
+   "date": "2026-11-02",
+   "decision": "KEEP",
+   "keep_true_t2532": 1.0,
+   "keep_true_final": "425/430=0.988",
+   "prompt_delta": -0.44,
+   "ninedim_diff": {
+    "goal": -0.177,
+    "fact": -0.105,
+    "attrib": -0.017,
+    "time": 0.062,
+    "boundary": -0.017,
+    "memory": -0.124,
+    "interact": -0.234,
+    "init": -0.04,
+    "emotion": -0.258
+   },
+   "severe": {
+    "candidate": 1,
+    "parent": 1
+   },
+   "severe_note": "评审初判 cand6/par2 经 B3 亲读修正（4 误报 2 降级）；评审器 32 处 CALL_FAIL",
+   "verdict_doc": "refs/experiment_protocol_20261023/long_probe_20261030/LD1_VERDICT_20261102.md"
+  },
+  "w14_b2_implementation": {
+   "status": "DONE_eliminated",
+   "candidate": "window_expand_b2",
+   "parent": "window_expand_b",
+   "design": "W14_SUPPRESSION_DESIGN_20261102.md",
+   "implementation_revision": "设计 §6 修订记录（E1-E4 ledger_rules 受控扩展 + 值名取消/回归现行两类行；判据不变）",
+   "sanity": "机制级 8 轮合成测试通过（含 LRE117 原句式）：superseded 对/cancelled 对/值名取消/回归现行/未定排除/预算≤240CU/快照字节一致/历史不被改写",
+   "identity": {
+    "candidate_sha256": "cce1a7ea0e5be5acc8c2592c6005581bc7e07720e89eea98b88f979d191076de",
+    "closure": "window_expand_b2>window_expand_b>v0_minimal_events>reference_product_v1"
+   },
+   "regression_batch": {
+    "auth": "AUTH-W14R-REG-20261102-01",
+    "plan": "W14R.INTERLEAVE_PLAN.json",
+    "batch_id": "BATCH-W14R-E061-20261102",
+    "arms": "window_expand_b2 vs r9_slim",
+    "episode": "E061(24轮,甲状腺随访)",
+    "attempts": 48,
+    "precheck": "G1-G7 全绿 2026-11-02 13:50",
+    "gates": "九维最差维>=-0.3；severe(b2)<=severe(parent) 亲读账；prompt<=r9_slim；对拍 window_expand_b 存档"
+   },
+   "judgment_batch": "§3.2 待回归通过后派发（4 篇 SEALED 长剧池选择中）",
+   "updated": "2026-11-02 13:51:04"
+  },
+  "w14_b2_regression_program": {
+   "batch": "BATCH-W14R-E061-20261102",
+   "auth": "AUTH-W14R-REG-20261102-01",
+   "completed": "48/48, failed=0, order_verified=true, dispatch_bijection=true",
+   "program_mean10": {
+    "parent_r9_slim": 10.0,
+    "candidate_b2": 6.67
+   },
+   "program_fails": {
+    "b2": {
+     "json_schema_broken": [
+      "T01",
+      "T03",
+      "T06",
+      "T14",
+      "T23"
+     ],
+     "illegal_source_id": {
+      "T02": "cited '1'(整数id当别名)",
+      "T20": "m19",
+      "T22": "m17"
+     }
+    },
+    "r9_slim": [],
+    "parent_b_baseline_W12_02_same_story": {
+     "json_schema_broken": [
+      "T17"
+     ],
+     "illegal_source_id": [
+      "T21(m_src[20],m_src[19])→FK-SCORE-01修复后属合法引用,误判已撤销"
+     ]
+    }
+   },
+   "prompt_cost_chars": {
+    "b2": 69912,
+    "r9_slim": 145998,
+    "b_W12_02_baseline": 69912
+   },
+   "duipai": "b2 vs b 同故事 24/24 轮 prompt+system 逐字节一致（压制段全程 supp_pairs=0，E061 无规则可测更正，符合设计 §3.1 '压制段近空'预期）",
+   "interpretation": "b2 失败族与 b 已知失败族相同（dsf temp0.7 采样噪声：directions 数组 null 元素 + 来源别名格式打滑），输入逐字节相同 → 非机制引起；频次 5/24 vs 1/24 属采样波动，判决以语义评审+severe 亲读账为准",
+   "review": {
+    "auth": "AUTH-W14R-REVIEW-20261102-01",
+    "status": "running",
+    "runner": "run_lp_review_generic（新增：单次失败重试1次+重试额度预登记≤20%+失败率旗标）"
+   },
+   "updated": "2026-11-02 14:17:41"
+  },
+  "w14_b2_judgment": {
+   "status": "DONE",
+   "batch": "BATCH-W14J-LONG4-20261102",
+   "auth": "AUTH-W14J-JUDG-20261102-01",
+   "plan_sha256": null,
+   "arms": {
+    "parent": "window_expand_b (LD1 KEEP, >24轮域冠军)",
+    "candidate": "window_expand_b2 (cce1a7ea0e5b...)"
+   },
+   "episodes": {
+    "LRE121": "40轮 医疗(接种取消改期)",
+    "LRE127": "32轮 数码(借用边界)",
+    "LRE145": "32轮 出行(拼车口径)",
+    "LRE146": "40轮 家庭(售后/人情账)"
+   },
+   "attempts": 288,
+   "precheck": "G1-G7 全绿 2026-11-02 14:48",
+   "criteria_frozen": "W14_SUPPRESSION_DESIGN_20261102.md §3.2（KEEP：同类 severe=0 且九维最差>=-0.5 且 T25-32 真实保持>=0.85 且 severe 总账 b2<=b 亲读；淘汰 H_SUP_null：同类 severe>=1 或总账 b2>b）",
+   "cards": "GRADING_CARDS_W14.json (144)",
+   "regression_verdict": "W14M01_REGRESSION_VERDICT_20261102.md (PASS)",
+   "updated": "2026-11-02 18:29",
+   "keep": "双臂 T25-32 与全篇 1.000/1.000（机械门过）；压制段仅 LRE121 活跃（36/40 轮，峰值 6 对 229CU）；程序失分 b2 16 vs b 15（同族噪声）",
+   "review": "AUTH-W14J-REVIEW-20261102-01 运行中（~320 裁判调用）",
+   "verdict": "H_SUP_null→淘汰（W14M02_JUDGMENT_VERDICT_20261102.md）：同类 severe 1 例（LRE146_T20 坐实未定）；正向=LRE121 活跃篇 b2 零 severe vs b≥2；冠军格局不变"
+  },
+  "w13_03_design": {
+   "status": "designed_material_ready",
+   "design": "W13-03_NEWDOMAIN_DESIGN_20261102.md（判据冻结）",
+   "stories": "新域兴趣社交 E131/E140/E166 + 已见域对照 E117/E122/E125（全部 SEALED）",
+   "material": "episodes 已导出（E140 用 runner_copy.json 补位）；GRADING_CARDS_W13_03.json 72 卡零错",
+   "tool_fixes": "build_stage2_grading_cards.py：intent/may_decline 缺失时从冻结题面逐字回填（标 episode_backfill_20261102 来源）+ 缺件跳过改按本篇增量判（原全局 errs 误跳后续篇）",
+   "dispatch": "排队 W14J 之后"
+  },
+  "w15_norecap_ablation": {
+   "status": "DONE_keep_champion_simplified",
+   "batch": "BATCH-W15N-NORECAP-20261102（AUTH-W15N-20261102-01，160/160 零失败，--workers 并行派发）",
+   "review": "AUTH-W15N_{A,B}-REV 双进程（LP_W15N_A/B_NINEDIM_REVIEW.json，swap 一致率 3/8 已按 main 顺序口径报告）",
+   "offline_evidence": "LD1 四篇 152 轮实测：recap 非零轮=LRE117 T34+(199CU)/LRE125 T38+(178CU)/LRE141 T38+(57CU)/LRE147 全程0；T25-32 判决段 recap 全空=与父本 prompt 逐字节相同→b 的 1.0 保持来自扩窗本身",
+   "candidate": "candidates/window_expand_b_norecap（删 delta ② recap 段，保留 3600 扩窗；少一段装配逻辑、少一份 ledger_rules 依赖）",
+   "design": "W15_NORECAP_ABLATION_DESIGN_20261102.md",
+   "verdict": "W15N01_ABLATION_VERDICT_20261102.md：四门全过→KEEP 冠军简化；T25-32 keep 1.000/1.000、九维 9/9 全正（memory +0.253/fact +0.241/最差 init·emotion +0.038）、severe 亲读 1≤12、成本 −0.3%",
+   "honesty_note": "幅度小（+0.04~+0.25）不宣称显著；主张是'无损可删'非'recap 有害'；cand 唯一 severe（LRE117_T22 坐实转账）与父本同篇 T14/T35 同族→无据确定化仍是冠军链共性风险",
+   "updated": "2026-11-02 20:52"
+  },
+  "w13_04_stage_design": {
+   "status": "designed",
+   "inventory": "relationship_stage 5桶：渐暧昧35/熟人24/普通14/搭子14/亲属9；调情深聊显式intent=0（素材缺口→W13-04b补料）",
+   "design": "W13-04_STAGESPREAD_DESIGN_20261102.md",
+   "updated": "2026-11-02 15:08"
+  },
+  "w13_03_batch": {
+   "status": "DONE_verdict_written",
+   "batch": "BATCH-W13-03-NEWDOM-20261102",
+   "auth": "AUTH-W1303-GEN-20261102-01",
+   "arms": "r9_slim + window_expand_b（双冠军各跑全部 6 篇，跨臂不判胜负）",
+   "episodes": "新域兴趣社交 E131/E140/E166 + 已见域对照 E117/E122/E125",
+   "attempts": 144,
+   "precheck": "G1-G7 全绿 2026-11-02 15:34",
+   "note": "用户要求提速→与 W14J 并行共享网关（两批判据均与延迟无关，本批延迟读数不作 claims）；题面 persona 扁平化修复后 precheck 通过",
+   "updated": "2026-11-02 15:37:31",
+   "verdict": "W13-03_VERDICT_20261102.md：H_GEN 成立；b 9/9 维正+severe 亲读 0/1+成本-53%"
+  },
+  "w13_04_stage": {
+   "status": "DONE",
+   "verdict": "W13-04_VERDICT_20261102.md：H_STAGE 成立；渐暧昧桶 b 9/9 全正无塌陷；severe 亲读 1/1（b 位=无据确定化族共性）",
+   "updated": "2026-11-02 20:34"
+  },
+  "w17_single_champion": {
+   "status": "DONE_no_merge",
+   "design": "W17_SINGLE_CHAMPION_DESIGN_20261102.md（判据跑前冻结：G1 九维最差-0.3 / G2 T07-12 keep 0.95x / G3 severe 亲读不升 / G4 成本只报告）",
+   "offline_fact": "64 篇 12 轮历史量实测：峰值 952CU、中位 564CU，全部 <1400 父本窗 → 3600 扩窗与 recap 在本域从不触发；b_norecap ≡ v0_minimal_events 装配路径，诚实标签=最小事件窗 vs r9_slim 的合并可行性",
+   "arms": "parent=action_policy_r9_slim / candidate=window_expand_b_norecap",
+   "stories": "E189/E190/E195/E199/E207/E208（全部未暴露 12 轮标准篇）",
+   "material": "episodes 已导出+persona 已扁平化；GRADING_CARDS_W17.json 72 卡（2026-11-02 生成）",
+   "attempts_planned": 144,
+   "next": "W17-02（W17b）：机制层输出契约守卫单变量重测，判据含契约违规率<=父本+1位与空回复=0",
+   "updated": "2026-11-02 23:58",
+   "plan_sha256": "6a0a3d2be504e44292da6a5adc0fd30ba583d2f7570a1508099d5f1640f985cb",
+   "offline_equivalence": "72 位中 71 位 b_norecap≡v0；仅 E189_T12 扩窗生效（2307 vs 2220）",
+   "verdict": "W17_MERGE_VERDICT_20261102.md：不合并（维持双冠军）。G1 PASS（整体最差 emotion -0.071；memory +0.132）、G2 keep 1.0、G3 FAIL（亲读 severe cand2 vs par1：E207_T08 空回复、E208_T01 替第三方确认 vs E199_T09 角色错位）、成本 -52.6%",
+   "finding_outside_gates": "契约违规 16/72 vs 4/72（自造 bad_but/bad_bo/bad_young）+1 例空回复；登记 D-W17-01（判据未覆盖契约合规率与空回复）"
+  },
+  "w16_uncertain": {
+   "status": "DONE_keep",
+   "design": "W16_UNCERTAIN_DESIGN_20261102.md（检测=hedge+实体锚点+未被后续确认关闭；注入≤120CU；无未定项时与父本逐字节相同）",
+   "evidence_chain": "b2 淘汰 LRE146_T20 / W13-04 b 位 / W15N LRE117_T22+T34；W15N 亲读补充：par 替 HER 确认第三方或金额、cand 把未定项补成 HER 自己行为",
+   "candidate_planned": "candidates/window_expand_b_norecap_uc（父本 b_norecap，单变量）",
+   "batch_planned": "BATCH-W16-UNC：LRE117+LRE146（回归）+LRE148（泛化）×2 臂=240 attempts",
+   "gates": "G1 severe 亲读 cand<par / G2 九维最差>=-0.2 且 interact·emotion·initiative 各>=-0.2 / G3 prompt<=+5% / G4 触发面(10%,90%]",
+   "updated": "2026-11-03 00:30",
+   "implementation": "candidates/window_expand_b_norecap_uc；单测 8 组全过；触发面 LRE117 5/40、LRE146 10/40、E190 4/12",
+   "batch_plan_sha256": "48d394462b6391b493f9925e88966b0ad62eb3509105dc40a5a97f9601854455",
+   "verdict": "W16_UNC_VERDICT_20261102.md：KEEP→>24 域冠军升级。G1 severe 亲读 1 vs 6；G2 9/9 维全正（memory +0.301、最差 init +0.087）；G3 +0.78%/0 额外调用；G4 触发 29.2%",
+   "honesty": "LRE117_T34 两臂都坐实转账（judge 漏标候选侧），同族仅剩 1 例；不得宣称无据确定化已解决"
+  },
+  "w17b_guard": {
+   "status": "DONE_keep",
+   "verdict": "W17B_GUARD_VERDICT_20261103.md：KEEP。契约违规 2/72 vs 7/72、空回复 0、九维最差 -0.058、severe 亲读 0 vs 2、prompt +0%",
+   "candidate": "candidates/window_expand_b_norecap_guard",
+   "updated": "2026-11-03 11:58"
+  },
+  "w18_uc_supp": {
+   "status": "execution_failed_partial_90of320",
+   "design": "W18_UNC_SUPPRESS_DESIGN_20261102.md",
+   "candidate": "candidates/window_expand_b_norecap_uc_supp",
+   "offline": "单测25/25；触发表与设计零差异；字节等同73/160",
+   "incident": "W18_EXECUTION_INCIDENT_20261103.md：LRE121_T15 parent 网关 120s 超时触发 fail_fast；按授权不续跑；部分数据不进 G1/G2",
+   "rerun_task": "W18-04 / BATCH-W18B-UCSUPP-20261103",
+   "updated": "2026-11-03 12:33"
+  },
+  "w17c_merge": {
+   "status": "DONE_merge",
+   "verdict": "W17C_MERGE_VERDICT_20261103.md Rev2：G1 main-only(n=61) 最差 emotion +0.033；G2 severe cand 0 vs parent 3 确认（1 降级）；G3 schema 2/72 vs 2/72、修正后全 veto 3 vs 2；G4 空 0；G5 prompt −52.2%；批级 keep 1.034（E170 单篇 0.833）；机械均值修正 9.583 vs 9.676（−0.093）",
+   "prereg": "W17C_PREREGISTRATION_20261103.md",
+   "batch": "BATCH-W17C-MERGE-20261103（144/144，failed=0）",
+   "b3": "LP_W17C_B3_READRESULT.json（parent 3 确认 + 1 降级；candidate 0）",
+   "updated": "2026-11-03 12:57"
+  },
+  "w18b_uc_supp": {
+   "status": "DONE_keep_no_regression_champion_unchanged",
+   "batch": "BATCH-W18B-UCSUPP-20261103（320 attempts，uc_supp vs uc；独占 6 路）",
+   "auth": "AUTH-W18B-20261103-01 / AUTH-W18B-REVIEW-20261103-01",
+   "plan_sha256": "150768ae735e893a2308b90e597ed9891da45ea51289ed02e00b21e5e4650f27",
+   "gates": "G1 PASS 附覆盖星标（B3 亲读 severe 主分析集 cand 0 vs par 2；S/U 两族未实例化→只写无退化）；G2 PASS（九维 main-only 全正，最差 boundary +0.160）；G3 PASS（prompt +1.02%、0 额外调用）；G4 PASS（并集 54.4%、同场 6.9%=离线预测、LRE146 惰性对照成立）",
+   "verdict": "W18B_VERDICT_20261103.md：KEEP-无退化，uc 保持 >24 域冠军不变（uc_supp 目标族零实例+成本 +1.02%，晋级无实例证据；去一法消融登记为 W19-07）；评审 callfail 16.3% 降权、severe 以亲读为准；评审引文幻觉再添 1 例（LRE146_T24）",
+   "b3": "LP_W18B_B3_READRESULT.json（主会话亲读 9 旗位+11 强制位+6 回避样读，judge 2 个 candidate severe 全降级）",
+   "updated": "2026-11-03 18:20"
+  }
+ },
+ "failure_families": [
+  {
+   "family": "评分器隔离路径 m_src 误判（FK-SCORE-01 复现）",
+   "first_observed": "W17c E183_T03/E191_T02（2026-11-03 红队复核）",
+   "disposition": "OPEN：trusted_controller.step_one_turn 未继承 lb_runner 的 m_src[i] 合法集；W19-01 修复并离线重评 W17b/W17c/W18B"
+  },
+  {
+   "family": "无据确定化-安抚压力型",
+   "first_observed": "E061_T13(双臂同中)",
+   "disposition": "assertion_tiering再武装(W16-05 v1 #10)；E3护栏对该型无效，需针对安抚语境的确定性分级"
+  }
+ ],
+ "as_of": "2026-11-04 10:30 W22-01 全量批判决完成：双冠军保留，uc_attr 归因锚定组件有效但 swap 翻转阻断晋升",
+ "w19_cross_verdict": {
+  "batch": "BATCH-W19-CROSS-20261103 (w19b 464/464, 0 error)",
+  "decision": "DUAL_CHAMPIONS_RETAINED (uc_guard 未晋升)",
+  "decided_at": "2026-11-03T23:55:00+08:00",
+  "decided_by": "main-session B3 亲读 + 冻结 G1-G5，零模型调用",
+  "gates": {
+   "G1": "PASS both (short12 cand2<=par2, long40 cand11<=par13, 无新增故障族)",
+   "G2": "PASS both (九维辅助门全正, 最差 short12 init+0.016 / long40 time+0.127)",
+   "G3": "short12 PASS (veto 9<=13, 空0) / long40 FAIL (cand 空回复5!=0: LRE138 T32/T36-T39)",
+   "G4": "PASS (prompt -0.56%, 0 额外调用, p50 +7.9%/p95 +2.2% 只报告)",
+   "G5": "TRIGGERED (故事级方向翻转 4/10: E164/E183/E191/LRE117) -> 不得宣布单冠军"
+  },
+  "verdict_doc": "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W19CROSS_VERDICT_20261103.md",
+  "b3_readresult": "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/LP_W19CROSS_B3_READRESULT.json",
+  "judge_defects": "误烧4(REJECTED: E164_T10/LRE121_T33/LRE146_T26/LRE146_T27) 漏检7(含cand空回复5) 无注severe8 双标3 —— B3 亲读不可替代, W20-03 必要性再证",
+  "observation": "guard 机制边界: 对空/全乱码原文按设计不触碰(unparseable_raw_left_untouched), 长域晚段空回复族 cand5/par6 集中于 LRE138 T32-T39; 前置缓解属新机制假设, 须新批预注册"
+ },
+ "w20_03_judge_calibration": {
+  "status": "DONE (2026-11-03 23:55)",
+  "report": "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W20_03_JUDGE_CAL_REPORT_20261103.md",
+  "per_dim": {
+   "goal": "full",
+   "time": "full",
+   "interact": "full",
+   "emotion": "full",
+   "init": "full-qualified 低证据",
+   "fact": "full-qualified 低证据(涉事实判死仍B3)",
+   "attrib": "assistive-only(not-testable)",
+   "boundary": "disqualified 维持辅助+B3(器械效度不足)",
+   "memory": "disqualified 维持辅助+B3(器械效度不足)"
+  },
+  "hard_rules": [
+   "severe 旗 P=0.062 → 只作 B3 复核触发器，永不自动 veto",
+   "winner 单值不进门（复现50%），门禁读逐维分（±1 稳定0.972）",
+   "引文逐字硬校验接线为评审管线必选（幻觉11.9% 真片段拼装族）",
+   "judge 单方面判死全面禁止"
+  ],
+  "budget": "AUTH-W20-JUDGE-CAL 114/160 + NEGGEN 36/40，0 失败 0 补跑",
+  "cross_validation": "与主会话 B3 亲读（LP_W19CROSS_B3_READRESULT.json）独立收敛：同判 severe 不可判死、引文幻觉同族、judge 漏检需亲读补"
+ },
+ "w21_full_verdict": {
+  "decision": "DUAL_CHAMPIONS_RETAINED (uc_retry 未晋升)",
+  "decided_at": "2026-11-04T05:54:12+08:00",
+  "gates": {
+   "G1": "PASS both (cand4≤par15+ 无新增族)",
+   "G2": "PASS both (九维全正)",
+   "G3'": "PASS (重试后双臂232/232=100%, 修复率12/12)",
+   "G4": "PASS (prompt+0.00%, 另册24/92)",
+   "G5": "FAIL (故事级翻转3/10) → 不得宣布单冠军"
+  },
+  "verdict_doc": "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W21FULL_VERDICT_20261104.md",
+  "mechanism_reading": "重试组件有效(修复率100%,prompt等价,双臂对称)——保留为评测基建工具+判据模板；候选质量无退化但 G5 翻转阻断晋升",
+  "honesty_notes": [
+   "崩坏率跨批 17.4%→2.6%→0% 波状，不外推",
+   "judge 初判 4/15 漏标由 B3 预读补 4（E191_T08 双臂/E164_T01/LRE121_T39）",
+   "swap 样本量小，冻结原文照录执行"
+  ]
+ },
+ "w22_full_verdict": {
+  "decision": "KEEP_NO_PROMOTE (REV2 修订, 取代 DUAL_CHAMPIONS_RETAINED)",
+  "decided_at": "2026-11-04T11:05:00+08:00",
+  "gates": {
+   "G1": "PASS (B3亲读账: cand 3 <= par 5; A族 cand 0 < par 2 含 LRE121_T31 香菜主体错置重分类; U族 cand 3 > par 2 如实披露; 域级PASS/故事级E157,LRE146例外)",
+   "G2": "PASS (main-only n=199-203 九维全正, 最差 emotion +0.015, memory +0.193)",
+   "G3": "FAIL (REV1 误记 PASS: live veto par 19 / cand 29 > par+1; json_schema_broken 11->22 翻倍, cand 槽位名漂移 bad_your/bad_girl 新失败模式)",
+   "G4": "PASS (prompt +1.77%, 非触发轮232对零差异, 0额外调用, 触发面42.7%)",
+   "G5": "FAIL (swap 翻转 7/22, 2 全翻转=cand severe 位) -> 不得宣布单冠军"
+  },
+  "verdict_doc": "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W22FULL_VERDICT_REV2_20261104.md",
+  "main_hypothesis": "正面且更强: A族 severe cand(0) < par(2) [LRE121_T31 + LRE121_T39, 均经 B3 亲读+原文反查确认]; LRE121_T39 cand 分账正确跨批方向一致; E191_T08 双臂零窃取",
+  "mechanism_reading": "归因锚定块对目标族有效但契约回归(跨批: uc_supp W18B 同现象)阻断组件继承; 后继预登记 uc_attr_guard",
+  "trigger_rate": "42.7% (99/232) in (10%,90%]",
+  "honesty_notes": [
+   "双实例并行收口: REV1(并行实例 10:27) 与 REV2(主会话) 并存, 分歧逐条列证据",
+   "judge 第四批空注释 severe 6/11, B3 降权纪律再次必要; LRE146_T24 judge fact=0 与原文矛盾(七百出现两次)",
+   "契约翻倍因果未消融, 仅有跨批一致性佐证",
+   "swap n=22 探索性"
+  ],
+  "supersedes": "W22FULL_VERDICT_20261104.md (REV1, 保留存档)"
+ },
+ "events": [
+  {
+   "date": "2026-11-08",
+   "task": "W27-01",
+   "kind": "phase2_progress",
+   "summary": "Benchmark V1 Phase 2 数据建设主体完成：38 新篇（E301-E338/488 轮）三角色隔离生成+标注（1268 卡/1350 原子）+三审计三修复（FAIL 全清，E325 CRITICAL 算术链反向重锚）；45 篇旧题审核收口（42/1/2/0，93 冲突全裁决，E065/LRE121 overlay）；谱系组规则统一+LEGACY_COMPAT_R9（21/21 测试）；schema 模板对齐+timeline 7 处同步已落盘；audit.md 8 节重构 D1/D2/D3 进行中；live pilot cap1500 未消费。",
+   "evidence": [
+    "refs/benchmark_v1_20261107/phase2/",
+    "benchmark/stories_v2/wave4_dev/"
+   ]
+  },
+  {
+   "date": "2026-11-08",
+   "task": "W27-01",
+   "kind": "phase2_pilot_complete",
+   "summary": "live pilot 完整收口：40 篇×2 臂 1,104 位全完成（capture 9/9 ×3 part），attempts 1,163/1,500。判别力证据：臂间零雷同（543 对 0 identical/0 near_dup）、万能句 0、无模板化——无机械答案迹象；协议可靠性两臂 99.8%+（CURRENT 2 位真实veto=层1 有效拦截实例）；资源基线 CURRENT 68.4s/2.25M tokens vs DIRECT 12.2s/0.80M。PHASE2_PILOT_REPORT.md 落盘。基础设施沉淀：LB_API_TIMEOUT_S 旋钮、resume 断点续跑、reconstruct_records.py。治理修正：分配表 v2（权威配额+T02 重分类E032→T04/E039→T01/E042→T09）。40 锚点包已填 36/40 真实回复（4 旧 T02 锚点篇目不在本批 pilot，如实留待）。待：用户填锚（NOT_COLLECTED 不代投）、GitHub 推送。",
+   "evidence": [
+    "refs/benchmark_v1_20261107/phase2/PHASE2_PILOT_REPORT.md",
+    "refs/benchmark_v1_20261107/phase2/pilot2_merged/",
+    "refs/benchmark_v1_20261107/phase2/HUMAN_REVIEW_QUEUE.md"
+   ]
+  }
+ ]
+}

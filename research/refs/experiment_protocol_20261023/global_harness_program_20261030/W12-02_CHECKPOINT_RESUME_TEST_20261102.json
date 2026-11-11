@@ -1,0 +1,55 @@
+{
+  "auth_id": "AUTH-W1202-CKPT-20261102-01",
+  "cap": 30,
+  "used": 24,
+  "ledger": "logs/auth_budget/AUTH-W1202-CKPT-20261102-01.jsonl",
+  "story": "E061",
+  "candidate": "window_expand_b",
+  "adapter": "openai_compat",
+  "run_dir": "logs/w12_02_ckpt_20261102/run1",
+  "phase_a": {
+    "turns": 12,
+    "main_calls": 12,
+    "checkpoint_sha256": "78ba3e2336da41300f76cee48eeb0ad19651af6d3f4af444bd14b636dace1664",
+    "checkpoint_json": {
+      "turns_done": 12,
+      "episode_id": "E061",
+      "lifecycle": "v2",
+      "ts": "2026-11-02 01:47:10"
+    },
+    "runner_pid": 62752,
+    "usage": {
+      "prompt": 32464,
+      "completion": 5085,
+      "source": "api_usage(网关记账字符口径)"
+    }
+  },
+  "resume": {
+    "resumed_from": 12,
+    "turn13_24_calls": 12,
+    "reburn_detected": false,
+    "checkpoint_sha256_match": true,
+    "runner_pid": 61136,
+    "byte_identity": {
+      "checked_files": 60,
+      "mismatches": 0,
+      "scope": "turn_01..turn_12 全部产物文件 vs _snap_before_resume 快照"
+    },
+    "veto_turns_13_24": 0
+  },
+  "continuity": [
+    "gateway_events.jsonl restore_completed 事件: resumed_from=12, checkpoint_sha256 与停点 checkpoint.bin sha256 逐字一致",
+    "两进程 runner_pid 不同（phase A=62752, phase B=61136），确为换进程续跑",
+    "episode_manifest.json: resumed_from=12, turns=24/24 complete=true, run_id=20261102_014748_ep_61136",
+    "calls.json 全 24 轮各恰好 1 次 main 调用；13-24 轮为新调用，1-12 轮产物逐文件 sha256 与快照零差异（无重烧）",
+    "mechanism_notes.txt 在 T01/T12/T13/T24 均存在（机制状态跨进程连续）；v2 snapshot/restore 文件型沙盒经 _sandbox 重建",
+    "turn_13 起输出正常：turn13-24 score10=[10.0, 10.0, 10.0, 10.0, 0.0, 10.0, 10.0, 10.0, 0.0, 10.0, 10.0, 10.0], veto=0"
+  ],
+  "usage_total": {
+    "prompt": 69912,
+    "completion": 9890,
+    "source": "api_usage(网关记账字符口径)"
+  },
+  "verdict": "PASS",
+  "notes": "Phase A 于 12 轮自然停并留 checkpoint；新进程 --resume 从 checkpoint 恢复 v2 文件型沙盒续跑 13-24 轮全部正常。硬条件全满足：reburn_detected=false、byte_identity 60 文件 0 mismatch、resumed_from=12、checkpoint_sha256 一致。意外1：首次启动因 LB_API_BASE 未设置失败一次（环境变量问题，非基建缺陷，未消耗调用）。意外2：resume 后 episode 汇总 mean_score10=9.17（turn13-24 含 2 个 veto 轮），属候选质量观察值，与本基建验收无关。账本经 AuthorizationBudget API 全程记账：24/30，授权保持 ACTIVE。"
+}

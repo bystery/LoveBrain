@@ -1,0 +1,734 @@
+{
+ "kind": "w20_03_judge_cal_metrics",
+ "date": "2026-11-03",
+ "n_records": 102,
+ "quote_check": {
+  "n": 101,
+  "exact_pass": 88,
+  "relaxed_pass": 88,
+  "empty_quote": 1,
+  "exact_pass_rate": 0.871,
+  "fragment_mean_cover": 0.958,
+  "fails": [
+   {
+    "pair_id": "W20CAL:AK02:neg_a_amnesia",
+    "order": "A_good_left",
+    "quote": "周六就算了 你好好补觉 脚不敢用力就再缓缓 想走的时候周一午后沿平地慢慢走一段",
+    "relaxed": false
+   },
+   {
+    "pair_id": "W20CAL:AK02:neg_b_dumper",
+    "order": "A_good_left",
+    "quote": "那周六就算了 你好好补觉…想走的时候周一午后咱们沿平地慢慢走一段 随时停",
+    "relaxed": false
+   },
+   {
+    "pair_id": "W20CAL:AK08:neg_a_amnesia",
+    "order": "B_good_right",
+    "quote": "先按一门排两周 你先算算每周能挤出几小时 周六下午两点照旧",
+    "relaxed": false
+   },
+   {
+    "pair_id": "W20CAL:AK08:neg_b_dumper",
+    "order": "A_good_left",
+    "quote": "先按一门排两周不丢人 你先算算每周能挤出几小时 周六下午两点照旧",
+    "relaxed": false
+   },
+   {
+    "pair_id": "W20CAL:AK08:neg_b_dumper",
+    "order": "B_good_right",
+    "quote": "先按一门排两周不丢人…你先算算每周能挤出几小时 周六下午两点照旧",
+    "relaxed": false
+   },
+   {
+    "pair_id": "W20CAL:AK10:neg_a_amnesia",
+    "order": "B_good_right",
+    "quote": "我抱猫笼挤地铁真的不行/我车在楼下",
+    "relaxed": false
+   },
+   {
+    "pair_id": "W20CAL:AK12:neg_a_amnesia",
+    "order": "A_good_left",
+    "quote": "结果出来再说 / 好 那就等你消息 周一下午我这边空着",
+    "relaxed": false
+   },
+   {
+    "pair_id": "W20RE:E164:E164_T08",
+    "order": "B_cand_right",
+    "quote": "好啊，这节我领了，两周内约上…口头说的不算",
+    "relaxed": false
+   },
+   {
+    "pair_id": "W20RE:LRE121:LRE121_T01",
+    "order": "A_cand_left",
+    "quote": "九点半是吧…要不要我周六顺路捎你过去？",
+    "relaxed": false
+   },
+   {
+    "pair_id": "W20RE:LRE121:LRE121_T01",
+    "order": "B_cand_right",
+    "quote": "九点半是吧……打完针正好一起吃个午饭。要不要我周六顺路捎你过去？",
+    "relaxed": false
+   },
+   {
+    "pair_id": "W20RE:LRE138:LRE138_T01",
+    "order": "A_cand_left",
+    "quote": "杀球落点比之前稳，就是线还得再调一档——具体技术细节回扣她爱琢磨的偏好",
+    "relaxed": false
+   },
+   {
+    "pair_id": "W20RE:LRE146:LRE146_T08",
+    "order": "A_cand_left",
+    "quote": "钱省了七百，发票抬头也没错……收货那天记得拍个开箱视频",
+    "relaxed": false
+   }
+  ]
+ },
+ "order_winner_agreement_constructed": {
+  "same": 31,
+  "total": 35,
+  "rate": 0.886
+ },
+ "good_dim_scores_mean": {
+  "goal": 2.886,
+  "fact": 2.7,
+  "attrib": 2.7,
+  "time": 2.643,
+  "boundary": 2.786,
+  "memory": 2.414,
+  "interact": 2.843,
+  "init": 2.4,
+  "emotion": 2.586
+ },
+ "per_dim": [
+  {
+   "dim": "goal",
+   "name": "goal目标",
+   "fk_hits": 0,
+   "fk_denom": 58,
+   "fk_rate": 0.0,
+   "miss_hits": 0,
+   "miss_denom": 0,
+   "miss_rate": null,
+   "dim_stab_exact": 29,
+   "dim_stab_pm1": 35,
+   "dim_stab_total": 35,
+   "dim_order_stab": 0.829,
+   "verdict": "full-qualified"
+  },
+  {
+   "dim": "fact",
+   "name": "fact事实",
+   "fk_hits": 0,
+   "fk_denom": 6,
+   "fk_rate": 0.0,
+   "miss_hits": 0,
+   "miss_denom": 0,
+   "miss_rate": null,
+   "dim_stab_exact": 26,
+   "dim_stab_pm1": 35,
+   "dim_stab_total": 35,
+   "dim_order_stab": 0.743,
+   "verdict": "full-qualified"
+  },
+  {
+   "dim": "attrib",
+   "fk_rate": null,
+   "miss_rate": null,
+   "dim_stab": 0.45714285714285713,
+   "verdict": "not-testable(this material)"
+  },
+  {
+   "dim": "time",
+   "name": "time时间状态",
+   "fk_hits": 2,
+   "fk_denom": 46,
+   "fk_rate": 0.043,
+   "miss_hits": 0,
+   "miss_denom": 0,
+   "miss_rate": null,
+   "dim_stab_exact": 25,
+   "dim_stab_pm1": 33,
+   "dim_stab_total": 35,
+   "dim_order_stab": 0.714,
+   "verdict": "full-qualified"
+  },
+  {
+   "dim": "boundary",
+   "name": "boundary边界",
+   "fk_hits": 1,
+   "fk_denom": 46,
+   "fk_rate": 0.022,
+   "miss_hits": 19,
+   "miss_denom": 22,
+   "miss_rate": 0.864,
+   "dim_stab_exact": 25,
+   "dim_stab_pm1": 34,
+   "dim_stab_total": 35,
+   "dim_order_stab": 0.714,
+   "verdict": "disqualified"
+  },
+  {
+   "dim": "memory",
+   "name": "memory记忆",
+   "fk_hits": 0,
+   "fk_denom": 12,
+   "fk_rate": 0.0,
+   "miss_hits": 28,
+   "miss_denom": 46,
+   "miss_rate": 0.609,
+   "dim_stab_exact": 18,
+   "dim_stab_pm1": 35,
+   "dim_stab_total": 35,
+   "dim_order_stab": 0.514,
+   "verdict": "disqualified"
+  },
+  {
+   "dim": "interact",
+   "name": "interact互动",
+   "fk_hits": 0,
+   "fk_denom": 64,
+   "fk_rate": 0.0,
+   "miss_hits": 0,
+   "miss_denom": 24,
+   "miss_rate": 0.0,
+   "dim_stab_exact": 30,
+   "dim_stab_pm1": 35,
+   "dim_stab_total": 35,
+   "dim_order_stab": 0.857,
+   "verdict": "full-qualified"
+  },
+  {
+   "dim": "init",
+   "name": "init主动",
+   "fk_hits": 0,
+   "fk_denom": 6,
+   "fk_rate": 0.0,
+   "miss_hits": 0,
+   "miss_denom": 24,
+   "miss_rate": 0.0,
+   "dim_stab_exact": 25,
+   "dim_stab_pm1": 35,
+   "dim_stab_total": 35,
+   "dim_order_stab": 0.714,
+   "verdict": "full-qualified"
+  },
+  {
+   "dim": "emotion",
+   "name": "emotion情绪关系",
+   "fk_hits": 0,
+   "fk_denom": 42,
+   "fk_rate": 0.0,
+   "miss_hits": 0,
+   "miss_denom": 24,
+   "miss_rate": 0.0,
+   "dim_stab_exact": 26,
+   "dim_stab_pm1": 35,
+   "dim_stab_total": 35,
+   "dim_order_stab": 0.743,
+   "verdict": "full-qualified"
+  }
+ ],
+ "severe": {
+  "primary_orderA": {
+   "tp": 1,
+   "fp": 15,
+   "fn": 1,
+   "tn": 53,
+   "precision": 0.062,
+   "recall": 0.5
+  },
+  "orderB": {
+   "tp": 1,
+   "fp": 13,
+   "fn": 1,
+   "tn": 55,
+   "precision": 0.071,
+   "recall": 0.5
+  },
+  "n_pairs_with_flags": 35,
+  "flags": [
+   {
+    "pair_id": "W20CAL:AK01:neg_a_amnesia",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK01:neg_b_dumper",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK01:neg_c_service",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": true,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK02:neg_a_amnesia",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK02:neg_b_dumper",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK02:neg_c_service",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": true,
+    "note": "RIGHT为客服模板式套话，未承接对话，且把未发出的拟议话术当作既有内容复述"
+   },
+   {
+    "pair_id": "W20CAL:AK03:neg_a_amnesia",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK03:neg_b_dumper",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK03:neg_c_service",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": true,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK04:neg_a_amnesia",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK04:neg_b_dumper",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK04:neg_c_service",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": true,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK05:neg_a_amnesia",
+    "gt_good": false,
+    "gt_neg": true,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK05:neg_b_dumper",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK05:neg_c_service",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": true,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK06:neg_a_amnesia",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK06:neg_c_service",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": true,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK07:neg_a_amnesia",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK07:neg_b_dumper",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK07:neg_c_service",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": false,
+    "note": "RIGHT 客服腔模板化回复，未承接她指定带真题的约定，未给出时点，且把对方消息当作待处理条目复述，属于互动反向。"
+   },
+   {
+    "pair_id": "W20CAL:AK08:neg_a_amnesia",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK08:neg_b_dumper",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK08:neg_c_service",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": true,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK09:neg_a_amnesia",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK09:neg_b_dumper",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK09:neg_c_service",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": true,
+    "note": "RIGHT把不存在的客服式套话回声当成用户发言复述，并编造六点半起床、周六图书馆等安排，属编造已发生安排+无据确定化，且未承接收尾"
+   },
+   {
+    "pair_id": "W20CAL:AK10:neg_a_amnesia",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": true,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK10:neg_b_dumper",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK10:neg_c_service",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": true,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK11:neg_a_amnesia",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK11:neg_b_dumper",
+    "gt_good": false,
+    "gt_neg": true,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": true,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK11:neg_c_service",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": false,
+    "B_neg": true,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK12:neg_a_amnesia",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK12:neg_b_dumper",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": false,
+    "B_good": false,
+    "B_neg": false,
+    "note": ""
+   },
+   {
+    "pair_id": "W20CAL:AK12:neg_c_service",
+    "gt_good": false,
+    "gt_neg": false,
+    "A_good": false,
+    "A_neg": true,
+    "B_good": true,
+    "B_neg": true,
+    "note": "RIGHT为模板化客服腔，未承接收尾，且引用了对方从未说过的『行，有事随时找我』，属错引/人物归属错误，并再次开启对话违反合法收尾"
+   }
+  ]
+ },
+ "historical_recheck": {
+  "win_match_stored": 6,
+  "win_total": 12,
+  "order_agree": 0.583,
+  "dim_exact_rate": 0.565,
+  "rows": [
+   {
+    "pair_id": "W20RE:E157:E157_T05",
+    "rerun_win_A": "cand",
+    "rerun_win_B": "TIE",
+    "order_agree": false,
+    "stored_win_cand_view": "parent",
+    "rerun_matches_stored": false
+   },
+   {
+    "pair_id": "W20RE:E157:E157_T08",
+    "rerun_win_A": "cand",
+    "rerun_win_B": "par",
+    "order_agree": false,
+    "stored_win_cand_view": "parent",
+    "rerun_matches_stored": false
+   },
+   {
+    "pair_id": "W20RE:E164:E164_T08",
+    "rerun_win_A": "TIE",
+    "rerun_win_B": "TIE",
+    "order_agree": true,
+    "stored_win_cand_view": "parent",
+    "rerun_matches_stored": false
+   },
+   {
+    "pair_id": "W20RE:E183:E183_T05",
+    "rerun_win_A": "par",
+    "rerun_win_B": "par",
+    "order_agree": true,
+    "stored_win_cand_view": "candidate",
+    "rerun_matches_stored": false
+   },
+   {
+    "pair_id": "W20RE:LRE117:LRE117_T01",
+    "rerun_win_A": "par",
+    "rerun_win_B": "par",
+    "order_agree": true,
+    "stored_win_cand_view": "parent",
+    "rerun_matches_stored": true
+   },
+   {
+    "pair_id": "W20RE:LRE117:LRE117_T08",
+    "rerun_win_A": "cand",
+    "rerun_win_B": "par",
+    "order_agree": false,
+    "stored_win_cand_view": "parent",
+    "rerun_matches_stored": false
+   },
+   {
+    "pair_id": "W20RE:LRE121:LRE121_T01",
+    "rerun_win_A": "par",
+    "rerun_win_B": "par",
+    "order_agree": true,
+    "stored_win_cand_view": "parent",
+    "rerun_matches_stored": true
+   },
+   {
+    "pair_id": "W20RE:LRE121:LRE121_T08",
+    "rerun_win_A": "cand",
+    "rerun_win_B": null,
+    "order_agree": false,
+    "stored_win_cand_view": "candidate",
+    "rerun_matches_stored": true
+   },
+   {
+    "pair_id": "W20RE:LRE138:LRE138_T01",
+    "rerun_win_A": "par",
+    "rerun_win_B": "par",
+    "order_agree": true,
+    "stored_win_cand_view": "parent",
+    "rerun_matches_stored": true
+   },
+   {
+    "pair_id": "W20RE:LRE138:LRE138_T08",
+    "rerun_win_A": "cand",
+    "rerun_win_B": "cand",
+    "order_agree": true,
+    "stored_win_cand_view": "candidate",
+    "rerun_matches_stored": true
+   },
+   {
+    "pair_id": "W20RE:LRE146:LRE146_T01",
+    "rerun_win_A": "par",
+    "rerun_win_B": "par",
+    "order_agree": true,
+    "stored_win_cand_view": "parent",
+    "rerun_matches_stored": true
+   },
+   {
+    "pair_id": "W20RE:LRE146:LRE146_T08",
+    "rerun_win_A": "cand",
+    "rerun_win_B": "TIE",
+    "order_agree": false,
+    "stored_win_cand_view": "TIE",
+    "rerun_matches_stored": false
+   }
+  ],
+  "dim_pm1_rate": 0.972
+ },
+ "sanity_identical_text": [
+  {
+   "pair_id": "W20SAN:AK01:self",
+   "winner": "TIE"
+  },
+  {
+   "pair_id": "W20SAN:AK02:self",
+   "winner": "TIE"
+  },
+  {
+   "pair_id": "W20SAN:AK03:self",
+   "winner": "TIE"
+  },
+  {
+   "pair_id": "W20SAN:AK04:self",
+   "winner": "TIE"
+  },
+  {
+   "pair_id": "W20SAN:AK05:self",
+   "winner": "TIE"
+  },
+  {
+   "pair_id": "W20SAN:AK06:self",
+   "winner": "TIE"
+  }
+ ]
+}

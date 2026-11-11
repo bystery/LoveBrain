@@ -1,0 +1,210 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W15N_B",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W15N_B_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w15n_norecap_live_20261102",
+ "n_queued": 6,
+ "queue": [
+  {
+   "pair_id": "LP:LRE146:LRE146_T07",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T07",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "右侧把“收货人写姥姥楼下他名字”当作既定安排，但输入未提收货人信息，属于无据确定化；且未回扣“发票齐全”边界，也没提她之前关心的安装调试谁盯的问题",
+   "key_quote": "让他下单，你盯收货和安装时间，发票写上姥姥的名字，后面保修好查。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 2,
+     "memory": 0
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "收货人写姥姥楼下他名字",
+      "发票齐全"
+     ],
+     "found_where": {
+      "收货人写姥姥楼下他名字": null,
+      "发票齐全": null
+     },
+     "nowhere": [
+      "收货人写姥姥楼下他名字",
+      "发票齐全"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T06",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T06",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "RIGHT 无据自称“我在门店问过电池保修”——实际是唐棠自己在门店问的老板，人物与经历错配",
+   "dims_flagged": {
+    "parent": {
+     "fact": 2,
+     "time": 2,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T11",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T11",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT 编造了『她以前总说那玩意儿噎得慌』这一具体过往细节，属无据编造人物偏好；LEFT 干净但未利用已知背景（她耳根软、性子细），仅泛化肯定。",
+   "key_quote": "LEFT：这收法漂亮，钱不拧巴，心意也落到了姥姥身上。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 2,
+     "time": 3,
+     "attrib": 2,
+     "memory": 0
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T13",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T13",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "R：全国联保两年——背景未提，属编造事实",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T14",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T14",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "杂牌靠绑带，骑起来一颠一带的，掉了不安全。何况电池都愿多花七百买安心",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 3,
+     "attrib": 3,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T38",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T38",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "轮椅够用，红包可比四个轮子实在。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

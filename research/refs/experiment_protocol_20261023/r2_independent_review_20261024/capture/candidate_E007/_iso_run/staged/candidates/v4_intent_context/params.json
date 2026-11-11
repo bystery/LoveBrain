@@ -1,0 +1,6 @@
+{
+  "role": "candidate",
+  "parent": "reference_product_v1",
+  "output_contract": null,
+  "note": "v4_intent_context 下一代意图与上下文候选【初稿】(VERDICT §6-C)。只加一层『当前目标作用域与上下文优先级』组织规则：有效意图进入预算保护区、关闭/替换不留旧目标、目标可指导行动但不谎称已同意/不复述、已确认事项独立于当前目标持续、note 四类分清、无题材词特判/无额外模型调用。system 复用与 v3 同一份精简资产(自带副本,不改冻结 v3)；共享依赖 rc/build_system_prompt/语义块来自父本 reference_product_v1(进闭包)。记忆保持简单事件+种子事项；模型回复是草稿不写回。legacy 契约不声明。可运行初稿，未声称更会聊，等 v3 真实结果后再定是否实跑。"
+}

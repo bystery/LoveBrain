@@ -1,0 +1,511 @@
+{
+  "authorization_id": "AUTH-P06-PAIRED-QWEN-20261027-01",
+  "model": "qwen3.8-flash",
+  "temperature": 0.7,
+  "timeout_s": 60,
+  "max_concurrency": 3,
+  "planned": 120,
+  "frozen": {
+    "PAIR_NODES.jsonl": "918021f6bf09ffd3fe187cb41f6a7d045d6fb611a841be033101e9634fb778eb",
+    "PRIVATE_PAIR_BINDINGS.json": "8f36c21f2b5d0e290a3de86b332dc605526bd8529f63dfa3b33e7b15693f221f",
+    "CONTROLS_PUBLIC.json": "03c1b61f067bde2fd845ebb157bf21e88973108d8ea251aa27d4eeba919fecd3",
+    "CONTROLS_PRIVATE.json": "085ddee663a4c929569d9280455932b98caa4b031112727652fc4e696a2007a7",
+    "PLAN.json": "9810ca5a4e4697f546593cda22eee68236179a60ec9454f4074e4d9d750c8ea2",
+    "JUDGE_SYSTEM.txt": "7519c31e78fa80cba89de16c2d1c5fce71d1cdf40dfd6114c527292ca0d8a60d"
+  },
+  "jobs": [
+    {
+      "id": "FC01",
+      "kind": "control"
+    },
+    {
+      "id": "FP046",
+      "kind": "pair"
+    },
+    {
+      "id": "FC02",
+      "kind": "control"
+    },
+    {
+      "id": "FC03",
+      "kind": "control"
+    },
+    {
+      "id": "FC04",
+      "kind": "control"
+    },
+    {
+      "id": "FC05",
+      "kind": "control"
+    },
+    {
+      "id": "FC06",
+      "kind": "control"
+    },
+    {
+      "id": "FC07",
+      "kind": "control"
+    },
+    {
+      "id": "FC08",
+      "kind": "control"
+    },
+    {
+      "id": "FC09",
+      "kind": "control"
+    },
+    {
+      "id": "FC10",
+      "kind": "control"
+    },
+    {
+      "id": "FC11",
+      "kind": "control"
+    },
+    {
+      "id": "FC12",
+      "kind": "control"
+    },
+    {
+      "id": "FP001",
+      "kind": "pair"
+    },
+    {
+      "id": "FP002",
+      "kind": "pair"
+    },
+    {
+      "id": "FP003",
+      "kind": "pair"
+    },
+    {
+      "id": "FP004",
+      "kind": "pair"
+    },
+    {
+      "id": "FP005",
+      "kind": "pair"
+    },
+    {
+      "id": "FP006",
+      "kind": "pair"
+    },
+    {
+      "id": "FP007",
+      "kind": "pair"
+    },
+    {
+      "id": "FP008",
+      "kind": "pair"
+    },
+    {
+      "id": "FP009",
+      "kind": "pair"
+    },
+    {
+      "id": "FP010",
+      "kind": "pair"
+    },
+    {
+      "id": "FP011",
+      "kind": "pair"
+    },
+    {
+      "id": "FP012",
+      "kind": "pair"
+    },
+    {
+      "id": "FP013",
+      "kind": "pair"
+    },
+    {
+      "id": "FP014",
+      "kind": "pair"
+    },
+    {
+      "id": "FP015",
+      "kind": "pair"
+    },
+    {
+      "id": "FP016",
+      "kind": "pair"
+    },
+    {
+      "id": "FP017",
+      "kind": "pair"
+    },
+    {
+      "id": "FP018",
+      "kind": "pair"
+    },
+    {
+      "id": "FP019",
+      "kind": "pair"
+    },
+    {
+      "id": "FP020",
+      "kind": "pair"
+    },
+    {
+      "id": "FP021",
+      "kind": "pair"
+    },
+    {
+      "id": "FP022",
+      "kind": "pair"
+    },
+    {
+      "id": "FP023",
+      "kind": "pair"
+    },
+    {
+      "id": "FP024",
+      "kind": "pair"
+    },
+    {
+      "id": "FP025",
+      "kind": "pair"
+    },
+    {
+      "id": "FP026",
+      "kind": "pair"
+    },
+    {
+      "id": "FP027",
+      "kind": "pair"
+    },
+    {
+      "id": "FP028",
+      "kind": "pair"
+    },
+    {
+      "id": "FP029",
+      "kind": "pair"
+    },
+    {
+      "id": "FP030",
+      "kind": "pair"
+    },
+    {
+      "id": "FP031",
+      "kind": "pair"
+    },
+    {
+      "id": "FP032",
+      "kind": "pair"
+    },
+    {
+      "id": "FP033",
+      "kind": "pair"
+    },
+    {
+      "id": "FP034",
+      "kind": "pair"
+    },
+    {
+      "id": "FP035",
+      "kind": "pair"
+    },
+    {
+      "id": "FP036",
+      "kind": "pair"
+    },
+    {
+      "id": "FP037",
+      "kind": "pair"
+    },
+    {
+      "id": "FP038",
+      "kind": "pair"
+    },
+    {
+      "id": "FP039",
+      "kind": "pair"
+    },
+    {
+      "id": "FP040",
+      "kind": "pair"
+    },
+    {
+      "id": "FP041",
+      "kind": "pair"
+    },
+    {
+      "id": "FP042",
+      "kind": "pair"
+    },
+    {
+      "id": "FP043",
+      "kind": "pair"
+    },
+    {
+      "id": "FP044",
+      "kind": "pair"
+    },
+    {
+      "id": "FP045",
+      "kind": "pair"
+    },
+    {
+      "id": "FP047",
+      "kind": "pair"
+    },
+    {
+      "id": "FP048",
+      "kind": "pair"
+    },
+    {
+      "id": "FP049",
+      "kind": "pair"
+    },
+    {
+      "id": "FP050",
+      "kind": "pair"
+    },
+    {
+      "id": "FP051",
+      "kind": "pair"
+    },
+    {
+      "id": "FP052",
+      "kind": "pair"
+    },
+    {
+      "id": "FP053",
+      "kind": "pair"
+    },
+    {
+      "id": "FP054",
+      "kind": "pair"
+    },
+    {
+      "id": "FP055",
+      "kind": "pair"
+    },
+    {
+      "id": "FP056",
+      "kind": "pair"
+    },
+    {
+      "id": "FP057",
+      "kind": "pair"
+    },
+    {
+      "id": "FP058",
+      "kind": "pair"
+    },
+    {
+      "id": "FP059",
+      "kind": "pair"
+    },
+    {
+      "id": "FP060",
+      "kind": "pair"
+    },
+    {
+      "id": "FP061",
+      "kind": "pair"
+    },
+    {
+      "id": "FP062",
+      "kind": "pair"
+    },
+    {
+      "id": "FP063",
+      "kind": "pair"
+    },
+    {
+      "id": "FP064",
+      "kind": "pair"
+    },
+    {
+      "id": "FP065",
+      "kind": "pair"
+    },
+    {
+      "id": "FP066",
+      "kind": "pair"
+    },
+    {
+      "id": "FP067",
+      "kind": "pair"
+    },
+    {
+      "id": "FP068",
+      "kind": "pair"
+    },
+    {
+      "id": "FP069",
+      "kind": "pair"
+    },
+    {
+      "id": "FP070",
+      "kind": "pair"
+    },
+    {
+      "id": "FP071",
+      "kind": "pair"
+    },
+    {
+      "id": "FP072",
+      "kind": "pair"
+    },
+    {
+      "id": "FP073",
+      "kind": "pair"
+    },
+    {
+      "id": "FP074",
+      "kind": "pair"
+    },
+    {
+      "id": "FP075",
+      "kind": "pair"
+    },
+    {
+      "id": "FP076",
+      "kind": "pair"
+    },
+    {
+      "id": "FP077",
+      "kind": "pair"
+    },
+    {
+      "id": "FP078",
+      "kind": "pair"
+    },
+    {
+      "id": "FP079",
+      "kind": "pair"
+    },
+    {
+      "id": "FP080",
+      "kind": "pair"
+    },
+    {
+      "id": "FP081",
+      "kind": "pair"
+    },
+    {
+      "id": "FP082",
+      "kind": "pair"
+    },
+    {
+      "id": "FP083",
+      "kind": "pair"
+    },
+    {
+      "id": "FP084",
+      "kind": "pair"
+    },
+    {
+      "id": "FP085",
+      "kind": "pair"
+    },
+    {
+      "id": "FP086",
+      "kind": "pair"
+    },
+    {
+      "id": "FP087",
+      "kind": "pair"
+    },
+    {
+      "id": "FP088",
+      "kind": "pair"
+    },
+    {
+      "id": "FP089",
+      "kind": "pair"
+    },
+    {
+      "id": "FP090",
+      "kind": "pair"
+    },
+    {
+      "id": "FP091",
+      "kind": "pair"
+    },
+    {
+      "id": "FP092",
+      "kind": "pair"
+    },
+    {
+      "id": "FP093",
+      "kind": "pair"
+    },
+    {
+      "id": "FP094",
+      "kind": "pair"
+    },
+    {
+      "id": "FP095",
+      "kind": "pair"
+    },
+    {
+      "id": "FP096",
+      "kind": "pair"
+    },
+    {
+      "id": "FP030-SWAP",
+      "source": "FP030",
+      "kind": "swap"
+    },
+    {
+      "id": "FP072-SWAP",
+      "source": "FP072",
+      "kind": "swap"
+    },
+    {
+      "id": "FP047-SWAP",
+      "source": "FP047",
+      "kind": "swap"
+    },
+    {
+      "id": "FP012-SWAP",
+      "source": "FP012",
+      "kind": "swap"
+    },
+    {
+      "id": "FP001-SWAP",
+      "source": "FP001",
+      "kind": "swap"
+    },
+    {
+      "id": "FP044-SWAP",
+      "source": "FP044",
+      "kind": "swap"
+    },
+    {
+      "id": "FP024-SWAP",
+      "source": "FP024",
+      "kind": "swap"
+    },
+    {
+      "id": "FP022-SWAP",
+      "source": "FP022",
+      "kind": "swap"
+    },
+    {
+      "id": "FP076-SWAP",
+      "source": "FP076",
+      "kind": "swap"
+    },
+    {
+      "id": "FP002-SWAP",
+      "source": "FP002",
+      "kind": "swap"
+    },
+    {
+      "id": "FP069-SWAP",
+      "source": "FP069",
+      "kind": "swap"
+    },
+    {
+      "id": "FP014-SWAP",
+      "source": "FP014",
+      "kind": "swap"
+    }
+  ],
+  "failure_policy": "No retry. Stop submitting on two consecutive empty/transport failures; pending unstarted units may resume under this unchanged plan. Auditing/identity/budget failure stops globally."
+}

@@ -1,0 +1,68 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-C4-SCREEN-20261026-01",
+ "authorized": true,
+ "granted_by": "持续执行授权(AGENTS §0)+执行书§0机制筛选阶段帽128内",
+ "budget_ledger": "logs/auth_budget/AUTH-C4-SCREEN-20261026-01.jsonl",
+ "max_attempts": 128,
+ "real_endpoint": "http://127.0.0.1:17770/v1",
+ "model": "dsf",
+ "api_config": "api_cfg:openai_compat_stream_true_v1(include_usage gated)——与96批同流式身份",
+ "scope": {
+  "purpose": "C4机制筛选：v5 vs goal_action_v1 / v5 vs evidence_memory_v1 两锚定成对批（2×64=128，恰满阶段帽）",
+  "formula_deviation": "执行书§4公式=4臂×4故事×8位=128；实施=2×(2臂×4故事×8位)=128。原版臂不在本批：a)阶段帽不允许第三批(192>128)；b)执行书M2复验(384帽)本就含原版/v5/入围三臂对照——原版对照在复验完成。96批+204批已含原版vs v5的48+96位历史证据。",
+  "stories": "E006/E008/E012/E007（主线 B1 c4_screening_pick：边界+事实归属+推进反馈+暂定确认）",
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "concurrency": 2,
+  "arm_identities_frozen": {
+   "reference_product_v1": [
+    "4f4ec9a887ae636d3e96e72270a54c7dea9d79a7b76ebfddfb6c466a698474dc",
+    "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f",
+    "a05e26673c51fa19aaa17a845f4955fddf684fd76912ee11649a4b190164592f",
+    "ecca9f87326b3217a4226a46242871e3f5c82ffb0f6639244ab2aa9b998763da",
+    "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+    "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+    "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+    "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+    "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba"
+   ],
+   "v5_purpose_aligned": [
+    "11eb79fbca6e5f06800bfa9a4570a39d33b45d8bf4b90b877d06888dd2500940",
+    "e5f072843cb300b35efce0a583120376e30dc56231478fba9d831045392ec11d",
+    "876a5d8830e637899722d23801b461f2479fd6ef10f06a4c0a5a22d91ab9d03f",
+    "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+    "fe5221b5bdc4c00a5e8837841140e778fc7052ab38ac8043f8f4d1f16d007eb0",
+    "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+    "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+    "422ec2277b7a6d7801f61c8c17701f1fa3d7a8cda8d8ed01aef6c9101b32e2cf"
+   ],
+   "goal_action_v1": [
+    "e0485722cfa6a682a091cad70212a6841c96d13c19f785e424c4f9d15b19f6d8",
+    "3233c428ab8e452b7bcbbb99cfae8489f935a236c241fb572c99f4591ab832c4",
+    "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+    "fe5221b5bdc4c00a5e8837841140e778fc7052ab38ac8043f8f4d1f16d007eb0",
+    "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+    "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+    "fe70f14c298dcfa75d5a3fc107b63a3c7a901f42b4e203f98dd0a9a07ca60c52"
+   ],
+   "evidence_memory_v1": [
+    "5e49be1119f2332def14229f746e0a18fa035673ca0437420767f1c327b2f9d6",
+    "42759e76f0fc4fbf62deaafd829b5ab5faaf7615ada59370dd83423ece3fa19f",
+    "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+    "fe5221b5bdc4c00a5e8837841140e778fc7052ab38ac8043f8f4d1f16d007eb0",
+    "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+    "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+    "5881018ab1b370fa8617bfa1859c425e1a58556b061005f76da9162a4794e153"
+   ]
+  },
+  "batches": [
+   "b2_v5_vs_goal",
+   "b3_v5_vs_mem"
+  ],
+  "arm_identity_note": "重冻于派发前(2026-10-26 07:5x)：staging 触发注释补入后 C2/C3 源码变化；此版为准"
+ },
+ "approval_basis": "主线静默>5h；主线 B1 池已预选故事（尊重其判断）；候选为主线C2/C3设计稿的侧线忠实实施",
+ "status": "ACTIVE"
+}

@@ -1,0 +1,83 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "LR2",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_LR2_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/longprobe_lr2_live_20261101",
+ "n_queued": 2,
+ "queue": [
+  {
+   "pair_id": "LP:LRE060:LRE060_T36",
+   "order": "main",
+   "story": "",
+   "cid": "LRE060_T36",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT凭空编出“还搭一张五十的券”这项已完成的补偿，与对话中实际只有五块红包的记录冲突，属于编造已发生事项；LEFT虽未点明“平台早已退款”这条事实，但用“钱长在阳台上”把旧账接回花土，结论没有错。",
+   "key_quote": "没扔。那80块现在长在阳台上，11盆全绿就是收据。……后天下午我上门点收，一盆一盆数给你看。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "还搭一张五十的券",
+      "平台早已退款",
+      "钱长在阳台上"
+     ],
+     "found_where": {
+      "还搭一张五十的券": null,
+      "平台早已退款": null,
+      "钱长在阳台上": null
+     },
+     "nowhere": [
+      "还搭一张五十的券",
+      "平台早已退款",
+      "钱长在阳台上"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE048:LRE048_T24",
+   "order": "swap",
+   "story": "",
+   "cid": "LRE048_T24",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "LEFT 没有依据就把‘明晚’确定为‘周日’，把日期确定化了；还编造她下播后有‘记账仪式’这一安排，相当于无依据地安排已发生的事。",
+   "key_quote": "RIGHT：明晚7点半我记着了，你笔记账本都摆齐，就差他那一笔。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 0,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  }
+ ]
+}

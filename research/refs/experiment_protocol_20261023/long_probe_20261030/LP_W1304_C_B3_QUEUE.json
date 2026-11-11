@@ -1,0 +1,41 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W1304_C",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W1304_C_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w1304_stage_live_20261102",
+ "n_queued": 1,
+ "queue": [
+  {
+   "pair_id": "LP:E184:E184_T11",
+   "order": "main",
+   "story": "E184",
+   "cid": "E184_T11",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "L断言'剩下六节上完是元旦前后'，将未确定的排课结束时间算成具体节点，属无据确定化；并把12月10日锁价截止日期归为与上课进度对立的说法，属无依据推断。",
+   "key_quote": "先按自己的节奏走，别被一个截止日期催着定",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

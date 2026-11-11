@@ -1,0 +1,73 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W1304_A",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W1304_A_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w1304_stage_live_20261102",
+ "n_queued": 2,
+ "queue": [
+  {
+   "pair_id": "LP:E179:E179_T04",
+   "order": "main",
+   "story": "E179",
+   "cid": "E179_T04",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "订金别超过五百，超过的话你先回来跟我说一声，别自己做主。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 2,
+     "time": 2,
+     "attrib": 2,
+     "memory": 0
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E179:E179_T11",
+   "order": "main",
+   "story": "E179",
+   "cid": "E179_T11",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "你外婆除了不吃辣，还有什么特别爱的？",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

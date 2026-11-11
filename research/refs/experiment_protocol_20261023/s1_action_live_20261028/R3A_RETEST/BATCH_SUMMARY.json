@@ -1,0 +1,36 @@
+{
+ "batch_id": "BATCH-R3A-DECLINE-20261028",
+ "mode": "capture",
+ "arm_mapping": {
+  "parent": "action_policy_r2",
+  "candidate": "action_policy_r3"
+ },
+ "attempts": 48,
+ "started": 48,
+ "completed": 48,
+ "failed": 0,
+ "execution_order_verified": true,
+ "dispatch_bijection": true,
+ "state_isolated": true,
+ "residents": 10,
+ "real_model_calls": 0,
+ "recall_metrics_applicable": false,
+ "cross_arm_user_len_diff_max": 250,
+ "turns_parent": 24,
+ "turns_candidate": 24,
+ "parent_cost": {
+  "prompt": 24,
+  "completion": 24,
+  "latency_p50_ms": 23,
+  "latency_p95_ms": 26,
+  "latency_max_ms": 34
+ },
+ "candidate_cost": {
+  "prompt": 24,
+  "completion": 24,
+  "latency_p50_ms": 22,
+  "latency_p95_ms": 25,
+  "latency_max_ms": 29
+ },
+ "all_semantic_unrated_without_annotations": true
+}

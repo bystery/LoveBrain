@@ -1,0 +1,11 @@
+{
+ "batch_id": "BATCH-W22-FASTLANE-20261104",
+ "arm_map": {"parent": "window_expand_b_norecap_uc", "candidate": "window_expand_b_norecap_uc_attr"},
+ "episode_order": [
+  {"episode": "E157", "arm_order": "parent_first"},
+  {"episode": "LRE117", "arm_order": "candidate_first"}
+ ],
+ "cards_path": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+ "recall_capable": false,
+ "note": "W22-01 快车道 G0（固定素材 E157+LRE117，104 attempts；G0 门槛含重试后口径修订）；候选=uc_attr（归属锚定，判据冻结 W22_01_ATTR_DESIGN_20261104.md）；G1 主假设=归因错位族 severe 计数 cand<par"
+}

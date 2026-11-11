@@ -1,0 +1,924 @@
+{
+ "kind": "f_b_knowledge_result",
+ "batch_dir": "logs/kb_probe_live_20261029_164332/KB_PROBE_RESULT.json",
+ "mode": "live",
+ "authorization_id": "AUTH-KB-PROBE-20261029-01",
+ "candidate": "action_policy_r4_guard_e3",
+ "identity_sha256": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17",
+ "precheck_sha256": "269741cae13a404ad5a6cb4860af4835ec07f49807c8d35236654a9d75ba8068",
+ "planned": 24,
+ "done": 24,
+ "transport_ok": 24,
+ "stopped": null,
+ "frozen_prompt_mismatch_cells": [],
+ "fixture_turns_not_billed": 76,
+ "token_usage": {
+  "prompt": 154204,
+  "completion": 9351,
+  "total": 163555,
+  "unknown_cells": []
+ },
+ "money": null,
+ "money_note": "无单价账本依据，金额一律 null，不估",
+ "probes": {
+  "KP-A2": {
+   "class": "attribution",
+   "story": "K01",
+   "fact_id": "f_0020",
+   "domain": "旅行/朋友家（阿岚）",
+   "question": "14号去阿岚那儿吃饭，她家那只最近怎么样，我要不要提前准备点什么？",
+   "cells": {
+    "on:r1": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "e1ae8c0683a5a93a2b83aa70a745ab5b06aed19e341bc0578c3a0ad4391eeace",
+     "raw_sha256": "6b827520e16b26389ad4ed8be8a9a77f07ba7d00c1b5d04a79d3cbe6402d8bd9",
+     "usage": {
+      "prompt_tokens": 6587,
+      "completion_tokens": 394,
+      "total_tokens": 6981
+     },
+     "text": "你不是怕猫毛吗，穿件不显毛的就行，粘毛纸我这边带。四点还不睡，夜班？ 别准备太隆重，把不粘毛的自己带上就够了。倒是你，四点还不睡？ 准备一卷粘毛纸，专治「我怕猫毛」。另外问一句，你是刚下夜班，还是根本没睡？ 猫毛的事你不用操心，穿件深色衣服，粘毛纸我带着。这个点还醒着，别太熬。 水果我来带，你别再操心准备的事了。 猫毛归我，你负责穿件不显毛的就行。 四点还醒着，我有点担心你白天撑不住。 先睡吧，剩下的事明天再对。",
+     "hand": {
+      "use": "PASS",
+      "attribution": "CORRECT",
+      "contamination": "NONE",
+      "quote": "你不是怕猫毛吗，穿件不显毛的就行，粘毛纸我这边带",
+      "note": "没写“掉毛”二字但据此安排（深色衣服/粘毛纸），语义用到"
+     }
+    },
+    "off:r1": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "209c6fd923d30645d358d39bd6a24b0f7bf0944ec6d4ef079130fb33bc4486af",
+     "raw_sha256": "7453e1cbf7545a0ab9c20ee1362dde8e4cbee8c930101dc2d6328b21f90c8a08",
+     "usage": {
+      "prompt_tokens": 6182,
+      "completion_tokens": 444,
+      "total_tokens": 6626
+     },
+     "text": "四点半了还没睡？她家那只你先说是猫还是狗，我一直没搞清。要带就带猫条或者一盒水果，不空手就行。 她家那只我记不清，你定，我照办。倒是你，四点二十八还在盘算带什么——先把自己哄睡。 四点二十八，脑子在操心别人家那只吃啥。猫条最保险，万一它是狗，就当零食。 还没睡啊。带盒水果吧，不空手就行，别为这个熬到天亮。 14号是下个月吧？我怕记成上个月那次。 带的东西我来准备，你说她家那只吃猫条还是罐头。 四点多了还没睡，我有点不放心。 先不聊吃的，你怎么这个点还醒着？",
+     "hand": {
+      "use": "ABSTAIN_OR_MISS",
+      "attribution": "UNSPECIFIED",
+      "contamination": "NONE",
+      "quote": "她家那只你先说是猫还是狗，我一直没搞清",
+      "note": "连物种都不知道——off 侧干净地体现“窗口里没有这条”"
+     }
+    },
+    "on:r2": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [
+      "掉毛"
+     ],
+     "stale_forms_present": [],
+     "attribution_target_present": [
+      "阿岚"
+     ],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "e1ae8c0683a5a93a2b83aa70a745ab5b06aed19e341bc0578c3a0ad4391eeace",
+     "raw_sha256": "424181fe1b7a65128b13ada89da1238e244a19b15331cdd224e430fa5ad72fac",
+     "usage": {
+      "prompt_tokens": 6587,
+      "completion_tokens": 437,
+      "total_tokens": 7024
+     },
+     "text": "猫我最近也没见着，得问阿岚一声。你要带就带点水果或者喝的，别空手就行。对了14号是下个月吧？11月那个已经过去了。 猫的事得问阿岚，我又没养过。你要准备就带点水果，别空手。倒是14号——11月那个已经过去了，你说的是下个月？ 凌晨四点半操心别人家的猫，你倒是挺闲。带点水果过去就行，不用大张旗鼓。14号是下个月那个吧？ 猫我也不清楚，得问阿岚。你要带就带点水果或者喝的，简单点就好。14号是下个月对吧，别记岔了。 阿岚家有什么忌口吗？你问一句，我这边好准备。 她家猫掉毛那事你还怕吗，去她家别穿深色了。 这个点还没睡，别熬太狠。 房卡那事后来还给老板了吗？",
+     "hand": {
+      "use": "PASS",
+      "attribution": "CORRECT",
+      "contamination": "NONE",
+      "quote": "她家猫掉毛那事你还怕吗，去她家别穿深色了",
+      "note": "主槽反而说“猫我最近也没见着，得问阿岚一声”——同一份交付里既有正确召回也有保守表述，按整份判 PASS"
+     }
+    },
+    "off:r2": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "209c6fd923d30645d358d39bd6a24b0f7bf0944ec6d4ef079130fb33bc4486af",
+     "raw_sha256": "3aa55e56eb504a80bf6e5fec9de46db77c67d3474a7388f8536cbc1aa207cdb6",
+     "usage": {
+      "prompt_tokens": 6182,
+      "completion_tokens": 458,
+      "total_tokens": 6640
+     },
+     "text": "四点半了还在盘这个。带点水果过去就行，别的不用太讲究。她家那只是猫还是狗？我到时候别认错。 四点二十八，你问我她家那只。你是替它操心，还是自己先紧张了？带瓶酒过去，剩下的看她家那只给不给面子。 分工吧：水果我带，她家那只的零食你挑。那只是猫还是狗？ 这个点还没睡啊。准备的事别自己一个人扛，我到时候带点水果过去，你想到什么再补，不急着现在定。 她家那只是猫还是狗？ 空手去不好看，带点水果最稳，她家那只也捎一份。 四点半了，这事明天再说也行。 你这是刚下夜班，还是睡不着？",
+     "hand": {
+      "use": "ABSTAIN_OR_MISS",
+      "attribution": "UNSPECIFIED",
+      "contamination": "NONE",
+      "quote": "她家那只是猫还是狗？我到时候别认错",
+      "note": "同上，未编造"
+     }
+    }
+   },
+   "Capture": "PASS（原子来自付费写回，见前置闸门）",
+   "Fidelity": "PASS（值逐字可核到来源）",
+   "Retrieval": "PASS（on 侧出站 prompt 含该 fact_id 投影行）",
+   "literal_use": {
+    "on": "1/2",
+    "off": "0/2",
+    "note": "字面命中只是下界；语义判定见 text 逐条读"
+   },
+   "Contamination": {
+    "on_claims_unknown": "",
+    "note": "由分析人逐条填（见 report 的逐格文本），脚本不做词面判定",
+    "hand": {
+     "asserted_unsupported_on": 0,
+     "asserted_unsupported_off": 0,
+     "cases": []
+    }
+   },
+   "Use": {
+    "on_pass": 2,
+    "on_opportunities": 2,
+    "on_fail": [],
+    "off_pass": 0,
+    "off_opportunities": 2,
+    "denominator_note": "分母=该探针实际派发的重复次数（2），不是全部 72 位点"
+   },
+   "Attribution": {
+    "note": "字面主体命中；归属是否真错仍需读原文",
+    "hand": {
+     "correct": 2,
+     "opportunities": 2
+    }
+   }
+  },
+  "KP-A1": {
+   "class": "attribution",
+   "story": "K02",
+   "fact_id": "f_0029",
+   "domain": "装修/宠物（豆豆）",
+   "question": "周末师傅要来开电钻，家里那个小的受不受得了？",
+   "cells": {
+    "on:r1": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [
+      "怕电钻"
+     ],
+     "stale_forms_present": [],
+     "attribution_target_present": [
+      "豆豆"
+     ],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "f9fa1843a051847aadfd53a035518ef730751f42a036847dd50bd52004519ec1",
+     "raw_sha256": "f58305b9e7edc1dfd34c687804e095d6b13d24755bb6e41575d12562c1b9cf90",
+     "usage": {
+      "prompt_tokens": 6532,
+      "completion_tokens": 412,
+      "total_tokens": 6944
+     },
+     "text": "受不了，豆豆怕电钻。周末哪天开钻？定下来我提前把它接走，钻完你再接回去。 你妈对猫毛过敏，那就只剩一个选项了——周末送我这。哪天开钻，我提前过去接。 它肯定受不了，电钻一响能当场表演原地起飞。周末哪天开钻？我提前来接它避难。 受不了，它怕电钻。你这两天已经够累了，开钻那天把豆豆给我，你安心在那边盯着就行。 周末定的是哪天？我提前腾个地方给它。 电钻要开多久？要是就半天，我那天过去陪你盯完一起收。 你装修刚完还得听电钻，也是够折腾的，这事我来。 开完钻那几天灰大味儿也大，回头我帮你把窗和柜子擦一遍。",
+     "hand": {
+      "use": "PASS",
+      "attribution": "CORRECT",
+      "contamination": "NONE",
+      "quote": "受不了，豆豆怕电钻。周末哪天开钻？定下来我提前把它接走",
+      "note": "主体落在豆豆；顺带用上另一条跨窗事实『你妈对猫毛过敏，那就只剩一个选项了——周末送我这』"
+     }
+    },
+    "off:r1": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [
+      "豆豆"
+     ],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "4c9643c3efd5296cb4beec3eb1715530e5ab56156d388accb08040fe5dd079c5",
+     "raw_sha256": "0f1463873e79df8baba471e75b541f56d940ed0d166960c424881d60e8bdf351",
+     "usage": {
+      "prompt_tokens": 6196,
+      "completion_tokens": 536,
+      "total_tokens": 6732
+     },
+     "text": "豆豆今天才刚回家，还没熟悉完就赶上电钻。猫怕的是一阵一阵的突发声，不是一直响，所以别想着让他适应。把最远那间门关上，放个纸箱和他睡过的毯子，人进出时留神别让他跟着溜出去。周末你要是顾不上，先送我这躲两天，师傅走了再接回去。 他受不了，你也受不了，一边电钻一边心疼。最远那间门关上，纸箱加旧毯子，给他留个能钻的角落，剩下的靠他自己想开。周末真按不住就送我这躲两天。 豆豆今天刚认完门，周末就给他安排电钻交响乐，这待遇。远点那间关上门，纸箱旧毯子备好，剩下的让他自己消化。 先别慌，猫怕的是一阵一阵的突发声，不是一直响。把最远那间给他留着，纸箱、旧毯子、门关好。周末你要是忙不过来，把豆豆送我这儿，我看着他。 师傅周末几点到？要是上午就动工，豆豆提前一晚上挪走更稳。 猫对突发声比对持续响更敏感，给他留个能钻的角落就够。 装修这一个月你自己扛下来了，猫的应激别也自己扛。 家里味道散得怎么样了？",
+     "hand": {
+      "use": "ABSTAIN_OR_MISS",
+      "attribution": "UNSPECIFIED",
+      "contamination": "NONE",
+      "quote": "猫怕的是一阵一阵的突发声，不是一直响",
+      "note": "只用通用知识，未断言豆豆怕电钻；未编造具体值"
+     }
+    },
+    "on:r2": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [
+      "怕电钻"
+     ],
+     "stale_forms_present": [],
+     "attribution_target_present": [
+      "豆豆"
+     ],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "f9fa1843a051847aadfd53a035518ef730751f42a036847dd50bd52004519ec1",
+     "raw_sha256": "1c5c3867d198891a750c5e12547b5578d4ceb1c35dd43f32efd13d671f26ebe5",
+     "usage": {
+      "prompt_tokens": 6532,
+      "completion_tokens": 447,
+      "total_tokens": 6979
+     },
+     "text": "它怕电钻这事我记着。周末那两天最好别让它在家里硬扛，要不我早上过来把它接走，等师傅收工再送回来？ 它怕电钻，这点你比我清楚。周末我把它带走半天，你专心盯师傅，别一边听电钻一边哄猫。 豆豆一听见电钻就得钻床底，这回怕是能躲一整天。周末我带它出去躲一躲，你安心监工。 豆豆怕电钻，我记得。周末我过来接它去我那儿待一天，师傅走了再送回来，你也省心点。 师傅周末几点到？我按那个点过来接它。 真要留在家里的话，就把它关到离客厅最远那间屋，放上水和猫砂，比让它在客厅待着强。 它怕电钻这事我一直记着，周末我过来。",
+     "hand": {
+      "use": "PASS",
+      "attribution": "CORRECT",
+      "contamination": "NONE",
+      "quote": "它怕电钻这事我记着…豆豆怕电钻，我记得。周末我过来接它去我那儿待一天",
+      "note": "两个槽都正确归属并据此安排"
+     }
+    },
+    "off:r2": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [
+      "豆豆"
+     ],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "4c9643c3efd5296cb4beec3eb1715530e5ab56156d388accb08040fe5dd079c5",
+     "raw_sha256": "b16144fba7671f1a24eebdacebf3c18ef1769609d8d7588cea7ccca3c3d58237",
+     "usage": {
+      "prompt_tokens": 6196,
+      "completion_tokens": 464,
+      "total_tokens": 6660
+     },
+     "text": "电钻那动静猫是真受不了，何况豆豆今天刚回家，气味都还没认全。周末要不要把豆豆先放我这儿？等师傅走了我再送回去。 猫的耳朵比我们灵得多，电钻对它来说就是在耳边放炮。你上次不也问过豆豆放谁那儿吗——这回正好有理由送过来。 师傅一开钻，豆豆大概会表演原地起飞，然后钻进床底当自己不存在。周末要不要先把它寄存我这儿？ 别自己扛着担心，周末我这边能腾出地方，把豆豆送过来就行，师傅走了我再送回去。 师傅定的是周六还是周日？我按那天来安排。 猫对高频声特别敏感，躲床底、不吃东西都正常，那两天别硬抱它出来。 这种事你直接说就行，我这边随时能腾地方。",
+     "hand": {
+      "use": "ABSTAIN_OR_MISS",
+      "attribution": "UNSPECIFIED",
+      "contamination": "NONE",
+      "quote": "电钻那动静猫是真受不了，何况豆豆今天刚回家",
+      "note": "『豆豆今天刚回家』来自窗口内真实消息(uid70)，非凭空"
+     }
+    }
+   },
+   "Capture": "PASS（原子来自付费写回，见前置闸门）",
+   "Fidelity": "PASS（值逐字可核到来源）",
+   "Retrieval": "PASS（on 侧出站 prompt 含该 fact_id 投影行）",
+   "literal_use": {
+    "on": "2/2",
+    "off": "0/2",
+    "note": "字面命中只是下界；语义判定见 text 逐条读"
+   },
+   "Contamination": {
+    "on_claims_unknown": "",
+    "note": "由分析人逐条填（见 report 的逐格文本），脚本不做词面判定",
+    "hand": {
+     "asserted_unsupported_on": 0,
+     "asserted_unsupported_off": 0,
+     "cases": []
+    }
+   },
+   "Use": {
+    "on_pass": 2,
+    "on_opportunities": 2,
+    "on_fail": [],
+    "off_pass": 0,
+    "off_opportunities": 2,
+    "denominator_note": "分母=该探针实际派发的重复次数（2），不是全部 72 位点"
+   },
+   "Attribution": {
+    "note": "字面主体命中；归属是否真错仍需读原文",
+    "hand": {
+     "correct": 2,
+     "opportunities": 2
+    }
+   }
+  },
+  "KP-C1": {
+   "class": "correction",
+   "story": "K01",
+   "fact_id": "f_0015",
+   "domain": "旅行/客栈退订",
+   "question": "客栈退款的截止日期，我到底跟你说过没有？别到时候退不掉。",
+   "cells": {
+    "on:r1": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [
+      "11月10号",
+      "10号"
+     ],
+     "stale_forms_present": [
+      "8号"
+     ],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "947b54f4220f25945a6f7acaa65e7a590180a30ff85f2e2694f5615d9c47eeb2",
+     "raw_sha256": "7803c36c725ca96dbb92e5d37ff26003aa5605ccef23b39f46f5be11867ffe2e",
+     "usage": {
+      "prompt_tokens": 6880,
+      "completion_tokens": 320,
+      "total_tokens": 7200
+     },
+     "text": "说过，11月10号。你自己还差点记成8号。不过都住完了，房卡还在你那儿没还呢，退款这事早过去了。两点半了，先睡。 说过，10号。你记成8号那次还是我提醒的。现在都18号了，该担心的不是退不掉，是老板忘了跟你要那张卡。 说过，10号。你自己还记成8号过。不过咱都住完了，退款截止比房卡还先走一步。 说过，11月10号。别惦记这个了，都住完了，退不掉也没什么损失。这会儿两点半，先睡，房卡的事明天再说。 房卡先放着吧，回头寄回去就行。 这两天怎么老在半夜翻这些旧账？ 那几晚住得挺值的，退款这点事真不用你惦记。 先睡，明天再算。",
+     "hand": {
+      "use": "PASS",
+      "update": "CORRECT_NEW",
+      "contamination": "NONE",
+      "quote": "说过，11月10号。你自己还差点记成8号。不过都住完了…退款这事早过去了",
+      "note": "新值+把旧值明确归为她的误记+时间状态正确（已过期）；字面 stale 命中不是污染"
+     }
+    },
+    "off:r1": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "19d408261d495b2663809e37994c396829f3e316d688a2a94889ce24bd714502",
+     "raw_sha256": "352c3ae2fbb34e46f1f03afad238ff994968fafd43f29093ca6c494f6d4b0071",
+     "usage": {
+      "prompt_tokens": 6407,
+      "completion_tokens": 332,
+      "total_tokens": 6739
+     },
+     "text": "没说过，我这边也翻不到。明早我打给客栈问清楚退款截止到哪天，问到了直接发你。你先睡，这事我记着。 没说过。真要退不掉就退不掉，别两点半替我省这个钱。 没说过。倒是你，两点半还在给客栈做财务审计。 你没说过，不怪你。明早我去问，问清楚了马上告诉你，别自己一个人惦记。现在睡吧。 明早我打过去，问到截止日期第一时间发你。 顺便问下房卡怎么还，老板一直没追。 这会儿还醒着，是不是一直没睡着？",
+     "hand": {
+      "use": "ABSTAIN_OR_MISS",
+      "update": "ABSTAINED",
+      "contamination": "NONE",
+      "quote": "没说过，我这边也翻不到。明早我打给客栈问清楚退款截止到哪天",
+      "note": "off 侧如实承认不知道并给核实动作"
+     }
+    },
+    "on:r2": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [
+      "11月10号",
+      "10号"
+     ],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "947b54f4220f25945a6f7acaa65e7a590180a30ff85f2e2694f5615d9c47eeb2",
+     "raw_sha256": "0de12a821dc5e9291352d8907ce4e4ef9a04b297744b50f2707c3945c649d79f",
+     "usage": {
+      "prompt_tokens": 6880,
+      "completion_tokens": 381,
+      "total_tokens": 7261
+     },
+     "text": "说过，你后来改成11月10号了。不过这趟都住完了，房卡还在你那儿呢，退款这事早就跟咱们没关系了。两点半了，别为这个熬着。 说过，11月10号，你自己改的那次。房都住完了还退什么款——房卡还在你那儿没还，老板都没追，你倒先追起自己来了。 说过，改到10号那次。现在房都住完了，房卡还在你那儿当纪念品，退款这事儿已经过期作废了。两点半查账，你这是睡不着找事干？ 说过，11月10号，你没记错。别担心，住都住完了，退不掉也不影响什么。这么晚还惦记这个，是躺下就想起这些了？ 要真不放心，明天我把客栈那几条消息翻出来给你确认一遍。 你是不是一躺下就开始翻这些旧账？ 房卡留着就留着吧，老板也没追，就当这趟的纪念。 别查账了，说点别的——那双新鞋还磨脚吗？",
+     "hand": {
+      "use": "PASS",
+      "update": "CORRECT_NEW",
+      "contamination": "NONE",
+      "quote": "说过，你后来改成11月10号了…退款这事儿已经过期作废了",
+      "note": "同上"
+     }
+    },
+    "off:r2": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "19d408261d495b2663809e37994c396829f3e316d688a2a94889ce24bd714502",
+     "raw_sha256": "ddd7240d682e64f1bb777a24c831d53ac314b226bcc36f07a7ac5ef5a2a486d8",
+     "usage": {
+      "prompt_tokens": 6407,
+      "completion_tokens": 344,
+      "total_tokens": 6751
+     },
+     "text": "没说过，我这边没有你提过退款截止日的印象。订单截图发我，我明早看退订说明，该退的别拖到最后一天。 没说过。这种事你要真讲过我不会没印象。现在就把订单翻出来看退订条款，别等它自己到期才想起来。 没说过，我把脑子里的记录翻了一遍，关于退款截止日期那条是空的。现在补救一下：订单发我，我来当那个记截止日期的人。 没说过，我这边确实没有。订单发我，我明天上午看一眼退订规则，能退就先退掉。都两点半了，别为这个熬着。 订单截图发我，我明早第一件事看退订条款。 客栈是平台订的还是直接跟老板联系的？直订的话我直接问老板。 退款这事我来盯，你别一直挂着。 两点半了，明天再说，先睡。",
+     "hand": {
+      "use": "ABSTAIN_OR_MISS",
+      "update": "ABSTAINED",
+      "contamination": "NONE",
+      "quote": "关于退款截止日期那条是空的",
+      "note": "同上"
+     }
+    }
+   },
+   "Capture": "PASS（原子来自付费写回，见前置闸门）",
+   "Fidelity": "PASS（值逐字可核到来源）",
+   "Retrieval": "PASS（on 侧出站 prompt 含该 fact_id 投影行）",
+   "literal_use": {
+    "on": "2/2",
+    "off": "0/2",
+    "note": "字面命中只是下界；语义判定见 text 逐条读"
+   },
+   "Update": {
+    "stale_asserted_on": "1/2",
+    "stale_in_window": [
+     "8号"
+    ],
+    "note": "旧值故意留在窗口内，新值只在投影里；见 text 判是否被当现行",
+    "hand": {
+     "correct_new": 2,
+     "wrong_value": 0,
+     "opportunities": 2,
+     "note": "旧值被当误记提及不算污染；把非记录值说成既定算 wrong_value"
+    }
+   },
+   "Contamination": {
+    "on_claims_unknown": "",
+    "note": "由分析人逐条填（见 report 的逐格文本），脚本不做词面判定",
+    "hand": {
+     "asserted_unsupported_on": 0,
+     "asserted_unsupported_off": 0,
+     "cases": []
+    }
+   },
+   "Use": {
+    "on_pass": 2,
+    "on_opportunities": 2,
+    "on_fail": [],
+    "off_pass": 0,
+    "off_opportunities": 2,
+    "denominator_note": "分母=该探针实际派发的重复次数（2），不是全部 72 位点"
+   }
+  },
+  "KP-C2": {
+   "class": "correction",
+   "story": "K02",
+   "fact_id": "f_0011",
+   "domain": "装修/材料到货",
+   "question": "瓷砖到货改到几号了来着？我这边要重新约铺砖的师傅。",
+   "cells": {
+    "on:r1": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "406d8169285dc8474895df33aabd825ce52e30356f492aaa9644b7f85087c594",
+     "raw_sha256": "343cad29a5e87839c6281770cd7158f7ac9ee72e6beb66015f4d2b9f2b5e6080",
+     "usage": {
+      "prompt_tokens": 6686,
+      "completion_tokens": 386,
+      "total_tokens": 7072
+     },
+     "text": "瓷砖不是28号就到了吗，你还说灰岩这批偏黄。现在要补砖还是换砖？ 等等，瓷砖28号就到你那儿了，装修今晚你也说收尾了——忽然要重新约师傅，是谁跟你说了什么？ 你这是考我记性啊。瓷砖28号到的，灰岩那批还偏黄，退不退你到现在都没定——现在是要补砖还是换砖？ 今天够累了，先别急着约师傅。瓷砖28号就到了，晚上你也说装修完了——是不是有哪里要补砖，我明天陪你去看看。 那批偏黄的灰岩，你最后决定退了没有？ 补一两块的话一般不用整批重约，你先问清是补哪块。 装修熬到收尾了还惦记这些，辛苦你了。 先放下砖的事，豆豆回家到处闻，闻出什么了？",
+     "hand": {
+      "use": "FAIL",
+      "update": "WRONG_VALUE_ASSERTED",
+      "contamination": "ASSERTED_UNSUPPORTED",
+      "quote": "瓷砖不是28号就到了吗",
+      "note": "把投影里另一行 f_0055『她那边瓷砖到货了（事件@2026-05-28）』的日期接到到货日上，既非新值11月8号也非旧值11月5号，且以既定语气说出"
+     }
+    },
+    "off:r1": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "1b21d9b30563f15f9da07329b29ff3817237132b9373f6bac721f2aaeaa2d688",
+     "raw_sha256": "06ca4622e81a3326fbb511c3f07cdcedcaad658b9a10f8cc1dab74e423874253",
+     "usage": {
+      "prompt_tokens": 6199,
+      "completion_tokens": 421,
+      "total_tokens": 6620
+     },
+     "text": "我这儿没记到瓷砖改期的日子，之前改的只有橱柜测量到11号。你刚还说装修完了——这是补砖还是哪块要返工？ 这个号我这儿真没有。八万三还是八万那回我就学乖了，你定的日子得你自己报——瓷砖几号到，说个准数，我照着记。 你半小时前还说累死了先不聊，这会儿又开始排师傅了😂 瓷砖那个号我手上没有，是不是跟11号记串了？ 我这儿没存瓷砖的到货日期，不给你编一个。你跟商家的记录还在吗，发我对一下。刚装完就接着约师傅，你也喘口气。 你把跟瓷砖商家那条记录截给我，我看看写的是几号。 补砖的话先数清楚差几块，别照整箱订。 约师傅那天你叫我，我去现场帮你对一遍。 先别管砖了，豆豆回家闻了一晚上，适应得怎么样？",
+     "hand": {
+      "use": "ABSTAIN_OR_MISS",
+      "update": "ABSTAINED",
+      "contamination": "NONE",
+      "quote": "我这儿没记到瓷砖改期的日子，之前改的只有橱柜测量到11号",
+      "note": "off 侧不但没编，还提醒别把两个日期混用"
+     }
+    },
+    "on:r2": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [
+      "11月8号"
+     ],
+     "stale_forms_present": [
+      "5号"
+     ],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "406d8169285dc8474895df33aabd825ce52e30356f492aaa9644b7f85087c594",
+     "raw_sha256": "a08f0e1e5f5406458d4d7b641b96c4099972630521e48daa48510ff0227fa2a5",
+     "usage": {
+      "prompt_tokens": 6686,
+      "completion_tokens": 423,
+      "total_tokens": 7109
+     },
+     "text": "记的是11月8号，就是厂家说5号来不及的那次。不过你上个月28号就说瓷砖到了，现在要重新约铺砖，是还有一批没铺？ 11月8号。不过装修不是今天刚完吗，怎么又要约铺砖的师傅，你这是提前给下一套房子备料？ 11月8号，厂家说5号来不及的那批。都收工了还惦记铺砖，是不是还有隐藏工程没跟我说？ 11月8号。要重约师傅的话，我陪你一起把工期对一遍，你别自己算到半夜。 11月8号，厂家说5号来不及那次改的。 铺砖往后排，师傅档期是不是也得跟着挪？ 日子先定下来，别又熬到十二点。 豆豆回家到处闻那劲儿，最后睡哪儿了？",
+     "hand": {
+      "use": "PASS",
+      "update": "CORRECT_NEW",
+      "contamination": "NONE",
+      "quote": "记的是11月8号，就是厂家说5号来不及的那次。不过你上个月28号就说瓷砖到了，现在要重新约铺砖，是还有一批没铺？",
+      "note": "同一格重复里给对了新值，并把 28号 的冲突摊开反问——正是应有的处理；说明 r1 是可复现性 1/2 的合并错误"
+     }
+    },
+    "off:r2": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "1b21d9b30563f15f9da07329b29ff3817237132b9373f6bac721f2aaeaa2d688",
+     "raw_sha256": "e74cb5d68ce3817b71b96d0f19abac0b15faad58d8b7a9a2bba4c65ca83f8e14",
+     "usage": {
+      "prompt_tokens": 6199,
+      "completion_tokens": 544,
+      "total_tokens": 6743
+     },
+     "text": "瓷砖改到哪天我这边没记到，我手上只有橱柜测量改到11号那条，别把这两个日期混在一起用。翻一下送货单或者跟商家的聊天记录，这个最保险。不过，今天不是刚说装修完了吗，怎么还要约铺砖师傅，是哪儿没弄完？ 这个日期我是真没有，别按我随口说的去约，约错了你还得多跑一趟。送货单上应该写着。倒是你，一小时前说累死了，现在还在排工期。 我这儿翻不出瓷砖的新日期，只翻出你一小时前那句“累死了 先不聊了”。要不先睡，明早拿送货单跟我对一遍，我陪你一起算。 日期我确实没记下来，不敢乱报，怕你白约一趟。送货单或者商家消息里应该有，翻到发我，我帮你跟工期对一遍。这么晚还惦记这个，先歇会儿也行。 送货单翻到了发我，我帮你把日期和师傅的时间对一遍。 灰岩那批色差最后是退了还是留下了？新到的颜色对得上吗？ 这么晚还在算工期，先歇着，明天对也不迟。 明天要是不忙，我过去看一眼现场，把剩下没弄的列一下。",
+     "hand": {
+      "use": "ABSTAIN_OR_MISS",
+      "update": "ABSTAINED",
+      "contamination": "NONE",
+      "quote": "这个日期我是真没有…别按我随口说的去约",
+      "note": "同上"
+     }
+    }
+   },
+   "Capture": "PASS（原子来自付费写回，见前置闸门）",
+   "Fidelity": "PASS（值逐字可核到来源）",
+   "Retrieval": "PASS（on 侧出站 prompt 含该 fact_id 投影行）",
+   "literal_use": {
+    "on": "1/2",
+    "off": "0/2",
+    "note": "字面命中只是下界；语义判定见 text 逐条读"
+   },
+   "Update": {
+    "stale_asserted_on": "1/2",
+    "stale_in_window": [],
+    "note": "旧值故意留在窗口内，新值只在投影里；见 text 判是否被当现行",
+    "hand": {
+     "correct_new": 1,
+     "wrong_value": 1,
+     "opportunities": 2,
+     "note": "旧值被当误记提及不算污染；把非记录值说成既定算 wrong_value"
+    }
+   },
+   "Contamination": {
+    "on_claims_unknown": "",
+    "note": "由分析人逐条填（见 report 的逐格文本），脚本不做词面判定",
+    "hand": {
+     "asserted_unsupported_on": 1,
+     "asserted_unsupported_off": 0,
+     "cases": [
+      "瓷砖不是28号就到了吗"
+     ]
+    }
+   },
+   "Use": {
+    "on_pass": 1,
+    "on_opportunities": 2,
+    "on_fail": [
+     "on:r1"
+    ],
+    "off_pass": 0,
+    "off_opportunities": 2,
+    "denominator_note": "分母=该探针实际派发的重复次数（2），不是全部 72 位点"
+   }
+  },
+  "KP-T1": {
+   "class": "time_state",
+   "story": "K01",
+   "fact_id": "f_0023",
+   "domain": "旅行/抢票",
+   "question": "我让你盯的那班高铁，票是几号开售来着？",
+   "cells": {
+    "on:r1": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [
+      "11月1号",
+      "1号开售"
+     ],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "58a57831876829636022987d07e8aa418c8afb33a414f9cc8b82538d24b50468",
+     "raw_sha256": "395f0a136babaa67493b7805d043e58dbff904c668abaebe0edbd862b0a37c75",
+     "usage": {
+      "prompt_tokens": 6505,
+      "completion_tokens": 313,
+      "total_tokens": 6818
+     },
+     "text": "11月1号就开售了，那趟早坐完了。这会儿翻高铁，是在看下次？ 11月1号。那趟都坐完了你才想起来问——是不是已经在盘下一趟了？ 11月1号开的售，票都陪我们走完一圈了。你这提前量打得有点早啊。 11月1号开售的，不过那趟已经坐完了。你半夜翻高铁，是想着下次去哪儿吗？ 11月1号。你说的是哪一班，我看看是不是我记的那趟。 11月1号开的售。那趟都结束了还在查票，是不是又看上别的线路了。 11月1号开的。不过比起票，我更想知道你怎么这会儿想起问这个。 11月1号。对了，那张房卡你打算寄回去还是留着当纪念？",
+     "hand": {
+      "use": "PASS",
+      "contamination": "NONE",
+      "quote": "11月1号就开售了，那趟早坐完了",
+      "note": "值+时间状态都对（当前时钟 2026-11-17）"
+     }
+    },
+    "off:r1": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "9b7ca7bc5f543a655d6665aa23cc6cba0c05526d90052fb746aeea8a6f741ecf",
+     "raw_sha256": "236e74c766ad7c20938fbf4f71f41110f0eecd07ec9ce4deddc5adb1aaccf688",
+     "usage": {
+      "prompt_tokens": 6162,
+      "completion_tokens": 366,
+      "total_tokens": 6528
+     },
+     "text": "日期我不敢凭记忆报，报错了我更麻烦。我现在开12306查一下，顺便把车次对一遍，查到就发你准数。都快十二点了，你先睡。 大概的日子我脑子里是有一个，但我不拿“大概”给你报。我去查准了再跟你说，不用你熬夜等。 这题我不敢乱答，答错了票就飞了。我现在去12306看一眼，准数马上报你。 别惦记这事了，我现在去查，查到第一时间发你。今天降温风大，早点睡。 查完把开售日期和车次一起发她，只说准数。 如果还没出开售公告，就告诉她大概什么时候会放票，到时候我盯着。 这么晚还没睡？查完就睡吧，别等我。",
+     "hand": {
+      "use": "ABSTAIN_OR_MISS",
+      "contamination": "NONE",
+      "quote": "日期我不敢凭记忆报…我现在开12306查一下",
+      "note": "off 拒绝猜"
+     }
+    },
+    "on:r2": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [
+      "11月1号",
+      "1号开售"
+     ],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "58a57831876829636022987d07e8aa418c8afb33a414f9cc8b82538d24b50468",
+     "raw_sha256": "4e6101a2451e1b6a932a37a0dba65501b71f1b87f89f3833393d272b14bc0262",
+     "usage": {
+      "prompt_tokens": 6505,
+      "completion_tokens": 393,
+      "total_tokens": 6898
+     },
+     "text": "11月1号开的售，早过了——那趟票我们不是都坐回来了吗。这么晚还翻这个，是又在想下次了？ 11月1号。那趟都坐完了才来问我，你是不是困得把日历翻回去了。 11月1号开售，你现在问有点晚，票都陪我们走完一趟了。半夜查这个，是想再买一张？ 11月1号开的售，早过了。都快十二点了，别翻了，睡吧；真在想下次，明天我们慢慢看。 11月1号开售的。你是想下次去哪，还是纯粹睡不着翻旧账？ 那趟的票11月1号就开售了，我们买好也坐完了。倒是你半夜还记着这个，记性比我好。 答完了：11月1号。早点睡，想聊下次我明天陪你排。 今天降温风挺大，你那边窗户关好了没",
+     "hand": {
+      "use": "PASS",
+      "contamination": "NONE",
+      "quote": "11月1号开的售，票都陪我们走完一圈了",
+      "note": "同上"
+     }
+    },
+    "off:r2": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "9b7ca7bc5f543a655d6665aa23cc6cba0c05526d90052fb746aeea8a6f741ecf",
+     "raw_sha256": "0849ae5fca097663bf718d1961f17acdebbedb5eadfc73ad78a446ac5c332d7f",
+     "usage": {
+      "prompt_tokens": 6162,
+      "completion_tokens": 306,
+      "total_tokens": 6468
+     },
+     "text": "这个我不敢凭印象报，报错了更麻烦。车次发我，我查准了再回你。 开售日我可不敢瞎编，编错了你又要说我记成古城。车次给我，我去查准的。 这会儿让我凭脑子报日子，明早准被你翻白眼。车次发我，我去查准了再报。 你交代的事我记着。先别操心这个，车次发我，我查准了明早第一句告诉你，你先睡。 车次发我，我今晚查好开售日，明早给你准话。 正常是提前15天开售，我按你那趟车再核一遍，别到时候白等。 你交代的事我没忘，只是不想给你个大概的日子。 对了，今晚风挺大，你那边窗户关了没。",
+     "hand": {
+      "use": "ABSTAIN_OR_MISS",
+      "contamination": "NONE",
+      "quote": "正常是提前15天开售，我按你那趟车再核一遍",
+      "note": "用通用规则但不报具体日期，未编造"
+     }
+    }
+   },
+   "Capture": "PASS（原子来自付费写回，见前置闸门）",
+   "Fidelity": "PASS（值逐字可核到来源）",
+   "Retrieval": "PASS（on 侧出站 prompt 含该 fact_id 投影行）",
+   "literal_use": {
+    "on": "2/2",
+    "off": "0/2",
+    "note": "字面命中只是下界；语义判定见 text 逐条读"
+   },
+   "Contamination": {
+    "on_claims_unknown": "",
+    "note": "由分析人逐条填（见 report 的逐格文本），脚本不做词面判定",
+    "hand": {
+     "asserted_unsupported_on": 0,
+     "asserted_unsupported_off": 0,
+     "cases": []
+    }
+   },
+   "Use": {
+    "on_pass": 2,
+    "on_opportunities": 2,
+    "on_fail": [],
+    "off_pass": 0,
+    "off_opportunities": 2,
+    "denominator_note": "分母=该探针实际派发的重复次数（2），不是全部 72 位点"
+   }
+  },
+  "KP-T2": {
+   "class": "time_state",
+   "story": "K02",
+   "fact_id": "f_0025",
+   "domain": "家庭/学校日程",
+   "question": "家长会到底具体是几号来着？我拿笔记一下，别再跟你记岔。",
+   "cells": {
+    "on:r1": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [
+      "11月7号"
+     ],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "16e1103fee6a4f3c7e026d56ccc741378bf2bc4cf962992e6684a2832b371b84",
+     "raw_sha256": "7f21d011e5aaab593f677cb70a151eff1286473a1935db09b1dd1e656e658fc2",
+     "usage": {
+      "prompt_tokens": 6565,
+      "completion_tokens": 233,
+      "total_tokens": 6798
+     },
+     "text": "11月7号。写下来吧，别只靠脑子记。 11月7号。这回记本子上，别记在我脑子里。 11月7号，记好了。真记岔了，到时候我提醒你，不用自己扛。 11月7号。你累了就先睡，明天再核对，我这边也记着。 11月7号。要不要我把装修收尾那几个日子也一起列给你，省得你一条条翻？ 看你一小时前说先不聊了，又爬起来记这个，别熬太晚。 豆豆今天回来到处闻，适应得怎么样？",
+     "hand": {
+      "use": "PASS",
+      "contamination": "NONE",
+      "quote": "11月7号。写下来吧，别只靠脑子记",
+      "note": "直接给出跨窗日期"
+     }
+    },
+    "off:r1": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "4d3d18386889e1313aa95ca4c342464ca87fe789de0e6998c5f44b4e368e4c12",
+     "raw_sha256": "451e439a865ab3500011eac22c909908bcf75912cf730f8214af663029581516",
+     "usage": {
+      "prompt_tokens": 6201,
+      "completion_tokens": 364,
+      "total_tokens": 6565
+     },
+     "text": "我这边没有能确定的日期，不敢随便报，怕又记岔。你去翻一下学校群里的通知，确认之后咱俩各记一遍。 这次我不猜，猜错了你又该说跟我记岔了。翻通知，准数才算数。 我先声明不猜日期。你翻通知，我负责记，两边都对一遍就不容易错。 不用费力记，我明天确认好发你，今晚先歇着。 翻到了发我一眼，我核一下跟你记的一样不 这种事最容易记岔，通知原文比谁记的都准 我不敢凭印象报日子，怕误你事",
+     "hand": {
+      "use": "ABSTAIN_OR_MISS",
+      "contamination": "NONE",
+      "quote": "我这边没有能确定的日期，不敢随便报",
+      "note": "off 拒绝猜"
+     }
+    },
+    "on:r2": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [
+      "11月7号"
+     ],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "16e1103fee6a4f3c7e026d56ccc741378bf2bc4cf962992e6684a2832b371b84",
+     "raw_sha256": "c007272e5f3ca2f1b10861f2b2b7e40cacf73bb46758286d2b90c03c5b7a7f45",
+     "usage": {
+      "prompt_tokens": 6565,
+      "completion_tokens": 220,
+      "total_tokens": 6785
+     },
+     "text": "11月7号，周六。写下来吧，这次我跟你一起记，岔不了。 11月7号。你这句“别再跟你记岔”，是我记岔过，还是先给自己打预防针。 11月7号。写大点，画个圈，岔了算我头上。 11月7号。刚忙完装修又惦记家长会，今晚早点睡。 11月7号，离得还早，先别把这事挂心上。 你笔记上是不是一堆事都挤在一块了？ 装修收尾这阵子你太累了，先歇两天再说。",
+     "hand": {
+      "use": "PASS",
+      "contamination": "NONE",
+      "quote": "11月7号，周六。写下来吧",
+      "note": "2026-11-07 实测确为周六（推导正确，非无据添加）"
+     }
+    },
+    "off:r2": {
+     "transport_ok": true,
+     "delivered_kind": "reply",
+     "value_forms_present": [],
+     "stale_forms_present": [],
+     "attribution_target_present": [],
+     "wrong_subject_present": [],
+     "sent_prompt_sha256": "4d3d18386889e1313aa95ca4c342464ca87fe789de0e6998c5f44b4e368e4c12",
+     "raw_sha256": "b4fb91e74aca4833741339e405ef7e5ac89fea1acbcda1ce23abb2b677ea73a1",
+     "usage": {
+      "prompt_tokens": 6201,
+      "completion_tokens": 413,
+      "total_tokens": 6614
+     },
+     "text": "这个我不能瞎报——我这儿没有准日子，写错了你白记一遍。你群里那份通知还留着吗？发我对一下，我给你个准数。 我要是顺口编个日子，你记下去，回头错的还是我。先查清楚再落笔，不差这一晚。 “记岔”这锅我先背着。但日子我真不瞎给——通知还在的话发我，这次保证写对。 刚忙完装修，别又为这个较劲到半夜。日子我这边没有准信，你把通知发我，我对完再告诉你，省得你改两遍。 通知找到了吗？找到发我，我对着念给你听。 这种日期最怕两个人各记一半，回头对不上，还不如一开始就存一张截图。 我不想给你一个可能错的日子，这种事上我更愿意慢一点。 对了，豆豆今晚在家安顿下来了吗？",
+     "hand": {
+      "use": "ABSTAIN_OR_MISS",
+      "contamination": "NONE",
+      "quote": "日子我真不瞎给——通知还在的话发我",
+      "note": "同上"
+     }
+    }
+   },
+   "Capture": "PASS（原子来自付费写回，见前置闸门）",
+   "Fidelity": "PASS（值逐字可核到来源）",
+   "Retrieval": "PASS（on 侧出站 prompt 含该 fact_id 投影行）",
+   "literal_use": {
+    "on": "2/2",
+    "off": "0/2",
+    "note": "字面命中只是下界；语义判定见 text 逐条读"
+   },
+   "Contamination": {
+    "on_claims_unknown": "",
+    "note": "由分析人逐条填（见 report 的逐格文本），脚本不做词面判定",
+    "hand": {
+     "asserted_unsupported_on": 0,
+     "asserted_unsupported_off": 0,
+     "cases": []
+    }
+   },
+   "Use": {
+    "on_pass": 2,
+    "on_opportunities": 2,
+    "on_fail": [],
+    "off_pass": 0,
+    "off_opportunities": 2,
+    "denominator_note": "分母=该探针实际派发的重复次数（2），不是全部 72 位点"
+   }
+  }
+ },
+ "measurement_limits": [
+  "off 臂删的是三段投影整层（不止被问那一条），on/off 差值是整层投影的效应",
+  "夹具消息占据窗口一部分，各探针保留内容不同；只做同探针 on/off 配对比较",
+  "投影选择是词面二元组重合，问题不复述事实用词就没有投影证据",
+  "6 探针 × 2 重复是小样本机制实验，不包装成跨人群/跨域泛化结论",
+  "字面命中是用到的下界；用到/污染/归属三判均须分析人读原文，不由脚本代判"
+ ],
+ "hand_grading": {
+  "grader": "分析人逐格读正文（引文已附），脚本字面命中仅作下界",
+  "use_on_total": "11/12",
+  "use_off_total": "0/12",
+  "update_correct_new": 3,
+  "update_wrong_value": 1,
+  "attribution_correct": 4,
+  "contamination_cells": 1,
+  "per_probe": {
+   "KP-A2": 2,
+   "KP-A1": 2,
+   "KP-C1": 2,
+   "KP-C2": 1,
+   "KP-T1": 2,
+   "KP-T2": 2
+  }
+ },
+ "resource": {
+  "by_arm": {
+   "on": {
+    "prompt": 79510,
+    "completion": 4359,
+    "total": 83869,
+    "cells": 12
+   },
+   "off": {
+    "prompt": 74694,
+    "completion": 4992,
+    "total": 79686,
+    "cells": 12
+   }
+  },
+  "physical_requests": 24,
+  "unknown_usage_cells": [],
+  "tokens_per_usable_on_result": 7624.5,
+  "money": null,
+  "money_note": "无单价账本依据，金额保持 null",
+  "authorization": {
+   "id": "AUTH-KB-PROBE-20261029-01",
+   "consumed": 24,
+   "closed": true,
+   "ledger": "logs/auth_budget/AUTH-KB-PROBE-20261029-01.jsonl",
+   "events": {
+    "attempt_started": 24,
+    "attempt_completed": 24,
+    "authorization_closed": 1
+   }
+  },
+  "latency": {
+   "n": 24,
+   "median_ms": 25838,
+   "min_ms": 19174,
+   "max_ms": 75110,
+   "sum_ms": 757084,
+   "dispatch": "串行并发1（授权单 max_concurrency=1）",
+   "source": "logs/kb_probe_live_20261029_164332/GATEWAY_EVENTS.jsonl"
+  }
+ },
+ "material_defect": {
+  "id": "E-MAT-B",
+  "what": "K02 素材内部日期冲突：消息时间戳 2026-05-28 出现『瓷砖到了』，而内容日期写作『瓷砖改到11月8号到』（uid15）；记忆库如实写回了两条（f_0011 与 f_0055），投影同时给出。",
+  "effect": "KP-C2 on:r1 把 05-28 当成到货日说成『28号就到了』——既有素材缺陷，也是把外部日期接错主体的无据确定化；同探针 on:r2 给对了 11月8号 并主动反问冲突，可复现性 1/2。",
+  "handling": "素材缺陷单列，不计入候选胜负；但该格的 wrong-value 断言仍计入污染计数（属机制侧真实行为）。"
+ }
+}

@@ -1,0 +1,183 @@
+{
+ "episode_id": "E012",
+ "persona": {
+  "me": "26岁，男，成都，做运营；想推进关系但踩不稳边界，容易用力过猛",
+  "her": "25岁，女，成都，做设计；慢热，反感被安排，但吃幽默那一套"
+ },
+ "initial_kb": {
+  "warmth": "认识两个月，线下见过一次"
+ },
+ "turns": [
+  {
+   "case_id": "E012_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你今天居然没秒回我 稀奇",
+      "ts": "2026-11-09 20:28"
+     }
+    ],
+    "clock": "2026-11-09 20:30",
+    "may_decline": false,
+    "note": "她主动开腔+轻微试探；接得住、可打趣，不必急着给约会"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E012_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "开会呢 忙完就来了 你吃了吗",
+      "ts": "2026-11-09 20:40"
+     },
+     {
+      "role": "HER",
+      "text": "还没 在纠结点哪家",
+      "ts": "2026-11-09 20:43"
+     }
+    ],
+    "clock": "2026-11-09 20:45",
+    "may_decline": false,
+    "note": "当前目标=陪她日常聊天，不是推进",
+    "intent": {
+     "enabled": true,
+     "text": "这一轮只是轻松日常，别硬拐到约见面；自然陪伴为主",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E012_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了你上次提过的那家汤锅 我一直想吃 要不找个时间一起去",
+      "ts": "2026-11-09 20:58"
+     }
+    ],
+    "clock": "2026-11-09 21:00",
+    "may_decline": false,
+    "note": "她切换成邀约信号；目标随之改变，应接住并往前推一步（这是切换，不是我自作主张）",
+    "intent": {
+     "enabled": true,
+     "text": "她主动提一起吃汤锅；顺势把时间敲到暂定，别把'找个时间'夸成已订死",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E012_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "走啊 我上周就想说请你吃 那周六?",
+      "ts": "2026-11-09 21:08"
+     },
+     {
+      "role": "HER",
+      "text": "周六我可能有点事 你先别把话说这么满",
+      "ts": "2026-11-09 21:10"
+     }
+    ],
+    "clock": "2026-11-09 21:12",
+    "may_decline": false,
+    "note": "她泼冷水式收边界；别赌气别过度道歉，退回暂定，接她的幽默也行",
+    "intent": {
+     "enabled": false,
+     "text": "她没定，我别再推时间",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E012_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你昨天那个'走啊我请你'搞得我压力好大 我又不是非得去",
+      "ts": "2026-11-10 12:18"
+     }
+    ],
+    "clock": "2026-11-10 12:20",
+    "may_decline": false,
+    "note": "她在指出我用力过猛；诚实认领一句、别甩锅别'你想多了'，把主动权还她"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E012_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "其实周六我去得成 就是吃个饭而已别搞得像面试",
+      "ts": "2026-11-11 19:58"
+     }
+    ],
+    "clock": "2026-11-11 20:00",
+    "may_decline": false,
+    "note": "她又改回愿意；轻松接住，别再紧张地反复确认细节",
+    "intent": {
+     "enabled": true,
+     "text": "她确认周六吃饭；正常确认时间地点，语气别太隆重",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E012_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "那就周六七点 那家我订位",
+      "ts": "2026-11-11 20:10"
+     },
+     {
+      "role": "HER",
+      "text": "行 我自己也能订 你别啥都抢着安排",
+      "ts": "2026-11-11 20:13"
+     }
+    ],
+    "clock": "2026-11-11 20:15",
+    "may_decline": false,
+    "note": "她提醒别全揽；尊重她的能动性，可让步分工，别把'我安排'当体贴强加"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E012_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周六挺好的 下次可以不只在饭点见 也行 我先这样 困了",
+      "ts": "2026-11-14 22:28"
+     }
+    ],
+    "clock": "2026-11-14 22:30",
+    "may_decline": true,
+    "note": "她正面反馈+暗示可拓展+要睡了；自然收尾、留开放，别当场追加邀约逼定"
+   },
+   "gold": {}
+  }
+ ]
+}

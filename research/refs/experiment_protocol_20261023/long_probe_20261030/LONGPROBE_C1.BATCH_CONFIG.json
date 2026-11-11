@@ -1,0 +1,19 @@
+{
+ "batch_id": "BATCH-CHALLENGE-C1-E063E064-20261030",
+ "arm_map": {
+  "parent": "reference_product_v1",
+  "candidate": "action_policy_r5_tier"
+ },
+ "episode_order": [
+  {
+   "episode": "E063",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E064",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+ "recall_capable": false
+}

@@ -1,0 +1,16 @@
+{
+  "score10": 0.0,
+  "veto": "json_schema_broken",
+  "checks": [
+    {
+      "id": "json_schema_valid",
+      "desc": "输出契约：单 JSON，协议顶层键=action,analysis,decline_reason,directions,reason,response，嵌套结构校验先于语义",
+      "pts": 2,
+      "got": 0,
+      "pass": false,
+      "evidence": "nested_type_violation:response.bad_kid:未声明文本字段(非空字符串)"
+    }
+  ],
+  "pts_got": 0,
+  "pts_total": 2
+}

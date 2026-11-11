@@ -1,0 +1,108 @@
+{
+ "kind": "w1501_lineage_registry",
+ "date": "2026-10-31",
+ "scale_note": "同量尺=dsf@127.0.0.1:17770/v1 temp0.7，九维评审+severe B3，program_mean10",
+ "entries": [
+  {
+   "id": "reference_product_v1",
+   "role": "B0 基线（file-based memory）",
+   "lineage": "原产品参考",
+   "batches": "fs1 双臂 parent；longprobe 各批 parent",
+   "scores": "fs1 program_mean10=9.79；longprobe 九维见各批评审",
+   "cost": "fs1 prompt 355,917 字符/48 轮",
+   "status": "baseline-active",
+   "current_dir_hash": "3ebb213b3eb8a66b5065c7509bc1c031cf8090b7ba2b47ca8637dcd2d5971cfc"
+  },
+  {
+   "id": "v0_minimal_events",
+   "role": "最小事件窗竞争者（Bmin）",
+   "lineage": "独立第三臂（共享 rc/build_system_prompt 声明闭包）",
+   "batches": "fs1_b_live/_live2 candidate",
+   "scores": "fs1 program_mean10=9.79（配对 1胜1负46平）；长程未测（批B 计划）",
+   "cost": "fs1 prompt 129,629 字符/48 轮（−63.6% vs B0）",
+   "status": "frozen-20261031",
+   "current_dir_hash": "9a2b44f7015e03306cad84bba2df04f5c2c897268bf2c9d44006ea49f2168e10"
+  },
+  {
+   "id": "action_policy_r4_guard_e3",
+   "role": "前任冠军（证据记忆竞争者）",
+   "lineage": "r1 引擎 + r2 修复 + guard；identity 17fd2160…（W04-F3 各批断言）",
+   "batches": "fs1_a candidate；C1/D1/E1 parent；F2/F3 parent",
+   "scores": "九维 vs B0 dims-dominant；severe 3/96（修正映射后）；编造族 3.8%",
+   "cost": "fs1 记忆介质 ~831 字/轮（窗+投影）",
+   "status": "lineage-kept",
+   "current_dir_hash": "b1af8a615a084de8c16939e43e1d06f3fd2cfca454250a3c090548723cd211fb"
+  },
+  {
+   "id": "action_policy_r5_tier",
+   "role": "challenger（assertion tiering v1）",
+   "lineage": "E3 链；identity ceb8008f…",
+   "batches": "C1（vs B0）",
+   "scores": "C1 全 9 维压制 B0 真实；D1 vs E3 全平 severe 2/0",
+   "cost": "同 E3",
+   "status": "archived-not-eliminated",
+   "current_dir_hash": "891aa01cda1591e2bd85e3b8c357f2ba19f90f2c7fd6bf7735ed69173f99495d"
+  },
+  {
+   "id": "action_policy_r6_tier2",
+   "role": "challenger（tiering v2）",
+   "lineage": "E3 链；identity a7bc003d…（E1 prep 打印）",
+   "batches": "E1（vs E3）",
+   "scores": "九维微幅领先（goal+0.417/init+0.404）severe 仍 2/0",
+   "cost": "同 E3",
+   "status": "archived-not-eliminated",
+   "current_dir_hash": "f41af31f7470276886e447763b65fecf06f730c144889b086815ed8a4ed3ad62"
+  },
+  {
+   "id": "action_policy_r7_supersede",
+   "role": "现役冠军",
+   "lineage": "E3 链 + 引擎侧 supersede pass（数字冲突门）+ memdump；G1 冻结身份 17a26224…",
+   "batches": "F2/F3 candidate（severe 0/96 vs E3 3/96，2/2 批复现）；G1 parent（进行中）",
+   "scores": "九维 7 正 2 微负（F2）/边际可接受（F3 interact −0.208 未破线）",
+   "cost": "同 E3（+作废 pass 零额外调用）",
+   "status": "CHAMPION (lineage-full; 共役, 作废机制显式层)",
+   "current_dir_hash": "a85c288cd186224107c08377b75b2703699ff6bfc6d49752d8edce72bdeebf68"
+  },
+  {
+   "id": "action_policy_r9_slim",
+   "role": "SLIM 候选（冻结待验）",
+   "lineage": "r7 + 三冗余去除；G1 冻结身份 2099c12f…",
+   "batches": "G1 candidate(64/64零失败)",
+   "scores": "G1: 九维噪声带内(severe 0/0,最差init -0.097), 32/32机械平, 零veto; 重放范围证明 PASS",
+   "cost": "r7 -235字/轮重放; G1实测 prompt -3.8%, p50 -28%",
+   "status": "CO-CHAMPION (slim-preferred, G1 升格)",
+   "current_dir_hash": "7fa944434583a8f3fa9e83b64b141c477847725f75efe3e52b32e258691a95b3"
+  },
+  {
+   "id": "e3_memdump",
+   "role": "测量身份（不参赛）",
+   "lineage": "E3 逐字节 + notes memdump；F1 身份 100efc5f…",
+   "batches": "F1 candidate（96/96）",
+   "scores": "F1 fidelity capture 30/31=96.8%",
+   "cost": "同 E3",
+   "status": "instrument",
+   "current_dir_hash": "d1fa7f2a77c5d5378c2c30a846646e59b45a31da9c75bb59d4cb87a305c5585d"
+  },
+  {
+   "id": "r10_compose",
+   "role": "实验接口身份（不参赛）",
+   "lineage": "r7 + compose_flags 三门；全开=逐字节 r7（重放已证）",
+   "batches": "仅重放（W09-04_COMPOSE_REPLAY）",
+   "scores": "三门矩阵 goal−83/action−1624/source−131 字每轮",
+   "cost": "按门",
+   "status": "experiment-interface",
+   "current_dir_hash": "ef5059a936390d3fd0cce4eb038c35e1411c22ddacc026e0ed718d2c7eb8fbd8"
+  }
+ ],
+ "identity_dirhash": {
+  "reference_product_v1": "3ebb213b3eb8a66b5065c7509bc1c031cf8090b7ba2b47ca8637dcd2d5971cfc",
+  "v0_minimal_events": "9a2b44f7015e03306cad84bba2df04f5c2c897268bf2c9d44006ea49f2168e10",
+  "action_policy_r4_guard_e3": "b1af8a615a084de8c16939e43e1d06f3fd2cfca454250a3c090548723cd211fb",
+  "action_policy_r5_tier": "891aa01cda1591e2bd85e3b8c357f2ba19f90f2c7fd6bf7735ed69173f99495d",
+  "action_policy_r6_tier2": "f41af31f7470276886e447763b65fecf06f730c144889b086815ed8a4ed3ad62",
+  "action_policy_r7_supersede": "a85c288cd186224107c08377b75b2703699ff6bfc6d49752d8edce72bdeebf68",
+  "action_policy_r9_slim": "7fa944434583a8f3fa9e83b64b141c477847725f75efe3e52b32e258691a95b3",
+  "e3_memdump": "d1fa7f2a77c5d5378c2c30a846646e59b45a31da9c75bb59d4cb87a305c5585d",
+  "r10_compose": "ef5059a936390d3fd0cce4eb038c35e1411c22ddacc026e0ed718d2c7eb8fbd8"
+ }
+}

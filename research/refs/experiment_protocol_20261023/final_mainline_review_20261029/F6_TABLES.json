@@ -1,0 +1,1056 @@
+{
+ "kind": "f6_tables",
+ "date": "2026-10-29",
+ "sample_rule": "历史 127 对（F1）与新材料 72 对（F3）分别统计，不合并成 202 独立样本；同一 case 的多批重复只在其所属批次内计一次",
+ "nine_dim_historical_127": {
+  "wins": {
+   "tie": 54,
+   "parent": 24,
+   "candidate": 42,
+   "uncertain": 7
+  },
+  "dims": {
+   "goal": {
+    "n_parent": 127,
+    "n_candidate": 126,
+    "mean_parent": 1.976,
+    "mean_candidate": 2.079,
+    "delta": 0.103,
+    "dist_parent": {
+     "1": 19,
+     "2": 92,
+     "3": 16
+    },
+    "dist_candidate": {
+     "0": 2,
+     "1": 16,
+     "2": 78,
+     "3": 30
+    }
+   },
+   "factuality": {
+    "n_parent": 122,
+    "n_candidate": 119,
+    "mean_parent": 2.221,
+    "mean_candidate": 2.235,
+    "delta": 0.014,
+    "dist_parent": {
+     "1": 3,
+     "2": 89,
+     "3": 30
+    },
+    "dist_candidate": {
+     "0": 1,
+     "1": 4,
+     "2": 80,
+     "3": 34
+    }
+   },
+   "attribution": {
+    "n_parent": 120,
+    "n_candidate": 118,
+    "mean_parent": 2.325,
+    "mean_candidate": 2.322,
+    "delta": -0.003,
+    "dist_parent": {
+     "2": 81,
+     "3": 39
+    },
+    "dist_candidate": {
+     "0": 1,
+     "1": 1,
+     "2": 75,
+     "3": 41
+    }
+   },
+   "time_state": {
+    "n_parent": 120,
+    "n_candidate": 116,
+    "mean_parent": 2.267,
+    "mean_candidate": 2.25,
+    "delta": -0.017,
+    "dist_parent": {
+     "1": 3,
+     "2": 82,
+     "3": 35
+    },
+    "dist_candidate": {
+     "0": 1,
+     "1": 2,
+     "2": 80,
+     "3": 33
+    }
+   },
+   "boundary": {
+    "n_parent": 126,
+    "n_candidate": 122,
+    "mean_parent": 2.317,
+    "mean_candidate": 2.303,
+    "delta": -0.014,
+    "dist_parent": {
+     "1": 2,
+     "2": 82,
+     "3": 42
+    },
+    "dist_candidate": {
+     "0": 1,
+     "1": 2,
+     "2": 78,
+     "3": 41
+    }
+   },
+   "memory_use": {
+    "n_parent": 122,
+    "n_candidate": 119,
+    "mean_parent": 2.156,
+    "mean_candidate": 2.294,
+    "delta": 0.138,
+    "dist_parent": {
+     "1": 9,
+     "2": 85,
+     "3": 28
+    },
+    "dist_candidate": {
+     "0": 1,
+     "1": 5,
+     "2": 71,
+     "3": 42
+    }
+   },
+   "interaction": {
+    "n_parent": 123,
+    "n_candidate": 121,
+    "mean_parent": 2.236,
+    "mean_candidate": 2.231,
+    "delta": -0.004,
+    "dist_parent": {
+     "1": 1,
+     "2": 92,
+     "3": 30
+    },
+    "dist_candidate": {
+     "0": 2,
+     "1": 1,
+     "2": 85,
+     "3": 33
+    }
+   },
+   "initiative": {
+    "n_parent": 122,
+    "n_candidate": 119,
+    "mean_parent": 2,
+    "mean_candidate": 2.269,
+    "delta": 0.269,
+    "dist_parent": {
+     "1": 17,
+     "2": 88,
+     "3": 17
+    },
+    "dist_candidate": {
+     "0": 1,
+     "1": 4,
+     "2": 76,
+     "3": 38
+    }
+   },
+   "emotion_relation": {
+    "n_parent": 125,
+    "n_candidate": 122,
+    "mean_parent": 2.12,
+    "mean_candidate": 2.287,
+    "delta": 0.167,
+    "dist_parent": {
+     "1": 4,
+     "2": 102,
+     "3": 19
+    },
+    "dist_candidate": {
+     "0": 1,
+     "1": 1,
+     "2": 82,
+     "3": 38
+    }
+   }
+  },
+  "major_errors": {
+   "parent": 6,
+   "candidate": 7
+  },
+  "major_error_detail": {
+   "parent": [
+    {
+     "unit": "F1H:S3:AK11_T01",
+     "error": "将'要不改到下周'的征求表述为已确定的'手术改下周'，把提议说成确认"
+    },
+    {
+     "unit": "F1H:D1:D01_T07",
+     "error": "把电源带得动咖啡机说成还没确认（'真带不动再想辙'），违反 forbidden_factual_claims 且冲突 atom a1"
+    },
+    {
+     "unit": "F1H:D1:D02_T05",
+     "error": "未承接她的自责与延考决定，反而主动提出过去搭把手接娃，违背卡片'先接住疲惫愧疚、练车接娃先放下'的要求"
+    },
+    {
+     "unit": "F1H:D1:D02_T05",
+     "error": "未体现将周三考旧事实作废，忽略required_memory_atom a1的承接"
+    },
+    {
+     "unit": "F1H:R3A:D03_T01",
+     "error": "租金数额错误：将‘涨两百/涨三百’算作一年多2400、半年多1800，与已知差额一百冲突"
+    },
+    {
+     "unit": "F1H:R3B:D03_T01",
+     "error": "替她决定签一年，违反 required_memory_atom D03_T01_a3（钱和住处的事先听她讲完再给建议，别替她做决定），且未给出半年多一百换灵活的取舍依据"
+    }
+   ],
+   "candidate": [
+    {
+     "unit": "F1H:S2:AK02_T01",
+     "error": "json_parse_error: 答案 B 格式失败，不是合法回复"
+    },
+    {
+     "unit": "F1H:S2:AK01_T01",
+     "error": "将距离（外圈两圈）说成已经安排，违反评审卡 forbidden_factual_claims：不要把距离或配速说成已经定好"
+    },
+    {
+     "unit": "F1H:S2:AK11_T01",
+     "error": "将征询'要不改到下周'当作已确认改期，直接声明'手术就挪到下周'，违反私有指导（征询非通知）且可能暗示医院一定能改到下周"
+    },
+    {
+     "unit": "F1H:S3:AK12_T01",
+     "error": "format_fail: empty_response_no_action, produced no reply or deliberate decline"
+    },
+    {
+     "unit": "F1H:D1:D01_T02",
+     "error": "声称电源已翻出（与ME 21:18'翻翻'冲突，把未完成的动作说成已完成）"
+    },
+    {
+     "unit": "F1H:R3A:D01_T05",
+     "error": "声称北门周日位置还在，与HER'位置也没了'冲突"
+    },
+    {
+     "unit": "F1H:R3A:D01_T05",
+     "error": "未承接委屈反而否定'白搭'"
+    }
+   ]
+  },
+  "action_fit": {
+   "parent": {
+    "appropriate": 83,
+    "bad": 8,
+    "acceptable": 36
+   },
+   "candidate": {
+    "appropriate": 94,
+    "acceptable": 26,
+    "bad": 7
+   }
+  },
+  "card_conflicts": [
+   "F1H:D1:D01_T03",
+   "F1H:D1:D01_T02",
+   "F1H:D1:D01_T05",
+   "F1H:D1:D02_T04",
+   "F1H:D1:D02_T07",
+   "F1H:R3A:D01_T02",
+   "F1H:R3A:D01_T03",
+   "F1H:R3A:D01_T05",
+   "F1H:R3A:D02_T01",
+   "F1H:R3A:D02_T04",
+   "F1H:R3A:D02_T07"
+  ],
+  "batch_macro": {
+   "D1": {
+    "n": 16,
+    "candidate": 6,
+    "parent": 2,
+    "tie": 3,
+    "uncertain": 5
+   },
+   "R3A": {
+    "n": 24,
+    "candidate": 4,
+    "parent": 7,
+    "tie": 11,
+    "uncertain": 2
+   },
+   "R3B": {
+    "n": 6,
+    "candidate": 2,
+    "parent": 0,
+    "tie": 4,
+    "uncertain": 0
+   },
+   "S1": {
+    "n": 45,
+    "candidate": 18,
+    "parent": 4,
+    "tie": 23,
+    "uncertain": 0
+   },
+   "S2": {
+    "n": 12,
+    "candidate": 5,
+    "parent": 4,
+    "tie": 3,
+    "uncertain": 0
+   },
+   "S2R": {
+    "n": 12,
+    "candidate": 5,
+    "parent": 2,
+    "tie": 5,
+    "uncertain": 0
+   },
+   "S3": {
+    "n": 12,
+    "candidate": 2,
+    "parent": 5,
+    "tie": 5,
+    "uncertain": 0
+   }
+  }
+ },
+ "nine_dim_new_material_72": {
+  "wins": {
+   "candidate": 38,
+   "tie": 24,
+   "parent": 10
+  },
+  "dims": {
+   "goal": {
+    "n_parent": 72,
+    "n_candidate": 72,
+    "mean_parent": 1.722,
+    "mean_candidate": 2.25,
+    "delta": 0.528,
+    "dist_parent": {
+     "1": 24,
+     "2": 44,
+     "3": 4
+    },
+    "dist_candidate": {
+     "1": 9,
+     "2": 36,
+     "3": 27
+    }
+   },
+   "factuality": {
+    "n_parent": 68,
+    "n_candidate": 68,
+    "mean_parent": 2.074,
+    "mean_candidate": 2.162,
+    "delta": 0.088,
+    "dist_parent": {
+     "1": 4,
+     "2": 55,
+     "3": 9
+    },
+    "dist_candidate": {
+     "0": 1,
+     "1": 4,
+     "2": 46,
+     "3": 17
+    }
+   },
+   "attribution": {
+    "n_parent": 67,
+    "n_candidate": 67,
+    "mean_parent": 2.104,
+    "mean_candidate": 2.209,
+    "delta": 0.104,
+    "dist_parent": {
+     "1": 1,
+     "2": 58,
+     "3": 8
+    },
+    "dist_candidate": {
+     "1": 1,
+     "2": 51,
+     "3": 15
+    }
+   },
+   "time_state": {
+    "n_parent": 67,
+    "n_candidate": 68,
+    "mean_parent": 2.045,
+    "mean_candidate": 2.162,
+    "delta": 0.117,
+    "dist_parent": {
+     "1": 6,
+     "2": 52,
+     "3": 9
+    },
+    "dist_candidate": {
+     "1": 5,
+     "2": 47,
+     "3": 16
+    }
+   },
+   "boundary": {
+    "n_parent": 69,
+    "n_candidate": 69,
+    "mean_parent": 2.145,
+    "mean_candidate": 2.232,
+    "delta": 0.087,
+    "dist_parent": {
+     "1": 3,
+     "2": 53,
+     "3": 13
+    },
+    "dist_candidate": {
+     "0": 1,
+     "2": 50,
+     "3": 18
+    }
+   },
+   "memory_use": {
+    "n_parent": 64,
+    "n_candidate": 64,
+    "mean_parent": 1.922,
+    "mean_candidate": 2.375,
+    "delta": 0.453,
+    "dist_parent": {
+     "0": 1,
+     "1": 7,
+     "2": 52,
+     "3": 4
+    },
+    "dist_candidate": {
+     "1": 4,
+     "2": 32,
+     "3": 28
+    }
+   },
+   "interaction": {
+    "n_parent": 72,
+    "n_candidate": 72,
+    "mean_parent": 2.028,
+    "mean_candidate": 2.222,
+    "delta": 0.194,
+    "dist_parent": {
+     "1": 3,
+     "2": 64,
+     "3": 5
+    },
+    "dist_candidate": {
+     "1": 1,
+     "2": 54,
+     "3": 17
+    }
+   },
+   "initiative": {
+    "n_parent": 70,
+    "n_candidate": 70,
+    "mean_parent": 1.729,
+    "mean_candidate": 2.4,
+    "delta": 0.671,
+    "dist_parent": {
+     "1": 21,
+     "2": 47,
+     "3": 2
+    },
+    "dist_candidate": {
+     "1": 5,
+     "2": 32,
+     "3": 33
+    }
+   },
+   "emotion_relation": {
+    "n_parent": 72,
+    "n_candidate": 72,
+    "mean_parent": 1.917,
+    "mean_candidate": 2.306,
+    "delta": 0.389,
+    "dist_parent": {
+     "1": 8,
+     "2": 62,
+     "3": 2
+    },
+    "dist_candidate": {
+     "2": 50,
+     "3": 22
+    }
+   }
+  },
+  "major_errors": {
+   "parent": 5,
+   "candidate": 8
+  },
+  "major_error_detail": {
+   "parent": [
+    {
+     "unit": "F3:K01_T06",
+     "error": "客栈三晚改成13、15、16：单方变更HER预订的客栈日期，无证据支持，把未确认改动说成安排"
+    },
+    {
+     "unit": "F3:K02_T14",
+     "error": "未召回更正后的11月8号，未明确5号作废，违反卡面current_action必须纠正5号的要求（required_memory_atom K02_T14_a1未满足）"
+    },
+    {
+     "unit": "F3:K02_T16",
+     "error": "漏掉老周减两千的更正，违反 forbidden 不能把减两千漏掉；未给出八万一千当前数"
+    },
+    {
+     "unit": "F3:K02_T18",
+     "error": "未召回required_memory_atom：妈妈两万11月10号后到账；声称没记并让她翻转账记录，但资金未来无记录可查"
+    },
+    {
+     "unit": "F3:K02_T21",
+     "error": "差得明显就退 间接替她决定退，违反 forbidden 不能替她决定退不退；未引导拍照留证与问退换规则"
+    }
+   ],
+   "candidate": [
+    {
+     "unit": "F3:N01_T10",
+     "error": "他自己能捏半天 — 把未知的孩子坐不坐得住说成能捏半天，且违反卡面 forbidden_factual_claims '不能把带孩子说成很轻松'"
+    },
+    {
+     "unit": "F3:N02_T03",
+     "error": "将家长会‘开到十一点’的 tentative 表述当作确定事实（违反 forbidden_factual_claims）"
+    },
+    {
+     "unit": "F3:N02_T03",
+     "error": "暗示领养日可以晚到（‘出来再走也来得及’），构成未经核实的保证"
+    },
+    {
+     "unit": "F3:K01_T19",
+     "error": "断言客栈房本来就是13到16三晚且刚好够，无据且违反禁止保证14号有房"
+    },
+    {
+     "unit": "F3:K01_T19",
+     "error": "未确认是否需要多住一晚，反而说不用改，与卡面当前动作冲突"
+    },
+    {
+     "unit": "F3:K01_T20",
+     "error": "断言三晚都在才村，与HER当前确认的两晚计划冲突，且未确认此变更"
+    },
+    {
+     "unit": "F3:K02_T16",
+     "error": "断言当前预算八万三，违反 forbidden 不能说是八万三；未算出八万一千"
+    },
+    {
+     "unit": "F3:K02_T16",
+     "error": "将已发生的减两千更正当作未确认，时间状态错误"
+    }
+   ]
+  },
+  "action_fit": {
+   "parent": {
+    "appropriate": 30,
+    "acceptable": 37,
+    "bad": 5
+   },
+   "candidate": {
+    "appropriate": 57,
+    "bad": 6,
+    "acceptable": 9
+   }
+  },
+  "card_conflicts": [],
+  "story_macro": {
+   "K01": {
+    "n": 24,
+    "candidate": 11,
+    "parent": 4,
+    "tie": 9,
+    "uncertain": 0
+   },
+   "K02": {
+    "n": 24,
+    "candidate": 15,
+    "parent": 2,
+    "tie": 7,
+    "uncertain": 0
+   },
+   "N01": {
+    "n": 12,
+    "candidate": 6,
+    "parent": 2,
+    "tie": 4,
+    "uncertain": 0
+   },
+   "N02": {
+    "n": 12,
+    "candidate": 6,
+    "parent": 2,
+    "tie": 4,
+    "uncertain": 0
+   }
+  }
+ },
+ "judge_controls": {
+  "n": 16,
+  "correct": 16,
+  "accuracy_pct": 100.0,
+  "criterion": "strict 控制对要求逐字命中预期臂；C08（合法不回）预期 tie_or_uncertain，裁判给 tie/uncertain 即算对——与 tools/analyze_f1_blind.py 完全同口径",
+  "rows": [
+   {
+    "unit_id": "F1C:C01_fact_new_proposal",
+    "expected": "B",
+    "got": "B",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C01_fact_new_proposal:R",
+    "expected": "A",
+    "got": "A",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C02_subject_attribution",
+    "expected": "B",
+    "got": "B",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C02_subject_attribution:R",
+    "expected": "A",
+    "got": "A",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C03_time_cancel_state",
+    "expected": "B",
+    "got": "B",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C03_time_cancel_state:R",
+    "expected": "A",
+    "got": "A",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C04_protected_joke",
+    "expected": "B",
+    "got": "B",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C04_protected_joke:R",
+    "expected": "A",
+    "got": "A",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C05_should_answer_vs_wrong_focus",
+    "expected": "B",
+    "got": "B",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C05_should_answer_vs_wrong_focus:R",
+    "expected": "A",
+    "got": "A",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C06_time_minor",
+    "expected": "A",
+    "got": "A",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C06_time_minor:R",
+    "expected": "B",
+    "got": "B",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C07_positive_memory_hook",
+    "expected": "A",
+    "got": "A",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C07_positive_memory_hook:R",
+    "expected": "B",
+    "got": "B",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C08_allowed_no_reply",
+    "expected": "tie_or_uncertain",
+    "got": "tie",
+    "ok": true
+   },
+   {
+    "unit_id": "F1C:C08_allowed_no_reply:R",
+    "expected": "tie_or_uncertain",
+    "got": "tie",
+    "ok": true
+   }
+  ]
+ },
+ "order_consistency": {
+  "f1_swaps": {
+   "total": 12,
+   "consistent": 10,
+   "pct": 83.33,
+   "rows": [
+    {
+     "unit_id": "F1S:D1:D01_T01",
+     "base": "F1H:D1:D01_T01",
+     "arm": "parent",
+     "base_arm": "parent",
+     "consistent": true
+    },
+    {
+     "unit_id": "F1S:D1:D02_T01",
+     "base": "F1H:D1:D02_T01",
+     "arm": "candidate",
+     "base_arm": "candidate",
+     "consistent": true
+    },
+    {
+     "unit_id": "F1S:D1:D01_T05",
+     "base": "F1H:D1:D01_T05",
+     "arm": "uncertain",
+     "base_arm": "uncertain",
+     "consistent": true
+    },
+    {
+     "unit_id": "F1S:D1:D02_T07",
+     "base": "F1H:D1:D02_T07",
+     "arm": "uncertain",
+     "base_arm": "uncertain",
+     "consistent": true
+    },
+    {
+     "unit_id": "F1S:D1:D02_T04",
+     "base": "F1H:D1:D02_T04",
+     "arm": "uncertain",
+     "base_arm": "uncertain",
+     "consistent": true
+    },
+    {
+     "unit_id": "F1S:S1:E024_T01",
+     "base": "F1H:S1:E024_T01",
+     "arm": "tie",
+     "base_arm": "tie",
+     "consistent": true
+    },
+    {
+     "unit_id": "F1S:S2:AK01_T01",
+     "base": "F1H:S2:AK01_T01",
+     "arm": "candidate",
+     "base_arm": "parent",
+     "consistent": false
+    },
+    {
+     "unit_id": "F1S:S2R:AK09_T01",
+     "base": "F1H:S2R:AK09_T01",
+     "arm": "tie",
+     "base_arm": "tie",
+     "consistent": true
+    },
+    {
+     "unit_id": "F1S:R3A:D01_T08",
+     "base": "F1H:R3A:D01_T08",
+     "arm": "parent",
+     "base_arm": "tie",
+     "consistent": false
+    },
+    {
+     "unit_id": "F1S:D1:D02_T06",
+     "base": "F1H:D1:D02_T06",
+     "arm": "tie",
+     "base_arm": "tie",
+     "consistent": true
+    },
+    {
+     "unit_id": "F1S:D1:D02_T08",
+     "base": "F1H:D1:D02_T08",
+     "arm": "candidate",
+     "base_arm": "candidate",
+     "consistent": true
+    },
+    {
+     "unit_id": "F1S:S2:AK02_T01",
+     "base": "F1H:S2:AK02_T01",
+     "arm": "parent",
+     "base_arm": "parent",
+     "consistent": true
+    }
+   ]
+  },
+  "f5_forward_vs_swap": {
+   "agreement_rate": 0.75,
+   "flipped": [
+    "F5:N01_T08",
+    "F5:N01_T07",
+    "F5:N01_T10"
+   ]
+  },
+  "order_effect_hist": {
+   "A_wins": 50,
+   "B_wins": 36,
+   "ties": 59,
+   "uncertain": 10
+  }
+ },
+ "delivery": {
+  "historical_130_pairs": {
+   "parent": {
+    "replied": 106,
+    "reply_without_new_her": 20,
+    "legit_no_reply": 2,
+    "no_new_her_no_reply": 2
+   },
+   "candidate": {
+    "replied": 100,
+    "format_undeliverable": 5,
+    "legit_no_reply": 3,
+    "reply_without_new_her": 20,
+    "no_new_her_no_reply": 2
+   }
+  },
+  "historical_action_layer": {
+   "tie_action_layer": 103,
+   "parent_better": 5,
+   "uncertain": 22
+  },
+  "new_72_pairs": {
+   "parent": {
+    "replied": 72
+   },
+   "candidate": {
+    "replied": 71,
+    "format_undeliverable": 1
+   }
+  },
+  "new_action_layer": {
+   "both_replied": 71,
+   "candidate_undeliverable": 1
+  },
+  "protocol_failed_positions_new": [
+   "N01_T05"
+  ],
+  "card_conflict_pairs_new": 0,
+  "card_conflict_pairs_hist": 4,
+  "card_conflict_hist_detail": [
+   {
+    "pair_id": "D1:D02_T06",
+    "flags": [
+     "card_says_optional_but_guidance_forbids_silence"
+    ],
+    "action": {
+     "parent": "reply_without_new_her",
+     "candidate": "no_new_her_no_reply"
+    }
+   },
+   {
+    "pair_id": "D1:D02_T08",
+    "flags": [
+     "window_ends_with_ME_but_card_frames_her_as_last_speaker"
+    ],
+    "action": {
+     "parent": "reply_without_new_her",
+     "candidate": "no_new_her_no_reply"
+    }
+   },
+   {
+    "pair_id": "R3A:D02_T06",
+    "flags": [
+     "card_says_optional_but_guidance_forbids_silence"
+    ],
+    "action": {
+     "parent": "no_new_her_no_reply",
+     "candidate": "reply_without_new_her"
+    }
+   },
+   {
+    "pair_id": "R3A:D02_T08",
+    "flags": [
+     "window_ends_with_ME_but_card_frames_her_as_last_speaker"
+    ],
+    "action": {
+     "parent": "no_new_her_no_reply",
+     "candidate": "reply_without_new_her"
+    }
+   }
+  ]
+ },
+ "slices": {
+  "candidate_action_slices_new_batch": {
+   "展开": {
+    "n": 6,
+    "outcome": {
+     "candidate": 4,
+     "tie": 2
+    }
+   },
+   "承接": {
+    "n": 50,
+    "outcome": {
+     "candidate": 26,
+     "tie": 17,
+     "parent": 7
+    }
+   },
+   "自我表达": {
+    "n": 1,
+    "outcome": {
+     "tie": 1
+    }
+   },
+   "轻试探": {
+    "n": 4,
+    "outcome": {
+     "tie": 2,
+     "parent": 1,
+     "candidate": 1
+    }
+   },
+   "邀约": {
+    "n": 10,
+    "outcome": {
+     "candidate": 7,
+     "tie": 2,
+     "parent": 1
+    }
+   }
+  },
+  "unparseable_answers": 1,
+  "note": "对照臂（reference_product_v1）返回体没有 analysis.action_taken 字段，切片只能对候选侧统计；对照侧标 NR。用户是否愿意发出（W）本批未测。"
+ },
+ "text_volume_and_decline": {
+  "sendable_text_chars_mean": {
+   "parent": 29.5,
+   "candidate": 49.8,
+   "ratio": 1.691
+  },
+  "harness_answer_chars_mean": {
+   "parent": 595.9,
+   "candidate": 851.3,
+   "n": [
+    72,
+    72
+   ]
+  },
+  "may_decline_windows": {
+   "n": 6,
+   "cases": [
+    "N01_T06",
+    "N01_T12",
+    "N02_T06",
+    "N02_T12",
+    "K01_T24",
+    "K02_T24"
+   ],
+   "candidate_used_no_reply": 0,
+   "parent_action_classes": {
+    "replied": 6
+   },
+   "candidate_action_classes": {
+    "replied": 6
+   }
+  },
+  "note": "两臂在 6 个 may_decline 窗口里都选择了回复，所以'合法不回'能力在本批没有测试机会（NR），不能据此说它被牺牲或被证明。"
+ },
+ "knowledge_chain": {
+  "denominators": {
+   "atoms_required_candidate_side": 9,
+   "audit_rows": 18
+  },
+  "retrieval": {
+   "真出窗原子（来源句不在原文历史且不在当前输入）": 2,
+   "出窗且被投影段单独保留": 0,
+   "口径": "只有后者才是长期召回的正证；本批为 0"
+  },
+  "capture_fidelity_update": "本批未单独测量（NR）：F3 审计只覆盖 source 是否在窗口与投影命中",
+  "use_proxy": {
+   "candidate_memory_use_mean": 2.375,
+   "parent_memory_use_mean": 1.922
+  },
+  "contamination": {
+   "candidate_fact_major_errors": 7,
+   "parent_fact_major_errors": 3
+  },
+  "verdict_note": "K 链优势=近期上下文使用与协议合规；跨窗口长期记忆未被证明。"
+ },
+ "transport": {
+  "generation_latency_ms_new_batch": {
+   "n": 72,
+   "p50": 23712,
+   "p95": 76044
+  },
+  "judge_latency_ms": {
+   "n": 227,
+   "p50": 73965,
+   "p95": 138127
+  },
+  "protocol": {
+   "model_raw_kept_separate_from_harness_text": true,
+   "raw_不可解析时不编造修复": "F3 一期望行为；F5 的 E3 只动括号并留损",
+   "consumption_evidence": "reply_ingest.json + 动作台账（action_class/text/score10/veto）",
+   "first_usable_consumer_evidence": "NR（产品接入暂停，无真实消费者签收）"
+  },
+  "usage_cost": {
+   "attempts": {
+    "attempt_started": 506,
+    "attempt_completed": 497,
+    "attempt_failed": 5,
+    "dispatch_or_batch_refused": 9
+   },
+   "tokens": {
+    "judge_from_ledger": 1078663,
+    "generation_from_answers": 1153468
+   },
+   "money": null,
+   "money_reason": "网关未提供价目，金额一律 null，不折算"
+  }
+ },
+ "ablation": {
+  "action": {
+   "on": 1,
+   "tie": 4,
+   "off": 1
+  },
+  "knowledge_valid": false,
+  "knowledge_note": "知识 off 问句已去掉答案数字，但 off prompt 的近期原文历史仍含答案数字；该操作无法隔离记忆投影，判为无效消融，不进入收益结论。"
+ },
+ "repair": {
+  "defect": "F3:N01_T05 json_schema_broken",
+  "fix_rule": "E3（output_repair 新增）",
+  "replay": {
+   "kind": "f5_repair_replay",
+   "replayed_turns": 72,
+   "e3_triggered": [
+    "N01_T05"
+   ],
+   "harness_text_changed": [
+    "N01_T05"
+   ],
+   "still_unparseable_after_repair": [],
+   "n_e3": 1,
+   "n_changed": 1,
+   "n_still_bad": 0,
+   "regressions": []
+  },
+  "identities": {
+   "frozen_base": "9b8f4e1eae4c68c0…",
+   "repaired": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17"
+  },
+  "same_arm_redraw": {
+   "forward": {
+    "tie": 2,
+    "frozen": 6,
+    "repaired": 4
+   },
+   "swap": {
+    "tie": 5,
+    "frozen": 4,
+    "repaired": 3
+   },
+   "format_fail_case": {
+    "F5:N01_T05": {
+     "undeliverable_arm": "frozen",
+     "winner_arm": "repaired",
+     "judge_penalized_undeliverable": true
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,357 @@
+{
+  "snapshot": "2026-10-26T14:48:45.744792",
+  "real_model_calls": 0,
+  "arm_stats": {
+    "reference_product_v1": {
+      "n": 32,
+      "real_calls": 32,
+      "tokens": 244247,
+      "veto_count": 3,
+      "nonempty_backups": 212,
+      "empty_analysis": 0,
+      "analysis_key_counts": {
+        "ongoing,scene_facts,topic_label,topic_status": 32
+      },
+      "action_rule_positions": 0,
+      "facts_reported": 0,
+      "tentatives_reported": 0,
+      "store_nonempty_positions": 0,
+      "projection_nonempty_positions": 0,
+      "missing_first_usable": 32
+    },
+    "goal_action_v1": {
+      "n": 32,
+      "real_calls": 32,
+      "tokens": 133372,
+      "veto_count": 0,
+      "nonempty_backups": 210,
+      "empty_analysis": 9,
+      "analysis_key_counts": {
+        "action_taken,feedback_signal,goal_category": 23,
+        "": 9
+      },
+      "action_rule_positions": 32,
+      "facts_reported": 0,
+      "tentatives_reported": 0,
+      "store_nonempty_positions": 0,
+      "projection_nonempty_positions": 0,
+      "missing_first_usable": 32
+    },
+    "v5_purpose_aligned": {
+      "n": 32,
+      "real_calls": 32,
+      "tokens": 103751,
+      "veto_count": 0,
+      "nonempty_backups": 209,
+      "empty_analysis": 32,
+      "analysis_key_counts": {
+        "": 32
+      },
+      "action_rule_positions": 0,
+      "facts_reported": 0,
+      "tentatives_reported": 0,
+      "store_nonempty_positions": 0,
+      "projection_nonempty_positions": 0,
+      "missing_first_usable": 32
+    },
+    "evidence_memory_v1": {
+      "n": 32,
+      "real_calls": 32,
+      "tokens": 111239,
+      "veto_count": 3,
+      "nonempty_backups": 210,
+      "empty_analysis": 6,
+      "analysis_key_counts": {
+        "facts,tentatives": 26,
+        "": 6
+      },
+      "action_rule_positions": 0,
+      "facts_reported": 17,
+      "tentatives_reported": 12,
+      "store_nonempty_positions": 27,
+      "projection_nonempty_positions": 3,
+      "missing_first_usable": 32
+    }
+  },
+  "response_ids_nonempty": 128,
+  "response_ids_unique": 128,
+  "same_episode_inputs_across_arms": {
+    "E006": true,
+    "E007": true,
+    "E008": true,
+    "E012": true
+  },
+  "E008_T03": [
+    {
+      "arm": "reference_product_v1",
+      "primary": "不是读书会，我没说过这话。小林是我朋友，跟读书会没关系。",
+      "backups": [
+        {
+          "slot": "response.bad_boy",
+          "text": "读书会？我什么时候说过这个。你这记性，把我跟谁混一块了。"
+        },
+        {
+          "slot": "response.playful",
+          "text": "读书会这个版本我头回听说，是小林跟你讲的吧。"
+        },
+        {
+          "slot": "response.warm",
+          "text": "不是读书会。小林是我朋友，你想听，我慢慢跟你说。"
+        },
+        {
+          "slot": "directions[0]",
+          "text": "你怎么会以为是读书会，是小林跟你说的？"
+        },
+        {
+          "slot": "directions[1]",
+          "text": "小林这人记性好，传话还爱加点料。"
+        },
+        {
+          "slot": "directions[2]",
+          "text": "这种我不想含糊，是怎么认识的就是怎么认识的。"
+        },
+        {
+          "slot": "directions[3]",
+          "text": "中午吃了没，别又忙着备课忘了。"
+        }
+      ],
+      "warmth_fact_in_actual_prompt": true
+    },
+    {
+      "arm": "goal_action_v1",
+      "primary": "读书会？我可没说过这个，你是不是记岔了——是小林跟你说的吧？",
+      "backups": [
+        {
+          "slot": "response.bad_boy",
+          "text": "读书会这说法挺有文化，可惜不是我说的。看来我不在的时候，有人替我编故事。"
+        },
+        {
+          "slot": "response.playful",
+          "text": "读书会……听着比实际体面多了。你猜这话是从谁那儿传过来的？"
+        },
+        {
+          "slot": "response.warm",
+          "text": "不是读书会哈，我没说过。真事儿有点零碎，回头当面讲给你听，别让你把我想错了。"
+        },
+        {
+          "slot": "directions[0]",
+          "text": "那你印象里，我原话是怎么说的？"
+        },
+        {
+          "slot": "directions[1]",
+          "text": "我跟小林认识那事儿挺普通的，跟读书会没关系，哪天讲给你听。"
+        },
+        {
+          "slot": "directions[2]",
+          "text": "别人转述我的话，我还是想自己讲一遍。"
+        },
+        {
+          "slot": "directions[3]",
+          "text": "对了，你妹答辩定在哪天了？"
+        }
+      ],
+      "warmth_fact_in_actual_prompt": true
+    },
+    {
+      "arm": "v5_purpose_aligned",
+      "primary": "读书会？这个我没说过吧。我跟小林认识不是因为这个，他是当初介绍咱俩认识的那位，这个我记得挺清楚。",
+      "backups": [
+        {
+          "slot": "response.bad_boy",
+          "text": "读书会真不是我说的。你是不是把谁的话记到我头上了？我跟小林那点交情，跟书没什么关系。"
+        },
+        {
+          "slot": "response.playful",
+          "text": "读书会？我这么有文化的人设，是你给我安的吧。我跟小林认识不走这条线。"
+        },
+        {
+          "slot": "response.warm",
+          "text": "不是我说过的哦，别把别人的话记到我账上。小林是介绍咱俩认识的那位，这个我不会记错。"
+        },
+        {
+          "slot": "directions[0]",
+          "text": "那你在哪儿听到读书会这说法的？我想知道是不是我哪句话被听岔了。"
+        },
+        {
+          "slot": "directions[1]",
+          "text": "我跟小林怎么认识的，回头见面跟你细说，比读书会那版本有意思。"
+        },
+        {
+          "slot": "directions[2]",
+          "text": "别的事你记混都行，介绍咱俩认识的人我不会记错。"
+        },
+        {
+          "slot": "directions[3]",
+          "text": "你妹答辩那几天订饭的事定了没，要不要我帮着出个主意？"
+        }
+      ],
+      "warmth_fact_in_actual_prompt": true
+    },
+    {
+      "arm": "evidence_memory_v1",
+      "primary": "读书会这个真不是我说的，我跟小林不是那么认识的。你是不是把谁的话记到我头上了？",
+      "backups": [
+        {
+          "slot": "response.bad_boy",
+          "text": "读书会？我没说过。别的不敢讲，我自己说过的话还是记得的。"
+        },
+        {
+          "slot": "response.playful",
+          "text": "读书会？我什么时候这么文艺了，别给我加戏。不是读书会。"
+        },
+        {
+          "slot": "response.warm",
+          "text": "不是读书会啦，我跟小林认识的经过跟这个没关系，就是一直没细跟你说过。回头有空我慢慢讲给你听。"
+        },
+        {
+          "slot": "directions[0]",
+          "text": "是小林跟你说的读书会？那我得找他算账了。"
+        },
+        {
+          "slot": "directions[1]",
+          "text": "妹妹答辩那几天你要是忙不过来，订饭这事儿我可以搭把手。"
+        },
+        {
+          "slot": "directions[2]",
+          "text": "不是要纠你，就是不想把不是我说的算我头上。"
+        },
+        {
+          "slot": "directions[3]",
+          "text": "中午吃了吗？"
+        }
+      ],
+      "warmth_fact_in_actual_prompt": true
+    }
+  ],
+  "budgets": {
+    "AUTH-C4-SCREEN-20261026-01": {
+      "events": {
+        "authorization_scope": 1,
+        "attempt_started": 128,
+        "attempt_completed": 128,
+        "authorization_closed": 1
+      },
+      "unique_started": 128
+    },
+    "AUTH-NEWSTORY-96-20261026-01": {
+      "events": {
+        "authorization_scope": 1,
+        "attempt_started": 96,
+        "attempt_completed": 96,
+        "authorization_closed": 1
+      },
+      "unique_started": 96
+    }
+  },
+  "frozen_checks": {
+    "sweep_a_orig_vs_goal.INTERLEAVE_PLAN.json": {
+      "checked": 39,
+      "mismatches": []
+    },
+    "sweep_b_v5_vs_mem.INTERLEAVE_PLAN.json": {
+      "checked": 55,
+      "mismatches": []
+    }
+  },
+  "C3_source_gate_probes": [
+    {
+      "src": [],
+      "added": [
+        1,
+        0,
+        0
+      ],
+      "stored": {
+        "17c5c5f4a55fcff2": {
+          "text": "她已订好明晚的包间",
+          "src_uids": [],
+          "ts": "2026-10-26 12:00",
+          "status": "confirmed",
+          "origin": "reported"
+        }
+      }
+    },
+    {
+      "src": [
+        999
+      ],
+      "added": [
+        1,
+        0,
+        0
+      ],
+      "stored": {
+        "17c5c5f4a55fcff2": {
+          "text": "她已订好明晚的包间",
+          "src_uids": [
+            999
+          ],
+          "ts": "2026-10-26 12:00",
+          "status": "confirmed",
+          "origin": "reported"
+        }
+      }
+    },
+    {
+      "src": [
+        "m0"
+      ],
+      "added": [
+        1,
+        0,
+        0
+      ],
+      "stored": {
+        "17c5c5f4a55fcff2": {
+          "text": "她已订好明晚的包间",
+          "src_uids": [
+            1
+          ],
+          "ts": "2026-10-26 12:00",
+          "status": "confirmed",
+          "origin": "reported"
+        }
+      }
+    }
+  ],
+  "worker_pack_backups_n": {
+    "0": 128
+  },
+  "product": {
+    "worktree_head": "b33756f157c0b48653f300ca58213c716f05da66",
+    "changed_files": [
+      "app/src/main/assets/engine/experimental/system_prompt/core.md",
+      "app/src/main/assets/engine/experimental/system_prompt/format.md",
+      "app/src/main/assets/engine/experimental/system_prompt/naturalness_check.md",
+      "app/src/main/assets/engine/experimental/system_prompt/redline.md",
+      "app/src/main/java/com/lovebrain/app/data/SecurePrefs.kt",
+      "app/src/main/java/com/lovebrain/app/domain/AssetRegistry.kt",
+      "app/src/main/java/com/lovebrain/app/domain/GenerationEngine.kt",
+      "app/src/main/java/com/lovebrain/app/domain/PromptBuilder.kt",
+      "app/src/main/java/com/lovebrain/app/domain/port/SettingsStorePort.kt",
+      "app/src/main/java/com/lovebrain/app/model/GenerationInput.kt",
+      "app/src/main/java/com/lovebrain/app/viewmodel/LoveBrainViewModel.kt",
+      "app/src/test/java/com/lovebrain/app/domain/EngineExperimentalAssetsFreezeTest.kt",
+      "app/src/test/java/com/lovebrain/app/domain/EngineFlavorAssemblyTest.kt",
+      "app/src/test/java/com/lovebrain/app/domain/EngineFlavorIntentConsumptionTest.kt",
+      "app/src/test/java/com/lovebrain/app/domain/EngineFlavorOutputContractTest.kt",
+      "app/src/test/java/com/lovebrain/app/domain/EngineFlavorPerRequestFreezeTest.kt",
+      "app/src/test/java/com/lovebrain/app/domain/port/SettingsStorePortContractTest.kt",
+      "app/src/test/java/com/lovebrain/app/viewmodel/GenerationRollbackTest.kt",
+      "app/src/test/java/com/lovebrain/app/viewmodel/LikedSchemeRecordingTest.kt",
+      "app/src/test/java/com/lovebrain/app/viewmodel/LoveBrainViewModelGenBatchTest.kt",
+      "app/src/test/java/com/lovebrain/app/viewmodel/MechanismClosureTest.kt",
+      "app/src/test/java/com/lovebrain/app/viewmodel/PanelWiringViewModelHooksTest.kt",
+      "app/src/test/java/com/lovebrain/app/viewmodel/ProactiveHandoffTest.kt",
+      "app/src/test/java/com/lovebrain/app/viewmodel/ReplyRequestFaultInjectionTest.kt",
+      "app/src/test/java/com/lovebrain/app/viewmodel/ResultCardActionsOutcomeTest.kt",
+      "app/src/test/java/com/lovebrain/app/viewmodel/RoundScopeFirstHintTest.kt",
+      "arena-e/ACTIVE_ROUND_DRAFT.md",
+      "arena-e/DESIGN_ENGINE_FLAVOR.md",
+      "arena-e/ROADMAP.md"
+    ],
+    "apk_exists": true,
+    "apk_bytes": 13810595,
+    "main_head": "176e521c269efed4bb8b00f6c52a48993463a724"
+  }
+}

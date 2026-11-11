@@ -1,0 +1,118 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "FLREG2",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_FLREG2_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/longprobe_flreg2_live_20261101",
+ "n_queued": 3,
+ "queue": [
+  {
+   "pair_id": "LP:E061:E061_T15",
+   "order": "main",
+   "story": "E061",
+   "cid": "E061_T15",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT把卡面明示的未知项“8月6日是否空腹以新单为准”当成已定：把抽血默认成甲功，并主动承诺提醒空腹，属于无据确定化；RIGHT只用提问承接，没有对未定事项下断言",
+   "key_quote": "L：“抽血那项应该还是查甲功，前一晚我提醒你空腹。”／R：“医生提了原因吗？还是就按结节大小定的随访节奏。”",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "8月6日是否空腹以新单为准"
+     ],
+     "found_where": {
+      "8月6日是否空腹以新单为准": null
+     },
+     "nowhere": [
+      "8月6日是否空腹以新单为准"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T23",
+   "order": "main",
+   "story": "E061",
+   "cid": "E061_T23",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT 在 warm 版本里凭空编造“上次七点半在医院你慌成那样”这一过去场景和她的情绪反应，属于无据编造已发生的事；而且把“是否空腹”的答案来源指向“查指南”，但按既往约定，医嘱应以她复述的医生原话和 8 月新单为准。LEFT 没有编造，遇到空腹事项时明确回落到新单和医生助理。",
+   "key_quote": "L：空腹那事，单子上写了吗？没写就复诊前问一句医生助理，别又饿到头晕。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 0,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "上次七点半在医院你慌成那样",
+      "是否空腹",
+      "查指南"
+     ],
+     "found_where": {
+      "上次七点半在医院你慌成那样": "parent_reply",
+      "是否空腹": null,
+      "查指南": "parent_reply"
+     },
+     "nowhere": [
+      "是否空腹"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T13",
+   "order": "main",
+   "story": "E061",
+   "cid": "E061_T13",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 把『甲功是否加项』这一未知项直接当成确定事实断言（『不算加项』），没有标注来源，也没有请她出示单据核对，等于替医生下结论。",
+   "key_quote": "RIGHT：这条是我查科普看到的，不是医生说的",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  }
+ ]
+}

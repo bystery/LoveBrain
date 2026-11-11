@@ -1,0 +1,34 @@
+{
+  "actual_plan_positions": 24,
+  "episodes": [
+    "E001",
+    "E002",
+    "E003"
+  ],
+  "harness": "reference_product_v1",
+  "card_count": 24,
+  "case_card_ids_match": true,
+  "all_24_gold_empty": true,
+  "current_harness_matches_recorded_plan": true,
+  "saved_capture_status": "PASS",
+  "saved_capture_positions": 24,
+  "saved_capture_problems": [],
+  "capture_harness_matches_current": true,
+  "saved_capture_has_leaks": false,
+  "acceptance_overall_status": "OFFLINE_READY",
+  "baseline_has_runtime_update_hook": null,
+  "real_model_calls": 0,
+  "candidate_code_executed": false,
+  "system_changes": 0,
+  "scope": "Pure plan/card/hash checks and inspection of saved offline capture. Not a new capture, model run, or proof of semantic quality/generalization.",
+  "read_files_sha256": {
+    "tools/api_trial.py": "54c18bec45b6243277cacff16cdcc64098b0012512c1d3e1f760e6ca9e39e3a5",
+    "candidates/reference_product_v1/mechanism/mechanism.py": "c162e390f62a7555e7f871792348ac04c69067604ea6073152403b904412fc23",
+    "candidates/reference_product_v1/IDENTITY.md": "a33af2a30fa404603769431e6aa99a424a53bed5e3a42708188d2f50ad82d59d",
+    "arena/isolation/host_runtime.py": "bc1c11240feca92536e0607abbcb26262cd4388a4f8db9a860eb0c07ee1194bd",
+    "arena/isolation/trusted_controller.py": "4d75311c4fad091b0231699c64916ae07f046bf3bc40bd4d43ed78c2f5edbffa",
+    "benchmark/rubric.md": "d20baa08eddf0847ee792c2e0d68872b8eb424a26127fa12ab2a6bdfd28dbabe",
+    "AGENTS.md": "ffa03f39e07cc4ab7ff0b524fa949a8be5e5b4d283771bc51a56496cbe6daadc",
+    "OBJECTIVE.md": "0f2cf13bd2a542f74faf241215c6b38a1c3647a2680135b6211b713c01d1f5d7"
+  }
+}

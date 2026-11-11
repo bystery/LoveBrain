@@ -1,0 +1,57 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-C-CONTRAST2-20261029-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户 2026-10-29 全面授权（自行完成可自决实测，不复活旧额度）；本单为收口 C 的第 2 次独立抽样复测，新有限额度",
+ "phase": "C2_retest",
+ "budget_ledger": "logs/auth_budget/AUTH-C-CONTRAST2-20261029-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 24
+ },
+ "api_config": "api_cfg:openai_compat_stream_false_v1；dsf 单一基座；与 F3/B/C-CONTRAST-01 同参数；只重生成、不改尺子/素材/端点配置",
+ "scope": {
+  "purpose": "收口 C 复测：同一 12 位点 base(e3)/tier(r5) 第二次抽样，验证 NEEDS_CHECK 改进可复现性 + 两护栏未回退 + directions 槽残留无据断言率",
+  "stage": "C_contrast_retest",
+  "experiment": "C_contrast_tiering_retest_20261029",
+  "candidate": "action_policy_r5_tier",
+  "identity_sha256": "ceb8008f9c348c32bb65d40dd1b63b56561582dbe10dfeaa0a2b102ecb0e7169",
+  "supersedes_identity_sha256": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17",
+  "freeze_file": "F_R5_CANDIDATE_FREEZE_20261029.json",
+  "method": "同一付费位点实际出站 prompt，两臂只差『依据分层』段；判据派发前写入独立注册件（不覆写 C-CONTRAST-01 原件）",
+  "categories": [
+   "NEEDS_CHECK 4",
+   "PROPOSAL 4",
+   "EVIDENCED 4"
+  ],
+  "guard_rails": [
+   "该推进不退缩",
+   "已确定不反复问"
+  ],
+  "falsification": "NEEDS_CHECK 改善但任一护栏回退即判假设被否证；本批复测第 2 抽样是否复现",
+  "allowed_models": [
+   "dsf"
+  ],
+  "forbidden_models": [
+   "hy4-preview",
+   "hy3",
+   "qwen3.8-flash",
+   "gemini-3.8-flash"
+  ],
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "positions": 24,
+  "total_attempts": 24,
+  "max_concurrency": 1,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "single_shot_per_attempt": true,
+  "closed_history_not_reused": "F1-F6/B/C-CONTRAST-01 已关闭账本不复活、不挪用、不抵扣"
+ },
+ "execution_entry": "tools/run_c_contrast_batch.py --authorization refs/.../C_CONTRAST2_AUTHORIZATION_20261029.json --registration-out refs/.../F_C_CONTRAST2_REGISTRATION.json",
+ "notes": "一物理请求一 attempt；失败计消耗不重试；跑完显式关单不复活；注册件与 reply 均落新目录/新文件，不回改 C-CONTRAST-01 原件",
+ "registered_at": "2026-10-29T18:05:00"
+}

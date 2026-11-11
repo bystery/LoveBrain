@@ -1,0 +1,45 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-W19-CROSS-20261103-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30 常设授权+2026-10-25 持续执行授权；本批自建有限 scope（W19 跨域单构建批）",
+ "phase": "W19CROSS",
+ "budget_ledger": "logs/auth_budget/AUTH-W19-CROSS-20261103-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 464
+ },
+ "scope": {
+  "purpose": "W19 跨域单构建批：window_expand_b_norecap_uc_guard（=uc+guard 输出契约守卫，单变量）vs parent window_expand_b_norecap_uc；6篇12轮(E157,E164,E170,E183,E191,E212)+4篇40轮(LRE117,LRE121,LRE146,LRE138)=464 attempts。判据跑前冻结 W19-03_CROSS_DOMAIN_DESIGN_20261103.md G1-G5。约束：live 独占 6 workers，不与评审/其它 live 并行；fail_fast/no_retry/no_makeup；完成标准 464/464 manifest、0 CALL_FAIL/TIMEOUT。",
+  "route": "two_arm_batch_464",
+  "total_attempts": 464,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "W19CROSS": "BATCH-W19-CROSS-20261103"
+  },
+  "episodes": [],
+  "cards": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+  "plan_sha256": "00d51ef7ffbce4301aa1aca07fa48a9e9293bddadac5831719364783e0dbed02"
+ },
+ "frozen_bindings": {
+  "W19CROSS": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/W19_CROSS.INTERLEAVE_PLAN.json",
+   "plan_sha256": "00d51ef7ffbce4301aa1aca07fa48a9e9293bddadac5831719364783e0dbed02",
+   "batch_id": "BATCH-W19-CROSS-20261103",
+   "cards_file": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+   "cards_sha256": "badd923b6be466daafcd4dcdaf4eb4f594964b418b06146d6c5e0a9a2f298c7c",
+   "attempts": 464,
+   "parent": "window_expand_b_norecap_uc",
+   "parent_identity_sha256": "5b3266a91350d66a799f2d3c53274168f9c9b1d16a81f26d8b7193e1847c13df",
+   "candidate": "window_expand_b_norecap_uc_guard",
+   "candidate_identity_sha256": "aceb7d92379a859f422d194327a6aa2b9676ddfdf7671a652010508b9e1c90fc"
+  }
+ },
+ "created": "2026-11-03"
+}

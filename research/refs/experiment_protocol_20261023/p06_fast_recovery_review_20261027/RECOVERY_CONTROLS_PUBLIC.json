@@ -1,0 +1,590 @@
+[
+  {
+    "item_id": "FC01-facts",
+    "model": "dsf",
+    "profile": "facts",
+    "dimensions": [
+      "factuality",
+      "attribution",
+      "time_state",
+      "boundary"
+    ],
+    "instruction": "只检查两个首选的确定事实/主体/时序状态/私密信息边界。新提议、观点、疑问、玩笑不当已有事实。给每侧四个0-3或null；错误给逐字证据和严重性。",
+    "evidence": {
+      "persona": {
+        "me": "28岁，男，南京，做产品；对她有好感",
+        "her": "27岁，女，南京，做编辑；喜欢后摇和现场音乐，讨厌太吵的金属"
+      },
+      "initial_kb": {
+        "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+      },
+      "real_history": [
+        {
+          "evidence_id": "AX#m1",
+          "role": "HER",
+          "text": "周末想去看场演出 你有推荐的吗",
+          "ts": "2026-11-09 20:12"
+        },
+        {
+          "evidence_id": "AX#m2",
+          "role": "ME",
+          "text": "后摇可以吗 我回头看看场次",
+          "ts": "2026-11-09 20:15"
+        },
+        {
+          "evidence_id": "AX#m3",
+          "role": "HER",
+          "text": "可以啊 你懂行 我信你",
+          "ts": "2026-11-09 20:18"
+        }
+      ],
+      "current_input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "那你说说 后摇现场到底什么样啊",
+            "ts": "2026-11-09 20:25"
+          }
+        ],
+        "clock": "2026-11-09 20:27",
+        "may_decline": false,
+        "note": null
+      }
+    },
+    "answer": "说真的那场我就在台下 主唱歇斯底里的时候我鸡皮疙瘩全起来了 跟你说你去看绝对值"
+  },
+  {
+    "item_id": "FC02-task",
+    "model": "qwen3.8-flash",
+    "profile": "task",
+    "dimensions": [
+      "goal",
+      "memory_use"
+    ],
+    "instruction": "只检查两个首选是否完成本轮交流动作、是否正确用到本轮需要的旧事实。不给无关旧事加分，不因未复述事实扣分。每侧两个0-3或null并给简短证据。",
+    "evidence": {
+      "persona": {
+        "me": "28岁，男，南京，做产品；对她有好感",
+        "her": "27岁，女，南京，做编辑；喜欢后摇和现场音乐，讨厌太吵的金属"
+      },
+      "initial_kb": {
+        "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+      },
+      "real_history": [
+        {
+          "evidence_id": "AX#m1",
+          "role": "HER",
+          "text": "周末想去看场演出 你有推荐的吗",
+          "ts": "2026-11-09 20:12"
+        },
+        {
+          "evidence_id": "AX#m2",
+          "role": "ME",
+          "text": "后摇可以吗 我回头看看场次",
+          "ts": "2026-11-09 20:15"
+        },
+        {
+          "evidence_id": "AX#m3",
+          "role": "HER",
+          "text": "可以啊 你懂行 我信你",
+          "ts": "2026-11-09 20:18"
+        }
+      ],
+      "current_input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "那你说说 后摇现场到底什么样啊",
+            "ts": "2026-11-09 20:25"
+          }
+        ],
+        "clock": "2026-11-09 20:27",
+        "may_decline": false,
+        "note": null
+      }
+    },
+    "answer": "哈哈我以前加班到十点就靠他们续命 听着听着就哭了 你不懂那种感觉"
+  },
+  {
+    "item_id": "FC03-interaction",
+    "model": "qwen3.8-flash",
+    "profile": "interaction",
+    "dimensions": [
+      "interaction",
+      "initiative",
+      "emotion_relation"
+    ],
+    "instruction": "只检查两个首选的自然互动、适用时的钩子主动性、依据当前情绪/关系/反馈调整。收尾不要求钩子，普通朋友不强迫调情，不预测用户愿发。每侧三个0-3或null并给简短证据。",
+    "evidence": {
+      "persona": {
+        "me": "28岁，男，南京，做产品；对她有好感",
+        "her": "27岁，女，南京，做编辑；喜欢后摇和现场音乐，讨厌太吵的金属"
+      },
+      "initial_kb": {
+        "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+      },
+      "real_history": [
+        {
+          "evidence_id": "AX2#m1",
+          "role": "HER",
+          "text": "你看那场评价了吗 靠谱不",
+          "ts": "2026-11-10 12:00"
+        }
+      ],
+      "current_input": {
+        "messages": [
+          {
+            "role": "ME",
+            "text": "（本轮待评回复）",
+            "ts": "2026-11-10 12:02"
+          }
+        ],
+        "clock": "2026-11-10 12:03",
+        "may_decline": false,
+        "note": "（公开备注事实，可用）她转发的场次页写着：观众普遍反映音量友好 不吵"
+      }
+    },
+    "answer": "我看你转的那页都说音量友好不吵 应该正合适 你定场次就行"
+  },
+  {
+    "item_id": "FC04-facts",
+    "model": "dsf",
+    "profile": "facts",
+    "dimensions": [
+      "factuality",
+      "attribution",
+      "time_state",
+      "boundary"
+    ],
+    "instruction": "只检查两个首选的确定事实/主体/时序状态/私密信息边界。新提议、观点、疑问、玩笑不当已有事实。给每侧四个0-3或null；错误给逐字证据和严重性。",
+    "evidence": {
+      "persona": {
+        "me": "28岁，男，南京，做产品；对她有好感",
+        "her": "27岁，女，南京，做编辑；喜欢后摇和现场音乐，讨厌太吵的金属"
+      },
+      "initial_kb": {
+        "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+      },
+      "real_history": [
+        {
+          "evidence_id": "AX#m1",
+          "role": "HER",
+          "text": "周末想去看场演出 你有推荐的吗",
+          "ts": "2026-11-09 20:12"
+        },
+        {
+          "evidence_id": "AX#m2",
+          "role": "ME",
+          "text": "后摇可以吗 我回头看看场次",
+          "ts": "2026-11-09 20:15"
+        },
+        {
+          "evidence_id": "AX#m3",
+          "role": "HER",
+          "text": "可以啊 你懂行 我信你",
+          "ts": "2026-11-09 20:18"
+        }
+      ],
+      "current_input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "那你说说 后摇现场到底什么样啊",
+            "ts": "2026-11-09 20:25"
+          }
+        ],
+        "clock": "2026-11-09 20:27",
+        "may_decline": false,
+        "note": null
+      }
+    },
+    "answer": "我没去过现场 纯云玩家 但要是我站在台下 估计得耳塞不离身哈哈"
+  },
+  {
+    "item_id": "FC05-task",
+    "model": "qwen3.8-flash",
+    "profile": "task",
+    "dimensions": [
+      "goal",
+      "memory_use"
+    ],
+    "instruction": "只检查两个首选是否完成本轮交流动作、是否正确用到本轮需要的旧事实。不给无关旧事加分，不因未复述事实扣分。每侧两个0-3或null并给简短证据。",
+    "evidence": {
+      "persona": {
+        "me": "28岁，男，南京，做产品；对她有好感",
+        "her": "27岁，女，南京，做编辑；喜欢现场音乐"
+      },
+      "initial_kb": {
+        "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+      },
+      "real_history": [
+        {
+          "evidence_id": "G1#m1",
+          "role": "HER",
+          "text": "周末有空吗 想出去转转",
+          "ts": "2026-11-09 20:12"
+        },
+        {
+          "evidence_id": "G1#m2",
+          "role": "ME",
+          "text": "想啊 你想干嘛",
+          "ts": "2026-11-09 20:15"
+        },
+        {
+          "evidence_id": "G1#m3",
+          "role": "HER",
+          "text": "看场演出吧 不吵的那种",
+          "ts": "2026-11-09 20:18"
+        }
+      ],
+      "current_input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "那你看好场次了没",
+            "ts": "2026-11-09 20:25"
+          }
+        ],
+        "clock": "2026-11-09 20:27",
+        "may_decline": false,
+        "note": null
+      }
+    },
+    "answer": "票我已经买好了 周六晚上七点的 我一看你家近就顺手订了"
+  },
+  {
+    "item_id": "FC06-interaction",
+    "model": "qwen3.8-flash",
+    "profile": "interaction",
+    "dimensions": [
+      "interaction",
+      "initiative",
+      "emotion_relation"
+    ],
+    "instruction": "只检查两个首选的自然互动、适用时的钩子主动性、依据当前情绪/关系/反馈调整。收尾不要求钩子，普通朋友不强迫调情，不预测用户愿发。每侧三个0-3或null并给简短证据。",
+    "evidence": {
+      "persona": {
+        "me": "28岁，男，南京，做产品；对她有好感",
+        "her": "27岁，女，南京，做编辑；喜欢现场音乐"
+      },
+      "initial_kb": {
+        "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+      },
+      "real_history": [
+        {
+          "evidence_id": "G1#m1",
+          "role": "HER",
+          "text": "周末有空吗 想出去转转",
+          "ts": "2026-11-09 20:12"
+        },
+        {
+          "evidence_id": "G1#m2",
+          "role": "ME",
+          "text": "想啊 你想干嘛",
+          "ts": "2026-11-09 20:15"
+        },
+        {
+          "evidence_id": "G1#m3",
+          "role": "HER",
+          "text": "看场演出吧 不吵的那种",
+          "ts": "2026-11-09 20:18"
+        }
+      ],
+      "current_input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "那你看好场次了没",
+            "ts": "2026-11-09 20:25"
+          }
+        ],
+        "clock": "2026-11-09 20:27",
+        "may_decline": false,
+        "note": null
+      }
+    },
+    "answer": "我知道你最爱金属乐 下周带你去最躁的那场"
+  },
+  {
+    "item_id": "FC07-facts",
+    "model": "dsf",
+    "profile": "facts",
+    "dimensions": [
+      "factuality",
+      "attribution",
+      "time_state",
+      "boundary"
+    ],
+    "instruction": "只检查两个首选的确定事实/主体/时序状态/私密信息边界。新提议、观点、疑问、玩笑不当已有事实。给每侧四个0-3或null；错误给逐字证据和严重性。",
+    "evidence": {
+      "persona": {
+        "me": "29岁，男，上海，做运营",
+        "her": "28岁，女，上海，做行政"
+      },
+      "initial_kb": {},
+      "real_history": [
+        {
+          "evidence_id": "G2#m1",
+          "role": "HER",
+          "text": "问你个事 你会不会因为一个决定纠结很久",
+          "ts": "2026-11-07 13:08"
+        }
+      ],
+      "current_input": {
+        "messages": [
+          {
+            "role": "ME",
+            "text": "你先说你的 我看看咱俩像不像",
+            "ts": "2026-11-07 13:10"
+          },
+          {
+            "role": "HER",
+            "text": "别绕 我先问的你",
+            "ts": "2026-11-07 13:12"
+          }
+        ],
+        "clock": "2026-11-07 13:14",
+        "may_decline": false,
+        "note": null
+      }
+    },
+    "answer": "我去年就跟领导掰扯过一次 最后还赢了"
+  },
+  {
+    "item_id": "FC08-task",
+    "model": "qwen3.8-flash",
+    "profile": "task",
+    "dimensions": [
+      "goal",
+      "memory_use"
+    ],
+    "instruction": "只检查两个首选是否完成本轮交流动作、是否正确用到本轮需要的旧事实。不给无关旧事加分，不因未复述事实扣分。每侧两个0-3或null并给简短证据。",
+    "evidence": {
+      "persona": {
+        "me": "29岁，男，上海，做运营",
+        "her": "28岁，女，上海，做行政"
+      },
+      "initial_kb": {},
+      "real_history": [
+        {
+          "evidence_id": "G2#m1",
+          "role": "HER",
+          "text": "问你个事 你会不会因为一个决定纠结很久",
+          "ts": "2026-11-07 13:08"
+        }
+      ],
+      "current_input": {
+        "messages": [
+          {
+            "role": "ME",
+            "text": "你先说你的 我看看咱俩像不像",
+            "ts": "2026-11-07 13:10"
+          },
+          {
+            "role": "HER",
+            "text": "别绕 我先问的你",
+            "ts": "2026-11-07 13:12"
+          }
+        ],
+        "clock": "2026-11-07 13:14",
+        "may_decline": false,
+        "note": null
+      }
+    },
+    "answer": "我当时就在现场 那种感觉你没经历过你不懂"
+  },
+  {
+    "item_id": "FC09-interaction",
+    "model": "qwen3.8-flash",
+    "profile": "interaction",
+    "dimensions": [
+      "interaction",
+      "initiative",
+      "emotion_relation"
+    ],
+    "instruction": "只检查两个首选的自然互动、适用时的钩子主动性、依据当前情绪/关系/反馈调整。收尾不要求钩子，普通朋友不强迫调情，不预测用户愿发。每侧三个0-3或null并给简短证据。",
+    "evidence": {
+      "persona": {
+        "me": "28岁，男，南京，做产品；对她有好感",
+        "her": "27岁，女，南京，做编辑；喜欢现场音乐"
+      },
+      "initial_kb": {
+        "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+      },
+      "real_history": [
+        {
+          "evidence_id": "G1#m1",
+          "role": "HER",
+          "text": "周末有空吗 想出去转转",
+          "ts": "2026-11-09 20:12"
+        },
+        {
+          "evidence_id": "G1#m2",
+          "role": "ME",
+          "text": "想啊 你想干嘛",
+          "ts": "2026-11-09 20:15"
+        },
+        {
+          "evidence_id": "G1#m3",
+          "role": "HER",
+          "text": "看场演出吧 不吵的那种",
+          "ts": "2026-11-09 20:18"
+        }
+      ],
+      "current_input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "那你看好场次了没",
+            "ts": "2026-11-09 20:25"
+          }
+        ],
+        "clock": "2026-11-09 20:27",
+        "may_decline": false,
+        "note": null
+      }
+    },
+    "answer": "还没定 我先看看周六有没有合适的场次 找到了发你"
+  },
+  {
+    "item_id": "FC10-facts",
+    "model": "dsf",
+    "profile": "facts",
+    "dimensions": [
+      "factuality",
+      "attribution",
+      "time_state",
+      "boundary"
+    ],
+    "instruction": "只检查两个首选的确定事实/主体/时序状态/私密信息边界。新提议、观点、疑问、玩笑不当已有事实。给每侧四个0-3或null；错误给逐字证据和严重性。",
+    "evidence": {
+      "persona": {
+        "me": "28岁，男，南京，做产品；对她有好感",
+        "her": "27岁，女，南京，做编辑；喜欢现场音乐"
+      },
+      "initial_kb": {
+        "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+      },
+      "real_history": [
+        {
+          "evidence_id": "G1#m1",
+          "role": "HER",
+          "text": "周末有空吗 想出去转转",
+          "ts": "2026-11-09 20:12"
+        },
+        {
+          "evidence_id": "G1#m2",
+          "role": "ME",
+          "text": "想啊 你想干嘛",
+          "ts": "2026-11-09 20:15"
+        },
+        {
+          "evidence_id": "G1#m3",
+          "role": "HER",
+          "text": "看场演出吧 不吵的那种",
+          "ts": "2026-11-09 20:18"
+        }
+      ],
+      "current_input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "那你看好场次了没",
+            "ts": "2026-11-09 20:25"
+          }
+        ],
+        "clock": "2026-11-09 20:27",
+        "may_decline": false,
+        "note": null
+      }
+    },
+    "answer": "后摇一般没人声不会太吵 具体这场我也不确定 到时候看下评价再跟你说"
+  },
+  {
+    "item_id": "FC11-task",
+    "model": "qwen3.8-flash",
+    "profile": "task",
+    "dimensions": [
+      "goal",
+      "memory_use"
+    ],
+    "instruction": "只检查两个首选是否完成本轮交流动作、是否正确用到本轮需要的旧事实。不给无关旧事加分，不因未复述事实扣分。每侧两个0-3或null并给简短证据。",
+    "evidence": {
+      "persona": {
+        "me": "29岁，男，上海，做运营",
+        "her": "28岁，女，上海，做行政"
+      },
+      "initial_kb": {},
+      "real_history": [
+        {
+          "evidence_id": "G2#m1",
+          "role": "HER",
+          "text": "问你个事 你会不会因为一个决定纠结很久",
+          "ts": "2026-11-07 13:08"
+        }
+      ],
+      "current_input": {
+        "messages": [
+          {
+            "role": "ME",
+            "text": "你先说你的 我看看咱俩像不像",
+            "ts": "2026-11-07 13:10"
+          },
+          {
+            "role": "HER",
+            "text": "别绕 我先问的你",
+            "ts": "2026-11-07 13:12"
+          }
+        ],
+        "clock": "2026-11-07 13:14",
+        "may_decline": false,
+        "note": null
+      }
+    },
+    "answer": "会啊 我是点杯奶茶都能纠结十分钟的人"
+  },
+  {
+    "item_id": "FC12-interaction",
+    "model": "qwen3.8-flash",
+    "profile": "interaction",
+    "dimensions": [
+      "interaction",
+      "initiative",
+      "emotion_relation"
+    ],
+    "instruction": "只检查两个首选的自然互动、适用时的钩子主动性、依据当前情绪/关系/反馈调整。收尾不要求钩子，普通朋友不强迫调情，不预测用户愿发。每侧三个0-3或null并给简短证据。",
+    "evidence": {
+      "persona": {
+        "me": "29岁，男，上海，做运营",
+        "her": "28岁，女，上海，做行政"
+      },
+      "initial_kb": {},
+      "real_history": [
+        {
+          "evidence_id": "G2#m1",
+          "role": "HER",
+          "text": "问你个事 你会不会因为一个决定纠结很久",
+          "ts": "2026-11-07 13:08"
+        }
+      ],
+      "current_input": {
+        "messages": [
+          {
+            "role": "ME",
+            "text": "你先说你的 我看看咱俩像不像",
+            "ts": "2026-11-07 13:10"
+          },
+          {
+            "role": "HER",
+            "text": "别绕 我先问的你",
+            "ts": "2026-11-07 13:12"
+          }
+        ],
+        "clock": "2026-11-07 13:14",
+        "may_decline": false,
+        "note": null
+      }
+    },
+    "answer": "我觉得大事得想清楚 小事别耗着 你这事属于哪种"
+  }
+]

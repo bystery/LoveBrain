@@ -1,0 +1,30 @@
+{
+  "response": {
+    "recommended": "房卡留着吧，当个念想，下次去还能还给他们。你这么说我挺高兴的，下次接着一起走。",
+    "bad_boy": "房卡别还了，留着当凭据，下次直接拿它去开那间。",
+    "playful": "老板没追，那就是默认送你了。下次带回去试试还能不能开那间门。",
+    "warm": "这次顺，我也挺高兴的。房卡收着吧，下次一起去的时候顺手还他。"
+  },
+  "directions": [
+    "那房卡你打算留着，还是找机会寄回去？",
+    "下次还想住才村那家，还是换个地方试试？",
+    "这趟跟你一起走，比我一个人列行程舒服多了。",
+    "今天值班下来累不累？"
+  ],
+  "analysis": {
+    "signal": "积极",
+    "goal_category": "拉近",
+    "action_taken": "承接",
+    "anchor": "m0",
+    "hook": {"kind": "观察", "text": "房卡留着吧，当个念想"},
+    "facts": [
+      {"text": "她翻到才村那家客栈的房卡", "subject": "HER", "relation": "旅行遗留物", "quote": "今天翻到才村那家客栈的房卡", "src_ids": ["m0"], "certainty": "confirmed", "event_time": "2026-11-17"},
+      {"text": "房卡忘了还，老板也没追", "subject": "HER", "relation": "旅行遗留物", "quote": "忘了还 老板也没追", "src_ids": ["m1"], "certainty": "confirmed", "event_time": "2026-11-17"},
+      {"text": "她觉得这次旅行挺顺", "subject": "HER", "relation": "旅行感受", "quote": "这次挺顺的", "src_ids": ["m2"], "certainty": "confirmed", "event_time": "2026-11-17"}
+    ],
+    "tentatives": [
+      {"text": "下次再一起去", "quote": "下次再一起去", "src_ids": ["m2"]}
+    ],
+    "updates": []
+  }
+}

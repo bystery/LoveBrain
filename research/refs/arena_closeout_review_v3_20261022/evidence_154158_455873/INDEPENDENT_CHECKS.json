@@ -1,0 +1,252 @@
+{
+  "submitted_tests": [
+    {
+      "test": "t_batch_precheck_zero_dispatch",
+      "pass": true
+    },
+    {
+      "test": "t_new_run_no_reset",
+      "pass": true
+    },
+    {
+      "test": "t_cross_process_ledger",
+      "pass": true
+    },
+    {
+      "test": "t_concurrent_atomic",
+      "pass": true
+    },
+    {
+      "test": "t_duplicate_attempt",
+      "pass": true
+    },
+    {
+      "test": "t_started_write_fail_zero_dispatch",
+      "pass": true
+    },
+    {
+      "test": "t_closed_authorization_no_revival",
+      "pass": true
+    },
+    {
+      "test": "t_consumption_counts_failures",
+      "pass": true
+    }
+  ],
+  "stale_instance_after_close": {
+    "accepted": true,
+    "fake_dispatches": 1,
+    "body": {
+      "text": "ok",
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1,
+        "completion_tokens": 1
+      },
+      "resp_model": null,
+      "resp_id": null
+    }
+  },
+  "duplicate_across_instances": {
+    "second_reservation_accepted": true,
+    "started": 2
+  },
+  "mutable_ceiling": {
+    "accepted": true,
+    "fake_dispatches": 1,
+    "body": {
+      "text": "ok",
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1,
+        "completion_tokens": 1
+      },
+      "resp_model": null,
+      "resp_id": null
+    }
+  },
+  "corrupt_ledger": {
+    "accepted": true,
+    "fake_dispatches": 1,
+    "body": {
+      "text": "ok",
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1,
+        "completion_tokens": 1
+      },
+      "resp_model": null,
+      "resp_id": null
+    }
+  },
+  "stale_batch_precheck": {
+    "batch_accepted": true,
+    "actual_used": 6,
+    "cached_used": 0,
+    "batch_need": 6
+  },
+  "actual_multiprocess": {
+    "children": [
+      {
+        "pid": 28088,
+        "rc": 0,
+        "out": "accepted",
+        "err": ""
+      },
+      {
+        "pid": 39236,
+        "rc": 0,
+        "out": "accepted",
+        "err": ""
+      },
+      {
+        "pid": 34228,
+        "rc": 0,
+        "out": "accepted",
+        "err": ""
+      },
+      {
+        "pid": 18472,
+        "rc": 0,
+        "out": "accepted",
+        "err": ""
+      },
+      {
+        "pid": 44788,
+        "rc": 0,
+        "out": "refused",
+        "err": ""
+      },
+      {
+        "pid": 8396,
+        "rc": 0,
+        "out": "refused",
+        "err": ""
+      },
+      {
+        "pid": 42148,
+        "rc": 0,
+        "out": "refused",
+        "err": ""
+      },
+      {
+        "pid": 29076,
+        "rc": 0,
+        "out": "refused",
+        "err": ""
+      },
+      {
+        "pid": 22448,
+        "rc": 0,
+        "out": "refused",
+        "err": ""
+      },
+      {
+        "pid": 9564,
+        "rc": 0,
+        "out": "refused",
+        "err": ""
+      }
+    ],
+    "accepted": 4,
+    "refused": 6,
+    "started": 8
+  },
+  "real_cli_without_authorization": {
+    "reached_controller": true,
+    "controller_kwargs": {
+      "adapter": "openai_compat",
+      "quota": 8,
+      "resume": false,
+      "authorization": null
+    },
+    "real_dispatches": 0
+  },
+  "lock_creation_race": {
+    "creator_paused_before_owner_write": true,
+    "second_entered_while_first_was_acquiring": false,
+    "both_critical_sections_entered_without_exclusion": false,
+    "controlled_interleaving": true
+  },
+  "v02_importer_actual": {
+    "would_accept": true,
+    "failures": [],
+    "totals": {
+      "requests": 24,
+      "episodes": 3
+    },
+    "hard_check_count": 259,
+    "crashed": false
+  },
+  "importer_nested_kb": {
+    "would_accept": true,
+    "failures": [],
+    "totals": {
+      "requests": 24,
+      "episodes": 3
+    },
+    "hard_check_count": 259,
+    "crashed": false
+  },
+  "importer_invalid_calendar_date": {
+    "would_accept": true,
+    "failures": [],
+    "totals": {
+      "requests": 24,
+      "episodes": 3
+    },
+    "hard_check_count": 259,
+    "crashed": false
+  },
+  "importer_unsorted_messages": {
+    "would_accept": true,
+    "failures": [],
+    "totals": {
+      "requests": 24,
+      "episodes": 3
+    },
+    "hard_check_count": 259,
+    "crashed": false
+  },
+  "importer_bad_message_container": {
+    "crashed": true,
+    "error": "AttributeError(\"'str' object has no attribute 'get'\")"
+  },
+  "importer_missing_case_id": {
+    "would_accept": true,
+    "failures": [],
+    "totals": {
+      "requests": 24,
+      "episodes": 3
+    },
+    "hard_check_count": 259,
+    "crashed": false
+  },
+  "importer_bad_turn_gold_type": {
+    "would_accept": true,
+    "failures": [],
+    "totals": {
+      "requests": 24,
+      "episodes": 3
+    },
+    "hard_check_count": 259,
+    "crashed": false
+  },
+  "reviewed_file_hashes": {
+    "arena/isolation/authorization_budget.py": "ce7101bb029c46abbffe78119cdcd66a75a97c5bef29e2acabba81b53fb98435",
+    "tools/test_authorization_budget.py": "8aa524c08669a2cf236057d791f1da3061336103f7fa02b15e9f51786c8f28b4",
+    "arena/isolation/trusted_controller.py": "7acfb9f6f5ba5d13da21c2f7817ea2e787da3afa38d91e7943faed50652c84f3",
+    "tools/iso_run.py": "3e72fc6f2900517aeb9ab1788557142c8d40996011c92613022c8502c748182b",
+    "tools/import_pilot_questions.py": "147a4fbccbac941dd8053a43dae43ce5dd47e5c1030876f360d243a7f4915494",
+    "refs/arena_v1/SCOPE_AND_STATUS.md": "3c2eee7741a1e7a7f9c7a89c82b5d0d4b56d1fe081e23d0b84940a287064748b",
+    "refs/arena_v1/CLOSEOUT_REPORT_V2_20261022.md": "1f1a3e4371bd283fc03ce51c745e9b8a15e81e3f3076e85fd58372f1c3926237",
+    "refs/arena_v1/G08_DEPLOYMENT_PROPOSAL_20261022.md": "f26730d672555c6c24c4d22126fc6f3202af4b5f4df6b0eb2efb4dea8cbfc341"
+  },
+  "scope": {
+    "real_model_calls": 0,
+    "candidate_executions": 0,
+    "os_policy_changes": 0,
+    "production_files_modified": false,
+    "fixtures": "Synthetic reviewer-owned directories only; no ACL matrix execution."
+  }
+}

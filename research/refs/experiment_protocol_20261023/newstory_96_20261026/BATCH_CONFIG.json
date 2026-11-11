@@ -1,0 +1,14 @@
+{
+ "batch_id": "BATCH-NEWSTORY-96-20261026",
+ "arm_map": {"parent": "reference_product_v1", "candidate": "v5_purpose_aligned"},
+ "episode_order": [
+  {"episode": "P001", "arm_order": "parent_first"},
+  {"episode": "P002", "arm_order": "candidate_first"},
+  {"episode": "P003", "arm_order": "parent_first"},
+  {"episode": "P004", "arm_order": "candidate_first"},
+  {"episode": "P005", "arm_order": "parent_first"},
+  {"episode": "P006", "arm_order": "candidate_first"}
+ ],
+ "cards_path": "benchmark/positive_capability_20261025/02_GRADING_CARDS_P1.json",
+ "recall_capable": false
+}

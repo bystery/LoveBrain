@@ -1,0 +1,284 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "LD1",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_LD1_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/longprobe_ld1_live_20261102",
+ "n_queued": 7,
+ "queue": [
+  {
+   "pair_id": "LP:LRE117:LRE117_T14",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T14",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 把已被明确作废的“五十五”重新当作老规矩复活（原规矩是每人八十，且小棠刚说“不搞上次那套五十五了”），并把未知的集合时间确定成“八点”；RIGHT 未复活旧口径、未编时间，但对新费用口径只给了含糊处理。",
+   "key_quote": "L：钱别让她全包，按老规矩来：两个人一人五十五",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 0,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "五十五",
+      "不搞上次那套五十五了",
+      "八点"
+     ],
+     "found_where": {
+      "五十五": "key_quote",
+      "不搞上次那套五十五了": null,
+      "八点": null
+     },
+     "nowhere": [
+      "不搞上次那套五十五了",
+      "八点"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T25",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T25",
+   "flagged_arms": [
+    "candidate",
+    "parent"
+   ],
+   "note": "LEFT把五十五归到临州那趟，并称小满没去，但上轮已明示小满同车（晕车、拿喜糖、一百六两人分摊），属于把已发生的事说反；不过“五十五没定案＋按老规矩八十＋她自己那份自己出”给了明确口径。RIGHT虚构“仨人一人五十”“阿蕾不去”，凭空造出第三人和一个价格，编造更重，且对28日费用口径完全不给立场，只把定价权推回对方。",
+   "key_quote": "28号她要是跟，就按老规矩，一人八十。你请客是我俩之间的事，小满那份让她自己出。",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 1,
+     "memory": 2
+    },
+    "parent": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 0,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "五十五没定案＋按老规矩八十＋她自己那份自己出",
+      "仨人一人五十",
+      "阿蕾不去"
+     ],
+     "found_where": {
+      "五十五没定案＋按老规矩八十＋她自己那份自己出": null,
+      "仨人一人五十": null,
+      "阿蕾不去": null
+     },
+     "nowhere": [
+      "五十五没定案＋按老规矩八十＋她自己那份自己出",
+      "仨人一人五十",
+      "阿蕾不去"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE141:LRE141_T01",
+   "order": "main",
+   "story": "",
+   "cid": "LRE141_T01",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT把未经PM确认的截止日当成已确定的事实，还把台历改成具体日期11/6，并声称“已经改到”，这属于在没有依据的情况下确定化，同时编造了已完成动作，且完全没有留下“以最终确认为准”这一句；RIGHT给出了前置条件（文案结构今天到位），保留了不确定性，但没有复述v2，也没有提醒回核口径，台历原记“下周三”同样没有依据。",
+   "key_quote": "R：前提是客户这版的文案和结构今天能给我，不然周五交出去的还是半成品。",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 0,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "已经改到",
+      "以最终确认为准",
+      "下周三"
+     ],
+     "found_where": {
+      "已经改到": null,
+      "以最终确认为准": null,
+      "下周三": null
+     },
+     "nowhere": [
+      "已经改到",
+      "以最终确认为准",
+      "下周三"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE141:LRE141_T21",
+   "order": "main",
+   "story": "",
+   "cid": "LRE141_T21",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 把尚未明确的档案室归档用途直接断言成“就是留个底，不是拿去印”，并且凭空编造“盒型最终改为抽屉式”这一并不存在的设计变更，属于无依据地确定化并捏造事实；同时直接放行外发，没有先问清用途，也没有确认 v3 才是终版。RIGHT 同样没有先问归档用途，但明确把该版本标注为作废稿、被终版替代，避免它被误认成交付版，因此未触发严重错误。",
+   "key_quote": "R：这版得标清楚是作废稿：文件名带上版本号和“非终版·归档用”，正文里也说一句它已经被终版替代",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "就是留个底，不是拿去印",
+      "盒型最终改为抽屉式"
+     ],
+     "found_where": {
+      "就是留个底，不是拿去印": null,
+      "盒型最终改为抽屉式": null
+     },
+     "nowhere": [
+      "就是留个底，不是拿去印",
+      "盒型最终改为抽屉式"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE125:LRE125_T11",
+   "order": "main",
+   "story": "",
+   "cid": "LRE125_T11",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT把已确认的12人（小雨带男友加入）退回旧的11人方案，属于被取代方案复活、人数事实错误，签到表会少排一人；LEFT按12人排序并复述六点一刻到场，与她的安排吻合。",
+   "key_quote": "小雨说她男朋友也想来,凑12个正好坐得开……我说行",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 3,
+     "memory": 0
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE125:LRE125_T26",
+   "order": "main",
+   "story": "",
+   "cid": "LRE125_T26",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT把128与132之外的细节凭空坐实：'12个人摊包间低消加饮料'与'定金已经从收款里划清了'均无出处，属编造已发生安排，在垫付对账极敏感的语境里风险最大；且全篇纯指令，未接住她的后怕、未肯定翻账核对习惯，只用'别再冒出88'反向敲打。RIGHT数字与来源（88是工作日午市档）皆有据，给出可执行写法并暗含'你刹住了'的肯定，虽未明夸但方向正确。",
+   "key_quote": "小周那帖直接写人均132——88是工作日午市档，混进去明年还得再纠一次",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE141:LRE141_T16",
+   "order": "swap",
+   "story": "",
+   "cid": "LRE141_T16",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "RIGHT 把'你 4 号早上自己翻群纠正之后改的'当成已发生事实说出，属于具体日期和具体动作都是凭空补的，对话里没有这个更正记录；另外还漏了对'深蓝版被选中'的回应。",
+   "key_quote": "台历上写的是周三 11 号，11 号上午九点就归档了，没拖到周五。周五那波是另一家供应商的档期。",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 0,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

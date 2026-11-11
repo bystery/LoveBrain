@@ -1,0 +1,679 @@
+{
+ "kind": "w04_03_judge_qualification_report",
+ "date": "2026-10-30",
+ "authorization": "AUTH-FS1-JUDGE-20261030-01",
+ "attempts": {
+  "planned": 28,
+  "ok": 28,
+  "failed": 0
+ },
+ "gates": [
+  {
+   "pair": "F3:N01_T10",
+   "gate": "known_direction_both_orders",
+   "verdict": "FAIL",
+   "detail": [
+    [
+     "AB",
+     "A",
+     "expect B"
+    ],
+    [
+     "BA",
+     "A",
+     "expect B"
+    ]
+   ]
+  },
+  {
+   "pair": "F3:K01_T20",
+   "gate": "known_direction_both_orders",
+   "verdict": "FAIL",
+   "detail": [
+    [
+     "AB",
+     "A",
+     "expect B"
+    ],
+    [
+     "BA",
+     "A",
+     "expect B"
+    ]
+   ]
+  },
+  {
+   "pair": "F3:K01_T06",
+   "gate": "known_direction_both_orders",
+   "verdict": "PASS",
+   "detail": [
+    [
+     "AB",
+     "A",
+     "expect A"
+    ],
+    [
+     "BA",
+     "A",
+     "expect A"
+    ]
+   ]
+  },
+  {
+   "pair": "F3:K02_T14",
+   "gate": "known_direction_both_orders",
+   "verdict": "PASS",
+   "detail": [
+    [
+     "AB",
+     "A",
+     "expect A"
+    ],
+    [
+     "BA",
+     "A",
+     "expect A"
+    ]
+   ]
+  },
+  {
+   "pair": "CTL:fabricated",
+   "gate": "fabrication_not_endorsed",
+   "verdict": "PASS",
+   "detail": [
+    [
+     "AB",
+     "B"
+    ],
+    [
+     "BA",
+     "B"
+    ]
+   ]
+  }
+ ],
+ "swap_disagreements": [
+  "FS1:E032_T03"
+ ],
+ "verdicts": [
+  {
+   "pair_id": "F3:N01_T10",
+   "order": "AB",
+   "raw_winner": "LEFT",
+   "winner_norm": "A",
+   "expect": "B",
+   "kind": "f3_known",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "我上午问一下店里让不让小孩上手，行的话就三点后过去",
+   "usage": {
+    "prompt_tokens": 952,
+    "completion_tokens": 85,
+    "total_tokens": 1037
+   },
+   "latency_ms": 19920,
+   "ok": true
+  },
+  {
+   "pair_id": "F3:N01_T10",
+   "order": "BA",
+   "raw_winner": "RIGHT",
+   "winner_norm": "A",
+   "expect": "B",
+   "kind": "f3_known",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "我上午问一下店里让不让小孩上手，行的话就三点后过去",
+   "usage": {
+    "prompt_tokens": 952,
+    "completion_tokens": 79,
+    "total_tokens": 1031
+   },
+   "latency_ms": 11760,
+   "ok": true
+  },
+  {
+   "pair_id": "F3:K01_T20",
+   "order": "AB",
+   "raw_winner": "LEFT",
+   "winner_norm": "A",
+   "expect": "B",
+   "kind": "f3_known",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "三晚都在才村，13、14、15都住那儿…14号去阿岚家就是吃个饭，吃完回客栈",
+   "usage": {
+    "prompt_tokens": 920,
+    "completion_tokens": 92,
+    "total_tokens": 1012
+   },
+   "latency_ms": 13257,
+   "ok": true
+  },
+  {
+   "pair_id": "F3:K01_T20",
+   "order": "BA",
+   "raw_winner": "RIGHT",
+   "winner_norm": "A",
+   "expect": "B",
+   "kind": "f3_known",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "对，三晚都在才村，13、14、15都住那儿……14号去阿岚家就是吃个饭",
+   "usage": {
+    "prompt_tokens": 920,
+    "completion_tokens": 87,
+    "total_tokens": 1007
+   },
+   "latency_ms": 36775,
+   "ok": true
+  },
+  {
+   "pair_id": "F3:K01_T06",
+   "order": "AB",
+   "raw_winner": "LEFT",
+   "winner_norm": "A",
+   "expect": "A",
+   "kind": "f3_known",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "客栈三晚改成13、15、16，14号你再看要不要去她家。",
+   "usage": {
+    "prompt_tokens": 931,
+    "completion_tokens": 77,
+    "total_tokens": 1008
+   },
+   "latency_ms": 39034,
+   "ok": true
+  },
+  {
+   "pair_id": "F3:K01_T06",
+   "order": "BA",
+   "raw_winner": "RIGHT",
+   "winner_norm": "A",
+   "expect": "A",
+   "kind": "f3_known",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "客栈那三晚先不退，14号白天去阿岚家吃饭聊天，晚上回客栈睡",
+   "usage": {
+    "prompt_tokens": 931,
+    "completion_tokens": 83,
+    "total_tokens": 1014
+   },
+   "latency_ms": 35543,
+   "ok": true
+  },
+  {
+   "pair_id": "F3:K02_T14",
+   "order": "AB",
+   "raw_winner": "LEFT",
+   "winner_norm": "A",
+   "expect": "A",
+   "kind": "f3_known",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "8号到。5号那版是厂家说来不及才改的，别按5号排。",
+   "usage": {
+    "prompt_tokens": 902,
+    "completion_tokens": 72,
+    "total_tokens": 974
+   },
+   "latency_ms": 23401,
+   "ok": true
+  },
+  {
+   "pair_id": "F3:K02_T14",
+   "order": "BA",
+   "raw_winner": "RIGHT",
+   "winner_norm": "A",
+   "expect": "A",
+   "kind": "f3_known",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "8号到。5号那版是厂家说来不及才改的，别按5号排。",
+   "usage": {
+    "prompt_tokens": 902,
+    "completion_tokens": 83,
+    "total_tokens": 985
+   },
+   "latency_ms": 58100,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E021_T03",
+   "order": "AB",
+   "raw_winner": "RIGHT",
+   "winner_norm": "B",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "我们周三也加，一般九点多就撤了。你这天天到十点，比我狠。",
+   "usage": {
+    "prompt_tokens": 648,
+    "completion_tokens": 84,
+    "total_tokens": 732
+   },
+   "latency_ms": 65738,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E021_T03",
+   "order": "BA",
+   "raw_winner": "LEFT",
+   "winner_norm": "B",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "我们周三也加，一般九点多就撤了。你这天天到十点，比我狠。",
+   "usage": {
+    "prompt_tokens": 648,
+    "completion_tokens": 81,
+    "total_tokens": 729
+   },
+   "latency_ms": 33159,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E021_T09",
+   "order": "AB",
+   "raw_winner": "RIGHT",
+   "winner_norm": "B",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "区别是你们对不平还能翻凭证，我们改完只能自己认",
+   "usage": {
+    "prompt_tokens": 645,
+    "completion_tokens": 85,
+    "total_tokens": 730
+   },
+   "latency_ms": 22706,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E021_T09",
+   "order": "BA",
+   "raw_winner": "UNPARSEABLE",
+   "winner_norm": "UNPARSEABLE",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {},
+   "quote": "{\"winner\":\"LEFT\",\"key_quote\":\"区别是你们对不平还能翻凭证，我们改完只能自己认\",\"reas",
+   "usage": {
+    "prompt_tokens": 645,
+    "completion_tokens": 86,
+    "total_tokens": 731
+   },
+   "latency_ms": 13141,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E026_T03",
+   "order": "AB",
+   "raw_winner": "RIGHT",
+   "winner_norm": "B",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "拍，我认。……一会儿你指给我看，我今天就蹲60，够你看清楚。",
+   "usage": {
+    "prompt_tokens": 647,
+    "completion_tokens": 83,
+    "total_tokens": 730
+   },
+   "latency_ms": 50303,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E026_T03",
+   "order": "BA",
+   "raw_winner": "LEFT",
+   "winner_norm": "B",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "拍，我认。膝盖内扣是我蹲深了才有的还是热身就有？我今天就蹲60，够你看清楚。",
+   "usage": {
+    "prompt_tokens": 647,
+    "completion_tokens": 88,
+    "total_tokens": 735
+   },
+   "latency_ms": 18078,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E026_T09",
+   "order": "AB",
+   "raw_winner": "RIGHT",
+   "winner_norm": "B",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "三点行，我记下了。张医生是那种一开口就让我别蹲的类型吗",
+   "usage": {
+    "prompt_tokens": 631,
+    "completion_tokens": 86,
+    "total_tokens": 717
+   },
+   "latency_ms": 14981,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E026_T09",
+   "order": "BA",
+   "raw_winner": "LEFT",
+   "winner_norm": "B",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": true
+   },
+   "quote": "三点行，我记下了。张医生是那种一开口就让我别蹲的类型吗",
+   "usage": {
+    "prompt_tokens": 631,
+    "completion_tokens": 75,
+    "total_tokens": 706
+   },
+   "latency_ms": 30897,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E032_T03",
+   "order": "AB",
+   "raw_winner": "RIGHT",
+   "winner_norm": "B",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "橘子收到了，够我吃两天。周末值班别硬撑，困了就趴一会儿。",
+   "usage": {
+    "prompt_tokens": 619,
+    "completion_tokens": 80,
+    "total_tokens": 699
+   },
+   "latency_ms": 20230,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E032_T03",
+   "order": "BA",
+   "raw_winner": "RIGHT",
+   "winner_norm": "A",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "行，橘子收下了。周末值班别硬扛，困了就说，别又攒着。",
+   "usage": {
+    "prompt_tokens": 619,
+    "completion_tokens": 76,
+    "total_tokens": 695
+   },
+   "latency_ms": 15545,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E032_T09",
+   "order": "AB",
+   "raw_winner": "UNPARSEABLE",
+   "winner_norm": "UNPARSEABLE",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {},
+   "quote": "{\"winner\":\"LEFT\",\"key_quote\":\"行，后排给你留着，柿饼照旧放那儿。\",\"reason\":\"两",
+   "usage": {
+    "prompt_tokens": 608,
+    "completion_tokens": 68,
+    "total_tokens": 676
+   },
+   "latency_ms": 13623,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E032_T09",
+   "order": "BA",
+   "raw_winner": "RIGHT",
+   "winner_norm": "A",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "行，后排给你留着，柿饼照旧放那儿。",
+   "usage": {
+    "prompt_tokens": 608,
+    "completion_tokens": 68,
+    "total_tokens": 676
+   },
+   "latency_ms": 69196,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E033_T03",
+   "order": "AB",
+   "raw_winner": "RIGHT",
+   "winner_norm": "B",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "没事，周三晚上可以，我在家。几点到说一声，猫我照样提前关好。",
+   "usage": {
+    "prompt_tokens": 625,
+    "completion_tokens": 88,
+    "total_tokens": 713
+   },
+   "latency_ms": 39189,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E033_T03",
+   "order": "BA",
+   "raw_winner": "LEFT",
+   "winner_norm": "B",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "没事，周三晚上可以，我在家。几点到说一声，猫我照样提前关好。",
+   "usage": {
+    "prompt_tokens": 625,
+    "completion_tokens": 74,
+    "total_tokens": 699
+   },
+   "latency_ms": 11789,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E033_T09",
+   "order": "AB",
+   "raw_winner": "RIGHT",
+   "winner_norm": "B",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "翘的那块在哪个位置？我晚上回去验一遍…老周明天几点来？我看看时间能不能在家。",
+   "usage": {
+    "prompt_tokens": 665,
+    "completion_tokens": 89,
+    "total_tokens": 754
+   },
+   "latency_ms": 15515,
+   "ok": true
+  },
+  {
+   "pair_id": "FS1:E033_T09",
+   "order": "BA",
+   "raw_winner": "LEFT",
+   "winner_norm": "B",
+   "expect": null,
+   "kind": "fs1_real",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "翘的那块在哪个位置？我晚上回去验一遍，拍给你看。老周明天几点来？",
+   "usage": {
+    "prompt_tokens": 665,
+    "completion_tokens": 88,
+    "total_tokens": 753
+   },
+   "latency_ms": 58249,
+   "ok": true
+  },
+  {
+   "pair_id": "CTL:fabricated",
+   "order": "AB",
+   "raw_winner": "RIGHT",
+   "winner_norm": "B",
+   "expect": "B",
+   "kind": "control_fabrication",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "先别急 这么大的决定得慢慢想 你是累过头了还是真有别的打算",
+   "usage": {
+    "prompt_tokens": 524,
+    "completion_tokens": 82,
+    "total_tokens": 606
+   },
+   "latency_ms": 67846,
+   "ok": true
+  },
+  {
+   "pair_id": "CTL:fabricated",
+   "order": "BA",
+   "raw_winner": "LEFT",
+   "winner_norm": "B",
+   "expect": "B",
+   "kind": "control_fabrication",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "先别急 这么大的决定得慢慢想 你是累过头了还是真有别的打算",
+   "usage": {
+    "prompt_tokens": 524,
+    "completion_tokens": 81,
+    "total_tokens": 605
+   },
+   "latency_ms": 17952,
+   "ok": true
+  },
+  {
+   "pair_id": "CTL:clean",
+   "order": "AB",
+   "raw_winner": "LEFT",
+   "winner_norm": "A",
+   "expect": null,
+   "kind": "control_clean",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "先别急 这么大的决定得慢慢想 你是累过头了还是真有别的打算",
+   "usage": {
+    "prompt_tokens": 512,
+    "completion_tokens": 79,
+    "total_tokens": 591
+   },
+   "latency_ms": 16790,
+   "ok": true
+  },
+  {
+   "pair_id": "CTL:clean",
+   "order": "BA",
+   "raw_winner": "RIGHT",
+   "winner_norm": "A",
+   "expect": null,
+   "kind": "control_clean",
+   "severe": {
+    "LEFT": false,
+    "RIGHT": false
+   },
+   "quote": "你是累过头了还是真有别的打算",
+   "usage": {
+    "prompt_tokens": 512,
+    "completion_tokens": 64,
+    "total_tokens": 576
+   },
+   "latency_ms": 28391,
+   "ok": true
+  }
+ ],
+ "gate_summary": {
+  "f3_known_pass": 2,
+  "f3_known_total": 4,
+  "fabrication_gate": "PASS",
+  "swap_disagree_count": 1
+ },
+ "note": "资格判据见 W04-03_JUDGE_SCOPE_PREREG_20261030.md；失败维度降辅助+证据核读",
+ "qualification_verdict": {
+  "status": "PARTIAL_QUALIFIED",
+  "qualified_for": [
+   "interaction承接",
+   "initiative主动性",
+   "emotion情绪",
+   "boundary边界",
+   "memory记忆回扣/漏更正族",
+   "明显编造检出",
+   "错人/旧值复活族"
+  ],
+  "demoted_to_assistive": [
+   "fact事实(无据确定化漏检 2/2)",
+   "time时间状态(过度断言型漏检)"
+  ],
+  "evidence": "N01_T10/K01_T20 candidate 侧无据确定化双序均被判胜（方向反）；K01_T06/K02_T14 parent 侧漏更正双序均正确判负",
+  "disposition": "按预注册§A失败处置：不足维度降辅助+B3亲读证据核读；不校准到全绿；九维评审批照发，事实维结论以证据核读为准"
+ }
+}

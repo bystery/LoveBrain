@@ -1,0 +1,52 @@
+{
+  "scope": "Static source comparison only; not Android execution or a model call",
+  "reference_run_turn_calls": [
+    "_intent_cfg_from_input",
+    "_knowledge_block",
+    "_normalize_messages",
+    "_ongoing_block",
+    "_timestamp_block",
+    "ctx.get",
+    "gw.generate",
+    "h['ongoing'].select_for_injection",
+    "h['store'].corrections",
+    "inp.get",
+    "inp.get",
+    "inp.get",
+    "isinstance",
+    "m.get",
+    "rc.build_advisor_note_block",
+    "rc.build_intent_block",
+    "rc.infer_scene",
+    "rc.render_chat_transcript",
+    "rc.scene_block"
+  ],
+  "reference_excludes_topic_recorder": true,
+  "original_next_round_invokes_record": true,
+  "p95_label_uses_max": true,
+  "sources": {
+    "current_reference_mechanism": {
+      "path": "D:\\lovebrain-arena\\candidates\\reference_product_v1\\mechanism\\mechanism.py",
+      "sha256": "c162e390f62a7555e7f871792348ac04c69067604ea6073152403b904412fc23"
+    },
+    "original_next_round": {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\viewmodel\\LoveBrainViewModel.kt",
+      "sha256": "6a9a942f78565cba96ba578ee77ea3da8e12f315093d3206f6cee93601963d70"
+    },
+    "original_topic_recorder": {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\TopicRecorder.kt",
+      "sha256": "3f30494d42c1118923568381c04cd55abb6712d5c40d600e41407d1418835252"
+    },
+    "runtime_host": {
+      "path": "D:\\lovebrain-arena\\arena\\isolation\\host_runtime.py",
+      "sha256": "bc1c11240feca92536e0607abbcb26262cd4388a4f8db9a860eb0c07ee1194bd"
+    },
+    "current_controller": {
+      "path": "D:\\lovebrain-arena\\arena\\isolation\\trusted_controller.py",
+      "sha256": "4d75311c4fad091b0231699c64916ae07f046bf3bc40bd4d43ed78c2f5edbffa"
+    }
+  },
+  "real_model_calls": 0,
+  "system_changes": 0,
+  "production_code_changes": 0
+}

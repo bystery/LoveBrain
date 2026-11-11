@@ -1,0 +1,113 @@
+{
+  "id": "CHALLENGE_01_LOVEBRAIN",
+  "name": "LoveBrain 生产级复杂多模块重构需求全量捕获与代码锚定",
+  "source_document": "D:\\桌面\\lovebrian.txt",
+  "target_project": "D:\\LoveBrain",
+  "ground_truth_requirements": [
+    {
+      "req_id": "REQ-01",
+      "topic": "主动发模式崩溃与回滚",
+      "intent": "主动发生成完毕后闪退，需回退至 commit 131 版本卡片展示逻辑",
+      "keywords": ["主动发", "闪退", "131", "回退"],
+      "target_scope": "ActiveSend / CardView"
+    },
+    {
+      "req_id": "REQ-02",
+      "topic": "聊天气泡配色改造",
+      "intent": "我的消息底色改为类似微信的绿色，她的消息保持白色",
+      "keywords": ["底色", "微信", "绿", "白"],
+      "target_scope": "MessageAdapter / BubbleLayout"
+    },
+    {
+      "req_id": "REQ-03",
+      "topic": "移除前缀冗余标识",
+      "intent": "删除消息气泡前面的《她》《我》前缀文字",
+      "keywords": ["《她》", "《我》", "删"],
+      "target_scope": "MessageItemViewHolder"
+    },
+    {
+      "req_id": "REQ-04",
+      "topic": "滑动删除手势与清除图标优化",
+      "intent": "支持左右滑动删除消息，同时彻底移除 ❌ 图标按钮",
+      "keywords": ["滑动", "删除", "❌"],
+      "target_scope": "SwipeToDeleteHelper"
+    },
+    {
+      "req_id": "REQ-05",
+      "topic": "单条消息卡片高度紧凑化",
+      "intent": "精简冗余元素后缩小消息项在列表中占用的尺寸与间距",
+      "keywords": ["大小", "缩小", "占用的整个大小"],
+      "target_scope": "MessageListItemLayout"
+    },
+    {
+      "req_id": "REQ-06",
+      "topic": "长按滑动跟手性延迟修复",
+      "intent": "修复长按滑动消息时的拖拽粘滞感与卡顿，提升跟手帧率",
+      "keywords": ["长按", "滑动", "不跟手"],
+      "target_scope": "TouchListener / GestureRecognizer"
+    },
+    {
+      "req_id": "REQ-07",
+      "topic": "“想法”功能重塑为“军师注意”",
+      "intent": "将概念从“想法”重构为用户对AI助手对话的私密指令，重命名为“我让军师注意：XXXXX”，放在最后一条气泡下方呈灰色小字",
+      "keywords": ["军师注意", "想法", "灰色", "小字"],
+      "target_scope": "AdvisorHintView / ChatViewModel"
+    },
+    {
+      "req_id": "REQ-08",
+      "topic": "输入框间隙插入“仅看本轮”入口",
+      "intent": "利用输入框与加号按钮之间的多余空白，增设“仅看本轮”过滤切换开关",
+      "keywords": ["仅看本轮", "空白", "输入框"],
+      "target_scope": "ChatInputBarLayout"
+    },
+    {
+      "req_id": "REQ-09",
+      "topic": "设置弹窗极简透明度滑块",
+      "intent": "删除多余废话选项，仅保留透明度调节，且纠正逻辑：100% 为最不透明",
+      "keywords": ["透明度", "100%", "最不透明", "设置"],
+      "target_scope": "SettingsDialog / WindowAlpha"
+    },
+    {
+      "req_id": "REQ-10",
+      "topic": "主页顶层状态卡片精简化",
+      "intent": "左侧红黄绿三色状态灯，右侧三角形开始按钮（点击变正方形停止并微请求探测），下方黄色字展示未就绪原因",
+      "keywords": ["红/黄/绿", "三角形", "方框", "未就绪", "主页面"],
+      "target_scope": "MainDashboardCardView"
+    },
+    {
+      "req_id": "REQ-11",
+      "topic": "知识库卡片回滚与无用按钮清空",
+      "intent": "知识库卡片尺寸回退到 131，彻底删除清空按钮和《旧版归档》按钮",
+      "keywords": ["知识库", "131", "清空", "旧版归档", "删除"],
+      "target_scope": "KnowledgeBaseFragment"
+    },
+    {
+      "req_id": "REQ-12",
+      "topic": "经验库模板泄漏与提取计数器 Bug 修复",
+      "intent": "严禁对外展示 #[yyyy-MM]... 原始模板占位符，修复提取次数永远显示第1次的计数器 Bug",
+      "keywords": ["经验", "模板", "提取", "计数", "#[yyyy-MM]"],
+      "target_scope": "ExperienceExtractor / StorageHelper"
+    },
+    {
+      "req_id": "REQ-13",
+      "topic": "已踩案例页面格式复用与冗余字段精简",
+      "intent": "直接复用知识库成熟页面布局，删除待分析/版本号/上下文模式三个多余字段，导出统一为默认 JSON 格式",
+      "keywords": ["已踩案例", "待分析", "版本", "上下文模式", "json"],
+      "target_scope": "NegativeCaseView / CaseExporter"
+    },
+    {
+      "req_id": "REQ-14",
+      "topic": "彻底删除锦囊功能并入主动发",
+      "intent": "删除全部锦囊无用代码，将意图识别并入主动发一条功能，顶部仅保留回复与谈心双 Tab 并支持左右平滑滑动切换",
+      "keywords": ["锦囊", "删除", "主动发", "回复/谈心", "滑动"],
+      "target_scope": "TipManager / MainTabPagerAdapter"
+    },
+    {
+      "req_id": "REQ-15",
+      "topic": "通知消息格式统一与点踩弹窗移除",
+      "intent": "通知格式对齐 131（统一为 ✅已记入 简短通知），点踩操作直接后台记录、彻底取消弹窗",
+      "keywords": ["通知", "131", "✅已记入", "点踩", "弹窗"],
+      "target_scope": "NotificationHelper / FeedbackDialog"
+    }
+  ]
+}

@@ -1,0 +1,1013 @@
+{
+ "kind": "lp_ninedim_review",
+ "tag": "W1304_B",
+ "date": "2026-10-30",
+ "authorization": "AUTH-W1304_B-REV-20261102-01",
+ "anchors": "W04-01_RUBRIC_ANCHORS_V1",
+ "stories": [
+  "E205",
+  "E128"
+ ],
+ "n_positions": 24,
+ "dims": {
+  "goal": {
+   "n": 22,
+   "cand_mean": 2.318,
+   "parent_mean": 2.182,
+   "paired_diff_mean": 0.136,
+   "cand_wins": 4,
+   "parent_wins": 2
+  },
+  "fact": {
+   "n": 22,
+   "cand_mean": 2.136,
+   "parent_mean": 2.091,
+   "paired_diff_mean": 0.045,
+   "cand_wins": 3,
+   "parent_wins": 2
+  },
+  "attrib": {
+   "n": 22,
+   "cand_mean": 2.045,
+   "parent_mean": 2.045,
+   "paired_diff_mean": 0.0,
+   "cand_wins": 2,
+   "parent_wins": 2
+  },
+  "time": {
+   "n": 22,
+   "cand_mean": 2.136,
+   "parent_mean": 2.182,
+   "paired_diff_mean": -0.045,
+   "cand_wins": 1,
+   "parent_wins": 2
+  },
+  "boundary": {
+   "n": 22,
+   "cand_mean": 2.364,
+   "parent_mean": 2.136,
+   "paired_diff_mean": 0.227,
+   "cand_wins": 6,
+   "parent_wins": 4
+  },
+  "memory": {
+   "n": 22,
+   "cand_mean": 2.045,
+   "parent_mean": 1.909,
+   "paired_diff_mean": 0.136,
+   "cand_wins": 7,
+   "parent_wins": 5
+  },
+  "interact": {
+   "n": 22,
+   "cand_mean": 2.364,
+   "parent_mean": 2.5,
+   "paired_diff_mean": -0.136,
+   "cand_wins": 3,
+   "parent_wins": 6
+  },
+  "init": {
+   "n": 22,
+   "cand_mean": 2.0,
+   "parent_mean": 1.864,
+   "paired_diff_mean": 0.136,
+   "cand_wins": 7,
+   "parent_wins": 6
+  },
+  "emotion": {
+   "n": 22,
+   "cand_mean": 2.182,
+   "parent_mean": 2.409,
+   "paired_diff_mean": -0.227,
+   "cand_wins": 3,
+   "parent_wins": 8
+  }
+ },
+ "severe": {
+  "candidate": 0,
+  "parent": 1
+ },
+ "review_call_quality": {
+  "n_call_fail": 2,
+  "fail_rate": 0.083,
+  "fail_rate_high": false,
+  "policy": "单次失败重试1次；重试额度预登记≤20%"
+ },
+ "swap_agreement": "2/2",
+ "swap_disagreements_true": [],
+ "verdicts": [
+  {
+   "pair_id": "LP:E205:E205_T01",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 3,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "你没牵着豆豆吧？",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E205:E205_T02",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "不是柯基，我认，那只大狗我确实没看清。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E205:E205_T03",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "豆豆全程牵绳，汤圆才肯靠近；它上个月被没绳的大狗扑过一次",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E205:E205_T04",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": ""
+   },
+   "key_quote": "规矩就是规矩……周日九点见，你牵着，我带着它。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E205:E205_T05",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "既然绳在手里，一会儿就别松，汤圆看见豆豆站它旁边也踏实。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E205:E205_T06",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "你先给豆豆把绳牵上，今天这事我不想含糊过去。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E205:E205_T07",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "赔罪不用，回头让它俩隔着段距离再认识一次就行",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E205:E205_T08",
+   "candidate_arm": "window_expand_b",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "就是想起昨天那五分钟，我这模范当得有点心虚",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E205:E205_T09",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "我寻思就放开五分钟，反正没人看着……你别生气哈[HER]→七点没人没狗，豆豆能安心多走半小时[R]",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E205:E205_T10",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "汤圆就别勉强了，让它在家当后勤部长",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E205:E205_T11",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "收绳那下干得漂亮",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E205:E205_T12",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "看见红榜第一反应是——上面终于有我俩的名字了哈哈。汤圆还怕，但比上次好",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E128:E128_T01",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "苹果那种的一两百到三百多，杂牌几十块，还得看卖家愿不愿意单卖仓",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E128:E128_T02",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "UNPARSEABLE",
+   "dims": {
+    "candidate": {},
+    "parent": {}
+   },
+   "severe": {
+    "candidate": null,
+    "parent": null,
+    "note": ""
+   },
+   "key_quote": "",
+   "raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":2,\"memory\":2,\"interact\":2",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E128:E128_T03",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "这事最怕的不是坏，是第91天坏——钱花在自己能追责的地方",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E128:E128_T04",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "兼容仓那家你把质保截图发我，我帮你看有没有写清楚换新还是修",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E128:E128_T05",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "先想清楚一件事：你现在是特别急着用耳机，还是能等上十天？",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E128:E128_T06",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "UNPARSEABLE",
+   "dims": {
+    "candidate": {},
+    "parent": {}
+   },
+   "severe": {
+    "candidate": null,
+    "parent": null,
+    "note": ""
+   },
+   "key_quote": "",
+   "raw": "{\"L\":{\"goal\":3,\"fact\":3,\"attrib\":3,\"time\":3,\"boundary\":3,\"memory\":2,\"interact\":3",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E128:E128_T07",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，规矩点省事，80块买个全新套装还有整年质保，比兼容仓那90天强",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E128:E128_T08",
+   "candidate_arm": "window_expand_b",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "店家那句是口头的还是给截图了？你是财务，这钱得掰得清楚",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E128:E128_T09",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "扣磨损费这套我熟，150变118，比官网回收92也没高多少了",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E128:E128_T10",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "验机全绿就放心了。防丢片加工牌绳，这组合挺硬核，丢过一次的人确实懂。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E128:E128_T11",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "防丢片要记得每年换一次电池，就当庆祝第三次",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E128:E128_T12",
+   "candidate_arm": "window_expand_b",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "验光单是刚做的还是旧的？这两点定了，价格和款式差得挺远。",
+   "raw": "",
+   "attempts_used": 2
+  }
+ ],
+ "swap_supplement": [
+  {
+   "pair_id": "LP:E205:E205_T08",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "你那根绳昨天一牵上，豆豆不也没事嘛。"
+  },
+  {
+   "pair_id": "LP:E128:E128_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "店家那句是口头的还是给截图了？"
+  }
+ ],
+ "note": "故事级=探索性读数；fact/time 维 assistive（资格批处置）；安抚压力位 severe 需逐位 B3 复核"
+}

@@ -1,0 +1,50 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-W1303-GEN-20261102-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30地狱级常设授权(AUTH-GLOBAL-CONTINUOUS-20261030-01)+用户2026-11-02全面授权重申(全面继续+提速)",
+ "phase": "W13_03_newdomain",
+ "budget_ledger": "logs/auth_budget/AUTH-W1303-GEN-20261102-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 144
+ },
+ "scope": {
+  "purpose": "W13-03 新领域验证批（W13-03_NEWDOMAIN_DESIGN_20261102.md 判据冻结）：r9_slim 与 window_expand_b 双冠军各跑 6 篇（新域兴趣社交 E131/E140/E166 + 已见域对照 E117/E122/E125），144 attempts。报告按域分列九维+机会位分母；跨臂不判胜负。fail_fast/no_retry/no_makeup。评审另册 AUTH-W1303-REVIEW-20261102-01。并行说明：与 W14J 判决批共享网关（两批判据均与延迟无关，延迟读数本批不作 claims）",
+  "route": "two_arm_batch_144",
+  "total_attempts": 144,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "W1303": "BATCH-W13-03-NEWDOM-20261102"
+  },
+  "episodes": [
+   "E131",
+   "E122",
+   "E140",
+   "E117",
+   "E166",
+   "E125"
+  ],
+  "cards": "benchmark/stories_v2/wave3/GRADING_CARDS_W13_03.json",
+  "plan_sha256": "90c2d9f510e03ad3cb10beea2e96f5148af65b68ca7efa22c98ccdeac29433ef"
+ },
+ "frozen_bindings": {
+  "W1303": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/W1303.INTERLEAVE_PLAN.json",
+   "plan_sha256": "90c2d9f510e03ad3cb10beea2e96f5148af65b68ca7efa22c98ccdeac29433ef",
+   "batch_id": "BATCH-W13-03-NEWDOM-20261102",
+   "cards_file": "benchmark/stories_v2/wave3/GRADING_CARDS_W13_03.json",
+   "attempts": 144,
+   "parent": "action_policy_r9_slim",
+   "candidate": "window_expand_b",
+   "parent_identity_sha256": "2099c12f55337dd7dcfac0327cdd9411f7e5de2cdaa0a7083498bab6d12c9c03",
+   "candidate_identity_sha256": "e233ce314d5ee628425f22ab7c74f2fd58871ee367a4d91358d8be818bd88ba6"
+  }
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "batch_id": "BATCH-FS1-A-E3VSREF-20261030",
+ "arm_map": {
+  "parent": "reference_product_v1",
+  "candidate": "action_policy_r4_guard_e3"
+ },
+ "episode_order": [
+  {
+   "episode": "E021",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E026",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E032",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E033",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/stage2/GRADING_CARDS_E021_E026_E032_E033.json",
+ "recall_capable": false
+}

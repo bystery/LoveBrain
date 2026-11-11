@@ -1,0 +1,43 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-W15N-20261102-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30地狱级常设授权+2026-11-02全面授权重申(加速迭代)",
+ "phase": "W15N",
+ "budget_ledger": "logs/auth_budget/AUTH-W15N-20261102-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 160
+ },
+ "scope": {
+  "purpose": "W15N 消融批（W15_NORECAP_ABLATION_DESIGN_20261102.md 判据冻结）：b_norecap vs b on LRE117+LRE146，160 attempts。KEEP(简化冠军)=T25-32 keep>=0.95x父本+九维最差>=-0.3+severe不升(亲读)；任一门破→recap 保留。并行执行器 --workers。评审另册",
+  "route": "two_arm_batch_160",
+  "total_attempts": 160,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "W15N": "BATCH-W15N-NORECAP-20261102"
+  },
+  "episodes": [],
+  "cards": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_LD1.json",
+  "plan_sha256": "a95d5b6506c0bd49ccb3a812c1a0660b87fdee286f63d05943748dfee56e25d8"
+ },
+ "frozen_bindings": {
+  "W15N": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/W15N.INTERLEAVE_PLAN.json",
+   "plan_sha256": "a95d5b6506c0bd49ccb3a812c1a0660b87fdee286f63d05943748dfee56e25d8",
+   "batch_id": "BATCH-W15N-NORECAP-20261102",
+   "cards_file": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_LD1.json",
+   "attempts": 160,
+   "parent": "window_expand_b",
+   "candidate": "window_expand_b_norecap",
+   "parent_identity_sha256": "e233ce314d5ee628425f22ab7c74f2fd58871ee367a4d91358d8be818bd88ba6",
+   "candidate_identity_sha256": "ccf0f8fca5148d9f276fad2bb6fe6acef2e1c9db4c58d86f21ab37398e6b7076"
+  }
+ }
+}

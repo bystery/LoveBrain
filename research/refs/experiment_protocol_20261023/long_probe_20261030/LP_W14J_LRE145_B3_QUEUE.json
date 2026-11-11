@@ -1,0 +1,105 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W14J_LRE145",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W14J_LRE145_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w14j_long4_live_20261102",
+ "n_queued": 3,
+ "queue": [
+  {
+   "pair_id": "LP:LRE145:LRE145_T02",
+   "order": "main",
+   "story": "",
+   "cid": "LRE145_T02",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 将司机口头时间断言为确定答案，与订单矛盾且未标不确定，也无据断言App时间来源",
+   "key_quote": "订单白纸黑字七点半。司机群里那句七点你就当缓冲——七点就下楼等着",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 1,
+     "time": 0,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE145:LRE145_T25",
+   "order": "main",
+   "story": "",
+   "cid": "LRE145_T25",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "四十块买'不用等人'，这账算得挺明白……也不算独苗了",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE145:LRE145_T28",
+   "order": "main",
+   "story": "",
+   "cid": "LRE145_T28",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "旧通知的可能性大……进站前顺手看一眼官方号的最新公告就踏实了",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

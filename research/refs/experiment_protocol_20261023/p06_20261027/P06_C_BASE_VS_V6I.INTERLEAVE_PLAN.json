@@ -1,0 +1,779 @@
+{
+ "generated_at": "2026-10-27T13:01:59",
+ "protocol": "refs/experiment_protocol_20261023/EXPERIMENT_PLAN_20261023.md rev R5.2 §4",
+ "arm_mapping": {
+  "parent": "reference_product_v1",
+  "candidate": "v6_integrated"
+ },
+ "episode_order": [
+  {
+   "episode": "E006",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E007",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E008",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E012",
+   "arm_order": "parent_first"
+  }
+ ],
+ "batch": {
+  "batch_id": "BATCH-P06-C-BASE-VS-V6I-20261027",
+  "cards_path": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+  "recall_capable": false
+ },
+ "total_attempts": 64,
+ "no_auto_retry": true,
+ "no_makeup_paired_run": true,
+ "fail_fast_on_transmission_error": true,
+ "execution_entry": "arena.isolation.trusted_controller.IsolatedRun (mock/capture/live 共用)",
+ "frozen": {
+  "identity_closure": {
+   "parent": {
+    "identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+    "closure": [
+     "reference_product_v1"
+    ],
+    "file_count": 9,
+    "files": {
+     "candidates/reference_product_v1/IDENTITY.md": "c59102200db794e6432814375debc1aaa5ac403ee9a2fd5d662adf2e16b564ac",
+     "candidates/reference_product_v1/params.json": "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f",
+     "candidates/reference_product_v1/product_memory.py": "a05e26673c51fa19aaa17a845f4955fddf684fd76912ee11649a4b190164592f",
+     "candidates/reference_product_v1/reference_chain.py": "c31e612cbafae7d282dee975305ee88d156bc5b43693468e655873ed25af6dbe",
+     "candidates/reference_product_v1/assets/system_prompt/core.md": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+     "candidates/reference_product_v1/assets/system_prompt/format.md": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+     "candidates/reference_product_v1/assets/system_prompt/naturalness_check.md": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+     "candidates/reference_product_v1/assets/system_prompt/redline.md": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+     "candidates/reference_product_v1/mechanism/mechanism.py": "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba"
+    }
+   },
+   "candidate": {
+    "identity_sha256": "ac2672ffac3ba82d799a49b753840573cb1933eb71d8110792e5e0f3448c127b",
+    "closure": [
+     "v6_integrated",
+     "v6_goal_context",
+     "v5_purpose_aligned",
+     "v4_intent_context_r2",
+     "reference_product_v1"
+    ],
+    "file_count": 41,
+    "files": {
+     "candidates/v6_integrated/IDENTITY.md": "bf03f36c0cf01db46bcb808da32f2b443b8a857e7b53afc92c8c90264df0dca2",
+     "candidates/v6_integrated/MECHANISM.md": "091a572fb7883288fcce020e4031995060561966ef161c46623d76f76616ee24",
+     "candidates/v6_integrated/params.json": "4172d56ed3f8cf51197695ca4b0c6a6feed86ed3fce4b41f246bac2b3d72758f",
+     "candidates/v6_integrated/assets/system_prompt/core.md": "48b50a87747db8a8725c4346ecc69b34831126e81a31ca47bf2b0fd728e6c45b",
+     "candidates/v6_integrated/assets/system_prompt/format.md": "6eed7b468713c78542ea368f0f1f53c15550622df7f3d2ee1eabb6805bd1a3d3",
+     "candidates/v6_integrated/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/v6_integrated/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/v6_integrated/mechanism/mechanism.py": "f9bc0e3651b7d5d7730fefa1c264f89f0db975c9b51774c98e48a9120f405c31",
+     "candidates/v6_goal_context/IDENTITY.md": "1ed2ecc3a1940cd30dbe66c4e5cfc73d91d7c4a813219860074c7dc351356d7f",
+     "candidates/v6_goal_context/MECHANISM.md": "75c6a9e88af75653a9586f432eaad4c16721c03a43b724c78beb38d7c508b5e3",
+     "candidates/v6_goal_context/params.json": "5706bdc38f139fae13219f87702ad20d39499958e709b89381c53c74f8fba395",
+     "candidates/v6_goal_context/assets/system_prompt/core.md": "ffe6035f4ba3a7d851b28815a40ed58b4b2946c049662a392bc2b92dd4c0805b",
+     "candidates/v6_goal_context/assets/system_prompt/format.md": "1e5a6eec1d9196e33fdd70210d8f5c1e7ced127c34c1207170778a2ad3d41878",
+     "candidates/v6_goal_context/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/v6_goal_context/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/v6_goal_context/mechanism/mechanism.py": "083779764b669da287aeebeb0541dc1a31b39906b59ea0b141dc47267d736a76",
+     "candidates/v5_purpose_aligned/IDENTITY.md": "11eb79fbca6e5f06800bfa9a4570a39d33b45d8bf4b90b877d06888dd2500940",
+     "candidates/v5_purpose_aligned/MECHANISM.md": "e5f072843cb300b35efce0a583120376e30dc56231478fba9d831045392ec11d",
+     "candidates/v5_purpose_aligned/params.json": "876a5d8830e637899722d23801b461f2479fd6ef10f06a4c0a5a22d91ab9d03f",
+     "candidates/v5_purpose_aligned/assets/system_prompt/core.md": "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+     "candidates/v5_purpose_aligned/assets/system_prompt/format.md": "fe5221b5bdc4c00a5e8837841140e778fc7052ab38ac8043f8f4d1f16d007eb0",
+     "candidates/v5_purpose_aligned/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/v5_purpose_aligned/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/v5_purpose_aligned/mechanism/mechanism.py": "422ec2277b7a6d7801f61c8c17701f1fa3d7a8cda8d8ed01aef6c9101b32e2cf",
+     "candidates/v4_intent_context_r2/IDENTITY.md": "d2cf0e1505b1dd3b4dd873f639e9cc79267df7d82b9e6fbcd2c2774e6cf15abe",
+     "candidates/v4_intent_context_r2/MECHANISM.md": "5b9d4db52eec7e8406145c466f5dad3d6483f0322bbff9e67d02ffc0797ea26d",
+     "candidates/v4_intent_context_r2/params.json": "8cb388fbdea4bd60a2497eb65ae89a8ca4bdeab7484e4cf93d7a9c5e75d872f2",
+     "candidates/v4_intent_context_r2/assets/system_prompt/core.md": "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+     "candidates/v4_intent_context_r2/assets/system_prompt/format.md": "9d5f07ead2ee937680c7401a3ff6c4dc2452c0221cc396d97cca67eae43cc00a",
+     "candidates/v4_intent_context_r2/assets/system_prompt/naturalness_check.md": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+     "candidates/v4_intent_context_r2/assets/system_prompt/redline.md": "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+     "candidates/v4_intent_context_r2/mechanism/mechanism.py": "ba25dee0fb4b0dfcac2bca64256ecdbb2fc4a96b590d1f102a37091060b049a2",
+     "candidates/reference_product_v1/IDENTITY.md": "c59102200db794e6432814375debc1aaa5ac403ee9a2fd5d662adf2e16b564ac",
+     "candidates/reference_product_v1/params.json": "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f",
+     "candidates/reference_product_v1/product_memory.py": "a05e26673c51fa19aaa17a845f4955fddf684fd76912ee11649a4b190164592f",
+     "candidates/reference_product_v1/reference_chain.py": "c31e612cbafae7d282dee975305ee88d156bc5b43693468e655873ed25af6dbe",
+     "candidates/reference_product_v1/assets/system_prompt/core.md": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+     "candidates/reference_product_v1/assets/system_prompt/format.md": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+     "candidates/reference_product_v1/assets/system_prompt/naturalness_check.md": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+     "candidates/reference_product_v1/assets/system_prompt/redline.md": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+     "candidates/reference_product_v1/mechanism/mechanism.py": "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba"
+    }
+   }
+  },
+  "config_files": {
+   "benchmark/episodes/E006.json": "cee5c9a413072f1e4220ef964cf50bd76688f3fa7a17ae99a8da993269321f16",
+   "benchmark/episodes/E007.json": "f43feaa2b77da60a193fc3eb277df6cc6794ffdc39650d720f39774586a7f13c",
+   "benchmark/episodes/E008.json": "d0c49898e8633e322f989307616211a7f3639d7368294b994f9536800f40bb20",
+   "benchmark/episodes/E012.json": "abfcd7fc77165028014cfc027d274caa8af554415c4c6a44e1a1f6a3b6048d6c",
+   "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json": "bdd258bdcceee54d7c024e9d2e3860adcd3c64e48e3eee834f993c10714b788a",
+   "benchmark/rubric.md": "0b96fc5b0d8bf325ff225bed912fc616437b81782a2ebb19c178f1be6f2e1e86",
+   "benchmark/annotations/exam1_20261023_semantic.json": "bc39a3a3812dc3c4ac8f453eec99f6c4e11e19c5164f69e9deb3a52be4596a2f",
+   "arena/lb_scorer.py": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+   "arena/protocol_public.py": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7",
+   "arena/lb_gateway.py": "56867a44380fe03df4e84e945b1ed854a211d2f0b92d93b80b9e42d54e051d8e",
+   "arena/lb_runner.py": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+   "arena/lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+   "arena/api_candidate.py": "5b5948ec5aed8093535c448f5e651f9235f7e18adad4c451d80e136f5905f2d3",
+   "arena/isolation/trusted_controller.py": "7dc3c93a57c41110dd81fd9fc5859d59710a058b97184c033170d920018afd39",
+   "arena/isolation/host_runtime.py": "bc1c11240feca92536e0607abbcb26262cd4388a4f8db9a860eb0c07ee1194bd",
+   "arena/isolation/_candidate_host.py": "8fada64f5d3012733100e9537685c8f490fc877ba603a47137f8c020923368a5",
+   "arena/isolation/authorization_budget.py": "aef5b5735c37d082c7fdfe3e0d5967ec7045e77a41a4f6483fceb6a73efec568",
+   "tools/api_trial.py": "eb2c6b91faec14aa559859d1c3171d9152e030747db63006ab38f8c1c8b29b85",
+   "tools/exam_layered_score.py": "93dc7a86dd294000638d07d218aebe6b65f1e3ef4d6c7e067528b7c4033ea288",
+   "tools/build_semantic_annotations.py": "77da2b27017ea0e8c4e907c6698fdab153ac1bf88c2a64c7e97e7e86a5b5bb4e",
+   "tools/freeze_identity.py": "ca08af7a51bdd53067e127358f39a7091fb15b6ba780b838ef0dc6b889593ec9",
+   "tools/exam_interleave_plan.py": "8512266ea28aa7e714b15f13dd4745e8ad374348a7b4710f381d31c41219ae8b",
+   "tools/rescore_offline.py": "62300c04b7501c1eae8b9ce5d3faa09c92a7f73eed0990ba610c03e31156a836"
+  }
+ },
+ "attempts": [
+  {
+   "seq": 1,
+   "episode": "E006",
+   "turn": 1,
+   "case_id": "E006_T01",
+   "arm": "parent",
+   "pair_key": "E006_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 2,
+   "episode": "E006",
+   "turn": 1,
+   "case_id": "E006_T01",
+   "arm": "candidate",
+   "pair_key": "E006_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 3,
+   "episode": "E006",
+   "turn": 2,
+   "case_id": "E006_T02",
+   "arm": "parent",
+   "pair_key": "E006_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 4,
+   "episode": "E006",
+   "turn": 2,
+   "case_id": "E006_T02",
+   "arm": "candidate",
+   "pair_key": "E006_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 5,
+   "episode": "E006",
+   "turn": 3,
+   "case_id": "E006_T03",
+   "arm": "parent",
+   "pair_key": "E006_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 6,
+   "episode": "E006",
+   "turn": 3,
+   "case_id": "E006_T03",
+   "arm": "candidate",
+   "pair_key": "E006_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 7,
+   "episode": "E006",
+   "turn": 4,
+   "case_id": "E006_T04",
+   "arm": "parent",
+   "pair_key": "E006_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 8,
+   "episode": "E006",
+   "turn": 4,
+   "case_id": "E006_T04",
+   "arm": "candidate",
+   "pair_key": "E006_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 9,
+   "episode": "E006",
+   "turn": 5,
+   "case_id": "E006_T05",
+   "arm": "parent",
+   "pair_key": "E006_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 10,
+   "episode": "E006",
+   "turn": 5,
+   "case_id": "E006_T05",
+   "arm": "candidate",
+   "pair_key": "E006_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 11,
+   "episode": "E006",
+   "turn": 6,
+   "case_id": "E006_T06",
+   "arm": "parent",
+   "pair_key": "E006_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 12,
+   "episode": "E006",
+   "turn": 6,
+   "case_id": "E006_T06",
+   "arm": "candidate",
+   "pair_key": "E006_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 13,
+   "episode": "E006",
+   "turn": 7,
+   "case_id": "E006_T07",
+   "arm": "parent",
+   "pair_key": "E006_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 14,
+   "episode": "E006",
+   "turn": 7,
+   "case_id": "E006_T07",
+   "arm": "candidate",
+   "pair_key": "E006_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 15,
+   "episode": "E006",
+   "turn": 8,
+   "case_id": "E006_T08",
+   "arm": "parent",
+   "pair_key": "E006_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 16,
+   "episode": "E006",
+   "turn": 8,
+   "case_id": "E006_T08",
+   "arm": "candidate",
+   "pair_key": "E006_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 17,
+   "episode": "E007",
+   "turn": 1,
+   "case_id": "E007_T01",
+   "arm": "candidate",
+   "pair_key": "E007_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 18,
+   "episode": "E007",
+   "turn": 1,
+   "case_id": "E007_T01",
+   "arm": "parent",
+   "pair_key": "E007_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 19,
+   "episode": "E007",
+   "turn": 2,
+   "case_id": "E007_T02",
+   "arm": "candidate",
+   "pair_key": "E007_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 20,
+   "episode": "E007",
+   "turn": 2,
+   "case_id": "E007_T02",
+   "arm": "parent",
+   "pair_key": "E007_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 21,
+   "episode": "E007",
+   "turn": 3,
+   "case_id": "E007_T03",
+   "arm": "candidate",
+   "pair_key": "E007_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 22,
+   "episode": "E007",
+   "turn": 3,
+   "case_id": "E007_T03",
+   "arm": "parent",
+   "pair_key": "E007_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 23,
+   "episode": "E007",
+   "turn": 4,
+   "case_id": "E007_T04",
+   "arm": "candidate",
+   "pair_key": "E007_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 24,
+   "episode": "E007",
+   "turn": 4,
+   "case_id": "E007_T04",
+   "arm": "parent",
+   "pair_key": "E007_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 25,
+   "episode": "E007",
+   "turn": 5,
+   "case_id": "E007_T05",
+   "arm": "candidate",
+   "pair_key": "E007_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 26,
+   "episode": "E007",
+   "turn": 5,
+   "case_id": "E007_T05",
+   "arm": "parent",
+   "pair_key": "E007_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 27,
+   "episode": "E007",
+   "turn": 6,
+   "case_id": "E007_T06",
+   "arm": "candidate",
+   "pair_key": "E007_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 28,
+   "episode": "E007",
+   "turn": 6,
+   "case_id": "E007_T06",
+   "arm": "parent",
+   "pair_key": "E007_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 29,
+   "episode": "E007",
+   "turn": 7,
+   "case_id": "E007_T07",
+   "arm": "candidate",
+   "pair_key": "E007_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 30,
+   "episode": "E007",
+   "turn": 7,
+   "case_id": "E007_T07",
+   "arm": "parent",
+   "pair_key": "E007_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 31,
+   "episode": "E007",
+   "turn": 8,
+   "case_id": "E007_T08",
+   "arm": "candidate",
+   "pair_key": "E007_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 32,
+   "episode": "E007",
+   "turn": 8,
+   "case_id": "E007_T08",
+   "arm": "parent",
+   "pair_key": "E007_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 33,
+   "episode": "E008",
+   "turn": 1,
+   "case_id": "E008_T01",
+   "arm": "candidate",
+   "pair_key": "E008_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 34,
+   "episode": "E008",
+   "turn": 1,
+   "case_id": "E008_T01",
+   "arm": "parent",
+   "pair_key": "E008_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 35,
+   "episode": "E008",
+   "turn": 2,
+   "case_id": "E008_T02",
+   "arm": "candidate",
+   "pair_key": "E008_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 36,
+   "episode": "E008",
+   "turn": 2,
+   "case_id": "E008_T02",
+   "arm": "parent",
+   "pair_key": "E008_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 37,
+   "episode": "E008",
+   "turn": 3,
+   "case_id": "E008_T03",
+   "arm": "candidate",
+   "pair_key": "E008_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 38,
+   "episode": "E008",
+   "turn": 3,
+   "case_id": "E008_T03",
+   "arm": "parent",
+   "pair_key": "E008_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 39,
+   "episode": "E008",
+   "turn": 4,
+   "case_id": "E008_T04",
+   "arm": "candidate",
+   "pair_key": "E008_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 40,
+   "episode": "E008",
+   "turn": 4,
+   "case_id": "E008_T04",
+   "arm": "parent",
+   "pair_key": "E008_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 41,
+   "episode": "E008",
+   "turn": 5,
+   "case_id": "E008_T05",
+   "arm": "candidate",
+   "pair_key": "E008_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 42,
+   "episode": "E008",
+   "turn": 5,
+   "case_id": "E008_T05",
+   "arm": "parent",
+   "pair_key": "E008_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 43,
+   "episode": "E008",
+   "turn": 6,
+   "case_id": "E008_T06",
+   "arm": "candidate",
+   "pair_key": "E008_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 44,
+   "episode": "E008",
+   "turn": 6,
+   "case_id": "E008_T06",
+   "arm": "parent",
+   "pair_key": "E008_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 45,
+   "episode": "E008",
+   "turn": 7,
+   "case_id": "E008_T07",
+   "arm": "candidate",
+   "pair_key": "E008_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 46,
+   "episode": "E008",
+   "turn": 7,
+   "case_id": "E008_T07",
+   "arm": "parent",
+   "pair_key": "E008_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 47,
+   "episode": "E008",
+   "turn": 8,
+   "case_id": "E008_T08",
+   "arm": "candidate",
+   "pair_key": "E008_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 48,
+   "episode": "E008",
+   "turn": 8,
+   "case_id": "E008_T08",
+   "arm": "parent",
+   "pair_key": "E008_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "candidate_first"
+  },
+  {
+   "seq": 49,
+   "episode": "E012",
+   "turn": 1,
+   "case_id": "E012_T01",
+   "arm": "parent",
+   "pair_key": "E012_T01",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 50,
+   "episode": "E012",
+   "turn": 1,
+   "case_id": "E012_T01",
+   "arm": "candidate",
+   "pair_key": "E012_T01",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 51,
+   "episode": "E012",
+   "turn": 2,
+   "case_id": "E012_T02",
+   "arm": "parent",
+   "pair_key": "E012_T02",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 52,
+   "episode": "E012",
+   "turn": 2,
+   "case_id": "E012_T02",
+   "arm": "candidate",
+   "pair_key": "E012_T02",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 53,
+   "episode": "E012",
+   "turn": 3,
+   "case_id": "E012_T03",
+   "arm": "parent",
+   "pair_key": "E012_T03",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 54,
+   "episode": "E012",
+   "turn": 3,
+   "case_id": "E012_T03",
+   "arm": "candidate",
+   "pair_key": "E012_T03",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 55,
+   "episode": "E012",
+   "turn": 4,
+   "case_id": "E012_T04",
+   "arm": "parent",
+   "pair_key": "E012_T04",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 56,
+   "episode": "E012",
+   "turn": 4,
+   "case_id": "E012_T04",
+   "arm": "candidate",
+   "pair_key": "E012_T04",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 57,
+   "episode": "E012",
+   "turn": 5,
+   "case_id": "E012_T05",
+   "arm": "parent",
+   "pair_key": "E012_T05",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 58,
+   "episode": "E012",
+   "turn": 5,
+   "case_id": "E012_T05",
+   "arm": "candidate",
+   "pair_key": "E012_T05",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 59,
+   "episode": "E012",
+   "turn": 6,
+   "case_id": "E012_T06",
+   "arm": "parent",
+   "pair_key": "E012_T06",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 60,
+   "episode": "E012",
+   "turn": 6,
+   "case_id": "E012_T06",
+   "arm": "candidate",
+   "pair_key": "E012_T06",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 61,
+   "episode": "E012",
+   "turn": 7,
+   "case_id": "E012_T07",
+   "arm": "parent",
+   "pair_key": "E012_T07",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 62,
+   "episode": "E012",
+   "turn": 7,
+   "case_id": "E012_T07",
+   "arm": "candidate",
+   "pair_key": "E012_T07",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 63,
+   "episode": "E012",
+   "turn": 8,
+   "case_id": "E012_T08",
+   "arm": "parent",
+   "pair_key": "E012_T08",
+   "within_pair_pos": 1,
+   "arm_order_in_ep": "parent_first"
+  },
+  {
+   "seq": 64,
+   "episode": "E012",
+   "turn": 8,
+   "case_id": "E012_T08",
+   "arm": "candidate",
+   "pair_key": "E012_T08",
+   "within_pair_pos": 2,
+   "arm_order_in_ep": "parent_first"
+  }
+ ]
+}

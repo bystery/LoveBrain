@@ -1,0 +1,28 @@
+{
+ "batch_id": "BATCH-C4-B2_V5_VS_GOAL-20261026",
+ "arm_map": {
+  "parent": "v5_purpose_aligned",
+  "candidate": "goal_action_v1"
+ },
+ "episode_order": [
+  {
+   "episode": "E006",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E008",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E012",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E007",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "02_GRADING_CARDS_P1.json",
+ "recall_capable": false,
+ "design_note": "C4 机制筛选（执行书§4）：4开发故事×8位=32/批；v5_purpose_aligned vs goal_action_v1；锚定成对法三批共96（书公式128的替代，偏差已登记：用既有两臂冻结工具、v5为锚覆盖四臂）"
+}

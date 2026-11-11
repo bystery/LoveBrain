@@ -1,0 +1,169 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W14J_LRE146",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W14J_LRE146_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w14j_long4_live_20261102",
+ "n_queued": 5,
+ "queue": [
+  {
+   "pair_id": "LP:LRE146:LRE146_T05",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T05",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "RIGHT：“安装直接约厂家上门，网上买的也一样有安装服务，下单时勾上就行”——服务未核实却当确定",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T20",
+   "order": "swap",
+   "story": "",
+   "cid": "LRE146_T20",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "RIGHT将'全国联保两年、电池第一年包换'说成'老板亲口说的'，无据归属且把保修条款当作已核实事实；同时断言故障原因（'是这块电池本身有毛病'）而未知项为电池故障原因未明，属无据确定化。",
+   "key_quote": "别急着认错——先弄清是没充进去还是耗得快，再打厂家售后电话问保修管不管换",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T22",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T22",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "他本来是最该让你换电池的人。等师傅上门检测就行……我舅那边也有个台阶下",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T25",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T25",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "R：“跟'他全出'那句对不上”——此前并无此说，属编造引入；L先核实谁掏钱再定抬头，稳妥",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 0,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE146:LRE146_T32",
+   "order": "main",
+   "story": "",
+   "cid": "LRE146_T32",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "七百块换来姥姥现在天天自己溜达买菜、生日那天全程自己开进去，这账怎么算都是赚的",
+   "dims_flagged": {
+    "parent": {
+     "fact": 2,
+     "time": 1,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

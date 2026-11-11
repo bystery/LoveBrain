@@ -1,0 +1,244 @@
+{
+ "episode_id": "E027",
+ "persona": {
+  "me": "26岁，建筑系研究生，喜欢看展但懒得拍照打卡；嘴上毒，心里分得清。",
+  "her": "29岁，美术馆策展助理，大学摄影社学姐；看展口味刁，吐槽准但不刻薄。"
+ },
+ "initial_kb": {
+  "me": "建筑系研三，导师项目忙但能溜；看展自备讲解器，讨厌网红打卡位。上次陪她逛展时试过，出口那台互动屏只对会员开放扫码。",
+  "her": "美术馆策展助理，常能拿到内部票；对烂解说词零容忍。",
+  "warmth": "大学摄影社认识，毕业后偶尔约看展，互相吐槽是固定节目。",
+  "style": "吐槽要具体到作品；不空评；她说展好那就是真好。",
+  "stage": "老熟人看展搭子。",
+  "lessons": "她的专业判断优先；吐槽归吐槽，别贬她的职业。"
+ },
+ "turns": [
+  {
+   "case_id": "E027_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你来看这个赛博山水了? 解说词写得像传销",
+      "ts": "2026-11-21 14:05"
+     }
+    ],
+    "clock": "2026-11-21 14:07",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E027_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "第三展厅的投影 一半人举手机拍 一半人念解说词",
+      "ts": "2026-11-21 14:08"
+     },
+     {
+      "role": "HER",
+      "text": "你是哪一半 说实话",
+      "ts": "2026-11-21 14:13"
+     }
+    ],
+    "clock": "2026-11-21 14:15",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E027_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "出口处那个互动屏 我对着它摆了十分钟姿势 它没反应 我怀疑是坏的",
+      "ts": "2026-11-21 14:23"
+     }
+    ],
+    "clock": "2026-11-21 14:25",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E027_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "不是坏的 它只对会员开放扫码",
+      "ts": "2026-11-21 14:26"
+     },
+     {
+      "role": "HER",
+      "text": "???那它竖在大厅干嘛 钓鱼吗",
+      "ts": "2026-11-21 14:30"
+     }
+    ],
+    "clock": "2026-11-21 14:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E027_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "楼下咖啡馆坐会儿? 我请 你被钓鱼了算工伤",
+      "ts": "2026-11-21 14:38"
+     }
+    ],
+    "clock": "2026-11-21 14:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E027_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "行 工伤得赔双份",
+      "ts": "2026-11-21 14:42"
+     },
+     {
+      "role": "HER",
+      "text": "想得美 单份 再聊工伤加钱",
+      "ts": "2026-11-21 14:46"
+     }
+    ],
+    "clock": "2026-11-21 14:48",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E027_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下个月有个冷门展 瑞士海报展 人少 你要不要",
+      "ts": "2026-11-25 21:30"
+     }
+    ],
+    "clock": "2026-11-25 21:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E027_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "要 哪天",
+      "ts": "2026-11-25 21:34"
+     },
+     {
+      "role": "HER",
+      "text": "看你们研究生放不放人 提前三天跟我说",
+      "ts": "2026-11-25 21:38"
+     }
+    ],
+    "clock": "2026-11-25 21:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E027_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "提前三天到了 下个周六 你实验室放人吗",
+      "ts": "2026-12-02 21:40"
+     }
+    ],
+    "clock": "2026-12-02 21:42",
+    "may_decline": false,
+    "intent": {
+     "text": "落实周六海报展同行",
+     "status": "ACTIVE",
+     "enabled": true
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E027_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "放 周六两点 展馆门口",
+      "ts": "2026-12-02 21:44"
+     },
+     {
+      "role": "HER",
+      "text": "行 我买好票 你带身份证",
+      "ts": "2026-12-02 21:48"
+     }
+    ],
+    "clock": "2026-12-02 21:50",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E027_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "明天两点 别迟到 我买到早鸟票了 便宜你十块",
+      "ts": "2026-12-04 21:20"
+     }
+    ],
+    "clock": "2026-12-04 21:22",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E027_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "收到，一点五十到，给你十分钟迟到额度",
+      "ts": "2026-12-04 21:22"
+     },
+     {
+      "role": "HER",
+      "text": "用不完也给我存着 哈哈 拜拜",
+      "ts": "2026-12-04 21:26"
+     }
+    ],
+    "clock": "2026-12-04 21:28",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

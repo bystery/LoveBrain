@@ -1,0 +1,484 @@
+[
+  {
+    "attempt_id": "timing_cap_20261025_110400_a1d4eeef_p1",
+    "ok": true,
+    "answer": {
+      "text": "OK",
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 218,
+        "completion_tokens": 1,
+        "total_tokens": 219
+      },
+      "resp_model": "dsf",
+      "resp_id": "chatcmpl-614c8aba4b52443e9e50c3f3"
+    },
+    "metrics": {
+      "request": {
+        "model": "dsf",
+        "temperature": 0.7,
+        "max_tokens": 16,
+        "messages": [
+          {
+            "role": "system",
+            "content": "只回复英文OK两个字母，不要其他内容。"
+          },
+          {
+            "role": "user",
+            "content": "请回复OK。"
+          }
+        ],
+        "stream": false
+      },
+      "stream_requested": false,
+      "headers_ms": 11097.949100076221,
+      "first_content_ms": null,
+      "last_content_ms": null,
+      "completion_ms": 11098.098500049673,
+      "timeout_s": 120,
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "raw_response": {
+        "id": "chatcmpl-614c8aba4b52443e9e50c3f3",
+        "object": "chat.completion",
+        "created": 1792897440,
+        "model": "dsf",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "OK"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 218,
+          "completion_tokens": 1,
+          "total_tokens": 219
+        },
+        "x_scaffold": {
+          "alias": "dsf",
+          "provider": "WorkBuddyAI-CLI",
+          "elapsed_ms": 10955,
+          "tried": [
+            "WorkBuddyAI-API:upstream",
+            "WorkBuddyAI-CLI:ok"
+          ],
+          "upstream": {
+            "kind": "scaffold",
+            "source": "wbai",
+            "model": "deepseek-v4.1-flash",
+            "sysPrompt": "replace"
+          },
+          "raw": {
+            "warm": true,
+            "fresh": true,
+            "key": "9fc48c6c436b9da2",
+            "initMs": 7790,
+            "ms": 10634,
+            "deltas": 1,
+            "sentMessages": 1,
+            "subtype": "success"
+          },
+          "tools_offered": 0,
+          "tool_names": [],
+          "tool_mode": "off",
+          "tool_parse_failed": false,
+          "unknown_tool_names": [],
+          "usage_source": "gateway_estimate",
+          "usage_upstream": {
+            "input": 3611,
+            "output": 2
+          }
+        }
+      },
+      "ttft_observable": false
+    },
+    "gateway_calls": [
+      {
+        "tag": "main",
+        "ts": "11:04:00",
+        "latency_ms": 11101,
+        "prompt_chars": 218,
+        "reply_chars": 1,
+        "usage": {
+          "prompt": 218,
+          "completion": 1,
+          "cache_hit": null,
+          "cache_miss": null,
+          "source": "api_usage"
+        },
+        "system": "只回复英文OK两个字母，不要其他内容。",
+        "user": "请回复OK。",
+        "temperature": 0.7,
+        "images": [],
+        "resp_model": "dsf",
+        "resp_id": "chatcmpl-614c8aba4b52443e9e50c3f3",
+        "finish": "stop",
+        "raw_text": "OK"
+      }
+    ]
+  },
+  {
+    "attempt_id": "timing_cap_20261025_110400_a1d4eeef_p2",
+    "ok": true,
+    "answer": {
+      "text": "OK",
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 218,
+        "completion_tokens": 1,
+        "total_tokens": 219
+      },
+      "resp_model": "dsf",
+      "resp_id": "chatcmpl-3e6f1459c5514384a05c04b4"
+    },
+    "metrics": {
+      "request": {
+        "model": "dsf",
+        "temperature": 0.7,
+        "max_tokens": 16,
+        "messages": [
+          {
+            "role": "system",
+            "content": "只回复英文OK两个字母，不要其他内容。"
+          },
+          {
+            "role": "user",
+            "content": "请回复OK。"
+          }
+        ],
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "stream_requested": true,
+      "headers_ms": 4012.89460004773,
+      "first_content_ms": 9869.628900079988,
+      "last_content_ms": 9869.628900079988,
+      "completion_ms": 19997.89670004975,
+      "timeout_s": 120,
+      "http_status": 200,
+      "content_type": "text/event-stream; charset=utf-8",
+      "raw_chunks": [
+        {
+          "id": "chatcmpl-3e6f1459c5514384a05c04b4",
+          "object": "chat.completion.chunk",
+          "created": 1792897451,
+          "model": "dsf",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "role": "assistant"
+              },
+              "finish_reason": null
+            }
+          ]
+        },
+        {
+          "id": "chatcmpl-3e6f1459c5514384a05c04b4",
+          "object": "chat.completion.chunk",
+          "created": 1792897451,
+          "model": "dsf",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "content": "OK"
+              },
+              "finish_reason": null
+            }
+          ]
+        },
+        {
+          "id": "chatcmpl-3e6f1459c5514384a05c04b4",
+          "object": "chat.completion.chunk",
+          "created": 1792897451,
+          "model": "dsf",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {},
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 218,
+            "completion_tokens": 1,
+            "total_tokens": 219
+          }
+        }
+      ],
+      "ttft_observable": true
+    },
+    "gateway_calls": [
+      {
+        "tag": "main",
+        "ts": "11:04:11",
+        "latency_ms": 19999,
+        "prompt_chars": 218,
+        "reply_chars": 1,
+        "usage": {
+          "prompt": 218,
+          "completion": 1,
+          "cache_hit": null,
+          "cache_miss": null,
+          "source": "api_usage"
+        },
+        "system": "只回复英文OK两个字母，不要其他内容。",
+        "user": "请回复OK。",
+        "temperature": 0.7,
+        "images": [],
+        "resp_model": "dsf",
+        "resp_id": "chatcmpl-3e6f1459c5514384a05c04b4",
+        "finish": "stop",
+        "raw_text": "OK"
+      }
+    ]
+  },
+  {
+    "attempt_id": "timing_cap_20261025_110400_a1d4eeef_p3",
+    "ok": true,
+    "answer": {
+      "text": "OK",
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 218,
+        "completion_tokens": 1,
+        "total_tokens": 219
+      },
+      "resp_model": "dsf",
+      "resp_id": "chatcmpl-a762d4998bab4c74a12a55dd"
+    },
+    "metrics": {
+      "request": {
+        "model": "dsf",
+        "temperature": 0.7,
+        "max_tokens": 16,
+        "messages": [
+          {
+            "role": "system",
+            "content": "只回复英文OK两个字母，不要其他内容。"
+          },
+          {
+            "role": "user",
+            "content": "请回复OK。"
+          }
+        ],
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "stream_requested": true,
+      "headers_ms": 4009.709100006148,
+      "first_content_ms": 9507.384399999864,
+      "last_content_ms": 9507.384399999864,
+      "completion_ms": 19646.68859995436,
+      "timeout_s": 120,
+      "http_status": 200,
+      "content_type": "text/event-stream; charset=utf-8",
+      "raw_chunks": [
+        {
+          "id": "chatcmpl-a762d4998bab4c74a12a55dd",
+          "object": "chat.completion.chunk",
+          "created": 1792897471,
+          "model": "dsf",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "role": "assistant"
+              },
+              "finish_reason": null
+            }
+          ]
+        },
+        {
+          "id": "chatcmpl-a762d4998bab4c74a12a55dd",
+          "object": "chat.completion.chunk",
+          "created": 1792897471,
+          "model": "dsf",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "content": "OK"
+              },
+              "finish_reason": null
+            }
+          ]
+        },
+        {
+          "id": "chatcmpl-a762d4998bab4c74a12a55dd",
+          "object": "chat.completion.chunk",
+          "created": 1792897471,
+          "model": "dsf",
+          "choices": [
+            {
+              "index": 0,
+              "delta": {},
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 218,
+            "completion_tokens": 1,
+            "total_tokens": 219
+          }
+        }
+      ],
+      "ttft_observable": true
+    },
+    "gateway_calls": [
+      {
+        "tag": "main",
+        "ts": "11:04:31",
+        "latency_ms": 19648,
+        "prompt_chars": 218,
+        "reply_chars": 1,
+        "usage": {
+          "prompt": 218,
+          "completion": 1,
+          "cache_hit": null,
+          "cache_miss": null,
+          "source": "api_usage"
+        },
+        "system": "只回复英文OK两个字母，不要其他内容。",
+        "user": "请回复OK。",
+        "temperature": 0.7,
+        "images": [],
+        "resp_model": "dsf",
+        "resp_id": "chatcmpl-a762d4998bab4c74a12a55dd",
+        "finish": "stop",
+        "raw_text": "OK"
+      }
+    ]
+  },
+  {
+    "attempt_id": "timing_cap_20261025_110400_a1d4eeef_p4",
+    "ok": true,
+    "answer": {
+      "text": "OK",
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 218,
+        "completion_tokens": 1,
+        "total_tokens": 219
+      },
+      "resp_model": "dsf",
+      "resp_id": "chatcmpl-34a733966b93408db9089281"
+    },
+    "metrics": {
+      "request": {
+        "model": "dsf",
+        "temperature": 0.7,
+        "max_tokens": 16,
+        "messages": [
+          {
+            "role": "system",
+            "content": "只回复英文OK两个字母，不要其他内容。"
+          },
+          {
+            "role": "user",
+            "content": "请回复OK。"
+          }
+        ],
+        "stream": false
+      },
+      "stream_requested": false,
+      "headers_ms": 19741.110799950548,
+      "first_content_ms": null,
+      "last_content_ms": null,
+      "completion_ms": 19741.236399975605,
+      "timeout_s": 120,
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "raw_response": {
+        "id": "chatcmpl-34a733966b93408db9089281",
+        "object": "chat.completion",
+        "created": 1792897491,
+        "model": "dsf",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "OK"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 218,
+          "completion_tokens": 1,
+          "total_tokens": 219
+        },
+        "x_scaffold": {
+          "alias": "dsf",
+          "provider": "WorkBuddyAI-CLI",
+          "elapsed_ms": 19738,
+          "tried": [
+            "WorkBuddyAI-API:upstream",
+            "WorkBuddyAI-CLI:ok"
+          ],
+          "upstream": {
+            "kind": "scaffold",
+            "source": "wbai",
+            "model": "deepseek-v4.1-flash",
+            "sysPrompt": "replace"
+          },
+          "raw": {
+            "warm": true,
+            "fresh": true,
+            "key": "9fc48c6c436b9da2",
+            "initMs": 7234,
+            "ms": 19426,
+            "deltas": 1,
+            "sentMessages": 1,
+            "subtype": "success"
+          },
+          "tools_offered": 0,
+          "tool_names": [],
+          "tool_mode": "off",
+          "tool_parse_failed": false,
+          "unknown_tool_names": [],
+          "usage_source": "gateway_estimate",
+          "usage_upstream": {
+            "input": 3611,
+            "output": 2
+          }
+        }
+      },
+      "ttft_observable": false
+    },
+    "gateway_calls": [
+      {
+        "tag": "main",
+        "ts": "11:04:51",
+        "latency_ms": 19742,
+        "prompt_chars": 218,
+        "reply_chars": 1,
+        "usage": {
+          "prompt": 218,
+          "completion": 1,
+          "cache_hit": null,
+          "cache_miss": null,
+          "source": "api_usage"
+        },
+        "system": "只回复英文OK两个字母，不要其他内容。",
+        "user": "请回复OK。",
+        "temperature": 0.7,
+        "images": [],
+        "resp_model": "dsf",
+        "resp_id": "chatcmpl-34a733966b93408db9089281",
+        "finish": "stop",
+        "raw_text": "OK"
+      }
+    ]
+  }
+]

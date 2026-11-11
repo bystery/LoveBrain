@@ -1,0 +1,19 @@
+{
+ "batch_id": "BATCH-SUPERSEDE-F3-E062E064-20261031",
+ "arm_map": {
+  "parent": "action_policy_r4_guard_e3",
+  "candidate": "action_policy_r7_supersede"
+ },
+ "episode_order": [
+  {
+   "episode": "E062",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E064",
+   "arm_order": "parent_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+ "recall_capable": false
+}

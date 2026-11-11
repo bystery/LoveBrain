@@ -1,0 +1,10 @@
+{
+ "candidate": "action_policy_r3",
+ "role": "candidate",
+ "parent": "action_policy_r2",
+ "output_contract": null,
+ "mechanism_flags": {
+  "no_reply_scope_narrowing_fix": true
+ },
+ "note": "过度沉默修复分支：全量继承 action_policy_r2（运行时闭包引用 r2→r1→v6_goal_context，不复制代码），只补一项已定位根因。FIX-9 no_reply_scope_narrowing_fix：D1 新材料批（r2 身份）实测候选在 D01_T08/D02_T08 交 action=no_reply，而这两张卡的 acceptable_actions 没有任何不回选项、current_action 要求简短认可成果；SILENCE_MENU_AUDIT_20261028.json 另核出 3 处菜单泄漏（E024_T10/E031_T09/D01_T03：hint=暂缓|忙碌 且 may_decline=false 仍给含不回语义的 收尾）。本分支做四件事：①动作语义复位——收尾恢复 v6 含义（发一句不要求应答的短消息，正文必须非空），不回从此只有 停 一个动作名；②停 仅在 may_decline=true 且 她最近一条给出明确免回授权/指定下次由她开口 且 本窗口无新落地成果 且 最近一条无待答问题 时才进菜单（AK09 你别等 / AK12 结果出来我再说 两格合法不回因此保留）；③泛化剔除任何 hint 下 may_decline=false 的 停，修掉菜单泄漏；④检测到成果/求助时动作块追加【必须接住】硬判据，清单无 停 时【发送合同】直接要求正文非空。FIX-6 的不回写法（action=no_reply+decline_reason）逐字复用父本常量原样保留，FIX-7 单 JSON 硬约束与 FIX-8 回扣有据同样逐字复用，不重写。不改评分器、不改 rubric、不改题面与卡、不新增模型调用。诚实边界：判据词表是通用生活语言启发式（无 episode 特判），漏判会重演过度沉默、误判只少给一次合法不回，后果不对称故表偏保守；本文件不声称已修好，必须由新身份真实复验批（受影响位点+新写同类位点+AK09/AK12 对照+3 处菜单泄漏位点）回填。本文件只列本候选真正读取的 flag：r2 的三个 flag 由 r2 自己的 params.json 读取，在这里增删它们不产生行为变化（避免伪消融），要消融须改对应父本=新身份。"
+}

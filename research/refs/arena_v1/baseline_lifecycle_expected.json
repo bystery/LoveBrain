@@ -1,0 +1,42 @@
+{
+ "source": "lb_runner.run_episode (非隔离原产品驱动, echo 适配器, 2026-10-22 冻结)",
+ "candidate": "reference_product_v1",
+ "episodes": {
+  "NCA_CORR_INTENT_v1.json": {
+   "episode_sha256": "018826ba3f7025edd8139cb7b02267d38e096589ecf5f6c9dbe4e43778470e57",
+   "case_ids": [
+    "NCA_t01",
+    "NCA_t02",
+    "NCA_t03",
+    "NCA_t04",
+    "NCA_t05",
+    "NCA_t06"
+   ],
+   "replies": [
+    "{\"response\": {\"recommended\": \"没什么特别要提的\", \"bad_boy\": \"忘了也没事\", \"playful\": \"随便聊聊\", \"warm\": \"慢慢聊\"}, \"directions\": [\"没什么特别要提的\", null, \"想起来再说\", null], \"analysis\": {\"topic_status\": \"same\", \"topic_label\": \"echo\", \"scene_facts\": [], \"ongoing\": []}}",
+    "{\"response\": {\"recommended\": \"没什么特别要提的\", \"bad_boy\": \"忘了也没事\", \"playful\": \"随便聊聊\", \"warm\": \"慢慢聊\"}, \"directions\": [\"没什么特别要提的\", null, \"想起来再说\", null], \"analysis\": {\"topic_status\": \"same\", \"topic_label\": \"echo\", \"scene_facts\": [], \"ongoing\": []}}",
+    "{\"response\": {\"recommended\": \"没什么特别要提的\", \"bad_boy\": \"忘了也没事\", \"playful\": \"随便聊聊\", \"warm\": \"慢慢聊\"}, \"directions\": [\"没什么特别要提的\", null, \"想起来再说\", null], \"analysis\": {\"topic_status\": \"same\", \"topic_label\": \"echo\", \"scene_facts\": [], \"ongoing\": []}}",
+    "{\"response\": {\"recommended\": \"没什么特别要提的\", \"bad_boy\": \"忘了也没事\", \"playful\": \"随便聊聊\", \"warm\": \"慢慢聊\"}, \"directions\": [\"没什么特别要提的\", null, \"想起来再说\", null], \"analysis\": {\"topic_status\": \"same\", \"topic_label\": \"echo\", \"scene_facts\": [], \"ongoing\": []}}",
+    "{\"response\": {\"recommended\": \"没什么特别要提的\", \"bad_boy\": \"忘了也没事\", \"playful\": \"随便聊聊\", \"warm\": \"慢慢聊\"}, \"directions\": [\"没什么特别要提的\", null, \"想起来再说\", null], \"analysis\": {\"topic_status\": \"same\", \"topic_label\": \"echo\", \"scene_facts\": [], \"ongoing\": []}}",
+    "{\"response\": {\"recommended\": \"没什么特别要提的\", \"bad_boy\": \"忘了也没事\", \"playful\": \"随便聊聊\", \"warm\": \"慢慢聊\"}, \"directions\": [\"没什么特别要提的\", null, \"想起来再说\", null], \"analysis\": {\"topic_status\": \"same\", \"topic_label\": \"echo\", \"scene_facts\": [], \"ongoing\": []}}"
+   ]
+  },
+  "NCB_ENTITY_DENSE_v1.json": {
+   "episode_sha256": "8fbb29b5fec8f6ab61a0e89d8fe9e121024d482aeb4cda9f125f7b5c6afb62f7",
+   "case_ids": [
+    "NCB_t01",
+    "NCB_t02",
+    "NCB_t03",
+    "NCB_t04",
+    "NCB_t05"
+   ],
+   "replies": [
+    "{\"response\": {\"recommended\": \"没什么特别要提的\", \"bad_boy\": \"忘了也没事\", \"playful\": \"随便聊聊\", \"warm\": \"慢慢聊\"}, \"directions\": [\"没什么特别要提的\", null, \"想起来再说\", null], \"analysis\": {\"topic_status\": \"same\", \"topic_label\": \"echo\", \"scene_facts\": [], \"ongoing\": []}}",
+    "{\"response\": {\"recommended\": \"没什么特别要提的\", \"bad_boy\": \"忘了也没事\", \"playful\": \"随便聊聊\", \"warm\": \"慢慢聊\"}, \"directions\": [\"没什么特别要提的\", null, \"想起来再说\", null], \"analysis\": {\"topic_status\": \"same\", \"topic_label\": \"echo\", \"scene_facts\": [], \"ongoing\": []}}",
+    "{\"response\": {\"recommended\": \"没什么特别要提的\", \"bad_boy\": \"忘了也没事\", \"playful\": \"随便聊聊\", \"warm\": \"慢慢聊\"}, \"directions\": [\"没什么特别要提的\", null, \"想起来再说\", null], \"analysis\": {\"topic_status\": \"same\", \"topic_label\": \"echo\", \"scene_facts\": [], \"ongoing\": []}}",
+    "{\"response\": {\"recommended\": \"没什么特别要提的\", \"bad_boy\": \"忘了也没事\", \"playful\": \"随便聊聊\", \"warm\": \"慢慢聊\"}, \"directions\": [\"没什么特别要提的\", null, \"想起来再说\", null], \"analysis\": {\"topic_status\": \"same\", \"topic_label\": \"echo\", \"scene_facts\": [], \"ongoing\": []}}",
+    "{\"response\": {\"recommended\": \"没什么特别要提的\", \"bad_boy\": \"忘了也没事\", \"playful\": \"随便聊聊\", \"warm\": \"慢慢聊\"}, \"directions\": [\"没什么特别要提的\", null, \"想起来再说\", null], \"analysis\": {\"topic_status\": \"same\", \"topic_label\": \"echo\", \"scene_facts\": [], \"ongoing\": []}}"
+   ]
+  }
+ }
+}

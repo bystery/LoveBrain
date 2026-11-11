@@ -1,0 +1,85 @@
+{
+ "kind": "judge_qual_v2_report",
+ "date": "2026-10-30",
+ "authorization": "AUTH-FS1-JUDGE-20261030-03",
+ "sys_change": "fact/time 锚点加入两处漏检负例；其余与 v1 一致",
+ "gates": [
+  {
+   "pair": "F3:N01_T10",
+   "verdict": "FAIL",
+   "detail": [
+    [
+     "AB",
+     "B"
+    ],
+    [
+     "BA",
+     "UNPARSEABLE"
+    ]
+   ]
+  },
+  {
+   "pair": "F3:K01_T20",
+   "verdict": "FAIL",
+   "detail": [
+    [
+     "AB",
+     "A"
+    ],
+    [
+     "BA",
+     "B"
+    ]
+   ]
+  },
+  {
+   "pair": "F3:K01_T06",
+   "verdict": "FAIL",
+   "detail": [
+    [
+     "AB",
+     "A"
+    ],
+    [
+     "BA",
+     "B"
+    ]
+   ]
+  },
+  {
+   "pair": "F3:K02_T14",
+   "verdict": "PASS",
+   "detail": [
+    [
+     "AB",
+     "A"
+    ],
+    [
+     "BA",
+     "A"
+    ]
+   ]
+  },
+  {
+   "pair": "CTL:fabricated",
+   "verdict": "PASS",
+   "detail": [
+    [
+     "AB",
+     "B"
+    ],
+    [
+     "BA",
+     "B"
+    ]
+   ]
+  }
+ ],
+ "verdict": {
+  "status": "STILL_PARTIAL",
+  "known_direction": "1/4",
+  "fabrication_control": "N/A",
+  "note": "v2 通过则 fact/time 维升为主判（severe 仍需 B3 复核）；不过则维持 PARTIAL",
+  "disposition": "维持 v1 评审器与 PARTIAL 处置；prompt 侧负例无效→停止 prompt 迭代；fact/time 结论继续走 B3 亲读（该工作流已在 E061_T13 验证能抓对）"
+ }
+}

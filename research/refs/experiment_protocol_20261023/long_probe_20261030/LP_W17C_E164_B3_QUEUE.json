@@ -1,0 +1,41 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W17C_E164",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W17C_E164_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w17c_merge_live_20261103",
+ "n_queued": 1,
+ "queue": [
+  {
+   "pair_id": "LP:E164:E164_T04",
+   "order": "main",
+   "story": "E164",
+   "cid": "E164_T04",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "她问的是单次合多少，不是 899 除多少次",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

@@ -1,0 +1,174 @@
+{
+ "kind": "long_probe_mechanical_score",
+ "date": "2026-10-30",
+ "revival": {
+  "E062": {
+   "parent": {
+    "revival_count": 6,
+    "texts_scanned": 189,
+    "hits": [
+     {
+      "turn": 7,
+      "family": "旧参数",
+      "token": "2.8",
+      "text": "先别急着“越想越值”——那颗是2.8，我这颗是f4L，差一档光圈，价格也差一截。4300含罩是f4的行情，2.8这个价早被人抢走了。你预算有限的话反而合适，就是"
+     },
+     {
+      "turn": 7,
+      "family": "旧参数",
+      "token": "2.8",
+      "text": "2.8那颗要是4300，轮不到群里挂着。我这颗是f4L——型号认准了再“越想越值”，不然周六现场我得给你降一次预期。"
+     },
+     {
+      "turn": 7,
+      "family": "旧参数",
+      "token": "2.8",
+      "text": "你这么一夸我都有点心虚了……得先纠正：f4，不是2.8。暗光稳这事，F4只能让位给ISO，剩下的靠你手稳。"
+     },
+     {
+      "turn": 7,
+      "family": "旧参数",
+      "token": "2.8",
+      "text": "有个得说清：我这颗是f4L，不是2.8那颗，怕你按2.8的期待来。周六现场你自己拧一下、暗光试两张，能不能接受一眼就知道，不用听我说。"
+     },
+     {
+      "turn": 7,
+      "family": "旧参数",
+      "token": "2.8",
+      "text": "4300是f4的行情，2.8二手得往上翻一截，别按错型号算预算。"
+     },
+     {
+      "turn": 10,
+      "family": "旧日期",
+      "token": "周六",
+      "text": "赶稿要紧，周六我不催你。周日同一时间照旧，转接环到时候看着要不要，别现在纠结。"
+     }
+    ]
+   },
+   "candidate": {
+    "revival_count": 4,
+    "texts_scanned": 177,
+    "hits": [
+     {
+      "turn": 7,
+      "family": "旧参数",
+      "token": "2.8",
+      "text": "醒醒，2.8 你能按这价收到，我连转接环一起送 😄 我这颗是 f4，4300 含遮光罩，这样价格才对得上吧"
+     },
+     {
+      "turn": 7,
+      "family": "旧参数",
+      "token": "2.8",
+      "text": "2.8？那这 4300 就得打个问号了 😄 是 f4 啦，光圈差一档价格差一截，可别带着误会来面交"
+     },
+     {
+      "turn": 7,
+      "family": "旧参数",
+      "token": "2.8",
+      "text": "2.8 和 f4 差的不只是光圈，重量也差一截，背一天就知道哪个更适合自己"
+     },
+     {
+      "turn": 10,
+      "family": "旧日期",
+      "token": "周六",
+      "text": "稿子要紧，周六就算了，周日我这边没问题。具体几点你定好了跟我说一声。"
+     }
+    ]
+   }
+  },
+  "E064": {
+   "parent": {
+    "revival_count": 0,
+    "texts_scanned": 186,
+    "hits": []
+   },
+   "candidate": {
+    "revival_count": 0,
+    "texts_scanned": 183,
+    "hits": []
+   }
+  }
+ },
+ "probe_recall_prescreen": {
+  "E062": {
+   "parent": {
+    "19": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [],
+     "primary_empty": false
+    }
+   },
+   "candidate": {
+    "19": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [
+      "8200"
+     ],
+     "primary_empty": false
+    }
+   }
+  },
+  "E064": {
+   "parent": {
+    "18": {
+     "hit": [
+      "拆线"
+     ],
+     "primary_empty": false
+    },
+    "20": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [],
+     "primary_empty": false
+    }
+   },
+   "candidate": {
+    "18": {
+     "hit": [
+      "拆线"
+     ],
+     "primary_empty": false
+    },
+    "20": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [],
+     "primary_empty": false
+    }
+   }
+  }
+ },
+ "program": {
+  "E062": {
+   "parent": {
+    "mean10": 10.0,
+    "n": 24
+   },
+   "candidate": {
+    "mean10": 10.0,
+    "n": 22
+   }
+  },
+  "E064": {
+   "parent": {
+    "mean10": 10.0,
+    "n": 24
+   },
+   "candidate": {
+    "mean10": 10.0,
+    "n": 24
+   }
+  }
+ }
+}

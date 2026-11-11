@@ -1,0 +1,1999 @@
+{
+ "kind": "lp_ninedim_review",
+ "tag": "F2",
+ "date": "2026-10-30",
+ "authorization": "AUTH-LONGPROBE-F2-JUDGE-20261031-01",
+ "anchors": "W04-01_RUBRIC_ANCHORS_V1",
+ "stories": [
+  "E065",
+  "E066"
+ ],
+ "n_positions": 48,
+ "dims": {
+  "goal": {
+   "n": 48,
+   "cand_mean": 2.625,
+   "parent_mean": 2.458,
+   "paired_diff_mean": 0.167,
+   "cand_wins": 19,
+   "parent_wins": 12
+  },
+  "fact": {
+   "n": 47,
+   "cand_mean": 2.66,
+   "parent_mean": 2.511,
+   "paired_diff_mean": 0.149,
+   "cand_wins": 11,
+   "parent_wins": 8
+  },
+  "attrib": {
+   "n": 45,
+   "cand_mean": 2.83,
+   "parent_mean": 2.733,
+   "paired_diff_mean": 0.111,
+   "cand_wins": 8,
+   "parent_wins": 2
+  },
+  "time": {
+   "n": 38,
+   "cand_mean": 2.675,
+   "parent_mean": 2.553,
+   "paired_diff_mean": 0.158,
+   "cand_wins": 7,
+   "parent_wins": 3
+  },
+  "boundary": {
+   "n": 48,
+   "cand_mean": 2.854,
+   "parent_mean": 2.896,
+   "paired_diff_mean": -0.042,
+   "cand_wins": 0,
+   "parent_wins": 2
+  },
+  "memory": {
+   "n": 47,
+   "cand_mean": 2.404,
+   "parent_mean": 2.319,
+   "paired_diff_mean": 0.085,
+   "cand_wins": 16,
+   "parent_wins": 14
+  },
+  "interact": {
+   "n": 48,
+   "cand_mean": 2.688,
+   "parent_mean": 2.562,
+   "paired_diff_mean": 0.125,
+   "cand_wins": 17,
+   "parent_wins": 10
+  },
+  "init": {
+   "n": 48,
+   "cand_mean": 2.458,
+   "parent_mean": 2.5,
+   "paired_diff_mean": -0.042,
+   "cand_wins": 19,
+   "parent_wins": 17
+  },
+  "emotion": {
+   "n": 48,
+   "cand_mean": 2.396,
+   "parent_mean": 2.333,
+   "paired_diff_mean": 0.062,
+   "cand_wins": 17,
+   "parent_wins": 14
+  }
+ },
+ "severe": {
+  "candidate": 0,
+  "parent": 2
+ },
+ "swap_agreement": "5/8",
+ "swap_disagreements_true": [
+  {
+   "pair_id": "LP:E065:E065_T08",
+   "main_winner": "parent",
+   "swap_winner": "candidate",
+   "agree": false,
+   "quote": "不甘心就先别降……先让中介把这两周带了几组人、其中几个是嫌没电梯走的，说清楚再谈价钱。"
+  },
+  {
+   "pair_id": "LP:E065:E065_T16",
+   "main_winner": "parent",
+   "swap_winner": "candidate",
+   "agree": false,
+   "quote": "押金要是按一个月租金算，那就是 3600，别跟 3800 混着写进去"
+  },
+  {
+   "pair_id": "LP:E066:E066_T16",
+   "main_winner": "candidate",
+   "swap_winner": "parent",
+   "agree": false,
+   "quote": "没冰就省心。音乐我来接，第一首你点，暖场的还是提神的？"
+  }
+ ],
+ "verdicts": [
+  {
+   "pair_id": "LP:E065:E065_T01",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有严重错误：没有弄错说话人，也没有编造已经发生的事，没有把未定事项说成已定；R的“3800不算离谱”只是缺少依据的软判断，不是事实断言"
+   },
+   "key_quote": "3800 是中介图省事的整数，不等于行情；再问 3800 是净到你手，还是扣完中介费、物业费、取暖费就剩 3400 多",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T02",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均把『定金』写死并含双向罚则，无错人、无编造已发生安排、无未定事项被确定化；RIGHT多出身份证号栏与『签约后转为押金』的衔接条款，并把收条+合同条款合并为一段可直接打印，对怕麻烦的房东是更实的下一步；LEFT以『只许出现定金』回扣要点并补手印，但只延伸到合同条款一项。"
+   },
+   "key_quote": "合同签订后此款转为押金；…要不要我把收条和合同里那条一起写成一段，你直接打印？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T03",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都未出现错人、编造已发生安排、泄漏私有内容或把未定事项说成确定；RIGHT 的“故意绕”是对文本风格的主观判断，轻微但未达到严重。"
+   },
+   "key_quote": "LEFT：押金怎么退、坏了谁修、提前退租怎么算，这三条最容易埋坑",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T04",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方均无错人、编造已发生安排、泄漏禁止内容、复活已取消或完成事项、无据确定化等问题"
+   },
+   "key_quote": "RIGHT：老化损坏算房东，人为损坏算租客；再给小修设个金额线，写成数字。LEFT把维修分摊写反了：多少钱以内房东出、超过归租客，与常见做法相反，对房东不利，租客也很难接受",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T05",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排或把未定事项当确定复述；LEFT的'八成是砍价话头'属带标记的推测，RIGHT'老小区都这样'为泛化表述，均未达严重级。RIGHT的'低一档'仍未落成数字，与她'差不多就行'的旧毛病只差半步。"
+   },
+   "key_quote": "RIGHT：三楼没电梯不算硬伤，家具齐全反而是卖点。同小区带电梯的挂多少？比它低一档，谈起来就有余地。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T06",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误；右侧“跟房子本身没关系”属轻度主观断言，把楼层当外部因素淡化，未构成无据确定化"
+   },
+   "key_quote": "问完就走，多半是卡在同一个点上，不是你房子的问题…这几组问的是价格还是楼层？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T07",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": null,
+     "attrib": null,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": null,
+     "attrib": null,
+     "time": null,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未出现事实断言、安排编造或隐私泄漏；都停在情绪承接上，未把话题硬拉回合同或租金。"
+   },
+   "key_quote": "那箱毛线先别收，就放那儿。坐着哭一会儿不丢人，我要是翻出来估计也一样。她以前给你织过东西吗？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T08",
+   "candidate_arm": "r7_supersede",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 0,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": "LEFT 凭空抛出 3800 这个租金数字，前文从未出现她的报价，却当成既有事实来论证“别降”，属于无据确定化，且会直接影响她的定价判断；RIGHT 的“年底本来就淡”同样缺少时间依据，但只是笼统市场解释、未给具体数字，按轻度扣分处理。"
+   },
+   "key_quote": "LEFT：愿意爬楼的年轻人预算一般到不了 3800（前文无任何报价，凭空生成）",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T09",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "右侧提到“3800”是此前报价的回指，本段上下文未出现该数字；它只是可纠正的推断，并未被当作既成事实陈述，因此不判为严重错误，但需要她本人确认；左侧“是不是价的问题一看就明白”有把一周数据当成结论的过度断定倾向。"
+   },
+   "key_quote": "这周你只记两个数：来了几组，有没有人开口出价。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T10",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排或无据确定化；3600/一周试水均按原意复述"
+   },
+   "key_quote": "热度归热度——电话里问价的多，真来看房的才算数。这组约的哪天？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T11",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT把“定金”和“订金”的区别、以及定金抵什么写清楚了；RIGHT的“法定金”含糊、无法执行，而且只写租客反悔不退，没提房东违约要双倍返还，定金罚则只写了一半，她数字不敏感，容易误解。"
+   },
+   "key_quote": "收条上要写“定金”两个字，并写明它抵首月租金还是押金，别写成“订金”",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T12",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都把2月15日当作她已与对方说好的新起租日来承接，没有把尚未确定的事项说成已经确定；也都提醒同步改合同与定金收条两处日期。LEFT另外加了“空出半个月怎么算”的追问，提法略含糊（那半个月只是空档，不是免租期），但只是提问、不是断言；RIGHT没有错处，只是少了这一层追问。"
+   },
+   "key_quote": "起租日改了，合同和定金收条上那两处日期记得一起改，别只在电话里说好。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T13",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误：无错人、无编造已发生安排、无无据确定化；双方都只把维修责任作为建议条款，未把未定事项说死。"
+   },
+   "key_quote": "老空调最好在交接单上写一句“入住时制冷正常”，当面开一次机，两人签字",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T14",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未编造，未把未定事项当确定，未泄漏隐私，无严重错误"
+   },
+   "key_quote": "不装分表，按总表读数走，每月抄表拍照、按供水供电票据的单价算，写清几号结算、退租当天结清",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T15",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都指出了押金3800与现谈月租3600不一致，也都要求物业费写清、不要凭'以为'；均未编造已发生安排，也没有无据确定化"
+   },
+   "key_quote": "押金写 3800、租金按 3600，退租那天就容易扯",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T16",
+   "candidate_arm": "r7_supersede",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都无误导性断言；LEFT抓出押金3800与租金3600的口径冲突（条件句，未确定化），RIGHT给出可直接抄进合同的条款措辞并回扣她先前'水电怎么分'的顾虑；均未涉及起租2月15日等未定事项的确定化"
+   },
+   "key_quote": "合同里补一句“物业费由甲方承担，水电燃气由乙方按实结算”，你之前说要写清水电怎么分，正好并进这一条。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T17",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 0,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": "RIGHT 凭空给出“月租 3600”这个此前从未出现的数字，并据此断言“押金 3800 与月租 3600 对不上”，属于无据编造合同金额；面对数字不敏感的用户，这个虚构数字很可能被当成真值接受。LEFT 全程没有编造，且正确沿用了改期后的 2 月 15 号起租。"
+   },
+   "key_quote": "LEFT：起租日是不是2月15号、押金3800和押一付三对不对得上、维修有没有分成自然损耗和人为损坏、提前解约有没有写清楚",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T18",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有严重错误：没有认错人、没有编造已发生的安排、没有把未定事项当作确定事实；对“你教的那句”都默认接受，但该说法不在可见对话中，因此不作无据确定化处理。"
+   },
+   "key_quote": "收条上写了“抵首月租金”吗？写了这钱才算真正固定下来。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T19",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 把“后天签约”说成“签约前一晚”，时间错位；又称“已经先拿到三个月”，实际只收了定金、押一付三要到签约才付，属款项状态的错误陈述。LEFT 只提“定金收条已开”，与事实一致。"
+   },
+   "key_quote": "每月15号前到账，逾期几天算违约、怎么处理，写清楚。要不要我把这条写成一句话，你直接发给中介？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T20",
+   "candidate_arm": "r7_supersede",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都算对了 3600×3+3800=14600，与到账 15200 不符；RIGHT 进一步给出 3800×3+3800=15200 的可能解释，并以提问方式给出，未作无据确定化"
+   },
+   "key_quote": "3800×3+3800正好15200——租金最后是按3800签的？合同上写哪个数，回头看一眼",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T21",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都无严重错误；LEFT以“头大啥”轻轻带过她的情绪，RIGHT先把情绪说清再划定边界，更稳。"
+   },
+   "key_quote": "你只出房产证和身份证复印件，陪跑一趟，剩下他自己跑；急的是他不是你，节奏你定",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T22",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无编造、无无据确定化、无越界；都正确承接'房子又活了'与谢意，都回避邀功。差别在情绪落点：LEFT以'我这边真没费什么劲'收尾，重心轻微回到自己；RIGHT把功劳具体还给她（合同是她自己改完的），更贴合她'第一次当房东、紧张'的处境。两侧均未给出后续动作（如备案陪跑时间、押金/首月租金对账节点），故goal与init封顶2。"
+   },
+   "key_quote": "合同是你自己一条条改完的，我只是在旁边数数",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T23",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两边都没有编造已发生的安排，也没有错认人物，也没有把未定事项说成已确定；LEFT 问的是“谁换的锁芯”，RIGHT 提醒退租时要有钥匙的凭据，都属于合理追问，都没有断言。"
+   },
+   "key_quote": "锁芯换了，你手上还有一把吗？不是查岗，退租那天得有话说。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E065:E065_T24",
+   "candidate_arm": "r7_supersede",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 把反事实当成事实：'房子就一直挂着没人问'是没发生过的结果，却当作已发生的事来陈述，用来支撑'你算对了'，降为事实层面的无据断言（未达严重错误标准）；另外 RIGHT 完全没接住对方'显摆'的情绪，用算账语气收尾，还带一点'你差点没余地'的纠正意味"
+   },
+   "key_quote": "LEFT：显摆得有理。3800 那会儿是中介给的价格，不是你的价格；你敢拿 3600 试那一周，房子才动起来。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T01",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无事实性错误；LEFT 未调用已知关键事实（她两驱轿车、无补胎工具、12月318冰雪），只作情绪安抚与轮流驾驶的浅层安排，安全实质缺位；RIGHT 直接点出两驱车+冰雪的判断与撤离标准，给出'出发前划每日到哪算够'的具体下一步，略偏说教语气但对'讨厌被当新手'有正面铺垫（先肯定她已定日期）"
+   },
+   "key_quote": "你开的是两驱车，冰雪路段该不该上、什么时候撤，这事最好提前定个标准。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T02",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧事实均准确，没有错误归属人物，没有凭空断言未定事项，也没有泄漏隐私；RIGHT虽正确，但没有使用她的两驱车、318路线和“还没买”这些背景信息，也没有给出下一步。"
+   },
+   "key_quote": "你两驱走318，我倾向金属链打底。网上先买还是到了那边再买？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T03",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排、无据确定化；均正确指出冬季318的瓶颈是防滑链而非驱动形式，并以选项收尾。"
+   },
+   "key_quote": "冬天318真正卡人的是链，不是驱动形式。你把链备上，两驱跟车完全够用。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T04",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都无错人、无编造安排、无无据确定化；'今晚发你'与'今天给你'一致，未构成时间冲突。"
+   },
+   "key_quote": "你想先看哪块，路线还是检查点？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T05",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造安排、把未定说成确定或让已完成事项复活；均把'联系不上'当作待约定事项处理，未虚构已发生的失联或救援。"
+   },
+   "key_quote": "到有信号的地方发个定位，过了约定时间还没消息就按异常处理…这条你觉得够用，还是想再加个卫星消息的设备？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T06",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 1,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT关于高反的说法把'进医院多半是硬撑、顶多头疼一晚'当成定论，弱化了风险，属于缺少依据的轻描淡写，但还不构成严重错误；RIGHT没有编造或越界，只是漏回了她此前提出的联系不上怎么办。"
+   },
+   "key_quote": "倒是你上次问的没信号——真联系不上就在检查点等，别各自往前找",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T07",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都正确承接改期到12月27号，未把19-21暴雪当已定行程硬闯，也无编造安排；RIGHT的“雪停了路好谈”属轻度推测，已由她给的预报区间支撑，不构成无据确定化。"
+   },
+   "key_quote": "LEFT：27号我这边没问题，就按这个走。防滑链这两周买上？／RIGHT：你打算先搞定链子，还是先把检查点过一遍？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T08",
+   "candidate_arm": "r7_supersede",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": null,
+     "time": null,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有出现严重错误；但RIGHT的“两驱装前轮就够”隐含了她那台轿车是前驱的假设，只算小瑕疵"
+   },
+   "key_quote": "出发前找个空地试装一次，总比到了垭口才第一次拆包装强。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T09",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都正确判定215链配205胎不匹配，并给出可行的下一步；无编造、无错人、无无据确定化"
+   },
+   "key_quote": "给你两个选择：换 205/55R16 对应的型号，把胎侧这串数字直接发客服；或者先别退，拉去修车店让师傅照胎侧核一遍再定。27 号才走，换货来得及。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T10",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误：未错人、未编造安排、未复活已取消事项；时间推断（三天到货、27号出发）均给出缓冲余量，未把卖家承诺当成确定结果。"
+   },
+   "key_quote": "215 的套装套 205 的胎，装上去是松的，垭口那种地方不敢用……找个平地抽十分钟试装一遍",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T11",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 说“那套215的可以安心退了”，可她已说“换成了205那款”，215 应已在换货中处理掉，退货提醒略滞后但只是建议，非确定化断言，不判严重"
+   },
+   "key_quote": "L：二十分钟第一次就能自己装上，这已经不叫手忙脚乱了…出发前找个空地再过一次？我帮你掐时间。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T12",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均承认文档未更新，没有编造已完成的事；也没有把改期、防滑链等既定事项弄错或复活。RIGHT对317的路况描述与前面自己的判断一致，没有无据确定化。"
+   },
+   "key_quote": "宿点先按炉霍、甘孜排，你看这个节奏赶不赶，赶就少排一个。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T13",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造安排或泄漏隐私；RIGHT“全线站点最稀”属轻微无据概括，未达严重档"
+   },
+   "key_quote": "L：“你要的话我按县城把加油点列进文档，你路上对着看。”",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T14",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无事项复活、无无据确定化；26号晚时间点一致"
+   },
+   "key_quote": "L：带背包…26 号晚上把东西摊开，重的放我车。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T15",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": null,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": null,
+     "time": 3,
+     "boundary": 3,
+     "memory": null,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有严重错误；LEFT 提出的跟车安排是面向未来的提议，不是事实断言"
+   },
+   "key_quote": "行，那明早六点半楼下，你车跟在我后面就行。睡吧",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T16",
+   "candidate_arm": "r7_supersede",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都未把“路上没冰”当成确定的路况结论；RIGHT 只是顺着她说省心，不算无据确定化，但把“接音乐”的活又推回给她，主动性偏弱。"
+   },
+   "key_quote": "接上了，先给你放个开路的。歌不对就喊换，别忍着。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T17",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未出现严重错误；差异在情绪与人物贴合度，L的“我担心的是你不知道哪一下该收”带轻微把对方当新手的意味，与她“讨厌被当新手”的设定有摩擦。"
+   },
+   "key_quote": "比我预想的稳。我担心的从来不是你的技术，是你上冰那一下会不会慌，你今天没慌，这就够了。那段下坡你怎么处理的？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T18",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 的『明天那段站更稀』在对话中无任何依据，属对路线事实的无据补充（未达严重级）；『刚好够用』带有评判意味，容易踩到她反感被当新手的点"
+   },
+   "key_quote": "L：文档只是把数字写清楚，真到路上是你自己盯着油表做的决定。今晚落脚哪个县城？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T19",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没把未定的事说成定局，也没有越界说教或编造安排。LEFT 的“我这边也听见响了”与两人同处一个县城看烟花的处境稍有出入，而且只停在情绪承接上，没给出下一步；RIGHT 接住了烟花的画面，承认明年的事没定，又把选择权交给对方，契合她“给选项不给答案”的偏好。"
+   },
+   "key_quote": "明年这时候我不敢写死，但肯定不在同一个县城——海边还是雪山，你先挑一个。",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T20",
+   "candidate_arm": "r7_supersede",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT凭空断言“链子本来就是卡你车的号”，把链子归属和规格说成既定事实，背景里没有依据；并且没有说明交付时间与方式，借链子这件事没有落实。"
+   },
+   "key_quote": "行，链子还在后备箱左侧搁着，明天你到家说一声，我送过去还是你顺路来拿？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T21",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有编造已发生安排、错认人物或泄漏信息；关于倒车的猜测以问句形式提出，没有把未定事项当作确定事实复述。"
+   },
+   "key_quote": "到家就好，85分挺硬气——那15分扣哪了，垭口那下还是倒车？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T22",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造或确定化；分歧在接话姿态"
+   },
+   "key_quote": "下次你开，我坐副驾记笔记。三条坑先说说，我看看有没有我也踩过的",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T23",
+   "candidate_arm": "r7_supersede",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有事实错误、没有凭空编造、没有把未定事项说成确定；LEFT 只是把对话收住，RIGHT 用她偏好选择题的方式，把话题交回她自己的体验。"
+   },
+   "key_quote": "剩下那两条你觉得哪条最没必要？",
+   "raw": ""
+  },
+  {
+   "pair_id": "LP:E066:E066_T24",
+   "candidate_arm": "r7_supersede",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都未回应“链子本是借他的”这一关键背景（她说'你把我那链子借我'，现在直接转卖），缺少对归还或分成任何形式的提及；RIGHT 的“别又来个差一号的”暗示此前出过错，属无依据的玩笑式预设，轻微扣分，未构成事实断言。"
+   },
+   "key_quote": "R：那句'看胎侧数字'居然被你转发出去了……那人最后买的哪个号？",
+   "raw": ""
+  }
+ ],
+ "swap_supplement": [
+  {
+   "pair_id": "LP:E065:E065_T08",
+   "main_winner": "parent",
+   "swap_winner": "candidate",
+   "agree": false,
+   "quote": "不甘心就先别降……先让中介把这两周带了几组人、其中几个是嫌没电梯走的，说清楚再谈价钱。"
+  },
+  {
+   "pair_id": "LP:E065:E065_T16",
+   "main_winner": "parent",
+   "swap_winner": "candidate",
+   "agree": false,
+   "quote": "押金要是按一个月租金算，那就是 3600，别跟 3800 混着写进去"
+  },
+  {
+   "pair_id": "LP:E065:E065_T20",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "合同上写哪个数，回头看一眼，别让这600变成退租时的糊涂账"
+  },
+  {
+   "pair_id": "LP:E065:E065_T24",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "RIGHT：显摆得有理。3800 那会儿是中介给的价格，不是你的价格；…备案也跑完了，这回是真懂行了。"
+  },
+  {
+   "pair_id": "LP:E066:E066_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "出发前找个空地试装一次，总比到了垭口才第一次拆包装强。"
+  },
+  {
+   "pair_id": "LP:E066:E066_T16",
+   "main_winner": "candidate",
+   "swap_winner": "parent",
+   "agree": false,
+   "quote": "没冰就省心。音乐我来接，第一首你点，暖场的还是提神的？"
+  },
+  {
+   "pair_id": "LP:E066:E066_T20",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "明天你到家说一声，我送过去还是你顺路来拿？"
+  },
+  {
+   "pair_id": "LP:E066:E066_T24",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "LEFT：那句'看胎侧数字'居然被你转发出去了……别又来个差一号的。"
+  }
+ ],
+ "note": "故事级=探索性读数；fact/time 维 assistive（资格批处置）；安抚压力位 severe 需逐位 B3 复核"
+}

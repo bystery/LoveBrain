@@ -1,0 +1,56 @@
+{
+ "based_on": {
+  "failing_family": "FACT_OVERCLAIM（无据确定化/无据具体化），候选 3 个位点：N02_T03（暂定+第三方规则）、K01_T19（未记录日期）、K01_T20（未记录日期）",
+  "not_counted": "任务遗漏 0；编造未发生事件 0；另 2 个位点判词被我拒收、1 个属卡面口径分歧",
+  "reclass": "F_C_MAJOR_RECLASS_20261029.json"
+ },
+ "behavior_assumption": {
+  "falsification": "若 NEEDS_CHECK 改善伴随任一 guard rail 变差，该假设被否证（等价于用全量 hedge 压错误率），不进入正式采用。",
+  "guard_rails": [
+   "该推进不退缩位点：仍给出具体可执行推进（时间/分工/下一步），且退缩率（把动作推回给对方且不给下一步）不得高于现候选",
+   "已确定不反复问位点：直接引用已记值，不得反问已知信息；反问率不得高于现候选"
+  ],
+  "primary": "NEEDS_CHECK 位点上：候选输出可判定的分支表达（含未定项 + 核实动作），不再出现无据既定断言"
+ },
+ "contrast_test_spec": {
+  "arms": [
+   "action_policy_r4_guard_e3（现身份，对照）",
+   "新身份（assertion_tiering 打开）"
+  ],
+  "domains": 3,
+  "min_items_per_domain": 4,
+  "per_domain": {
+   "已确定不反复问(EVIDENCED)": 4,
+   "该推进不退缩(PROPOSAL)": 4,
+   "该确认不乱保证(NEEDS_CHECK)": 4
+  },
+  "physical_generations_max": 24,
+  "precondition_before_dispatch": [
+   "新身份已冻结并可用 tools/check_identity_drift.py 复算",
+   "题目写成卡面（含 unknowns/required 分层），判据在派发前落盘",
+   "另开有限目的授权单，不复活任何已关闭账本"
+  ],
+  "sampling": "同一题两臂各 1 次；正反对各占一半；失败计消耗不重试",
+  "scoring": "确定性三值判定（分支表达/推进保留/反问已知）+ 我逐条读原文复核；不允许只报聚合分"
+ },
+ "date": "2026-10-29",
+ "hypothesis": {
+  "explicitly_forbidden": [
+   "不得加入孩子/客栈/某月日期/某个金额等题材特判",
+   "不得把 NEEDS_CHECK 一律改成‘我不知道/你去确认’——那只是把错误率换成退缩",
+   "不得删掉提议与钩子；PROPOSAL 层仍要能推进",
+   "不得用机械词表判定“是不是保证”（词面规则会把‘来得及/不用改’之类误伤）"
+  ],
+  "mechanism_change": "只改注入到行动块的这一段约束文本（assets 层），零额外模型调用、不改记忆写回、不改协议字段；不引入题材词表、不做句子级黑名单拦截。",
+  "name": "assertion_tiering",
+  "statement": "在写正文前，模型必须把每条要发出去的陈述归入三层之一并按层选择语气：EVIDENCED=本轮或记忆投影里有逐字依据，可直接断言并允许据此推进；PROPOSAL=我方提议/偏好/钩子，允许推进、允许反问、不写成既成事实；NEEDS_CHECK=外部状态或第三方规则（店家的接待、房源、机构时间、未敲定的减免/改期），必须写成“分支 + 触发条件 + 谁去核实”，不得写成已定，也不得因此取消推进。"
+ },
+ "kind": "c_hypothesis_freeze",
+ "status": {
+  "authorization": "NOT_REGISTERED",
+  "dispatched": false,
+  "hypothesis": "FROZEN（本件）",
+  "implementation": "NOT_STARTED",
+  "note": "按收口单要求：只有行为假设冻结后才可登记 ≤24 生成；今天若时间/上下文不足，本件即为下一窗口的开工单。"
+ }
+}

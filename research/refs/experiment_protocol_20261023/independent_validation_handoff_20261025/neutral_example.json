@@ -1,0 +1,100 @@
+{
+  "episode_id": "V0EX",
+  "persona": {
+    "me": "33岁，男，苏州，做图书馆员；通过一次读书会认识她，说话慢热真诚，想自然多点接触但不催",
+    "her": "34岁，女，苏州，做社区园艺讲师；爱植物和旧书，日程被课程和市集占，聊天看状态"
+  },
+  "initial_kb": {
+    "her": "喜欢观叶植物和旧书市集，最近周末常在社区 garden 上课",
+    "warmth": "两人是在一场旧书换购活动上认识，只见过一次面"
+  },
+  "gold": {},
+  "turns": [
+    {
+      "case_id": "V0EX_T01", "turn_type": "reply",
+      "input": {
+        "clock": "2026-11-07 21:10", "may_decline": false,
+        "messages": [{"role": "HER", "text": "今天市集摆摊站到腿软 累瘫了", "ts": "2026-11-07 21:05"}],
+        "note": "先接住她的累，别一上来就提下次活动"
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "V0EX_T02", "turn_type": "reply",
+      "input": {
+        "clock": "2026-11-07 21:20", "may_decline": false,
+        "messages": [
+          {"role": "ME", "text": "摆摊是体力活 你这周还有一场?", "ts": "2026-11-07 21:14"},
+          {"role": "HER", "text": "下周花园开放日还有一场 你要不要来逛逛", "ts": "2026-11-07 21:18"}
+        ],
+        "note": "她递了个由头；顺势推进但贴她的活动，别把话说成已定",
+        "intent": {"enabled": true, "text": "想去她的花园开放日，主动接话头但别当已约好", "status": "ACTIVE"}
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "V0EX_T03", "turn_type": "reply",
+      "input": {
+        "clock": "2026-11-08 09:30", "may_decline": true,
+        "messages": [{"role": "HER", "text": "不过开放日那天我可能得带课 不一定顾得上你", "ts": "2026-11-08 09:25"}],
+        "note": "她给了保留；记成暂定，别追死",
+        "intent": {"enabled": false, "text": "她要先顾课程，本轮别往前逼", "status": "CLOSED"}
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "V0EX_T04", "turn_type": "reply",
+      "input": {
+        "clock": "2026-11-08 09:45", "may_decline": false,
+        "messages": [{"role": "HER", "text": "话说你上次那本旧书后来翻完了吗", "ts": "2026-11-08 09:40"}],
+        "note": "她把话题挪到旧书上；跟着聊，别硬拐回开放日",
+        "intent": {"enabled": false, "text": "", "status": "CLOSED"}
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "V0EX_T05", "turn_type": "reply",
+      "input": {
+        "clock": "2026-11-09 20:00", "may_decline": false,
+        "messages": [
+          {"role": "ME", "text": "翻了一半 讲植物那章我拍了照想给你看", "ts": "2026-11-09 19:55"},
+          {"role": "HER", "text": "哈哈好啊 对了开放日我不用带课了 你来吧", "ts": "2026-11-09 19:58"}
+        ],
+        "note": "她重新确认开放日；把暂定转成她去推进，正常高兴一下",
+        "intent": {"enabled": true, "text": "她确认开放日可去；配合把大致时间对上", "status": "ACTIVE"}
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "V0EX_T06", "turn_type": "reply",
+      "input": {
+        "clock": "2026-11-09 20:15", "may_decline": false,
+        "messages": [
+          {"role": "ME", "text": "行 那我周日上午到 你那时候方便?", "ts": "2026-11-09 20:10"},
+          {"role": "HER", "text": "上午我在布场 你十一点来正好", "ts": "2026-11-09 20:12"}
+        ],
+        "note": "时间敲定；确认即可别反复问"
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "V0EX_T07", "turn_type": "reply",
+      "input": {
+        "clock": "2026-11-09 20:25", "may_decline": false,
+        "messages": [{"role": "HER", "text": "我室友说她也要来 你不介意吧 人多热闹", "ts": "2026-11-09 20:22"}],
+        "note": "室友是第三人借她口；接住多人也不失自己的期待，别把室友当她本人的敷衍",
+        "intent": {"enabled": false, "text": "已定见面；本轮只是补充人数", "status": "CLOSED"}
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "V0EX_T08", "turn_type": "reply",
+      "input": {
+        "clock": "2026-11-12 22:30", "may_decline": true,
+        "messages": [{"role": "HER", "text": "今天开放日挺开心 下次旧书市集我把你叫上 先睡啦", "ts": "2026-11-12 22:28"}],
+        "note": "回顾当天+提议下次+她要睡；自然收尾留开放，别当场逼定下次日期"
+      },
+      "gold": {}
+    }
+  ]
+}

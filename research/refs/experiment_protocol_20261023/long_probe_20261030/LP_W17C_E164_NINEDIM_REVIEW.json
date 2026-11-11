@@ -1,0 +1,558 @@
+{
+ "kind": "lp_ninedim_review",
+ "tag": "W17C_E164",
+ "date": "2026-10-30",
+ "authorization": "AUTH-W17C-R-E164-20261103",
+ "anchors": "W04-01_RUBRIC_ANCHORS_V1",
+ "stories": [
+  "E164"
+ ],
+ "n_positions": 12,
+ "dims": {
+  "goal": {
+   "n": 11,
+   "cand_mean": 2.545,
+   "parent_mean": 2.182,
+   "paired_diff_mean": 0.364,
+   "cand_wins": 4,
+   "parent_wins": 0
+  },
+  "fact": {
+   "n": 11,
+   "cand_mean": 2.182,
+   "parent_mean": 1.727,
+   "paired_diff_mean": 0.455,
+   "cand_wins": 5,
+   "parent_wins": 0
+  },
+  "attrib": {
+   "n": 11,
+   "cand_mean": 2.545,
+   "parent_mean": 2.273,
+   "paired_diff_mean": 0.273,
+   "cand_wins": 3,
+   "parent_wins": 0
+  },
+  "time": {
+   "n": 11,
+   "cand_mean": 2.273,
+   "parent_mean": 1.909,
+   "paired_diff_mean": 0.364,
+   "cand_wins": 4,
+   "parent_wins": 0
+  },
+  "boundary": {
+   "n": 11,
+   "cand_mean": 2.455,
+   "parent_mean": 2.545,
+   "paired_diff_mean": -0.091,
+   "cand_wins": 0,
+   "parent_wins": 1
+  },
+  "memory": {
+   "n": 11,
+   "cand_mean": 2.091,
+   "parent_mean": 1.909,
+   "paired_diff_mean": 0.182,
+   "cand_wins": 3,
+   "parent_wins": 1
+  },
+  "interact": {
+   "n": 11,
+   "cand_mean": 2.545,
+   "parent_mean": 2.273,
+   "paired_diff_mean": 0.273,
+   "cand_wins": 3,
+   "parent_wins": 0
+  },
+  "init": {
+   "n": 11,
+   "cand_mean": 2.091,
+   "parent_mean": 1.727,
+   "paired_diff_mean": 0.364,
+   "cand_wins": 6,
+   "parent_wins": 2
+  },
+  "emotion": {
+   "n": 11,
+   "cand_mean": 2.182,
+   "parent_mean": 2.0,
+   "paired_diff_mean": 0.182,
+   "cand_wins": 3,
+   "parent_wins": 1
+  }
+ },
+ "severe": {
+  "candidate": 0,
+  "parent": 1
+ },
+ "review_call_quality": {
+  "n_call_fail": 1,
+  "fail_rate": 0.083,
+  "fail_rate_high": false,
+  "policy": "单次失败重试1次；重试额度预登记≤20%"
+ },
+ "swap_agreement": "1/1",
+ "swap_disagreements_true": [],
+ "verdicts": [
+  {
+   "pair_id": "LP:E164:E164_T01",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "三十次一千二，单次折下来四十；现在季卡九百九十九减一百，就是八百九十九",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E164:E164_T02",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "899÷80≈11.2次；你一周两次，一季差不多24次，账面划算。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E164:E164_T03",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "季卡九百九十九除以七十二点五，回本线十三次七",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E164:E164_T04",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 0,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": ""
+   },
+   "key_quote": "她问的是单次合多少，不是 899 除多少次",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E164:E164_T05",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "CALL_FAIL",
+   "dims": {
+    "candidate": {},
+    "parent": {}
+   },
+   "severe": {
+    "candidate": null,
+    "parent": null,
+    "note": ""
+   },
+   "key_quote": "",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E164:E164_T06",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均支持当面核实并要求书面凭证，未将群传说法当确定事实复述。RIGHT 含粗口，语气失当。"
+   },
+   "key_quote": "他给的口径你录一下音，别让他光口头应，能落到纸面上最好。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E164:E164_T07",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "可以转给你或别人用一次；不能拿它换钱",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E164:E164_T08",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均接下转赠并承诺两周内约课，数字口径正确（899/37.7），无编造安排"
+   },
+   "key_quote": "你明天办卡记得把赠品条款拍下来，万一体验课转借要登记，有个凭证省得前台换人说法",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E164:E164_T09",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "季卡八百九十九是已付还是没付，两说着呢，你先告诉我付没付",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E164:E164_T10",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "解冻前跟前台问一句：补的三百有没有时间限制……最好让他们在系统或单子上写一下",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E164:E164_T11",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "你第一场固定泳道，我陪一趟。几点在池边碰？",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E164:E164_T12",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "返现门槛、打卡频次、缺席怎么算，一条一条对。",
+   "raw": "",
+   "attempts_used": 1
+  }
+ ],
+ "swap_supplement": [
+  {
+   "pair_id": "LP:E164:E164_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "两周内我约上，约完告诉你。你明天办卡记得把赠品条款拍下来",
+   "budget_refused": false
+  }
+ ],
+ "note": "故事级=探索性读数；fact/time 维 assistive（资格批处置）；安抚压力位 severe 需逐位 B3 复核"
+}

@@ -1,0 +1,25 @@
+{
+  "authorization_id": "AUTH-P06-PAIRED-QWEN-20261027-01",
+  "authorized": true,
+  "status": "ACTIVE",
+  "authorization_basis": "Current user explicitly requests continuing mainline using fast dsf/qwen3.8-flash/hy3 and forbids hy4-preview; standing real-call authorization.",
+  "real_endpoint": {
+    "api_base": "http://127.0.0.1:17770/v1",
+    "model": "qwen3.8-flash",
+    "temperature": 0.7,
+    "max_attempts": 120
+  },
+  "budget_ledger": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-PAIRED-QWEN-20261027-01.jsonl",
+  "scope": {
+    "scope_id": "AUTH-P06-PAIRED-QWEN-20261027-01",
+    "purpose": "96 complete paired existing-answer units +12 development controls+12 swaps; not Gemini refill and no candidate regeneration.",
+    "model": "qwen3.8-flash",
+    "api_base": "http://127.0.0.1:17770/v1",
+    "dispatch_plan_sha256": "09646371122c0bb690bce95dbf06f288c2915576ac644c474394329cdc6ebba2",
+    "automatic_candidate_generations": false,
+    "forbidden_models": [
+      "hy4-preview"
+    ],
+    "max_concurrency": 3
+  }
+}

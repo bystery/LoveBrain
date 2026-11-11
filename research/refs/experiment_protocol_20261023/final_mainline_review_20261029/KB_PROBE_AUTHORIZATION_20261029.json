@@ -1,0 +1,150 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-KB-PROBE-20261029-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-29收口单 §B 明文额度（最多 24 次真实生成，前置全部满足后方可派发）；不新增其它用途额度。",
+ "phase": "B",
+ "budget_ledger": "logs/auth_budget/AUTH-KB-PROBE-20261029-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 24
+ },
+ "api_config": "api_cfg:openai_compat_stream_false_v1；dsf 单一基座；与 F3 正式批同参数。",
+ "scope": {
+  "purpose": "收口单 B：证明“已离开原文窗口的知识”能否被检索并用于行动；6 探针 × on/off × 2 重复 = 24 次物理生成",
+  "stage": "B_knowledge_probe",
+  "experiment": "KB_probe_cross_window_20261029",
+  "candidate": "action_policy_r4_guard_e3",
+  "identity_sha256": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17",
+  "precheck_file": "refs/experiment_protocol_20261023/final_mainline_review_20261029/F_B_PRECHECK.json",
+  "precheck_sha256": "269741cae13a404ad5a6cb4860af4835ec07f49807c8d35236654a9d75ba8068",
+  "registration_file": "refs/experiment_protocol_20261023/final_mainline_review_20261029/F_B_PROBE_REGISTRATION.json",
+  "registration_sha256": "85e500ec540d025b26e61c9cc3de574777d316335fcc1302a84ba4035dc6bcbd",
+  "selected_probes": [
+   "KP-A2",
+   "KP-A1",
+   "KP-C1",
+   "KP-C2",
+   "KP-T1",
+   "KP-T2"
+  ],
+  "probe_detail": {
+   "KP-A1": {
+    "class": "attribution",
+    "story": "K02",
+    "fact_id": "f_0029",
+    "domain": "装修/宠物（豆豆）",
+    "fillers": 0,
+    "on_prompt_sha256": "f9fa1843a051847aadfd53a035518ef730751f42a036847dd50bd52004519ec1",
+    "off_prompt_sha256": "4c9643c3efd5296cb4beec3eb1715530e5ab56156d388accb08040fe5dd079c5",
+    "probe_clock": "2026-06-15 22:38"
+   },
+   "KP-A2": {
+    "class": "attribution",
+    "story": "K01",
+    "fact_id": "f_0020",
+    "domain": "旅行/朋友家（阿岚）",
+    "fillers": 11,
+    "on_prompt_sha256": "e1ae8c0683a5a93a2b83aa70a745ab5b06aed19e341bc0578c3a0ad4391eeace",
+    "off_prompt_sha256": "209c6fd923d30645d358d39bd6a24b0f7bf0944ec6d4ef079130fb33bc4486af",
+    "probe_clock": "2026-11-18 04:28"
+   },
+   "KP-C1": {
+    "class": "correction",
+    "story": "K01",
+    "fact_id": "f_0015",
+    "domain": "旅行/客栈退订",
+    "fillers": 7,
+    "on_prompt_sha256": "947b54f4220f25945a6f7acaa65e7a590180a30ff85f2e2694f5615d9c47eeb2",
+    "off_prompt_sha256": "19d408261d495b2663809e37994c396829f3e316d688a2a94889ce24bd714502",
+    "probe_clock": "2026-11-18 02:28"
+   },
+   "KP-C2": {
+    "class": "correction",
+    "story": "K02",
+    "fact_id": "f_0011",
+    "domain": "装修/材料到货",
+    "fillers": 0,
+    "on_prompt_sha256": "406d8169285dc8474895df33aabd825ce52e30356f492aaa9644b7f85087c594",
+    "off_prompt_sha256": "1b21d9b30563f15f9da07329b29ff3817237132b9373f6bac721f2aaeaa2d688",
+    "probe_clock": "2026-06-15 22:38"
+   },
+   "KP-T1": {
+    "class": "time_state",
+    "story": "K01",
+    "fact_id": "f_0023",
+    "domain": "旅行/抢票",
+    "fillers": 1,
+    "on_prompt_sha256": "58a57831876829636022987d07e8aa418c8afb33a414f9cc8b82538d24b50468",
+    "off_prompt_sha256": "9b7ca7bc5f543a655d6665aa23cc6cba0c05526d90052fb746aeea8a6f741ecf",
+    "probe_clock": "2026-11-17 23:28"
+   },
+   "KP-T2": {
+    "class": "time_state",
+    "story": "K02",
+    "fact_id": "f_0025",
+    "domain": "家庭/学校日程",
+    "fillers": 0,
+    "on_prompt_sha256": "16e1103fee6a4f3c7e026d56ccc741378bf2bc4cf962992e6684a2832b371b84",
+    "off_prompt_sha256": "4d3d18386889e1313aa95ca4c342464ca87fe789de0e6998c5f44b4e368e4c12",
+    "probe_clock": "2026-06-15 22:38"
+   }
+  },
+  "frozen_dispatch_order": [
+   "KP-A2:on:r1",
+   "KP-A2:off:r1",
+   "KP-A1:on:r1",
+   "KP-A1:off:r1",
+   "KP-C1:on:r1",
+   "KP-C1:off:r1",
+   "KP-C2:on:r1",
+   "KP-C2:off:r1",
+   "KP-T1:on:r1",
+   "KP-T1:off:r1",
+   "KP-T2:on:r1",
+   "KP-T2:off:r1",
+   "KP-A2:on:r2",
+   "KP-A2:off:r2",
+   "KP-A1:on:r2",
+   "KP-A1:off:r2",
+   "KP-C1:on:r2",
+   "KP-C1:off:r2",
+   "KP-C2:on:r2",
+   "KP-C2:off:r2",
+   "KP-T1:on:r2",
+   "KP-T1:off:r2",
+   "KP-T2:on:r2",
+   "KP-T2:off:r2"
+  ],
+  "order_rule": "重复1两轮先跑，探针顺序=闸门选择规则给出的固定顺序，同一探针 on/off 相邻以抵消位置漂移；顺序在本单写死，跑批不得临时改。",
+  "arms": {
+   "on": "机制原样出站 prompt",
+   "off": "同一 prompt 精确删除三段投影（逐字节见探针目录）"
+  },
+  "allowed_models": [
+   "dsf"
+  ],
+  "forbidden_models": [
+   "hy4-preview",
+   "hy3",
+   "qwen3.8-flash",
+   "gemini-3.8-flash"
+  ],
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "positions": 24,
+  "total_attempts": 24,
+  "max_concurrency": 1,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "single_shot_per_attempt": true,
+  "fixture_turns_not_billed": "夹具轮为零网络脚本返回，不产生物理请求，不入本账本；总数记在运行结果的 fixture_turns。",
+  "closed_history_not_reused": "F1–F6 已关闭授权单不复活、不挪用、不抵扣。"
+ },
+ "execution_entry": "tools/run_knowledge_probe_batch.py",
+ "notes": "一物理请求一 attempt；失败消耗不退款；不重试；额度用尽即停并书面申请。",
+ "registered_at": "2026-10-29T16:42:55"
+}

@@ -1,0 +1,88 @@
+{
+ "kind": "lp_w17c_g1_mainonly",
+ "source": "LP_W17C_NINEDIM_REVIEW.json",
+ "reason": "merged dims 把 6 个 T08 的 swap 重判计入（order=swap）；按 pre-reg G1 用 main 顺序重算",
+ "main_order": {
+  "positions": 62,
+  "dims": {
+   "goal": {
+    "n": 61,
+    "paired_diff_mean": 0.377
+   },
+   "fact": {
+    "n": 61,
+    "paired_diff_mean": 0.2131
+   },
+   "attrib": {
+    "n": 61,
+    "paired_diff_mean": 0.1639
+   },
+   "time": {
+    "n": 61,
+    "paired_diff_mean": 0.2623
+   },
+   "boundary": {
+    "n": 61,
+    "paired_diff_mean": 0.1475
+   },
+   "memory": {
+    "n": 61,
+    "paired_diff_mean": 0.3934
+   },
+   "interact": {
+    "n": 61,
+    "paired_diff_mean": 0.1803
+   },
+   "init": {
+    "n": 61,
+    "paired_diff_mean": 0.2295
+   },
+   "emotion": {
+    "n": 61,
+    "paired_diff_mean": 0.0328
+   }
+  }
+ },
+ "swap_only": {
+  "positions": 6,
+  "dims": {
+   "goal": {
+    "n": 6,
+    "paired_diff_mean": -0.3333
+   },
+   "fact": {
+    "n": 6,
+    "paired_diff_mean": -0.3333
+   },
+   "attrib": {
+    "n": 6,
+    "paired_diff_mean": -0.3333
+   },
+   "time": {
+    "n": 6,
+    "paired_diff_mean": 0.0
+   },
+   "boundary": {
+    "n": 6,
+    "paired_diff_mean": -0.1667
+   },
+   "memory": {
+    "n": 6,
+    "paired_diff_mean": -0.3333
+   },
+   "interact": {
+    "n": 6,
+    "paired_diff_mean": -0.3333
+   },
+   "init": {
+    "n": 6,
+    "paired_diff_mean": -0.1667
+   },
+   "emotion": {
+    "n": 6,
+    "paired_diff_mean": -0.5
+   }
+  }
+ },
+ "note": "main-only 最差 emotion +0.033；swap-only 多数维 −0.33，候选优势对顺序敏感；swap 一致 3/6。"
+}

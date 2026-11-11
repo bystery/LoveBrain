@@ -1,0 +1,22 @@
+{
+  "model": "qwen3.8-flash",
+  "kind": "representative_input",
+  "attempt_id": "AUTH-P06-FASTSCREEN-LOW-QWEN3_8-FLASH-20261027-01:representative_input",
+  "input_chars": 3604,
+  "input_sha256": "eea00c7906bc05f1c19ac7055b5a187891772245a3c7de6dbf6225d7e91f466c",
+  "transport_ok": true,
+  "raw": "{\"verdict\":\"supported\",\"quote\":\"行，监考要紧。这次你来定时间，定好了跟我说一声。\",\"reason\":\"未新增无据确定事实；回应其临时监考，后续安排为提议而非既成事实\"}",
+  "usage": {
+    "prompt_tokens": 1832,
+    "completion_tokens": 67,
+    "total_tokens": 1899
+  },
+  "nonempty": true,
+  "parsed": {
+    "verdict": "supported",
+    "quote": "行，监考要紧。这次你来定时间，定好了跟我说一声。",
+    "reason": "未新增无据确定事实；回应其临时监考，后续安排为提议而非既成事实"
+  },
+  "json_ok": true,
+  "wall_s": 5.562
+}

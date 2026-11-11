@@ -1,0 +1,1788 @@
+{
+ "F1C:C01_fact_new_proposal": {
+  "kind": "control",
+  "pair_id": "C01_fact_new_proposal",
+  "good_control": "CTL02",
+  "bad_control": "CTL01",
+  "constructed_negative": false,
+  "expected": {
+   "verdict": "B",
+   "strict": true,
+   "note": "control answer has clear evidence"
+  }
+ },
+ "F1C:C01_fact_new_proposal:R": {
+  "kind": "control",
+  "pair_id": "C01_fact_new_proposal",
+  "good_control": "CTL02",
+  "bad_control": "CTL01",
+  "constructed_negative": false,
+  "reverse_of": "F1C:C01_fact_new_proposal",
+  "expected": {
+   "verdict": "A",
+   "strict": true,
+   "note": "reverse order of same control"
+  }
+ },
+ "F1C:C02_subject_attribution": {
+  "kind": "control",
+  "pair_id": "C02_subject_attribution",
+  "good_control": "CTL09",
+  "bad_control": "CTL10",
+  "constructed_negative": false,
+  "expected": {
+   "verdict": "B",
+   "strict": true,
+   "note": "control answer has clear evidence"
+  }
+ },
+ "F1C:C02_subject_attribution:R": {
+  "kind": "control",
+  "pair_id": "C02_subject_attribution",
+  "good_control": "CTL09",
+  "bad_control": "CTL10",
+  "constructed_negative": false,
+  "reverse_of": "F1C:C02_subject_attribution",
+  "expected": {
+   "verdict": "A",
+   "strict": true,
+   "note": "reverse order of same control"
+  }
+ },
+ "F1C:C03_time_cancel_state": {
+  "kind": "control",
+  "pair_id": "C03_time_cancel_state",
+  "good_control": "CTL16",
+  "bad_control": "CTL15",
+  "constructed_negative": false,
+  "expected": {
+   "verdict": "B",
+   "strict": true,
+   "note": "control answer has clear evidence"
+  }
+ },
+ "F1C:C03_time_cancel_state:R": {
+  "kind": "control",
+  "pair_id": "C03_time_cancel_state",
+  "good_control": "CTL16",
+  "bad_control": "CTL15",
+  "constructed_negative": false,
+  "reverse_of": "F1C:C03_time_cancel_state",
+  "expected": {
+   "verdict": "A",
+   "strict": true,
+   "note": "reverse order of same control"
+  }
+ },
+ "F1C:C04_protected_joke": {
+  "kind": "control",
+  "pair_id": "C04_protected_joke",
+  "good_control": "CTL05",
+  "bad_control": "CTL06",
+  "constructed_negative": false,
+  "expected": {
+   "verdict": "B",
+   "strict": true,
+   "note": "control answer has clear evidence"
+  }
+ },
+ "F1C:C04_protected_joke:R": {
+  "kind": "control",
+  "pair_id": "C04_protected_joke",
+  "good_control": "CTL05",
+  "bad_control": "CTL06",
+  "constructed_negative": false,
+  "reverse_of": "F1C:C04_protected_joke",
+  "expected": {
+   "verdict": "A",
+   "strict": true,
+   "note": "reverse order of same control"
+  }
+ },
+ "F1C:C05_should_answer_vs_wrong_focus": {
+  "kind": "control",
+  "pair_id": "C05_should_answer_vs_wrong_focus",
+  "good_control": "CTL07",
+  "bad_control": "CTL24",
+  "constructed_negative": false,
+  "expected": {
+   "verdict": "B",
+   "strict": true,
+   "note": "control answer has clear evidence"
+  }
+ },
+ "F1C:C05_should_answer_vs_wrong_focus:R": {
+  "kind": "control",
+  "pair_id": "C05_should_answer_vs_wrong_focus",
+  "good_control": "CTL07",
+  "bad_control": "CTL24",
+  "constructed_negative": false,
+  "reverse_of": "F1C:C05_should_answer_vs_wrong_focus",
+  "expected": {
+   "verdict": "A",
+   "strict": true,
+   "note": "reverse order of same control"
+  }
+ },
+ "F1C:C06_time_minor": {
+  "kind": "control",
+  "pair_id": "C06_time_minor",
+  "good_control": "CTL13",
+  "bad_control": "CTL14",
+  "constructed_negative": false,
+  "expected": {
+   "verdict": "A",
+   "strict": true,
+   "note": "control answer has clear evidence"
+  }
+ },
+ "F1C:C06_time_minor:R": {
+  "kind": "control",
+  "pair_id": "C06_time_minor",
+  "good_control": "CTL13",
+  "bad_control": "CTL14",
+  "constructed_negative": false,
+  "reverse_of": "F1C:C06_time_minor",
+  "expected": {
+   "verdict": "B",
+   "strict": true,
+   "note": "reverse order of same control"
+  }
+ },
+ "F1C:C07_positive_memory_hook": {
+  "kind": "control",
+  "pair_id": "C07_positive_memory_hook",
+  "good_control": "CTL21",
+  "bad_control": "__SYNTH_BAD_HOOK__",
+  "constructed_negative": true,
+  "expected": {
+   "verdict": "A",
+   "strict": true,
+   "note": "control answer has clear evidence"
+  }
+ },
+ "F1C:C07_positive_memory_hook:R": {
+  "kind": "control",
+  "pair_id": "C07_positive_memory_hook",
+  "good_control": "CTL21",
+  "bad_control": "__SYNTH_BAD_HOOK__",
+  "constructed_negative": true,
+  "reverse_of": "F1C:C07_positive_memory_hook",
+  "expected": {
+   "verdict": "B",
+   "strict": true,
+   "note": "reverse order of same control"
+  }
+ },
+ "F1C:C08_allowed_no_reply": {
+  "kind": "control",
+  "pair_id": "D1:D01_T08",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "expected": {
+   "verdict": "tie_or_uncertain",
+   "strict": false,
+   "no_reply_arm": "A",
+   "note": "D01_T08: HER explicitly closes; no_reply is allowed; do not call it a major error"
+  }
+ },
+ "F1C:C08_allowed_no_reply:R": {
+  "kind": "control",
+  "pair_id": "D1:D01_T08",
+  "reverse_of": "F1C:C08_allowed_no_reply",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "expected": {
+   "verdict": "tie_or_uncertain",
+   "strict": false,
+   "no_reply_arm": "B",
+   "note": "reverse order of D01_T08 allowed-no-reply control"
+  }
+ },
+ "F1H:S1:E024_T01": {
+  "kind": "historical",
+  "pair_id": "S1:E024_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E024_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E024_T02": {
+  "kind": "historical",
+  "pair_id": "S1:E024_T02",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E024_T02",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E024_T03": {
+  "kind": "historical",
+  "pair_id": "S1:E024_T03",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E024_T03",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E024_T04": {
+  "kind": "historical",
+  "pair_id": "S1:E024_T04",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E024_T04",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E024_T05": {
+  "kind": "historical",
+  "pair_id": "S1:E024_T05",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E024_T05",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E024_T06": {
+  "kind": "historical",
+  "pair_id": "S1:E024_T06",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E024_T06",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E024_T07": {
+  "kind": "historical",
+  "pair_id": "S1:E024_T07",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E024_T07",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E024_T08": {
+  "kind": "historical",
+  "pair_id": "S1:E024_T08",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E024_T08",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E024_T09": {
+  "kind": "historical",
+  "pair_id": "S1:E024_T09",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E024_T09",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E024_T10": {
+  "kind": "historical",
+  "pair_id": "S1:E024_T10",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E024_T10",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E024_T11": {
+  "kind": "historical",
+  "pair_id": "S1:E024_T11",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E024_T11",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E024_T12": {
+  "kind": "historical",
+  "pair_id": "S1:E024_T12",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E024_T12",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E027_T01": {
+  "kind": "historical",
+  "pair_id": "S1:E027_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E027_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E027_T02": {
+  "kind": "historical",
+  "pair_id": "S1:E027_T02",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E027_T02",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E027_T03": {
+  "kind": "historical",
+  "pair_id": "S1:E027_T03",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E027_T03",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E027_T04": {
+  "kind": "historical",
+  "pair_id": "S1:E027_T04",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E027_T04",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E027_T05": {
+  "kind": "historical",
+  "pair_id": "S1:E027_T05",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E027_T05",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E027_T06": {
+  "kind": "historical",
+  "pair_id": "S1:E027_T06",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E027_T06",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E027_T07": {
+  "kind": "historical",
+  "pair_id": "S1:E027_T07",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E027_T07",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E027_T08": {
+  "kind": "historical",
+  "pair_id": "S1:E027_T08",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E027_T08",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E027_T09": {
+  "kind": "historical",
+  "pair_id": "S1:E027_T09",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E027_T09",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E027_T10": {
+  "kind": "historical",
+  "pair_id": "S1:E027_T10",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E027_T10",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E027_T11": {
+  "kind": "historical",
+  "pair_id": "S1:E027_T11",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E027_T11",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E027_T12": {
+  "kind": "historical",
+  "pair_id": "S1:E027_T12",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E027_T12",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E031_T01": {
+  "kind": "historical",
+  "pair_id": "S1:E031_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E031_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E031_T02": {
+  "kind": "historical",
+  "pair_id": "S1:E031_T02",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E031_T02",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E031_T03": {
+  "kind": "historical",
+  "pair_id": "S1:E031_T03",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E031_T03",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E031_T04": {
+  "kind": "historical",
+  "pair_id": "S1:E031_T04",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E031_T04",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E031_T05": {
+  "kind": "historical",
+  "pair_id": "S1:E031_T05",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E031_T05",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E031_T06": {
+  "kind": "historical",
+  "pair_id": "S1:E031_T06",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E031_T06",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E031_T07": {
+  "kind": "historical",
+  "pair_id": "S1:E031_T07",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E031_T07",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E031_T08": {
+  "kind": "historical",
+  "pair_id": "S1:E031_T08",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E031_T08",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E031_T09": {
+  "kind": "historical",
+  "pair_id": "S1:E031_T09",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E031_T09",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E031_T10": {
+  "kind": "historical",
+  "pair_id": "S1:E031_T10",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E031_T10",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E031_T11": {
+  "kind": "historical",
+  "pair_id": "S1:E031_T11",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E031_T11",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E031_T12": {
+  "kind": "historical",
+  "pair_id": "S1:E031_T12",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E031_T12",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E034_T01": {
+  "kind": "historical",
+  "pair_id": "S1:E034_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E034_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E034_T02": {
+  "kind": "historical",
+  "pair_id": "S1:E034_T02",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E034_T02",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E034_T03": {
+  "kind": "historical",
+  "pair_id": "S1:E034_T03",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E034_T03",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E034_T04": {
+  "kind": "historical",
+  "pair_id": "S1:E034_T04",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E034_T04",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E034_T05": {
+  "kind": "historical",
+  "pair_id": "S1:E034_T05",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E034_T05",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E034_T06": {
+  "kind": "historical",
+  "pair_id": "S1:E034_T06",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E034_T06",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E034_T07": {
+  "kind": "historical",
+  "pair_id": "S1:E034_T07",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E034_T07",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E034_T08": {
+  "kind": "historical",
+  "pair_id": "S1:E034_T08",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E034_T08",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E034_T09": {
+  "kind": "historical",
+  "pair_id": "S1:E034_T09",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E034_T09",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E034_T10": {
+  "kind": "historical",
+  "pair_id": "S1:E034_T10",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E034_T10",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E034_T11": {
+  "kind": "historical",
+  "pair_id": "S1:E034_T11",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S1",
+  "case_id": "E034_T11",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S1:E034_T12": {
+  "kind": "historical",
+  "pair_id": "S1:E034_T12",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E034_T12",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2:AK01_T01": {
+  "kind": "historical",
+  "pair_id": "S2:AK01_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S2",
+  "case_id": "AK01_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2:AK02_T01": {
+  "kind": "historical",
+  "pair_id": "S2:AK02_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S2",
+  "case_id": "AK02_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2:AK03_T01": {
+  "kind": "historical",
+  "pair_id": "S2:AK03_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2",
+  "case_id": "AK03_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2:AK04_T01": {
+  "kind": "historical",
+  "pair_id": "S2:AK04_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2",
+  "case_id": "AK04_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2:AK05_T01": {
+  "kind": "historical",
+  "pair_id": "S2:AK05_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2",
+  "case_id": "AK05_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2:AK06_T01": {
+  "kind": "historical",
+  "pair_id": "S2:AK06_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2",
+  "case_id": "AK06_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2:AK07_T01": {
+  "kind": "historical",
+  "pair_id": "S2:AK07_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2",
+  "case_id": "AK07_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2:AK08_T01": {
+  "kind": "historical",
+  "pair_id": "S2:AK08_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S2",
+  "case_id": "AK08_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2:AK09_T01": {
+  "kind": "historical",
+  "pair_id": "S2:AK09_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2",
+  "case_id": "AK09_T01",
+  "worker_winner": null,
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2:AK10_T01": {
+  "kind": "historical",
+  "pair_id": "S2:AK10_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2",
+  "case_id": "AK10_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2:AK11_T01": {
+  "kind": "historical",
+  "pair_id": "S2:AK11_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S2",
+  "case_id": "AK11_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2:AK12_T01": {
+  "kind": "historical",
+  "pair_id": "S2:AK12_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S2",
+  "case_id": "AK12_T01",
+  "worker_winner": null,
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2R:AK01_T01": {
+  "kind": "historical",
+  "pair_id": "S2R:AK01_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2R",
+  "case_id": "AK01_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2R:AK02_T01": {
+  "kind": "historical",
+  "pair_id": "S2R:AK02_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S2R",
+  "case_id": "AK02_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2R:AK03_T01": {
+  "kind": "historical",
+  "pair_id": "S2R:AK03_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2R",
+  "case_id": "AK03_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2R:AK04_T01": {
+  "kind": "historical",
+  "pair_id": "S2R:AK04_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2R",
+  "case_id": "AK04_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2R:AK05_T01": {
+  "kind": "historical",
+  "pair_id": "S2R:AK05_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S2R",
+  "case_id": "AK05_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2R:AK06_T01": {
+  "kind": "historical",
+  "pair_id": "S2R:AK06_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S2R",
+  "case_id": "AK06_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2R:AK07_T01": {
+  "kind": "historical",
+  "pair_id": "S2R:AK07_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2R",
+  "case_id": "AK07_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2R:AK08_T01": {
+  "kind": "historical",
+  "pair_id": "S2R:AK08_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S2R",
+  "case_id": "AK08_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2R:AK09_T01": {
+  "kind": "historical",
+  "pair_id": "S2R:AK09_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S2R",
+  "case_id": "AK09_T01",
+  "worker_winner": null,
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2R:AK10_T01": {
+  "kind": "historical",
+  "pair_id": "S2R:AK10_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2R",
+  "case_id": "AK10_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2R:AK11_T01": {
+  "kind": "historical",
+  "pair_id": "S2R:AK11_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2R",
+  "case_id": "AK11_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S2R:AK12_T01": {
+  "kind": "historical",
+  "pair_id": "S2R:AK12_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2R",
+  "case_id": "AK12_T01",
+  "worker_winner": null,
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S3:AK01_T01": {
+  "kind": "historical",
+  "pair_id": "S3:AK01_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S3",
+  "case_id": "AK01_T01",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S3:AK02_T01": {
+  "kind": "historical",
+  "pair_id": "S3:AK02_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S3",
+  "case_id": "AK02_T01",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S3:AK03_T01": {
+  "kind": "historical",
+  "pair_id": "S3:AK03_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S3",
+  "case_id": "AK03_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S3:AK04_T01": {
+  "kind": "historical",
+  "pair_id": "S3:AK04_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S3",
+  "case_id": "AK04_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S3:AK05_T01": {
+  "kind": "historical",
+  "pair_id": "S3:AK05_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S3",
+  "case_id": "AK05_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S3:AK06_T01": {
+  "kind": "historical",
+  "pair_id": "S3:AK06_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S3",
+  "case_id": "AK06_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S3:AK07_T01": {
+  "kind": "historical",
+  "pair_id": "S3:AK07_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S3",
+  "case_id": "AK07_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S3:AK08_T01": {
+  "kind": "historical",
+  "pair_id": "S3:AK08_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S3",
+  "case_id": "AK08_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S3:AK09_T01": {
+  "kind": "historical",
+  "pair_id": "S3:AK09_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S3",
+  "case_id": "AK09_T01",
+  "worker_winner": null,
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S3:AK10_T01": {
+  "kind": "historical",
+  "pair_id": "S3:AK10_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S3",
+  "case_id": "AK10_T01",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S3:AK11_T01": {
+  "kind": "historical",
+  "pair_id": "S3:AK11_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S3",
+  "case_id": "AK11_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:S3:AK12_T01": {
+  "kind": "historical",
+  "pair_id": "S3:AK12_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S3",
+  "case_id": "AK12_T01",
+  "worker_winner": null,
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D01_T01": {
+  "kind": "historical",
+  "pair_id": "D1:D01_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "D1",
+  "case_id": "D01_T01",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D01_T02": {
+  "kind": "historical",
+  "pair_id": "D1:D01_T02",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D01_T02",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D01_T03": {
+  "kind": "historical",
+  "pair_id": "D1:D01_T03",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D01_T03",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D01_T04": {
+  "kind": "historical",
+  "pair_id": "D1:D01_T04",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "D1",
+  "case_id": "D01_T04",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D01_T05": {
+  "kind": "historical",
+  "pair_id": "D1:D01_T05",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D01_T05",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D01_T06": {
+  "kind": "historical",
+  "pair_id": "D1:D01_T06",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D01_T06",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D01_T07": {
+  "kind": "historical",
+  "pair_id": "D1:D01_T07",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D01_T07",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D01_T08": {
+  "kind": "historical",
+  "pair_id": "D1:D01_T08",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "D1",
+  "case_id": "D01_T08",
+  "worker_winner": null,
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D02_T01": {
+  "kind": "historical",
+  "pair_id": "D1:D02_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D02_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D02_T02": {
+  "kind": "historical",
+  "pair_id": "D1:D02_T02",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "D1",
+  "case_id": "D02_T02",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D02_T03": {
+  "kind": "historical",
+  "pair_id": "D1:D02_T03",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D02_T03",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D02_T04": {
+  "kind": "historical",
+  "pair_id": "D1:D02_T04",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D02_T04",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D02_T05": {
+  "kind": "historical",
+  "pair_id": "D1:D02_T05",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D02_T05",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D02_T06": {
+  "kind": "historical",
+  "pair_id": "D1:D02_T06",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D02_T06",
+  "worker_winner": null,
+  "card_conflict_flags": [
+   "card_says_optional_but_guidance_forbids_silence"
+  ],
+  "expected": null
+ },
+ "F1H:D1:D02_T07": {
+  "kind": "historical",
+  "pair_id": "D1:D02_T07",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D02_T07",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:D1:D02_T08": {
+  "kind": "historical",
+  "pair_id": "D1:D02_T08",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D02_T08",
+  "worker_winner": null,
+  "card_conflict_flags": [
+   "window_ends_with_ME_but_card_frames_her_as_last_speaker"
+  ],
+  "expected": null
+ },
+ "F1H:R3A:AK09_T01": {
+  "kind": "historical",
+  "pair_id": "R3A:AK09_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "AK09_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:AK12_T01": {
+  "kind": "historical",
+  "pair_id": "R3A:AK12_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "R3A",
+  "case_id": "AK12_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D01_T01": {
+  "kind": "historical",
+  "pair_id": "R3A:D01_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D01_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D01_T02": {
+  "kind": "historical",
+  "pair_id": "R3A:D01_T02",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D01_T02",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D01_T03": {
+  "kind": "historical",
+  "pair_id": "R3A:D01_T03",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D01_T03",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D01_T04": {
+  "kind": "historical",
+  "pair_id": "R3A:D01_T04",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D01_T04",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D01_T05": {
+  "kind": "historical",
+  "pair_id": "R3A:D01_T05",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D01_T05",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D01_T06": {
+  "kind": "historical",
+  "pair_id": "R3A:D01_T06",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D01_T06",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D01_T07": {
+  "kind": "historical",
+  "pair_id": "R3A:D01_T07",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D01_T07",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D01_T08": {
+  "kind": "historical",
+  "pair_id": "R3A:D01_T08",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D01_T08",
+  "worker_winner": null,
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D02_T01": {
+  "kind": "historical",
+  "pair_id": "R3A:D02_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D02_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D02_T02": {
+  "kind": "historical",
+  "pair_id": "R3A:D02_T02",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D02_T02",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D02_T03": {
+  "kind": "historical",
+  "pair_id": "R3A:D02_T03",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "R3A",
+  "case_id": "D02_T03",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D02_T04": {
+  "kind": "historical",
+  "pair_id": "R3A:D02_T04",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D02_T04",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D02_T05": {
+  "kind": "historical",
+  "pair_id": "R3A:D02_T05",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D02_T05",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D02_T06": {
+  "kind": "historical",
+  "pair_id": "R3A:D02_T06",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "R3A",
+  "case_id": "D02_T06",
+  "worker_winner": null,
+  "card_conflict_flags": [
+   "card_says_optional_but_guidance_forbids_silence"
+  ],
+  "expected": null
+ },
+ "F1H:R3A:D02_T07": {
+  "kind": "historical",
+  "pair_id": "R3A:D02_T07",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D02_T07",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D02_T08": {
+  "kind": "historical",
+  "pair_id": "R3A:D02_T08",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "R3A",
+  "case_id": "D02_T08",
+  "worker_winner": null,
+  "card_conflict_flags": [
+   "window_ends_with_ME_but_card_frames_her_as_last_speaker"
+  ],
+  "expected": null
+ },
+ "F1H:R3A:D03_T01": {
+  "kind": "historical",
+  "pair_id": "R3A:D03_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "R3A",
+  "case_id": "D03_T01",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D03_T02": {
+  "kind": "historical",
+  "pair_id": "R3A:D03_T02",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "R3A",
+  "case_id": "D03_T02",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D03_T03": {
+  "kind": "historical",
+  "pair_id": "R3A:D03_T03",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D03_T03",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D03_T04": {
+  "kind": "historical",
+  "pair_id": "R3A:D03_T04",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "R3A",
+  "case_id": "D03_T04",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D03_T05": {
+  "kind": "historical",
+  "pair_id": "R3A:D03_T05",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3A",
+  "case_id": "D03_T05",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3A:D03_T06": {
+  "kind": "historical",
+  "pair_id": "R3A:D03_T06",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "R3A",
+  "case_id": "D03_T06",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3B:D03_T01": {
+  "kind": "historical",
+  "pair_id": "R3B:D03_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "R3B",
+  "case_id": "D03_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3B:D03_T02": {
+  "kind": "historical",
+  "pair_id": "R3B:D03_T02",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "R3B",
+  "case_id": "D03_T02",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3B:D03_T03": {
+  "kind": "historical",
+  "pair_id": "R3B:D03_T03",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3B",
+  "case_id": "D03_T03",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3B:D03_T04": {
+  "kind": "historical",
+  "pair_id": "R3B:D03_T04",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3B",
+  "case_id": "D03_T04",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3B:D03_T05": {
+  "kind": "historical",
+  "pair_id": "R3B:D03_T05",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3B",
+  "case_id": "D03_T05",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1H:R3B:D03_T06": {
+  "kind": "historical",
+  "pair_id": "R3B:D03_T06",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "R3B",
+  "case_id": "D03_T06",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "expected": null
+ },
+ "F1S:D1:D01_T01": {
+  "kind": "swap",
+  "pair_id": "D1:D01_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "D1",
+  "case_id": "D01_T01",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "swap_of": "F1H:D1:D01_T01",
+  "expected": null
+ },
+ "F1S:D1:D01_T05": {
+  "kind": "swap",
+  "pair_id": "D1:D01_T05",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "D1",
+  "case_id": "D01_T05",
+  "worker_winner": "parent",
+  "card_conflict_flags": [],
+  "swap_of": "F1H:D1:D01_T05",
+  "expected": null
+ },
+ "F1S:D1:D02_T01": {
+  "kind": "swap",
+  "pair_id": "D1:D02_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "D1",
+  "case_id": "D02_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "swap_of": "F1H:D1:D02_T01",
+  "expected": null
+ },
+ "F1S:D1:D02_T04": {
+  "kind": "swap",
+  "pair_id": "D1:D02_T04",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "D1",
+  "case_id": "D02_T04",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "swap_of": "F1H:D1:D02_T04",
+  "expected": null
+ },
+ "F1S:D1:D02_T07": {
+  "kind": "swap",
+  "pair_id": "D1:D02_T07",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "D1",
+  "case_id": "D02_T07",
+  "worker_winner": "tie",
+  "card_conflict_flags": [],
+  "swap_of": "F1H:D1:D02_T07",
+  "expected": null
+ },
+ "F1S:S1:E024_T01": {
+  "kind": "swap",
+  "pair_id": "S1:E024_T01",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "S1",
+  "case_id": "E024_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "swap_of": "F1H:S1:E024_T01",
+  "expected": null
+ },
+ "F1S:S2:AK01_T01": {
+  "kind": "swap",
+  "pair_id": "S2:AK01_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2",
+  "case_id": "AK01_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "swap_of": "F1H:S2:AK01_T01",
+  "expected": null
+ },
+ "F1S:S2R:AK09_T01": {
+  "kind": "swap",
+  "pair_id": "S2R:AK09_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2R",
+  "case_id": "AK09_T01",
+  "worker_winner": null,
+  "card_conflict_flags": [],
+  "swap_of": "F1H:S2R:AK09_T01",
+  "expected": null
+ },
+ "F1S:R3A:D01_T08": {
+  "kind": "swap",
+  "pair_id": "R3A:D01_T08",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "R3A",
+  "case_id": "D01_T08",
+  "worker_winner": null,
+  "card_conflict_flags": [],
+  "swap_of": "F1H:R3A:D01_T08",
+  "expected": null
+ },
+ "F1S:D1:D02_T06": {
+  "kind": "swap",
+  "pair_id": "D1:D02_T06",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "D1",
+  "case_id": "D02_T06",
+  "worker_winner": null,
+  "card_conflict_flags": [
+   "card_says_optional_but_guidance_forbids_silence"
+  ],
+  "swap_of": "F1H:D1:D02_T06",
+  "expected": null
+ },
+ "F1S:D1:D02_T08": {
+  "kind": "swap",
+  "pair_id": "D1:D02_T08",
+  "a_arm": "parent",
+  "b_arm": "candidate",
+  "batch": "D1",
+  "case_id": "D02_T08",
+  "worker_winner": null,
+  "card_conflict_flags": [
+   "window_ends_with_ME_but_card_frames_her_as_last_speaker"
+  ],
+  "swap_of": "F1H:D1:D02_T08",
+  "expected": null
+ },
+ "F1S:S2:AK02_T01": {
+  "kind": "swap",
+  "pair_id": "S2:AK02_T01",
+  "a_arm": "candidate",
+  "b_arm": "parent",
+  "batch": "S2",
+  "case_id": "AK02_T01",
+  "worker_winner": "candidate",
+  "card_conflict_flags": [],
+  "swap_of": "F1H:S2:AK02_T01",
+  "expected": null
+ }
+}

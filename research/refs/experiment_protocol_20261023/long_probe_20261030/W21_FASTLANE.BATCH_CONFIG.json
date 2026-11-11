@@ -1,0 +1,11 @@
+{
+ "batch_id": "BATCH-W21-FASTLANE-20261104",
+ "arm_map": {"parent": "window_expand_b_norecap_uc", "candidate": "window_expand_b_norecap_uc_retry"},
+ "episode_order": [
+  {"episode": "E157", "arm_order": "parent_first"},
+  {"episode": "LRE117", "arm_order": "candidate_first"}
+ ],
+ "cards_path": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+ "recall_capable": false,
+ "note": "W21-02 快车道 G0（FAST_LANE_DESIGN_20261103 §4 固定素材 E157+LRE117，104 attempts）；候选=uc_retry（崩坏轮确定性重试，判据冻结 W21_02_NEXT_BATCH_DESIGN_20261103.md）；重试头寸预注册 ≤20%×104=20，独立账本"
+}

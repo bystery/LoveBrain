@@ -1,0 +1,70 @@
+{
+  "Path": "Microsoft.PowerShell.Core\\FileSystem::D:\\lovebrain-arena",
+  "Owner": "XL16\\abyss",
+  "Access": [
+    {
+      "Identity": "BUILTIN\\Administrators",
+      "Rights": "FullControl",
+      "Type": "Allow",
+      "Inherited": true,
+      "Inheritance": "None",
+      "Propagation": "None"
+    },
+    {
+      "Identity": "BUILTIN\\Administrators",
+      "Rights": "268435456",
+      "Type": "Allow",
+      "Inherited": true,
+      "Inheritance": "ContainerInherit, ObjectInherit",
+      "Propagation": "InheritOnly"
+    },
+    {
+      "Identity": "NT AUTHORITY\\SYSTEM",
+      "Rights": "FullControl",
+      "Type": "Allow",
+      "Inherited": true,
+      "Inheritance": "None",
+      "Propagation": "None"
+    },
+    {
+      "Identity": "NT AUTHORITY\\SYSTEM",
+      "Rights": "268435456",
+      "Type": "Allow",
+      "Inherited": true,
+      "Inheritance": "ContainerInherit, ObjectInherit",
+      "Propagation": "InheritOnly"
+    },
+    {
+      "Identity": "NT AUTHORITY\\Authenticated Users",
+      "Rights": "Modify, Synchronize",
+      "Type": "Allow",
+      "Inherited": true,
+      "Inheritance": "None",
+      "Propagation": "None"
+    },
+    {
+      "Identity": "NT AUTHORITY\\Authenticated Users",
+      "Rights": "-536805376",
+      "Type": "Allow",
+      "Inherited": true,
+      "Inheritance": "ContainerInherit, ObjectInherit",
+      "Propagation": "InheritOnly"
+    },
+    {
+      "Identity": "BUILTIN\\Users",
+      "Rights": "ReadAndExecute, Synchronize",
+      "Type": "Allow",
+      "Inherited": true,
+      "Inheritance": "None",
+      "Propagation": "None"
+    },
+    {
+      "Identity": "BUILTIN\\Users",
+      "Rights": "-1610612736",
+      "Type": "Allow",
+      "Inherited": true,
+      "Inheritance": "ContainerInherit, ObjectInherit",
+      "Propagation": "InheritOnly"
+    }
+  ]
+}

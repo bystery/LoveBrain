@@ -1,0 +1,244 @@
+{
+ "episode_id": "E034",
+ "persona": {
+  "me": "30岁，互联网运营，老项目组骨干；记性好但常把年份记串。",
+  "her": "29岁，前同事，去年跳槽去做运营顾问；较真，简历数字化。"
+ },
+ "initial_kb": {
+  "me": "在老东家第五年；老领导姓蔡，带过我们两人；周报存档齐全。",
+  "her": "去年3月底离职；现做独立顾问；和老蔡偶有联系。",
+  "warmth": "前同事，同一大促项目组共事一年，她离职后基本没联系。",
+  "style": "对事不对人；数据要核对；玩笑不越界。",
+  "stage": "一年未联系的旧同事。",
+  "lessons": "记忆有分歧时查证据不嘴硬；她较真是职业习惯。"
+ },
+ "turns": [
+  {
+   "case_id": "E034_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "看到你们公司中标新闻了 你还在老项目组吗",
+      "ts": "2026-11-30 20:30"
+     }
+    ],
+    "clock": "2026-11-30 20:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E034_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "在 换了个组 不过老蔡还罩着",
+      "ts": "2026-11-30 20:34"
+     },
+     {
+      "role": "HER",
+      "text": "替我问老蔡好 他当年把我骂出职场第一课",
+      "ts": "2026-11-30 20:38"
+     }
+    ],
+    "clock": "2026-11-30 20:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E034_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "说起来 上次咱们那个大促上线 是几月来着 我简历上写的是3月",
+      "ts": "2026-11-30 20:46"
+     }
+    ],
+    "clock": "2026-11-30 20:48",
+    "may_decline": false,
+    "intent": {
+     "text": "帮她核对旧大促上线时间线",
+     "status": "ACTIVE",
+     "enabled": true
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E034_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "5月17号 我记得清楚 因为那天我通宵",
+      "ts": "2026-11-30 20:50"
+     },
+     {
+      "role": "HER",
+      "text": "不对 我记得是3月 我那年3月还没跳槽",
+      "ts": "2026-11-30 20:54"
+     }
+    ],
+    "clock": "2026-11-30 20:56",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E034_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你别猜了 翻翻你们周报存档 我3月28号离职 大促在我走之前就上了 所以是3月",
+      "ts": "2026-11-30 21:06"
+     }
+    ],
+    "clock": "2026-11-30 21:08",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E034_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "查了周报 你对 是3月14号 我记成5月了 那天通宵是另一个项目",
+      "ts": "2026-11-30 21:10"
+     },
+     {
+      "role": "HER",
+      "text": "哈 我就说 我简历改好了 谢谢配合",
+      "ts": "2026-11-30 21:14"
+     }
+    ],
+    "clock": "2026-11-30 21:16",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E034_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了 老蔡找我了 想挖我回去做顾问",
+      "ts": "2026-12-14 21:00"
+     }
+    ],
+    "clock": "2026-12-14 21:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E034_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "回吗 你上回被他骂出去的",
+      "ts": "2026-12-14 21:04"
+     },
+     {
+      "role": "HER",
+      "text": "职场第一课的对象现在递橄榄枝 我得装作考虑三天",
+      "ts": "2026-12-14 21:08"
+     }
+    ],
+    "clock": "2026-12-14 21:10",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E034_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "装完了 不回去了 但老蔡问你有没有兴趣带他们新项目",
+      "ts": "2026-12-14 21:14"
+     }
+    ],
+    "clock": "2026-12-14 21:16",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E034_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "让他先把我中标的项目干完",
+      "ts": "2026-12-14 21:18"
+     },
+     {
+      "role": "HER",
+      "text": "有骨气 我把原话带到 他会笑",
+      "ts": "2026-12-14 21:22"
+     }
+    ],
+    "clock": "2026-12-14 21:24",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E034_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "对了 帮我看看你项目那段的写法 我简历时间线终于对了",
+      "ts": "2026-12-28 21:00"
+     }
+    ],
+    "clock": "2026-12-28 21:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E034_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "发你了 照我这个抄 但3月14号那句别抄 错的是我",
+      "ts": "2026-12-28 21:04"
+     },
+     {
+      "role": "HER",
+      "text": "放心 错的都记我本上了 哈哈 新年常联系",
+      "ts": "2026-12-28 21:08"
+     }
+    ],
+    "clock": "2026-12-28 21:10",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

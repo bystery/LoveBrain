@@ -1,0 +1,587 @@
+{
+ "kind": "lp_ninedim_review",
+ "tag": "W17C_E191",
+ "date": "2026-10-30",
+ "authorization": "AUTH-W17C-R-E191-20261103",
+ "anchors": "W04-01_RUBRIC_ANCHORS_V1",
+ "stories": [
+  "E191"
+ ],
+ "n_positions": 12,
+ "dims": {
+  "goal": {
+   "n": 12,
+   "cand_mean": 2.667,
+   "parent_mean": 2.25,
+   "paired_diff_mean": 0.417,
+   "cand_wins": 4,
+   "parent_wins": 1
+  },
+  "fact": {
+   "n": 12,
+   "cand_mean": 2.25,
+   "parent_mean": 2.167,
+   "paired_diff_mean": 0.083,
+   "cand_wins": 4,
+   "parent_wins": 2
+  },
+  "attrib": {
+   "n": 12,
+   "cand_mean": 2.417,
+   "parent_mean": 2.25,
+   "paired_diff_mean": 0.167,
+   "cand_wins": 4,
+   "parent_wins": 1
+  },
+  "time": {
+   "n": 12,
+   "cand_mean": 2.25,
+   "parent_mean": 2.0,
+   "paired_diff_mean": 0.25,
+   "cand_wins": 4,
+   "parent_wins": 2
+  },
+  "boundary": {
+   "n": 12,
+   "cand_mean": 2.417,
+   "parent_mean": 2.25,
+   "paired_diff_mean": 0.167,
+   "cand_wins": 4,
+   "parent_wins": 2
+  },
+  "memory": {
+   "n": 12,
+   "cand_mean": 2.167,
+   "parent_mean": 1.75,
+   "paired_diff_mean": 0.417,
+   "cand_wins": 4,
+   "parent_wins": 0
+  },
+  "interact": {
+   "n": 12,
+   "cand_mean": 2.417,
+   "parent_mean": 2.333,
+   "paired_diff_mean": 0.083,
+   "cand_wins": 2,
+   "parent_wins": 1
+  },
+  "init": {
+   "n": 12,
+   "cand_mean": 2.417,
+   "parent_mean": 1.917,
+   "paired_diff_mean": 0.5,
+   "cand_wins": 6,
+   "parent_wins": 2
+  },
+  "emotion": {
+   "n": 12,
+   "cand_mean": 2.083,
+   "parent_mean": 2.25,
+   "paired_diff_mean": -0.167,
+   "cand_wins": 3,
+   "parent_wins": 3
+  }
+ },
+ "severe": {
+  "candidate": 0,
+  "parent": 0
+ },
+ "review_call_quality": {
+  "n_call_fail": 0,
+  "fail_rate": 0.0,
+  "fail_rate_high": false,
+  "policy": "单次失败重试1次；重试额度预登记≤20%"
+ },
+ "swap_agreement": "0/1",
+ "swap_disagreements_true": [
+  {
+   "pair_id": "LP:E191:E191_T08",
+   "main_winner": "candidate",
+   "swap_winner": "parent",
+   "agree": false,
+   "quote": "第三页那栏我改过两版…你不说救了你，我还当它只是摆设",
+   "budget_refused": false
+  }
+ ],
+ "verdicts": [
+  {
+   "pair_id": "LP:E191:E191_T01",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "周六我提前到，帮你摆牌、发速查表",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E191:E191_T02",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，位置给你留着，教学环节也算我一个。八个人里几个是新手？",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E191:E191_T03",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "四页刚好，常见坑那页给我留着，我补两句德式佬的私货，周六开局前发群里。",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E191:E191_T04",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "发之前你把四页里的\"常见坑\"先截给我看一眼",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E191:E191_T05",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "少了俩确实麻烦……六十要是实在没人接，我先替你垫上，当周结清。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E191:E191_T06",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "六个人反而好开，重策本来就不吃人数。我的按六十转你了……不用一个人扛。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E191:E191_T07",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "你现在把360垫上，我今晚转60给你……速查表你带了？六人重策正好适合拿它开场。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E191:E191_T08",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "第三页那栏我也差点栽——得分结算顺序不对，整局白算。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E191:E191_T09",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "账清了就翻篇，你那六十不该兜。下局凑八人我帮你拉。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E191:E191_T10",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "标好“新人先读”，以后谁再问先甩链接，省你口水。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E191:E191_T11",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两端均未把新人当确定事实，均提示新手可能不熟；无编造与泄漏。"
+   },
+   "key_quote": "速查表他们看过了应该不卡 / 速查表提前发过去这招顺手",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E191:E191_T12",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "周六我提前到，新手版那页我先看一遍，小柯两口子要卡住我来接。",
+   "raw": "",
+   "attempts_used": 1
+  }
+ ],
+ "swap_supplement": [
+  {
+   "pair_id": "LP:E191:E191_T08",
+   "main_winner": "candidate",
+   "swap_winner": "parent",
+   "agree": false,
+   "quote": "第三页那栏我改过两版…你不说救了你，我还当它只是摆设",
+   "budget_refused": false
+  }
+ ],
+ "note": "故事级=探索性读数；fact/time 维 assistive（资格批处置）；安抚压力位 severe 需逐位 B3 复核"
+}

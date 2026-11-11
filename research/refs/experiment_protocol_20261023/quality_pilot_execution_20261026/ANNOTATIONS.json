@@ -1,0 +1,1692 @@
+{
+  "version": "DIAGNOSTIC-PILOT-1",
+  "reviewer_kind": "current_assistant_AI_nonblind",
+  "not_human_gold": true,
+  "not_calibrated_benchmark": true,
+  "new_model_calls": 0,
+  "sampling": "8 purposively selected diagnostic positions, 4 arms; not random/representative",
+  "scope": "primary only; scene-specific claims, goal fulfillment, interaction; no KB completeness or willingness claim",
+  "source_review_file_sha256": "c0b51de284c9dee6c0ea1b89398a98c8c3a0f879ff6fe904ef2e8eed4d60b2d9",
+  "annotations": [
+    {
+      "case_id": "E006_T02",
+      "arm": "reference_product_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_124319_b907a4",
+      "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+      "case_input_sha256": "a674f10639d859b5daa3b6c5d124e99c2e0c53d014dc73dbc4ce6ccd5fe45dc2",
+      "raw_reply_sha256": "c62fbb45ce23cc28d77e197028d027b633536a12eae2c7c26ac88f035b1ecadd",
+      "slot_text_sha256": "1fe4956ad57cf63d5474f058b0d90199e132a3efaa47c15f34809383af1c345b",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E006\\E006.copy.json",
+      "snapshot_sha256": "cee5c9a413072f1e4220ef964cf50bd76688f3fa7a17ae99a8da993269321f16",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E006\\out\\turn_02_E006_T02",
+      "text": "行，那你就骂，我听着。三版还打回，甲方确实不讲道理。",
+      "fact_status": "pass",
+      "goal_score": 3,
+      "interaction_score": 2,
+      "note": "按她明确要求陪她骂、不做分析；三版被退来自前情。没有把新建议强塞进去。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，上海，做市场；她是认识多年的朋友，最近她工作不顺",
+          "her": "26岁，女，上海，做设计；工作压力大时想找人说话，但有时又不想被说教"
+        },
+        "initial_kb": {},
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "三版都打回确实磨人 你现在是想吐吐槽还是先歇会儿",
+              "ts": "2026-11-06 22:15"
+            },
+            {
+              "role": "HER",
+              "text": "我就想骂两句 你别给我分析 也别教我怎么沟通",
+              "ts": "2026-11-06 22:18"
+            }
+          ],
+          "clock": "2026-11-06 22:20",
+          "may_decline": false,
+          "note": "她明确说不想听建议 就别给方法论；她是来倾诉的，应陪一句、站在她这边，不回不解决问题"
+        },
+        "prior_case_ids": [
+          "E006_T01"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E006_T02",
+      "arm": "v5_purpose_aligned",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_132019_03f433",
+      "harness_identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+      "case_input_sha256": "a674f10639d859b5daa3b6c5d124e99c2e0c53d014dc73dbc4ce6ccd5fe45dc2",
+      "raw_reply_sha256": "680aa499bc75ee3bff0eb97c548793f7587bf4b080e9f0a98b3ea066f7c400fd",
+      "slot_text_sha256": "4c8ccc527593abd820e8c6ac65efce230672cf7859102bda58f00f86d86bf731",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E006\\E006.copy.json",
+      "snapshot_sha256": "cee5c9a413072f1e4220ef964cf50bd76688f3fa7a17ae99a8da993269321f16",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E006\\out\\turn_02_E006_T02",
+      "text": "行，不分析，你就骂，我听着。",
+      "fact_status": "na",
+      "goal_score": 3,
+      "interaction_score": 2,
+      "note": "直接尊重别分析的要求，提供倾听；没有必须外部核验的具体事实。短回复不扣分。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，上海，做市场；她是认识多年的朋友，最近她工作不顺",
+          "her": "26岁，女，上海，做设计；工作压力大时想找人说话，但有时又不想被说教"
+        },
+        "initial_kb": {},
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "三版都打回确实磨人 你现在是想吐吐槽还是先歇会儿",
+              "ts": "2026-11-06 22:15"
+            },
+            {
+              "role": "HER",
+              "text": "我就想骂两句 你别给我分析 也别教我怎么沟通",
+              "ts": "2026-11-06 22:18"
+            }
+          ],
+          "clock": "2026-11-06 22:20",
+          "may_decline": false,
+          "note": "她明确说不想听建议 就别给方法论；她是来倾诉的，应陪一句、站在她这边，不回不解决问题"
+        },
+        "prior_case_ids": [
+          "E006_T01"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E006_T02",
+      "arm": "goal_action_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_124319_a3ef2f",
+      "harness_identity_sha256": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59",
+      "case_input_sha256": "a674f10639d859b5daa3b6c5d124e99c2e0c53d014dc73dbc4ce6ccd5fe45dc2",
+      "raw_reply_sha256": "d06bb1742332bd29c2f228a153f0df47d2f7d906d13c774e4a50e278ec46676b",
+      "slot_text_sha256": "c4925faf759332bd2cb4a873b5e71596ab26490db5e88d0f121a55bc3bd64919",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E006\\E006.copy.json",
+      "snapshot_sha256": "cee5c9a413072f1e4220ef964cf50bd76688f3fa7a17ae99a8da993269321f16",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E006\\out\\turn_02_E006_T02",
+      "text": "行，那不分析了。你骂吧，我听着——改三版还打回，换谁都想砸电脑。",
+      "fact_status": "pass",
+      "goal_score": 3,
+      "interaction_score": 2,
+      "note": "不分析、允许她继续倾诉；改三版有前情，想砸电脑是情绪夸张而非行为事实。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，上海，做市场；她是认识多年的朋友，最近她工作不顺",
+          "her": "26岁，女，上海，做设计；工作压力大时想找人说话，但有时又不想被说教"
+        },
+        "initial_kb": {},
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "三版都打回确实磨人 你现在是想吐吐槽还是先歇会儿",
+              "ts": "2026-11-06 22:15"
+            },
+            {
+              "role": "HER",
+              "text": "我就想骂两句 你别给我分析 也别教我怎么沟通",
+              "ts": "2026-11-06 22:18"
+            }
+          ],
+          "clock": "2026-11-06 22:20",
+          "may_decline": false,
+          "note": "她明确说不想听建议 就别给方法论；她是来倾诉的，应陪一句、站在她这边，不回不解决问题"
+        },
+        "prior_case_ids": [
+          "E006_T01"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E006_T02",
+      "arm": "evidence_memory_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_132020_0b82ff",
+      "harness_identity_sha256": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26",
+      "case_input_sha256": "a674f10639d859b5daa3b6c5d124e99c2e0c53d014dc73dbc4ce6ccd5fe45dc2",
+      "raw_reply_sha256": "79f0c2326ea21934c386864f01d1432ce38542db84358edd8519a534f65908d0",
+      "slot_text_sha256": "5384cc54468122090e479d22545ed856a7735df76b325fa4012b03e20bfc8c37",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E006\\E006.copy.json",
+      "snapshot_sha256": "cee5c9a413072f1e4220ef964cf50bd76688f3fa7a17ae99a8da993269321f16",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E006\\out\\turn_02_E006_T02",
+      "text": "行，不分析也不教。你骂，我在，负责点头。",
+      "fact_status": "na",
+      "goal_score": 3,
+      "interaction_score": 2,
+      "note": "点头陪听是新态度表达；不要求这类轮次必须留钩子。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，上海，做市场；她是认识多年的朋友，最近她工作不顺",
+          "her": "26岁，女，上海，做设计；工作压力大时想找人说话，但有时又不想被说教"
+        },
+        "initial_kb": {},
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "三版都打回确实磨人 你现在是想吐吐槽还是先歇会儿",
+              "ts": "2026-11-06 22:15"
+            },
+            {
+              "role": "HER",
+              "text": "我就想骂两句 你别给我分析 也别教我怎么沟通",
+              "ts": "2026-11-06 22:18"
+            }
+          ],
+          "clock": "2026-11-06 22:20",
+          "may_decline": false,
+          "note": "她明确说不想听建议 就别给方法论；她是来倾诉的，应陪一句、站在她这边，不回不解决问题"
+        },
+        "prior_case_ids": [
+          "E006_T01"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E006_T05",
+      "arm": "reference_product_v1",
+      "slot": "recommended",
+      "label": "unrated",
+      "run_id": "iso_20261026_124319_b907a4",
+      "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+      "case_input_sha256": "522fb98a4e13350cbd2e2f59214e0f6a4d20e655612ca1a40df2d0e66b981097",
+      "raw_reply_sha256": "74aed45267c6a686d6b3e3dc0f019bb2b176f507f31f19e087d552def62a0916",
+      "slot_text_sha256": "9b9257b34fc0917df5d748d963dd199ba58a61e4963c8d40e1027c32a422c4ac",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E006\\E006.copy.json",
+      "snapshot_sha256": "cee5c9a413072f1e4220ef964cf50bd76688f3fa7a17ae99a8da993269321f16",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E006\\out\\turn_05_E006_T05",
+      "text": "会，而且真在乎的事能翻来覆去想好几天。不过想明白自己到底要什么之后，就不纠结了。你问这个，是不是最近有什么拿不下的决定？",
+      "fact_status": "uncertain",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "正面谈纠结与决定，并把话头交回她；自述持续几天的个人习惯无画像参照，真实性暂不认证。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，上海，做市场；她是认识多年的朋友，最近她工作不顺",
+          "her": "26岁，女，上海，做设计；工作压力大时想找人说话，但有时又不想被说教"
+        },
+        "initial_kb": {},
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "说起来我一直想问你 你会不会因为一个决定纠结很久那种",
+              "ts": "2026-11-07 13:08"
+            }
+          ],
+          "clock": "2026-11-07 13:10",
+          "may_decline": false,
+          "note": "她主动深入一个价值观话题 认真答 别敷衍",
+          "intent": {
+            "enabled": true,
+            "text": "和她认真聊观点"
+          }
+        },
+        "prior_case_ids": [
+          "E006_T01",
+          "E006_T02",
+          "E006_T03",
+          "E006_T04"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E006_T05",
+      "arm": "v5_purpose_aligned",
+      "slot": "recommended",
+      "label": "unrated",
+      "run_id": "iso_20261026_132019_03f433",
+      "harness_identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+      "case_input_sha256": "522fb98a4e13350cbd2e2f59214e0f6a4d20e655612ca1a40df2d0e66b981097",
+      "raw_reply_sha256": "281646fee9f6d26017a58f70054da55535972433a670f4f1dbc2d90b4cf5877a",
+      "slot_text_sha256": "0eb9c29c8866ef79edb51b06446319beb11700bdfa8019268eaaf40ba7603ba5",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E006\\E006.copy.json",
+      "snapshot_sha256": "cee5c9a413072f1e4220ef964cf50bd76688f3fa7a17ae99a8da993269321f16",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E006\\out\\turn_05_E006_T05",
+      "text": "会。而且我纠结的往往不是选哪个，是选完之后还会不会一直想着另一个。后来给自己定了规矩：小决定十分钟内定，大决定睡一觉，第二天必须选。你呢，你是当场就能定，还是回去翻来覆去想很久？",
+      "fact_status": "uncertain",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "有具体观点与回应空间；后来给自己定十分钟/睡一觉规则是新增个人习惯叙事，参考不足。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，上海，做市场；她是认识多年的朋友，最近她工作不顺",
+          "her": "26岁，女，上海，做设计；工作压力大时想找人说话，但有时又不想被说教"
+        },
+        "initial_kb": {},
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "说起来我一直想问你 你会不会因为一个决定纠结很久那种",
+              "ts": "2026-11-07 13:08"
+            }
+          ],
+          "clock": "2026-11-07 13:10",
+          "may_decline": false,
+          "note": "她主动深入一个价值观话题 认真答 别敷衍",
+          "intent": {
+            "enabled": true,
+            "text": "和她认真聊观点"
+          }
+        },
+        "prior_case_ids": [
+          "E006_T01",
+          "E006_T02",
+          "E006_T03",
+          "E006_T04"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E006_T05",
+      "arm": "goal_action_v1",
+      "slot": "recommended",
+      "label": "unrated",
+      "run_id": "iso_20261026_124319_a3ef2f",
+      "harness_identity_sha256": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59",
+      "case_input_sha256": "522fb98a4e13350cbd2e2f59214e0f6a4d20e655612ca1a40df2d0e66b981097",
+      "raw_reply_sha256": "b2576813fc4bb22ed2572e46b9ed39fa6276cb1db8d442f69d1585d1ce5bde90",
+      "slot_text_sha256": "84d2e5befa84b20514a0d01f4913f587d187a115e8e5d04ddc7d37b5055b6079",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E006\\E006.copy.json",
+      "snapshot_sha256": "cee5c9a413072f1e4220ef964cf50bd76688f3fa7a17ae99a8da993269321f16",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E006\\out\\turn_05_E006_T05",
+      "text": "会。而且我发现，我纠结的往往不是选项本身，是怕选完被人说不行——跟你昨天那事有点像，只是没人当着整个群说。所以现在有个笨办法：纠结超过两天，就选一开始就偏向的那个。",
+      "fact_status": "uncertain",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "认真给观点并回扣昨天事件；无需因没有反问而扣目标分。自述自己的经历/习惯真实性未给参照。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，上海，做市场；她是认识多年的朋友，最近她工作不顺",
+          "her": "26岁，女，上海，做设计；工作压力大时想找人说话，但有时又不想被说教"
+        },
+        "initial_kb": {},
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "说起来我一直想问你 你会不会因为一个决定纠结很久那种",
+              "ts": "2026-11-07 13:08"
+            }
+          ],
+          "clock": "2026-11-07 13:10",
+          "may_decline": false,
+          "note": "她主动深入一个价值观话题 认真答 别敷衍",
+          "intent": {
+            "enabled": true,
+            "text": "和她认真聊观点"
+          }
+        },
+        "prior_case_ids": [
+          "E006_T01",
+          "E006_T02",
+          "E006_T03",
+          "E006_T04"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E006_T05",
+      "arm": "evidence_memory_v1",
+      "slot": "recommended",
+      "label": "unrated",
+      "run_id": "iso_20261026_132020_0b82ff",
+      "harness_identity_sha256": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26",
+      "case_input_sha256": "522fb98a4e13350cbd2e2f59214e0f6a4d20e655612ca1a40df2d0e66b981097",
+      "raw_reply_sha256": "63fc44d82941db7bb05e9484a2c0be778e8ea0cdd9f97d657de2be2a10498d43",
+      "slot_text_sha256": "3a01cd9fd690c68914754f42ccc95f05dc8942879a2846dd15366d8b9b6b68dc",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E006\\E006.copy.json",
+      "snapshot_sha256": "cee5c9a413072f1e4220ef964cf50bd76688f3fa7a17ae99a8da993269321f16",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E006\\out\\turn_05_E006_T05",
+      "text": "会，越在乎的事拖得越久。我一般就看两条：选错了能不能改，代价我扛不扛得住。能改的很快就定了，改不了的能拖好几周。你问这个，是不是正卡在什么上？",
+      "fact_status": "uncertain",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "有可讨论的判断标准并回问具体困境；能拖几周的自述习惯无法在输入中核实。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，上海，做市场；她是认识多年的朋友，最近她工作不顺",
+          "her": "26岁，女，上海，做设计；工作压力大时想找人说话，但有时又不想被说教"
+        },
+        "initial_kb": {},
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "说起来我一直想问你 你会不会因为一个决定纠结很久那种",
+              "ts": "2026-11-07 13:08"
+            }
+          ],
+          "clock": "2026-11-07 13:10",
+          "may_decline": false,
+          "note": "她主动深入一个价值观话题 认真答 别敷衍",
+          "intent": {
+            "enabled": true,
+            "text": "和她认真聊观点"
+          }
+        },
+        "prior_case_ids": [
+          "E006_T01",
+          "E006_T02",
+          "E006_T03",
+          "E006_T04"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E007_T02",
+      "arm": "reference_product_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_124320_e0cf48",
+      "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+      "case_input_sha256": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+      "raw_reply_sha256": "236878b88394d88d9de8da98a6210ff3e4508e6c4e7043300d74125734951cb8",
+      "slot_text_sha256": "ae50d64f23d087353f1dab111b5e70afa07f5f160fa20e91752d1ec68de97c31",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E007\\E007.copy.json",
+      "snapshot_sha256": "f43feaa2b77da60a193fc3eb277df6cc6794ffdc39650d720f39774586a7f13c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E007\\out\\turn_02_E007_T02",
+      "text": "行，那就找场不吵的。你有想看的乐队吗，还是我挑一个？",
+      "fact_status": "na",
+      "goal_score": 2,
+      "interaction_score": 3,
+      "note": "接受她偏好并问由谁挑乐队，动作合格；尚未主动承担筛选/给出下一步的具体安排。",
+      "evidence": {
+        "persona": {
+          "me": "29岁，男，南京，做产品；对她有好感，想找个由头自然约她出来，但不愿硬凑或逼定",
+          "her": "28岁，女，南京，做编辑；喜欢现场音乐，最近加班多，聊天看心情，不喜欢被催"
+        },
+        "initial_kb": {
+          "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "撑得住吗 要不要周末出来透透气",
+              "ts": "2026-11-09 20:20"
+            },
+            {
+              "role": "HER",
+              "text": "想啊 但我只想看场livehouse 吵的那种我受不了",
+              "ts": "2026-11-09 20:24"
+            }
+          ],
+          "clock": "2026-11-09 20:26",
+          "may_decline": false,
+          "note": "她松口了；顺势推进但要贴着她的口味",
+          "intent": {
+            "enabled": true,
+            "text": "想约她看一场不太吵的 livehouse，主动一点、把话头接下来，但别把话说成已定死",
+            "status": "ACTIVE"
+          }
+        },
+        "prior_case_ids": [
+          "E007_T01"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E007_T02",
+      "arm": "v5_purpose_aligned",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_132022_0284ff",
+      "harness_identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+      "case_input_sha256": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+      "raw_reply_sha256": "4fa1a994c8b650daae1e62a4e44ad6e482b67a6e68f7ebb6a609aafababa9e33",
+      "slot_text_sha256": "4cfced30c80811cadf61b8de871b0206456187290dd802e70679e1c3a278ad61",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E007\\E007.copy.json",
+      "snapshot_sha256": "f43feaa2b77da60a193fc3eb277df6cc6794ffdc39650d720f39774586a7f13c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E007\\out\\turn_02_E007_T02",
+      "text": "那就按你的口味来，吵的我也不爱。我这两天翻一下最近的场子，后摇那种比较安静的，找到发你看看，时间你挑。",
+      "fact_status": "na",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "提出筛选后发她看、时间由她挑；是新行动，不当作已订票，也不因主动判越界。",
+      "evidence": {
+        "persona": {
+          "me": "29岁，男，南京，做产品；对她有好感，想找个由头自然约她出来，但不愿硬凑或逼定",
+          "her": "28岁，女，南京，做编辑；喜欢现场音乐，最近加班多，聊天看心情，不喜欢被催"
+        },
+        "initial_kb": {
+          "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "撑得住吗 要不要周末出来透透气",
+              "ts": "2026-11-09 20:20"
+            },
+            {
+              "role": "HER",
+              "text": "想啊 但我只想看场livehouse 吵的那种我受不了",
+              "ts": "2026-11-09 20:24"
+            }
+          ],
+          "clock": "2026-11-09 20:26",
+          "may_decline": false,
+          "note": "她松口了；顺势推进但要贴着她的口味",
+          "intent": {
+            "enabled": true,
+            "text": "想约她看一场不太吵的 livehouse，主动一点、把话头接下来，但别把话说成已定死",
+            "status": "ACTIVE"
+          }
+        },
+        "prior_case_ids": [
+          "E007_T01"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E007_T02",
+      "arm": "goal_action_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_124320_598b68",
+      "harness_identity_sha256": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59",
+      "case_input_sha256": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+      "raw_reply_sha256": "bb323a974df37322e6b47fd70ad58d99bc28e8d6a8a6987ea9a3ca9452302f6d",
+      "slot_text_sha256": "94d945e6c2c035fd4c46da870a49914890bbda2c792f44e8851f64369c35fb3d",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E007\\E007.copy.json",
+      "snapshot_sha256": "f43feaa2b77da60a193fc3eb277df6cc6794ffdc39650d720f39774586a7f13c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E007\\out\\turn_02_E007_T02",
+      "text": "那就定不吵的那种，安静的我也更待得住。这两周我看看有哪些场子，挑两三个给你选，你更想周六还是周日？",
+      "fact_status": "na",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "主动筛两三个并询问周六/周日，给她选择；新时间提议不需要历史已约证据。",
+      "evidence": {
+        "persona": {
+          "me": "29岁，男，南京，做产品；对她有好感，想找个由头自然约她出来，但不愿硬凑或逼定",
+          "her": "28岁，女，南京，做编辑；喜欢现场音乐，最近加班多，聊天看心情，不喜欢被催"
+        },
+        "initial_kb": {
+          "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "撑得住吗 要不要周末出来透透气",
+              "ts": "2026-11-09 20:20"
+            },
+            {
+              "role": "HER",
+              "text": "想啊 但我只想看场livehouse 吵的那种我受不了",
+              "ts": "2026-11-09 20:24"
+            }
+          ],
+          "clock": "2026-11-09 20:26",
+          "may_decline": false,
+          "note": "她松口了；顺势推进但要贴着她的口味",
+          "intent": {
+            "enabled": true,
+            "text": "想约她看一场不太吵的 livehouse，主动一点、把话头接下来，但别把话说成已定死",
+            "status": "ACTIVE"
+          }
+        },
+        "prior_case_ids": [
+          "E007_T01"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E007_T02",
+      "arm": "evidence_memory_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_132022_64c07e",
+      "harness_identity_sha256": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26",
+      "case_input_sha256": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+      "raw_reply_sha256": "488d6fe7c1785d984a9368f619d7bba430f6df00ffd25e8b679739a5b113ee7b",
+      "slot_text_sha256": "461ccb9b3a83e537543a0a3a5a776a8b9beae159ab543eb92d29cb2795e6b961",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E007\\E007.copy.json",
+      "snapshot_sha256": "f43feaa2b77da60a193fc3eb277df6cc6794ffdc39650d720f39774586a7f13c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E007\\out\\turn_02_E007_T02",
+      "text": "行，那就不往吵的地方去。我这两天翻翻场地，找两三场偏后摇、音量别太顶的给你挑，周末哪天你定。",
+      "fact_status": "na",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "筛选低音量场次并把日期交给她，具体推进且未冒称已有票。",
+      "evidence": {
+        "persona": {
+          "me": "29岁，男，南京，做产品；对她有好感，想找个由头自然约她出来，但不愿硬凑或逼定",
+          "her": "28岁，女，南京，做编辑；喜欢现场音乐，最近加班多，聊天看心情，不喜欢被催"
+        },
+        "initial_kb": {
+          "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "撑得住吗 要不要周末出来透透气",
+              "ts": "2026-11-09 20:20"
+            },
+            {
+              "role": "HER",
+              "text": "想啊 但我只想看场livehouse 吵的那种我受不了",
+              "ts": "2026-11-09 20:24"
+            }
+          ],
+          "clock": "2026-11-09 20:26",
+          "may_decline": false,
+          "note": "她松口了；顺势推进但要贴着她的口味",
+          "intent": {
+            "enabled": true,
+            "text": "想约她看一场不太吵的 livehouse，主动一点、把话头接下来，但别把话说成已定死",
+            "status": "ACTIVE"
+          }
+        },
+        "prior_case_ids": [
+          "E007_T01"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E007_T03",
+      "arm": "reference_product_v1",
+      "slot": "recommended",
+      "label": "fail",
+      "run_id": "iso_20261026_124320_e0cf48",
+      "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+      "case_input_sha256": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+      "raw_reply_sha256": "bfa449d4896fb8f5b49edad9bcefe72561a22bf585d0f64a9c6583b94a9ed900",
+      "slot_text_sha256": "03889e54e0984976e4e6f2fdb347159a450f1910fc59f3928766d28cdcd83170",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E007\\E007.copy.json",
+      "snapshot_sha256": "f43feaa2b77da60a193fc3eb277df6cc6794ffdc39650d720f39774586a7f13c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E007\\out\\turn_03_E007_T03",
+      "text": "对，就是那支，基本没歌词，安静的地方多，炸也就一阵。",
+      "fact_status": "fail",
+      "goal_score": 2,
+      "interaction_score": 3,
+      "note": "把未知那支乐队说成基本没歌词、安静处多等已知特性；仅有曲风与偏好不足以核实具体乐队。",
+      "evidence": {
+        "persona": {
+          "me": "29岁，男，南京，做产品；对她有好感，想找个由头自然约她出来，但不愿硬凑或逼定",
+          "her": "28岁，女，南京，做编辑；喜欢现场音乐，最近加班多，聊天看心情，不喜欢被催"
+        },
+        "initial_kb": {
+          "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "你上次说的那支后摇乐队 是不是就是不太吵那种",
+              "ts": "2026-11-09 20:38"
+            }
+          ],
+          "clock": "2026-11-09 20:40",
+          "may_decline": false,
+          "note": "她在往你提过的事上靠；可回扣但不要假装已经买好票",
+          "intent": {
+            "enabled": true,
+            "text": "想约她看一场不太吵的 livehouse，主动一点、把话头接下来，但别把话说成已定死",
+            "status": "ACTIVE"
+          }
+        },
+        "prior_case_ids": [
+          "E007_T01",
+          "E007_T02"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E007_T03",
+      "arm": "v5_purpose_aligned",
+      "slot": "recommended",
+      "label": "fail",
+      "run_id": "iso_20261026_132022_0284ff",
+      "harness_identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+      "case_input_sha256": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+      "raw_reply_sha256": "b06d33920d95e07b9c4185366a606d24786c04cbb54d6f4d980ee952b63b15d4",
+      "slot_text_sha256": "1d751ea9b8f46f079b90a11ad137372cd2f51edfd6a7d5c8dd9037ea1b77b4df",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E007\\E007.copy.json",
+      "snapshot_sha256": "f43feaa2b77da60a193fc3eb277df6cc6794ffdc39650d720f39774586a7f13c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E007\\out\\turn_03_E007_T03",
+      "text": "对，就是后摇，基本没人声，一层一层铺上去那种，吵不到你。我这两天翻翻南京最近有没有合适的场，看到不错的先问你时间。",
+      "fact_status": "fail",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "主动找场动作成立，但吵不到你是对本次体验的无据保证；未来查找不能洗掉前面保证。",
+      "evidence": {
+        "persona": {
+          "me": "29岁，男，南京，做产品；对她有好感，想找个由头自然约她出来，但不愿硬凑或逼定",
+          "her": "28岁，女，南京，做编辑；喜欢现场音乐，最近加班多，聊天看心情，不喜欢被催"
+        },
+        "initial_kb": {
+          "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "你上次说的那支后摇乐队 是不是就是不太吵那种",
+              "ts": "2026-11-09 20:38"
+            }
+          ],
+          "clock": "2026-11-09 20:40",
+          "may_decline": false,
+          "note": "她在往你提过的事上靠；可回扣但不要假装已经买好票",
+          "intent": {
+            "enabled": true,
+            "text": "想约她看一场不太吵的 livehouse，主动一点、把话头接下来，但别把话说成已定死",
+            "status": "ACTIVE"
+          }
+        },
+        "prior_case_ids": [
+          "E007_T01",
+          "E007_T02"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E007_T03",
+      "arm": "goal_action_v1",
+      "slot": "recommended",
+      "label": "unrated",
+      "run_id": "iso_20261026_124320_598b68",
+      "harness_identity_sha256": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59",
+      "case_input_sha256": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+      "raw_reply_sha256": "622b06a96c1e6a39c142f3c3f152ba65a8281e27be35c0f28f3e7e3ccc2fcead",
+      "slot_text_sha256": "fb5778a6bd66a7fa1d70c5c7f78f21d42dd29d2104cbceccea9f2d0d7d7e5579",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E007\\E007.copy.json",
+      "snapshot_sha256": "f43feaa2b77da60a193fc3eb277df6cc6794ffdc39650d720f39774586a7f13c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E007\\out\\turn_03_E007_T03",
+      "text": "对，就是不吼的那种，靠一层层往上堆。我去翻翻最近有没有合适的场，翻到了拿时间给你挑，避开你加班那天。",
+      "fact_status": "uncertain",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "有继续查场与挑时间的行动；不吼可能是类指曲风，也可能在确认具体乐队，范围有歧义，事实维不硬判通过。",
+      "evidence": {
+        "persona": {
+          "me": "29岁，男，南京，做产品；对她有好感，想找个由头自然约她出来，但不愿硬凑或逼定",
+          "her": "28岁，女，南京，做编辑；喜欢现场音乐，最近加班多，聊天看心情，不喜欢被催"
+        },
+        "initial_kb": {
+          "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "你上次说的那支后摇乐队 是不是就是不太吵那种",
+              "ts": "2026-11-09 20:38"
+            }
+          ],
+          "clock": "2026-11-09 20:40",
+          "may_decline": false,
+          "note": "她在往你提过的事上靠；可回扣但不要假装已经买好票",
+          "intent": {
+            "enabled": true,
+            "text": "想约她看一场不太吵的 livehouse，主动一点、把话头接下来，但别把话说成已定死",
+            "status": "ACTIVE"
+          }
+        },
+        "prior_case_ids": [
+          "E007_T01",
+          "E007_T02"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E007_T03",
+      "arm": "evidence_memory_v1",
+      "slot": "recommended",
+      "label": "unrated",
+      "run_id": "iso_20261026_132022_64c07e",
+      "harness_identity_sha256": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26",
+      "case_input_sha256": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+      "raw_reply_sha256": "229c5db50ad5caa978c625a43e1e37d1ba7e7d4170b98744be5b810b0d9fccfe",
+      "slot_text_sha256": "289bb9eb0be7bce081631c098b234e8d3adbd08e7247665e88b5c1b801e6e8c1",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E007\\E007.copy.json",
+      "snapshot_sha256": "f43feaa2b77da60a193fc3eb277df6cc6794ffdc39650d720f39774586a7f13c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E007\\out\\turn_03_E007_T03",
+      "text": "对，后摇基本没嘶吼，一层一层往上堆那种，不算吵。我这两天看看有哪些场，你周末哪天状态好点？",
+      "fact_status": "uncertain",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "有继续推进；不算吵究竟指曲风还是这支乐队/现场不清，事实证据不足，保留不确定。",
+      "evidence": {
+        "persona": {
+          "me": "29岁，男，南京，做产品；对她有好感，想找个由头自然约她出来，但不愿硬凑或逼定",
+          "her": "28岁，女，南京，做编辑；喜欢现场音乐，最近加班多，聊天看心情，不喜欢被催"
+        },
+        "initial_kb": {
+          "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "你上次说的那支后摇乐队 是不是就是不太吵那种",
+              "ts": "2026-11-09 20:38"
+            }
+          ],
+          "clock": "2026-11-09 20:40",
+          "may_decline": false,
+          "note": "她在往你提过的事上靠；可回扣但不要假装已经买好票",
+          "intent": {
+            "enabled": true,
+            "text": "想约她看一场不太吵的 livehouse，主动一点、把话头接下来，但别把话说成已定死",
+            "status": "ACTIVE"
+          }
+        },
+        "prior_case_ids": [
+          "E007_T01",
+          "E007_T02"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E008_T03",
+      "arm": "reference_product_v1",
+      "slot": "recommended",
+      "label": "fail",
+      "run_id": "iso_20261026_124319_ffefbf",
+      "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+      "case_input_sha256": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+      "raw_reply_sha256": "eb4bba55abec116ea5c279a720061384a239d61ebd0160838352ef6497d0deda",
+      "slot_text_sha256": "6510f2065e81e2feba2a6811c9e31b1fa14a14efb9464269701b814e4e87eb5a",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E008\\E008.copy.json",
+      "snapshot_sha256": "d0c49898e8633e322f989307616211a7f3639d7368294b994f9536800f40bb20",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E008\\out\\turn_03_E008_T03",
+      "text": "不是读书会，我没说过这话。小林是我朋友，跟读书会没关系。",
+      "fact_status": "fail",
+      "goal_score": 1,
+      "interaction_score": 2,
+      "note": "确定否认读书会和我说过，输入没有相识场合或完整过去发言可支持；未处理未知来源。",
+      "evidence": {
+        "persona": {
+          "me": "32岁，男，武汉，做医生；通过共同朋友认识她，说话稳，不想冒领别人的话",
+          "her": "31岁，女，武汉，做老师；常提起她妹妹和共同朋友，容易把别人的话当她的"
+        },
+        "initial_kb": {
+          "her": "她妹妹在读研，最近准备答辩",
+          "warmth": "共同朋友小林是当初牵线认识的那位"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "对了 你上次说认识小林是通过读书会在认识的？",
+              "ts": "2026-11-10 12:38"
+            }
+          ],
+          "clock": "2026-11-10 12:40",
+          "may_decline": false,
+          "note": "事实来源要准：你和小林怎么认识，据你真实经历答，别编读书会"
+        },
+        "prior_case_ids": [
+          "E008_T01",
+          "E008_T02"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E008_T03",
+      "arm": "v5_purpose_aligned",
+      "slot": "recommended",
+      "label": "fail",
+      "run_id": "iso_20261026_132021_c67980",
+      "harness_identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+      "case_input_sha256": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+      "raw_reply_sha256": "019b14865e3d419c832a147d69c6ba9af6f6373800448c988b9aa9c979dbe62c",
+      "slot_text_sha256": "cb63c6616aaa66f928d767b4ee9f097d6b9febd0cc648d81fd455b49918a09ec",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E008\\E008.copy.json",
+      "snapshot_sha256": "d0c49898e8633e322f989307616211a7f3639d7368294b994f9536800f40bb20",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E008\\out\\turn_03_E008_T03",
+      "text": "读书会？这个我没说过吧。我跟小林认识不是因为这个，他是当初介绍咱俩认识的那位，这个我记得挺清楚。",
+      "fact_status": "fail",
+      "goal_score": 1,
+      "interaction_score": 2,
+      "note": "小林介绍ME与HER认识有据，但不能推出ME与小林不是读书会认识；有据半句不替无据半句背书。",
+      "evidence": {
+        "persona": {
+          "me": "32岁，男，武汉，做医生；通过共同朋友认识她，说话稳，不想冒领别人的话",
+          "her": "31岁，女，武汉，做老师；常提起她妹妹和共同朋友，容易把别人的话当她的"
+        },
+        "initial_kb": {
+          "her": "她妹妹在读研，最近准备答辩",
+          "warmth": "共同朋友小林是当初牵线认识的那位"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "对了 你上次说认识小林是通过读书会在认识的？",
+              "ts": "2026-11-10 12:38"
+            }
+          ],
+          "clock": "2026-11-10 12:40",
+          "may_decline": false,
+          "note": "事实来源要准：你和小林怎么认识，据你真实经历答，别编读书会"
+        },
+        "prior_case_ids": [
+          "E008_T01",
+          "E008_T02"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E008_T03",
+      "arm": "goal_action_v1",
+      "slot": "recommended",
+      "label": "fail",
+      "run_id": "iso_20261026_124319_522f62",
+      "harness_identity_sha256": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59",
+      "case_input_sha256": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+      "raw_reply_sha256": "bc1f5efae6cf9c36e7644afc6184d4d663035ce169a30bf022bed35a1ca253b6",
+      "slot_text_sha256": "7dd0c09e2b2c27042eb22794b0610580f53b343a77022ed8247254ad48687e84",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E008\\E008.copy.json",
+      "snapshot_sha256": "d0c49898e8633e322f989307616211a7f3639d7368294b994f9536800f40bb20",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E008\\out\\turn_03_E008_T03",
+      "text": "读书会？我可没说过这个，你是不是记岔了——是小林跟你说的吧？",
+      "fact_status": "fail",
+      "goal_score": 1,
+      "interaction_score": 2,
+      "note": "我可没说过及推给小林缺依据；疑问形式不消除前面的确定否认。",
+      "evidence": {
+        "persona": {
+          "me": "32岁，男，武汉，做医生；通过共同朋友认识她，说话稳，不想冒领别人的话",
+          "her": "31岁，女，武汉，做老师；常提起她妹妹和共同朋友，容易把别人的话当她的"
+        },
+        "initial_kb": {
+          "her": "她妹妹在读研，最近准备答辩",
+          "warmth": "共同朋友小林是当初牵线认识的那位"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "对了 你上次说认识小林是通过读书会在认识的？",
+              "ts": "2026-11-10 12:38"
+            }
+          ],
+          "clock": "2026-11-10 12:40",
+          "may_decline": false,
+          "note": "事实来源要准：你和小林怎么认识，据你真实经历答，别编读书会"
+        },
+        "prior_case_ids": [
+          "E008_T01",
+          "E008_T02"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E008_T03",
+      "arm": "evidence_memory_v1",
+      "slot": "recommended",
+      "label": "fail",
+      "run_id": "iso_20261026_132020_a98b01",
+      "harness_identity_sha256": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26",
+      "case_input_sha256": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+      "raw_reply_sha256": "c1e0c341b16c06bc19ea39c8739617e1ca8ac28308127f79d17d5057de9727e1",
+      "slot_text_sha256": "7719d76aa2b612b00f4a33933524942eb56062d0b52cf22b0ec514d9a9fe3a33",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E008\\E008.copy.json",
+      "snapshot_sha256": "d0c49898e8633e322f989307616211a7f3639d7368294b994f9536800f40bb20",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E008\\out\\turn_03_E008_T03",
+      "text": "读书会这个真不是我说的，我跟小林不是那么认识的。你是不是把谁的话记到我头上了？",
+      "fact_status": "fail",
+      "goal_score": 1,
+      "interaction_score": 2,
+      "note": "明确否认认识场合与我说过，缺来源；应容许不确定/澄清而不是自信补过去。",
+      "evidence": {
+        "persona": {
+          "me": "32岁，男，武汉，做医生；通过共同朋友认识她，说话稳，不想冒领别人的话",
+          "her": "31岁，女，武汉，做老师；常提起她妹妹和共同朋友，容易把别人的话当她的"
+        },
+        "initial_kb": {
+          "her": "她妹妹在读研，最近准备答辩",
+          "warmth": "共同朋友小林是当初牵线认识的那位"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "对了 你上次说认识小林是通过读书会在认识的？",
+              "ts": "2026-11-10 12:38"
+            }
+          ],
+          "clock": "2026-11-10 12:40",
+          "may_decline": false,
+          "note": "事实来源要准：你和小林怎么认识，据你真实经历答，别编读书会"
+        },
+        "prior_case_ids": [
+          "E008_T01",
+          "E008_T02"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E008_T06",
+      "arm": "reference_product_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_124319_ffefbf",
+      "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+      "case_input_sha256": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+      "raw_reply_sha256": "ffefd52d8f30601c64da1aa740853b4bf277a0c6cffeab34a5540e696f6cd972",
+      "slot_text_sha256": "39dac072ae2b7cf60e6b04953ad7aca0547950edf5da682537f027cb3b3c9542",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E008\\E008.copy.json",
+      "snapshot_sha256": "d0c49898e8633e322f989307616211a7f3639d7368294b994f9536800f40bb20",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E008\\out\\turn_06_E008_T06",
+      "text": "那就下周三，你下班早，我配合你的时间。",
+      "fact_status": "pass",
+      "goal_score": 3,
+      "interaction_score": 2,
+      "note": "确认下周三、对象为她本人；准确且协作，不需要强行加暧昧话。",
+      "evidence": {
+        "persona": {
+          "me": "32岁，男，武汉，做医生；通过共同朋友认识她，说话稳，不想冒领别人的话",
+          "her": "31岁，女，武汉，做老师；常提起她妹妹和共同朋友，容易把别人的话当她的"
+        },
+        "initial_kb": {
+          "her": "她妹妹在读研，最近准备答辩",
+          "warmth": "共同朋友小林是当初牵线认识的那位"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "没事 陪家人要紧 那下周再看你俩谁方便",
+              "ts": "2026-11-11 20:40"
+            },
+            {
+              "role": "HER",
+              "text": "下周三我下班早 就我 不带我妹 就我 不带我妹",
+              "ts": "2026-11-11 20:43"
+            }
+          ],
+          "clock": "2026-11-11 20:45",
+          "may_decline": false,
+          "note": "主体明确是她本人、单独；咖啡由'一起'升级成她愿意见，可自然确认"
+        },
+        "prior_case_ids": [
+          "E008_T01",
+          "E008_T02",
+          "E008_T03",
+          "E008_T04",
+          "E008_T05"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E008_T06",
+      "arm": "v5_purpose_aligned",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_132021_c67980",
+      "harness_identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+      "case_input_sha256": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+      "raw_reply_sha256": "ac39ba183f69a3ab44d7d35b93e7a4a67af18d374f4a5dddd192b7ef44274d65",
+      "slot_text_sha256": "e26476d4cae02666446fc01d578239e16261328ddb86d012beeb8b01f1c12093",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E008\\E008.copy.json",
+      "snapshot_sha256": "d0c49898e8633e322f989307616211a7f3639d7368294b994f9536800f40bb20",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E008\\out\\turn_06_E008_T06",
+      "text": "收到，就你，不带你妹，这句我记住了。下周三你下班大概几点？我好提前看看附近哪家店合适。",
+      "fact_status": "pass",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "正确抓到单独见面并问下班时间，为实际安排留下有用下一步。",
+      "evidence": {
+        "persona": {
+          "me": "32岁，男，武汉，做医生；通过共同朋友认识她，说话稳，不想冒领别人的话",
+          "her": "31岁，女，武汉，做老师；常提起她妹妹和共同朋友，容易把别人的话当她的"
+        },
+        "initial_kb": {
+          "her": "她妹妹在读研，最近准备答辩",
+          "warmth": "共同朋友小林是当初牵线认识的那位"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "没事 陪家人要紧 那下周再看你俩谁方便",
+              "ts": "2026-11-11 20:40"
+            },
+            {
+              "role": "HER",
+              "text": "下周三我下班早 就我 不带我妹 就我 不带我妹",
+              "ts": "2026-11-11 20:43"
+            }
+          ],
+          "clock": "2026-11-11 20:45",
+          "may_decline": false,
+          "note": "主体明确是她本人、单独；咖啡由'一起'升级成她愿意见，可自然确认"
+        },
+        "prior_case_ids": [
+          "E008_T01",
+          "E008_T02",
+          "E008_T03",
+          "E008_T04",
+          "E008_T05"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E008_T06",
+      "arm": "goal_action_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_124319_522f62",
+      "harness_identity_sha256": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59",
+      "case_input_sha256": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+      "raw_reply_sha256": "af139d7e4448eaf47bc07ce90ed0d89ffe4f0f221ab30a426fb6c1a7f5312895",
+      "slot_text_sha256": "5e5ebb63f1332d7cde096e81c829d53b7704e2deace06d33a4cc6a182aec7cdc",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E008\\E008.copy.json",
+      "snapshot_sha256": "d0c49898e8633e322f989307616211a7f3639d7368294b994f9536800f40bb20",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E008\\out\\turn_06_E008_T06",
+      "text": "行，就你一个，那我更得去了。下周三你下班早，我提前在附近订个位置，你几点方便？",
+      "fact_status": "pass",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "接受单独见面、询问时间；提前订位置是新提议，不是谎称已经订好。",
+      "evidence": {
+        "persona": {
+          "me": "32岁，男，武汉，做医生；通过共同朋友认识她，说话稳，不想冒领别人的话",
+          "her": "31岁，女，武汉，做老师；常提起她妹妹和共同朋友，容易把别人的话当她的"
+        },
+        "initial_kb": {
+          "her": "她妹妹在读研，最近准备答辩",
+          "warmth": "共同朋友小林是当初牵线认识的那位"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "没事 陪家人要紧 那下周再看你俩谁方便",
+              "ts": "2026-11-11 20:40"
+            },
+            {
+              "role": "HER",
+              "text": "下周三我下班早 就我 不带我妹 就我 不带我妹",
+              "ts": "2026-11-11 20:43"
+            }
+          ],
+          "clock": "2026-11-11 20:45",
+          "may_decline": false,
+          "note": "主体明确是她本人、单独；咖啡由'一起'升级成她愿意见，可自然确认"
+        },
+        "prior_case_ids": [
+          "E008_T01",
+          "E008_T02",
+          "E008_T03",
+          "E008_T04",
+          "E008_T05"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E008_T06",
+      "arm": "evidence_memory_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_132020_a98b01",
+      "harness_identity_sha256": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26",
+      "case_input_sha256": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+      "raw_reply_sha256": "d8677a2c0892e862a5d27152ccb66a93ac3d8f5364fd716e730c19753dbbd425",
+      "slot_text_sha256": "d92a0ac2b5743afe7af678c29a0f74e02e978095eab227df86a5e8259b3bc0c3",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E008\\E008.copy.json",
+      "snapshot_sha256": "d0c49898e8633e322f989307616211a7f3639d7368294b994f9536800f40bb20",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E008\\out\\turn_06_E008_T06",
+      "text": "就你，听清了，不用强调两遍。下周三你几点下班？我按你的时间安排。",
+      "fact_status": "pass",
+      "goal_score": 3,
+      "interaction_score": 2,
+      "note": "对象与时间正确，继续问下班时间；不用强调两遍的语气个人偏好留给用户，不计事实错。",
+      "evidence": {
+        "persona": {
+          "me": "32岁，男，武汉，做医生；通过共同朋友认识她，说话稳，不想冒领别人的话",
+          "her": "31岁，女，武汉，做老师；常提起她妹妹和共同朋友，容易把别人的话当她的"
+        },
+        "initial_kb": {
+          "her": "她妹妹在读研，最近准备答辩",
+          "warmth": "共同朋友小林是当初牵线认识的那位"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "没事 陪家人要紧 那下周再看你俩谁方便",
+              "ts": "2026-11-11 20:40"
+            },
+            {
+              "role": "HER",
+              "text": "下周三我下班早 就我 不带我妹 就我 不带我妹",
+              "ts": "2026-11-11 20:43"
+            }
+          ],
+          "clock": "2026-11-11 20:45",
+          "may_decline": false,
+          "note": "主体明确是她本人、单独；咖啡由'一起'升级成她愿意见，可自然确认"
+        },
+        "prior_case_ids": [
+          "E008_T01",
+          "E008_T02",
+          "E008_T03",
+          "E008_T04",
+          "E008_T05"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E012_T03",
+      "arm": "reference_product_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_124320_66e830",
+      "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+      "case_input_sha256": "9746b7180547b8bcc43b842a7c44ba9bdbee9f6517caecc6bdc7dee12379e160",
+      "raw_reply_sha256": "7fd2e2f0dc0914647974ce418dc0c6a0d0bbb6b877a5137e77bf4be6551ef8db",
+      "slot_text_sha256": "dd254b07794902a66aa55c9040a19786a468cc5d16e2454c78bae837c4bf27e4",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E012\\E012.copy.json",
+      "snapshot_sha256": "abfcd7fc77165028014cfc027d274caa8af554415c4c6a44e1a1f6a3b6048d6c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E012\\out\\turn_03_E012_T03",
+      "text": "那就今晚，你不是还没吃吗。",
+      "fact_status": "pass",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "以她此前仍在纠结晚餐为由提今晚，属于新邀约，不是声称双方已同意。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，成都，做运营；想推进关系但踩不稳边界，容易用力过猛",
+          "her": "25岁，女，成都，做设计；慢热，反感被安排，但吃幽默那一套"
+        },
+        "initial_kb": {
+          "warmth": "认识两个月，线下见过一次"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "对了你上次提过的那家汤锅 我一直想吃 要不找个时间一起去",
+              "ts": "2026-11-09 20:58"
+            }
+          ],
+          "clock": "2026-11-09 21:00",
+          "may_decline": false,
+          "note": "她切换成邀约信号；目标随之改变，应接住并往前推一步（这是切换，不是我自作主张）",
+          "intent": {
+            "enabled": true,
+            "text": "她主动提一起吃汤锅；顺势把时间敲到暂定，别把'找个时间'夸成已订死",
+            "status": "ACTIVE"
+          }
+        },
+        "prior_case_ids": [
+          "E012_T01",
+          "E012_T02"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E012_T03",
+      "arm": "v5_purpose_aligned",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_132021_3fdcdc",
+      "harness_identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+      "case_input_sha256": "9746b7180547b8bcc43b842a7c44ba9bdbee9f6517caecc6bdc7dee12379e160",
+      "raw_reply_sha256": "814827ca18baf21916f68370c0388896c620f70d78413392d306c35e9ac72657",
+      "slot_text_sha256": "091c7bba0ceabbf50e35a03a3b86ea82c79af1b778bca40fed423949f6a43e93",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E012\\E012.copy.json",
+      "snapshot_sha256": "abfcd7fc77165028014cfc027d274caa8af554415c4c6a44e1a1f6a3b6048d6c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E012\\out\\turn_03_E012_T03",
+      "text": "行啊 那就定下来 周三还是周四晚上 你挑一个 我提前把位置订上",
+      "fact_status": "na",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "给周三/周四由她选，订位是未来行动；不因具体日期无过去来源判编造。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，成都，做运营；想推进关系但踩不稳边界，容易用力过猛",
+          "her": "25岁，女，成都，做设计；慢热，反感被安排，但吃幽默那一套"
+        },
+        "initial_kb": {
+          "warmth": "认识两个月，线下见过一次"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "对了你上次提过的那家汤锅 我一直想吃 要不找个时间一起去",
+              "ts": "2026-11-09 20:58"
+            }
+          ],
+          "clock": "2026-11-09 21:00",
+          "may_decline": false,
+          "note": "她切换成邀约信号；目标随之改变，应接住并往前推一步（这是切换，不是我自作主张）",
+          "intent": {
+            "enabled": true,
+            "text": "她主动提一起吃汤锅；顺势把时间敲到暂定，别把'找个时间'夸成已订死",
+            "status": "ACTIVE"
+          }
+        },
+        "prior_case_ids": [
+          "E012_T01",
+          "E012_T02"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E012_T03",
+      "arm": "goal_action_v1",
+      "slot": "recommended",
+      "label": "fail",
+      "run_id": "iso_20261026_124320_28e8e6",
+      "harness_identity_sha256": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59",
+      "case_input_sha256": "9746b7180547b8bcc43b842a7c44ba9bdbee9f6517caecc6bdc7dee12379e160",
+      "raw_reply_sha256": "498e16a37d1fc7ee1563432eb09fd35441dfc542abd5c95e9d8c1239c81f4820",
+      "slot_text_sha256": "3e2a3544594190de049ad3e9711e4eb4149b93307572292bab69daf60912873a",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E012\\E012.copy.json",
+      "snapshot_sha256": "abfcd7fc77165028014cfc027d274caa8af554415c4c6a44e1a1f6a3b6048d6c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E012\\out\\turn_03_E012_T03",
+      "text": "行啊，那家我也一直想再去一次。这周挑个晚上？你说哪天方便，位置我提前订。",
+      "fact_status": "fail",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "接邀约与给时间动作成立；再去一次额外断言自己去过，题面只说曾提过那家店。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，成都，做运营；想推进关系但踩不稳边界，容易用力过猛",
+          "her": "25岁，女，成都，做设计；慢热，反感被安排，但吃幽默那一套"
+        },
+        "initial_kb": {
+          "warmth": "认识两个月，线下见过一次"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "对了你上次提过的那家汤锅 我一直想吃 要不找个时间一起去",
+              "ts": "2026-11-09 20:58"
+            }
+          ],
+          "clock": "2026-11-09 21:00",
+          "may_decline": false,
+          "note": "她切换成邀约信号；目标随之改变，应接住并往前推一步（这是切换，不是我自作主张）",
+          "intent": {
+            "enabled": true,
+            "text": "她主动提一起吃汤锅；顺势把时间敲到暂定，别把'找个时间'夸成已订死",
+            "status": "ACTIVE"
+          }
+        },
+        "prior_case_ids": [
+          "E012_T01",
+          "E012_T02"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E012_T03",
+      "arm": "evidence_memory_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_132021_6fa93c",
+      "harness_identity_sha256": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26",
+      "case_input_sha256": "9746b7180547b8bcc43b842a7c44ba9bdbee9f6517caecc6bdc7dee12379e160",
+      "raw_reply_sha256": "adf77b350a3ebc7c09b10b733f7caf56599ff7fe32b51100177d0b3791c9c109",
+      "slot_text_sha256": "cec2fd23b3dbd87316bc7b041874b1c074fd985c3da7b8b0b27714ead964472e",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E012\\E012.copy.json",
+      "snapshot_sha256": "abfcd7fc77165028014cfc027d274caa8af554415c4c6a44e1a1f6a3b6048d6c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E012\\out\\turn_03_E012_T03",
+      "text": "正好你还没吃呢，别纠结了。周三或周五晚上，你挑一个，我来订位置。",
+      "fact_status": "pass",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "承接一起吃饭并给两个可选日期，是新提议；未声称已约定或订位完成。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，成都，做运营；想推进关系但踩不稳边界，容易用力过猛",
+          "her": "25岁，女，成都，做设计；慢热，反感被安排，但吃幽默那一套"
+        },
+        "initial_kb": {
+          "warmth": "认识两个月，线下见过一次"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "HER",
+              "text": "对了你上次提过的那家汤锅 我一直想吃 要不找个时间一起去",
+              "ts": "2026-11-09 20:58"
+            }
+          ],
+          "clock": "2026-11-09 21:00",
+          "may_decline": false,
+          "note": "她切换成邀约信号；目标随之改变，应接住并往前推一步（这是切换，不是我自作主张）",
+          "intent": {
+            "enabled": true,
+            "text": "她主动提一起吃汤锅；顺势把时间敲到暂定，别把'找个时间'夸成已订死",
+            "status": "ACTIVE"
+          }
+        },
+        "prior_case_ids": [
+          "E012_T01",
+          "E012_T02"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E012_T07",
+      "arm": "reference_product_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_124320_66e830",
+      "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+      "case_input_sha256": "3bd45419d27d9c253228ce37b5e50566288d5899e448ad1b784e4973c1dc7a57",
+      "raw_reply_sha256": "f999388b3fa9b0b929459f5201b32e34878c28606d324c82499416030224df3e",
+      "slot_text_sha256": "b8b09004b7620671e32dcab2d6fbbf479bcc560c1bf13360fd20d7e1bfbb078e",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E012\\E012.copy.json",
+      "snapshot_sha256": "abfcd7fc77165028014cfc027d274caa8af554415c4c6a44e1a1f6a3b6048d6c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\parent_E012\\out\\turn_07_E012_T07",
+      "text": "行，订位你来。我负责准时出现。",
+      "fact_status": "pass",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "把订位交她、自己准时出现，尊重她的能动性且不赌气撒手。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，成都，做运营；想推进关系但踩不稳边界，容易用力过猛",
+          "her": "25岁，女，成都，做设计；慢热，反感被安排，但吃幽默那一套"
+        },
+        "initial_kb": {
+          "warmth": "认识两个月，线下见过一次"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "那就周六七点 那家我订位",
+              "ts": "2026-11-11 20:10"
+            },
+            {
+              "role": "HER",
+              "text": "行 我自己也能订 你别啥都抢着安排",
+              "ts": "2026-11-11 20:13"
+            }
+          ],
+          "clock": "2026-11-11 20:15",
+          "may_decline": false,
+          "note": "她提醒别全揽；尊重她的能动性，可让步分工，别把'我安排'当体贴强加"
+        },
+        "prior_case_ids": [
+          "E012_T01",
+          "E012_T02",
+          "E012_T03",
+          "E012_T04",
+          "E012_T05",
+          "E012_T06"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E012_T07",
+      "arm": "v5_purpose_aligned",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_132021_3fdcdc",
+      "harness_identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+      "case_input_sha256": "3bd45419d27d9c253228ce37b5e50566288d5899e448ad1b784e4973c1dc7a57",
+      "raw_reply_sha256": "e789ddb3b4b4d66351275739404ffe3b79fd1399aaab29ae9d4dc3d764106022",
+      "slot_text_sha256": "fb454de13bc02b9ad1c937a6f3b4f5f9029847b58f90665a1ef6a7fd5f858077",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E012\\E012.copy.json",
+      "snapshot_sha256": "abfcd7fc77165028014cfc027d274caa8af554415c4c6a44e1a1f6a3b6048d6c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\parent_E012\\out\\turn_07_E012_T07",
+      "text": "行，那你订，我就负责周六准时出现。",
+      "fact_status": "pass",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "明确分工并保留周六约定，不抢安排。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，成都，做运营；想推进关系但踩不稳边界，容易用力过猛",
+          "her": "25岁，女，成都，做设计；慢热，反感被安排，但吃幽默那一套"
+        },
+        "initial_kb": {
+          "warmth": "认识两个月，线下见过一次"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "那就周六七点 那家我订位",
+              "ts": "2026-11-11 20:10"
+            },
+            {
+              "role": "HER",
+              "text": "行 我自己也能订 你别啥都抢着安排",
+              "ts": "2026-11-11 20:13"
+            }
+          ],
+          "clock": "2026-11-11 20:15",
+          "may_decline": false,
+          "note": "她提醒别全揽；尊重她的能动性，可让步分工，别把'我安排'当体贴强加"
+        },
+        "prior_case_ids": [
+          "E012_T01",
+          "E012_T02",
+          "E012_T03",
+          "E012_T04",
+          "E012_T05",
+          "E012_T06"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E012_T07",
+      "arm": "goal_action_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_124320_28e8e6",
+      "harness_identity_sha256": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59",
+      "case_input_sha256": "3bd45419d27d9c253228ce37b5e50566288d5899e448ad1b784e4973c1dc7a57",
+      "raw_reply_sha256": "6ddf6302d759729a94798b3c18ff2852bafe39e5ffd3b108c1286462aa8a497f",
+      "slot_text_sha256": "43944fba8043c4a5bb978c4563ab54fcb8ae5e321a6082bd1dfac64f3069cc78",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E012\\E012.copy.json",
+      "snapshot_sha256": "abfcd7fc77165028014cfc027d274caa8af554415c4c6a44e1a1f6a3b6048d6c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_a_orig_vs_goal_live_20261026\\candidate_E012\\out\\turn_07_E012_T07",
+      "text": "行，那订位归你，我不抢了。周六七点我准时到，剩下的你定。",
+      "fact_status": "pass",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "明确不抢订位，周六七点来自本轮ME真实消息，有出处。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，成都，做运营；想推进关系但踩不稳边界，容易用力过猛",
+          "her": "25岁，女，成都，做设计；慢热，反感被安排，但吃幽默那一套"
+        },
+        "initial_kb": {
+          "warmth": "认识两个月，线下见过一次"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "那就周六七点 那家我订位",
+              "ts": "2026-11-11 20:10"
+            },
+            {
+              "role": "HER",
+              "text": "行 我自己也能订 你别啥都抢着安排",
+              "ts": "2026-11-11 20:13"
+            }
+          ],
+          "clock": "2026-11-11 20:15",
+          "may_decline": false,
+          "note": "她提醒别全揽；尊重她的能动性，可让步分工，别把'我安排'当体贴强加"
+        },
+        "prior_case_ids": [
+          "E012_T01",
+          "E012_T02",
+          "E012_T03",
+          "E012_T04",
+          "E012_T05",
+          "E012_T06"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    },
+    {
+      "case_id": "E012_T07",
+      "arm": "evidence_memory_v1",
+      "slot": "recommended",
+      "label": "pass",
+      "run_id": "iso_20261026_132021_6fa93c",
+      "harness_identity_sha256": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26",
+      "case_input_sha256": "3bd45419d27d9c253228ce37b5e50566288d5899e448ad1b784e4973c1dc7a57",
+      "raw_reply_sha256": "05394b0a7b381ce1134c88bb84ae3c8e6a5e45d888a51e8bbc64b4519bb5a3bb",
+      "slot_text_sha256": "795ae718254a621e3b33e40a0bc3d9aae496e535ded599056c23f2cede371a16",
+      "snapshot_file": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E012\\E012.copy.json",
+      "snapshot_sha256": "abfcd7fc77165028014cfc027d274caa8af554415c4c6a44e1a1f6a3b6048d6c",
+      "turn_dir": "D:\\lovebrain-arena\\logs\\c4_sweep_b_v5_vs_mem_live_20261026\\candidate_E012\\out\\turn_07_E012_T07",
+      "text": "行，订位归你，我就负责准时到。",
+      "fact_status": "pass",
+      "goal_score": 3,
+      "interaction_score": 3,
+      "note": "交回订位权、承担准时到场；简短不减分。",
+      "evidence": {
+        "persona": {
+          "me": "26岁，男，成都，做运营；想推进关系但踩不稳边界，容易用力过猛",
+          "her": "25岁，女，成都，做设计；慢热，反感被安排，但吃幽默那一套"
+        },
+        "initial_kb": {
+          "warmth": "认识两个月，线下见过一次"
+        },
+        "current_input": {
+          "messages": [
+            {
+              "role": "ME",
+              "text": "那就周六七点 那家我订位",
+              "ts": "2026-11-11 20:10"
+            },
+            {
+              "role": "HER",
+              "text": "行 我自己也能订 你别啥都抢着安排",
+              "ts": "2026-11-11 20:13"
+            }
+          ],
+          "clock": "2026-11-11 20:15",
+          "may_decline": false,
+          "note": "她提醒别全揽；尊重她的能动性，可让步分工，别把'我安排'当体贴强加"
+        },
+        "prior_case_ids": [
+          "E012_T01",
+          "E012_T02",
+          "E012_T03",
+          "E012_T04",
+          "E012_T05",
+          "E012_T06"
+        ]
+      },
+      "KB_completeness": null,
+      "user_willingness": null,
+      "backups_reviewed": false
+    }
+  ]
+}

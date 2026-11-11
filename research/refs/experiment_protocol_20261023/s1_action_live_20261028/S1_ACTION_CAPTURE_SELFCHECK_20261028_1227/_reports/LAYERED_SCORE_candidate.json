@@ -1,0 +1,3685 @@
+{
+ "exam_dir": "refs\\experiment_protocol_20261023\\s1_action_live_20261028\\S1_ACTION.INTERLEAVE_PLAN.json\\_reports\\EXAM_candidate",
+ "annotations_source": "NONE",
+ "annotations_bound_slots": 0,
+ "episodes": [
+  {
+   "primary_semantic_pass": 0,
+   "primary_rated_n": 0,
+   "primary_coverage_ratio": 0.0,
+   "primary_semantic_pass_rate_on_rated": null,
+   "primary_semantic_pass_rate_e2e": 0.0,
+   "at_least_one_pass_true": 0,
+   "at_least_one_pass_false": 0,
+   "at_least_one_pass_unknown": 12,
+   "at_least_one_pass_rate_on_decided": null,
+   "severe_error_backup_true": 0,
+   "severe_error_backup_false": 0,
+   "severe_error_backup_unknown": 12,
+   "severe_error_backup_lower_bound_rate": 0.0,
+   "severe_error_backup_rate_on_decided": null,
+   "backup_slots_total": 48,
+   "backup_slots_rated": 0,
+   "backup_slot_coverage_ratio": 0.0,
+   "annotations_sufficient_for_gate": false,
+   "episode_id": "E024",
+   "positions": 12,
+   "program_mean10": 8.33,
+   "program_mean10_excl_veto": 8.33,
+   "veto_turns": 0,
+   "semantic": {
+    "pass": 0,
+    "edge": 0,
+    "fail": 0,
+    "unrated": 12
+   },
+   "tokens": {
+    "prompt": 12,
+    "completion": 12
+   },
+   "latency_ms": {
+    "p50": 20,
+    "p95": 22,
+    "max": 22,
+    "n": 12
+   }
+  },
+  {
+   "primary_semantic_pass": 0,
+   "primary_rated_n": 0,
+   "primary_coverage_ratio": 0.0,
+   "primary_semantic_pass_rate_on_rated": null,
+   "primary_semantic_pass_rate_e2e": 0.0,
+   "at_least_one_pass_true": 0,
+   "at_least_one_pass_false": 0,
+   "at_least_one_pass_unknown": 12,
+   "at_least_one_pass_rate_on_decided": null,
+   "severe_error_backup_true": 0,
+   "severe_error_backup_false": 0,
+   "severe_error_backup_unknown": 12,
+   "severe_error_backup_lower_bound_rate": 0.0,
+   "severe_error_backup_rate_on_decided": null,
+   "backup_slots_total": 48,
+   "backup_slots_rated": 0,
+   "backup_slot_coverage_ratio": 0.0,
+   "annotations_sufficient_for_gate": false,
+   "episode_id": "E027",
+   "positions": 12,
+   "program_mean10": 8.33,
+   "program_mean10_excl_veto": 8.33,
+   "veto_turns": 0,
+   "semantic": {
+    "pass": 0,
+    "edge": 0,
+    "fail": 0,
+    "unrated": 12
+   },
+   "tokens": {
+    "prompt": 12,
+    "completion": 12
+   },
+   "latency_ms": {
+    "p50": 22,
+    "p95": 27,
+    "max": 29,
+    "n": 12
+   }
+  },
+  {
+   "primary_semantic_pass": 0,
+   "primary_rated_n": 0,
+   "primary_coverage_ratio": 0.0,
+   "primary_semantic_pass_rate_on_rated": null,
+   "primary_semantic_pass_rate_e2e": 0.0,
+   "at_least_one_pass_true": 0,
+   "at_least_one_pass_false": 0,
+   "at_least_one_pass_unknown": 12,
+   "at_least_one_pass_rate_on_decided": null,
+   "severe_error_backup_true": 0,
+   "severe_error_backup_false": 0,
+   "severe_error_backup_unknown": 12,
+   "severe_error_backup_lower_bound_rate": 0.0,
+   "severe_error_backup_rate_on_decided": null,
+   "backup_slots_total": 48,
+   "backup_slots_rated": 0,
+   "backup_slot_coverage_ratio": 0.0,
+   "annotations_sufficient_for_gate": false,
+   "episode_id": "E031",
+   "positions": 12,
+   "program_mean10": 8.33,
+   "program_mean10_excl_veto": 8.33,
+   "veto_turns": 0,
+   "semantic": {
+    "pass": 0,
+    "edge": 0,
+    "fail": 0,
+    "unrated": 12
+   },
+   "tokens": {
+    "prompt": 12,
+    "completion": 12
+   },
+   "latency_ms": {
+    "p50": 22,
+    "p95": 29,
+    "max": 31,
+    "n": 12
+   }
+  },
+  {
+   "primary_semantic_pass": 0,
+   "primary_rated_n": 0,
+   "primary_coverage_ratio": 0.0,
+   "primary_semantic_pass_rate_on_rated": null,
+   "primary_semantic_pass_rate_e2e": 0.0,
+   "at_least_one_pass_true": 0,
+   "at_least_one_pass_false": 0,
+   "at_least_one_pass_unknown": 12,
+   "at_least_one_pass_rate_on_decided": null,
+   "severe_error_backup_true": 0,
+   "severe_error_backup_false": 0,
+   "severe_error_backup_unknown": 12,
+   "severe_error_backup_lower_bound_rate": 0.0,
+   "severe_error_backup_rate_on_decided": null,
+   "backup_slots_total": 48,
+   "backup_slots_rated": 0,
+   "backup_slot_coverage_ratio": 0.0,
+   "annotations_sufficient_for_gate": false,
+   "episode_id": "E034",
+   "positions": 12,
+   "program_mean10": 8.33,
+   "program_mean10_excl_veto": 8.33,
+   "veto_turns": 0,
+   "semantic": {
+    "pass": 0,
+    "edge": 0,
+    "fail": 0,
+    "unrated": 12
+   },
+   "tokens": {
+    "prompt": 12,
+    "completion": 12
+   },
+   "latency_ms": {
+    "p50": 23,
+    "p95": 27,
+    "max": 29,
+    "n": 12
+   }
+  }
+ ],
+ "turns": [
+  {
+   "case_id": "E024_T01",
+   "turn": 1,
+   "generating_run_id": "iso_20261028_122810_ddd60a",
+   "case_input_sha256_16": "13e37a7fe024a58e",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 18,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E024_T02",
+   "turn": 2,
+   "generating_run_id": "iso_20261028_122810_ddd60a",
+   "case_input_sha256_16": "cfdfdf56f55b620c",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 18,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E024_T03",
+   "turn": 3,
+   "generating_run_id": "iso_20261028_122810_ddd60a",
+   "case_input_sha256_16": "3e23fde8239974db",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 19,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E024_T04",
+   "turn": 4,
+   "generating_run_id": "iso_20261028_122810_ddd60a",
+   "case_input_sha256_16": "db341ed56898060f",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 17,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E024_T05",
+   "turn": 5,
+   "generating_run_id": "iso_20261028_122810_ddd60a",
+   "case_input_sha256_16": "44c98b397936350d",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 17,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E024_T06",
+   "turn": 6,
+   "generating_run_id": "iso_20261028_122810_ddd60a",
+   "case_input_sha256_16": "05cf75da6d358878",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 20,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E024_T07",
+   "turn": 7,
+   "generating_run_id": "iso_20261028_122810_ddd60a",
+   "case_input_sha256_16": "f657a75c2ae9616d",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 22,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E024_T08",
+   "turn": 8,
+   "generating_run_id": "iso_20261028_122810_ddd60a",
+   "case_input_sha256_16": "0cd95f88e0e258f2",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 19,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E024_T09",
+   "turn": 9,
+   "generating_run_id": "iso_20261028_122810_ddd60a",
+   "case_input_sha256_16": "d813d3eb12e1184e",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 20,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E024_T10",
+   "turn": 10,
+   "generating_run_id": "iso_20261028_122810_ddd60a",
+   "case_input_sha256_16": "e34464240202a4dc",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 20,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E024_T11",
+   "turn": 11,
+   "generating_run_id": "iso_20261028_122810_ddd60a",
+   "case_input_sha256_16": "7de4726bd817e165",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 22,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E024_T12",
+   "turn": 12,
+   "generating_run_id": "iso_20261028_122810_ddd60a",
+   "case_input_sha256_16": "f0f481ac25b37f09",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 20,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E027_T01",
+   "turn": 1,
+   "generating_run_id": "iso_20261028_122811_e46976",
+   "case_input_sha256_16": "105323619ed93da3",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 22,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E027_T02",
+   "turn": 2,
+   "generating_run_id": "iso_20261028_122811_e46976",
+   "case_input_sha256_16": "6c4092428681883b",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 22,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E027_T03",
+   "turn": 3,
+   "generating_run_id": "iso_20261028_122811_e46976",
+   "case_input_sha256_16": "5e53095b763fdb7c",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 20,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E027_T04",
+   "turn": 4,
+   "generating_run_id": "iso_20261028_122811_e46976",
+   "case_input_sha256_16": "aadfde56699be8e9",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 21,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E027_T05",
+   "turn": 5,
+   "generating_run_id": "iso_20261028_122811_e46976",
+   "case_input_sha256_16": "40b514af9797c690",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 21,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E027_T06",
+   "turn": 6,
+   "generating_run_id": "iso_20261028_122811_e46976",
+   "case_input_sha256_16": "baccfd9494f10522",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 22,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E027_T07",
+   "turn": 7,
+   "generating_run_id": "iso_20261028_122811_e46976",
+   "case_input_sha256_16": "28754d49d111ab43",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 21,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E027_T08",
+   "turn": 8,
+   "generating_run_id": "iso_20261028_122811_e46976",
+   "case_input_sha256_16": "386d785cb30ff28f",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 23,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E027_T09",
+   "turn": 9,
+   "generating_run_id": "iso_20261028_122811_e46976",
+   "case_input_sha256_16": "9b9ba6f3c788a257",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 22,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E027_T10",
+   "turn": 10,
+   "generating_run_id": "iso_20261028_122811_e46976",
+   "case_input_sha256_16": "cdbf776cd997a586",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 26,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E027_T11",
+   "turn": 11,
+   "generating_run_id": "iso_20261028_122811_e46976",
+   "case_input_sha256_16": "8077734a98a22b9c",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 29,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E027_T12",
+   "turn": 12,
+   "generating_run_id": "iso_20261028_122811_e46976",
+   "case_input_sha256_16": "8143a69c587d5d71",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 26,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E031_T01",
+   "turn": 1,
+   "generating_run_id": "iso_20261028_122811_b1a408",
+   "case_input_sha256_16": "60d248f32c0f0d3c",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 27,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E031_T02",
+   "turn": 2,
+   "generating_run_id": "iso_20261028_122811_b1a408",
+   "case_input_sha256_16": "61ef33f21b402acc",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 19,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E031_T03",
+   "turn": 3,
+   "generating_run_id": "iso_20261028_122811_b1a408",
+   "case_input_sha256_16": "798bc82d7b7d05bd",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 20,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E031_T04",
+   "turn": 4,
+   "generating_run_id": "iso_20261028_122811_b1a408",
+   "case_input_sha256_16": "9436f3bc837db3ab",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 21,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E031_T05",
+   "turn": 5,
+   "generating_run_id": "iso_20261028_122811_b1a408",
+   "case_input_sha256_16": "a5019e2a1c09fa4b",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 22,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E031_T06",
+   "turn": 6,
+   "generating_run_id": "iso_20261028_122811_b1a408",
+   "case_input_sha256_16": "06187c61296102ec",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 21,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E031_T07",
+   "turn": 7,
+   "generating_run_id": "iso_20261028_122811_b1a408",
+   "case_input_sha256_16": "5175712f95ad3dad",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 28,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E031_T08",
+   "turn": 8,
+   "generating_run_id": "iso_20261028_122811_b1a408",
+   "case_input_sha256_16": "f82335c644971bf1",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 28,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E031_T09",
+   "turn": 9,
+   "generating_run_id": "iso_20261028_122811_b1a408",
+   "case_input_sha256_16": "c28d1e60738e97de",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 23,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E031_T10",
+   "turn": 10,
+   "generating_run_id": "iso_20261028_122811_b1a408",
+   "case_input_sha256_16": "34ac9ab0c7cc0a8f",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 22,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E031_T11",
+   "turn": 11,
+   "generating_run_id": "iso_20261028_122811_b1a408",
+   "case_input_sha256_16": "b1b6549961176bba",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 27,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E031_T12",
+   "turn": 12,
+   "generating_run_id": "iso_20261028_122811_b1a408",
+   "case_input_sha256_16": "151bac616650f906",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 31,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E034_T01",
+   "turn": 1,
+   "generating_run_id": "iso_20261028_122812_0c9fea",
+   "case_input_sha256_16": "da693c4212733dc6",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 29,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E034_T02",
+   "turn": 2,
+   "generating_run_id": "iso_20261028_122812_0c9fea",
+   "case_input_sha256_16": "d16d5ea2cb8f3902",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 26,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E034_T03",
+   "turn": 3,
+   "generating_run_id": "iso_20261028_122812_0c9fea",
+   "case_input_sha256_16": "b9c6045cd04ed3d4",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 20,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E034_T04",
+   "turn": 4,
+   "generating_run_id": "iso_20261028_122812_0c9fea",
+   "case_input_sha256_16": "03514e1ac5f10b84",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 20,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E034_T05",
+   "turn": 5,
+   "generating_run_id": "iso_20261028_122812_0c9fea",
+   "case_input_sha256_16": "b6cd6ea7cd91c9ce",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 23,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E034_T06",
+   "turn": 6,
+   "generating_run_id": "iso_20261028_122812_0c9fea",
+   "case_input_sha256_16": "590b9d188c5cce6e",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 20,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E034_T07",
+   "turn": 7,
+   "generating_run_id": "iso_20261028_122812_0c9fea",
+   "case_input_sha256_16": "9df38c99b206f141",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 22,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E034_T08",
+   "turn": 8,
+   "generating_run_id": "iso_20261028_122812_0c9fea",
+   "case_input_sha256_16": "322e1374668c3118",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 22,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E034_T09",
+   "turn": 9,
+   "generating_run_id": "iso_20261028_122812_0c9fea",
+   "case_input_sha256_16": "c537e6646bd825e7",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 24,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E034_T10",
+   "turn": 10,
+   "generating_run_id": "iso_20261028_122812_0c9fea",
+   "case_input_sha256_16": "ca97b2a0191e92b8",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 25,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E034_T11",
+   "turn": 11,
+   "generating_run_id": "iso_20261028_122812_0c9fea",
+   "case_input_sha256_16": "ea4e1b87b2a0d678",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 23,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  },
+  {
+   "case_id": "E034_T12",
+   "turn": 12,
+   "generating_run_id": "iso_20261028_122812_0c9fea",
+   "case_input_sha256_16": "6307bb27eaa13990",
+   "case_input_sha_source": "run_snapshot",
+   "program_score10": 8.33,
+   "program_failed_checks": [
+    "style_diversity"
+   ],
+   "veto": null,
+   "raw_reply_sha256_16": "3560f741492b0671",
+   "primary_slot": "recommended",
+   "primary_text": "（离线替身，不代表质量）",
+   "primary_semantic": "unrated",
+   "primary_semantic_note": "未提供批注文件",
+   "primary_annotation_bound": false,
+   "backup_slots": [
+    "bad_boy",
+    "playful",
+    "warm",
+    "directions[0]"
+   ],
+   "backup_semantic_per_slot": [
+    {
+     "slot": "bad_boy",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "playful",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "warm",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    },
+    {
+     "slot": "directions[0]",
+     "text": "（替身）",
+     "semantic": "unrated",
+     "note": "未提供批注文件",
+     "annotation_bound": false,
+     "slot_text_sha256_16": "2b7c051d03973c6f"
+    }
+   ],
+   "at_least_one_pass": "unknown",
+   "backup_with_severe_error": "unknown",
+   "slot_parse": "ok",
+   "coverage": {
+    "primary_rated": false,
+    "backup_slots_total": 4,
+    "backup_slots_rated": 0
+   },
+   "latency_ms": 23,
+   "tokens": {
+    "prompt": 1,
+    "completion": 1
+   },
+   "turn_type": "reply"
+  }
+ ],
+ "index": {
+  "started_at": "2026-10-28T12:28:21",
+  "harness": "action_policy_r1",
+  "harness_identity_sha256": "6e450c8f607b9c255171ec9c40c1c4f731461d0ae8b16b045ac7549665b2a46b",
+  "authorization_id": "AUTH-REHEARSAL-20261028122810",
+  "batch_id": "AUTH-REHEARSAL-20261028122810",
+  "model": "dsf",
+  "temperature": 0.7,
+  "status": "capture"
+ },
+ "id_binding": {
+  "authorization_id": "AUTH-REHEARSAL-20261028122810",
+  "batch_id": "AUTH-REHEARSAL-20261028122810",
+  "annotation_match_key": "run_id = 批/授权级绑定（跨 run 复用，非每 run 唯一）",
+  "per_episode_run_id": {
+   "E024": "iso_20261028_122810_ddd60a",
+   "E027": "iso_20261028_122811_e46976",
+   "E031": "iso_20261028_122811_b1a408",
+   "E034": "iso_20261028_122812_0c9fea"
+  }
+ },
+ "total": {
+  "primary_semantic_pass": 0,
+  "primary_rated_n": 0,
+  "primary_coverage_ratio": 0.0,
+  "primary_semantic_pass_rate_on_rated": null,
+  "primary_semantic_pass_rate_e2e": 0.0,
+  "at_least_one_pass_true": 0,
+  "at_least_one_pass_false": 0,
+  "at_least_one_pass_unknown": 48,
+  "at_least_one_pass_rate_on_decided": null,
+  "severe_error_backup_true": 0,
+  "severe_error_backup_false": 0,
+  "severe_error_backup_unknown": 48,
+  "severe_error_backup_lower_bound_rate": 0.0,
+  "severe_error_backup_rate_on_decided": null,
+  "backup_slots_total": 192,
+  "backup_slots_rated": 0,
+  "backup_slot_coverage_ratio": 0.0,
+  "annotations_sufficient_for_gate": false,
+  "positions": 48,
+  "program_mean10": 8.33,
+  "semantic": {
+   "pass": 0,
+   "edge": 0,
+   "fail": 0,
+   "unrated": 48
+  },
+  "latency_ms": {
+   "p50": 22,
+   "p95": 29,
+   "max": 31,
+   "n": 48
+  },
+  "willing_to_send": "未投票（用户口味，worker 不代投）"
+ }
+}

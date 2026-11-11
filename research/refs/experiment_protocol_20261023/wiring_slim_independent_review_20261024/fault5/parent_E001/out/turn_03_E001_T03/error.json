@@ -1,0 +1,7 @@
+{
+  "case_id": "E001_T03",
+  "turn_index": 3,
+  "error": "HOST_EXCEPTION: RuntimeError: gateway generate failed: upstream failed: simulated 5xx at dispatch 5 | frame={'error': 'HOST_EXCEPTION', 'detail': 'RuntimeError: gateway generate failed: upstream failed: simulated 5xx at dispatch 5', 'trace_tail': 'nism\\\\mechanism.py\", line 432, in run_turn\\n    res = gw.generate(h[\"system_prompt\"], prompt, images=images or None,\\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"D:\\\\lovebrain-arena\\\\refs\\\\experiment_protocol_20261023\\\\wir",
+  "adapter": "openai_compat",
+  "ts": "2026-10-24 11:45:09"
+}

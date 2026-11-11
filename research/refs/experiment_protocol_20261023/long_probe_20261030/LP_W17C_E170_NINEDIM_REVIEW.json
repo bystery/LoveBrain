@@ -1,0 +1,567 @@
+{
+ "kind": "lp_ninedim_review",
+ "tag": "W17C_E170",
+ "date": "2026-10-30",
+ "authorization": "AUTH-W17C-R-E170-20261103",
+ "anchors": "W04-01_RUBRIC_ANCHORS_V1",
+ "stories": [
+  "E170"
+ ],
+ "n_positions": 12,
+ "dims": {
+  "goal": {
+   "n": 11,
+   "cand_mean": 2.727,
+   "parent_mean": 2.364,
+   "paired_diff_mean": 0.364,
+   "cand_wins": 5,
+   "parent_wins": 2
+  },
+  "fact": {
+   "n": 11,
+   "cand_mean": 2.364,
+   "parent_mean": 2.0,
+   "paired_diff_mean": 0.364,
+   "cand_wins": 3,
+   "parent_wins": 1
+  },
+  "attrib": {
+   "n": 11,
+   "cand_mean": 2.545,
+   "parent_mean": 2.273,
+   "paired_diff_mean": 0.273,
+   "cand_wins": 3,
+   "parent_wins": 0
+  },
+  "time": {
+   "n": 11,
+   "cand_mean": 2.364,
+   "parent_mean": 2.0,
+   "paired_diff_mean": 0.364,
+   "cand_wins": 5,
+   "parent_wins": 1
+  },
+  "boundary": {
+   "n": 11,
+   "cand_mean": 2.455,
+   "parent_mean": 2.273,
+   "paired_diff_mean": 0.182,
+   "cand_wins": 2,
+   "parent_wins": 0
+  },
+  "memory": {
+   "n": 11,
+   "cand_mean": 2.455,
+   "parent_mean": 1.727,
+   "paired_diff_mean": 0.727,
+   "cand_wins": 7,
+   "parent_wins": 0
+  },
+  "interact": {
+   "n": 11,
+   "cand_mean": 2.636,
+   "parent_mean": 2.364,
+   "paired_diff_mean": 0.273,
+   "cand_wins": 5,
+   "parent_wins": 2
+  },
+  "init": {
+   "n": 11,
+   "cand_mean": 2.455,
+   "parent_mean": 2.182,
+   "paired_diff_mean": 0.273,
+   "cand_wins": 5,
+   "parent_wins": 2
+  },
+  "emotion": {
+   "n": 11,
+   "cand_mean": 2.182,
+   "parent_mean": 1.909,
+   "paired_diff_mean": 0.273,
+   "cand_wins": 3,
+   "parent_wins": 1
+  }
+ },
+ "severe": {
+  "candidate": 0,
+  "parent": 2
+ },
+ "review_call_quality": {
+  "n_call_fail": 1,
+  "fail_rate": 0.083,
+  "fail_rate_high": false,
+  "policy": "单次失败重试1次；重试额度预登记≤20%"
+ },
+ "swap_agreement": "0/1",
+ "swap_disagreements_true": [
+  {
+   "pair_id": "LP:E170:E170_T08",
+   "main_winner": "candidate",
+   "swap_winner": "TIE",
+   "agree": false,
+   "quote": "问清楚燃气那边20号上门要提前几天约，别拖到最后一天才报。",
+   "budget_refused": false
+  }
+ ],
+ "verdicts": [
+  {
+   "pair_id": "LP:E170:E170_T01",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "注明谁的原因、谁出钱、几天重装。今天能签字盖章最好，签不了就微信文字留痕。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E170:E170_T02",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 0,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": ""
+   },
+   "key_quote": "那条只管“客户原因”，量尺是木言的人来量的，就不是客户原因",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E170:E170_T03",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "单子上写七十六、现场量七十四，返厂是谁的责任，得看木言自己怎么解释这个数",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E170:E170_T04",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "CALL_FAIL",
+   "dims": {
+    "candidate": {},
+    "parent": {}
+   },
+   "severe": {
+    "candidate": null,
+    "parent": null,
+    "note": ""
+   },
+   "key_quote": "",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E170:E170_T05",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": ""
+   },
+   "key_quote": "工期从十五号推到十七号，这七天合同怎么算，让门店在责任单里写清楚",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E170:E170_T06",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "改层数如果动到柜体侧板孔位，就等于重新下单，那七天工期刚谈好又得往后挪。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E170:E170_T07",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "三百五你自己出没问题，那六百是门店责任单里写的，两笔别混一起记",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E170:E170_T08",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "燃气公司只看家里有没有人开门验收，你在就行",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E170:E170_T09",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "17号我去，封板缝和挡水条这两处我盯着。五十就五十，别在这上面耗神",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E170:E170_T10",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "17号上午九点我准时到，主要盯封板缝和挡水条",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E170:E170_T11",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "手机开手电贴着缝往下照，阴影均匀就没事",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E170:E170_T12",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "周六我带嫂子过去，先吃饭再对账；阳台柜先发链接/先量尺寸再谈款式",
+   "raw": "",
+   "attempts_used": 1
+  }
+ ],
+ "swap_supplement": [
+  {
+   "pair_id": "LP:E170:E170_T08",
+   "main_winner": "candidate",
+   "swap_winner": "TIE",
+   "agree": false,
+   "quote": "问清楚燃气那边20号上门要提前几天约，别拖到最后一天才报。",
+   "budget_refused": false
+  }
+ ],
+ "note": "故事级=探索性读数；fact/time 维 assistive（资格批处置）；安抚压力位 severe 需逐位 B3 复核"
+}

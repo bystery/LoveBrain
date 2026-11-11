@@ -1,0 +1,1081 @@
+{
+ "kind": "lp_ninedim_review",
+ "tag": "W14R",
+ "date": "2026-10-30",
+ "authorization": "AUTH-W14R-REVIEW-20261102-02",
+ "anchors": "W04-01_RUBRIC_ANCHORS_V1",
+ "stories": [
+  "E061"
+ ],
+ "n_positions": 24,
+ "dims": {
+  "goal": {
+   "n": 24,
+   "cand_mean": 2.375,
+   "parent_mean": 2.167,
+   "paired_diff_mean": 0.208,
+   "cand_wins": 9,
+   "parent_wins": 6
+  },
+  "fact": {
+   "n": 24,
+   "cand_mean": 2.125,
+   "parent_mean": 2.042,
+   "paired_diff_mean": 0.083,
+   "cand_wins": 6,
+   "parent_wins": 4
+  },
+  "attrib": {
+   "n": 23,
+   "cand_mean": 2.087,
+   "parent_mean": 1.957,
+   "paired_diff_mean": 0.13,
+   "cand_wins": 5,
+   "parent_wins": 3
+  },
+  "time": {
+   "n": 22,
+   "cand_mean": 2.182,
+   "parent_mean": 1.955,
+   "paired_diff_mean": 0.227,
+   "cand_wins": 7,
+   "parent_wins": 3
+  },
+  "boundary": {
+   "n": 24,
+   "cand_mean": 2.458,
+   "parent_mean": 2.167,
+   "paired_diff_mean": 0.292,
+   "cand_wins": 8,
+   "parent_wins": 2
+  },
+  "memory": {
+   "n": 24,
+   "cand_mean": 1.792,
+   "parent_mean": 1.625,
+   "paired_diff_mean": 0.167,
+   "cand_wins": 9,
+   "parent_wins": 6
+  },
+  "interact": {
+   "n": 24,
+   "cand_mean": 2.208,
+   "parent_mean": 2.125,
+   "paired_diff_mean": 0.083,
+   "cand_wins": 9,
+   "parent_wins": 7
+  },
+  "init": {
+   "n": 24,
+   "cand_mean": 1.833,
+   "parent_mean": 1.875,
+   "paired_diff_mean": -0.042,
+   "cand_wins": 6,
+   "parent_wins": 7
+  },
+  "emotion": {
+   "n": 24,
+   "cand_mean": 2.042,
+   "parent_mean": 2.042,
+   "paired_diff_mean": 0.0,
+   "cand_wins": 6,
+   "parent_wins": 7
+  }
+ },
+ "severe": {
+  "candidate": 2,
+  "parent": 1
+ },
+ "review_call_quality": {
+  "n_call_fail": 0,
+  "fail_rate": 0.0,
+  "fail_rate_high": false,
+  "policy": "单次失败重试1次；重试额度预登记≤20%"
+ },
+ "swap_agreement": "2/4",
+ "swap_disagreements_true": [
+  {
+   "pair_id": "LP:E061:E061_T08",
+   "main_winner": "TIE",
+   "swap_winner": "candidate",
+   "agree": false,
+   "quote": "改到明天了，那明天上午我陪你去。空腹的事你确认过了吧？"
+  },
+  {
+   "pair_id": "LP:E061:E061_T24",
+   "main_winner": "TIE",
+   "swap_winner": "parent",
+   "agree": false,
+   "quote": "明天你生日 老地方七点 我下班直接过去"
+  }
+ ],
+ "verdicts": [
+  {
+   "pair_id": "LP:E061:E061_T01",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "3类不是\"快变癌\"那档，指南里一般就是定期复查、先观察；你现在最怕的是哪一点",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T02",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "半年后复查超声，这是3类结节的常规随访节奏……你搜到的那些，要是反而让你更慌，明天我陪你一起理一遍",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E061:E061_T03",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "5月20号上午我记上了，空腹我陪你。到时候早点起，路上给你带瓶水，抽完血再喝。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T04",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "夹工牌后面，天天带着，这招挺稳。5月20号上午我空着，头天晚上我把闹钟定好",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E061:E061_T05",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "3类在指南里属于低风险……我查的是指南和正规医院的科普，不是网上小作文",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T06",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 1,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "你先把复查做了，20号我陪你去，回头拿医生的原话回她",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T07",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，那天先不买。出差大概几号定下来？",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E061:E061_T08",
+   "candidate_arm": "window_expand_b2",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "改到明天了，那明天上午我陪你去。空腹的事你确认过了吧？",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T09",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "复查改成当天下午或者换个上午都行——电话里能不能问下还有没有别的加号",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T10",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "组长不肯改时间，这事确实气人。先看能不能把主讲往后挪一挪，说上半小时，下午再赶过去？",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T11",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "好，我不拦。……5月6号早上的抽血和超声我陪你去，你只管把讲稿交出去。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T12",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": null,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": null,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "明天我 7 点半前到，在挂号机那儿等你",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T13",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "LEFT:抽甲功是常规操作；RIGHT:我不是医生，具体为什么加，取报告时问一句最准",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T14",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "没长就好，这半年算是稳住了。甲功那几项出来了吗",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T15",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "三个月，那就是八月六号。比原来提前了",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T16",
+   "candidate_arm": "window_expand_b2",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": true,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "30 块是贵，不过换来个“没长、医生说挺好”，这钱花得值",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T17",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": null,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "医生说不用特意忌碘反而省事，正常吃就行",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T18",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "6月12号七点云南菜我记下了，那周五我从公司过去，正好顺路",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T19",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "新单上岗，旧单退役，流程越来越顺了。8 月 6 号我先记上。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T20",
+   "candidate_arm": "window_expand_b2",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": "LEFT把复查日期说成'改到6号'，与已知的8月6日不符且把'8月那次'和'明早翻单'混在一起，属时间/事项状态错误；RIGHT明确8月单子未定、以新单为准并给可执行下一步。"
+   },
+   "key_quote": "你翻一下8月那张单子，写没写空腹，没有明天打门诊问一句最稳。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T21",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "要，发我一份吧，我存着。你自己那份别只放云盘，手机里也留个备份。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T22",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "她已经能做的最硬的一版回复；她认不认是她的选择，你不用再劝",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E061:E061_T23",
+   "candidate_arm": "window_expand_b2",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误；卡面要求的空腹提醒均未落实，主动性略弱"
+   },
+   "key_quote": "还是同一位医生，前后能对得上。8 月 6 号我记着了。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E061:E061_T24",
+   "candidate_arm": "window_expand_b2",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 0,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": true,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "明天你不用赶，我提前到，先占好位子等你下班。就是别又在路上随便对付一口，留着肚子。",
+   "raw": "",
+   "attempts_used": 1
+  }
+ ],
+ "swap_supplement": [
+  {
+   "pair_id": "LP:E061:E061_T08",
+   "main_winner": "TIE",
+   "swap_winner": "candidate",
+   "agree": false,
+   "quote": "改到明天了，那明天上午我陪你去。空腹的事你确认过了吧？"
+  },
+  {
+   "pair_id": "LP:E061:E061_T16",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "30块是贵，不过换来个“没长、医生说挺好”，这钱花得值"
+  },
+  {
+   "pair_id": "LP:E061:E061_T20",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "你翻一下8月那张单子，写没写空腹，没有明天打门诊问一句最稳"
+  },
+  {
+   "pair_id": "LP:E061:E061_T24",
+   "main_winner": "TIE",
+   "swap_winner": "parent",
+   "agree": false,
+   "quote": "明天你生日 老地方七点 我下班直接过去"
+  }
+ ],
+ "note": "故事级=探索性读数；fact/time 维 assistive（资格批处置）；安抚压力位 severe 需逐位 B3 复核"
+}

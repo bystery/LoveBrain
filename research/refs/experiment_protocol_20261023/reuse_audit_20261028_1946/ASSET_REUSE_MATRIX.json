@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-28",
+  "kind": "evidence_based_reuse_decisions_not_new_platform",
+  "items": [
+    {
+      "component": "原版范围/移植",
+      "existing": "candidates/reference_product_v1/mechanism/reference_chain.py; refs/arena_v1/BASELINE_PARITY.md",
+      "status": "已有，应继承",
+      "reuse_or_extend": "按已声明范围比较；未覆盖能力单列",
+      "do_not_repeat": "不重新移植同一前台主链"
+    },
+    {
+      "component": "模型网关",
+      "existing": "arena/lb_gateway.py",
+      "status": "公共可复用",
+      "reuse_or_extend": "继续用现有网关和真实attempt日志",
+      "do_not_repeat": "不另造计费/派发平台"
+    },
+    {
+      "component": "授权预算",
+      "existing": "arena/isolation/authorization_budget.py",
+      "status": "已实现并有事故修复",
+      "reuse_or_extend": "新scope登记与旧物理更正并列",
+      "do_not_repeat": "不复活关闭单、不重做27/18修复"
+    },
+    {
+      "component": "固定故事执行",
+      "existing": "tools/exam_interleave_plan.py; arena/isolation/trusted_controller.py",
+      "status": "今天已复用",
+      "reuse_or_extend": "同一入口适配新题卡/候选",
+      "do_not_repeat": "不因为换窗口再写执行器"
+    },
+    {
+      "component": "公共输出契约",
+      "existing": "arena/protocol_public.py; arena/lb_scorer.py",
+      "status": "已有语义权威",
+      "reuse_or_extend": "实际入口复用或等价调用",
+      "do_not_repeat": "不再增加第三份近似动作协议"
+    },
+    {
+      "component": "消费归一保全",
+      "existing": "tools/normalize_reply_contract.py",
+      "status": "旧保全可复用",
+      "reuse_or_extend": "保全冲突和超额方向的完整原文",
+      "do_not_repeat": "不重新截断已解决的审计信息"
+    },
+    {
+      "component": "新R3闭合修复",
+      "existing": "tools/output_repair.py",
+      "status": "有新功能但与旧R1/R2重叠",
+      "reuse_or_extend": "仅增量扩展；当前只是离线工具",
+      "do_not_repeat": "不宣称正式消费链已全面恢复"
+    },
+    {
+      "component": "批注/结果绑定",
+      "existing": "tools/exam_layered_score.py::_match_annotation; tools/build_review_worksheet.py",
+      "status": "旧保障已实现，新汇总未继承",
+      "reuse_or_extend": "离线绑定现有答案和批注，再派生分表",
+      "do_not_repeat": "不为修绑定重新跑生成"
+    },
+    {
+      "component": "九维分表",
+      "existing": "tools/aggregate_s1_scorecard.py",
+      "status": "新统计有价值，身份/绑定丢失",
+      "reuse_or_extend": "接回旧真实索引与绑定；修48位模板",
+      "do_not_repeat": "不把旧case_id分数静默带到新答案"
+    },
+    {
+      "component": "证据状态结构",
+      "existing": "candidates/v6_integrated/mechanism/mechanism.py",
+      "status": "已有结构，W04重复派工被拒",
+      "reuse_or_extend": "研究语义支持、主体和真实使用",
+      "do_not_repeat": "不为满足任务书复制evidence_state_r1"
+    },
+    {
+      "component": "行动父子候选",
+      "existing": "candidates/action_policy_r1; candidates/action_policy_r2; candidates/action_policy_r3",
+      "status": "实际继承且有机制差分",
+      "reuse_or_extend": "保留现有闭包与真实试验",
+      "do_not_repeat": "不将继承文件相同计作从零重做"
+    },
+    {
+      "component": "Stage1/2开发故事",
+      "existing": "benchmark/stories_v2/stage1; benchmark/stories_v2/stage2",
+      "status": "已有可用材料",
+      "reuse_or_extend": "按覆盖缺口、暴露与已跑状态选择",
+      "do_not_repeat": "不重新写同样一批故事或假称独立"
+    },
+    {
+      "component": "当前已付费答卷",
+      "existing": "refs/experiment_protocol_20261023/s1_action_live_20261028",
+      "status": "S1/S2/S2R/S3/D1已发生",
+      "reuse_or_extend": "回收、绑定、评审与必要新版本复验",
+      "do_not_repeat": "不因新审计把原始数据归零"
+    },
+    {
+      "component": "慢模拟器研究",
+      "existing": "logs/p07_w09_20261028_a; W09_DISPATCH_INCIDENT_20261028.json",
+      "status": "重复补齐和覆盖事故已有证据",
+      "reuse_or_extend": "独立辅助epoch，不占固定故事关键路径",
+      "do_not_repeat": "不继续r6/r7补到成功"
+    },
+    {
+      "component": "当前任务权威",
+      "existing": "WORKER_CURRENT_RUNBOOK.json",
+      "status": "已有唯一指针",
+      "reuse_or_extend": "保持一个当前入口，旧书只作沿革",
+      "do_not_repeat": "不再为审计新建V5总任务书"
+    }
+  ]
+}

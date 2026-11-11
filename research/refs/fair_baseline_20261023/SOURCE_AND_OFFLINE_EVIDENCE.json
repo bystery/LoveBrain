@@ -1,0 +1,234 @@
+{
+  "checked_at": "2026-10-23T00:44:15.856623+08:00",
+  "scope": "Source review plus seven existing offline carryover fixtures; not Android execution or end-to-end Kotlin parity",
+  "original_repository": {
+    "path": "D:\\LoveBrain",
+    "branch": "main",
+    "commit": "176e521c269efed4bb8b00f6c52a48993463a724",
+    "tracked_status": "",
+    "untracked_files_checked": false
+  },
+  "files": [
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\AppConfig.kt",
+      "sha256": "b865c790c0d202f29e4f103e89256c3567e9e8a0fd2363fcdc368f0d955843e5"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\PromptBuilder.kt",
+      "sha256": "b08b2a08c069c30eeea3a7958ad1e0acc9030a803656167c97e781a2c5a88e19"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\PromptBudget.kt",
+      "sha256": "2417def08e49d61753512ce198273ead64604b1f6fd74a82d78de3cc055b0899"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\TopicRecorder.kt",
+      "sha256": "3f30494d42c1118923568381c04cd55abb6712d5c40d600e41407d1418835252"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\RecentRoundStore.kt",
+      "sha256": "32678f6c0d0ca1a410ded02a25f42d9f81b946128e82e0d7314333f3b80e13d4"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\SceneChainStore.kt",
+      "sha256": "04a02554baa735175d5157b8d3e737fd21e0c8db2804190d25d3f06fe8b9eaa2"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\SceneChainInjection.kt",
+      "sha256": "136874de750dbe00288e6761459f01b4dcb18c9b0576a86be148ac009e081cde"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\FactSubjectResolver.kt",
+      "sha256": "221b847f0ebc8aa0c3617b83051743bf41e1c7fa397cbf575ff5eb15729be3ff"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\FactSpeakerResolver.kt",
+      "sha256": "7142887cd5390d386b156efac0e08a6d6d63b5f597938f4850643eeecda72eaf"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\OngoingPlanStore.kt",
+      "sha256": "73e3cec8571a6fd2d019985f2b8eaaa90c5ab6a9ccb6a4a5d4175b319c60ad03"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\OngoingContextSelector.kt",
+      "sha256": "ac6426355fa2980dbce58b1710dfba9de76e422a8c16504793df300fe3a369d6"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\MemoryCorrectionPolicy.kt",
+      "sha256": "6cfc2711b1caeca6f3e92fe99559b105970a784a462b224f403b673e0c8f1adf"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\KnowledgeTriggerCoordinator.kt",
+      "sha256": "dbd05f880809af6de381ec4b85c9de0b43bbfda009f0f16adc439de0a82a38e7"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\KnowledgeContextReader.kt",
+      "sha256": "cd9d8a3afe68a08a5337343575bd2c547b7bc4106dd53b9e8b0dba7d21525614"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\GenerationEngine.kt",
+      "sha256": "4c451daf47a64fa5fff96eab5943b497ff67ad6a9fc6a738ae95e3646210cf02"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\prompt\\PromptKnowledgeSection.kt",
+      "sha256": "c164caba90732cbf534e998dddc504d21b0af3948999b5491288746c957c388b"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\prompt\\IntentIdeaBlock.kt",
+      "sha256": "ed27e0236b043c85d3415569cf52e3e4fbb194d47bbd149ee2d109c1b1f1a92e"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\domain\\prompt\\MemoryRefPolicy.kt",
+      "sha256": "91206f2f889d19810659eaa24515c31c6c9f541f0e035665b9150d719243f75b"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\model\\Models.kt",
+      "sha256": "3b3f48a981d1bb658d8fb7f2a0d6b19148a91bfcfec2114fe244f1bef77eb319"
+    },
+    {
+      "path": "D:\\LoveBrain\\app\\src\\main\\java\\com\\lovebrain\\app\\viewmodel\\LoveBrainViewModel.kt",
+      "sha256": "6a9a942f78565cba96ba578ee77ea3da8e12f315093d3206f6cee93601963d70"
+    },
+    {
+      "path": "D:\\lovebrain-arena\\candidates\\reference_product_v1\\mechanism\\mechanism.py",
+      "sha256": "6c5f4b366df3c6764321ab2d0cb04f06c94d11a3cc55fe212e2f3f6754c0af16"
+    },
+    {
+      "path": "D:\\lovebrain-arena\\candidates\\reference_product_v1\\product_memory.py",
+      "sha256": "fee3b418beebc104f8bd21266d73117c0ff82985d932c380cbba12350504b6c7"
+    },
+    {
+      "path": "D:\\lovebrain-arena\\candidates\\reference_product_v1\\reference_chain.py",
+      "sha256": "5ee21efd98697c6173597e718e696f8aace650fbc0262fe84fb06d2d309e1737"
+    },
+    {
+      "path": "D:\\lovebrain-arena\\refs\\arena_v1\\BASELINE_PARITY.md",
+      "sha256": "16cafba47ee7a173cec7b76da6c40ae989b8d1f42c10a2ff3ee792458b0c67f9"
+    },
+    {
+      "path": "D:\\lovebrain-arena\\AGENTS.md",
+      "sha256": "ffa03f39e07cc4ab7ff0b524fa949a8be5e5b4d283771bc51a56496cbe6daadc"
+    },
+    {
+      "path": "D:\\lovebrain-arena\\arena\\isolation\\trusted_controller.py",
+      "sha256": "fd0cd621e2c181d451601c0e59ad496c1522e62693484c6c0d2dfec91a4a6391"
+    },
+    {
+      "path": "D:\\lovebrain-arena\\arena\\lb_gateway.py",
+      "sha256": "a1f46a632d76a5e4759b5d15f6cc8872ec9aee2eee491b638d864f3198de07b6"
+    },
+    {
+      "path": "D:\\lovebrain-arena\\tools\\test_baseline_carryover.py",
+      "sha256": "cbb74718bf09661f70e78427651060dd1fd672d772d1d12b64c2a0b85bb7452d"
+    }
+  ],
+  "sources_unchanged_during_offline_checks": true,
+  "assets": [
+    {
+      "name": "core",
+      "original_path": "D:\\LoveBrain\\app\\src\\main\\assets\\engine\\system_prompt\\core.md",
+      "original_sha256": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+      "reference_path": "D:\\lovebrain-arena\\candidates\\reference_product_v1\\assets\\system_prompt\\core.md",
+      "reference_exists": true,
+      "reference_sha256": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+      "byte_equal": true
+    },
+    {
+      "name": "naturalness_check",
+      "original_path": "D:\\LoveBrain\\app\\src\\main\\assets\\engine\\system_prompt\\naturalness_check.md",
+      "original_sha256": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+      "reference_path": "D:\\lovebrain-arena\\candidates\\reference_product_v1\\assets\\system_prompt\\naturalness_check.md",
+      "reference_exists": true,
+      "reference_sha256": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+      "byte_equal": true
+    },
+    {
+      "name": "redline",
+      "original_path": "D:\\LoveBrain\\app\\src\\main\\assets\\engine\\system_prompt\\redline.md",
+      "original_sha256": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+      "reference_path": "D:\\lovebrain-arena\\candidates\\reference_product_v1\\assets\\system_prompt\\redline.md",
+      "reference_exists": true,
+      "reference_sha256": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+      "byte_equal": true
+    },
+    {
+      "name": "format",
+      "original_path": "D:\\LoveBrain\\app\\src\\main\\assets\\engine\\system_prompt\\format.md",
+      "original_sha256": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+      "reference_path": "D:\\lovebrain-arena\\candidates\\reference_product_v1\\assets\\system_prompt\\format.md",
+      "reference_exists": true,
+      "reference_sha256": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+      "byte_equal": true
+    },
+    {
+      "name": "stage",
+      "original_path": "D:\\LoveBrain\\app\\src\\main\\assets\\engine\\system_prompt\\stage.md",
+      "original_sha256": "1bd2f92f3ed49868c386ed0d5ac2bf2a19b80004ac0fa71a0bc681d609c43431",
+      "reference_path": "D:\\lovebrain-arena\\candidates\\reference_product_v1\\assets\\system_prompt\\stage.md",
+      "reference_exists": false
+    },
+    {
+      "name": "aggressive",
+      "original_path": "D:\\LoveBrain\\app\\src\\main\\assets\\engine\\system_prompt\\aggressive.md",
+      "original_sha256": "67abc1afbebdc1a4b6953fbbbd53c846381d586c0c9ee2e915bcd4ebcbe26a12",
+      "reference_path": "D:\\lovebrain-arena\\candidates\\reference_product_v1\\assets\\system_prompt\\aggressive.md",
+      "reference_exists": false
+    }
+  ],
+  "carryover_fixture_results": [
+    {
+      "name": "t1_second_prompt_reads_writeback",
+      "status": "PASS",
+      "detail": "p2_reads_recent+scene+topic+ongoing, p3_reads_p2, turnCount=3"
+    },
+    {
+      "name": "t2_new_story_clears",
+      "status": "PASS",
+      "detail": "new_story_no_leak"
+    },
+    {
+      "name": "t3_snapshot_restore_keeps_memory",
+      "status": "PASS",
+      "detail": "restore_keeps_recent+scene"
+    },
+    {
+      "name": "t4_invalid_source_rejected",
+      "status": "PASS",
+      "detail": "invalid_source_rejected"
+    },
+    {
+      "name": "t5_no_analysis_writes_nothing",
+      "status": "PASS",
+      "detail": "no_analysis_no_write"
+    },
+    {
+      "name": "t6_terminal_not_revived_and_filler_skipped",
+      "status": "PASS",
+      "detail": "terminal_not_revived, filler_skipped"
+    },
+    {
+      "name": "t7_topic_rotation_clears_moment",
+      "status": "PASS",
+      "detail": "rotate_archives_and_clears"
+    }
+  ],
+  "carryover_passed": 7,
+  "current_confirmed_findings": [
+    "Current reference has product_memory cross-round writeback and reads it in the next prompt; previous absence finding is historical.",
+    "Current reference run_turn concatenates prompt blocks without original PromptBudget.byBlocks.",
+    "Current reference _knowledge_block reads corrections but does not apply that variable to its rendered profile/lesson/scene/ongoing blocks.",
+    "Current original timestamp prompt includes behavioral constraints; reference timestamp is simplified.",
+    "product_memory explicitly excludes FactSubjectResolver, multi-file WAL recovery and background reestimation triggers.",
+    "Current controller implements genuine interpolated percentiles; previous max-as-p95 finding is historical."
+  ],
+  "limits": {
+    "real_model_calls": 0,
+    "product_code_changes": 0,
+    "os_configuration_changes": 0,
+    "sealed_bank_read": false,
+    "full_android_build_executed": false,
+    "fixture_design": "Existing worker tests, independently re-executed; not new blind tests or exhaustive parity proof"
+  },
+  "guide_sha256": "0972e05498ae59ea8546ac8a6bf86d5ccfdcd5ad7e1e0ffec0093dd3ec98f63b",
+  "guide_local_source_links_checked": 7
+}

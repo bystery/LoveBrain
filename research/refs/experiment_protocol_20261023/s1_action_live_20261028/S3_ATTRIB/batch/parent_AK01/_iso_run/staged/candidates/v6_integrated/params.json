@@ -1,0 +1,11 @@
+{
+ "candidate": "v6_integrated",
+ "role": "candidate",
+ "parent": "v6_goal_context",
+ "output_contract": null,
+ "mechanism_flags": {
+  "action_layer": true,
+  "evidence_memory": true
+ },
+ "note": "MAX-288 V2 P05-B：在 v6_goal_context 同一目标/行动分支上整合证据记忆、状态更新与上下文选择。真实差异（全在 user 侧，零额外调用）：(A) 真实事件日志只收 HER/ME 原文+稳定 uid+role+ts，模型回复不写回；(B) 每条事实带 fact_id/subject/relation/evidence_uids/evidence_quotes/certainty/status/event_time/valid_from/valid_to/supersedes，初始画像/共同知识按 kbin:/persona: 来源归档；(C) confirmed_seed/confirmed/tentative/proposed/cancelled/completed/reopened/unverified_src/superseded 与历史版本分离，更正只改指定 fact_id，旧版本留 history；(D) src_ids 必须属于本轮、quote 必须是所引消息的逐字子串（空白归一），主体/引文不成立存 unverified_src 不投影；(E) 当前窗口永不挤出，相关事实 500CU/暂定 300CU/最近更正 220CU 预算化投影，静态种子与 seed 块去重，取消/完成/过期/被替换不投影；(F) 快照/恢复含事件、事实、历史版本、目标历史、动作日志、计划编号，用 runner 的 stop-after/resume 跨进程验。消融：mechanism_flags.evidence_memory=false 关记忆层，action_layer=false 关动作层，两者全 false=v5 基座；改 flags=改 params=新身份。诚实边界：引文存在≠语义主体正确，主体语义错换仍由评审层判；不新增调用；不声称已优于 v5/C2/C3。output_contract 沿用父本 legacy（response 四风格 + directions 四方向不变）。"
+}

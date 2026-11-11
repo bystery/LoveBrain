@@ -1,0 +1,24 @@
+{
+  "ack_id": "GIA-20261109-ANNOTATOR-B5",
+  "date": "2026-11-09",
+  "role": "gold_annotator",
+  "annotator_session": "ANNOTATOR-B5",
+  "batch": "phase3_wave5_selection_batch2",
+  "assigned_episodes": ["E356", "E357", "E360", "E361", "E369"],
+  "declarations": {
+    "no_run_results_read": true,
+    "no_logs_read": true,
+    "no_candidates_read": true,
+    "no_audit_or_verdict_docs_read": true,
+    "no_gold_sidecar_read": true,
+    "no_other_episode_reference_or_audit_read": true,
+    "specs_read_in_order": [
+      "refs/benchmark_v1_20261107/phase3/SELECTION_ANNOTATOR_BRIEF.md",
+      "refs/benchmark_v1_20261107/phase2/GOLD_ANNOTATION_GUIDE_V1.md",
+      "refs/benchmark_v1_20261107/phase2/ATOMIC_ASSERTION_GUIDE_V1.md",
+      "benchmark/stories_v2/GOLD_SCHEMA.md",
+      "refs/benchmark_v1_20261107/phase2/TOPIC_RUBRIC_V1.md (T05/T06/T07)"
+    ],
+    "validation_scripts_kept_outside_repo": true
+  }
+}

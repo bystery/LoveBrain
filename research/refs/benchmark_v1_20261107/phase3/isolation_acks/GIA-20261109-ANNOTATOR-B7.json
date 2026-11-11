@@ -1,0 +1,38 @@
+{
+  "ack_id": "GIA-20261109-ANNOTATOR-B7",
+  "date": "2026-11-10",
+  "role": "gold_annotator",
+  "annotator": "ANNOTATOR-B7",
+  "batch": "phase3_batch2_w5_selection",
+  "session_note": "重派会话记录：本文件覆盖 2026-11-09 旧会话登记，为本次重派执行会话的生效 ack。",
+  "assigned_stories": ["E364", "E365", "E371", "E372", "E374"],
+  "declarations": {
+    "no_run_results_read": true,
+    "no_logs_read": true,
+    "no_candidates_read": true,
+    "no_verdict_or_audit_docs_read": true,
+    "no_gold_sidecar_read": true,
+    "no_other_episode_reference_or_audit_read": true,
+    "author_files_frozen_readonly": true,
+    "specs_read_in_order": [
+      "refs/benchmark_v1_20261107/phase3/SELECTION_ANNOTATOR_BRIEF.md",
+      "refs/benchmark_v1_20261107/phase2/GOLD_ANNOTATION_GUIDE_V1.md",
+      "refs/benchmark_v1_20261107/phase2/ATOMIC_ASSERTION_GUIDE_V1.md",
+      "benchmark/stories_v2/GOLD_SCHEMA.md",
+      "refs/benchmark_v1_20261107/phase2/TOPIC_RUBRIC_V1.md (T06, T08, T09)"
+    ],
+    "temp_scripts_location": "system temp dir (not in repo)"
+  },
+  "outputs_committed": [
+    "benchmark/stories_v2/wave5_selection/E364/reference.json",
+    "benchmark/stories_v2/wave5_selection/E364/audit.md",
+    "benchmark/stories_v2/wave5_selection/E365/reference.json",
+    "benchmark/stories_v2/wave5_selection/E365/audit.md",
+    "benchmark/stories_v2/wave5_selection/E371/reference.json",
+    "benchmark/stories_v2/wave5_selection/E371/audit.md",
+    "benchmark/stories_v2/wave5_selection/E372/reference.json",
+    "benchmark/stories_v2/wave5_selection/E372/audit.md",
+    "benchmark/stories_v2/wave5_selection/E374/reference.json",
+    "benchmark/stories_v2/wave5_selection/E374/audit.md"
+  ]
+}

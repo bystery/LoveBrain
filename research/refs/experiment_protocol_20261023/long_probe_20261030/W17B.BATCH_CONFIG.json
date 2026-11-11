@@ -1,0 +1,17 @@
+{
+ "batch_id": "BATCH-W17B-GUARD-20261102",
+ "arm_map": {
+  "parent": "window_expand_b_norecap",
+  "candidate": "window_expand_b_norecap_guard"
+ },
+ "episode_order": [
+  {"episode": "E189", "arm_order": "parent_first"},
+  {"episode": "E190", "arm_order": "candidate_first"},
+  {"episode": "E195", "arm_order": "parent_first"},
+  {"episode": "E199", "arm_order": "candidate_first"},
+  {"episode": "E207", "arm_order": "parent_first"},
+  {"episode": "E208", "arm_order": "candidate_first"}
+ ],
+ "cards_path": "benchmark/stories_v2/wave3/GRADING_CARDS_W17.json",
+ "recall_capable": false
+}

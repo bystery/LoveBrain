@@ -1,0 +1,48 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "F3",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_F3_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/longprobe_f3_live_20261030",
+ "n_queued": 1,
+ "queue": [
+  {
+   "pair_id": "LP:E062:E062_T23",
+   "order": "main",
+   "story": "E062",
+   "cid": "E062_T23",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "R凭空编出“那200已经让过了”这一已发生的让价安排，属于编造已发生安排；它既与4400含环的账目口径冲突，也把未发生过的议价当成既成事实。L把灰点位置写成“前组里两粒”，同样是没依据的具体化，而且两人都漏了卡面要求的4400数字核对。R对旷量“先空着等问清楚再补一行”的状态处理是唯一亮点。",
+   "key_quote": "那 200 已经让过了，将来出手直接写“前组两粒灰点，价已让”",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 3,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "那200已经让过了",
+      "前组里两粒",
+      "先空着等问清楚再补一行"
+     ],
+     "found_where": {
+      "那200已经让过了": "parent_reply",
+      "前组里两粒": "candidate_reply",
+      "先空着等问清楚再补一行": "parent_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  }
+ ]
+}

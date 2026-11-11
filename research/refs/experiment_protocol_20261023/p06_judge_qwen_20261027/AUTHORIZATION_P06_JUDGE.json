@@ -1,0 +1,31 @@
+{
+ "authorization_id": "AUTH-P06-JUDGE-QWEN-20261027-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "authorization_basis": {
+  "kind": "user_cycle_authorization_20261027",
+  "user_quote": "我授权你按该V2任务继续本周期固定dsf的模型实验，按其16,384次新增管理上限逐批建立有限、可核验的授权和预算，生成/裁判/命题或对方模拟分账",
+  "interpretation": "P06 judge batch is a separate judge account under the same cycle cap; harness generations already covered by AUTH-P06-MAX288V2-20261027-01. No new human signature or per-batch approval claimed."
+ },
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "qwen3.8-flash",
+  "temperature": 0.7,
+  "max_attempts": 256
+ },
+ "budget_ledger": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-P06-JUDGE-QWEN-20261027-01.jsonl",
+ "scope": {
+  "scope_id": "p06_quality_judge_20261027_v1",
+  "purpose": "P06 three two-arm batches (A base-vs-v5, B base-vs-v6g, C base-vs-v6i), primary answers + fixed repeats + authored development controls; advisory nine-dimensional review, NOT personal willingness prediction, NOT product integration.",
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "model_alias": "qwen3.8-flash",
+  "temperature": 0.7,
+  "automatic_judge_generations": true,
+  "automatic_candidate_generations": false,
+  "failure_policy": "Failure consumes quota. No retries, no refill, stop on transport failure. Invalid semantic response is preserved as unassessed, not regenerated.",
+  "gate_before_dispatch": "Freeze nodes, controls, cards, V1.1 manual, private bindings, dispatch plan and input hashes; verify all three harness batches DONE 64/64 first."
+ },
+ "planned_attempts": 251,
+ "unused_capacity_policy": "remaining capacity is not retry permission; not a spending target",
+ "human_willingness": "unknown; model forbidden to fill user labels"
+}

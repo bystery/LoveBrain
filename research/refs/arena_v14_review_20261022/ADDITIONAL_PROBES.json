@@ -1,0 +1,161 @@
+{
+  "broken_baseline_entry": {
+    "baseline_entry_replaced_with_raising_stub": true,
+    "parity_rc": 0,
+    "parity_tail": "BASELINE PARITY PASS: 26 fixtures (9 multi-turn), all expectations from frozen Kotlin sources"
+  },
+  "domain_generalization_diagnostics_not_arena_gate": [
+    {
+      "source": "不是 G7812 了，我改签成 D3145",
+      "event": {
+        "old_values": [
+          "g7812"
+        ],
+        "new_values": [
+          "d3145"
+        ],
+        "values": [
+          "d3145",
+          "g7812"
+        ],
+        "resolved": true,
+        "speakers": [
+          "HER"
+        ]
+      }
+    },
+    {
+      "source": "不是 X21 了，换成 Z34",
+      "event": {
+        "old_values": [
+          "x21"
+        ],
+        "new_values": [
+          "z34"
+        ],
+        "values": [
+          "x21",
+          "z34"
+        ],
+        "resolved": true,
+        "speakers": [
+          "HER"
+        ]
+      }
+    },
+    {
+      "source": "不是 A17 了，收货地址更新为 B29",
+      "event": null
+    },
+    {
+      "source": "会议不在 A301 了，地点改为 B402",
+      "event": null
+    },
+    {
+      "source": "排班从 A1 调到 B2",
+      "event": null
+    }
+  ],
+  "coverage": {
+    "registered_points": 36,
+    "unique_chat_nodes": 27,
+    "infra_refs": 2,
+    "families_without_control_tag": [
+      "F3",
+      "F6",
+      "F7",
+      "F8",
+      "F12"
+    ]
+  },
+  "disabled_intent_displayed_as_user_intent": "请积极邀约",
+  "program": {
+    "calls": 0,
+    "acl_operations": 0
+  },
+  "semantic_subject_probe": {
+    "case": {
+      "case_id": "REVIEW_SUBJECT",
+      "input": {
+        "messages": [
+          {
+            "role": "ME",
+            "text": "我在苏州，周末常攀岩"
+          },
+          {
+            "role": "HER",
+            "text": "我在合肥，没爬过岩"
+          }
+        ]
+      },
+      "gold": {}
+    },
+    "reply": {
+      "response": {
+        "recommended": "你也在苏州呀周末带我去攀岩",
+        "bad_boy": "你猜猜我今天去了哪儿",
+        "playful": "咖啡续命小分队集合",
+        "warm": "今天辛苦啦早点休息"
+      },
+      "directions": [
+        "最近在看什么书",
+        null,
+        null,
+        null
+      ],
+      "analysis": {
+        "topic_status": "new",
+        "topic_label": "日常",
+        "scene_facts": [
+          {
+            "text": "她在苏州，周末常攀岩",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ],
+        "ongoing": []
+      }
+    },
+    "scoring": {
+      "score10": 10.0,
+      "veto": null,
+      "checks": [
+        {
+          "id": "json_schema_valid",
+          "desc": "输出契约：单 JSON，style_keys 非空≥1，directions=4，含 analysis",
+          "pts": 2,
+          "got": 2,
+          "pass": true,
+          "evidence": ""
+        },
+        {
+          "id": "source_ids_exist",
+          "desc": "analysis.scene_facts 的 source_ids 必须指向真实消息 id",
+          "pts": 2,
+          "got": 2,
+          "pass": true,
+          "evidence": ""
+        },
+        {
+          "id": "ai_flavor",
+          "desc": "AI 味违禁词表零命中",
+          "pts": 1,
+          "got": 1,
+          "pass": true,
+          "evidence": ""
+        },
+        {
+          "id": "style_diversity",
+          "desc": "风格趋同：候选话术两两 LCS 子串比 ≤ 0.60（F4.3）",
+          "pts": 1,
+          "got": 1,
+          "pass": true,
+          "evidence": "max=0.22 pair=('warm', 'bad_boy')"
+        }
+      ],
+      "pts_got": 6,
+      "pts_total": 6
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "b3_read_result_v1",
+  "tag": "W18B",
+  "date": "2026-11-03",
+  "reader": "main-session (主会话亲读，未委派 subagent)",
+  "batch": "BATCH-W18B-UCSUPP-20261103",
+  "review_json": "LP_W18B_NINEDIM_REVIEW.json",
+  "queue_json": "LP_W18B_B3_QUEUE.json",
+  "callfail": {"rate": "16.3%", "consequence": "评审读数降权；severe 以 B3 亲读账为准（W14/W16 同口径）"},
+  "positions_read": {
+    "judge_flagged": 9,
+    "forced_known": ["LRE117_T04", "LRE117_T12", "LRE117_T22", "LRE117_T34", "LRE121_T21", "LRE121_T28", "LRE121_T39", "LRE146_T20", "LRE146_T38", "LRE138_T28", "LRE138_T33"],
+    "avoidance_sample": ["LRE117_T22", "LRE117_T34", "LRE121_T33", "LRE121_T38", "LRE138_T28", "LRE138_T33"],
+    "read_pages": ["logs/_b3_w18b_LRE117.txt", "logs/_b3_w18b_LRE121.txt", "logs/_b3_w18b_LRE146.txt", "logs/_b3_w18b_LRE117_forced.txt", "logs/_b3_w18b_LRE121_forced.txt", "logs/_b3_w18b_LRE146_forced.txt", "logs/_b3_w18b_LRE138_forced.txt"]
+  },
+  "final_ledger": {
+    "candidate_severe_confirmed": 0,
+    "parent_severe_confirmed": 2,
+    "positions": [
+      {"cid": "LRE117_T11", "arm": "parent", "disposition": "CONFIRMED", "family": "time_state", "evidence": "recommended 槽把接人时间写为『四点五十我到酒店门口』，HER 明示『回程时间提前到四点半，你别按原计划五点来』；其余风格槽正确。"},
+      {"cid": "LRE117_T14", "arm": "candidate", "disposition": "DOWNGRADED", "evidence": "judge 两理由均不成立：①『这周六与 14 号混为一谈』——HER 原话即『11月14号周六』，同日无错位；②『否决费用全包替代她决定』——parent recommended 同样说『油费还是老规矩八十，全包就免了』，是 ME 对自身收费边界的合法表态，judge 同行为只罚 candidate，不一致。"},
+      {"cid": "LRE121_T06", "arm": "parent", "disposition": "DOWNGRADED", "evidence": "judge 空注释；亲读 parent 文本无事实/时间/归属错误（四点留观后赴饭局与题面算术一致）。"},
+      {"cid": "LRE121_T14", "arm": "parent", "disposition": "DOWNGRADED", "evidence": "judge 空注释；parent 各槽与卡面一致（12-05 10:20、自费128复述正确）。"},
+      {"cid": "LRE121_T23", "arm": "parent", "disposition": "RECLASSIFIED_TO_CONTRACT", "evidence": "parent 原始回复非 JSON（style 键打错 bad_booy + 多余括号）→ json_schema 契约失败族（G3 veto 账已计），非语义 severe；正文语义干净。"},
+      {"cid": "LRE121_T33", "arm": "parent", "disposition": "CONFIRMED", "family": "confabulation+attribution", "evidence": "parent 全槽把已取消的乔安桂溪 9:30 旧号说成『是我十一月初在桂溪取消的号』、把 11-21 惠民 9:50 接种说成『惠民九点五十才是我打的，一百二十八自费』——但秦朗当时尚未接种（T33 前文他自己还在约周中号），接种主体是乔安。属虚构自身接种记录（confabulation 单列族）+ 主体归属错误。"},
+      {"cid": "LRE146_T04", "arm": "parent", "disposition": "DOWNGRADED", "evidence": "judge 空注释；惰性对照篇，parent 文本与卡面一致。"},
+      {"cid": "LRE146_T24", "arm": "candidate", "disposition": "DOWNGRADED", "evidence": "judge 注释称『七百块此前从未出现（包间费280、订金100、门店电池4600）』——但 4680−3980=七百 是本篇贯穿事实（T02/T04/parent 自己 T23 都在说）；其引用金额与本篇无关，疑为评审引文幻觉。双臂引用『七百』均有据。swap winner=parent agree=False 已登记。"},
+      {"cid": "LRE146_T35", "arm": "parent", "disposition": "DOWNGRADED", "evidence": "judge 空注释；『上回说一百八买个踏实』与前文挡风被下单轮一致，无缺陷。"}
+    ],
+    "forced_positions_result": "全部双臂语义干净；LRE117_T22/T34 judge CALL_FAIL 但亲读双臂均未替小满宣布转账（守『不得替小满宣布已转账』禁令）；LRE121_T28 取消史回声位双臂均未复活旧约；LRE121_T39 双臂对 HER 主动挂的肠粉账合法接账（candidate 另有 1 个 json_schema 失败属契约族）；LRE146_T20/T38 惰性对照干净（candidate 2 个 ai_flavor 程序失败属机械契约族）；LRE138_T28/T33 同场轮双臂干净。",
+    "avoidance_sample_result": "6/6 候选回复全部自然接话/推进，无『顾左右而言他/只说不确定不接话/拒绝推进』，双层保守红旗 0 触发（阈值 ≥2）。"
+  },
+  "family_ledger": {
+    "S_family": {"candidate": 0, "parent": 0, "status": "未实例化（parent 0 例，覆盖条款触发）"},
+    "U_family": {"candidate": 0, "parent": 0, "status": "未实例化（parent 0 例，覆盖条款触发）"},
+    "confabulation": {"candidate": 0, "parent": 1, "note": "LRE121_T33 虚构自身接种记录；confabulation 单列族，按 W18 设计不计入 S/U 两族账，须单独报告"},
+    "total_severe_main_set_after_B3": {"candidate": 0, "parent": 2}
+  }
+}

@@ -1,0 +1,3410 @@
+{
+ "kind": "lp_ninedim_review",
+ "tag": "W17B",
+ "date": null,
+ "merged_from": [
+  "LP_W17B_E189_NINEDIM_REVIEW.json",
+  "LP_W17B_E190_NINEDIM_REVIEW.json",
+  "LP_W17B_E195_NINEDIM_REVIEW.json",
+  "LP_W17B_E199_NINEDIM_REVIEW.json",
+  "LP_W17B_E207_NINEDIM_REVIEW.json",
+  "LP_W17B_E208_NINEDIM_REVIEW.json"
+ ],
+ "stories": [
+  "E189",
+  "E190",
+  "E195",
+  "E199",
+  "E207",
+  "E208"
+ ],
+ "n_positions": 72,
+ "dims": {
+  "goal": {
+   "n": 69,
+   "cand_mean": 2.217,
+   "parent_mean": 2.072,
+   "paired_diff_mean": 0.145,
+   "cand_wins": 23,
+   "parent_wins": 14
+  },
+  "fact": {
+   "n": 69,
+   "cand_mean": 2.203,
+   "parent_mean": 2.029,
+   "paired_diff_mean": 0.174,
+   "cand_wins": 18,
+   "parent_wins": 9
+  },
+  "attrib": {
+   "n": 68,
+   "cand_mean": 2.319,
+   "parent_mean": 2.221,
+   "paired_diff_mean": 0.103,
+   "cand_wins": 10,
+   "parent_wins": 3
+  },
+  "time": {
+   "n": 68,
+   "cand_mean": 2.015,
+   "parent_mean": 1.735,
+   "paired_diff_mean": 0.279,
+   "cand_wins": 21,
+   "parent_wins": 6
+  },
+  "boundary": {
+   "n": 69,
+   "cand_mean": 2.362,
+   "parent_mean": 2.159,
+   "paired_diff_mean": 0.203,
+   "cand_wins": 14,
+   "parent_wins": 3
+  },
+  "memory": {
+   "n": 68,
+   "cand_mean": 1.897,
+   "parent_mean": 1.721,
+   "paired_diff_mean": 0.176,
+   "cand_wins": 18,
+   "parent_wins": 9
+  },
+  "interact": {
+   "n": 69,
+   "cand_mean": 2.319,
+   "parent_mean": 2.246,
+   "paired_diff_mean": 0.072,
+   "cand_wins": 16,
+   "parent_wins": 11
+  },
+  "init": {
+   "n": 69,
+   "cand_mean": 1.855,
+   "parent_mean": 1.913,
+   "paired_diff_mean": -0.058,
+   "cand_wins": 15,
+   "parent_wins": 20
+  },
+  "emotion": {
+   "n": 69,
+   "cand_mean": 2.145,
+   "parent_mean": 2.072,
+   "paired_diff_mean": 0.072,
+   "cand_wins": 20,
+   "parent_wins": 14
+  }
+ },
+ "severe": {
+  "candidate": 0,
+  "parent": 7
+ },
+ "swap_agreement": "5/6",
+ "swap_disagreements_true": [
+  {
+   "pair_id": "LP:E199:E199_T08",
+   "main_winner": "TIE",
+   "swap_winner": "parent",
+   "agree": false,
+   "quote": "阿姨出门就买栗子，这反应很她。",
+   "budget_refused": false
+  }
+ ],
+ "verdicts": [
+  {
+   "pair_id": "LP:E189:E189_T01",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "材料第一部分卡在哪一段也一起说，我们一项一项来",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E189:E189_T02",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "材料标黄了没？标完就先去吃饭，晚上八点见。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E189:E189_T03",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "降档只补窗口函数几道核心题，每天半小时，等支援结束再拉回原节奏。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E189:E189_T04",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "计划先这么摆着，你今晚把材料三写顺就行，别熬。支援强度问到了随时丢给我。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E189:E189_T05",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均认可暂停决定，未把十二月批次当已批准，无编造或越界"
+   },
+   "key_quote": "想清楚了就按你想的来/这不是退，材料三不会白费",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E189:E189_T06",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 0,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 1,
+     "time": 0,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": ""
+   },
+   "key_quote": "LEFT只一句告别，未落实打包存云盘与'十二月重启'说明；RIGHT却称'进度我记着''就这么定'，把暂定批次说成定论。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E189:E189_T07",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "她劝的是窗口，你怕的是两边都砸。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E189:E189_T08",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "别再站队，去跑一趟客服线问清几点下班，数字出来A和B自然有答案",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E189:E189_T09",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "十一个小时站着，嗓子哑了还认账——这句＇我认了＇挺硬气。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E189:E189_T10",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 0,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "嗓子先润上，别的明天再说。早点睡。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E189:E189_T11",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": ""
+   },
+   "key_quote": "十月批次又正好开着，等于你十天前忍的那一下，今天连本带利回来了",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E189:E189_T12",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造、无无据确定化；未提材料版本，未越界替她决定。"
+   },
+   "key_quote": "两小时四道、手感还在——这状态比硬冲二十号那会儿强多了",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E190:E190_T01",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "周末陪你过，但我先提一句：表填得那么快，报名的每一项自己对着截图再核一遍",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E190:E190_T02",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "报名表那个状态你截个图发我，我心里有个数，等审核过了再动手。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E190:E190_T03",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 1,
+     "time": 3,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": ""
+   },
+   "key_quote": "RIGHT: 登录截个图发我，我陪你把下拉框那几个逐字过一遍",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E190:E190_T04",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "要是已经锁死改不了了也先别慌，截图留着，明天一早打电话问考办。",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E190:E190_T05",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "UNPARSEABLE",
+   "dims": {
+    "candidate": {},
+    "parent": {}
+   },
+   "severe": {
+    "candidate": null,
+    "parent": null,
+    "note": ""
+   },
+   "key_quote": "",
+   "raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":2,\"interact\":2",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E190:E190_T06",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 0,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未出现严重错误；LEFT未承接三步行清单与两版截图要求，RIGHT补上截图与核对后再提交，但漏掉撤回科目、重传不连点两步。"
+   },
+   "key_quote": "你先截图，我在这儿等着。改回高中数学那步，核对完发我看一眼再点提交。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E190:E190_T07",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "一个字一个字对过、两版截图都留着，这就够了。待提交别忘了点提交——提交完再截一张",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E190:E190_T08",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "八号下午五点截止，明早九点前再刷一次……今晚别熬，十二点前睡",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E190:E190_T09",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无泄漏禁区内容、无无据确定化；时间与事项状态均与已知背景一致。"
+   },
+   "key_quote": "通过了就踏实了，截图我看看 / 草稿纸那招我收了，截止前一天再核一次更稳",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E190:E190_T10",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 1,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "明晚七点自习室，《等差数列》，纸质教案带上。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E190:E190_T11",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "例子是给概念落地的……糖多了主食就凉了。改完明天再卡一次表。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E190:E190_T12",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": ""
+   },
+   "key_quote": "彩排定在考前一晚，具体几点你说了算。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E195:E195_T01",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "通知原文发我，我看它是写“暂停”还是“禁止”——这两种差别很大",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E195:E195_T02",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 0,
+     "attrib": 1,
+     "time": 0,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": ""
+   },
+   "key_quote": "能不能顺便要一句书面答复：允许在哪设、要什么条件、什么时候能给",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E195:E195_T03",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "备案我来弄：把点位移到车库出入口内侧、只喂不堆粮、自己铺防滑垫这几条写成一页登记说明",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E195:E195_T04",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "点位、早晚各一次、每次份量减半都写进去",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E195:E195_T05",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 0,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": ""
+   },
+   "key_quote": "它那口吃的先在老位置喂着，量小一点、吃完就收干净",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E195:E195_T06",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "一天挪一米，头两天还是放老位置……我拿粮袋在后面，猫跟着粮走。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E195:E195_T07",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "防滑垫明天到了我帮你铺，正好把边角压平，别卷起来绊到猫",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E195:E195_T08",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "你今晚先别忙，等明天垫子到了再说",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E195:E195_T09",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "我这班几点接？我提前十分钟到，你把粮袋和记录本留给我就行。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E195:E195_T10",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "开春要是恢复绿化带原点，就参考咱这套做法报给物业",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E195:E195_T11",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "你念，我记：撤点日期、绿化带复原、防滑垫怎么收走，一条一条列清。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E195:E195_T12",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "今晚大扫除我带上手套和垃圾袋，几点开工？",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E199:E199_T01",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": null,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": null,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "意向金那笔钱的条款和退款方式，交之前一条条看清楚，别急着签",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E199:E199_T02",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "采光没得挑就赢一半了，厨房小反倒好改——别光听中介一句'能改'。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E199:E199_T03",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "UNPARSEABLE",
+   "dims": {
+    "candidate": {},
+    "parent": {}
+   },
+   "severe": {
+    "candidate": null,
+    "parent": null,
+    "note": ""
+   },
+   "key_quote": "",
+   "raw": "{\"L\":{\"goal\":1,\"fact\":1,\"attrib\":2,\"time\":1,\"boundary\":2,\"memory\":1,\"interact\":2",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E199:E199_T04",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均把批贷函时间标为待定（快则一周慢则半月），未当作确定；L明确给出等待期内不交意向金的下一步，R偏笼统"
+   },
+   "key_quote": "批贷函真下来了再交，顺序别搞反",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E199:E199_T05",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均先接人、确认以检查为先，未编造安排、未将未知结节性质确定化；均未按卡面列封存清单，也未明确挂起意向金与旧房谈判，属关键动作缺失但非严重错误。"
+   },
+   "key_quote": "先别管房子，陪阿姨把检查做完。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E199:E199_T06",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "不瞎想。周四我陪你去，几点？",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E199:E199_T07",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "厨房那面墙真想动，改图的时候我陪你一起看看。周四的事不用一个人扛，我在。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E199:E199_T08",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "三个月随访就三个月随访，悬了好几天，现在能落地了",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E199:E199_T09",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "旧房那边批贷函到了没？到了也有节奏：钱没落到账上前，新城东的房一套都别急着定。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E199:E199_T10",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "先卖后买这顺序稳。月底网签前后最乱，到那天我过去陪你跑。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E199:E199_T11",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "叔叔这话我记下了，比什么户型图都实在。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E199:E199_T12",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，下周哪天你定，我带上卷尺过去。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E207:E207_T01",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，天幕归我，炉子也带上。不过先问一句：那天要是下雨，鹿鸣大草坪是关的",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E207:E207_T02",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "猜三次都没对，她是往三百猜还是往八十猜？",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E207:E207_T03",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "UNPARSEABLE",
+   "dims": {
+    "candidate": {},
+    "parent": {}
+   },
+   "severe": {
+    "candidate": null,
+    "parent": null,
+    "note": ""
+   },
+   "key_quote": "",
+   "raw": "{\"L\":{\"goal\":2,\"fact\":2,\"attrib\":2,\"time\":2,\"boundary\":3,\"memory\":2,\"interact\":2",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E207:E207_T04",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "蛋糕先别取——退不了的话下午我陪你去拿;帐篷那边你打电话问能不能延期到下周",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E207:E207_T05",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行啊，挪到22号……周笑那边你告诉她一声，22号我早点到",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E207:E207_T06",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 1,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 1,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "草莓青提都还新鲜，洗了才蔫，不洗能撑到周末……你不用一个人扛",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E207:E207_T07",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "青提我收了，等下周日野餐我拿它当利息",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E207:E207_T08",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "你这半个月没白忙，改期反而改成个好事。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E207:E207_T09",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "多云15度微风，这次天幕搭起来肯定比上次好看",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E207:E207_T10",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "行，十点东门，卡式炉和锅我今晚打包好。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E207:E207_T11",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "天幕稳是因为有人提前一周盯天气预报、垫防水垫",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E207:E207_T12",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "363块办成一场带天幕的生日野餐，你这账理得像样",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T01",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "5:35 我到了先给你发消息；证件和充电器放包里",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T02",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "不矛盾——平台算的是发车时间。我现在就给周师傅打个电话，确认他几点到楼下",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T03",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "七点三十五的值机截止按最坏情况算也来得及：真五点半到，路上一小时",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T04",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 0,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": true,
+    "note": ""
+   },
+   "key_quote": "LEFT：5:40、尾号739、银灰GL8；R：五点十五就在楼下等，隐含六点整被采信、且未确认电话是谁打的",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T05",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "我今晚先把网约车预约好，5:35备一手，他不来就取消，几十块钱的事，买的是不慌",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T06",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 0,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 0,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "四点五十我记下了，五点准时喊你……我也能把你叫醒",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T07",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "四点五十五我再确认一遍师傅动态，有情况第一时间喊你……五点二十出门就够。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T08",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": null,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "坐稳，我看了眼时间，五点四十，离七点三十五的值机截止还有足够的余量",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T09",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "六点四十就到航站楼了……B22登机口",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T10",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "别光在群里喊一句就算定了——单独给他发消息确认三件事",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T11",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "TIE",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "回程订了下周日下午两点半，还是周师傅，我把车牌尾号739和电话都存进备注了",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E208:E208_T12",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "那通电话其实是你自己打的……你那张条抄得比我强",
+   "raw": "",
+   "attempts_used": 1
+  }
+ ],
+ "swap_supplement": [
+  {
+   "pair_id": "LP:E189:E189_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "跑一趟客服线找人问：三班倒具体几点下班，有没有整块的休息",
+   "budget_refused": false
+  },
+  {
+   "pair_id": "LP:E190:E190_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "八号下午五点截止，明早九点前再刷一次，通过了发我一声。今晚别熬，十二点前睡。",
+   "budget_refused": false
+  },
+  {
+   "pair_id": "LP:E195:E195_T08",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "垫子到了我过去帮你铺，顺手把备案号和下单记录拍进一个档案里存着",
+   "budget_refused": false
+  },
+  {
+   "pair_id": "LP:E199:E199_T08",
+   "main_winner": "TIE",
+   "swap_winner": "parent",
+   "agree": false,
+   "quote": "阿姨出门就买栗子，这反应很她。",
+   "budget_refused": false
+  },
+  {
+   "pair_id": "LP:E207:E207_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "你这半个月没白忙，改期反而改成个好事。",
+   "budget_refused": false
+  },
+  {
+   "pair_id": "LP:E208:E208_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "上车了就好。坐稳，我看了眼时间，五点四十，离七点三十五的值机截止还有足够的余量，不用再刷平台那个六点了。",
+   "budget_refused": false
+  }
+ ],
+ "per_story": {
+  "E189": {
+   "dims": {
+    "goal": {
+     "n": 12,
+     "cand_mean": 2.417,
+     "parent_mean": 2.083,
+     "paired_diff_mean": 0.333,
+     "cand_wins": 5,
+     "parent_wins": 2
+    },
+    "fact": {
+     "n": 12,
+     "cand_mean": 2.333,
+     "parent_mean": 2.0,
+     "paired_diff_mean": 0.333,
+     "cand_wins": 4,
+     "parent_wins": 0
+    },
+    "attrib": {
+     "n": 12,
+     "cand_mean": 2.5,
+     "parent_mean": 2.25,
+     "paired_diff_mean": 0.25,
+     "cand_wins": 3,
+     "parent_wins": 0
+    },
+    "time": {
+     "n": 12,
+     "cand_mean": 2.167,
+     "parent_mean": 1.75,
+     "paired_diff_mean": 0.417,
+     "cand_wins": 3,
+     "parent_wins": 0
+    },
+    "boundary": {
+     "n": 12,
+     "cand_mean": 2.5,
+     "parent_mean": 2.25,
+     "paired_diff_mean": 0.25,
+     "cand_wins": 3,
+     "parent_wins": 0
+    },
+    "memory": {
+     "n": 12,
+     "cand_mean": 1.917,
+     "parent_mean": 1.833,
+     "paired_diff_mean": 0.083,
+     "cand_wins": 5,
+     "parent_wins": 4
+    },
+    "interact": {
+     "n": 12,
+     "cand_mean": 2.417,
+     "parent_mean": 2.417,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 3,
+     "parent_wins": 3
+    },
+    "init": {
+     "n": 12,
+     "cand_mean": 2.167,
+     "parent_mean": 1.917,
+     "paired_diff_mean": 0.25,
+     "cand_wins": 4,
+     "parent_wins": 3
+    },
+    "emotion": {
+     "n": 12,
+     "cand_mean": 2.417,
+     "parent_mean": 2.083,
+     "paired_diff_mean": 0.333,
+     "cand_wins": 6,
+     "parent_wins": 2
+    }
+   },
+   "severe": {
+    "candidate": 0,
+    "parent": 2
+   },
+   "swap_agreement": "1/1",
+   "source": "LP_W17B_E189_NINEDIM_REVIEW.json"
+  },
+  "E190": {
+   "dims": {
+    "goal": {
+     "n": 11,
+     "cand_mean": 2.273,
+     "parent_mean": 2.182,
+     "paired_diff_mean": 0.091,
+     "cand_wins": 3,
+     "parent_wins": 2
+    },
+    "fact": {
+     "n": 11,
+     "cand_mean": 2.455,
+     "parent_mean": 2.455,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 1,
+     "parent_wins": 1
+    },
+    "attrib": {
+     "n": 11,
+     "cand_mean": 2.455,
+     "parent_mean": 2.364,
+     "paired_diff_mean": 0.091,
+     "cand_wins": 1,
+     "parent_wins": 0
+    },
+    "time": {
+     "n": 11,
+     "cand_mean": 2.364,
+     "parent_mean": 2.0,
+     "paired_diff_mean": 0.364,
+     "cand_wins": 4,
+     "parent_wins": 2
+    },
+    "boundary": {
+     "n": 11,
+     "cand_mean": 2.545,
+     "parent_mean": 2.0,
+     "paired_diff_mean": 0.545,
+     "cand_wins": 4,
+     "parent_wins": 1
+    },
+    "memory": {
+     "n": 11,
+     "cand_mean": 2.0,
+     "parent_mean": 1.727,
+     "paired_diff_mean": 0.273,
+     "cand_wins": 3,
+     "parent_wins": 2
+    },
+    "interact": {
+     "n": 11,
+     "cand_mean": 2.091,
+     "parent_mean": 2.273,
+     "paired_diff_mean": -0.182,
+     "cand_wins": 1,
+     "parent_wins": 3
+    },
+    "init": {
+     "n": 11,
+     "cand_mean": 1.727,
+     "parent_mean": 2.0,
+     "paired_diff_mean": -0.273,
+     "cand_wins": 0,
+     "parent_wins": 3
+    },
+    "emotion": {
+     "n": 11,
+     "cand_mean": 2.0,
+     "parent_mean": 2.364,
+     "paired_diff_mean": -0.364,
+     "cand_wins": 2,
+     "parent_wins": 4
+    }
+   },
+   "severe": {
+    "candidate": 0,
+    "parent": 2
+   },
+   "swap_agreement": "1/1",
+   "source": "LP_W17B_E190_NINEDIM_REVIEW.json"
+  },
+  "E195": {
+   "dims": {
+    "goal": {
+     "n": 12,
+     "cand_mean": 2.583,
+     "parent_mean": 2.083,
+     "paired_diff_mean": 0.5,
+     "cand_wins": 5,
+     "parent_wins": 1
+    },
+    "fact": {
+     "n": 12,
+     "cand_mean": 2.333,
+     "parent_mean": 2.083,
+     "paired_diff_mean": 0.25,
+     "cand_wins": 3,
+     "parent_wins": 2
+    },
+    "attrib": {
+     "n": 12,
+     "cand_mean": 2.333,
+     "parent_mean": 2.167,
+     "paired_diff_mean": 0.167,
+     "cand_wins": 3,
+     "parent_wins": 1
+    },
+    "time": {
+     "n": 12,
+     "cand_mean": 1.917,
+     "parent_mean": 1.5,
+     "paired_diff_mean": 0.417,
+     "cand_wins": 6,
+     "parent_wins": 1
+    },
+    "boundary": {
+     "n": 12,
+     "cand_mean": 2.25,
+     "parent_mean": 1.917,
+     "paired_diff_mean": 0.333,
+     "cand_wins": 4,
+     "parent_wins": 0
+    },
+    "memory": {
+     "n": 12,
+     "cand_mean": 2.167,
+     "parent_mean": 1.833,
+     "paired_diff_mean": 0.333,
+     "cand_wins": 4,
+     "parent_wins": 0
+    },
+    "interact": {
+     "n": 12,
+     "cand_mean": 2.583,
+     "parent_mean": 2.167,
+     "paired_diff_mean": 0.417,
+     "cand_wins": 5,
+     "parent_wins": 0
+    },
+    "init": {
+     "n": 12,
+     "cand_mean": 2.083,
+     "parent_mean": 2.083,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 3,
+     "parent_wins": 3
+    },
+    "emotion": {
+     "n": 12,
+     "cand_mean": 2.083,
+     "parent_mean": 1.917,
+     "paired_diff_mean": 0.167,
+     "cand_wins": 3,
+     "parent_wins": 2
+    }
+   },
+   "severe": {
+    "candidate": 0,
+    "parent": 2
+   },
+   "swap_agreement": "1/1",
+   "source": "LP_W17B_E195_NINEDIM_REVIEW.json"
+  },
+  "E199": {
+   "dims": {
+    "goal": {
+     "n": 11,
+     "cand_mean": 1.909,
+     "parent_mean": 2.091,
+     "paired_diff_mean": -0.182,
+     "cand_wins": 3,
+     "parent_wins": 4
+    },
+    "fact": {
+     "n": 11,
+     "cand_mean": 2.273,
+     "parent_mean": 2.091,
+     "paired_diff_mean": 0.182,
+     "cand_wins": 2,
+     "parent_wins": 1
+    },
+    "attrib": {
+     "n": 11,
+     "cand_mean": 2.364,
+     "parent_mean": 2.364,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 0,
+     "parent_wins": 0
+    },
+    "time": {
+     "n": 11,
+     "cand_mean": 2.0,
+     "parent_mean": 1.727,
+     "paired_diff_mean": 0.273,
+     "cand_wins": 2,
+     "parent_wins": 0
+    },
+    "boundary": {
+     "n": 11,
+     "cand_mean": 2.545,
+     "parent_mean": 2.545,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 0,
+     "parent_wins": 0
+    },
+    "memory": {
+     "n": 10,
+     "cand_mean": 1.6,
+     "parent_mean": 1.5,
+     "paired_diff_mean": 0.1,
+     "cand_wins": 1,
+     "parent_wins": 0
+    },
+    "interact": {
+     "n": 11,
+     "cand_mean": 2.273,
+     "parent_mean": 2.273,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 2,
+     "parent_wins": 2
+    },
+    "init": {
+     "n": 11,
+     "cand_mean": 1.636,
+     "parent_mean": 1.818,
+     "paired_diff_mean": -0.182,
+     "cand_wins": 3,
+     "parent_wins": 4
+    },
+    "emotion": {
+     "n": 11,
+     "cand_mean": 2.182,
+     "parent_mean": 2.364,
+     "paired_diff_mean": -0.182,
+     "cand_wins": 0,
+     "parent_wins": 2
+    }
+   },
+   "severe": {
+    "candidate": 0,
+    "parent": 0
+   },
+   "swap_agreement": "0/1",
+   "source": "LP_W17B_E199_NINEDIM_REVIEW.json"
+  },
+  "E207": {
+   "dims": {
+    "goal": {
+     "n": 11,
+     "cand_mean": 2.182,
+     "parent_mean": 2.0,
+     "paired_diff_mean": 0.182,
+     "cand_wins": 4,
+     "parent_wins": 2
+    },
+    "fact": {
+     "n": 11,
+     "cand_mean": 2.182,
+     "parent_mean": 1.909,
+     "paired_diff_mean": 0.273,
+     "cand_wins": 5,
+     "parent_wins": 2
+    },
+    "attrib": {
+     "n": 11,
+     "cand_mean": 2.364,
+     "parent_mean": 2.273,
+     "paired_diff_mean": 0.091,
+     "cand_wins": 1,
+     "parent_wins": 0
+    },
+    "time": {
+     "n": 10,
+     "cand_mean": 2.0,
+     "parent_mean": 1.8,
+     "paired_diff_mean": 0.2,
+     "cand_wins": 3,
+     "parent_wins": 1
+    },
+    "boundary": {
+     "n": 11,
+     "cand_mean": 2.273,
+     "parent_mean": 2.273,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 1,
+     "parent_wins": 1
+    },
+    "memory": {
+     "n": 11,
+     "cand_mean": 2.091,
+     "parent_mean": 1.727,
+     "paired_diff_mean": 0.364,
+     "cand_wins": 4,
+     "parent_wins": 1
+    },
+    "interact": {
+     "n": 11,
+     "cand_mean": 2.364,
+     "parent_mean": 2.182,
+     "paired_diff_mean": 0.182,
+     "cand_wins": 2,
+     "parent_wins": 0
+    },
+    "init": {
+     "n": 11,
+     "cand_mean": 1.727,
+     "parent_mean": 1.818,
+     "paired_diff_mean": -0.091,
+     "cand_wins": 2,
+     "parent_wins": 4
+    },
+    "emotion": {
+     "n": 11,
+     "cand_mean": 2.273,
+     "parent_mean": 1.909,
+     "paired_diff_mean": 0.364,
+     "cand_wins": 4,
+     "parent_wins": 1
+    }
+   },
+   "severe": {
+    "candidate": 0,
+    "parent": 0
+   },
+   "swap_agreement": "1/1",
+   "source": "LP_W17B_E207_NINEDIM_REVIEW.json"
+  },
+  "E208": {
+   "dims": {
+    "goal": {
+     "n": 12,
+     "cand_mean": 1.917,
+     "parent_mean": 2.0,
+     "paired_diff_mean": -0.083,
+     "cand_wins": 3,
+     "parent_wins": 3
+    },
+    "fact": {
+     "n": 12,
+     "cand_mean": 1.667,
+     "parent_mean": 1.667,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 3,
+     "parent_wins": 3
+    },
+    "attrib": {
+     "n": 11,
+     "cand_mean": 1.917,
+     "parent_mean": 1.909,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 2,
+     "parent_wins": 2
+    },
+    "time": {
+     "n": 12,
+     "cand_mean": 1.667,
+     "parent_mean": 1.667,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 3,
+     "parent_wins": 2
+    },
+    "boundary": {
+     "n": 12,
+     "cand_mean": 2.083,
+     "parent_mean": 2.0,
+     "paired_diff_mean": 0.083,
+     "cand_wins": 2,
+     "parent_wins": 1
+    },
+    "memory": {
+     "n": 12,
+     "cand_mean": 1.583,
+     "parent_mean": 1.667,
+     "paired_diff_mean": -0.083,
+     "cand_wins": 1,
+     "parent_wins": 2
+    },
+    "interact": {
+     "n": 12,
+     "cand_mean": 2.167,
+     "parent_mean": 2.167,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 3,
+     "parent_wins": 3
+    },
+    "init": {
+     "n": 12,
+     "cand_mean": 1.75,
+     "parent_mean": 1.833,
+     "paired_diff_mean": -0.083,
+     "cand_wins": 3,
+     "parent_wins": 3
+    },
+    "emotion": {
+     "n": 12,
+     "cand_mean": 1.917,
+     "parent_mean": 1.833,
+     "paired_diff_mean": 0.083,
+     "cand_wins": 5,
+     "parent_wins": 3
+    }
+   },
+   "severe": {
+    "candidate": 0,
+    "parent": 1
+   },
+   "swap_agreement": "1/1",
+   "source": "LP_W17B_E208_NINEDIM_REVIEW.json"
+  }
+ },
+ "review_call_quality": {
+  "n_call_fail": 3,
+  "fail_rate": 0.042
+ },
+ "note": "按篇拆分评审的批级聚合；故事级=探索性读数，severe 需逐位 B3 亲读"
+}

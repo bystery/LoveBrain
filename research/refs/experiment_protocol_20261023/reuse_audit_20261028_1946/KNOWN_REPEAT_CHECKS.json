@@ -1,0 +1,142 @@
+{
+  "g11_pairs": [
+    {
+      "case": "turn_01_NCA_t01",
+      "first": "D:\\lovebrain-arena\\runs\\g11_real_nca\\turn_01_NCA_t01\\calls.json",
+      "second": "D:\\lovebrain-arena\\runs\\g11_real_nca2\\turn_01_NCA_t01\\calls.json",
+      "same_request_fields": {
+        "system": true,
+        "user": true,
+        "temperature": true,
+        "images": true,
+        "model": true,
+        "resp_model": true
+      },
+      "same_output": false
+    },
+    {
+      "case": "turn_02_NCA_t02",
+      "first": "D:\\lovebrain-arena\\runs\\g11_real_nca\\turn_02_NCA_t02\\calls.json",
+      "second": "D:\\lovebrain-arena\\runs\\g11_real_nca2\\turn_02_NCA_t02\\calls.json",
+      "same_request_fields": {
+        "system": true,
+        "user": true,
+        "temperature": true,
+        "images": true,
+        "model": true,
+        "resp_model": true
+      },
+      "same_output": false
+    },
+    {
+      "case": "turn_03_NCA_t03",
+      "first": "D:\\lovebrain-arena\\runs\\g11_real_nca\\turn_03_NCA_t03\\calls.json",
+      "second": "D:\\lovebrain-arena\\runs\\g11_real_nca2\\turn_03_NCA_t03\\calls.json",
+      "same_request_fields": {
+        "system": true,
+        "user": true,
+        "temperature": true,
+        "images": true,
+        "model": true,
+        "resp_model": true
+      },
+      "same_output": false
+    },
+    {
+      "case": "turn_04_NCA_t04",
+      "first": "D:\\lovebrain-arena\\runs\\g11_real_nca\\turn_04_NCA_t04\\calls.json",
+      "second": "D:\\lovebrain-arena\\runs\\g11_real_nca2\\turn_04_NCA_t04\\calls.json",
+      "same_request_fields": {
+        "system": true,
+        "user": true,
+        "temperature": true,
+        "images": true,
+        "model": true,
+        "resp_model": true
+      },
+      "same_output": false
+    },
+    {
+      "case": "turn_05_NCA_t05",
+      "first": "D:\\lovebrain-arena\\runs\\g11_real_nca\\turn_05_NCA_t05\\calls.json",
+      "second": "D:\\lovebrain-arena\\runs\\g11_real_nca2\\turn_05_NCA_t05\\calls.json",
+      "same_request_fields": {
+        "system": true,
+        "user": true,
+        "temperature": true,
+        "images": true,
+        "model": true,
+        "resp_model": true
+      },
+      "same_output": false
+    },
+    {
+      "case": "turn_06_NCA_t06",
+      "first": "D:\\lovebrain-arena\\runs\\g11_real_nca\\turn_06_NCA_t06\\calls.json",
+      "second": "D:\\lovebrain-arena\\runs\\g11_real_nca2\\turn_06_NCA_t06\\calls.json",
+      "same_request_fields": {
+        "system": true,
+        "user": true,
+        "temperature": true,
+        "images": true,
+        "model": true,
+        "resp_model": true
+      },
+      "same_output": false
+    }
+  ],
+  "g11_same_request_pairs": 6,
+  "g11_known_reason": "After a reporting/authorization evidence-path edit changed the frozen hash, six entire real generations were reissued. Source incident record explicitly confirms12/8 exceeded. This is avoidable engineering rerun, not a new harness experiment.",
+  "w09_by_cell_events": {
+    "I1__fbpositive__reference_product_v1": {
+      "call_ok": 4
+    },
+    "I1__fbhesitant__reference_product_v1": {
+      "call_ok": 3
+    },
+    "I1__fbbusy__reference_product_v1": {
+      "call_ok": 4
+    },
+    "I1__fbdisengage__reference_product_v1": {
+      "call_ok": 4
+    },
+    "I3__fbpositive__reference_product_v1": {
+      "call_ok": 4
+    },
+    "I3__fbhesitant__reference_product_v1": {
+      "call_ok": 4
+    },
+    "I3__fbbusy__reference_product_v1": {
+      "call_ok": 4
+    },
+    "I3__fbdisengage__reference_product_v1": {
+      "call_ok": 7,
+      "sim_bad": 1
+    },
+    "I1__fbpositive__v6_integrated": {
+      "call_ok": 6,
+      "call_fail": 5,
+      "sim_exc": 5
+    },
+    "I1__fbhesitant__v6_integrated": {
+      "call_ok": 8,
+      "call_fail": 5,
+      "sim_exc": 5
+    },
+    "I1__fbbusy__v6_integrated": {
+      "call_ok": 1,
+      "call_fail": 2,
+      "sim_exc": 2
+    },
+    "I3__fbpositive__v6_integrated": {
+      "call_fail": 1,
+      "sim_exc": 1
+    },
+    "I3__fbhesitant__v6_integrated": {
+      "call_fail": 1,
+      "sim_exc": 1
+    }
+  },
+  "w09_current_complete_pairs": 0,
+  "caution": "W09 errors, planned repeats and known overwrite waste must not be blindly added as one exact wasted-call figure."
+}

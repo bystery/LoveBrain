@@ -1,0 +1,45 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-FLREG-20261101-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30地狱级常设授权（AUTH-GLOBAL-CONTINUOUS-20261030-01）+用户2026-11-01催办提速",
+ "phase": "W12_fact_ledger_regression_le24",
+ "budget_ledger": "logs/auth_budget/AUTH-FLREG-20261101-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 64
+ },
+ "scope": {
+  "purpose": "W12 第一段回归批(≤24轮域)：fact_ledger_v1(基座v0+M1/M2事实账本,FK-LR2-01修复候选) vs r9_slim on E061(24轮,EXPOSED复用口径)。v0 锚点臂复用 LR1 存档同条件数据(设计§4.1原72 attempts省24)。判据(设计§4.1冻结)：九维最差维≥-0.3、severe(cand)≤severe(parent)、E061 T15-24窗口保持率≥v0同段实测、prompt usage≤r9_slim。任一不达不进第二段判决批。覆盖率前置审计 94.6%(FACT_COVERAGE_AUDIT.json)",
+  "route": "two_arm_batch_48",
+  "total_attempts": 48,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "FLREG": "BATCH-FLREG-E061-20261101"
+  },
+  "episodes": [
+   "E061"
+  ],
+  "cards": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+  "design": "refs/experiment_protocol_20261023/global_harness_program_20261030/W12_FACT_LEDGER_DESIGN_20261101.md"
+ },
+ "frozen_bindings": {
+  "FLREG": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/LONGPROBE_FLREG.INTERLEAVE_PLAN.json",
+   "plan_sha256": "ca2c391bcca568a40b24989644f54eae9d39181bcc1c23760a46567e410ce4dd",
+   "batch_id": "BATCH-FLREG-E061-20261101",
+   "cards_file": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+   "attempts": 48,
+   "parent": "action_policy_r9_slim",
+   "candidate": "fact_ledger_v1",
+   "parent_identity_sha256": "2099c12f55337dd7dcfac0327cdd9411f7e5de2cdaa0a7083498bab6d12c9c03",
+   "candidate_identity_sha256": "cdef18386940efde3d0f74b753213b659ecbe53c6b30b6f4f9b7a5a51cea6700"
+  }
+ }
+}

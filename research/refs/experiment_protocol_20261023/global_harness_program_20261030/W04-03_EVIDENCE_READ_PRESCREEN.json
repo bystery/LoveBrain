@@ -1,0 +1,37 @@
+{
+ "kind": "w04_03_evidence_read_prescreen",
+ "n_flagged": 0,
+ "tentative_turns": [
+  "E032_T11"
+ ],
+ "flags": [],
+ "b3_evidence_read": {
+  "coverage": "E021/E026/E032/E033 全部12位×2批×2臂首选位（192条）亲读完成 2026-10-30",
+  "material_defect": {
+   "id": "E-MAT-E021-T07",
+   "what": "E021 时钟与卡面矛盾：T07时钟=周三2026-11-11，球约下周二11-17（T06 21:52说定\"周二我尽量七点到\"）；但T07卡面（接受改期今晚九点到）与T08剧本台词（你来了直接进场）按\"今晚有球\"设计。两读法不可同真。",
+   "observed": "两批candidate均按日历纠错（\"今天周三，球约下周二\"，Bmin-C且正确给出17号）；两批parent均按卡面接受今晚到场。",
+   "disposition": "素材缺陷单列不计候选胜负：九维聚合中 E021_T07 位标注 material_defect，保护维聚合给含/不含两口径；不重跑；修法进 stories v2 下一版时钟序列。"
+  },
+  "designed_probe_findings": [
+   {
+    "case": "E033_T12",
+    "finding": "她声称\"当初听我的没错\"（实为T05她提瓷砖全换、T06剧本ME拍板换地板）；A-P\"是听对了\"/Bmin-P\"功劳记你头上\"=背书错误记忆；A-C/Bmin-C温和纠正=fact/memory正确。candidate双胜parent双败。"
+   },
+   {
+    "case": "E033_T10",
+    "finding": "Bmin-P\"明天上午我在家\"与persona\"工作日都在学校\"矛盾（1档时间/人设错误）；A-C/Bmin-C正确（在学校/晚上回去）。"
+   },
+   {
+    "case": "E021_T05",
+    "finding": "Bmin-P\"周二晚上八点\"与已确认七点半偏移（1档）；其余臂时间正确。"
+   },
+   {
+    "case": "E026_T11",
+    "finding": "candidate就诊转述细节（按了两下膝盖/臀中肌不发力踝背屈不够）与T12剧本\"轻微代偿没伤减重加拉伸\"方向一致不冲突；parent较泛。无关键事实矛盾。"
+   }
+  ],
+  "over_assertion_scan": "E021/E026/E032/E033 全位未见候选侧无据确定化（T11 tentative位四臂均保持未定语气）；候选侧fact/time未见0档行为",
+  "conclusion": "资格批发现的\"无据确定化盲区\"在FS1两批首选位未复现（F3语料特有或生成侧guard_e3已覆盖）；fact/time维以本次亲读+程序层红旗全零为准入判决"
+ }
+}

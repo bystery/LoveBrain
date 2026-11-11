@@ -1,0 +1,142 @@
+{
+  "real_model_calls": 0,
+  "before": {
+    "tools/exam_interleave_plan.py": "969001016eaf066125cf16920d070e6a889812ed2bbba27b07c142f9bb653f39",
+    "tools/build_review_worksheet.py": "c92d08209a23dbe6ab56fdc9f30fd8b6d727b04a6595252b5122feabc13add4c",
+    "candidates/reference_product_v1/mechanism/mechanism.py": "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba",
+    "candidates/v3_system_slim/mechanism/mechanism.py": "a5574885703f48c63cea5d5e05ce59a97d861eeaafdf21f83358c46bcef879c3",
+    "candidates/v0_minimal_events/mechanism/mechanism.py": "066f98a1f72eeaa3e99ae651f681669942bccb6c9940afc0eda7a0b856e9199a",
+    "benchmark/episodes/E004.json": "1fd0292e01cde304968866e8a6056f64e64e5020c8eba35473a7a878d66235c5",
+    "benchmark/episodes/E005.json": "419d6f3ea40f91280a50a52919bf220cc707539d842db615ecee492cd202097c"
+  },
+  "existing_checks": [
+    {
+      "name": "g_no_system_drift",
+      "pass": true,
+      "detail": "guard PASS: v0/v3 build_system_prompt 逐字节相等(2598 码元)"
+    },
+    {
+      "name": "c1_write_then_read",
+      "pass": true,
+      "detail": "story-internal PASS: 真实消息写入且下一轮读到"
+    },
+    {
+      "name": "c2_story_isolation",
+      "pass": true,
+      "detail": "isolation PASS: 故事 B 未见故事 A 的消息"
+    },
+    {
+      "name": "c3_snapshot_restore",
+      "pass": true,
+      "detail": "restore PASS: 往返一致，恢复后继续同状态"
+    },
+    {
+      "name": "c4_draft_not_committed",
+      "pass": true,
+      "detail": "draft PASS: 模型回复(草稿)未进入真实事件历史"
+    },
+    {
+      "name": "c5_real_intent_not_persisted",
+      "pass": true,
+      "detail": "intent PASS: 真 intent 只取当轮，关闭/替换后不留旧目标；note 与 intent 分块"
+    },
+    {
+      "name": "c6_current_input_not_evicted",
+      "pass": true,
+      "detail": "budget PASS: 长历史下当前输入保留、历史段≤MAX_EVENT_HISTORY_CU(1400)"
+    },
+    {
+      "name": "c8_seed_kb_and_persona_reach_prompt",
+      "pass": true,
+      "detail": "seed PASS: initial_kb + persona 种子进入请求"
+    },
+    {
+      "name": "c9_current_clock_reaches_prompt",
+      "pass": true,
+      "detail": "clock PASS: 【当前时间】进入请求"
+    },
+    {
+      "name": "c10_message_ts_and_source_alias",
+      "pass": true,
+      "detail": "alias PASS: 当前消息 m0/m1 逐条编号 + 稳定 source_id + ts 均在请求内"
+    },
+    {
+      "name": "c11_oversize_history_respects_cap",
+      "pass": true,
+      "detail": "oversize PASS: 单条旧史超上限时省略之，历史段≤1400，当前输入完整"
+    },
+    {
+      "name": "c7_declared_units",
+      "pass": true,
+      "detail": "units PASS: notes 报 UTF-16 码元 (v0_minimal_events[events=1 prompt_cu=276 history_cu=0 hist_b)"
+    }
+  ],
+  "submitted_plan_frozen_matches": true,
+  "capture": {
+    "attempt_started": 48,
+    "attempt_completed": 48,
+    "attempt_failed": 0,
+    "execution_order_verified": true,
+    "dispatch_bijection": true,
+    "state_isolated": true,
+    "real_model_calls": 0,
+    "recall_metrics_applicable": false,
+    "recall_seg_ok": null,
+    "injection_within_budget_ok": null,
+    "evidence_persisted": true
+  },
+  "actual_seed_delivery": [
+    {
+      "arm": "parent",
+      "seed_value_visible": false,
+      "seed_phrase_visible": false
+    },
+    {
+      "arm": "candidate",
+      "seed_value_visible": false,
+      "seed_phrase_visible": false
+    }
+  ],
+  "seed_mapping_fix_component_proof": [
+    {
+      "candidate": "reference_product_v1",
+      "seed_visible": true
+    },
+    {
+      "candidate": "v3_system_slim",
+      "seed_visible": true
+    }
+  ],
+  "new_data_mechanical": {
+    "episodes": 9,
+    "requests": 72,
+    "cards": 72,
+    "failures": []
+  },
+  "no_text_turn_ledger": {
+    "turns": 2,
+    "rows": 2,
+    "statuses": [
+      "format_fail",
+      "format_fail"
+    ],
+    "prefilled_semantic": 0
+  },
+  "v0_external_input_probe": {
+    "intent": true,
+    "seed": true,
+    "clock": true,
+    "message_ts": true,
+    "source_alias": true
+  },
+  "after": {
+    "tools/exam_interleave_plan.py": "969001016eaf066125cf16920d070e6a889812ed2bbba27b07c142f9bb653f39",
+    "tools/build_review_worksheet.py": "c92d08209a23dbe6ab56fdc9f30fd8b6d727b04a6595252b5122feabc13add4c",
+    "candidates/reference_product_v1/mechanism/mechanism.py": "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba",
+    "candidates/v3_system_slim/mechanism/mechanism.py": "a5574885703f48c63cea5d5e05ce59a97d861eeaafdf21f83358c46bcef879c3",
+    "candidates/v0_minimal_events/mechanism/mechanism.py": "066f98a1f72eeaa3e99ae651f681669942bccb6c9940afc0eda7a0b856e9199a",
+    "benchmark/episodes/E004.json": "1fd0292e01cde304968866e8a6056f64e64e5020c8eba35473a7a878d66235c5",
+    "benchmark/episodes/E005.json": "419d6f3ea40f91280a50a52919bf220cc707539d842db615ecee492cd202097c"
+  },
+  "watched_source_unchanged": true
+}

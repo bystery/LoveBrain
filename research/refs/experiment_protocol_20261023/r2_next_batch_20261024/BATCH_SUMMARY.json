@@ -1,0 +1,36 @@
+{
+ "batch_id": "BATCH-R2-CTX-20261024",
+ "mode": "capture",
+ "arm_mapping": {
+  "parent": "reference_product_v1",
+  "candidate": "v4_intent_context_r2"
+ },
+ "attempts": 48,
+ "started": 48,
+ "completed": 48,
+ "failed": 0,
+ "execution_order_verified": true,
+ "dispatch_bijection": true,
+ "state_isolated": true,
+ "residents": 6,
+ "real_model_calls": 0,
+ "recall_metrics_applicable": false,
+ "cross_arm_user_len_diff_max": 793,
+ "turns_parent": 24,
+ "turns_candidate": 24,
+ "parent_cost": {
+  "prompt": 24,
+  "completion": 24,
+  "latency_p50_ms": 29,
+  "latency_p95_ms": 35,
+  "latency_max_ms": 52
+ },
+ "candidate_cost": {
+  "prompt": 24,
+  "completion": 24,
+  "latency_p50_ms": 21,
+  "latency_p95_ms": 25,
+  "latency_max_ms": 25
+ },
+ "all_semantic_unrated_without_annotations": true
+}

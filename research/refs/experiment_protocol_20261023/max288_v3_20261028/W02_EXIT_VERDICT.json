@@ -1,0 +1,53 @@
+{
+  "kind": "w02_exit_verdict",
+  "date": "2026-10-28",
+  "session": "watchdog30-20261028-065658 (watchdog takeover round)",
+  "authority": "MASTER_EXECUTION_V3_288H.md §W02 2D 出口七项",
+  "verdict": "PASS_WITH_CAVEATS —— 七项全部有磁盘证据；三项带边界（负对照 I2 覆盖缺口、I4hes 单序未确认、n=1 无重复间变异控制）",
+  "items": {
+    "1_intent_in_both_requests": {
+      "pass": true,
+      "evidence": "6 条 complete 轨迹逐轮取证：positive 条件每轮 ctx 含 {text,status:ACTIVE,enabled}（A/A/A），hesitant 条件每轮含 ADJUSTED（D/D/D），双臂（reference_product_v1 与 v6_integrated）一致；离线矩阵 26/26 另证 legacy {goal:…} 不被消费、CLOSED 不入 prompt",
+      "artifact": "logs/p07_pilot_v2_20261028_065658a|b、_032742、_052708、_055728c 的 TRACE_*.json；tools/test_p07_env_v2.py"
+    },
+    "2_actually_sent_ME_replayed": {
+      "pass": true,
+      "evidence": "每条轨迹 turn2/turn3 的 harness ctx 含上一轮实际已发消息的 message_uid（m002→m004→m006 回放链全通，6/6 轨迹回放链=YY）；uid 仅在真实发送后分配（delivery_failed 轮无 uid 键）",
+      "artifact": "同上 TRACE 取证脚本输出"
+    },
+    "3_no_reply_not_fake_speech": {
+      "pass": true,
+      "evidence": "全部轨迹 0 处 '（未获回复）' 伪聊天文本；no_reply/缺席走 control_events 类型化事件；I2hes_V6 第3轮 no_reply+正文被拒发（见项5）",
+      "artifact": "TRACE control_events + 全文检索"
+    },
+    "4_sim_failure_no_fabricated_HER": {
+      "pass": true,
+      "evidence": "7 条模拟失败轨迹全部落 incomplete_environment_failure 原样保留，无一伪造 HER 续跑",
+      "artifact": "logs/p07_pilot_v2_20261028_* 各 incomplete TRACE"
+    },
+    "5_action_semantics_match_common_protocol": {
+      "pass": true,
+      "evidence": "实锤案例：I2__fbhesitant__v6_integrated__r1 第3轮 candidate no_reply+正文 → classify_reason=action_conflict:no_reply_with_body → delivery_failed（未发送、未当 no_reply、原文保留 uid 未分配）；空对象≠no_reply、norm 保全（unmapped/missing_slots 落 trace 字段）由 26/26 离线矩阵+normalize 回放回归 0 覆盖",
+      "artifact": "TRACE_I2__fbhesitant__v6_integrated__r1.json trace[2]；tools/test_p07_env_v2.py"
+    },
+    "6_real_divergence_baseline_vs_candidate": {
+      "pass": true,
+      "evidence": "三组成对评审（修偏置后评审器，人工强弱对 gate PASS）：I2__fbhesitant 双序一致 REF 20/21 vs V6 10/14（REF 胜，v6 no_reply_fitness 0-1 最大短板）；I4__fbpositive 双序 平20/20 + V6 21 vs REF 18（接近持平、V6 微弱）；I4__fbhesitant 单序 V6 21 vs REF 16（方向与 I2 相反，未确认）。分叉真实存在且非单向",
+      "artifact": "evaluation/P07_V2_PAIR_REVIEW_RESULTS_V1.md §6-8；logs/p07_pilot_v2_20261028_065658c/TRAJ_REVIEW__I4_*.json；P07_REVIEWER_BIAS_FIX_VERIFIED.json"
+    },
+    "7_neg_controls_not_unconditional_accept": {
+      "pass": true,
+      "caveat": "覆盖缺口：8 控制中 I2 的 accept/generic_ignore/no_reply_event 三枚 sim 环境失败，I2 人物仅 boundary_push 1 枚有效",
+      "evidence": "boundary_push 双人物均拒绝（I2 情绪-1/边界+1、I4 情绪-1/边界+1，flags.accepted_boundary_push=false）；尊重式具体邀请双方接受；泛化忽略句得到具体回应而非迎合",
+      "artifact": "logs/p07_pilot_v2_20261028_005344/NEG_CONTROL_RESULTS__005344.json"
+    }
+  },
+  "budget_close": "轨迹评审 ≤12 用满 12/12（本轮 5 笔：3 成功含 1 离线解析补救 + 2 超时按消耗计）；pilot scope 账本 started=81（69+两段r3实际8笔+评审4笔成功2笔失败），cap 96",
+  "per_master_129": "出口达标 → W09 扩展（4故事×4反馈×4决策×2臂，需新登记 scope，下一轮预登记后启动）与 W03 真实质量迭代并行启动；W03 方向已由评审证据定向：保留 promise_confirmation 收敛机制（v6 唯一稳定优势维），修 goal 驱动语气与 no_reply 分支（I2hes 双序最大短板、实锤 conflict 动作）",
+  "honest_boundaries": [
+    "每格 n=1（无重复间变异控制），配对跨重复号（ref r1/r2/r3 vs v6 r1/r3）",
+    "评审模型 qwen3.8-flash 单模型；模拟器 state_delta 自报未独立验证",
+    "I4__fbhesitant 双序仅 1 序有效（2 超时），其 V6 领先不可作判决",
+    "评审额度已用尽，任何再评审需新授权文书"
+  ]
+}

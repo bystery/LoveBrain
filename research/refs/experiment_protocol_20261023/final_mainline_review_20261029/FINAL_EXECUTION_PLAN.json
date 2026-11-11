@@ -1,0 +1,72 @@
+{
+  "kind": "final_mainline_execution_menu_not_authorization",
+  "date": "2026-10-29",
+  "new_model_calls_in_this_delivery": 0,
+  "existing_generated_answers": 260,
+  "historical_paired_observations": 130,
+  "unique_case_ids": 82,
+  "previously_scored_pairs": 118,
+  "excluded_action_pairs_to_review": 12,
+  "deadline_date": "2026-10-29",
+  "quality_bar_lowered": false,
+  "global_cap_added": 0,
+  "generation_cap": 232,
+  "author_cap": 6,
+  "judge_cap": 274,
+  "total_menu_cap": 512,
+  "budget_rule": "Menu only; register finite scopes against actual existing-cycle balance and continuous user authorization. No old closed-grant reuse.",
+  "phases": [
+    {
+      "id": "F0",
+      "work": "增量核验、错判更正、130对行动台账、候选选择",
+      "status": "READY"
+    },
+    {
+      "id": "F1",
+      "work": "小控制＋130历史盲审＋12换序，非worker一致率门禁",
+      "status": "READY_AFTER_F0_ERRATA"
+    },
+    {
+      "id": "F2",
+      "work": "实际合同/来源差额修复与候选冻结",
+      "status": "READY_AFTER_F0_SELECTION"
+    },
+    {
+      "id": "F3",
+      "work": "4条新故事、长期知识与恢复、正向能力，144生成",
+      "status": "MATERIAL_PREP_PARALLEL_WITH_F1_F2"
+    },
+    {
+      "id": "F4",
+      "work": "知识通道与行动层小消融，24生成",
+      "status": "AFTER_F3_CHECKPOINTS"
+    },
+    {
+      "id": "F5",
+      "work": "确认重大问题的一次修复复验，最多64生成",
+      "status": "ONLY_IF_EVIDENCE_REQUIRES"
+    },
+    {
+      "id": "F6",
+      "work": "研究级综合表、可复现候选与终局判决",
+      "status": "AFTER_REQUIRED_EVIDENCE"
+    }
+  ],
+  "parallel": [
+    "F1 historical review",
+    "F2 candidate implementation",
+    "F3 data preparation"
+  ],
+  "not_global_gates": [
+    "worker agreement80%",
+    "legacy simulator completion",
+    "personal W preference"
+  ],
+  "scope_notes": [
+    "F2 final candidate must be selected by evidence, not default latest r3",
+    "F3 candidate-frozen prospective blinded AI data is not independent human sealed evaluation",
+    "F4 if manipulation ineffective do not fabricate ablation benefits",
+    "F5 reserve is not mandatory spending"
+  ],
+  "output": "final reproducible harness and evidence-based ACCEPT/REWORK/FAIL; not another readiness statement"
+}

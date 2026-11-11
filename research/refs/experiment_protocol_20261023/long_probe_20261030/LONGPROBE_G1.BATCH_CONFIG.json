@@ -1,0 +1,27 @@
+{
+ "batch_id": "BATCH-SLIM-G1-E037E039E041E042-20261031",
+ "arm_map": {
+  "parent": "action_policy_r7_supersede",
+  "candidate": "action_policy_r9_slim"
+ },
+ "episode_order": [
+  {
+   "episode": "E037",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E039",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E041",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E042",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/stage3/GRADING_CARDS_STAGE3.json",
+ "recall_capable": false
+}

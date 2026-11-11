@@ -1,0 +1,26 @@
+{
+ "kind": "authorization_p07_w03_validation",
+ "authorization_id": "AUTH-P07-W03VAL-20261028-01",
+ "registered_by": "watchdog30-20261028-065658 (continuous mainline push)",
+ "created": "2026-10-28T07:55+08:00",
+ "authority_source": "MASTER_EXECUTION_V3_288H.md §W03（行动迭代需真实验证）；action_policy_r1 离线合同验证 7/7（tools/test_action_policy_r1_contract.py）",
+ "status": "ACTIVE",
+ "authorized": true,
+ "real_endpoint": "http://127.0.0.1:17770/v1",
+ "cycle_budget": {"global_management_cap": 16384, "note": "沿用全局管理帽；本 scope 为目的分账，与 W09 scope 独立"},
+ "scope": {
+  "experiment": "P07_W03_action_policy_r1_validation",
+  "allowed_models": ["dsf", "hy3", "qwen3.8-flash"],
+  "forbidden_models": ["hy4-preview", "gemini-3.8-flash"],
+  "model_policy": "同 MODEL_POLICY：qwen3.8-flash 每 alias≤3 并发跨角色；两连续 sim 失败暂停探针门控恢复；无 SLA 阶梯"
+ },
+ "design": {
+  "question": "action_policy_r1 的五项修复（发送合同对齐 + 目标让位 + 钩子承接 + 交付失败修复意识[配套环境 v2.1 own_events] + 自我状态有据）是否在真实轨迹中消除 v6 的 no_reply/conflict 短板、goal 硬推、钩子落空与无据编造，且不在 v6 强势格（I4 positive）回归",
+  "cells": "I2×hesitant, I2×busy, I4×positive × {action_policy_r1, v6_integrated} × 4轮 = 6 轨迹 = 24 harness + ≤24 sim",
+  "review": "3 组对（action_policy_r1 vs v6_integrated 同格配对）× 双序 = 6 笔评审，purpose=trajectory_review；双序一致方向才出结论",
+  "budget_check": "24+24+6=54=cap",
+  "execution_gate": "W09-a/b/c 三相完成后再跑（qwen alias 并发帽与负载考虑），不在 W09 运行中并行消耗"
+ },
+ "halt_rules": "两连续 sim 环境失败自动暂停；轨迹 incomplete 原样保留；预登记重复独立计费",
+ "honest_boundary": "n=3 格×2 臂；结果只支持'修复是否生效'的判定，不外推到全部场景；评审单模型"
+}

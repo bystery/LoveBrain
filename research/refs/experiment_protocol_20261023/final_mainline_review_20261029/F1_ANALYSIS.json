@@ -1,0 +1,1283 @@
+{
+ "kind": "f1_blind_analysis",
+ "ratings": "logs/f1_blind_review_20261029_094731/F1_RATINGS.jsonl",
+ "rows": 155,
+ "schema_ok": 155,
+ "transport_ok": 155,
+ "controls": {
+  "total": 16,
+  "scored": 16,
+  "correct": 16,
+  "accuracy_pct": 100.0,
+  "rows": [
+   {
+    "unit_id": "F1C:C01_fact_new_proposal",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 65098
+   },
+   {
+    "unit_id": "F1C:C01_fact_new_proposal:R",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 54523
+   },
+   {
+    "unit_id": "F1C:C02_subject_attribution",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 89217
+   },
+   {
+    "unit_id": "F1C:C02_subject_attribution:R",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 97512
+   },
+   {
+    "unit_id": "F1C:C03_time_cancel_state",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 65605
+   },
+   {
+    "unit_id": "F1C:C03_time_cancel_state:R",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 111701
+   },
+   {
+    "unit_id": "F1C:C04_protected_joke",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 51126
+   },
+   {
+    "unit_id": "F1C:C04_protected_joke:R",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 49533
+   },
+   {
+    "unit_id": "F1C:C05_should_answer_vs_wrong_focus",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 63212
+   },
+   {
+    "unit_id": "F1C:C05_should_answer_vs_wrong_focus:R",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 76902
+   },
+   {
+    "unit_id": "F1C:C06_time_minor",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 59155
+   },
+   {
+    "unit_id": "F1C:C06_time_minor:R",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 109853
+   },
+   {
+    "unit_id": "F1C:C07_positive_memory_hook",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 91866
+   },
+   {
+    "unit_id": "F1C:C07_positive_memory_hook:R",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 48774
+   },
+   {
+    "unit_id": "F1C:C08_allowed_no_reply",
+    "expected": "tie_or_uncertain",
+    "got": "tie",
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 71491
+   },
+   {
+    "unit_id": "F1C:C08_allowed_no_reply:R",
+    "expected": "tie_or_uncertain",
+    "got": "tie",
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 84125
+   }
+  ]
+ },
+ "historical": {
+  "total": 127,
+  "wins": {
+   "parent": 24,
+   "candidate": 42,
+   "tie": 54,
+   "uncertain": 7,
+   "missing": 0
+  },
+  "worker_agreement": {
+   "n": 108,
+   "agree": 52,
+   "pct": 48.15
+  },
+  "card_conflict": 11,
+  "rows": [
+   {
+    "unit_id": "F1H:S1:E024_T01",
+    "pair_id": "S1:E024_T01",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E024_T03",
+    "pair_id": "S1:E024_T03",
+    "winner_arm": "parent",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E024_T02",
+    "pair_id": "S1:E024_T02",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E024_T04",
+    "pair_id": "S1:E024_T04",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E024_T05",
+    "pair_id": "S1:E024_T05",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E024_T06",
+    "pair_id": "S1:E024_T06",
+    "winner_arm": "tie",
+    "worker": "parent",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E024_T07",
+    "pair_id": "S1:E024_T07",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E024_T08",
+    "pair_id": "S1:E024_T08",
+    "winner_arm": "tie",
+    "worker": "parent",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E024_T09",
+    "pair_id": "S1:E024_T09",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E024_T10",
+    "pair_id": "S1:E024_T10",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E024_T11",
+    "pair_id": "S1:E024_T11",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E024_T12",
+    "pair_id": "S1:E024_T12",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E027_T01",
+    "pair_id": "S1:E027_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E027_T02",
+    "pair_id": "S1:E027_T02",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E027_T03",
+    "pair_id": "S1:E027_T03",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E027_T05",
+    "pair_id": "S1:E027_T05",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E027_T04",
+    "pair_id": "S1:E027_T04",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E027_T06",
+    "pair_id": "S1:E027_T06",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E027_T11",
+    "pair_id": "S1:E027_T11",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E027_T10",
+    "pair_id": "S1:E027_T10",
+    "winner_arm": "parent",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E027_T12",
+    "pair_id": "S1:E027_T12",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E031_T01",
+    "pair_id": "S1:E031_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E031_T02",
+    "pair_id": "S1:E031_T02",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E031_T03",
+    "pair_id": "S1:E031_T03",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E031_T05",
+    "pair_id": "S1:E031_T05",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E031_T04",
+    "pair_id": "S1:E031_T04",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E031_T06",
+    "pair_id": "S1:E031_T06",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E031_T07",
+    "pair_id": "S1:E031_T07",
+    "winner_arm": "parent",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E031_T08",
+    "pair_id": "S1:E031_T08",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E031_T09",
+    "pair_id": "S1:E031_T09",
+    "winner_arm": "candidate",
+    "worker": "parent",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E031_T10",
+    "pair_id": "S1:E031_T10",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E031_T12",
+    "pair_id": "S1:E031_T12",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E031_T11",
+    "pair_id": "S1:E031_T11",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E034_T01",
+    "pair_id": "S1:E034_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E034_T03",
+    "pair_id": "S1:E034_T03",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E034_T02",
+    "pair_id": "S1:E034_T02",
+    "winner_arm": "parent",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E034_T04",
+    "pair_id": "S1:E034_T04",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E034_T05",
+    "pair_id": "S1:E034_T05",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E034_T06",
+    "pair_id": "S1:E034_T06",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E034_T07",
+    "pair_id": "S1:E034_T07",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E034_T08",
+    "pair_id": "S1:E034_T08",
+    "winner_arm": "tie",
+    "worker": "parent",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E034_T09",
+    "pair_id": "S1:E034_T09",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E034_T10",
+    "pair_id": "S1:E034_T10",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E034_T12",
+    "pair_id": "S1:E034_T12",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S1:E034_T11",
+    "pair_id": "S1:E034_T11",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2:AK02_T01",
+    "pair_id": "S2:AK02_T01",
+    "winner_arm": "parent",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2:AK01_T01",
+    "pair_id": "S2:AK01_T01",
+    "winner_arm": "parent",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2:AK04_T01",
+    "pair_id": "S2:AK04_T01",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2:AK03_T01",
+    "pair_id": "S2:AK03_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2:AK05_T01",
+    "pair_id": "S2:AK05_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2:AK06_T01",
+    "pair_id": "S2:AK06_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2:AK07_T01",
+    "pair_id": "S2:AK07_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2:AK09_T01",
+    "pair_id": "S2:AK09_T01",
+    "winner_arm": "tie",
+    "worker": null,
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2:AK08_T01",
+    "pair_id": "S2:AK08_T01",
+    "winner_arm": "parent",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2:AK10_T01",
+    "pair_id": "S2:AK10_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2:AK11_T01",
+    "pair_id": "S2:AK11_T01",
+    "winner_arm": "parent",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2:AK12_T01",
+    "pair_id": "S2:AK12_T01",
+    "winner_arm": "tie",
+    "worker": null,
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2R:AK01_T01",
+    "pair_id": "S2R:AK01_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2R:AK02_T01",
+    "pair_id": "S2R:AK02_T01",
+    "winner_arm": "parent",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2R:AK03_T01",
+    "pair_id": "S2R:AK03_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2R:AK04_T01",
+    "pair_id": "S2R:AK04_T01",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2R:AK05_T01",
+    "pair_id": "S2R:AK05_T01",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2R:AK06_T01",
+    "pair_id": "S2R:AK06_T01",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2R:AK07_T01",
+    "pair_id": "S2R:AK07_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2R:AK08_T01",
+    "pair_id": "S2R:AK08_T01",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2R:AK09_T01",
+    "pair_id": "S2R:AK09_T01",
+    "winner_arm": "tie",
+    "worker": null,
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2R:AK10_T01",
+    "pair_id": "S2R:AK10_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2R:AK11_T01",
+    "pair_id": "S2R:AK11_T01",
+    "winner_arm": "parent",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S2R:AK12_T01",
+    "pair_id": "S2R:AK12_T01",
+    "winner_arm": "tie",
+    "worker": null,
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S3:AK01_T01",
+    "pair_id": "S3:AK01_T01",
+    "winner_arm": "parent",
+    "worker": "parent",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S3:AK03_T01",
+    "pair_id": "S3:AK03_T01",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S3:AK02_T01",
+    "pair_id": "S3:AK02_T01",
+    "winner_arm": "candidate",
+    "worker": "parent",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S3:AK05_T01",
+    "pair_id": "S3:AK05_T01",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S3:AK06_T01",
+    "pair_id": "S3:AK06_T01",
+    "winner_arm": "parent",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S3:AK04_T01",
+    "pair_id": "S3:AK04_T01",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S3:AK08_T01",
+    "pair_id": "S3:AK08_T01",
+    "winner_arm": "parent",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S3:AK07_T01",
+    "pair_id": "S3:AK07_T01",
+    "winner_arm": "tie",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S3:AK09_T01",
+    "pair_id": "S3:AK09_T01",
+    "winner_arm": "parent",
+    "worker": null,
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S3:AK10_T01",
+    "pair_id": "S3:AK10_T01",
+    "winner_arm": "tie",
+    "worker": "parent",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S3:AK11_T01",
+    "pair_id": "S3:AK11_T01",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:S3:AK12_T01",
+    "pair_id": "S3:AK12_T01",
+    "winner_arm": "parent",
+    "worker": null,
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D01_T01",
+    "pair_id": "D1:D01_T01",
+    "winner_arm": "parent",
+    "worker": "parent",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D01_T03",
+    "pair_id": "D1:D01_T03",
+    "winner_arm": "uncertain",
+    "worker": "tie",
+    "card_conflict": true,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D01_T02",
+    "pair_id": "D1:D01_T02",
+    "winner_arm": "uncertain",
+    "worker": "tie",
+    "card_conflict": true,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D01_T05",
+    "pair_id": "D1:D01_T05",
+    "winner_arm": "uncertain",
+    "worker": "parent",
+    "card_conflict": true,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D01_T04",
+    "pair_id": "D1:D01_T04",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D01_T06",
+    "pair_id": "D1:D01_T06",
+    "winner_arm": "tie",
+    "worker": "parent",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D01_T07",
+    "pair_id": "D1:D01_T07",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D01_T08",
+    "pair_id": "D1:D01_T08",
+    "winner_arm": "tie",
+    "worker": null,
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D02_T01",
+    "pair_id": "D1:D02_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D02_T02",
+    "pair_id": "D1:D02_T02",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D02_T03",
+    "pair_id": "D1:D02_T03",
+    "winner_arm": "parent",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D02_T04",
+    "pair_id": "D1:D02_T04",
+    "winner_arm": "uncertain",
+    "worker": "candidate",
+    "card_conflict": true,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D02_T06",
+    "pair_id": "D1:D02_T06",
+    "winner_arm": "tie",
+    "worker": null,
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D02_T05",
+    "pair_id": "D1:D02_T05",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D02_T08",
+    "pair_id": "D1:D02_T08",
+    "winner_arm": "candidate",
+    "worker": null,
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:AK09_T01",
+    "pair_id": "R3A:AK09_T01",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:D1:D02_T07",
+    "pair_id": "D1:D02_T07",
+    "winner_arm": "uncertain",
+    "worker": "tie",
+    "card_conflict": true,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:AK12_T01",
+    "pair_id": "R3A:AK12_T01",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D01_T01",
+    "pair_id": "R3A:D01_T01",
+    "winner_arm": "parent",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D01_T02",
+    "pair_id": "R3A:D01_T02",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": true,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D01_T03",
+    "pair_id": "R3A:D01_T03",
+    "winner_arm": "uncertain",
+    "worker": "tie",
+    "card_conflict": true,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D01_T04",
+    "pair_id": "R3A:D01_T04",
+    "winner_arm": "parent",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D01_T05",
+    "pair_id": "R3A:D01_T05",
+    "winner_arm": "parent",
+    "worker": "tie",
+    "card_conflict": true,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D01_T06",
+    "pair_id": "R3A:D01_T06",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D01_T07",
+    "pair_id": "R3A:D01_T07",
+    "winner_arm": "parent",
+    "worker": "parent",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D01_T08",
+    "pair_id": "R3A:D01_T08",
+    "winner_arm": "tie",
+    "worker": null,
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D02_T02",
+    "pair_id": "R3A:D02_T02",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D02_T01",
+    "pair_id": "R3A:D02_T01",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": true,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D02_T03",
+    "pair_id": "R3A:D02_T03",
+    "winner_arm": "parent",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D02_T04",
+    "pair_id": "R3A:D02_T04",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": true,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D02_T05",
+    "pair_id": "R3A:D02_T05",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D02_T06",
+    "pair_id": "R3A:D02_T06",
+    "winner_arm": "parent",
+    "worker": null,
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D02_T07",
+    "pair_id": "R3A:D02_T07",
+    "winner_arm": "uncertain",
+    "worker": "tie",
+    "card_conflict": true,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D02_T08",
+    "pair_id": "R3A:D02_T08",
+    "winner_arm": "parent",
+    "worker": null,
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D03_T01",
+    "pair_id": "R3A:D03_T01",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D03_T02",
+    "pair_id": "R3A:D03_T02",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D03_T03",
+    "pair_id": "R3A:D03_T03",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D03_T04",
+    "pair_id": "R3A:D03_T04",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D03_T05",
+    "pair_id": "R3A:D03_T05",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3A:D03_T06",
+    "pair_id": "R3A:D03_T06",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3B:D03_T01",
+    "pair_id": "R3B:D03_T01",
+    "winner_arm": "candidate",
+    "worker": "candidate",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3B:D03_T02",
+    "pair_id": "R3B:D03_T02",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3B:D03_T04",
+    "pair_id": "R3B:D03_T04",
+    "winner_arm": "candidate",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3B:D03_T03",
+    "pair_id": "R3B:D03_T03",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3B:D03_T05",
+    "pair_id": "R3B:D03_T05",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   },
+   {
+    "unit_id": "F1H:R3B:D03_T06",
+    "pair_id": "R3B:D03_T06",
+    "winner_arm": "tie",
+    "worker": "tie",
+    "card_conflict": false,
+    "schema_ok": true
+   }
+  ]
+ },
+ "swaps": {
+  "total": 12,
+  "consistent": 10,
+  "pct": 83.33,
+  "rows": [
+   {
+    "unit_id": "F1S:D1:D01_T01",
+    "base": "F1H:D1:D01_T01",
+    "arm": "parent",
+    "base_arm": "parent",
+    "consistent": true
+   },
+   {
+    "unit_id": "F1S:D1:D02_T01",
+    "base": "F1H:D1:D02_T01",
+    "arm": "candidate",
+    "base_arm": "candidate",
+    "consistent": true
+   },
+   {
+    "unit_id": "F1S:D1:D01_T05",
+    "base": "F1H:D1:D01_T05",
+    "arm": "uncertain",
+    "base_arm": "uncertain",
+    "consistent": true
+   },
+   {
+    "unit_id": "F1S:D1:D02_T07",
+    "base": "F1H:D1:D02_T07",
+    "arm": "uncertain",
+    "base_arm": "uncertain",
+    "consistent": true
+   },
+   {
+    "unit_id": "F1S:D1:D02_T04",
+    "base": "F1H:D1:D02_T04",
+    "arm": "uncertain",
+    "base_arm": "uncertain",
+    "consistent": true
+   },
+   {
+    "unit_id": "F1S:S1:E024_T01",
+    "base": "F1H:S1:E024_T01",
+    "arm": "tie",
+    "base_arm": "tie",
+    "consistent": true
+   },
+   {
+    "unit_id": "F1S:S2:AK01_T01",
+    "base": "F1H:S2:AK01_T01",
+    "arm": "candidate",
+    "base_arm": "parent",
+    "consistent": false
+   },
+   {
+    "unit_id": "F1S:S2R:AK09_T01",
+    "base": "F1H:S2R:AK09_T01",
+    "arm": "tie",
+    "base_arm": "tie",
+    "consistent": true
+   },
+   {
+    "unit_id": "F1S:R3A:D01_T08",
+    "base": "F1H:R3A:D01_T08",
+    "arm": "parent",
+    "base_arm": "tie",
+    "consistent": false
+   },
+   {
+    "unit_id": "F1S:D1:D02_T06",
+    "base": "F1H:D1:D02_T06",
+    "arm": "tie",
+    "base_arm": "tie",
+    "consistent": true
+   },
+   {
+    "unit_id": "F1S:D1:D02_T08",
+    "base": "F1H:D1:D02_T08",
+    "arm": "candidate",
+    "base_arm": "candidate",
+    "consistent": true
+   },
+   {
+    "unit_id": "F1S:S2:AK02_T01",
+    "base": "F1H:S2:AK02_T01",
+    "arm": "parent",
+    "base_arm": "parent",
+    "consistent": true
+   }
+  ]
+ },
+ "order_effect": {
+  "A_wins": 50,
+  "B_wins": 36,
+  "ties": 59,
+  "uncertain": 10
+ },
+ "usage": {
+  "prompt_tokens": 0,
+  "completion_tokens": 0
+ },
+ "latency_ms": {
+  "p50": 74958,
+  "p95": 146013,
+  "max": 232570
+ }
+}

@@ -1,0 +1,94 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-P06-MAX288V2-20261027-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户持续执行授权（AGENTS.md §0：额度很多、修复后推进主线，不再每48次索取口令）+ MAX-288 V2 §0/§13.4 的 16,384 新周期管理帽；本单是 P06 阶段的有限登记，不是把阶段总帽当无身份钱包。",
+ "phase": "P06",
+ "budget_ledger": "logs/auth_budget/AUTH-P06-MAX288V2-20261027-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 192
+ },
+ "api_config": "api_cfg:openai_compat_stream_true_v1(include_usage gated)；三批同端点/model/温度/流式配置；不与任何旧非流式表拼接。",
+ "scope": {
+  "purpose": "P06 首轮真实新机制对照：三批两臂×4故事×8位=192 次真实生成；不是四臂 128 随机实验，不伪报同一随机比较。",
+  "route": "three_two_arm_batches_192",
+  "positions_per_arm_per_batch": 32,
+  "total_attempts": 192,
+  "baseline_repeat": "同一 reference_product_v1 身份在三批各出现一次，用于各自严格配对；A/B/C 跨批横比只作探索。",
+  "batches": [
+   "A_BASE_VS_V5",
+   "B_BASE_VS_V6G",
+   "C_BASE_VS_V6I"
+  ],
+  "batch_ids": {
+   "A_BASE_VS_V5": "BATCH-P06-A-BASE-VS-V5-20261027",
+   "B_BASE_VS_V6G": "BATCH-P06-B-BASE-VS-V6G-20261027",
+   "C_BASE_VS_V6I": "BATCH-P06-C-BASE-VS-V6I-20261027"
+  },
+  "arms": [
+   "reference_product_v1",
+   "v5_purpose_aligned",
+   "v6_goal_context",
+   "v6_integrated"
+  ],
+  "episodes": [
+   "E006",
+   "E007",
+   "E008",
+   "E012"
+  ],
+  "cards": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "judge_separate": "P06 质量评审另建 judge scope 的有限授权；本单只覆盖 harness 生成，不自动触发裁判。",
+  "stream_identity_separate_from": "AUTH-V5-CTX / AUTH-R2-CTX / AUTH-V3-DELETION / AUTH-NEWSTORY-96 / AUTH-STREAM-INT / AUTH-C4-SCREEN / AUTH-QUALITY-PANEL / AUTH-A3-JUDGE / AUTH-EVAL-JUDGE 均 CLOSED，不复活、不复用。",
+  "perf_ledger_untouched": "AUTH-HARNESS-PERF-PHASE1-20261025-01 used 4/256 不动；P06 生成另账，不拿旧性能余额抵扣。",
+  "new_cycle_cap": 16384,
+  "phase_p06_harness_ceiling": 192,
+  "not_a_spending_target": true
+ },
+ "frozen_bindings": {
+  "A_BASE_VS_V5": {
+   "plan_file": "refs/experiment_protocol_20261023/p06_20261027/P06_A_BASE_VS_V5.INTERLEAVE_PLAN.json",
+   "plan_sha256": "8b10493a3ebb07e5c415edde3512d1f53addb1e3680c3ea82d1be52161b72fb2",
+   "batch_id": "BATCH-P06-A-BASE-VS-V5-20261027",
+   "cards_file": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+   "attempts": 64,
+   "parent": "reference_product_v1",
+   "candidate": "v5_purpose_aligned",
+   "parent_identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "candidate_identity_sha256": "7c6b51cec9780049d11cb0aabdfe9c42f65ff1a33d2afe22f5a926034e6eb7ac"
+  },
+  "B_BASE_VS_V6G": {
+   "plan_file": "refs/experiment_protocol_20261023/p06_20261027/P06_B_BASE_VS_V6G.INTERLEAVE_PLAN.json",
+   "plan_sha256": "183bc2699275956567d717dfbd2c33e01ce17ff75cecf809ae9ece2d04e8dde6",
+   "batch_id": "BATCH-P06-B-BASE-VS-V6G-20261027",
+   "cards_file": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+   "attempts": 64,
+   "parent": "reference_product_v1",
+   "candidate": "v6_goal_context",
+   "parent_identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "candidate_identity_sha256": "4e9d454aabd50a18f77fcd350ffe0ca8fd8a6271c8db99bc3249ed2fb7f157f6"
+  },
+  "C_BASE_VS_V6I": {
+   "plan_file": "refs/experiment_protocol_20261023/p06_20261027/P06_C_BASE_VS_V6I.INTERLEAVE_PLAN.json",
+   "plan_sha256": "11d7d1646c8409b8fc5ce02ffa0a2ff40d5b7e330b1303aa0899de63a0d22008",
+   "batch_id": "BATCH-P06-C-BASE-VS-V6I-20261027",
+   "cards_file": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+   "attempts": 64,
+   "parent": "reference_product_v1",
+   "candidate": "v6_integrated",
+   "parent_identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "candidate_identity_sha256": "ac2672ffac3ba82d799a49b753840573cb1933eb71d8110792e5e0f3448c127b"
+  }
+ },
+ "execution_entry": "tools/run_max288_batch.py",
+ "execution_entry_sha256": "908d58695cccdac8be6d261894b47037367f1802de40d46e1f0eb8ffdbf2c685",
+ "notes": "旧 CLOSED 单不复活；失败消耗不退款；不自动重试/补配对；每批先 precheck 再 capture 再 live；live 目录已存在 turn_* 即拒绝覆盖。"
+}

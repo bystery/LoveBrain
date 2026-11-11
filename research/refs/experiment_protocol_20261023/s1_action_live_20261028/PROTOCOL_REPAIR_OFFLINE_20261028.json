@@ -1,0 +1,223 @@
+{
+ "kind": "protocol_repair_offline_v1",
+ "zero_network": true,
+ "note": "P 列（原始协议 veto）按评分器既有记账不改；本表只加测'消费侧能否交付'。R4 类刻意不由消费侧代补 action：不回必须由生成侧显式表达。",
+ "counts": [
+  {
+   "batch": "S1",
+   "arm": "action_policy_r1",
+   "class": "consumer_recoverable",
+   "n": 2
+  },
+  {
+   "batch": "S1",
+   "arm": "action_policy_r1",
+   "class": "unrecoverable",
+   "n": 1
+  },
+  {
+   "batch": "S1",
+   "arm": "reference_product_v1",
+   "class": "unrecoverable",
+   "n": 2
+  },
+  {
+   "batch": "S2",
+   "arm": "action_policy_r1",
+   "class": "R4_generator_side_only",
+   "n": 2
+  },
+  {
+   "batch": "S2",
+   "arm": "action_policy_r1",
+   "class": "consumer_recoverable",
+   "n": 1
+  }
+ ],
+ "positions_total_paid": 120,
+ "protocol_failed_positions": 8,
+ "rows": [
+  {
+   "batch": "S1",
+   "case_id": "E024_T02",
+   "arm": "action_policy_r1",
+   "raw_protocol_veto": "json_schema_broken",
+   "raw_chars": 418,
+   "loss_rules": [
+    "R1_style_key_normalized"
+   ],
+   "loss_log": [
+    {
+     "rule": "R1_style_key_normalized",
+     "from": "'bad_bo y'",
+     "to": "bad_boy",
+     "text_unchanged": true
+    }
+   ],
+   "sendable_after_repair": 4,
+   "offline_rescore_after_repair": {
+    "score10": 10.0,
+    "veto": null
+   },
+   "classification": "consumer_recoverable"
+  },
+  {
+   "batch": "S1",
+   "case_id": "E024_T04",
+   "arm": "action_policy_r1",
+   "raw_protocol_veto": "json_schema_broken",
+   "raw_chars": 405,
+   "loss_rules": [
+    "R2_directions_overflow"
+   ],
+   "loss_log": [
+    {
+     "rule": "R2_directions_overflow",
+     "given": 5,
+     "dropped_directions": [
+      null
+     ]
+    }
+   ],
+   "sendable_after_repair": 4,
+   "offline_rescore_after_repair": {
+    "score10": 10.0,
+    "veto": null
+   },
+   "classification": "consumer_recoverable"
+  },
+  {
+   "batch": "S1",
+   "case_id": "E027_T06",
+   "arm": "reference_product_v1",
+   "raw_protocol_veto": "illegal_source_id:t5_0",
+   "raw_chars": 492,
+   "loss_rules": [],
+   "loss_log": [],
+   "sendable_after_repair": 4,
+   "offline_rescore_after_repair": {
+    "score10": 0.0,
+    "veto": "illegal_source_id:t5_0,m1"
+   },
+   "classification": "unrecoverable"
+  },
+  {
+   "batch": "S1",
+   "case_id": "E034_T05",
+   "arm": "action_policy_r1",
+   "raw_protocol_veto": "json_schema_broken",
+   "raw_chars": 887,
+   "loss_rules": [
+    "R1_unmappable_key"
+   ],
+   "loss_log": [
+    {
+     "rule": "R1_unmappable_key",
+     "key": "'bad_boo'",
+     "detail": "键名无法归一到四规范名，按原样保留（不猜）"
+    }
+   ],
+   "sendable_after_repair": 3,
+   "offline_rescore_after_repair": {
+    "score10": 0.0,
+    "veto": "json_schema_broken"
+   },
+   "classification": "unrecoverable"
+  },
+  {
+   "batch": "S1",
+   "case_id": "E034_T11",
+   "arm": "reference_product_v1",
+   "raw_protocol_veto": "json_schema_broken",
+   "raw_chars": 428,
+   "loss_rules": [
+    "R2_directions_overflow"
+   ],
+   "loss_log": [
+    {
+     "rule": "R2_directions_overflow",
+     "given": 5,
+     "dropped_directions": [
+      null
+     ]
+    }
+   ],
+   "sendable_after_repair": 4,
+   "offline_rescore_after_repair": {
+    "score10": 0.0,
+    "veto": "illegal_source_id:m0"
+   },
+   "classification": "unrecoverable"
+  },
+  {
+   "batch": "S2",
+   "case_id": "AK02_T01",
+   "arm": "action_policy_r1",
+   "raw_protocol_veto": "json_schema_broken",
+   "raw_chars": 732,
+   "loss_rules": [
+    "R3_premature_top_level_brace"
+   ],
+   "loss_log": [
+    {
+     "rule": "R3_premature_top_level_brace",
+     "cut_index": 329,
+     "bytes_moved": 1,
+     "detail": "删掉 directions 之后多余的顶层 }，analysis 原样接回"
+    }
+   ],
+   "sendable_after_repair": 4,
+   "offline_rescore_after_repair": {
+    "score10": 10.0,
+    "veto": null
+   },
+   "classification": "consumer_recoverable"
+  },
+  {
+   "batch": "S2",
+   "case_id": "AK09_T01",
+   "arm": "action_policy_r1",
+   "raw_protocol_veto": "json_schema_broken",
+   "raw_chars": 543,
+   "loss_rules": [
+    "R4_no_reply_expression_missing"
+   ],
+   "loss_log": [
+    {
+     "rule": "R4_no_reply_expression_missing",
+     "detail": "空正文+全 null 方向：不回只能由生成侧显式 action 表达，消费侧不代补",
+     "repaired_here": false
+    }
+   ],
+   "sendable_after_repair": 0,
+   "offline_rescore_after_repair": {
+    "score10": 0.0,
+    "veto": "json_schema_broken"
+   },
+   "classification": "R4_generator_side_only"
+  },
+  {
+   "batch": "S2",
+   "case_id": "AK12_T01",
+   "arm": "action_policy_r1",
+   "raw_protocol_veto": "json_schema_broken",
+   "raw_chars": 476,
+   "loss_rules": [
+    "R4_no_reply_expression_missing"
+   ],
+   "loss_log": [
+    {
+     "rule": "R4_no_reply_expression_missing",
+     "detail": "空正文+全 null 方向：不回只能由生成侧显式 action 表达，消费侧不代补",
+     "repaired_here": false
+    }
+   ],
+   "sendable_after_repair": 0,
+   "offline_rescore_after_repair": {
+    "score10": 0.0,
+    "veto": "json_schema_broken"
+   },
+   "classification": "R4_generator_side_only"
+  }
+ ]
+}

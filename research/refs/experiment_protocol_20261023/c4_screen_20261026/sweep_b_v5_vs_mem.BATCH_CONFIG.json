@@ -1,0 +1,28 @@
+{
+ "batch_id": "BATCH-C4-B-V5-VS-MEM-20261026",
+ "arm_map": {
+  "parent": "v5_purpose_aligned",
+  "candidate": "evidence_memory_v1"
+ },
+ "episode_order": [
+  {
+   "episode": "E006",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E008",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E012",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E007",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+ "recall_capable": false,
+ "design_note": "C4 机制筛选·臂批B：v5_purpose_aligned vs 证据记忆候选 evidence_memory_v1，与批A同 4 故事同 8 位同先手模式，位点级四臂可比（各臂状态只由自身历史演进，两批之间不共享状态）。批A+批B=128 恰满阶段帽。"
+}

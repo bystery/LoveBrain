@@ -1,0 +1,189 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W04-03_FS1",
+ "review": "refs/experiment_protocol_20261023/global_harness_program_20261030/W04-03_FS1_NINEDIM_REVIEW.json",
+ "batch_root": "logs/fs1_a_live2_20261030",
+ "n_queued": 5,
+ "queue": [
+  {
+   "pair_id": "NIND:B:E021:E021_T07",
+   "order": "main",
+   "story": "E021",
+   "cid": "E021_T07",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT在没有任何日期依据的情况下断言“今天周三”“定的是下周二17号”，把对方今晚九点到场改写成另一个日子，并劝她别去球馆，等于否掉她“九点到、你先打”的安排；这是把未定事项说成确定事实，并且反向处理了改期。",
+   "key_quote": "L：今天周三…球馆没我，你九点才下班就别往球馆跑了 / R：行，我先打着，你到了直接进来。",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 0,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": true,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "今天周三",
+      "定的是下周二17号",
+      "九点到、你先打"
+     ],
+     "found_where": {
+      "今天周三": "key_quote",
+      "定的是下周二17号": null,
+      "九点到、你先打": null
+     },
+     "nowhere": [
+      "定的是下周二17号",
+      "九点到、你先打"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 1
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T12",
+   "order": "main",
+   "story": "E033",
+   "cid": "E033_T12",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT编造未发生事实：此前对话中地板是HER改材料单加的（“我改材料单 地板加两万”），无任何“劝上瓷砖”记录，属编造已发生安排+错人归属，并在她收尾时反向争功。",
+   "key_quote": "L：“地板是我改的，你当时还劝我上瓷砖呢”；R：“这功劳记你头上。以后有朋友装修我第一个推你。”",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 0,
+     "memory": 0
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "我改材料单 地板加两万",
+      "劝上瓷砖"
+     ],
+     "found_where": {
+      "我改材料单 地板加两万": "episode_context",
+      "劝上瓷砖": null
+     },
+     "nowhere": [
+      "劝上瓷砖"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 1
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T07",
+   "order": "main",
+   "story": "E021",
+   "cid": "E021_T07",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT把当天当成周三，并据此取消或否定已约好的周二场次，属于没有依据就把事项状态确定下来，而且把她挡在球场外；RIGHT接受她的变更，先打起来并留好进场口。",
+   "key_quote": "R：行，我先打着，你到了直接过来找我",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 0,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": true,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T05",
+   "order": "swap",
+   "story": "E026",
+   "cid": "E026_T05",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "RIGHT把尚未发生的事当成已经发生：她只说过“一会儿你深蹲我给你拍，有个膝盖内扣我早想说”，还没点评，RIGHT却写成“你点评完膝盖内扣就没下文了”，把未来事项当成已经完成，属于编造已发生安排",
+   "key_quote": "你点评完膝盖内扣就没下文了（她仅说“一会儿给你拍…早想说”）",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 2,
+     "time": 0,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "一会儿你深蹲我给你拍，有个膝盖内扣我早想说",
+      "你点评完膝盖内扣就没下文了"
+     ],
+     "found_where": {
+      "一会儿你深蹲我给你拍，有个膝盖内扣我早想说": "episode_context",
+      "你点评完膝盖内扣就没下文了": "candidate_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T12",
+   "order": "main",
+   "story": "E021",
+   "cid": "E021_T12",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 把尚未确定的到场时间说成既定安排（『照旧七点半』），但她此前只说『尽量七点』或『九点才能到』，属于没有依据就把不确定的事说成确定；而且她已道别，此时又另起约球话题，违背了卡面要求的不开新话题。RIGHT 只道别，并轻轻回扣了『对账』。",
+   "key_quote": "LEFT：周二我照旧七点半到，等你。／RIGHT：行，撤吧，明天对账顺利。",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 0,
+     "attrib": 3,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  }
+ ]
+}

@@ -1,0 +1,79 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W16_LRE148",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W16_LRE148_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w16_unc_live_20261102",
+ "n_queued": 2,
+ "queue": [
+  {
+   "pair_id": "LP:LRE148:LRE148_T19",
+   "order": "main",
+   "story": "",
+   "cid": "LRE148_T19",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "两侧都把麻薯的换粮节奏直接套到饮食史未明的流浪猫妈妈身上，均未提醒先问站长；RIGHT 还称七天到十天办法“行不通”、把麻薯经验当通用结论，并给出七天到十天可直接套用的确定化方案，越过卡面本位要求与边界",
+   "key_quote": "先别急，猫妈妈刚生完崽还喂着奶，这会儿全换粮最容易拉稀。先把麻薯那套七天到十天的节奏挪过去",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "行不通"
+     ],
+     "found_where": {
+      "行不通": null
+     },
+     "nowhere": [
+      "行不通"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE148:LRE148_T24",
+   "order": "swap",
+   "story": "",
+   "cid": "LRE148_T24",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "",
+   "key_quote": "11月6号……我这儿也记着一笔呢（编造了当晚十点多对话）",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 2,
+     "time": 2,
+     "attrib": 3,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

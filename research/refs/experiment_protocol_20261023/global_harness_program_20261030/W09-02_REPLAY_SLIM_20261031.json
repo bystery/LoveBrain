@@ -1,0 +1,308 @@
+{
+ "kind": "w0902_replay_slim",
+ "date": "2026-10-31",
+ "batch": "logs/fs1_a_live2_20261030",
+ "stories": {
+  "E021": {
+   "turns_replayed": 12,
+   "base_mem": {
+    "n": 25,
+    "digest": [
+     "f_0001|confirmed_seed|在一家做物流系统的公司写后端；周三例行加班；腰上个月拉伤刚好转，医生嘱咐别猛跳。",
+     "f_0002|confirmed_seed|在会计师事务所做审计，4月起进年审忙季；羽毛球打了三年，正手凶反手弱；不爱加群。",
+     "f_0003|confirmed_seed|球馆混双随机配到过两次，互加了微信但还没单独聊过；知道彼此称呼和球风而已。",
+     "f_0004|confirmed_seed|短句，先接对方说的点；不连续追问；约球要说具体时间地点。",
+     "f_0005|confirmed_seed|新认识的球友，还没形成固定往来。",
+     "f_0006|confirmed_seed|28岁，后端工程师，住城东；每周打一次羽毛球，腰伤刚好不久，打球偏防守。",
+     "f_0007|confirmed_seed|26岁，会计师事务所审计员，年审季前夜；球风凶但怕吵，打球图出汗不想社交。",
+     "f_0008|confirmed|她问下次球馆周二晚有没有空位",
+     "f_0009|confirmed|周二晚七点半，我的固定场地；空位我明后天去问",
+     "f_0010|confirmed|我周二固定去球馆，七点半那片场",
+     "f_0011|confirmed|她周二带新拍去试",
+     "f_0012|confirmed|她的旧拍线断了",
+     "f_0013|confirmed|她下周开始天天对账到十点",
+     "f_0014|confirmed|她下周对账十点算早的，项目不同时间不同，组里今年新人多她要带",
+     "f_0015|confirmed|我周三例行加班",
+     "f_0016|completed|周二打球时间待定，她担心加班导致缺席",
+     "f_0017|confirmed|我周二会先到场占场，她几点到都行",
+     "f_0018|confirmed|她说定了，周二尽量七点到",
+     "f_0019|confirmed|她今天刚下班，九点才能到",
+     "f_0020|confirmed|她让我先打，不用等她",
+     "f_0021|confirmed|她今天对账到很晚，累得头都是懵的",
+     "f_0022|proposed|她提议下季度忙完后固定约周二（未敲定，我这边先应下场地）",
+     "f_0023|confirmed|她明天还得对账",
+     "f_0024|tentative|我说五月起每周二都算上我",
+     "f_0025|proposed|五月起每周二固定约球，我这边先应下，具体未敲定"
+    ]
+   },
+   "slim_mem": {
+    "n": 25,
+    "digest": [
+     "f_0001|confirmed_seed|在一家做物流系统的公司写后端；周三例行加班；腰上个月拉伤刚好转，医生嘱咐别猛跳。",
+     "f_0002|confirmed_seed|在会计师事务所做审计，4月起进年审忙季；羽毛球打了三年，正手凶反手弱；不爱加群。",
+     "f_0003|confirmed_seed|球馆混双随机配到过两次，互加了微信但还没单独聊过；知道彼此称呼和球风而已。",
+     "f_0004|confirmed_seed|短句，先接对方说的点；不连续追问；约球要说具体时间地点。",
+     "f_0005|confirmed_seed|新认识的球友，还没形成固定往来。",
+     "f_0006|confirmed_seed|28岁，后端工程师，住城东；每周打一次羽毛球，腰伤刚好不久，打球偏防守。",
+     "f_0007|confirmed_seed|26岁，会计师事务所审计员，年审季前夜；球风凶但怕吵，打球图出汗不想社交。",
+     "f_0008|confirmed|她问下次球馆周二晚有没有空位",
+     "f_0009|confirmed|周二晚七点半，我的固定场地；空位我明后天去问",
+     "f_0010|confirmed|我周二固定去球馆，七点半那片场",
+     "f_0011|confirmed|她周二带新拍去试",
+     "f_0012|confirmed|她的旧拍线断了",
+     "f_0013|confirmed|她下周开始天天对账到十点",
+     "f_0014|confirmed|她下周对账十点算早的，项目不同时间不同，组里今年新人多她要带",
+     "f_0015|confirmed|我周三例行加班",
+     "f_0016|completed|周二打球时间待定，她担心加班导致缺席",
+     "f_0017|confirmed|我周二会先到场占场，她几点到都行",
+     "f_0018|confirmed|她说定了，周二尽量七点到",
+     "f_0019|confirmed|她今天刚下班，九点才能到",
+     "f_0020|confirmed|她让我先打，不用等她",
+     "f_0021|confirmed|她今天对账到很晚，累得头都是懵的",
+     "f_0022|proposed|她提议下季度忙完后固定约周二（未敲定，我这边先应下场地）",
+     "f_0023|confirmed|她明天还得对账",
+     "f_0024|tentative|我说五月起每周二都算上我",
+     "f_0025|proposed|五月起每周二固定约球，我这边先应下，具体未敲定"
+    ]
+   },
+   "state_identical": true,
+   "anchor_checks": {
+    "gone_system:不暴露这是 AI 或辅助": true,
+    "gone_system:## 期望的可用回复": true,
+    "gone_system:不否定她的情绪、不冷暴力": true,
+    "gone_user:【回扣有据】凡提到'上次": true,
+    "kept_system:可公开事实": true,
+    "kept_system:私下目标": true,
+    "kept_system:未发送草稿": true,
+    "kept_system:JSON Schema（": true,
+    "kept_user:【单 JSON 硬约束】": true,
+    "kept_user:【钩子承接】": true,
+    "kept_user:【目标让位】": true,
+    "kept_user:【自我状态有据】": true
+   },
+   "per_turn_delta": [
+    {
+     "turn": 1,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 2,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 3,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 4,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 5,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 6,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 7,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 8,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 9,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 10,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 11,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 12,
+     "sys_saved": 125,
+     "user_saved": 110
+    }
+   ],
+   "anchors_ok": true
+  },
+  "E033": {
+   "turns_replayed": 12,
+   "base_mem": {
+    "n": 32,
+    "digest": [
+     "f_0001|confirmed_seed|首套房装修，全包给装修公司；工作日都在学校，晚上在家。",
+     "f_0002|confirmed_seed|从业八年；工长老周经验足但怕猫；材料单改一次出一版。",
+     "f_0003|confirmed_seed|朋友介绍的设计师，签约前的咨询期，专业上互相尊重。",
+     "f_0004|confirmed_seed|事务式短句；决策点列清楚；不催单。",
+     "f_0005|confirmed_seed|设计师与业主（服务关系，未见熟）。",
+     "f_0006|confirmed_seed|30岁，中学老师，装修业主，预算35万；养一只英短，怕地板凉。",
+     "f_0007|confirmed_seed|31岁，装修公司设计师，监理风格；报价实，改单快，说话留证据。",
+     "f_0008|confirmed|量房改到下周三晚上，老周带队，她随行（原周六上午已取消）",
+     "f_0009|confirmed|我：下周三晚上七点在家等量房",
+     "f_0010|confirmed|她提醒提前把猫关好，老周怕猫",
+     "f_0011|confirmed|双方：量房定在下周三晚上七点",
+     "f_0012|confirmed|老周周六有个急活",
+     "f_0013|confirmed|量房时间定在晚上七点",
+     "f_0014|confirmed|老周让用户把户型图找出来",
+     "f_0015|confirmed|方案初稿预算原按35万，因瓷砖换地板加两万，现预算37万",
+     "f_0016|confirmed|她建议瓷砖全换，称这部分钱省不下",
+     "f_0017|confirmed|我把瓷砖改成地板，理由是养猫怕凉",
+     "f_0018|confirmed|她改材料单，地板加两万，预算变成37万",
+     "f_0019|confirmed|地板已到货，其中两箱存在色差",
+     "f_0020|confirmed|老周说有色差的两箱可以换",
+     "f_0021|proposed|我去现场看有色差的地板，时间尚未敲定",
+     "f_0022|confirmed|我决定把两箱有色差的地板换掉",
+     "f_0023|confirmed|她让老周联系厂家换货",
+     "f_0024|completed|铺装排在两周后，具体日期未定",
+     "f_0025|confirmed|铺装完成",
+     "f_0026|confirmed|有一块踢脚线翘了，需要修",
+     "f_0027|confirmed|老周明天来修踢脚线",
+     "f_0028|confirmed|老周明天上午去现场",
+     "f_0029|proposed|她提议顺便评估猫的挠痕、包防抓条，是否包未定",
+     "f_0030|confirmed|尾款已结清，工程完结",
+     "f_0031|confirmed|猫现在敢在地板上跑，把地板当跑道",
+     "f_0032|proposed|她说常联系，未约定具体下次"
+    ]
+   },
+   "slim_mem": {
+    "n": 32,
+    "digest": [
+     "f_0001|confirmed_seed|首套房装修，全包给装修公司；工作日都在学校，晚上在家。",
+     "f_0002|confirmed_seed|从业八年；工长老周经验足但怕猫；材料单改一次出一版。",
+     "f_0003|confirmed_seed|朋友介绍的设计师，签约前的咨询期，专业上互相尊重。",
+     "f_0004|confirmed_seed|事务式短句；决策点列清楚；不催单。",
+     "f_0005|confirmed_seed|设计师与业主（服务关系，未见熟）。",
+     "f_0006|confirmed_seed|30岁，中学老师，装修业主，预算35万；养一只英短，怕地板凉。",
+     "f_0007|confirmed_seed|31岁，装修公司设计师，监理风格；报价实，改单快，说话留证据。",
+     "f_0008|confirmed|量房改到下周三晚上，老周带队，她随行（原周六上午已取消）",
+     "f_0009|confirmed|我：下周三晚上七点在家等量房",
+     "f_0010|confirmed|她提醒提前把猫关好，老周怕猫",
+     "f_0011|confirmed|双方：量房定在下周三晚上七点",
+     "f_0012|confirmed|老周周六有个急活",
+     "f_0013|confirmed|量房时间定在晚上七点",
+     "f_0014|confirmed|老周让用户把户型图找出来",
+     "f_0015|confirmed|方案初稿预算原按35万，因瓷砖换地板加两万，现预算37万",
+     "f_0016|confirmed|她建议瓷砖全换，称这部分钱省不下",
+     "f_0017|confirmed|我把瓷砖改成地板，理由是养猫怕凉",
+     "f_0018|confirmed|她改材料单，地板加两万，预算变成37万",
+     "f_0019|confirmed|地板已到货，其中两箱存在色差",
+     "f_0020|confirmed|老周说有色差的两箱可以换",
+     "f_0021|proposed|我去现场看有色差的地板，时间尚未敲定",
+     "f_0022|confirmed|我决定把两箱有色差的地板换掉",
+     "f_0023|confirmed|她让老周联系厂家换货",
+     "f_0024|completed|铺装排在两周后，具体日期未定",
+     "f_0025|confirmed|铺装完成",
+     "f_0026|confirmed|有一块踢脚线翘了，需要修",
+     "f_0027|confirmed|老周明天来修踢脚线",
+     "f_0028|confirmed|老周明天上午去现场",
+     "f_0029|proposed|她提议顺便评估猫的挠痕、包防抓条，是否包未定",
+     "f_0030|confirmed|尾款已结清，工程完结",
+     "f_0031|confirmed|猫现在敢在地板上跑，把地板当跑道",
+     "f_0032|proposed|她说常联系，未约定具体下次"
+    ]
+   },
+   "state_identical": true,
+   "anchor_checks": {
+    "gone_system:不暴露这是 AI 或辅助": true,
+    "gone_system:## 期望的可用回复": true,
+    "gone_system:不否定她的情绪、不冷暴力": true,
+    "gone_user:【回扣有据】凡提到'上次": true,
+    "kept_system:可公开事实": true,
+    "kept_system:私下目标": true,
+    "kept_system:未发送草稿": true,
+    "kept_system:JSON Schema（": true,
+    "kept_user:【单 JSON 硬约束】": true,
+    "kept_user:【钩子承接】": true,
+    "kept_user:【目标让位】": true,
+    "kept_user:【自我状态有据】": true
+   },
+   "per_turn_delta": [
+    {
+     "turn": 1,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 2,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 3,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 4,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 5,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 6,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 7,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 8,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 9,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 10,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 11,
+     "sys_saved": 125,
+     "user_saved": 110
+    },
+    {
+     "turn": 12,
+     "sys_saved": 125,
+     "user_saved": 110
+    }
+   ],
+   "anchors_ok": true
+  }
+ },
+ "totals": {
+  "sys_saved_per_turn_mean": 125.0,
+  "user_saved_per_turn_mean": 110.0,
+  "verdict": "PASS"
+ }
+}

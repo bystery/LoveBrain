@@ -1,0 +1,711 @@
+{
+ "kind": "fault_family_before_after_v1",
+ "zero_network": true,
+ "comparability": {
+  "cards_before": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+  "cards_after": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+  "cards_identical": true,
+  "endpoint_model_temp": "127.0.0.1:17770/v1 · dsf · 0.7（两批授权单各自登记一致）",
+  "before_batch": null,
+  "after_batch": null,
+  "before_candidate": "action_policy_r1",
+  "after_candidate": "action_policy_r2",
+  "note": "修复前后是不同 harness 身份；逐位分列不合并成绩。两批交错方向整体相反，因此'谁先派'不成为混淆变量。"
+ },
+ "family_counts": {
+  "candidate_before": {
+   "none": 9,
+   "_veto_any": 3,
+   "F3_premature_top_level_brace": 1,
+   "F4_no_reply_unrepresentable": 2
+  },
+  "candidate_after": {
+   "none": 9,
+   "_veto_any": 1,
+   "F2_directions_count": 1,
+   "F5_legal_no_reply_expressed": 2
+  },
+  "parent_batch_before": {
+   "none": 12,
+   "_veto_any": 0
+  },
+  "parent_batch_after": {
+   "none": 12,
+   "_veto_any": 0
+  }
+ },
+ "per_position": {
+  "candidate_before": {
+   "AK01_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 41,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 16618
+   },
+   "AK02_T01": {
+    "families": [
+     "F3_premature_top_level_brace"
+    ],
+    "note": [
+     "首段键=response,directions"
+    ],
+    "veto": "json_schema_broken",
+    "score10": 0.0,
+    "sendable_style_texts": 0,
+    "primary_chars": 51,
+    "nonempty_slots_total": 4,
+    "analysis_present": false,
+    "may_decline": false,
+    "latency_ms": 25392
+   },
+   "AK03_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 40,
+    "nonempty_slots_total": 7,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 18684
+   },
+   "AK04_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 30,
+    "nonempty_slots_total": 7,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 13792
+   },
+   "AK05_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 45,
+    "nonempty_slots_total": 7,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 21649
+   },
+   "AK06_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 53,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": true,
+    "latency_ms": 59638
+   },
+   "AK07_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 29,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 16546
+   },
+   "AK08_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 59,
+    "nonempty_slots_total": 7,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 85778
+   },
+   "AK09_T01": {
+    "families": [
+     "F4_no_reply_unrepresentable"
+    ],
+    "note": [],
+    "veto": "json_schema_broken",
+    "score10": 0.0,
+    "sendable_style_texts": 0,
+    "primary_chars": 0,
+    "nonempty_slots_total": 0,
+    "analysis_present": true,
+    "may_decline": true,
+    "latency_ms": 34002
+   },
+   "AK10_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 54,
+    "nonempty_slots_total": 7,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 22485
+   },
+   "AK11_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 47,
+    "nonempty_slots_total": 7,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 27819
+   },
+   "AK12_T01": {
+    "families": [
+     "F4_no_reply_unrepresentable"
+    ],
+    "note": [],
+    "veto": "json_schema_broken",
+    "score10": 0.0,
+    "sendable_style_texts": 0,
+    "primary_chars": 0,
+    "nonempty_slots_total": 0,
+    "analysis_present": true,
+    "may_decline": true,
+    "latency_ms": 22899
+   }
+  },
+  "candidate_after": {
+   "AK01_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 43,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 25207
+   },
+   "AK02_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 41,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 20675
+   },
+   "AK03_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 35,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 24394
+   },
+   "AK04_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 36,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 78851
+   },
+   "AK05_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 49,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 22128
+   },
+   "AK06_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 39,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": true,
+    "latency_ms": 57426
+   },
+   "AK07_T01": {
+    "families": [
+     "F2_directions_count"
+    ],
+    "note": [],
+    "veto": "json_schema_broken",
+    "score10": 0.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 26,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 29012
+   },
+   "AK08_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 49,
+    "nonempty_slots_total": 7,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 48956
+   },
+   "AK09_T01": {
+    "families": [
+     "F5_legal_no_reply_expressed"
+    ],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 0,
+    "primary_chars": 0,
+    "nonempty_slots_total": 0,
+    "analysis_present": true,
+    "may_decline": true,
+    "latency_ms": 83319
+   },
+   "AK10_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 62,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 29068
+   },
+   "AK11_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 36,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 50842
+   },
+   "AK12_T01": {
+    "families": [
+     "F5_legal_no_reply_expressed"
+    ],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 0,
+    "primary_chars": 0,
+    "nonempty_slots_total": 0,
+    "analysis_present": true,
+    "may_decline": true,
+    "latency_ms": 23613
+   }
+  },
+  "parent_before": {
+   "AK01_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 31,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 23589
+   },
+   "AK02_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 35,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 26574
+   },
+   "AK03_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 26,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 33350
+   },
+   "AK04_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 17,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 15028
+   },
+   "AK05_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 18,
+    "nonempty_slots_total": 7,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 25059
+   },
+   "AK06_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 32,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": true,
+    "latency_ms": 17754
+   },
+   "AK07_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 21,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 15239
+   },
+   "AK08_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 35,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 24046
+   },
+   "AK09_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 19,
+    "nonempty_slots_total": 6,
+    "analysis_present": true,
+    "may_decline": true,
+    "latency_ms": 22149
+   },
+   "AK10_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 23,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 37675
+   },
+   "AK11_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 33,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 15732
+   },
+   "AK12_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 22,
+    "nonempty_slots_total": 7,
+    "analysis_present": true,
+    "may_decline": true,
+    "latency_ms": 17392
+   }
+  },
+  "parent_after": {
+   "AK01_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 39,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 38717
+   },
+   "AK02_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 31,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 15517
+   },
+   "AK03_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 18,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 26826
+   },
+   "AK04_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 20,
+    "nonempty_slots_total": 7,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 62954
+   },
+   "AK05_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 24,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 41371
+   },
+   "AK06_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 30,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": true,
+    "latency_ms": 72593
+   },
+   "AK07_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 26,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 27942
+   },
+   "AK08_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 45,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 23485
+   },
+   "AK09_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 13,
+    "nonempty_slots_total": 7,
+    "analysis_present": true,
+    "may_decline": true,
+    "latency_ms": 22799
+   },
+   "AK10_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 23,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 83595
+   },
+   "AK11_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 39,
+    "nonempty_slots_total": 8,
+    "analysis_present": true,
+    "may_decline": false,
+    "latency_ms": 24382
+   },
+   "AK12_T01": {
+    "families": [],
+    "note": [],
+    "veto": null,
+    "score10": 10.0,
+    "sendable_style_texts": 4,
+    "primary_chars": 22,
+    "nonempty_slots_total": 7,
+    "analysis_present": true,
+    "may_decline": true,
+    "latency_ms": 22922
+   }
+  }
+ },
+ "degradation_control": {
+  "candidate_before": {
+   "non_decline_positions": 9,
+   "non_decline_with_sendable_primary": 9,
+   "non_decline_lost_its_voice": [],
+   "decline_allowed_positions": [
+    "AK06_T01",
+    "AK09_T01",
+    "AK12_T01"
+   ],
+   "decline_allowed_still_replied": [
+    "AK06_T01"
+   ],
+   "decline_allowed_chose_no_reply": [
+    "AK09_T01",
+    "AK12_T01"
+   ]
+  },
+  "candidate_after": {
+   "non_decline_positions": 9,
+   "non_decline_with_sendable_primary": 9,
+   "non_decline_lost_its_voice": [],
+   "decline_allowed_positions": [
+    "AK06_T01",
+    "AK09_T01",
+    "AK12_T01"
+   ],
+   "decline_allowed_still_replied": [
+    "AK06_T01"
+   ],
+   "decline_allowed_chose_no_reply": [
+    "AK09_T01",
+    "AK12_T01"
+   ]
+  },
+  "parent_before": {
+   "non_decline_positions": 9,
+   "non_decline_with_sendable_primary": 9,
+   "non_decline_lost_its_voice": [],
+   "decline_allowed_positions": [
+    "AK06_T01",
+    "AK09_T01",
+    "AK12_T01"
+   ],
+   "decline_allowed_still_replied": [
+    "AK06_T01",
+    "AK09_T01",
+    "AK12_T01"
+   ],
+   "decline_allowed_chose_no_reply": []
+  },
+  "parent_after": {
+   "non_decline_positions": 9,
+   "non_decline_with_sendable_primary": 9,
+   "non_decline_lost_its_voice": [],
+   "decline_allowed_positions": [
+    "AK06_T01",
+    "AK09_T01",
+    "AK12_T01"
+   ],
+   "decline_allowed_still_replied": [
+    "AK06_T01",
+    "AK09_T01",
+    "AK12_T01"
+   ],
+   "decline_allowed_chose_no_reply": []
+  }
+ },
+ "reading_rules": [
+  "F4=候选想不回但合同表达不出来 → 零可发正文，属交付失败；",
+  "F5=候选显式 action=no_reply → 本轮不发消息是设计结果，不算失败也不算得分；",
+  "F1/F2/F3 属结构层：原始协议层照记 veto，消费侧可否交付另见 PROTOCOL_REPAIR_OFFLINE_20261028.json（两列不互冒充）；",
+  "n=12 的单批差异只回答'是否复现'，不足以宣布统计显著或已根治。"
+ ]
+}

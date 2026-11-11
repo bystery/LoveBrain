@@ -1,0 +1,303 @@
+{
+ "kind": "f4_analysis",
+ "action": {
+  "n": 6,
+  "wins": {
+   "on": 1,
+   "tie": 4,
+   "off": 1
+  },
+  "rows": [
+   {
+    "probe_id": "N01_A1_positive",
+    "signal": null,
+    "winner": "on",
+    "verdict": "A",
+    "removed": [
+     {
+      "mark": "【本轮可用动作",
+      "chars": 956,
+      "sha256": "644b120d4714f1d085c0fbdd40e8cdd849266ca6cbd87dfbb5c2f021618c3882"
+     }
+    ],
+    "on_chars": 5240,
+    "off_chars": 4284
+   },
+   {
+    "probe_id": "N02_A1_positive",
+    "signal": null,
+    "winner": "tie",
+    "verdict": "tie",
+    "removed": [
+     {
+      "mark": "【本轮可用动作",
+      "chars": 956,
+      "sha256": "644b120d4714f1d085c0fbdd40e8cdd849266ca6cbd87dfbb5c2f021618c3882"
+     }
+    ],
+    "on_chars": 5338,
+    "off_chars": 4382
+   },
+   {
+    "probe_id": "N01_A2_ambiguous",
+    "signal": null,
+    "winner": "tie",
+    "verdict": "tie",
+    "removed": [
+     {
+      "mark": "【本轮可用动作",
+      "chars": 1037,
+      "sha256": "9235bdb444c08c6ffa6cae16010110159439cdc3065f26e535c4f03c4e876af7"
+     }
+    ],
+    "on_chars": 5379,
+    "off_chars": 4342
+   },
+   {
+    "probe_id": "N01_A3_busy",
+    "signal": null,
+    "winner": "off",
+    "verdict": "A",
+    "removed": [
+     {
+      "mark": "【本轮可用动作",
+      "chars": 956,
+      "sha256": "644b120d4714f1d085c0fbdd40e8cdd849266ca6cbd87dfbb5c2f021618c3882"
+     }
+    ],
+    "on_chars": 5181,
+    "off_chars": 4225
+   },
+   {
+    "probe_id": "N02_A2_ambiguous",
+    "signal": null,
+    "winner": "tie",
+    "verdict": "tie",
+    "removed": [
+     {
+      "mark": "【本轮可用动作",
+      "chars": 960,
+      "sha256": "00c85d043ed4b8ab0178c397fef60f2632d14286ebdc64edcb78649371d14d50"
+     }
+    ],
+    "on_chars": 5175,
+    "off_chars": 4215
+   },
+   {
+    "probe_id": "N02_A3_busy",
+    "signal": null,
+    "winner": "tie",
+    "verdict": "tie",
+    "removed": [
+     {
+      "mark": "【本轮可用动作",
+      "chars": 956,
+      "sha256": "644b120d4714f1d085c0fbdd40e8cdd849266ca6cbd87dfbb5c2f021618c3882"
+     }
+    ],
+    "on_chars": 5175,
+    "off_chars": 4219
+   }
+  ]
+ },
+ "knowledge": {
+  "n": 6,
+  "leaked_rows": 5,
+  "rows": [
+   {
+    "probe_id": "K01_P1_leave",
+    "off_answer": "到16号，17号就得上班了。你13号上午能走，三天半，不算赶——票就按13号上午那班定？",
+    "answer_nums": [
+     "13",
+     "16",
+     "17"
+    ],
+    "nums_in_off_history": [
+     "13",
+     "16",
+     "17"
+    ],
+    "leakage": true,
+    "removed": [
+     {
+      "mark": "【相关已确认事实",
+      "chars": 505,
+      "sha256": "c7422383c3cb40255b79a39a065238b6da8dc3684155e597584e8e5b67c49ccc"
+     },
+     {
+      "mark": "【暂定事项",
+      "chars": 280,
+      "sha256": "bf8d60866ed27d53a2cb347fb47544ba5980c692e5d3dd2c4e84e842f4a0f63a"
+     },
+     {
+      "mark": "【最近状态变更",
+      "chars": 162,
+      "sha256": "ecc06bb7d3a9129a70ee63fa611d3fab7dc0ceb782fb366142aca8d8acb1f24f"
+     }
+    ],
+    "on_chars": 5574,
+    "off_chars": 4627
+   },
+   {
+    "probe_id": "K01_P2_refund",
+    "off_answer": "10号。8号那个是旧的，已经改到10号了。要不要我9号晚上提醒你一句？",
+    "answer_nums": [
+     "10",
+     "8",
+     "9"
+    ],
+    "nums_in_off_history": [
+     "10",
+     "8",
+     "9"
+    ],
+    "leakage": true,
+    "removed": [
+     {
+      "mark": "【相关已确认事实",
+      "chars": 526,
+      "sha256": "a4cc9d863ffc0b4162adbe9dbcd44689f11a3aa20d3705031ef7fe2f4ea8a025"
+     },
+     {
+      "mark": "【暂定事项",
+      "chars": 280,
+      "sha256": "bf8d60866ed27d53a2cb347fb47544ba5980c692e5d3dd2c4e84e842f4a0f63a"
+     },
+     {
+      "mark": "【最近状态变更",
+      "chars": 162,
+      "sha256": "ecc06bb7d3a9129a70ee63fa611d3fab7dc0ceb782fb366142aca8d8acb1f24f"
+     }
+    ],
+    "on_chars": 5588,
+    "off_chars": 4620
+   },
+   {
+    "probe_id": "K01_P3_rail",
+    "off_answer": "1号开售。买D字头，时间别太早。13号上午走的话，十点那班和十一点那班你更想坐哪个？",
+    "answer_nums": [
+     "1",
+     "13"
+    ],
+    "nums_in_off_history": [
+     "1",
+     "13"
+    ],
+    "leakage": true,
+    "removed": [
+     {
+      "mark": "【相关已确认事实",
+      "chars": 302,
+      "sha256": "154342fae4d1ceafb2cf14de1800a2a1e601a38f1e803ac9eb0d33153e91af77"
+     },
+     {
+      "mark": "【暂定事项",
+      "chars": 280,
+      "sha256": "bf8d60866ed27d53a2cb347fb47544ba5980c692e5d3dd2c4e84e842f4a0f63a"
+     },
+     {
+      "mark": "【最近状态变更",
+      "chars": 162,
+      "sha256": "ecc06bb7d3a9129a70ee63fa611d3fab7dc0ceb782fb366142aca8d8acb1f24f"
+     }
+    ],
+    "on_chars": 5374,
+    "off_chars": 4630
+   },
+   {
+    "probe_id": "K02_P1_budget",
+    "off_answer": "八万一千。八万加三千，再减两千，就是81000，别的一概不算进去。要不要我把每一笔列一行给你对一遍？",
+    "answer_nums": [
+     "81000"
+    ],
+    "nums_in_off_history": [],
+    "leakage": false,
+    "removed": [
+     {
+      "mark": "【相关已确认事实",
+      "chars": 461,
+      "sha256": "795c8783bfe2d714b56d190c3533553888bad9422bc78575a7c79f61a52d6c85"
+     },
+     {
+      "mark": "【暂定事项",
+      "chars": 281,
+      "sha256": "b2ac2bb2711f08a6ad5020b8ce831472d206a926ba011b7c1f3ed2ad4b5ae919"
+     },
+     {
+      "mark": "【最近状态变更",
+      "chars": 144,
+      "sha256": "70ffa02a8f6a647990f6d5f43eb9ef64f58ab194d8caa8644261561666a7e3ab"
+     }
+    ],
+    "on_chars": 5573,
+    "off_chars": 4687
+   },
+   {
+    "probe_id": "K02_P2_tile",
+    "off_answer": "8号。5号那边排不进来，先按8号算，别再回头改了。8号上午到的话，我过去帮你点一下数？",
+    "answer_nums": [
+     "5",
+     "8"
+    ],
+    "nums_in_off_history": [
+     "5",
+     "8"
+    ],
+    "leakage": true,
+    "removed": [
+     {
+      "mark": "【相关已确认事实",
+      "chars": 504,
+      "sha256": "899d5d3bb71af2b187d5f616026f5c6ab470c1dbba14e896d882e018f25e0c87"
+     },
+     {
+      "mark": "【暂定事项",
+      "chars": 281,
+      "sha256": "b2ac2bb2711f08a6ad5020b8ce831472d206a926ba011b7c1f3ed2ad4b5ae919"
+     },
+     {
+      "mark": "【最近状态变更",
+      "chars": 144,
+      "sha256": "70ffa02a8f6a647990f6d5f43eb9ef64f58ab194d8caa8644261561666a7e3ab"
+     }
+    ],
+    "on_chars": 5597,
+    "off_chars": 4668
+   },
+   {
+    "probe_id": "K02_P3_measure",
+    "off_answer": "11号，9号那版已经取消了。你那边是不是还写着9号？",
+    "answer_nums": [
+     "11",
+     "9"
+    ],
+    "nums_in_off_history": [
+     "11",
+     "9"
+    ],
+    "leakage": true,
+    "removed": [
+     {
+      "mark": "【相关已确认事实",
+      "chars": 537,
+      "sha256": "a9b63d82de3787c3c34f0fa8f7ef7c1ff0fac0ea54d7099155585f4820cd2f76"
+     },
+     {
+      "mark": "【暂定事项",
+      "chars": 281,
+      "sha256": "b2ac2bb2711f08a6ad5020b8ce831472d206a926ba011b7c1f3ed2ad4b5ae919"
+     },
+     {
+      "mark": "【最近状态变更",
+      "chars": 144,
+      "sha256": "70ffa02a8f6a647990f6d5f43eb9ef64f58ab194d8caa8644261561666a7e3ab"
+     }
+    ],
+    "on_chars": 5637,
+    "off_chars": 4675
+   }
+  ],
+  "note": "知识 off 问句已去掉答案数字，但 off prompt 的近期原文历史仍含答案数字；该操作无法隔离记忆投影，判为无效消融，不进入收益结论。"
+ },
+ "verdict": "行动层 on/off 6 对：on 1、off 1、tie 4；未显示稳定组件收益。知识投影：6 个探针中多数 off 仍可从近期原文得到答案，操作无效；不宣称知识通道增益。"
+}

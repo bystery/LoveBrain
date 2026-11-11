@@ -1,0 +1,1106 @@
+{
+ "kind": "f5_repair_replay",
+ "generated_by": "tools/f5_repair_replay.py",
+ "source_run": "logs/f3_newmat_live_restart_20261029",
+ "replayed_rows": 72,
+ "harness_changed": 1,
+ "e3_fired": 1,
+ "unparseable_after_repair": 0,
+ "regressions_non_e3_change": 0,
+ "e3_positions": [
+  "N01_T05"
+ ],
+ "regression_positions": [],
+ "unparseable_positions": [],
+ "pass": true,
+ "rows": [
+  {
+   "arm": "candidate_N01",
+   "case_id": "N01_T01",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N01",
+   "case_id": "N01_T02",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N01",
+   "case_id": "N01_T03",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N01",
+   "case_id": "N01_T04",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N01",
+   "case_id": "N01_T05",
+   "old_sha256": "",
+   "harness_changed": true,
+   "e3_fired": true,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [
+    "E2_failed",
+    "E3_stray_wrapper_object_removed"
+   ],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N01",
+   "case_id": "N01_T06",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N01",
+   "case_id": "N01_T07",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N01",
+   "case_id": "N01_T08",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N01",
+   "case_id": "N01_T09",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N01",
+   "case_id": "N01_T10",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N01",
+   "case_id": "N01_T11",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N01",
+   "case_id": "N01_T12",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N02",
+   "case_id": "N02_T01",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N02",
+   "case_id": "N02_T02",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N02",
+   "case_id": "N02_T03",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N02",
+   "case_id": "N02_T04",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N02",
+   "case_id": "N02_T05",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N02",
+   "case_id": "N02_T06",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N02",
+   "case_id": "N02_T07",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N02",
+   "case_id": "N02_T08",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [
+    "I2_I3_I4_inherited_normalize",
+    "I3_directions_overflow_preserved"
+   ],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N02",
+   "case_id": "N02_T09",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N02",
+   "case_id": "N02_T10",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N02",
+   "case_id": "N02_T11",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_N02",
+   "case_id": "N02_T12",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T01",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T02",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T03",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T04",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T05",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T06",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T07",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T08",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T09",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T10",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": true
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T11",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T12",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T13",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T14",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T15",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T16",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T17",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": true
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T18",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T19",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T20",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T21",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T22",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T23",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K01_resume",
+   "case_id": "K01_T24",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T01",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T02",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [
+    "E2_premature_top_level_brace"
+   ],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T03",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T04",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T05",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T06",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T07",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T08",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T09",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T10",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T11",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T12",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T13",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T14",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T15",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T16",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T17",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T18",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T19",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T20",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T21",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T22",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T23",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  },
+  {
+   "arm": "candidate_K02_resume",
+   "case_id": "K02_T24",
+   "old_sha256": "",
+   "harness_changed": false,
+   "e3_fired": false,
+   "new_parse_ok": true,
+   "new_top_level_keys": [
+    "analysis",
+    "directions",
+    "response"
+   ],
+   "rules": [],
+   "subject_guard": false
+  }
+ ]
+}

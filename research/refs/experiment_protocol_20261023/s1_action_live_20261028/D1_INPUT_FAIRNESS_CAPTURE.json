@@ -1,0 +1,114 @@
+{
+ "out": "refs/experiment_protocol_20261023/s1_action_live_20261028/D1_GENERAL/batch",
+ "cards": "benchmark/stories_v2/stageD/GRADING_CARDS_D01_D02.json",
+ "episodes": [
+  "D01",
+  "D02"
+ ],
+ "arms": [
+  "parent",
+  "candidate"
+ ],
+ "positions_audited": 16,
+ "failures": [],
+ "passed": true,
+ "per_position": [
+  {
+   "case_id": "D01_T01",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 4764
+   },
+   "arm_user_utf16": {
+    "parent": 724,
+    "candidate": 3303
+   },
+   "user_len_diff": 2579
+  },
+  {
+   "case_id": "D01_T02",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 4764
+   },
+   "arm_user_utf16": {
+    "parent": 962,
+    "candidate": 3617
+   },
+   "user_len_diff": 2655
+  },
+  {
+   "case_id": "D01_T03",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 4764
+   },
+   "arm_user_utf16": {
+    "parent": 1076,
+    "candidate": 4046
+   },
+   "user_len_diff": 2970
+  },
+  {
+   "case_id": "D01_T04",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 4764
+   },
+   "arm_user_utf16": {
+    "parent": 1106,
+    "candidate": 3919
+   },
+   "user_len_diff": 2813
+  },
+  {
+   "case_id": "D01_T05",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 4764
+   },
+   "arm_user_utf16": {
+    "parent": 1244,
+    "candidate": 4241
+   },
+   "user_len_diff": 2997
+  },
+  {
+   "case_id": "D01_T06",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 4764
+   },
+   "arm_user_utf16": {
+    "parent": 1100,
+    "candidate": 4568
+   },
+   "user_len_diff": 3468
+  },
+  {
+   "case_id": "D01_T07",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 4764
+   },
+   "arm_user_utf16": {
+    "parent": 1104,
+    "candidate": 4446
+   },
+   "user_len_diff": 3342
+  },
+  {
+   "case_id": "D01_T08",
+   "arm_system_utf16": {
+    "parent": 8295,
+    "candidate": 4764
+   },
+   "arm_user_utf16": {
+    "parent": 1064,
+    "candidate": 4897
+   },
+   "user_len_diff": 3833
+  }
+ ],
+ "rows_total": 20
+}

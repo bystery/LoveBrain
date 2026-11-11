@@ -1,0 +1,21 @@
+{
+ "kind": "fs1_first_loop_verdict_thresholds",
+ "registered_at": "2026-10-30T12:05:00+08:00",
+ "registered_before": "W04-03_FS1_NINEDIM_REVIEW.json 尚未产出（后台跑批中）",
+ "authority": "rubric v0.5 §5.3（可接受幅度须在看到该批结果前登记）+ W10-01 protections",
+ "thresholds": {
+  "protected_dims_E3": ["goal", "boundary", "init"],
+  "significant_regression": "paired_diff_mean <= -0.5 且方向一致（parent_wins > cand_wins）",
+  "severe_gate": "severe_primary_candidate <= severe_primary_parent（不增即过）",
+  "cost_gate": "prompt/completion/latency_p50 任一显著上升(>10%)需在判决中报告交易",
+  "C1_close": "|paired_diff_mean| <= 0.3 on interaction 与 emotion",
+  "C2_confirmed": "goal/memory/time 中 >=2 维 paired_diff_mean <= -0.5",
+  "C3_check": "DONE.json cost.prompt_candidate < cost.prompt_parent"
+ },
+ "verdict_rules": {
+  "FS1_A_E3": "KEEP = 无保护维显著退化 + severe 不增 + 成本不显著恶化；任一违反 = REWORK（列出维度）；严重错误显著增多 = ELIMINATE",
+  "FS1_B_Bmin": "C2 证实则按预登记'失败即答案'：REWORK 或按用途定位（C3 若显著则记'低复杂度位专用候选'，不整体 KEEP）；C1/C3 全中且无严重错误回退才可 KEEP"
+ },
+ "judge_status": "PARTIAL_QUALIFIED（W04-03_JUDGE_QUAL_REPORT）：fact/time 维降辅助，结论以 B3 亲读+程序层红旗为准；其余维度按 judge 读数",
+ "evidence_read_status": "E032_T11 tentative 位四臂亲读通过；程序层 cancelled/forbidden_fact/stale/geo 红旗全零；无据确定化机械初筛 0 命中"
+}

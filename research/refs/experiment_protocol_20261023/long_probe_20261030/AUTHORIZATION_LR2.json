@@ -1,0 +1,46 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-LR2-LONGRANGE-20261101-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30地狱级常设授权（AUTH-GLOBAL-CONTINUOUS-20261030-01 登记件）；用户2026-11-01再次确认四模型可用并催办提速；管理帽16384不变",
+ "phase": "W10-04_remainder_W12-05_longrange_gt24",
+ "budget_ledger": "logs/auth_budget/AUTH-LR2-LONGRANGE-20261101-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 192
+ },
+ "scope": {
+  "purpose": "W10-04余项+W12-05: >24轮长剧域 v0_minimal_events vs r9_slim 两臂配对（LR2），素材=wave1_ext 隔离续写 LRE060(40轮)/LRE048(32轮)。判据=LONGPROBE_LR2_PREREGISTRATION.json（跑前冻结）。评审另册 AUTH-LR2-REVIEW-20261101-01",
+  "route": "two_arm_batch_144",
+  "total_attempts": 144,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "LR2": "BATCH-LONGRANGE-LR2-LRE060LRE048-20261101"
+  },
+  "episodes": [
+   "LRE060",
+   "LRE048"
+  ],
+  "cards": "benchmark/stories_v2/wave1_ext/GRADING_CARDS_W12.json",
+  "preregistration": "refs/experiment_protocol_20261023/long_probe_20261030/LONGPROBE_LR2_PREREGISTRATION.json"
+ },
+ "frozen_bindings": {
+  "LR2": {
+   "plan_file": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LONGPROBE_LR2.INTERLEAVE_PLAN.json",
+   "plan_sha256": "ab44b639e46294eb1aba3d88d76034296c949fa56b94828fd577f790c8fb7c70",
+   "batch_id": "BATCH-LONGRANGE-LR2-LRE060LRE048-20261101",
+   "cards_file": "benchmark/stories_v2/wave1_ext/GRADING_CARDS_W12.json",
+   "attempts": 144,
+   "parent": "action_policy_r9_slim",
+   "candidate": "v0_minimal_events",
+   "parent_identity_sha256": "2099c12f55337dd7dcfac0327cdd9411f7e5de2cdaa0a7083498bab6d12c9c03",
+   "candidate_identity_sha256": "eb35df9a6cd600ab7558e2f5e71f285a8e4f356e231211ce6aa1e8bc16a9122c"
+  }
+ }
+}

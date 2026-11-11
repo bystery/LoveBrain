@@ -1,0 +1,48 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W17_E189",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W17_E189_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w17_merge_live_20261102",
+ "n_queued": 1,
+ "queue": [
+  {
+   "pair_id": "LP:E189:E189_T11",
+   "order": "main",
+   "story": "E189",
+   "cid": "E189_T11",
+   "flagged_arms": [
+    "candidate",
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "查件全组第二还被点名，这一个月没白熬夜……重排计划可以开工了",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 2,
+     "memory": 2
+    },
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 2
+  }
+ ]
+}

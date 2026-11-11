@@ -1,0 +1,45 @@
+{
+ "kind": "c_contrast_cost",
+ "date": "2026-10-29",
+ "note": "C 对照批成本单独登记；不回改 F6_COST_INDEX.json / STATE_AND_ERRATA.json",
+ "authorization_id": "AUTH-C-CONTRAST-20261029-01",
+ "ledger": "logs/auth_budget/AUTH-C-CONTRAST-20261029-01.jsonl",
+ "status_note": "授权 JSON 字段 status=ACTIVE 为派发前写入未回写；账本末事件=authorization_closed，视同已关单，不复活不补跑",
+ "batch": "logs/c_contrast_live_20261029_173054",
+ "attempts": {
+  "started": 24,
+  "completed": 24,
+  "failed": 0,
+  "closed": true
+ },
+ "tokens_ledger_authoritative": {
+  "prompt": 159983,
+  "completion": 10783,
+  "total": 170766,
+  "unknown_usage_cells": 0,
+  "cache": "unknown (null, 未填0)"
+ },
+ "per_arm_from_result": {
+  "base_e3": {"prompt": 78429, "completion": 5193, "total": 83622, "latency_median_ms": 26136, "latency_p95_near_ms": 43125},
+  "tier_r5": {"prompt": 81554, "completion": 5590, "total": 87144, "latency_median_ms": 22230, "latency_p95_near_ms": 78432},
+  "delta": {"total_pct": 4.21, "completion_pct": 7.64, "prompt_per_call_added": 260.4, "latency_median_pct": -14.94, "latency_p95_pct": 81.9}
+ },
+ "latency_caveat": "n=12 单次、受上游网络主导，不可归因于分层段，不得据此声称更快",
+ "money": null,
+ "program_totals_after_C": {
+  "attempt_started": 554,
+  "attempt_completed": 545,
+  "attempt_failed": 5,
+  "dispatch_or_batch_refused": 9,
+  "orphan_attempts": 4,
+  "basis": "STATE 已含 B 的 530/521 再加 C 24/24；F6_COST_INDEX 的 506/497 为 F0-F5 不含 B/C",
+  "token_grand_total_all_buckets": 2566452,
+  "token_breakdown": {
+   "judge_and_f4gen_from_ledger": 1078663,
+   "f3_f5_generation_from_answers": 1153468,
+   "kb_probe_B_from_ledger": 163555,
+   "c_contrast_C_from_ledger": 170766
+  },
+  "aborted_f3_batch_excluded": true
+ }
+}

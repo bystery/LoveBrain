@@ -1,0 +1,4433 @@
+{
+ "kind": "w04_03_fs1_ninedim_review",
+ "date": "2026-10-30",
+ "authorization": "AUTH-FS1-JUDGE-20261030-02",
+ "anchors": "W04-01_RUBRIC_ANCHORS_V1",
+ "n_primary": 96,
+ "swap_subset": [
+  "T05",
+  "T09"
+ ],
+ "backup_prescreen_flagged": 0,
+ "backup_adjudicated_severe": 0,
+ "summary": {
+  "A": {
+   "candidate": "E3",
+   "dims": {
+    "goal": {
+     "n": 48,
+     "cand_mean": 2.625,
+     "parent_mean": 2.125,
+     "paired_diff_mean": 0.5,
+     "cand_wins": 29,
+     "parent_wins": 6
+    },
+    "fact": {
+     "n": 47,
+     "cand_mean": 2.787,
+     "parent_mean": 2.83,
+     "paired_diff_mean": -0.043,
+     "cand_wins": 7,
+     "parent_wins": 6
+    },
+    "attrib": {
+     "n": 46,
+     "cand_mean": 2.848,
+     "parent_mean": 2.783,
+     "paired_diff_mean": 0.065,
+     "cand_wins": 8,
+     "parent_wins": 5
+    },
+    "time": {
+     "n": 43,
+     "cand_mean": 2.558,
+     "parent_mean": 2.558,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 10,
+     "parent_wins": 8
+    },
+    "boundary": {
+     "n": 48,
+     "cand_mean": 2.938,
+     "parent_mean": 2.854,
+     "paired_diff_mean": 0.083,
+     "cand_wins": 5,
+     "parent_wins": 1
+    },
+    "memory": {
+     "n": 47,
+     "cand_mean": 2.574,
+     "parent_mean": 2.043,
+     "paired_diff_mean": 0.532,
+     "cand_wins": 29,
+     "parent_wins": 10
+    },
+    "interact": {
+     "n": 48,
+     "cand_mean": 2.771,
+     "parent_mean": 2.208,
+     "paired_diff_mean": 0.562,
+     "cand_wins": 29,
+     "parent_wins": 6
+    },
+    "init": {
+     "n": 48,
+     "cand_mean": 2.521,
+     "parent_mean": 1.771,
+     "paired_diff_mean": 0.75,
+     "cand_wins": 28,
+     "parent_wins": 2
+    },
+    "emotion": {
+     "n": 48,
+     "cand_mean": 2.542,
+     "parent_mean": 2.062,
+     "paired_diff_mean": 0.479,
+     "cand_wins": 27,
+     "parent_wins": 9
+    }
+   },
+   "severe_primary_candidate": 2,
+   "severe_primary_parent": 0,
+   "n_positions": 48
+  },
+  "B": {
+   "candidate": "Bmin",
+   "dims": {
+    "goal": {
+     "n": 48,
+     "cand_mean": 2.667,
+     "parent_mean": 2.042,
+     "paired_diff_mean": 0.625,
+     "cand_wins": 34,
+     "parent_wins": 6
+    },
+    "fact": {
+     "n": 47,
+     "cand_mean": 2.574,
+     "parent_mean": 2.596,
+     "paired_diff_mean": -0.021,
+     "cand_wins": 12,
+     "parent_wins": 8
+    },
+    "attrib": {
+     "n": 48,
+     "cand_mean": 2.771,
+     "parent_mean": 2.667,
+     "paired_diff_mean": 0.104,
+     "cand_wins": 9,
+     "parent_wins": 5
+    },
+    "time": {
+     "n": 43,
+     "cand_mean": 2.581,
+     "parent_mean": 2.279,
+     "paired_diff_mean": 0.302,
+     "cand_wins": 18,
+     "parent_wins": 6
+    },
+    "boundary": {
+     "n": 48,
+     "cand_mean": 2.854,
+     "parent_mean": 2.854,
+     "paired_diff_mean": 0.0,
+     "cand_wins": 6,
+     "parent_wins": 5
+    },
+    "memory": {
+     "n": 44,
+     "cand_mean": 2.773,
+     "parent_mean": 1.886,
+     "paired_diff_mean": 0.886,
+     "cand_wins": 31,
+     "parent_wins": 4
+    },
+    "interact": {
+     "n": 48,
+     "cand_mean": 2.771,
+     "parent_mean": 2.167,
+     "paired_diff_mean": 0.604,
+     "cand_wins": 33,
+     "parent_wins": 4
+    },
+    "init": {
+     "n": 48,
+     "cand_mean": 2.5,
+     "parent_mean": 1.792,
+     "paired_diff_mean": 0.708,
+     "cand_wins": 31,
+     "parent_wins": 8
+    },
+    "emotion": {
+     "n": 48,
+     "cand_mean": 2.604,
+     "parent_mean": 2.042,
+     "paired_diff_mean": 0.562,
+     "cand_wins": 29,
+     "parent_wins": 6
+    }
+   },
+   "severe_primary_candidate": 3,
+   "severe_primary_parent": 0,
+   "n_positions": 48
+  }
+ },
+ "verdicts": [
+  {
+   "pair_id": "NIND:A:E021:E021_T01",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方都没有错误归属、编造已发生安排或把未定事项当成确定事实来复述；LEFT如实说明场地还要去问，没有替她假定周二有没有空"
+   },
+   "key_quote": "LEFT：下周二晚我这边腾得出来，场地我去问，七点到九点——你要嫌晚就早一场，说一声。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T02",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT把已经确定的场地又当成未定（“去问空位，定了跟你说”），与上一轮“七点半那片场”相冲突，属于事项状态倒退，但不算编造或取消复活，因此不判严重"
+   },
+   "key_quote": "行，周二19:30。新拍第一回上手都别扭，先别急着发力。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T03",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有出现错人、编造安排或把未定事项说成确定等严重问题"
+   },
+   "key_quote": "我们周三也加，一般九点多就撤了。你这天天到十点，比我狠。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T04",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排或泄漏禁止内容。LEFT 把年审忙季自行具体成“这一个月”，属轻度无据时长化（未达 severe），其余承接扎实；“带人比自己做还耗，光解释就得说半天”是实在话且不打鸡血。RIGHT 全部用“吧、……、两头都得你盯”留白，未做时长或事实断言，短句贴合风格，但共鸣略薄、缺具体抓手。"
+   },
+   "key_quote": "L：“那这一个月基本就没自己的时间了”自行框定时长；R：“带新人比对账还耗人吧”带不确定标记",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T05",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误；LEFT复述已知时间未回应“怕放鸽子”，RIGHT给时间+迟到处理+改期兜底并卸压"
+   },
+   "key_quote": "你要真被对账拖到九点，提前半小时说一声就行，我改到周四或者周末都能打，不用有负担。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T06",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": null,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方均无严重错误；RIGHT 只是过度压缩，缺卡面要求的『一句轻的』，也没回扣她带新拍这个点"
+   },
+   "key_quote": "行，那周二七点。你先拿新拍热手，我七点前到把场占上。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T07",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 2,
+     "time": 0,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": true,
+    "parent": false,
+    "note": "LEFT把当天当成周三，并据此取消或否定已约好的周二场次，属于没有依据就把事项状态确定下来，而且把她挡在球场外；RIGHT接受她的变更，先打起来并留好进场口。"
+   },
+   "key_quote": "R：行，我先打着，你到了直接过来找我",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": true
+   }
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T08",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT把今晚到场时间说成“对到十点”（她说九点能到，十点是下周对账的口径），属事实偏差，未落入严重类；RIGHT无错项"
+   },
+   "key_quote": "对账就是这样，差一笔能翻半天。今晚先别想了，出出汗。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T09",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无事实错误、无越界、未把未定事项说成确定；共同不足是只答不抛回，缺下一步。"
+   },
+   "key_quote": "区别是你们对不平还能翻凭证，我们改完只能自己认",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T10",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方都接住了「失散同行」的梗，没有转向新话题，也没有事实或时间上的无据断言"
+   },
+   "key_quote": "LEFT：不过这门亲戚是靠加班认下来的，代价有点大",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T11",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 把“下季度忙完”这一条件去掉，说“周二我固定下来”，还把时间定成七点到九点；她刚说忙季九点才到，因此时间状态对不上（还没到严重错误，因为属于提议而不是断言）"
+   },
+   "key_quote": "LEFT：行啊，忙完就固定周二。场地我盯，你先熬过这阵。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T12",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有编造安排、不挽留、不开新话题；LEFT在道别里呼应了她刚说的'明天还得对账'，RIGHT只是泛泛叮嘱早睡，没回应她提到的点。"
+   },
+   "key_quote": "行，去睡吧。明天对账别熬太狠。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T01",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有严重错误：没有认错人，没有编造已经发生的安排，也没有把未定事项说成确定；LEFT 用自嘲承认躲了三天，给出八点半和 60 公斤这个明确安排，并把热身方式的决定权交给她，符合她说话算数的规矩；RIGHT 虽然认账，也提到请她看腰，但没有交代今天只蹲 60 这个关键计划，还把计划抛回给她提问"
+   },
+   "key_quote": "八点半到——先空杆热身还是直接上60，你说了算。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T02",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方均无错人、无编造已发生安排；RIGHT“晚上你别专门跑来盯我”是对未来提议的拒绝，非事实断言，不构成无据确定化"
+   },
+   "key_quote": "RIGHT：难得听你说句算我有数。60先蹲稳——接住了她对“腰是自己的”的认可，并重申60；LEFT只丢监工指令，没回扣减重判断",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T03",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都未编造内扣成因；LEFT把成因作为提问（蹲深才有还是热身就有），未无据确定化；RIGHT“你早看见了”是对“早想说”的轻度推断，不构成编造，但把接受帮助转成反问，主动性缺失。"
+   },
+   "key_quote": "拍，我认。膝盖内扣是我蹲深了才有的还是热身就有？",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T04",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有编造安排、错人、泄漏或把未定事项确定化；只是RIGHT只复述了梗，没有继续推进。"
+   },
+   "key_quote": "恐吓现场，那我得先签个免责声明。内扣严重到什么程度，值得你早想说？",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T05",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 0,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": true,
+    "parent": false,
+    "note": "RIGHT把尚未发生的事当成已经发生：她只说过“一会儿你深蹲我给你拍，有个膝盖内扣我早想说”，还没点评，RIGHT却写成“你点评完膝盖内扣就没下文了”，把未来事项当成已经完成，属于编造已发生安排"
+   },
+   "key_quote": "你点评完膝盖内扣就没下文了（她仅说“一会儿给你拍…早想说”）",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": true
+   }
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T06",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方都没有严重错误：既没有把未定事项当成确定事实，也没有编造已发生的安排。RIGHT 的主要问题在于偏离方向：卡面要求不要真的去辩论营养学，它却转去考据蛋白粉的克数，把互怼变成了较真盘问；而且“你专业你说了算”这句套话用在蛋白粉上，不如用在动作上贴切。"
+   },
+   "key_quote": "LEFT：行，好喝的蛋白，下次多冲一杯，我尝一口就知道是蛋白还是甜品",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T07",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造安排、无无据确定化；内扣是否已造成损伤均未断言，符合未知项"
+   },
+   "key_quote": "L：你哪天在科室方便，我过去一趟；需要带片子或者别的什么，你说一声",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T08",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无泄漏，均无未来提议被当作事实断言"
+   },
+   "key_quote": "成交，这杯记你账上。不过话说前面——要是又是奶茶味，我当场退单。你哪天上白班？",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T09",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有出现严重错误：时间只按她说的“周四三点”复述，张医生的出诊变化没有被当成确定的信息；右侧关于“让我别蹲”是玩笑式提问，并非对医生的事实断言。"
+   },
+   "key_quote": "三点行，我记下了。张医生是那种一开口就让我别蹲的类型吗",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T10",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": null,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均接住周四合并安排，无编造或确定化风险；LEFT复述了周四与张医生，并回扣膝盖问题，更扎实；RIGHT仅泛化'练完'与'腿软'，细节落地略弱"
+   },
+   "key_quote": "行，周四练腿完直接过去。就是蹲完再让张医生看膝盖，画面有点抽象。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T11",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": null,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT未转述任何医嘱内容，仅用“你想问哪段”反问把球踢回，本位要求（如实转述）落空；LEFT 给出结论并回扣她视频里的判断，符合互怼加互信风格，无严重错误。"
+   },
+   "key_quote": "结论跟你在视频里说的一字不差：别急着冲重量。我当时就想，这话我花钱又听了一遍。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T12",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方均只接受下周蹲80，未把未知项当确定事实；无错人、无编造安排、无泄漏"
+   },
+   "key_quote": "LEFT：你得站我旁边盯着，不然我手一抖又加片——接受目标并落到“她在旁边盯”的具体执行，比纯回怼多一步可操作衔接；RIGHT的“我哪敢代偿”对代偿梗回扣更准，但只收不落子",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T01",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有严重错误：都准确确认了明早七点半、老位置和我开车，没有编造安排，也没有越界。差别在于 LEFT 多了“到了我叫你”这个具体动作，接住了她后排睡觉的需求，并给出了下一步；RIGHT 只做了最基本的确认，没有额外推进。"
+   },
+   "key_quote": "我开，七点半老地方等你。后排归你，到了我叫你。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T02",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误；LEFT接住夸张并落到明早安排，RIGHT仅打趣未给下一步，略偏较真"
+   },
+   "key_quote": "一周的觉，两小时确实打发不了。明早上车你就闭眼，到点我叫你。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T03",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 1,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有编造事实、没有说错人、也没有把未定事项当成确定信息；共同的问题是卡面要求的“领情+回礼启动”只完成了领情，两侧都没带回礼（柿饼、家乡货），因此goal都记为关键不足。"
+   },
+   "key_quote": "RIGHT：别又攒着——回扣她“两小时不够 我补的是一周”，比LEFT泛泛的“趴一会儿”更贴身",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T04",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两边都没错人、没编造、没越界；RIGHT 只是接梗没有回扣“回礼确认”，属关键不足而非严重错误"
+   },
+   "key_quote": "LEFT：周日晚捎上，值班别一口啃完",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T05",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均接受缺席并叮嘱休息，无空跑抱怨、无编造安排。RIGHT 把“下下周五上车”当作确定事项，属于对固定每周五拼车节奏的合理外推，但严格说这是她未明说的安排，时间维小幅扣分，不构成无据确定化。"
+   },
+   "key_quote": "柿饼我先给你留着，等你下下周五上车再吃。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T06",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都只完成接梗、未完成卡面要求的‘心疼一句’，但无错人、编造、越界或无据确定化，故不判严重错误。"
+   },
+   "key_quote": "L：米其林几星？说来听听，我泡面只会煮三分钟硬芯那种。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T07",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均答应加倍给柿饼，没有编造奶奶的年龄等信息，也没有把未定的事当成已定；LEFT另外给出‘单独装’这一具体安排，并顺势把柿饼带进了她家的场景，关系推进得自然。"
+   },
+   "key_quote": "LEFT：两包给你，奶奶那份我单独装——答应、加倍、给出具体做法，并自然带出关系温度。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T08",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误；RIGHT未接物流梗、未回扣奶奶那份两包，还把四包重新分配成‘两包路上吃’，偏离ME的安排"
+   },
+   "key_quote": "物流节点也得签收啊，到了记得跟我说一声，奶奶那份别让你半路偷吃",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T09",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误：没有错认人物，没有编造已发生的安排，没有把未定事项当成确定事项，也没有泄漏隐私；LEFT 只是做到了简短确认，RIGHT 则用她上次自嘲的“物流节点”接上她的话，并给出了“到了我叫你”的具体动作。"
+   },
+   "key_quote": "柿饼照旧放老位置。这趟物流节点加急，你上车就睡，到了我叫你。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T10",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT把橘子皮的来源说成“你给的”，略微超出已明确的背景，但和她爱带零食分人的习惯相符，可以接受，不算没有依据就确定下来；RIGHT“别不识货”把她其实在夸人的话变成带刺的反击，而且没有接下去的话"
+   },
+   "key_quote": "LEFT：勤俭持家算不上，主要是舍不得扔你给的东西。橘子皮晒干了，明天泡一杯给你尝。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T11",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未把「可能三月调回」当成已定事实；LEFT 用「？」承接、只问原因，RIGHT 直接问「定下来了吗」，正好问到未知项，没有无据确定化"
+   },
+   "key_quote": "那以后周五后排就没人睡了。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T12",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有把“可能三月调”当成确定的事，也没有出现把没发生的事说成已经发生的情况；但都没有回应调动时间还不确定这一点，也没有给出具体的下一步。RIGHT更贴合“物流改专线”，LEFT的“不许改签”稍带控制感。"
+   },
+   "key_quote": "接啊，橘子柿饼专线，油钱另算",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T01",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方都只确认“周六上午”，并把具体到点时间作为询问提出，没有把“十点”当成已经确定的事项复述，因此不存在无依据确定化；都没有编造安排。"
+   },
+   "key_quote": "具体几点到说一声，我提前把猫关卧室，省得它围着人转",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T02",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造安排、无确定化未定事项"
+   },
+   "key_quote": "周六十点前我把猫挪进卧室关好。顺便问一句，老周是怕它扑人还是单纯怕掉毛？",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T03",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都正确接受改期并锁定周三晚上，未把“老周急活”当成已知信息，也没有让已作废的周六安排继续存在；LEFT 用“没事”回应对方的道歉，并用“照样”延续上次关猫的安排；RIGHT 未回应道歉，情绪承接略薄，但事实与动作仍完整。"
+   },
+   "key_quote": "没事，周三晚上可以，我在家。几点到说一声，猫我照样提前关好。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T04",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都只确认周三晚七点并落实户型图，无错人、无编造安排、无把未定事项说成已定"
+   },
+   "key_quote": "七点可以，户型图我提前找出来放桌上。那天大概要看多久？我好把晚上的时间留出来。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T05",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": null,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": null,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无泄漏，也未把未定事项当确定复述；仅对35万口径未明确回扣，属轻度不足。"
+   },
+   "key_quote": "瓷砖全换这条想听你拆一下：是全屋还是厨卫，多出来的钱主要在砖上还是人工上",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T06",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有错误：都确认了37万的新预算标准，没有编造安排，也没有把未定项当作确定事项；LEFT 还主动确定了地板类型和厨卫是否保留瓷砖这两个决策点，并用怕猫打滑来说明自己为何不愿在这里省钱。"
+   },
+   "key_quote": "37万我认，就当顶了。地板这块先定两点：强化还是实木复合，厨卫还留不留砖。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T07",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "就两箱的话我倾向换掉——省得铺完天天盯着那一块膈应",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T08",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方都没有编造内容，也没有把未定事项说成已定；LEFT 补充了在学校、提前告知这两个已知约束，并追问具体日期，下一步更具体；RIGHT 只泛泛要求定日子，没有结合已知作息"
+   },
+   "key_quote": "行 那铺装定哪天 我平时在学校 定了提前跟我说一声 我好安排",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T09",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排、无据确定化；翘起原因均未被断言，LEFT 未追问属可接受省略"
+   },
+   "key_quote": "明天老周来之前，我把猫关进卧室，他怕猫。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T10",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造或确定化；价格均未当作已知。"
+   },
+   "key_quote": "LEFT：包吧……防抓条是贴墙角那种吗？明天上午我在学校，老周直接进去弄就行。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T11",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误；LEFT未确认尾款结清与工程完结，只回扣了猫和地板；RIGHT两项均确认并回扣猫在地板上的状态。"
+   },
+   "key_quote": "结清了，工程完事。猫早就在地上打滚了，一点没怯。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T12",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未出现编造安排、错人、泄漏或把未定事项当确定；LEFT 把'听我的'轻推回'我拍板'属玩笑式归属校正，非事实错误。"
+   },
+   "key_quote": "LEFT：完工快乐我收下了。不过地板这条是我拍的板，你只是没拦我。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T01",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT先答“有”，又说“先去问问还有没有场地”，前后自相矛盾；还自行确定了一个输入未给出的具体日期“17号”。RIGHT无事实问题，但完全没接住“打得挺稳”这句夸赞。"
+   },
+   "key_quote": "LEFT：有……我先去问问还有没有场地。RIGHT：场地我去订，订好了跟你说。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T02",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误：时间地点与上轮一致，未把未定事项当作确定，也未越过关系边界"
+   },
+   "key_quote": "新拍头几拍先找找手感，别一上来就抡",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T03",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方均未编造或确定化未知项；LEFT 把已定周二场与她的忙季直接挂钩并给替代方案，RIGHT 只答加班+一句感慨，未回扣周二球局这条悬着的线"
+   },
+   "key_quote": "赶不上就换周末白天，我时间好挪。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T04",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT把忙季时长说成『这一个月』，对方只说下周开始、没说结束时间，属于轻度把不确定的时间说成确定，不构成严重错误"
+   },
+   "key_quote": "带新人比对账还费神，讲一遍还得再讲一遍。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T05",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": true,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误。LEFT 把先前定好的七点半改成八点，却没有对此作任何说明，属于时间安排上的疏漏，但不构成编造，也不构成无据确定化；RIGHT 的兜底方案偏向自己照打，对她晚到这种情况包容不够。"
+   },
+   "key_quote": "L：场地我先订两个小时。你要是真拖到十点，说一声改周六。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T06",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无编造安排、无无据确定化；时间点沿用已确认的周二七点半，未把“她七点到”当确定事实复述"
+   },
+   "key_quote": "成，说定了。周二七点半，我提前到占场。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T07",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 0,
+     "fact": 0,
+     "attrib": 2,
+     "time": 0,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 0,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": true,
+    "parent": false,
+    "note": "LEFT在没有任何日期依据的情况下断言“今天周三”“定的是下周二17号”，把对方今晚九点到场改写成另一个日子，并劝她别去球馆，等于否掉她“九点到、你先打”的安排；这是把未定事项说成确定事实，并且反向处理了改期。"
+   },
+   "key_quote": "L：今天周三…球馆没我，你九点才下班就别往球馆跑了 / R：行，我先打着，你到了直接进来。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": true
+   }
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T08",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未查问对账内容，无无据确定化；LEFT回扣了'留水'并给出到场即用的具体安排，RIGHT仅泛化安慰"
+   },
+   "key_quote": "头懵就先别看数字了，来了把球往死里打，水我放场边了。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T09",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": true,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有错人、编造或把未定事项说成确定；LEFT没有用上她刚说的“对账到九点头懵”，只泛泛比较谁更折腾；RIGHT用上了她九点还上场这个点，但结尾是评价式收尾，没把话头还给她"
+   },
+   "key_quote": "改，改到我们自己都不信文档。你今天对账到九点还能上场，这劲儿我服。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T10",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": null,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均正确接住「失散同行」梗、未转新话题，无编造、无错人、无无据确定化"
+   },
+   "key_quote": "苦命同行，一个被甲方核，一个被甲方改。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T11",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "忙季结束时间未定，两侧均未编造具体月份，都用“忙季里能来就来”留了余地，没有把未来提议说成已定；右侧“别硬撑”多一句关心，对“不想社交”的她略显主动，但不越界。"
+   },
+   "key_quote": "行，周二就固定下来。忙季这段你能来就来，场地我来订。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T12",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 0,
+     "attrib": 3,
+     "time": 0,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": true,
+    "parent": false,
+    "note": "LEFT 把尚未确定的到场时间说成既定安排（『照旧七点半』），但她此前只说『尽量七点』或『九点才能到』，属于没有依据就把不确定的事说成确定；而且她已道别，此时又另起约球话题，违背了卡面要求的不开新话题。RIGHT 只道别，并轻轻回扣了『对账』。"
+   },
+   "key_quote": "LEFT：周二我照旧七点半到，等你。／RIGHT：行，撤吧，明天对账顺利。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": true
+   }
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T01",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有出现冒认、编造已经发生的安排、让已经完成或取消的事项复活、没有依据就把事情说成确定等严重错误；LEFT 提出“八点”属于对未来的提议，不是事实断言。"
+   },
+   "key_quote": "LEFT：重量我听你的，腰要是不对劲我就减，不硬冲——承认被躲不过，把腰的情况和减重计划都交代了；RIGHT 只说“躲是躲了”，完全没交代今天只蹲60的计划。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T02",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造或泄漏；RIGHT的问题在于把话题从'只蹲60'的共识滑向'想加片'，动摇已定的减重计划，且没有下一步"
+   },
+   "key_quote": "行，那你今晚站旁边盯着点，蹲歪了你喊停",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T03",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都直接接受拍摄，没有嘴硬，也没有编造安排；RIGHT把她的“早想说”改成了“你不早讲、等我蹲60才开口”，略微像在推责，但还在互怼范围内"
+   },
+   "key_quote": "行，拍吧。内扣你憋到现在才说，忍功比我还强。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T04",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": null,
+     "attrib": 2,
+     "time": null,
+     "boundary": 3,
+     "memory": null,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": null,
+     "attrib": 2,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有严重错误；LEFT自黑接得更有劲，还加了‘角度压低点’这个具体动作；RIGHT回扣了内扣那条线，但‘丑就丑’接得有点泄气"
+   },
+   "key_quote": "恐吓现场也得拍全，角度压低点，让我死得明白。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T05",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": true,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方都没有出现严重错误；RIGHT 把“老三样”展开成具体菜名，属于对他自己那份饭的合理补充，不算没有根据地把对方的事说成确定的事实。"
+   },
+   "key_quote": "喝了，练后餐还是老三样…你今天那杯奶茶色蛋白呢，又是啥味",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T06",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 1,
+     "time": 3,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT没有编造已发生的安排，但它说她“练腿日那点强度”站不住脚：她深蹲130，他卡在100，今天还只蹲60，所以这句话反过来贬低了她本行专业的可信度，也与她练后餐背景冲突；LEFT只就蛋白粉的口味斗嘴，并约定了下次当面鉴定，没有越界。"
+   },
+   "key_quote": "LEFT：好喝到你得靠糖骗自己吧？下次冲一杯，我当面鉴定。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T07",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误；RIGHT 未给可用时间、未回扣'三五练'的已知作息，约时间停留在口头"
+   },
+   "key_quote": "严重就严重，我听你的。你们科室哪天方便？我这周三五得练，其他天能调开",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T08",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无编造、无错人、无越界；都把奶昔梗和奶茶梗接住了。LEFT 明确答应挂号并回扣膝盖伤，RIGHT 只说‘买卖我做’，去不去没有落实"
+   },
+   "key_quote": "行，那这号我挂了。不过先说好，你请的蛋白奶昔要是又喝出奶茶味，我这膝盖就白来了。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T09",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": true,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两边都没有严重错误：都没有编造安排，没有把张医生出诊当成确定事实，时间复述也正确"
+   },
+   "key_quote": "行，周四三点我能到。科室门口等你？那杯蛋白奶昔我先记上了。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T10",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均接受练腿日与就诊合并到周四的安排，没有把未定项当成已定事实复述，也没有编造已发生的安排；LEFT 多做了动作上的承接，更具体"
+   },
+   "key_quote": "躲不了，练完直接上楼。正好让你当面看看我膝盖有多难看。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T11",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT把就诊结论简化成“腰没大事”，没回应她提的膝盖内扣，也没说清具体医嘱；LEFT如实转述，给单腿稳定四周这个下一步，还接了她的互怼。"
+   },
+   "key_quote": "臀中肌不发力、踝背屈也不够，单腿稳定先练四周",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T12",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两边都接受80公斤目标，也都收住了，没有编造安排、错人、复活事项或把未定的事说成确定；LEFT多回扣了“装死”旧梗和拉伸落实，RIGHT更短更稳但承接偏薄"
+   },
+   "key_quote": "行，80就80，有你盯着我也不敢装死。拉伸我已经排进去了",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T01",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": null,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": null,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造、无无据确定化；时间与老位置均按她给的复述，无冲突"
+   },
+   "key_quote": "行，老位置七点半，我提前十分钟到，后排给你留着，睡你的。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T02",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排、泄漏或事项状态错误；RIGHT把'两小时'扩成七点半到十点(2.5小时)，与前述两小时略有出入，属轻微不精确，不构成无据确定化"
+   },
+   "key_quote": "行，那我把音乐关了，车当床使，到收费站再叫你。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T03",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有编造事实，也没有越过边界；但卡面要求的『回礼启动』两侧都缺，只做到领情一半。"
+   },
+   "key_quote": "橘子看到了，还挺沉。周末值班悠着点，别又攒一周的觉来补。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T04",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": null,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有错人、编造安排或把未定事项说成确定；LEFT的“周日晚回程”与她周日晚班前返回的已知节奏相符，不算时间冲突，只是略含糊。"
+   },
+   "key_quote": "LEFT：行，这光我包了。周日晚回程给你带，你值班别拿橘子当饭吃。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T05",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": true,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT把'下下周回来'当成她已定的行程，但她说的是'下周五'这一周，未确认之后安排，属于轻度无据确定化；LEFT用'哪次上车'留白，更稳"
+   },
+   "key_quote": "等你哪次上车再拿",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T06",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误；LEFT 用送柿饼承接心疼，与“下周五值大夜不能拼车”不矛盾；RIGHT 只反问接梗，未心疼、无下一步"
+   },
+   "key_quote": "米其林心得记得留档，周五我出发前绕一下，柿饼给你送到楼下",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T07",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "右侧把『下周五值大夜拼不了车』这一已知安排当成可能坐车来问，属于忽略已确认的信息，但形式是询问，不是断言，因此未定为严重。"
+   },
+   "key_quote": "留三包，多的那包算我给奶奶的；周五你值大夜，那周六是自己回？",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T08",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都无错人、编造或事项复活；差异在于LEFT把‘奶奶那份’接回本轮祝寿核心并给出具体动作，RIGHT只停在运费梗，把柿饼转成向她要奶茶，漏掉寿星回扣"
+   },
+   "key_quote": "物流节点也得有运费，奶奶那份算我出的，别半路截胡",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T09",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": true,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未出现严重错误；都确认了恢复拼车，也把柿饼放到老位置。"
+   },
+   "key_quote": "明天几点到高速口，我提前把车热上",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T10",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都未出现错人、编造安排或泄漏私人信息；LEFT 的“明早带一杯”与周五晚班后出发的行程在时间上略有错位，“两小时觉”属于对车程的轻度推断，但不构成严重错误"
+   },
+   "key_quote": "皮留着泡水刚好，明早给你带一杯，省得你两小时觉不够。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T11",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方都把“可能三月调回”直接说成已定（省略“可能”，未确认是否定下来），属于轻度确定化，但都没有编造新安排、也没有错认人物，因此不判为严重；其中 LEFT 用“离家近了吧”做了软性探询，RIGHT 用“三月？”保留了一点疑问语气。"
+   },
+   "key_quote": "LEFT：就是我这车以后后排空着，我还得适应一下（呼应她“占后排睡觉”，拼车结束而人没结束）",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T12",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都直接接受，没有把“可能三月调回”复述成已定事实；LEFT 的“路线改成市内配送”属于顺着玩笑提出的未来提议，并非事实断言，不算无据确定化。"
+   },
+   "key_quote": "接。路线从高速改成市内配送，运费照旧用泡面抵，米其林那套心得记得带上。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T01",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两条回复都先确认了周六上午，并追问具体到几点，没有把未说的“十点”当作已定事实复述；没有编造安排，也没有泄露隐私。LEFT 多做了两件事：主动说明会备好钥匙和户型图，并对“老周怕猫”用“要是”作了留有余地的表述，更符合设计师说话留证据的风格。RIGHT 把“老周怕猫”直接当事实说出，虽然背景里确实有此信息，但少了一层缓冲，也没有给出任何准备清单，主动性弱一些。"
+   },
+   "key_quote": "我按点在家等，钥匙和户型图提前备好",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T02",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方都没有严重错误；RIGHT没有明确回应“老周怕猫”，也没有把这一点联系到具体的人"
+   },
+   "key_quote": "猫提前关进卧室，让老周安心量",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T03",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都接受改期，未把周六当作仍然有效；也没有把老周急活编成具体原因。LEFT 明确写下周三晚上、问具体几点，并引用老周怕猫、要把猫关进卧室，接上了前文；RIGHT 只说“提前安排”，没有交代关猫这件事，也没有说明旧安排已经作废。两侧都没有回应她的“不好意思”，情绪承接都偏弱。"
+   },
+   "key_quote": "行，下周三晚上可以。具体几点？我提前把猫关卧室。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T04",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造、无无据确定化；周三晚七点为已定事项，复述正确。"
+   },
+   "key_quote": "好 周三晚七点 户型图我找出来 猫提前关好",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T05",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": true,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有出现错人、编造已发生安排或无据确定化；35万被当作既定预算口径来承接，没有把未来提议当成事实"
+   },
+   "key_quote": "是全屋换还是只换厨卫，差价单列一行，我好对预算……我家猫爱趴地上，地面太凉它受不了",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T06",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未编造或复活事项；新预算37万被正确当作生效口径而非既成明细"
+   },
+   "key_quote": "37万就按这个数封顶，别再往上走了。地板你出两版给我比：实木复合和强化各一版，含辅料和踢脚线，价差写清楚。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T07",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "右侧“跟已铺的同批号”预设了已开铺，但此前并无铺装信息，属于轻度无依据推定，不构成严重错误"
+   },
+   "key_quote": "你先让老周把那两箱单独放着别铺，我到了看一眼再定。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T08",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无泄漏；LEFT的加价疑问是询问，并未断言，因此不构成无据确定化"
+   },
+   "key_quote": "行 那就两周后铺装。换的这批不额外加钱吧？确认一下 我好按37万往下走",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T09",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": true,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": null,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": null,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无无据确定化；翘起原因仍未查，RIGHT 直接指定“别糊胶直接换”，在原因未明时越位定施工做法，仅算边界扣分，不构成严重"
+   },
+   "key_quote": "翘的那块别糊胶，直接换；明天老周几点到？我在学校，得提前回来开门。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T10",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没犯严重错误；LEFT只把自己的作息当作排期前提，和已知的“工作日都在学校”一致；RIGHT直接说“明天上午我在家”，与已知作息相反，却没有标注这只是假设，可能让老周上门时没人。"
+   },
+   "key_quote": "防抓条先让他看看位置、报个数给我，我看完再定。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T11",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都无错人、编造或泄漏；RIGHT 未确认尾款结清，只提了工程收尾，且把猫绕开凉处说成没解决问题，没有回扣地板决策对了这一点，属于关键不足而非严重错误。"
+   },
+   "key_quote": "L：结清了…猫现在直接趴地板上睡，赶都赶不走，地板这钱花得值",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T12",
+   "batch": "B",
+   "candidate_arm": "Bmin",
+   "swap": false,
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 0,
+     "attrib": 0,
+     "time": 2,
+     "boundary": 2,
+     "memory": 0,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": true,
+    "parent": false,
+    "note": "LEFT编造未发生事实：此前对话中地板是HER改材料单加的（“我改材料单 地板加两万”），无任何“劝上瓷砖”记录，属编造已发生安排+错人归属，并在她收尾时反向争功。"
+   },
+   "key_quote": "L：“地板是我改的，你当时还劝我上瓷砖呢”；R：“这功劳记你头上。以后有朋友装修我第一个推你。”",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": true
+   }
+  }
+ ],
+ "note": "故事级=探索性读数（rubric §3.4 统计纪律）；E3 单维显著退化即阻断（W10-01 保护项）；Bmin 允许 C2 维如实失败",
+ "swap_supplement": [
+  {
+   "pair_id": "NIND:A:E021:E021_T05",
+   "swapped_winner": "candidate",
+   "main_winner": "candidate",
+   "agree": true,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "两侧均无错人、无编造已发生安排、无无据确定化；RIGHT的订场与改期均为未来提议，不构成事实错误"
+   },
+   "quote": "你要真被对账拖到九点，提前半小时说一声就行，我改到周四或者周末都能打，不用有负担"
+  },
+  {
+   "pair_id": "NIND:A:E021:E021_T09",
+   "swapped_winner": "candidate",
+   "main_winner": "candidate",
+   "agree": true,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "两侧均无错人、无编造安排、无泄漏、无确定化未定事项"
+   },
+   "quote": "L：区别是你们对不平还能翻凭证，我们改完只能自己认。"
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T05",
+   "swapped_winner": "candidate",
+   "main_winner": "parent",
+   "agree": false,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "两侧均如实报备补剂与练后餐，无编造、无确定化、无越界；LEFT回扣了她上一轮“膝盖内扣”的未结事项并追问优先改哪一步，把话题推进到可执行动作；RIGHT以“奶茶色蛋白粉冲几勺”互怼承接，风格贴合但未收束她已抛出的动作纠正线索，主动性偏娱乐化。"
+   },
+   "quote": "你点评完膝盖内扣就没下文了，我到底该先改哪一步？"
+  },
+  {
+   "pair_id": "NIND:A:E026:E026_T09",
+   "swapped_winner": "candidate",
+   "main_winner": "candidate",
+   "agree": true,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "两侧均确认周四三点，无编造、无无据确定化（未断言张医生出诊不变）"
+   },
+   "quote": "三点行，我记下了。张医生是那种一开口就让我别蹲的类型吗"
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T05",
+   "swapped_winner": "candidate",
+   "main_winner": "candidate",
+   "agree": true,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "双方均无错人、编造或泄漏；LEFT仅据每周固定行程轻度预设下下周五复乘，非确定化既成安排。"
+   },
+   "quote": "柿饼我先给你留着，等你下下周五上车再吃。"
+  },
+  {
+   "pair_id": "NIND:A:E032:E032_T09",
+   "swapped_winner": "candidate",
+   "main_winner": "candidate",
+   "agree": true,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "两侧均无错人、编造已发生安排或确定性化未知项；LEFT多一层“物流节点”回扣她上轮自嘲，并把“到了我叫你”落到三班倒补觉的实际需求上"
+   },
+   "quote": "柿饼照旧放老位置。这趟物流节点加急，你上车就睡，到了我叫你。"
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T05",
+   "swapped_winner": "candidate",
+   "main_winner": "candidate",
+   "agree": true,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "两侧都没有错认说话人、编造安排或泄漏隐私；也都没有把“35万”这一预算口径自行改写成别的数字。两侧都只做询问，没有对瓷砖换与不换作出任何确定承诺，也没有把设计师提出的建议当成已经确定的方案。"
+   },
+   "quote": "瓷砖全换这条想听你拆一下：是全屋还是厨卫，多出来的钱主要在砖上还是人工上。"
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T09",
+   "swapped_winner": "candidate",
+   "main_winner": "parent",
+   "agree": false,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "两侧都未编造事项或错人；LEFT 明确完成表态、追问位置与到场时间，便于留下记录；RIGHT 主动运用“老周怕猫”的记忆并给出关猫安排，但未表态验收、未约定到场时间，时间口径偏虚。"
+   },
+   "quote": "LEFT：收到，铺装完成就好。翘的那块在哪个位置？我晚上回去验一遍，拍给你看。老周明天几点来？"
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T05",
+   "swapped_winner": "candidate",
+   "main_winner": "parent",
+   "agree": false,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "R的“场地我先订两个小时”是未经核实的占场说法（球馆周二是否满场未知），且把先前已说的七点半改成八点，未作交代；不算已发生安排的编造，但事实与时间维度扣分"
+   },
+   "quote": "LEFT：真被加班扣住就提前说一声，我自己照打，不耽误。"
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T09",
+   "swapped_winner": "parent",
+   "main_winner": "candidate",
+   "agree": false,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "双方都无编造、无越界；LEFT以夸奖收束，话头递回但无开口，RIGHT给出具体分享并以一句轻比较式反问把话头递回去，更贴合‘如实分享+反抛’，只是对‘头都是懵的’疲惫感回应略弱"
+   },
+   "quote": "改需求那是日常，今天刚被砍了个功能。你们对账比我们还能折腾？"
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T05",
+   "swapped_winner": "candidate",
+   "main_winner": "candidate",
+   "agree": true,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "两侧均按惯例如实报练后餐，无编造已发生安排；LEFT多给了具体菜名，并反问她的奶茶色蛋白，符合互怼风格；RIGHT用“你都知道还问”半句堵回去，缺少承接与下一步。"
+   },
+   "quote": "你今天那杯奶茶色蛋白呢，又是啥味"
+  },
+  {
+   "pair_id": "NIND:B:E026:E026_T09",
+   "swapped_winner": "candidate",
+   "main_winner": "candidate",
+   "agree": true,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "两侧都只确认了她给出的周四三点，没有把约诊说成已经敲定，也都没提张医生出诊可能变动；均无严重错误。"
+   },
+   "quote": "行，周四三点我能到。科室门口等你？那杯蛋白奶昔我先记上了。"
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T05",
+   "swapped_winner": "candidate",
+   "main_winner": "parent",
+   "agree": false,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "左侧“下下周回来再吃”把她下下周的行程当作既定来复述，她只说下周五值大夜拼不了车，未确认下下周的安排；属轻微越界推断，未达严重级"
+   },
+   "quote": "行，大夜辛苦，我慢慢开。柿饼先给你留着，等你下下周回来再吃。"
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T09",
+   "swapped_winner": "candidate",
+   "main_winner": "candidate",
+   "agree": true,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "两侧均无错认、无编造已发生安排、无事项复活；柿饼已装好与此前『装好了』一致，未把未定项确定化"
+   },
+   "quote": "明天几点到高速口，我提前把车热上"
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T05",
+   "swapped_winner": "candidate",
+   "main_winner": "candidate",
+   "agree": true,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "两侧都没有编造信息或把事情当作已确定；LEFT 同时问清了范围（全屋还是厨卫）、列出了差价，并提出养猫怕地面凉这一诉求；RIGHT 虽然问到了差价和原砖问题，但完全没有提及地面凉或养猫，已知背景信息没被用上，也没给下一步时间点"
+   },
+   "quote": "差价单列一行，我好对预算……我家猫爱趴地上，地面太凉它受不了"
+  },
+  {
+   "pair_id": "NIND:B:E033:E033_T09",
+   "swapped_winner": "candidate",
+   "main_winner": "candidate",
+   "agree": true,
+   "severe": {
+    "L": false,
+    "R": false,
+    "note": "双方都没有错认人物、编造安排或把未定事项说成确定；LEFT 只就修复方式提出质量要求，未涉及踢脚线翘起的原因；RIGHT 则回避了“明天老周来修”这个待确认事项。"
+   },
+   "quote": "LEFT：翘的那块别糊胶，直接换；明天老周几点到？我在学校，得提前回来开门。"
+  }
+ ],
+ "swap_disagreements_true": [
+  {
+   "pair_id": "NIND:A:E026:E026_T05",
+   "main": "parent",
+   "swapped": "candidate"
+  },
+  {
+   "pair_id": "NIND:A:E033:E033_T09",
+   "main": "parent",
+   "swapped": "candidate"
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T05",
+   "main": "parent",
+   "swapped": "candidate"
+  },
+  {
+   "pair_id": "NIND:B:E021:E021_T09",
+   "main": "candidate",
+   "swapped": "parent"
+  },
+  {
+   "pair_id": "NIND:B:E032:E032_T05",
+   "main": "parent",
+   "swapped": "candidate"
+  }
+ ],
+ "implementation_note": "主审96判中T05/T09为左右轮换单判；双序补判16位见 swap_supplement（2026-10-30 补齐，同一授权账本）",
+ "erratum_severe_swap": "ERRATUM-SEVERE-SWAP-20261030: severe L/R-to-arm mapping was inverted in review scripts (fixed 2026-10-30). Reported candidate=actual parent, reported parent=actual candidate. severe below = un-inverted per-position. C1 report unaffected (0/0). | summary severe_primary_* corrected to un-inverted counts."
+}

@@ -1,0 +1,117 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W21FASTLANE",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W21FASTLANE_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w21_fastlane_live_20261104",
+ "n_queued": 3,
+ "queue": [
+  {
+   "pair_id": "LP:LRE117:LRE117_T14",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T14",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT把旧八十规矩套到小满全包的新说法上，与卡面要求的“确认旧五十五口径不再沿用”相悖，且自行确定八点整集合（未知项）",
+   "key_quote": "她全包我反倒不好接，还是老规矩",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "确认旧五十五口径不再沿用"
+     ],
+     "found_where": {
+      "确认旧五十五口径不再沿用": null
+     },
+     "nowhere": [
+      "确认旧五十五口径不再沿用"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T15",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T15",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "右侧把待澄清的“老时间”直接当八点确定复述，属于无依据的确定化；左侧先反问确认是八点还是八点半，符合卡面要求",
+   "key_quote": "14 号周六还是八点、小区门口？",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "老时间"
+     ],
+     "found_where": {
+      "老时间": null
+     },
+     "nowhere": [
+      "老时间"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T23",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T23",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "",
+   "key_quote": "LEFT：'我这周去不了——车得跑临州，我爸妈那边也早说好要用'",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 0,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

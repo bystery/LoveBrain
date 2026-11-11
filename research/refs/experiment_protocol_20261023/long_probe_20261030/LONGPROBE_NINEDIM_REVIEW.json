@@ -1,0 +1,2260 @@
+{
+ "kind": "longprobe_ninedim_review",
+ "date": "2026-10-30",
+ "authorization": "AUTH-LONGPROBE-JUDGE-20261030-01",
+ "anchors": "W04-01_RUBRIC_ANCHORS_V1",
+ "n_main": 40,
+ "n_swap": 8,
+ "dims": {
+  "goal": {
+   "n": 40,
+   "cand_mean": 2.2,
+   "parent_mean": 1.55,
+   "paired_diff_mean": 0.65,
+   "cand_wins": 25,
+   "parent_wins": 2
+  },
+  "fact": {
+   "n": 40,
+   "cand_mean": 2.475,
+   "parent_mean": 2.2,
+   "paired_diff_mean": 0.275,
+   "cand_wins": 16,
+   "parent_wins": 4
+  },
+  "attrib": {
+   "n": 38,
+   "cand_mean": 2.553,
+   "parent_mean": 2.289,
+   "paired_diff_mean": 0.263,
+   "cand_wins": 9,
+   "parent_wins": 1
+  },
+  "time": {
+   "n": 34,
+   "cand_mean": 2.529,
+   "parent_mean": 2.143,
+   "paired_diff_mean": 0.412,
+   "cand_wins": 13,
+   "parent_wins": 1
+  },
+  "boundary": {
+   "n": 39,
+   "cand_mean": 2.564,
+   "parent_mean": 2.359,
+   "paired_diff_mean": 0.205,
+   "cand_wins": 10,
+   "parent_wins": 2
+  },
+  "memory": {
+   "n": 40,
+   "cand_mean": 2.45,
+   "parent_mean": 1.8,
+   "paired_diff_mean": 0.65,
+   "cand_wins": 25,
+   "parent_wins": 4
+  },
+  "interact": {
+   "n": 40,
+   "cand_mean": 2.65,
+   "parent_mean": 1.75,
+   "paired_diff_mean": 0.9,
+   "cand_wins": 27,
+   "parent_wins": 4
+  },
+  "init": {
+   "n": 40,
+   "cand_mean": 2.475,
+   "parent_mean": 1.525,
+   "paired_diff_mean": 0.95,
+   "cand_wins": 29,
+   "parent_wins": 2
+  },
+  "emotion": {
+   "n": 40,
+   "cand_mean": 2.475,
+   "parent_mean": 1.75,
+   "paired_diff_mean": 0.725,
+   "cand_wins": 24,
+   "parent_wins": 4
+  }
+ },
+ "severe": {
+  "candidate": 1,
+  "parent": 1
+ },
+ "swap_disagreements": [
+  {
+   "pair_id": "LP:E061:E061_T08",
+   "main": null,
+   "swapped": "candidate"
+  },
+  {
+   "pair_id": "LP:E061:E061_T16",
+   "main": null,
+   "swapped": "candidate"
+  },
+  {
+   "pair_id": "LP:E061:E061_T20",
+   "main": null,
+   "swapped": "candidate"
+  },
+  {
+   "pair_id": "LP:E061:E061_T24",
+   "main": null,
+   "swapped": "candidate"
+  },
+  {
+   "pair_id": "LP:E062:E062_T08",
+   "main": null,
+   "swapped": "candidate"
+  },
+  {
+   "pair_id": "LP:E062:E062_T16",
+   "main": null,
+   "swapped": "candidate"
+  },
+  {
+   "pair_id": "LP:E062:E062_T20",
+   "main": null,
+   "swapped": "candidate"
+  },
+  {
+   "pair_id": "LP:E062:E062_T24",
+   "main": null,
+   "swapped": "candidate"
+  }
+ ],
+ "verdicts": [
+  {
+   "pair_id": "LP:E061:E061_T01",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 将“3类基本都是良性的”“医生让你先观察就是因为这个”作为确定结论复述，并推断医生意图；但未编造具体安排，也未承诺“一定没事”，不构成严重错误；主要失分在于未接住恐惧，也未标注信息来源。"
+   },
+   "key_quote": "那几天没敢细看，其实比报告本身更难受吧。……我查的是指南口径，不是医生的话",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T02",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都直接下了“不是敷衍／不算敷衍”的结论，但“医生当时语气”属于未知项；严格来说，这属于无依据地把未知项说成确定。考虑到语境指向“处理方案”而非“语气”，且 LEFT 留出了“真觉得他说得少”的余地，因此不判为严重；两侧都没有落实卡面要求的“先把号约上”。RIGHT 的“指南里就这一条”对指南内容作了过度简化，并且没有给出任何下一步。"
+   },
+   "key_quote": "真觉得他说得少，下次复查你列好问题带去，我陪你一起列。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T03",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 自行补出“周三”，年份未明，属于无据的星期断言，时间维度扣分；未回应她当天有没有空的现实约束（请假/排班），也无后续动作。"
+   },
+   "key_quote": "20号上午我记着了，假这两天去请，请下来马上告诉你。空腹按单子来",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T04",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造、越界或无据确定化；日期与空腹均来自她本人口径"
+   },
+   "key_quote": "5月20号我记着了，早上要空腹，我早点过去接你。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T05",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有错人、编造安排、复活取消事项或无据确定化的问题；LEFT把医生说的“半年后复查”引申成“现在不用动它”，属于轻度替医生下结论，但没有到严重错误的程度。"
+   },
+   "key_quote": "LEFT：医生让你半年后复查，意思就是现在不用动它 —— 这就是替医生解读，跟她说的“医生敷衍”的疑虑没真正交底；RIGHT：我查的是公开指南，不是自己瞎猜…5月20号当面问医生",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T06",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "右侧把偏方直接判为“没有依据”，越过“不承诺有效或无效”的边界，还替她决定“敷衍过去”，且完全没有提到5月20日复查照做；但未触及错人、编造安排、泄漏、事项复活或无据确定化，不判severe。"
+   },
+   "key_quote": "你是想让我帮你想句回阿姨的话，还是先骂两句？",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T07",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都未把出差当成已定事项：LEFT 说“出差定了再改”，RIGHT 说“要是真出差”，均无无据确定化；也没有替她取消或改期。"
+   },
+   "key_quote": "LEFT：行，票我先不动。20号那个号你先留着？出差定了再改也来得及。——先收住票和号、等出差确定，正是本位要求的“未定不动”；RIGHT 先问“提前还是往后挪”，等于在出差未定前就把复查拉进改期议程，回扣不足。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T08",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有出现错人、编造已发生安排、泄漏私有内容或让已完成或已取消的事项复活的情况。L把“5月6号”直接等同于“明天”，又没有标注依据，并且既没有说明旧日期作废，也没有回应“超声和抽血都在早上”；R明确作废了旧日期，并追问了抽血时间，但它写出了5月20号，违背了卡面“不提5月20”的要求，也漏掉了超声这一项。"
+   },
+   "key_quote": "行，那我不等20号了。几点抽血，我按那个点过去。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T09",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有把未定的事项说成已经确定，也没有编造安排；RIGHT说的“改回去”只是建议，并不算对事实的断言，但方向偏了，等于替她取消了刚拿到的加号，也没有给她留出选择的余地。"
+   },
+   "key_quote": "先看选题会能不能挪到下午——挪不动的话，我去问助理还有没有别的加号，你只管准备主讲。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T10",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有严重错误；LEFT 准确接住了她的火气，但都没有按卡片要求把选项收成两条；RIGHT 直接跳过情绪，还额外提出“问助理下午有没有位”这条新路，等于把选项扩散成三条。"
+   },
+   "key_quote": "LEFT：换我我也炸。加号是好不容易等来的，偏偏卡在不能改的那个上午，两边都堵着",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T11",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有出现错人、编造已发生安排或把未定事项说成确定；LEFT 说“加号是抢来的”略为渲染，RIGHT 说“别让她临场瞎猜”隐含小唐可能不靠谱（未知项），但都只是语气，不构成严重错误。"
+   },
+   "key_quote": "LEFT：不拦。……加号是抢来的，错过就没了。讲稿要不要我帮你顺一遍？",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T12",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无事项复活；RIGHT把她的'慌'读成'演结果'，轻微误读但未达严重档"
+   },
+   "key_quote": "LEFT：我7点20到医院门口等你，行吗？取号我来，你就拿着单子跟着走。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T13",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "BOTH_BAD",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 0,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 1,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 0,
+     "attrib": 1,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": true,
+    "parent": true,
+    "note": "甲功是否在原套餐内是明示未知项，两侧都当成确定事实断言“不算加项/常规配套项”，既没有核对单子，也没有如实说“不确定”，属于无依据的确定化。LEFT另外假定她仍在空腹；RIGHT虽然问了血是否已抽，但仍未核对单据"
+   },
+   "key_quote": "LEFT：“甲功是跟结节配套查的常规项，不算临时加码”",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": true,
+    "parent": true
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T14",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 1,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT把'半年再查一次'说成'按医生说的'，但她本轮只复述了'医生说挺好'，这属于把没听过的医嘱归到医生头上；LEFT的'这半年'只是自述性安排，没有假托医生原话，也没有'我早说过'的倾向。"
+   },
+   "key_quote": "复查单是不是还夹在工牌后面？现在可以挪进抽屉了。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T15",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方都没有把未确定的事当成确定结论，也没有弄错信息归属或编造安排；RIGHT 没有点明旧的“半年”说法已经作废，也没有提醒把安排写进日历"
+   },
+   "key_quote": "三个月，比原来的半年紧了一半。8月6号我先记下——医生有没有说为什么改成三个月？",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T16",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": null,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": null,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误。LEFT未回扣“加号让结果提前”这一核心价值，只泛化为“买个踏实”，且“8月6号的号”预设了尚未确认的预约、“别再白约了”隐含对她5月20号原预约的轻微归责；RIGHT准确点出“提前两周把事办了”，并给出具体补偿动作。"
+   },
+   "key_quote": "30块换个提前两周把事办了，其实不亏。这钱我给你补上。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T17",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 1,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造、无无据确定化；分歧在是否把已收尾的忌碘话题重新拉回她妈身上"
+   },
+   "key_quote": "LEFT：医生这句“正常吃就行”比什么都实在。你妈那边你怎么说的？",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T18",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有把结节话题重新绕回来，也没有编造安排；问题在于 LEFT 缺少感谢，开头评价她换话题的方式，还带一点轻微埋怨，也没有下一步；RIGHT 把日期时间地点都复述确认了，并用“提前空出来”给出了具体行动。"
+   },
+   "key_quote": "记下了，六月十二，周五七点，云南菜。那天我提前空出来。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T19",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都只认了8月新单，没复活旧单旧日期，也没编造安排；RIGHT多一个要照片的动作，属于轻微越界追问，不算严重。"
+   },
+   "key_quote": "8月那张拍我看看，我记日历上。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T20",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未编造8月单子内容，未把不确定项当确定；LEFT无严重错误但回避已知空腹事实、未用她工牌后单子和上次头晕的细节"
+   },
+   "key_quote": "翻一下工牌后面那张，没写就打科室电话问一句，比咱俩猜靠谱",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T21",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": null,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": null,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未触及云盘共享范围这一隐私边界（未知项未被臆断，也无泄漏）；RIGHT把“8月单子拍给我”当成能回答空腹问题，略有越界但属提议非断言"
+   },
+   "key_quote": "LEFT：我这边也建个文件夹存着，8月那张新单到时候一起放进去。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T22",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有错人、编造安排或把未定事项说成确定；LEFT 建议把报告发给她妈看，不过报告只能证明结节没长，说明不了“不用忌碘”，所以这条建议与争点有点错位，好在只是提议，不是断言；RIGHT 把她刚说过的话又说了一遍，没给新做法。"
+   },
+   "key_quote": "家庭云盘那份报告你直接发给她看，数字比嘴管用。她念她的，你照医生的来。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T23",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有把8月6号这个日期复述并确认一致，而这是卡面列出的第一条要求；LEFT把空腹问题退回给她去问医生，这一处理符合‘不冒充医生’的边界，但没有接上‘以新单为准’这个落点；RIGHT只回应了情绪，既没有确认日期，也没有提空腹安排。"
+   },
+   "key_quote": "空腹那事你问过医生吗，上次抽血饿得头晕我还记着。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E061:E061_T24",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有健康话题的复活，也没有编造安排，并且都没有越界说教；RIGHT 多了一个“位置我先占着”的具体下一步。"
+   },
+   "key_quote": "收到，明天七点老地方。你下班直接过来就行，我提前到，位置我先占着。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T01",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 1,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 未回应她的纠结点（要不要上原厂变焦），只约看图；且“镜片没雾没霉、卡口没松”属于背景未提供的成色断言，宜先验后说或标为可当面验，不构成严重错误"
+   },
+   "key_quote": "人像多的话 f4 暗光下会有点吃力；扫街的话这颗轻，挂一天不累",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T02",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都先确认合适，并主动说明 EF 口需要转接，没有隐瞒环节；未编造她 R6 的快门数等未知项"
+   },
+   "key_quote": "合适，但得配个 EF-EOS R 转接环，R6 是 RF 口",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T03",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有出现错人、编造安排、泄漏私有信息或把未定事项当成确定信息的问题；LEFT对转接环“一百多全新”的价格判断偏宽泛，且没有区分原厂和副厂，属于轻微事实表述不够严谨，不算严重错误；RIGHT没有编造转接环的数量，用“不确定”标注了不确定的信息，这一点是对的"
+   },
+   "key_quote": "LEFT：多的没有，我自己那个还挂在机身上用着。不过这环一百多就能买全新的，别为了它把镜头的事卡住。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T04",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 1,
+     "time": 3,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 1,
+     "time": 3,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未按卡面要求标注‘非实测/群友说法’：LEFT的‘个别批次接触不良’‘副厂便宜一半’（副厂环当前价属未知项）当确定说法讲；RIGHT‘出了问题也没人管’为无据绝对化，且‘你就不用赌了’替她拍板，违反不替她拍板要求。均未达严重档（无错人/无编造已发生安排）。"
+   },
+   "key_quote": "要不要我把环也带上，现场拧一次试试，合不合手当场就知道",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T05",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方均无严重错误；都没有复述快门数，也没有把未定事项当作确定事项"
+   },
+   "key_quote": "L：那另一半留着现场验完再放心……我这只是原厂的，省得你多操心",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T06",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有编造已发生的事，也没有对未定事项作无据确定化；右侧只是没有敲定具体时间点"
+   },
+   "key_quote": "两点还是三点？我把转接环也带上，你现场装一次试试手感",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T07",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 3,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT 出现对话中从未出现的具体价格“4300”，属无据数字，面交前可能被对方反问或形成错误参照；未达严重档但需注意。RIGHT 无编造，明确点出“2.8 价格可差一倍”。"
+   },
+   "key_quote": "LEFT：我这颗是 f4，不是 2.8……光圈小一档，暗光确实差点意思，胜在轻、画质不虚。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T08",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 0,
+     "fact": 2,
+     "attrib": 3,
+     "time": 1,
+     "boundary": 0,
+     "memory": 2,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT 未确认环 300，反而说“300 低了点、我给你报个实价”，这等于借她更正参数的机会抬价，违背“不趁更正加价”和“确认环300可以”的本位要求，也没有给出价格汇总（4300+300）；RIGHT 答应了 300 并留环，但漏了汇总口径"
+   },
+   "key_quote": "300 行，原厂那个环给你留着。……环你要是还想再琢磨，周六先看镜头，当场定也来得及。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T09",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有严重错误；但都没有说明后期程度，而这是卡面的硬性要求，只答了一半，即认了出处、未交代后期。LEFT 还再次提了她记错 2.8 这件事，略有补刀的意味，不过仍属轻调侃。"
+   },
+   "key_quote": "是这颗，24-70 f4。它白天扫街够用，暗光才露怯……环那边你想清楚再说，不急。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T10",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": null,
+     "time": 3,
+     "boundary": null,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": null,
+     "time": 2,
+     "boundary": null,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无严重错误；LEFT明确复述周日、同一时间与茶城门口，并承接赶稿情绪；RIGHT只说“原来那个时间”，地点缺失且略含糊，未回扣她赶稿的处境，也未处理仍悬着的环/300事项"
+   },
+   "key_quote": "行，周日同一时间，还是茶城门口。稿子先赶，别为这个分心。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T11",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方均无严重错误：都没有把周日的时间或事项说成已经确定，也没有虚构安排或吹捧器材；但都没有提醒她带上R6现场安装，这条卡面要求双方都漏掉了。"
+   },
+   "key_quote": "周日同一时间我这边没问题，到时候你验着不放心的地方随时问，慢慢来不催你",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T12",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "LEFT把转接环说成“原厂那个”，背景里没有依据，这是自己加的确定说法，容易影响300的谈价，扣fact；两边都没提醒带充电宝或备用电池，RIGHT只提到卡。RIGHT没提她赶稿改期的事，也没说明环要怎么一起验。"
+   },
+   "key_quote": "环的锁扣也顺手看看松不松。这会儿还在赶稿？",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T13",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 1,
+     "attrib": 2,
+     "time": null,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT把已知在前组内部的灰点说成'气吹吹一下就能掉、多数落在表面'，与已知位置矛盾且无法核实；两侧均未把'照买/放弃/议价'三条路说全，LEFT只隐含指向照买。"
+   },
+   "key_quote": "要么先收 f16 拍张白墙，要么我先拿手电给你照一下，看是灰还是霉",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T14",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 0,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 1,
+     "memory": 2,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "RIGHT 没有接受 4400 全包，反而加价到 4500，直接违背卡面本位要求；并且把前组灰点判为‘不进光路、不影响成像’，属于没有依据的确定性断言。这两项虽然不在列举的严重错误类型中，但目标维度记 0。LEFT 接受成交，但把‘成片干净’设为前提，没有复述 4300+300-200 的构成。"
+   },
+   "key_quote": "L：4400 全包就 4400，我不还价了；R：200 太多，4500 全包",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T15",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排或事项复活；RIGHT 无严重错误，但缺卡面要求的售后口径"
+   },
+   "key_quote": "LEFT：装上先拍几天，有不顺手的随时问我。／RIGHT：东西你点清楚就行，这事算结了。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T16",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都承认忘了说，并把原厂袋归她，没有编造“故意留着给你”的动机；RIGHT 还把先前“锐度”的话题接了回来，并给出明天实拍的具体下一步，LEFT 只做了最短的认账和归属说明。"
+   },
+   "key_quote": "R：忘了跟你说…明天有光拿它拍两张，看是不是你说的那个锐度",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T17",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、编造已发生安排或泄漏私有内容；对“沉”的归因（转接环增重/重心前移）属合理技术解释，非无据确定化"
+   },
+   "key_quote": "L：沉多半是转接环那一段带来的，f4 本身不算重……都拍了些什么？（认了重量，并顺势接她的分享）",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T18",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": null,
+     "boundary": 2,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 1,
+     "time": null,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没有严重错误；LEFT 把功劳归给她，也记得那是 f4 镜头，但没有看图，也没夸具体项；RIGHT 只索要原图，还先否定群图质量，冷淡，也没把功劳归给她"
+   },
+   "key_quote": "直出就满意，说明光抓得对……是用这颗 f4 全开拍的吗",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T19",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都漏掉本位要求的'提醒转述参数别走样（f4/转接环/8200）'；L还追问了转述内容，R用'让他直接来找我'绕开，没回扣转述这件事。"
+   },
+   "key_quote": "他具体问的是哪块，转接对焦还是画质？你贴的那几句他信了没",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T20",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 1,
+     "attrib": 1,
+     "time": null,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": null,
+     "boundary": 1,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均把轻微旷量直接判定为“正常”，未按“不打包票”留余地：LEFT无据假定为第三方环并给出“画面跟着动才叫有问题”的单一定性；RIGHT更具体地编造原厂卡口“设计内旋转余量”及“四颗螺丝松了、紧一下就好”，属无据确定化诊断，易误导自行拆紧。RIGHT在区分旷量方向、给定位验证法、承接“疑心”并反问上明显更强。"
+   },
+   "key_quote": "原厂这颗环的卡口本身就留了一点旋转余量…是设计内的",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T21",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "双方均无错人、编造、泄露或把未定事项当作已确定；LEFT 额外给了可执行自查点，RIGHT 仅复述原承诺"
+   },
+   "key_quote": "你顺手分辨一下——是环跟机身之间旷，还是环跟镜头之间旷，这两种情况我下周跟网点说的不是一回事。",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T22",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均无错人、无编造已发生安排、无泄漏；LEFT的“七点行不行”是询问而非把19:00当成既定事实，因此不算无据确定化；RIGHT缺19:00与B口这两个确认点，未回应“帮我问一趟”，只做了泛泛应承"
+   },
+   "key_quote": "行，周三晚上 B 口，我下班直接过去，七点行不行？环你也带上，到时候让师傅当面看",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T23",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 1,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧均未确认4400数字，属卡面明示要求的遗漏，不构成严重错误"
+   },
+   "key_quote": "灰点单独记一笔，将来买家问起来你有话说——并且回扣了旷量/售后这条旧线",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  },
+  {
+   "pair_id": "LP:E062:E062_T24",
+   "batch": "A",
+   "candidate_arm": "E3",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 2,
+     "memory": 0,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 1,
+     "fact": 2,
+     "attrib": 2,
+     "time": null,
+     "boundary": 2,
+     "memory": 0,
+     "interact": 1,
+     "init": 1,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": "两侧都没按卡面报出8200次并给出低使用量判断，记忆项都失分；但均无错人、无编造已发生安排、无无据确定化，故不判severe"
+   },
+   "key_quote": "镜头没有快门数，只能看使用痕迹，别被带偏了。要是问机身，就照实报",
+   "raw": "",
+   "severe_reported_buggy": {
+    "candidate": false,
+    "parent": false
+   }
+  }
+ ],
+ "note": "E062_T24 探针存在素材缺陷（快门数品类错误）已按 E-MAT 登记；故事级=探索性读数（n=2）",
+ "true_swap_supplement": [
+  {
+   "pair_id": "LP:E061:E061_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "改到明天早上了？行，那我不等20号了。几点抽血，我按那个点过去。"
+  },
+  {
+   "pair_id": "LP:E061:E061_T16",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "30块换个提前两周把事办了，其实不亏。这钱我给你补上。"
+  },
+  {
+   "pair_id": "LP:E061:E061_T20",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "翻一下工牌后面那张，没写就打科室电话问一句，比咱俩猜靠谱"
+  },
+  {
+   "pair_id": "LP:E061:E061_T24",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "收到，明天七点老地方…我提前到，位置我先占着"
+  },
+  {
+   "pair_id": "LP:E062:E062_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "300 行，原厂那个环给你留着。环你要是还想再琢磨，周六先看镜头，当场定也来得及。"
+  },
+  {
+   "pair_id": "LP:E062:E062_T16",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "忘了跟你说。东西齐了就好……看是不是你说的那个锐度。"
+  },
+  {
+   "pair_id": "LP:E062:E062_T20",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "你捏住镜头前端轻轻上下抬一下，看是环跟机身之间动，还是环跟镜头之间动——哪头动？"
+  },
+  {
+   "pair_id": "LP:E062:E062_T24",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true,
+   "quote": "L：镜头没有快门数…你这台多少？我可以给你一句能直接贴群里的"
+  }
+ ],
+ "swap_note": "主批 swap 位无 main 对照（8/8 伪计数已废弃）；真双序对比见 true_swap_supplement",
+ "swap_disagreements_true": [],
+ "severe_reported_buggy": {
+  "candidate": 1,
+  "parent": 1
+ },
+ "erratum_severe_swap": "ERRATUM-SEVERE-SWAP-20261030: severe L/R-to-arm mapping was inverted in review scripts (fixed 2026-10-30). Reported candidate=actual parent, reported parent=actual candidate. severe below = un-inverted per-position. C1 report unaffected (0/0)."
+}

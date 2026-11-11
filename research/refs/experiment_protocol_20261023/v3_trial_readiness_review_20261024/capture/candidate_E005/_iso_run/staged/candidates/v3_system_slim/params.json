@@ -1,0 +1,6 @@
+{
+  "role": "candidate",
+  "parent": "reference_product_v1",
+  "output_contract": null,
+  "note": "v3_system_slim 是【资产删减候选】（HARNESS_OPTIMIZATION §5.2 第一个删除实验）。唯一变量=长 system 提示资产精简；机制文件逐字转发 reference_product_v1，记忆读/写/检索、上下文拼接、输出契约与父本完全一致（legacy 契约不声明，对齐父本）。身份闭包必须合并父本源码+资产，避免只 hash 引用符号不含实际依赖。"
+}

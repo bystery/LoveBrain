@@ -1,0 +1,28 @@
+{
+  "kind": "standing_authorization_bounded_supplement",
+  "authorization_id": "AUTH-QUALITY-PANEL-20261027-01",
+  "additional_stage_cap": 192,
+  "old_marathon_registry_modified": false,
+  "history_policy": "Old cap/use/closed records preserved. This is an explicit new supplement, not silent revival or use of performance-only judge=false scope.",
+  "scope": {
+    "scope_id": "quality_panel_semantic_review_20261027_v1",
+    "purpose": "Existing C4 128 answer sets plus 13 fixed repeats and 32 authored development controls; advisory nine-dimensional review, NOT personal willingness prediction.",
+    "endpoint": "http://127.0.0.1:17770/v1",
+    "model_alias": "dsf",
+    "temperature": 0.7,
+    "automatic_judge_generations": true,
+    "automatic_candidate_generations": false,
+    "failure_policy": "Failure consumes quota. No retries or automatic refill; stop on transport/audit failure. Invalid semantic response is preserved as unassessed, not regenerated.",
+    "gate_before_dispatch": "Freeze reference cards, review manual, schema, controls and full dispatch plan. Existing packet is ready; missing references are work to finish, not missing human approval."
+  },
+  "ledger_summary": {
+    "authorization_id": "AUTH-QUALITY-PANEL-20261027-01",
+    "used": 0,
+    "max_attempts": 192,
+    "remaining": 192,
+    "closed": false,
+    "close_reason": null,
+    "ledger": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-QUALITY-PANEL-20261027-01.jsonl"
+  },
+  "real_model_calls_this_registration": 0
+}

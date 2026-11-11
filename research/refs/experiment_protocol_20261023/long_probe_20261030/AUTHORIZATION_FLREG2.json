@@ -1,0 +1,45 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-FLREG2-20261101-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30地狱级常设授权（AUTH-GLOBAL-CONTINUOUS-20261030-01）",
+ "phase": "W12_fact_ledger_v2_regression_le24",
+ "budget_ledger": "logs/auth_budget/AUTH-FLREG2-20261101-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 64
+ },
+ "scope": {
+  "purpose": "W12 第二次回归批：fact_ledger_v2(R0主观句过滤+注入降权+‹她说›来源标记，修复v1的T09主观句错账) vs r9_slim on E061(24轮,EXPOSED复用)。判据同 FLREG(设计§4.1冻结)：九维最差维≥-0.3、severe(cand)≤severe(parent)(T13基座族双杀不计)、E061 T15-24窗口保持率≥v0同段(97.1%)、prompt usage≤r9_slim、且 v1 三强项不退化(保持98.8%/prompt -47%/init +0.333 不作硬门但如实报告)。任一硬门不达→v2 淘汰并归因，不再同配置重跑",
+  "route": "two_arm_batch_48",
+  "total_attempts": 48,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "FLREG2": "BATCH-FLREG2-E061-20261101"
+  },
+  "episodes": [
+   "E061"
+  ],
+  "cards": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+  "design": "refs/experiment_protocol_20261023/global_harness_program_20261030/W12_FACT_LEDGER_DESIGN_20261101.md + FLREG_VERDICT_20261101.md(v2 delta)"
+ },
+ "frozen_bindings": {
+  "FLREG2": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/LONGPROBE_FLREG2.INTERLEAVE_PLAN.json",
+   "plan_sha256": "8c3a796072f4432a46b73ce0724f52de2c6f063a55a2552a2f0f769fa72b0e45",
+   "batch_id": "BATCH-FLREG2-E061-20261101",
+   "cards_file": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+   "attempts": 48,
+   "parent": "action_policy_r9_slim",
+   "candidate": "fact_ledger_v2",
+   "parent_identity_sha256": "2099c12f55337dd7dcfac0327cdd9411f7e5de2cdaa0a7083498bab6d12c9c03",
+   "candidate_identity_sha256": "156dee873cf35eb201315faf3aa49f8ee10b9a45a1bef4613f381d3feea0d831"
+  }
+ }
+}

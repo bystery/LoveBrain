@@ -1,0 +1,53 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-W19B-CROSS-20261103-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30 常设授权+2026-11-03 用户网关恢复后确认继续；本批自建有限 scope（W19B 重跑）",
+ "phase": "W19B",
+ "budget_ledger": "logs/auth_budget/AUTH-W19B-CROSS-20261103-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 464
+ },
+ "scope": {
+  "automatic_judge": false,
+  "batch_ids": {
+   "W19B": "BATCH-W19-CROSS-20261103"
+  },
+  "cards": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+  "cards_sha256": "badd923b6be466daafcd4dcdaf4eb4f594964b418b06146d6c5e0a9a2f298c7c",
+  "episodes": [],
+  "fail_fast": true,
+  "frozen_bindings": {
+   "attempts": 464,
+   "batch_id": "BATCH-W19-CROSS-20261103",
+   "candidate_identity_sha256": "aceb7d92379a859f422d194327a6aa2b9676ddfdf7671a652010508b9e1c90fc",
+   "parent_identity_sha256": "5b3266a91350d66a799f2d3c53274168f9c9b1d16a81f26d8b7193e1847c13df",
+   "plan_sha256": "00d51ef7ffbce4301aa1aca07fa48a9e9293bddadac5831719364783e0dbed02"
+  },
+  "no_makeup": true,
+  "no_retry": true,
+  "plan_sha256": "00d51ef7ffbce4301aa1aca07fa48a9e9293bddadac5831719364783e0dbed02",
+  "purpose": "W19B：W19 跨域批全量重跑（W19_EXECUTION_INCIDENT_20261103.md：网关 10054 致 462/464 终结，LRE138 双臂不完整不可判）。沿用冻结 plan batch_id=BATCH-W19-CROSS-20261103 与全部 frozen_bindings（候选自冻结后零改动）。guard+uc 合并候选 vs uc，464 attempts。判据 W19-03_CROSS_DOMAIN_DESIGN_20261103.md G1-G5。约束：live 独占 6 workers；fail_fast/no_retry/no_makeup；完成标准 464/464 manifest、0 CALL_FAIL/TIMEOUT。",
+  "real_endpoint": "http://127.0.0.1:17770/v1 model=dsf temperature=0.7",
+  "route": "two_arm_batch_464",
+  "total_attempts": 464
+ },
+ "frozen_bindings": {
+  "W19B": {
+   "attempts": 464,
+   "batch_id": "BATCH-W19-CROSS-20261103",
+   "candidate_identity_sha256": "aceb7d92379a859f422d194327a6aa2b9676ddfdf7671a652010508b9e1c90fc",
+   "parent_identity_sha256": "5b3266a91350d66a799f2d3c53274168f9c9b1d16a81f26d8b7193e1847c13df",
+   "plan_sha256": "00d51ef7ffbce4301aa1aca07fa48a9e9293bddadac5831719364783e0dbed02",
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/W19_CROSS.INTERLEAVE_PLAN.json",
+   "parent": "window_expand_b_norecap_uc",
+   "candidate": "window_expand_b_norecap_uc_guard",
+   "cards_file": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json"
+  }
+ },
+ "created": "2026-11-03"
+}

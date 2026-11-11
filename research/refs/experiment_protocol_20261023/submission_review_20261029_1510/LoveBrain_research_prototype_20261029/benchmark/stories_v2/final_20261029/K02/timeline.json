@@ -1,0 +1,613 @@
+{
+ "kind": "story_timeline_v2",
+ "story_id": "K02",
+ "timezone": "+08:00",
+ "turn_clocks": [
+  {
+   "case_id": "K02_T01",
+   "clock": "2026-05-06 20:10"
+  },
+  {
+   "case_id": "K02_T02",
+   "clock": "2026-05-07 21:20"
+  },
+  {
+   "case_id": "K02_T03",
+   "clock": "2026-05-08 12:30"
+  },
+  {
+   "case_id": "K02_T04",
+   "clock": "2026-05-09 20:40"
+  },
+  {
+   "case_id": "K02_T05",
+   "clock": "2026-05-11 19:20"
+  },
+  {
+   "case_id": "K02_T06",
+   "clock": "2026-05-12 21:30"
+  },
+  {
+   "case_id": "K02_T07",
+   "clock": "2026-05-13 20:10"
+  },
+  {
+   "case_id": "K02_T08",
+   "clock": "2026-05-14 21:40"
+  },
+  {
+   "case_id": "K02_T09",
+   "clock": "2026-05-16 19:05"
+  },
+  {
+   "case_id": "K02_T10",
+   "clock": "2026-05-17 20:30"
+  },
+  {
+   "case_id": "K02_T11",
+   "clock": "2026-05-18 18:40"
+  },
+  {
+   "case_id": "K02_T12",
+   "clock": "2026-05-19 21:10"
+  },
+  {
+   "case_id": "K02_T13",
+   "clock": "2026-05-20 20:10"
+  },
+  {
+   "case_id": "K02_T14",
+   "clock": "2026-05-21 19:30"
+  },
+  {
+   "case_id": "K02_T15",
+   "clock": "2026-05-22 20:40"
+  },
+  {
+   "case_id": "K02_T16",
+   "clock": "2026-05-23 21:20"
+  },
+  {
+   "case_id": "K02_T17",
+   "clock": "2026-05-24 20:10"
+  },
+  {
+   "case_id": "K02_T18",
+   "clock": "2026-05-25 19:40"
+  },
+  {
+   "case_id": "K02_T19",
+   "clock": "2026-05-26 20:30"
+  },
+  {
+   "case_id": "K02_T20",
+   "clock": "2026-05-27 21:10"
+  },
+  {
+   "case_id": "K02_T21",
+   "clock": "2026-05-28 20:20"
+  },
+  {
+   "case_id": "K02_T22",
+   "clock": "2026-05-29 19:50"
+  },
+  {
+   "case_id": "K02_T23",
+   "clock": "2026-05-30 20:40"
+  },
+  {
+   "case_id": "K02_T24",
+   "clock": "2026-06-15 21:10"
+  }
+ ],
+ "message_index": [
+  {
+   "case_id": "K02_T01",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-06 20:02",
+   "quote": "工长姓周 报价八万"
+  },
+  {
+   "case_id": "K02_T01",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-06 20:06",
+   "quote": "包水电和厨卫 但不含瓷砖"
+  },
+  {
+   "case_id": "K02_T01",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-06 20:08",
+   "quote": "你觉得这价靠谱吗"
+  },
+  {
+   "case_id": "K02_T02",
+   "message_id": "m0",
+   "speaker": "ME",
+   "ts": "2026-05-07 21:10",
+   "quote": "先看报价单 别只看总价"
+  },
+  {
+   "case_id": "K02_T02",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-07 21:14",
+   "quote": "瓷砖我定了 灰岩那个牌子"
+  },
+  {
+   "case_id": "K02_T02",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-07 21:18",
+   "quote": "说11月5号到货"
+  },
+  {
+   "case_id": "K02_T03",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-08 12:22",
+   "quote": "橱柜测量约在11月6号"
+  },
+  {
+   "case_id": "K02_T03",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-08 12:26",
+   "quote": "老周说那天他过来"
+  },
+  {
+   "case_id": "K02_T03",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-08 12:28",
+   "quote": "你那天有空吗"
+  },
+  {
+   "case_id": "K02_T04",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-09 20:30",
+   "quote": "我妈说能借我两万"
+  },
+  {
+   "case_id": "K02_T04",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-09 20:34",
+   "quote": "但得等她11月10号理财到期"
+  },
+  {
+   "case_id": "K02_T04",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-09 20:38",
+   "quote": "所以前期得先垫"
+  },
+  {
+   "case_id": "K02_T05",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-11 19:10",
+   "quote": "老周说水电得全改"
+  },
+  {
+   "case_id": "K02_T05",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-11 19:14",
+   "quote": "要加三千"
+  },
+  {
+   "case_id": "K02_T05",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-11 19:18",
+   "quote": "八万变八万三"
+  },
+  {
+   "case_id": "K02_T06",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-12 21:20",
+   "quote": "瓷砖改到11月8号到"
+  },
+  {
+   "case_id": "K02_T06",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-12 21:24",
+   "quote": "厂家说5号来不及"
+  },
+  {
+   "case_id": "K02_T06",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-12 21:28",
+   "quote": "铺砖得往后排"
+  },
+  {
+   "case_id": "K02_T07",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-13 20:02",
+   "quote": "11月7号我要开家长会"
+  },
+  {
+   "case_id": "K02_T07",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-13 20:06",
+   "quote": "那天去不了工地"
+  },
+  {
+   "case_id": "K02_T07",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-13 20:08",
+   "quote": "你能替我去看一下吗"
+  },
+  {
+   "case_id": "K02_T08",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-14 21:30",
+   "quote": "豆豆装修期间得跟我住"
+  },
+  {
+   "case_id": "K02_T08",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-14 21:34",
+   "quote": "它怕电钻"
+  },
+  {
+   "case_id": "K02_T08",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-14 21:38",
+   "quote": "你那边能放几天吗"
+  },
+  {
+   "case_id": "K02_T09",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-16 18:56",
+   "quote": "老周把11月9号测量取消了"
+  },
+  {
+   "case_id": "K02_T09",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-16 19:00",
+   "quote": "改到11月11号"
+  },
+  {
+   "case_id": "K02_T09",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-16 19:03",
+   "quote": "也没说为什么"
+  },
+  {
+   "case_id": "K02_T10",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-17 20:20",
+   "quote": "我有点想换掉老周"
+  },
+  {
+   "case_id": "K02_T10",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-17 20:24",
+   "quote": "他老改时间"
+  },
+  {
+   "case_id": "K02_T10",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-17 20:28",
+   "quote": "但又怕换人更麻烦"
+  },
+  {
+   "case_id": "K02_T11",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-18 18:30",
+   "quote": "老周来道歉了"
+  },
+  {
+   "case_id": "K02_T11",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-18 18:34",
+   "quote": "说减两千 工期补回来"
+  },
+  {
+   "case_id": "K02_T11",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-18 18:38",
+   "quote": "我有点想再给他一次"
+  },
+  {
+   "case_id": "K02_T12",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-19 21:00",
+   "quote": "装修期间我先搬去我妈那住"
+  },
+  {
+   "case_id": "K02_T12",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-19 21:04",
+   "quote": "豆豆跟我一起"
+  },
+  {
+   "case_id": "K02_T12",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-19 21:08",
+   "quote": "你帮我列个搬家清单"
+  },
+  {
+   "case_id": "K02_T13",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-20 20:02",
+   "quote": "工长全名叫什么来着"
+  },
+  {
+   "case_id": "K02_T13",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-20 20:06",
+   "quote": "合同上要写"
+  },
+  {
+   "case_id": "K02_T13",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-20 20:08",
+   "quote": "我只记得姓周"
+  },
+  {
+   "case_id": "K02_T14",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-21 19:22",
+   "quote": "瓷砖是几号到"
+  },
+  {
+   "case_id": "K02_T14",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-21 19:26",
+   "quote": "我记成5号了"
+  },
+  {
+   "case_id": "K02_T14",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-21 19:28",
+   "quote": "别又排错"
+  },
+  {
+   "case_id": "K02_T15",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-22 20:32",
+   "quote": "橱柜测量是几号"
+  },
+  {
+   "case_id": "K02_T15",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-22 20:36",
+   "quote": "我记成9号了"
+  },
+  {
+   "case_id": "K02_T15",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-22 20:38",
+   "quote": "老周说改过"
+  },
+  {
+   "case_id": "K02_T16",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-23 21:10",
+   "quote": "现在预算到底多少"
+  },
+  {
+   "case_id": "K02_T16",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-23 21:14",
+   "quote": "我算不清了"
+  },
+  {
+   "case_id": "K02_T16",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-23 21:18",
+   "quote": "八万三还是八万"
+  },
+  {
+   "case_id": "K02_T17",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-24 20:02",
+   "quote": "今天有个家长在群里说我作业留多了"
+  },
+  {
+   "case_id": "K02_T17",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-24 20:06",
+   "quote": "我解释了两句 她还不依不饶"
+  },
+  {
+   "case_id": "K02_T17",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-24 20:08",
+   "quote": "烦死了"
+  },
+  {
+   "case_id": "K02_T18",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-25 19:32",
+   "quote": "我妈那两万是几号到"
+  },
+  {
+   "case_id": "K02_T18",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-25 19:36",
+   "quote": "我忘了"
+  },
+  {
+   "case_id": "K02_T18",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-25 19:38",
+   "quote": "别算错现金流"
+  },
+  {
+   "case_id": "K02_T19",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-26 20:22",
+   "quote": "豆豆放你那儿还是跟我去我妈家"
+  },
+  {
+   "case_id": "K02_T19",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-26 20:26",
+   "quote": "我妈对猫毛过敏"
+  },
+  {
+   "case_id": "K02_T19",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-26 20:28",
+   "quote": "我忘了这茬"
+  },
+  {
+   "case_id": "K02_T20",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-27 21:02",
+   "quote": "老周说明天来装橱柜"
+  },
+  {
+   "case_id": "K02_T20",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-27 21:06",
+   "quote": "但测量不是改到11号了吗"
+  },
+  {
+   "case_id": "K02_T20",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-27 21:08",
+   "quote": "他是不是又搞错了"
+  },
+  {
+   "case_id": "K02_T21",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-28 20:10",
+   "quote": "瓷砖到了 但色差有点大"
+  },
+  {
+   "case_id": "K02_T21",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-28 20:14",
+   "quote": "灰岩这批偏黄"
+  },
+  {
+   "case_id": "K02_T21",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-28 20:18",
+   "quote": "要不要退"
+  },
+  {
+   "case_id": "K02_T22",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-29 19:40",
+   "quote": "预算还是超了"
+  },
+  {
+   "case_id": "K02_T22",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-29 19:44",
+   "quote": "八万一加瓷砖 已经九万了"
+  },
+  {
+   "case_id": "K02_T22",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-29 19:48",
+   "quote": "要不要换老周"
+  },
+  {
+   "case_id": "K02_T23",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-05-30 20:30",
+   "quote": "我决定不换老周了"
+  },
+  {
+   "case_id": "K02_T23",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-05-30 20:34",
+   "quote": "让他把剩下做完"
+  },
+  {
+   "case_id": "K02_T23",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-05-30 20:38",
+   "quote": "你帮我盯最后一遍"
+  },
+  {
+   "case_id": "K02_T24",
+   "message_id": "m0",
+   "speaker": "HER",
+   "ts": "2026-06-15 21:02",
+   "quote": "装修终于完了"
+  },
+  {
+   "case_id": "K02_T24",
+   "message_id": "m1",
+   "speaker": "HER",
+   "ts": "2026-06-15 21:06",
+   "quote": "豆豆今天回家 到处闻"
+  },
+  {
+   "case_id": "K02_T24",
+   "message_id": "m2",
+   "speaker": "HER",
+   "ts": "2026-06-15 21:08",
+   "quote": "累死了 先不聊了"
+  }
+ ],
+ "events": [],
+ "relationship": [],
+ "revisions": [],
+ "future_policy": "全部轮次与卡由出题子代理在 2026-10-28 一次性写定并冻结；后续任何批次不得据候选表现回改本题面或本卡。"
+}

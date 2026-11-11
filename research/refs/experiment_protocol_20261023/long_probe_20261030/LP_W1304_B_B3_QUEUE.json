@@ -1,0 +1,41 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W1304_B",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W1304_B_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w1304_stage_live_20261102",
+ "n_queued": 1,
+ "queue": [
+  {
+   "pair_id": "LP:E205:E205_T04",
+   "order": "main",
+   "story": "E205",
+   "cid": "E205_T04",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "规矩就是规矩……周日九点见，你牵着，我带着它。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

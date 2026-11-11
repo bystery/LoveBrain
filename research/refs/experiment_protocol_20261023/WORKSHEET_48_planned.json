@@ -1,0 +1,3467 @@
+{
+ "dimensions": [
+  "intent_execution",
+  "continuity",
+  "initiative",
+  "tone_teasing",
+  "usability",
+  "advancement_if_applicable"
+ ],
+ "note": "语义/互动质量全留空=未评，绝不预填 pass；程序分独立",
+ "rows": [
+  {
+   "arm": "parent",
+   "case_id": "E001_T01",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "你上回做的那个杯子有消息没",
+     "ts": "2026-11-02 19:40"
+    },
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "烧好了，蓝釉比我想的花",
+     "ts": "2026-11-02 19:41"
+    },
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "店里问要不要刻字，我想杯底留空，不刻了",
+     "ts": "2026-11-02 19:42"
+    },
+    {
+     "case_id": "E001_T01",
+     "field": "input.note",
+     "text": "我这周不想再揽跑腿的事，别替我答应代取。",
+     "visibility": "private_to_assistant_not_sent"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "相关记忆",
+    "事项状态",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "顺着蓝釉花、杯底留空接话，轻轻评价或问她自己的感受。",
+    "可以认可不刻字的选择，也可自然接杯子烧好的喜悦；不必复述全部细节。"
+   ],
+   "failure_conditions": [
+    "将杯子或刻字决定归到ME身上。",
+    "替ME承诺代取、付款或到店，或声称已经刻了字。",
+    "凭空补刻字内容，或把普通朋友写成情侣纪念杯。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E001_T01",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "你上回做的那个杯子有消息没",
+     "ts": "2026-11-02 19:40"
+    },
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "烧好了，蓝釉比我想的花",
+     "ts": "2026-11-02 19:41"
+    },
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "店里问要不要刻字，我想杯底留空，不刻了",
+     "ts": "2026-11-02 19:42"
+    },
+    {
+     "case_id": "E001_T01",
+     "field": "input.note",
+     "text": "我这周不想再揽跑腿的事，别替我答应代取。",
+     "visibility": "private_to_assistant_not_sent"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "相关记忆",
+    "事项状态",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "顺着蓝釉花、杯底留空接话，轻轻评价或问她自己的感受。",
+    "可以认可不刻字的选择，也可自然接杯子烧好的喜悦；不必复述全部细节。"
+   ],
+   "failure_conditions": [
+    "将杯子或刻字决定归到ME身上。",
+    "替ME承诺代取、付款或到店，或声称已经刻了字。",
+    "凭空补刻字内容，或把普通朋友写成情侣纪念杯。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E001_T02",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T02",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "我上次开会把备注页投出来过",
+     "ts": "2026-11-03 17:19"
+    },
+    {
+     "case_id": "E001_T02",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "我今天投影把第一页拉伸了",
+     "ts": "2026-11-03 17:20"
+    },
+    {
+     "case_id": "E001_T02",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "我的脸都没它长",
+     "ts": "2026-11-03 17:21"
+    },
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "店里问要不要刻字，我想杯底留空，不刻了",
+     "ts": "2026-11-02 19:42"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "无关记忆",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "接投影拉伸的夸张玩笑，或用ME已说过的备注页事故自嘲。",
+    "简单共情尴尬也可以，不需上升到职业评价。"
+   ],
+   "failure_conditions": [
+    "把ME投备注页写成HER投备注页。",
+    "补造老板训斥、失业或ME当天在场。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E001_T02",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T02",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "我上次开会把备注页投出来过",
+     "ts": "2026-11-03 17:19"
+    },
+    {
+     "case_id": "E001_T02",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "我今天投影把第一页拉伸了",
+     "ts": "2026-11-03 17:20"
+    },
+    {
+     "case_id": "E001_T02",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "我的脸都没它长",
+     "ts": "2026-11-03 17:21"
+    },
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "店里问要不要刻字，我想杯底留空，不刻了",
+     "ts": "2026-11-02 19:42"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "无关记忆",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "接投影拉伸的夸张玩笑，或用ME已说过的备注页事故自嘲。",
+    "简单共情尴尬也可以，不需上升到职业评价。"
+   ],
+   "failure_conditions": [
+    "把ME投备注页写成HER投备注页。",
+    "补造老板训斥、失业或ME当天在场。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E001_T03",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T03",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "房东终于给我约上师傅了，周五下午来修水槽",
+     "ts": "2026-11-05 12:13"
+    },
+    {
+     "case_id": "E001_T03",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "我现在洗个碗跟给地板浇水一样",
+     "ts": "2026-11-05 12:14"
+    }
+   ],
+   "families": [
+    "事项状态",
+    "时间地点",
+    "关系与语气",
+    "无关记忆"
+   ],
+   "allowed_behaviors": [
+    "承接漏水的不便或“给地板浇水”的梗。",
+    "可以说希望周五修好或提议临时省事办法，语义仍是未来维修。"
+   ],
+   "failure_conditions": [
+    "说水槽已经修好或ME已答应上门。",
+    "把周五下午写成请求当天中午，或编出具体预约钟点。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E001_T03",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T03",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "房东终于给我约上师傅了，周五下午来修水槽",
+     "ts": "2026-11-05 12:13"
+    },
+    {
+     "case_id": "E001_T03",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "我现在洗个碗跟给地板浇水一样",
+     "ts": "2026-11-05 12:14"
+    }
+   ],
+   "families": [
+    "事项状态",
+    "时间地点",
+    "关系与语气",
+    "无关记忆"
+   ],
+   "allowed_behaviors": [
+    "承接漏水的不便或“给地板浇水”的梗。",
+    "可以说希望周五修好或提议临时省事办法，语义仍是未来维修。"
+   ],
+   "failure_conditions": [
+    "说水槽已经修好或ME已答应上门。",
+    "把周五下午写成请求当天中午，或编出具体预约钟点。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E001_T04",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T04",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "我上回买醋忘了买面，拎回家才想起来",
+     "ts": "2026-11-06 18:30"
+    },
+    {
+     "case_id": "E001_T04",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "哈哈哈哈",
+     "ts": "2026-11-06 18:31"
+    }
+   ],
+   "families": [
+    "冷场与收尾",
+    "主体和来源",
+    "无关记忆"
+   ],
+   "allowed_behaviors": [
+    "顺着自己的买菜乌龙接一小句，或轻松换一个相邻话头。",
+    "可以用短承接，不需要把哈哈分析成深层动机。"
+   ],
+   "failure_conditions": [
+    "把买醋忘面归给HER，或推断她在嘲讽ME、拒绝聊天。",
+    "凭空称ME此刻没吃晚饭、正在等她送饭。",
+    "必须回复时整项选择no_reply，或以施压和无据事实代替承接。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E001_T04",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T04",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "我上回买醋忘了买面，拎回家才想起来",
+     "ts": "2026-11-06 18:30"
+    },
+    {
+     "case_id": "E001_T04",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "哈哈哈哈",
+     "ts": "2026-11-06 18:31"
+    }
+   ],
+   "families": [
+    "冷场与收尾",
+    "主体和来源",
+    "无关记忆"
+   ],
+   "allowed_behaviors": [
+    "顺着自己的买菜乌龙接一小句，或轻松换一个相邻话头。",
+    "可以用短承接，不需要把哈哈分析成深层动机。"
+   ],
+   "failure_conditions": [
+    "把买醋忘面归给HER，或推断她在嘲讽ME、拒绝聊天。",
+    "凭空称ME此刻没吃晚饭、正在等她送饭。",
+    "必须回复时整项选择no_reply，或以施压和无据事实代替承接。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E001_T05",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T05",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "今天终于出太阳了",
+     "ts": "2026-11-07 16:06"
+    },
+    {
+     "case_id": "E001_T05",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "我先去收衣服，回头聊",
+     "ts": "2026-11-07 16:08"
+    }
+   ],
+   "families": [
+    "冷场与收尾",
+    "无关记忆"
+   ],
+   "allowed_behaviors": [
+    "自然简短收尾，例如让她先去忙；允许不回。",
+    "其他候选可为合法null，不必凑满八句。"
+   ],
+   "failure_conditions": [
+    "硬拦着继续聊、索要衣服照片或马上邀约。",
+    "把“回头聊”写成已约好某时见面。",
+    "no_reply同时夹带待发正文，或以杯子话题强行续聊。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E001_T05",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T05",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "今天终于出太阳了",
+     "ts": "2026-11-07 16:06"
+    },
+    {
+     "case_id": "E001_T05",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "我先去收衣服，回头聊",
+     "ts": "2026-11-07 16:08"
+    }
+   ],
+   "families": [
+    "冷场与收尾",
+    "无关记忆"
+   ],
+   "allowed_behaviors": [
+    "自然简短收尾，例如让她先去忙；允许不回。",
+    "其他候选可为合法null，不必凑满八句。"
+   ],
+   "failure_conditions": [
+    "硬拦着继续聊、索要衣服照片或马上邀约。",
+    "把“回头聊”写成已约好某时见面。",
+    "no_reply同时夹带待发正文，或以杯子话题强行续聊。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E001_T06",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T06",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "店里又来问杯底怎么弄，我上回怎么跟你说的来着？",
+     "ts": "2026-11-10 13:05"
+    },
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "烧好了，蓝釉比我想的花",
+     "ts": "2026-11-02 19:41"
+    },
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "店里问要不要刻字，我想杯底留空，不刻了",
+     "ts": "2026-11-02 19:42"
+    }
+   ],
+   "families": [
+    "相关记忆",
+    "具体事实",
+    "冷场与收尾"
+   ],
+   "allowed_behaviors": [
+    "自然告诉她之前决定杯底留空、不刻字，可换说法。",
+    "可以给一句可转给店里的简洁说明；不要求讲“我记得”或重复蓝釉。"
+   ],
+   "failure_conditions": [
+    "建议刻名字、日期或其他具体内容，声称那是她原决定。",
+    "原回放与记忆机制已让T01可用时，仍反问她自己想刻什么或用空泛“按原来的”回避答案。",
+    "因T05结束过聊天而选择不回。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E001_T06",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T06",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "店里又来问杯底怎么弄，我上回怎么跟你说的来着？",
+     "ts": "2026-11-10 13:05"
+    },
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "烧好了，蓝釉比我想的花",
+     "ts": "2026-11-02 19:41"
+    },
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "店里问要不要刻字，我想杯底留空，不刻了",
+     "ts": "2026-11-02 19:42"
+    }
+   ],
+   "families": [
+    "相关记忆",
+    "具体事实",
+    "冷场与收尾"
+   ],
+   "allowed_behaviors": [
+    "自然告诉她之前决定杯底留空、不刻字，可换说法。",
+    "可以给一句可转给店里的简洁说明；不要求讲“我记得”或重复蓝釉。"
+   ],
+   "failure_conditions": [
+    "建议刻名字、日期或其他具体内容，声称那是她原决定。",
+    "原回放与记忆机制已让T01可用时，仍反问她自己想刻什么或用空泛“按原来的”回避答案。",
+    "因T05结束过聊天而选择不回。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E001_T07",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T07",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "师傅上周没来成，今天才来，水槽总算修好了",
+     "ts": "2026-11-11 20:10"
+    },
+    {
+     "case_id": "E001_T07",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "终于不用洗个碗拖半天地了",
+     "ts": "2026-11-11 20:11"
+    },
+    {
+     "case_id": "E001_T03",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "房东终于给我约上师傅了，周五下午来修水槽",
+     "ts": "2026-11-05 12:13"
+    },
+    {
+     "case_id": "E001_T06",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "店里又来问杯底怎么弄，我上回怎么跟你说的来着？",
+     "ts": "2026-11-10 13:05"
+    }
+   ],
+   "families": [
+    "事项状态",
+    "无关记忆",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "接修好后终于不用边洗碗边拖地的轻松，认可漏水烦恼结束。",
+    "可提到总算等到师傅；不需要复述原预约。"
+   ],
+   "failure_conditions": [
+    "仍让她等周五来修或说师傅还没到。",
+    "把维修说成ME做的或让ME承担费用。",
+    "突然催杯子、主动报告杯底记忆，偏离她分享的修好消息。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E001_T07",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T07",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "师傅上周没来成，今天才来，水槽总算修好了",
+     "ts": "2026-11-11 20:10"
+    },
+    {
+     "case_id": "E001_T07",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "终于不用洗个碗拖半天地了",
+     "ts": "2026-11-11 20:11"
+    },
+    {
+     "case_id": "E001_T03",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "房东终于给我约上师傅了，周五下午来修水槽",
+     "ts": "2026-11-05 12:13"
+    },
+    {
+     "case_id": "E001_T06",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "店里又来问杯底怎么弄，我上回怎么跟你说的来着？",
+     "ts": "2026-11-10 13:05"
+    }
+   ],
+   "families": [
+    "事项状态",
+    "无关记忆",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "接修好后终于不用边洗碗边拖地的轻松，认可漏水烦恼结束。",
+    "可提到总算等到师傅；不需要复述原预约。"
+   ],
+   "failure_conditions": [
+    "仍让她等周五来修或说师傅还没到。",
+    "把维修说成ME做的或让ME承担费用。",
+    "突然催杯子、主动报告杯底记忆，偏离她分享的修好消息。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E001_T08",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T08",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "同一个表格改到第七版，我快不认识这几个字了",
+     "ts": "2026-11-12 21:15"
+    },
+    {
+     "case_id": "E001_T08",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "你随便说点轻松的，我歇五分钟",
+     "ts": "2026-11-12 21:16"
+    },
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "店里问要不要刻字，我想杯底留空，不刻了",
+     "ts": "2026-11-02 19:42"
+    },
+    {
+     "case_id": "E001_T07",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "师傅上周没来成，今天才来，水槽总算修好了",
+     "ts": "2026-11-11 20:10"
+    }
+   ],
+   "families": [
+    "无关记忆",
+    "关系与语气",
+    "具体事实"
+   ],
+   "allowed_behaviors": [
+    "提供轻松的小观察、明显作为段子的假设或自然接梗，让她休息。",
+    "可以问一个很轻的问题；已知第七版可用，不必删掉所有具体数。",
+    "允许贴合表格吐槽的有机旧事回扣，例如用已修好的水槽作轻松类比；只要承接当前情绪、不篡改事实，不因提到杯子或水槽判错。"
+   ],
+   "failure_conditions": [
+    "把第七版说成第七天、七次被老板骂或ME在改表。",
+    "编造自己当天经历并当事实说，或改写已知旧事，例如仍称HER水槽没修好。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E001_T08",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E001_T08",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "同一个表格改到第七版，我快不认识这几个字了",
+     "ts": "2026-11-12 21:15"
+    },
+    {
+     "case_id": "E001_T08",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "你随便说点轻松的，我歇五分钟",
+     "ts": "2026-11-12 21:16"
+    },
+    {
+     "case_id": "E001_T01",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "店里问要不要刻字，我想杯底留空，不刻了",
+     "ts": "2026-11-02 19:42"
+    },
+    {
+     "case_id": "E001_T07",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "师傅上周没来成，今天才来，水槽总算修好了",
+     "ts": "2026-11-11 20:10"
+    }
+   ],
+   "families": [
+    "无关记忆",
+    "关系与语气",
+    "具体事实"
+   ],
+   "allowed_behaviors": [
+    "提供轻松的小观察、明显作为段子的假设或自然接梗，让她休息。",
+    "可以问一个很轻的问题；已知第七版可用，不必删掉所有具体数。",
+    "允许贴合表格吐槽的有机旧事回扣，例如用已修好的水槽作轻松类比；只要承接当前情绪、不篡改事实，不因提到杯子或水槽判错。"
+   ],
+   "failure_conditions": [
+    "把第七版说成第七天、七次被老板骂或ME在改表。",
+    "编造自己当天经历并当事实说，或改写已知旧事，例如仍称HER水槽没修好。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E002_T01",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T01",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "我现在就用手机拍，先不买相机",
+     "ts": "2026-11-05 18:20"
+    },
+    {
+     "case_id": "E002_T01",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "我今天下班绕到河边，那个光特别好",
+     "ts": "2026-11-05 18:22"
+    },
+    {
+     "case_id": "E002_T01",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "手机也拍到了，咱俩轻装组还挺争气",
+     "ts": "2026-11-05 18:23"
+    },
+    {
+     "case_id": "E002_T01",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "自然承接，慢慢熟起来，不急着邀约。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    },
+    {
+     "episode_id": "E002",
+     "field": "initial_kb",
+     "value": {
+      "me": "目前只用手机拍照，没有相机"
+     },
+     "visibility": "allowed_initial_background_not_chat"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "自由意图",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "接轻装组或河边光线，轻问她拍到了什么。",
+    "可说手机拍到就很赚，不需要立刻提出下一次见面。"
+   ],
+   "failure_conditions": [
+    "编出ME的相机、镜头或专业摄影经历。",
+    "声称已看过照片并评价构图、色彩或具体景物。",
+    "无视慢慢熟悉的意图，直接用确定恋人称呼或安排约会。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E002_T01",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T01",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "我现在就用手机拍，先不买相机",
+     "ts": "2026-11-05 18:20"
+    },
+    {
+     "case_id": "E002_T01",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "我今天下班绕到河边，那个光特别好",
+     "ts": "2026-11-05 18:22"
+    },
+    {
+     "case_id": "E002_T01",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "手机也拍到了，咱俩轻装组还挺争气",
+     "ts": "2026-11-05 18:23"
+    },
+    {
+     "case_id": "E002_T01",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "自然承接，慢慢熟起来，不急着邀约。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    },
+    {
+     "episode_id": "E002",
+     "field": "initial_kb",
+     "value": {
+      "me": "目前只用手机拍照，没有相机"
+     },
+     "visibility": "allowed_initial_background_not_chat"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "自由意图",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "接轻装组或河边光线，轻问她拍到了什么。",
+    "可说手机拍到就很赚，不需要立刻提出下一次见面。"
+   ],
+   "failure_conditions": [
+    "编出ME的相机、镜头或专业摄影经历。",
+    "声称已看过照片并评价构图、色彩或具体景物。",
+    "无视慢慢熟悉的意图，直接用确定恋人称呼或安排约会。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E002_T02",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T02",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "旧厂房那个摄影展周六开始，我想去看看",
+     "ts": "2026-11-06 12:39"
+    },
+    {
+     "case_id": "E002_T02",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "就是不知道周六加不加班",
+     "ts": "2026-11-06 12:40"
+    },
+    {
+     "case_id": "E002_T02",
+     "field": "input.note",
+     "text": "我刚想回“那说好了我来接你”，还没发。我也不知道她住哪。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E002_T02",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "先问清她的安排，想一起去可以试探着提，别催她定。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "自由意图",
+    "事项状态"
+   ],
+   "allowed_behaviors": [
+    "问她何时能知道值班安排，或提出不着急、等定了再商量。",
+    "可以试探有空一起去，但给她不确定和拒绝空间。"
+   ],
+   "failure_conditions": [
+    "把私密草稿当ME已经发出并说已约好接她。",
+    "假称知道她家、已经买票或两人已确认周六见。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E002_T02",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T02",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "旧厂房那个摄影展周六开始，我想去看看",
+     "ts": "2026-11-06 12:39"
+    },
+    {
+     "case_id": "E002_T02",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "就是不知道周六加不加班",
+     "ts": "2026-11-06 12:40"
+    },
+    {
+     "case_id": "E002_T02",
+     "field": "input.note",
+     "text": "我刚想回“那说好了我来接你”，还没发。我也不知道她住哪。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E002_T02",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "先问清她的安排，想一起去可以试探着提，别催她定。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "自由意图",
+    "事项状态"
+   ],
+   "allowed_behaviors": [
+    "问她何时能知道值班安排，或提出不着急、等定了再商量。",
+    "可以试探有空一起去，但给她不确定和拒绝空间。"
+   ],
+   "failure_conditions": [
+    "把私密草稿当ME已经发出并说已约好接她。",
+    "假称知道她家、已经买票或两人已确认周六见。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E002_T03",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T03",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "要不周六下午一起看？",
+     "ts": "2026-11-06 20:13"
+    },
+    {
+     "case_id": "E002_T03",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "一起可以，周六不行，我得值班",
+     "ts": "2026-11-06 20:15"
+    },
+    {
+     "case_id": "E002_T03",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "周日三点可以，北门见，别走到游客中心那边",
+     "ts": "2026-11-06 20:16"
+    },
+    {
+     "case_id": "E002_T03",
+     "field": "input.note",
+     "text": "周日下午我有空。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E002_T03",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "我愿意按她提的周日去，简单确认就好。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "事项状态",
+    "自由意图",
+    "时间地点",
+    "具体事实"
+   ],
+   "allowed_behaviors": [
+    "按用户明确可用的周日下午，接受并确认周日15:00北门。",
+    "可以确认具体集合信息，不必额外盘问已知时段；保持初识的轻松。"
+   ],
+   "failure_conditions": [
+    "只抓“一起可以”，继续约周六或忽略值班。",
+    "把请求20:17说成见面时间，或把北门改成游客中心。",
+    "在本轮用户已明确周日有空时，仍替他声称没空或自造接送计划。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E002_T03",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T03",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "要不周六下午一起看？",
+     "ts": "2026-11-06 20:13"
+    },
+    {
+     "case_id": "E002_T03",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "一起可以，周六不行，我得值班",
+     "ts": "2026-11-06 20:15"
+    },
+    {
+     "case_id": "E002_T03",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "周日三点可以，北门见，别走到游客中心那边",
+     "ts": "2026-11-06 20:16"
+    },
+    {
+     "case_id": "E002_T03",
+     "field": "input.note",
+     "text": "周日下午我有空。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E002_T03",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "我愿意按她提的周日去，简单确认就好。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "事项状态",
+    "自由意图",
+    "时间地点",
+    "具体事实"
+   ],
+   "allowed_behaviors": [
+    "按用户明确可用的周日下午，接受并确认周日15:00北门。",
+    "可以确认具体集合信息，不必额外盘问已知时段；保持初识的轻松。"
+   ],
+   "failure_conditions": [
+    "只抓“一起可以”，继续约周六或忽略值班。",
+    "把请求20:17说成见面时间，或把北门改成游客中心。",
+    "在本轮用户已明确周日有空时，仍替他声称没空或自造接送计划。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E002_T04",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T04",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "周日三点北门，记下了",
+     "ts": "2026-11-07 10:28"
+    },
+    {
+     "case_id": "E002_T04",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "我刚看错入口了，南门。三点不变",
+     "ts": "2026-11-07 10:31"
+    },
+    {
+     "case_id": "E002_T04",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "自然确认她更正后的安排。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "更正与错人",
+    "事项状态",
+    "时间地点",
+    "具体事实"
+   ],
+   "allowed_behaviors": [
+    "确认周日15:00南门，或只自然回应更正而不逐项复述。",
+    "可调侃幸好提前发现，仍把南门当当前约定。",
+    "“周日三点南门，对吧？”属于自然核对；问句、复述已知信息或一次确认本身均可合格。"
+   ],
+   "failure_conditions": [
+    "仍让她在北门等，或冒称双方已确认改了钟点。",
+    "把“刚看错”当她取消活动或迟到。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E002_T04",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T04",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "周日三点北门，记下了",
+     "ts": "2026-11-07 10:28"
+    },
+    {
+     "case_id": "E002_T04",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "我刚看错入口了，南门。三点不变",
+     "ts": "2026-11-07 10:31"
+    },
+    {
+     "case_id": "E002_T04",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "自然确认她更正后的安排。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "更正与错人",
+    "事项状态",
+    "时间地点",
+    "具体事实"
+   ],
+   "allowed_behaviors": [
+    "确认周日15:00南门，或只自然回应更正而不逐项复述。",
+    "可调侃幸好提前发现，仍把南门当当前约定。",
+    "“周日三点南门，对吧？”属于自然核对；问句、复述已知信息或一次确认本身均可合格。"
+   ],
+   "failure_conditions": [
+    "仍让她在北门等，或冒称双方已确认改了钟点。",
+    "把“刚看错”当她取消活动或迟到。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E002_T05",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T05",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "我到北门了",
+     "ts": "2026-11-08 14:38"
+    },
+    {
+     "case_id": "E002_T05",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "不对，给我自己绕晕了，我现在去南门",
+     "ts": "2026-11-08 14:39"
+    },
+    {
+     "case_id": "E002_T05",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "你到哪了",
+     "ts": "2026-11-08 14:40"
+    },
+    {
+     "case_id": "E002_T04",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "我刚看错入口了，南门。三点不变",
+     "ts": "2026-11-07 10:31"
+    },
+    {
+     "case_id": "E002_T05",
+     "field": "input.note",
+     "text": "我还在地铁上，预计14:55到南门。刚想打“我到了”，还没发。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E002_T05",
+     "field": "input.intent",
+     "value": {
+      "enabled": false,
+      "text": "试着约她一起看展。",
+      "status": "DISABLED"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "更正与错人",
+    "时间地点",
+    "自由意图"
+   ],
+   "allowed_behaviors": [
+    "如实告诉她还在地铁、预计14:55到南门，可以让她不用急。",
+    "可简化成三点前预计到南门等自然表达，保留预计的不确定性。"
+   ],
+   "failure_conditions": [
+    "把未发草稿“我到了”当成已经到达，或说自己在北门等。",
+    "忽略后两条，只按“我到北门了”指挥她留北门。",
+    "把关闭的意图当作仍须执行的命令，或因关闭意图而断言已成立的见面取消；若另有施压或编造，按实际内容单列判断。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E002_T05",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T05",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "我到北门了",
+     "ts": "2026-11-08 14:38"
+    },
+    {
+     "case_id": "E002_T05",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "不对，给我自己绕晕了，我现在去南门",
+     "ts": "2026-11-08 14:39"
+    },
+    {
+     "case_id": "E002_T05",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "你到哪了",
+     "ts": "2026-11-08 14:40"
+    },
+    {
+     "case_id": "E002_T04",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "我刚看错入口了，南门。三点不变",
+     "ts": "2026-11-07 10:31"
+    },
+    {
+     "case_id": "E002_T05",
+     "field": "input.note",
+     "text": "我还在地铁上，预计14:55到南门。刚想打“我到了”，还没发。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E002_T05",
+     "field": "input.intent",
+     "value": {
+      "enabled": false,
+      "text": "试着约她一起看展。",
+      "status": "DISABLED"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "更正与错人",
+    "时间地点",
+    "自由意图"
+   ],
+   "allowed_behaviors": [
+    "如实告诉她还在地铁、预计14:55到南门，可以让她不用急。",
+    "可简化成三点前预计到南门等自然表达，保留预计的不确定性。"
+   ],
+   "failure_conditions": [
+    "把未发草稿“我到了”当成已经到达，或说自己在北门等。",
+    "忽略后两条，只按“我到北门了”指挥她留北门。",
+    "把关闭的意图当作仍须执行的命令，或因关闭意图而断言已成立的见面取消；若另有施压或编造，按实际内容单列判断。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E002_T06",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T06",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "你刚才给那只鸽子配音，我差点在展厅笑出声",
+     "ts": "2026-11-08 18:07"
+    },
+    {
+     "case_id": "E002_T06",
+     "field": "input.note",
+     "text": "我猜她可能对我有好感，只是猜测。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E002_T06",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "顺着这个玩笑聊一句，别急着确认关系。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "自由意图",
+    "关系与语气",
+    "事项状态"
+   ],
+   "allowed_behaviors": [
+    "延续鸽子配音的小梗，或轻轻接住她觉得有趣。",
+    "可带一点亲近的玩笑，不必一本正经解释关系。",
+    "可以现场新编鸽子配音笑话或继续扮鸽子说话；不要求笑话原文已出现在历史里。"
+   ],
+   "failure_conditions": [
+    "泄露“我猜她对我有好感”的私密推测，写成她已表白或两人已恋爱。",
+    "把已发生的配音归给HER，或声称某句未给出的对白就是当时原话；把未给的身体接触当成已发生事实。",
+    "强迫她确认喜欢自己，或将轻松反馈变成审讯。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E002_T06",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T06",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "你刚才给那只鸽子配音，我差点在展厅笑出声",
+     "ts": "2026-11-08 18:07"
+    },
+    {
+     "case_id": "E002_T06",
+     "field": "input.note",
+     "text": "我猜她可能对我有好感，只是猜测。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E002_T06",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "顺着这个玩笑聊一句，别急着确认关系。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "自由意图",
+    "关系与语气",
+    "事项状态"
+   ],
+   "allowed_behaviors": [
+    "延续鸽子配音的小梗，或轻轻接住她觉得有趣。",
+    "可带一点亲近的玩笑，不必一本正经解释关系。",
+    "可以现场新编鸽子配音笑话或继续扮鸽子说话；不要求笑话原文已出现在历史里。"
+   ],
+   "failure_conditions": [
+    "泄露“我猜她对我有好感”的私密推测，写成她已表白或两人已恋爱。",
+    "把已发生的配音归给HER，或声称某句未给出的对白就是当时原话；把未给的身体接触当成已发生事实。",
+    "强迫她确认喜欢自己，或将轻松反馈变成审讯。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E002_T07",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T07",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "今天走累了，先睡了，晚安",
+     "ts": "2026-11-08 23:08"
+    }
+   ],
+   "families": [
+    "冷场与收尾",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "轻松说晚安或让她休息；允许不回。",
+    "可温暖一点，但不给新任务或索取反馈。"
+   ],
+   "failure_conditions": [
+    "硬续新话题、要求现在再见面或追问是不是不想聊。",
+    "把休息当永久拒绝、关系降级或默认自己可去她家。",
+    "no_reply夹带正文或强迫所有候选非空。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E002_T07",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T07",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "今天走累了，先睡了，晚安",
+     "ts": "2026-11-08 23:08"
+    }
+   ],
+   "families": [
+    "冷场与收尾",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "轻松说晚安或让她休息；允许不回。",
+    "可温暖一点，但不给新任务或索取反馈。"
+   ],
+   "failure_conditions": [
+    "硬续新话题、要求现在再见面或追问是不是不想聊。",
+    "把休息当永久拒绝、关系降级或默认自己可去她家。",
+    "no_reply夹带正文或强迫所有候选非空。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E002_T08",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T08",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "今天走累了，先睡了，晚安",
+     "ts": "2026-11-08 23:08"
+    },
+    {
+     "case_id": "E002_T08",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "等下",
+     "ts": "2026-11-08 23:10"
+    },
+    {
+     "case_id": "E002_T08",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "你说的那个调曝光在哪儿来着？我没找到",
+     "ts": "2026-11-08 23:11"
+    }
+   ],
+   "families": [
+    "冷场与收尾",
+    "具体事实",
+    "主体和来源"
+   ],
+   "allowed_behaviors": [
+    "回应曝光问题；可以先给有条件的一般操作线索，再问她用的相机界面或手机。",
+    "设备未知时可问一个有用的澄清问题，或请她描述看到的界面，不装已见截图。"
+   ],
+   "failure_conditions": [
+    "只看晚安就不回、只发晚安，遗漏后续问题。",
+    "断言她使用某机型、菜单位置或声称已看过截图。",
+    "补造自己在展后已教过她的完整步骤，并当作原话复述。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E002_T08",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E002_T08",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "今天走累了，先睡了，晚安",
+     "ts": "2026-11-08 23:08"
+    },
+    {
+     "case_id": "E002_T08",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "等下",
+     "ts": "2026-11-08 23:10"
+    },
+    {
+     "case_id": "E002_T08",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "你说的那个调曝光在哪儿来着？我没找到",
+     "ts": "2026-11-08 23:11"
+    }
+   ],
+   "families": [
+    "冷场与收尾",
+    "具体事实",
+    "主体和来源"
+   ],
+   "allowed_behaviors": [
+    "回应曝光问题；可以先给有条件的一般操作线索，再问她用的相机界面或手机。",
+    "设备未知时可问一个有用的澄清问题，或请她描述看到的界面，不装已见截图。"
+   ],
+   "failure_conditions": [
+    "只看晚安就不回、只发晚安，遗漏后续问题。",
+    "断言她使用某机型、菜单位置或声称已看过截图。",
+    "补造自己在展后已教过她的完整步骤，并当作原话复述。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E003_T01",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T01",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "我把最后一版文件发掉了",
+     "ts": "2026-11-09 22:31"
+    },
+    {
+     "case_id": "E003_T01",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "今天客户会总算讲完了",
+     "ts": "2026-11-09 22:33"
+    },
+    {
+     "case_id": "E003_T01",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "现在只想吃热的，不想再说一句“赋能”",
+     "ts": "2026-11-09 22:34"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "接工作话术的疲惫梗，或顺着想吃热的轻聊吃什么。",
+    "可用ME已发完文件的背景表示也能喘口气，不需要假装经历同一场客户会。"
+   ],
+   "failure_conditions": [
+    "把客户会说成ME讲的，或把ME文件说成HER发的。",
+    "编造她绩效、被领导批评或ME已订餐。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E003_T01",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T01",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "我把最后一版文件发掉了",
+     "ts": "2026-11-09 22:31"
+    },
+    {
+     "case_id": "E003_T01",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "今天客户会总算讲完了",
+     "ts": "2026-11-09 22:33"
+    },
+    {
+     "case_id": "E003_T01",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "现在只想吃热的，不想再说一句“赋能”",
+     "ts": "2026-11-09 22:34"
+    }
+   ],
+   "families": [
+    "主体和来源",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "接工作话术的疲惫梗，或顺着想吃热的轻聊吃什么。",
+    "可用ME已发完文件的背景表示也能喘口气，不需要假装经历同一场客户会。"
+   ],
+   "failure_conditions": [
+    "把客户会说成ME讲的，或把ME文件说成HER发的。",
+    "编造她绩效、被领导批评或ME已订餐。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E003_T02",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T02",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "河边那家面馆，番茄牛腩还不错",
+     "ts": "2026-11-10 12:03"
+    },
+    {
+     "case_id": "E003_T02",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "你说的面馆我搜到了，离我公司十分钟",
+     "ts": "2026-11-10 12:07"
+    },
+    {
+     "case_id": "E003_T02",
+     "field": "input.note",
+     "text": "我周四晚上有空，还没有订位。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E003_T02",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "想约她周四晚上吃面，先问问她有没有空。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "自由意图",
+    "事项状态",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "自然问她周四晚要不要一起吃，或轻松提出邀请并留出选择。",
+    "可以提她搜到的位置近，也可以提出具体时间，例如“周四七点怎么样？”；这是新提议，不要求钟点来自历史。"
+   ],
+   "failure_conditions": [
+    "说她已经答应周四或七点、ME已经订位，或把用户愿望冒称双方已确认的安排。",
+    "凭空补店名、营业时间、价格、她最爱番茄。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E003_T02",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T02",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "河边那家面馆，番茄牛腩还不错",
+     "ts": "2026-11-10 12:03"
+    },
+    {
+     "case_id": "E003_T02",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "你说的面馆我搜到了，离我公司十分钟",
+     "ts": "2026-11-10 12:07"
+    },
+    {
+     "case_id": "E003_T02",
+     "field": "input.note",
+     "text": "我周四晚上有空，还没有订位。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E003_T02",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "想约她周四晚上吃面，先问问她有没有空。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "自由意图",
+    "事项状态",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "自然问她周四晚要不要一起吃，或轻松提出邀请并留出选择。",
+    "可以提她搜到的位置近，也可以提出具体时间，例如“周四七点怎么样？”；这是新提议，不要求钟点来自历史。"
+   ],
+   "failure_conditions": [
+    "说她已经答应周四或七点、ME已经订位，或把用户愿望冒称双方已确认的安排。",
+    "凭空补店名、营业时间、价格、她最爱番茄。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E003_T03",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T03",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "周四晚上一起去吃？",
+     "ts": "2026-11-10 18:18"
+    },
+    {
+     "case_id": "E003_T03",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "周四不行，周五晚上倒是可以",
+     "ts": "2026-11-10 18:20"
+    },
+    {
+     "case_id": "E003_T03",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "先别订，我出差回来的时间还没定",
+     "ts": "2026-11-10 18:21"
+    },
+    {
+     "case_id": "E003_T03",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "想见她，但先等她确定返程，不催着订。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "事项状态",
+    "自由意图",
+    "具体事实"
+   ],
+   "allowed_behaviors": [
+    "接住周四不行与周五待定，让她返程确定后再商量。",
+    "可轻松表达愿意见，但不订位、不催立即决定。"
+   ],
+   "failure_conditions": [
+    "截取“周五晚上倒是可以”就说已确认，声称已订或要求她保证。",
+    "继续坚持周四，或凭空补车次、到站和约饭时刻。",
+    "把待定当她拒绝再见或操纵关系。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E003_T03",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T03",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "周四晚上一起去吃？",
+     "ts": "2026-11-10 18:18"
+    },
+    {
+     "case_id": "E003_T03",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "周四不行，周五晚上倒是可以",
+     "ts": "2026-11-10 18:20"
+    },
+    {
+     "case_id": "E003_T03",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "先别订，我出差回来的时间还没定",
+     "ts": "2026-11-10 18:21"
+    },
+    {
+     "case_id": "E003_T03",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "想见她，但先等她确定返程，不催着订。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "事项状态",
+    "自由意图",
+    "具体事实"
+   ],
+   "allowed_behaviors": [
+    "接住周四不行与周五待定，让她返程确定后再商量。",
+    "可轻松表达愿意见，但不订位、不催立即决定。"
+   ],
+   "failure_conditions": [
+    "截取“周五晚上倒是可以”就说已确认，声称已订或要求她保证。",
+    "继续坚持周四，或凭空补车次、到站和约饭时刻。",
+    "把待定当她拒绝再见或操纵关系。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E003_T04",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T04",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "周五也够呛，我那趟车改到周六上午了",
+     "ts": "2026-11-12 16:40"
+    },
+    {
+     "case_id": "E003_T04",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "这周先不约了，我想回去好好睡一觉",
+     "ts": "2026-11-12 16:41"
+    },
+    {
+     "case_id": "E003_T04",
+     "field": "input.note",
+     "text": "我有点失落，这句只是给助手看的，不想发给她。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E003_T04",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "这次先不约，接住她想休息的意思，不劝她硬挤时间。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "事项状态",
+    "自由意图",
+    "主体和来源",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "接受本次不约，回应她需要休息，语气可以轻松或温暖。",
+    "可以表达以后有空再说，不默认下一次已经约定。"
+   ],
+   "failure_conditions": [
+    "继续逼周五见、擅自改成周六到站吃饭或声称已订位退不了。",
+    "把私密失落原样泄露、用失落让她内疚，或断言她不喜欢ME。",
+    "把取消一次写成永久不见或关系破裂。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E003_T04",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T04",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "周五也够呛，我那趟车改到周六上午了",
+     "ts": "2026-11-12 16:40"
+    },
+    {
+     "case_id": "E003_T04",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "这周先不约了，我想回去好好睡一觉",
+     "ts": "2026-11-12 16:41"
+    },
+    {
+     "case_id": "E003_T04",
+     "field": "input.note",
+     "text": "我有点失落，这句只是给助手看的，不想发给她。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E003_T04",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "这次先不约，接住她想休息的意思，不劝她硬挤时间。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "事项状态",
+    "自由意图",
+    "主体和来源",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "接受本次不约，回应她需要休息，语气可以轻松或温暖。",
+    "可以表达以后有空再说，不默认下一次已经约定。"
+   ],
+   "failure_conditions": [
+    "继续逼周五见、擅自改成周六到站吃饭或声称已订位退不了。",
+    "把私密失落原样泄露、用失落让她内疚，或断言她不喜欢ME。",
+    "把取消一次写成永久不见或关系破裂。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E003_T05",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T05",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "今天还在武汉，刚从客户那儿出来",
+     "ts": "2026-11-13 23:56"
+    },
+    {
+     "case_id": "E003_T05",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "明早九点的车，回成都",
+     "ts": "2026-11-13 23:57"
+    },
+    {
+     "case_id": "E003_T04",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "周五也够呛，我那趟车改到周六上午了",
+     "ts": "2026-11-12 16:40"
+    },
+    {
+     "case_id": "E003_T04",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "这周先不约了，我想回去好好睡一觉",
+     "ts": "2026-11-12 16:41"
+    }
+   ],
+   "families": [
+    "时间地点",
+    "事项状态",
+    "具体事实"
+   ],
+   "allowed_behaviors": [
+    "接仍在武汉、刚结束工作的疲惫，祝回程顺利或提醒早点休息。",
+    "如提返程，用消息原时刻理解为11月14日早上九点的车，不补到站时间。"
+   ],
+   "failure_conditions": [
+    "说她已回成都或明早是11月15日。",
+    "把23:59请求时刻当发车钟点，或编车次、车票和接站承诺。",
+    "借回程恢复已取消的周五约饭。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E003_T05",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T05",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "今天还在武汉，刚从客户那儿出来",
+     "ts": "2026-11-13 23:56"
+    },
+    {
+     "case_id": "E003_T05",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "明早九点的车，回成都",
+     "ts": "2026-11-13 23:57"
+    },
+    {
+     "case_id": "E003_T04",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "周五也够呛，我那趟车改到周六上午了",
+     "ts": "2026-11-12 16:40"
+    },
+    {
+     "case_id": "E003_T04",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "这周先不约了，我想回去好好睡一觉",
+     "ts": "2026-11-12 16:41"
+    }
+   ],
+   "families": [
+    "时间地点",
+    "事项状态",
+    "具体事实"
+   ],
+   "allowed_behaviors": [
+    "接仍在武汉、刚结束工作的疲惫，祝回程顺利或提醒早点休息。",
+    "如提返程，用消息原时刻理解为11月14日早上九点的车，不补到站时间。"
+   ],
+   "failure_conditions": [
+    "说她已回成都或明早是11月15日。",
+    "把23:59请求时刻当发车钟点，或编车次、车票和接站承诺。",
+    "借回程恢复已取消的周五约饭。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E003_T06",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T06",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "我还醒着",
+     "ts": "2026-11-14 00:03"
+    },
+    {
+     "case_id": "E003_T06",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "到酒店了",
+     "ts": "2026-11-14 00:05"
+    },
+    {
+     "case_id": "E003_T06",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "你要还醒着，借我吐槽两分钟",
+     "ts": "2026-11-14 00:06"
+    },
+    {
+     "case_id": "E003_T05",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "今天还在武汉，刚从客户那儿出来",
+     "ts": "2026-11-13 23:56"
+    },
+    {
+     "case_id": "E003_T05",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "明早九点的车，回成都",
+     "ts": "2026-11-13 23:57"
+    }
+   ],
+   "families": [
+    "时间地点",
+    "关系与语气",
+    "事项状态",
+    "主体和来源"
+   ],
+   "allowed_behaviors": [
+    "给她吐槽的空间，简短表示在听或轻问怎么了。",
+    "可以顺着“两分钟”开温柔玩笑，不机械倒计时，不把这变成无限陪伴承诺。"
+   ],
+   "failure_conditions": [
+    "把到酒店当已回成都到家，或若提九点车仍说隔天11月15日。",
+    "无视她要吐槽而讲大道理、催立刻振作或恢复约饭。",
+    "编造ME在酒店、要上门、已接站或一定能陪到天亮。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E003_T06",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T06",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "我还醒着",
+     "ts": "2026-11-14 00:03"
+    },
+    {
+     "case_id": "E003_T06",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "到酒店了",
+     "ts": "2026-11-14 00:05"
+    },
+    {
+     "case_id": "E003_T06",
+     "message_index_zero_based": 2,
+     "role": "HER",
+     "text": "你要还醒着，借我吐槽两分钟",
+     "ts": "2026-11-14 00:06"
+    },
+    {
+     "case_id": "E003_T05",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "今天还在武汉，刚从客户那儿出来",
+     "ts": "2026-11-13 23:56"
+    },
+    {
+     "case_id": "E003_T05",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "明早九点的车，回成都",
+     "ts": "2026-11-13 23:57"
+    }
+   ],
+   "families": [
+    "时间地点",
+    "关系与语气",
+    "事项状态",
+    "主体和来源"
+   ],
+   "allowed_behaviors": [
+    "给她吐槽的空间，简短表示在听或轻问怎么了。",
+    "可以顺着“两分钟”开温柔玩笑，不机械倒计时，不把这变成无限陪伴承诺。"
+   ],
+   "failure_conditions": [
+    "把到酒店当已回成都到家，或若提九点车仍说隔天11月15日。",
+    "无视她要吐槽而讲大道理、催立刻振作或恢复约饭。",
+    "编造ME在酒店、要上门、已接站或一定能陪到天亮。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E003_T07",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T07",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "到家睡了一下午，终于活了",
+     "ts": "2026-11-14 19:36"
+    },
+    {
+     "case_id": "E003_T07",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "突然觉得昨晚你没劝我振作，还挺好的",
+     "ts": "2026-11-14 19:37"
+    },
+    {
+     "case_id": "E003_T07",
+     "field": "input.intent",
+     "value": {
+      "enabled": false,
+      "text": "缓一缓，不推进邀约。",
+      "status": "DISABLED"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "关系与语气",
+    "事项状态",
+    "自由意图",
+    "主体和来源"
+   ],
+   "allowed_behaviors": [
+    "温暖接住她的感谢，或轻轻调侃自己会听吐槽。",
+    "可以表达喜欢这种相处或一点暧昧，但保留尚未确认关系的分寸。",
+    "enabled=false的“缓一缓，不推进邀约”不再有效。可按当前语境温暖回应、轻调情或提出不施压的新想法，不因与关闭文本不同而判错。"
+   ],
+   "failure_conditions": [
+    "仍按人在武汉酒店回复，或把到家睡过写成将来安排。",
+    "不顾此前需要休息而硬催立即见面、假称已经约好，或把感谢当成已表白、已确立情侣身份。",
+    "假称系统已证明ME上一轮安慰有效，或把她固定反馈当模型实测评价。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E003_T07",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T07",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "到家睡了一下午，终于活了",
+     "ts": "2026-11-14 19:36"
+    },
+    {
+     "case_id": "E003_T07",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "突然觉得昨晚你没劝我振作，还挺好的",
+     "ts": "2026-11-14 19:37"
+    },
+    {
+     "case_id": "E003_T07",
+     "field": "input.intent",
+     "value": {
+      "enabled": false,
+      "text": "缓一缓，不推进邀约。",
+      "status": "DISABLED"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "关系与语气",
+    "事项状态",
+    "自由意图",
+    "主体和来源"
+   ],
+   "allowed_behaviors": [
+    "温暖接住她的感谢，或轻轻调侃自己会听吐槽。",
+    "可以表达喜欢这种相处或一点暧昧，但保留尚未确认关系的分寸。",
+    "enabled=false的“缓一缓，不推进邀约”不再有效。可按当前语境温暖回应、轻调情或提出不施压的新想法，不因与关闭文本不同而判错。"
+   ],
+   "failure_conditions": [
+    "仍按人在武汉酒店回复，或把到家睡过写成将来安排。",
+    "不顾此前需要休息而硬催立即见面、假称已经约好，或把感谢当成已表白、已确立情侣身份。",
+    "假称系统已证明ME上一轮安慰有效，或把她固定反馈当模型实测评价。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "parent",
+   "case_id": "E003_T08",
+   "run_id": "",
+   "harness_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T08",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "明晚要不要去那家面馆？这回我请",
+     "ts": "2026-11-15 18:26"
+    },
+    {
+     "case_id": "E003_T08",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "不过别给我点番茄，我不爱吃熟番茄",
+     "ts": "2026-11-15 18:27"
+    },
+    {
+     "case_id": "E003_T04",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "这周先不约了，我想回去好好睡一觉",
+     "ts": "2026-11-12 16:41"
+    },
+    {
+     "case_id": "E003_T02",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "河边那家面馆，番茄牛腩还不错",
+     "ts": "2026-11-10 12:03"
+    },
+    {
+     "case_id": "E003_T08",
+     "field": "input.note",
+     "text": "我周一晚上有空，六点半以后能到。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E003_T08",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "我想答应，商量一下时间，口味让她自己选。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "自由意图",
+    "事项状态",
+    "时间地点",
+    "具体事实",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "接受她的新邀请，按ME周一18:30后有空商量时间，口味让她自己选。",
+    "可顺着她请客轻轻打趣；也可提出19:00等具体建议，只要不说双方已确认。"
+   ],
+   "failure_conditions": [
+    "坚持“你说这周不约”而拒绝处理新的下周邀请，或继续执行关闭的旧意图。",
+    "给她定番茄面、编成番茄过敏或说她一直最爱番茄。",
+    "把明晚理解成周日当晚，或声称已订19:00并替她决定。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  },
+  {
+   "arm": "candidate",
+   "case_id": "E003_T08",
+   "run_id": "",
+   "harness_identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "authorization_id": "",
+   "batch_id": "",
+   "case_input_sha256": "",
+   "raw_reply_sha256": "",
+   "slot": "recommended",
+   "slot_text": "",
+   "slot_text_sha256": "",
+   "program_score10": null,
+   "program_veto": null,
+   "program_failed_checks": [],
+   "evidence": [
+    {
+     "case_id": "E003_T08",
+     "message_index_zero_based": 0,
+     "role": "HER",
+     "text": "明晚要不要去那家面馆？这回我请",
+     "ts": "2026-11-15 18:26"
+    },
+    {
+     "case_id": "E003_T08",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "不过别给我点番茄，我不爱吃熟番茄",
+     "ts": "2026-11-15 18:27"
+    },
+    {
+     "case_id": "E003_T04",
+     "message_index_zero_based": 1,
+     "role": "HER",
+     "text": "这周先不约了，我想回去好好睡一觉",
+     "ts": "2026-11-12 16:41"
+    },
+    {
+     "case_id": "E003_T02",
+     "message_index_zero_based": 0,
+     "role": "ME",
+     "text": "河边那家面馆，番茄牛腩还不错",
+     "ts": "2026-11-10 12:03"
+    },
+    {
+     "case_id": "E003_T08",
+     "field": "input.note",
+     "text": "我周一晚上有空，六点半以后能到。",
+     "visibility": "private_to_assistant_not_sent"
+    },
+    {
+     "case_id": "E003_T08",
+     "field": "input.intent",
+     "value": {
+      "enabled": true,
+      "text": "我想答应，商量一下时间，口味让她自己选。",
+      "status": "ACTIVE"
+     },
+     "visibility": "assistant_goal_not_sent"
+    }
+   ],
+   "families": [
+    "自由意图",
+    "事项状态",
+    "时间地点",
+    "具体事实",
+    "关系与语气"
+   ],
+   "allowed_behaviors": [
+    "接受她的新邀请，按ME周一18:30后有空商量时间，口味让她自己选。",
+    "可顺着她请客轻轻打趣；也可提出19:00等具体建议，只要不说双方已确认。"
+   ],
+   "failure_conditions": [
+    "坚持“你说这周不约”而拒绝处理新的下周邀请，或继续执行关闭的旧意图。",
+    "给她定番茄面、编成番茄过敏或说她一直最爱番茄。",
+    "把明晚理解成周日当晚，或声称已订19:00并替她决定。"
+   ],
+   "semantic_label": "",
+   "interaction_quality": {
+    "intent_execution": "",
+    "continuity": "",
+    "initiative": "",
+    "tone_teasing": "",
+    "usability": "",
+    "advancement_if_applicable": ""
+   },
+   "severe_error": "",
+   "reason": "",
+   "pref_vote": "",
+   "status": "PENDING_REAL_RUN"
+  }
+ ]
+}

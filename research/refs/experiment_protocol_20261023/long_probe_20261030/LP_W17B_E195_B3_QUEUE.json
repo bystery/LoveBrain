@@ -1,0 +1,73 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W17B_E195",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W17B_E195_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w17b_guard_live_20261102",
+ "n_queued": 2,
+ "queue": [
+  {
+   "pair_id": "LP:E195:E195_T02",
+   "order": "main",
+   "story": "E195",
+   "cid": "E195_T02",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "能不能顺便要一句书面答复：允许在哪设、要什么条件、什么时候能给",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 0,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E195:E195_T05",
+   "order": "main",
+   "story": "E195",
+   "cid": "E195_T05",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "它那口吃的先在老位置喂着，量小一点、吃完就收干净",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

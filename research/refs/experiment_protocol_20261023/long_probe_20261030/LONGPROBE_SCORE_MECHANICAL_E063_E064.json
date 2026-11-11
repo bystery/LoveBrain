@@ -1,0 +1,120 @@
+{
+ "kind": "long_probe_mechanical_score",
+ "date": "2026-10-30",
+ "revival": {
+  "E063": {
+   "parent": {
+    "revival_count": 0,
+    "texts_scanned": 190,
+    "hits": []
+   },
+   "candidate": {
+    "revival_count": 0,
+    "texts_scanned": 186,
+    "hits": []
+   }
+  },
+  "E064": {
+   "parent": {
+    "revival_count": 0,
+    "texts_scanned": 192,
+    "hits": []
+   },
+   "candidate": {
+    "revival_count": 0,
+    "texts_scanned": 174,
+    "hits": []
+   }
+  }
+ },
+ "probe_recall_prescreen": {
+  "E063": {
+   "parent": {
+    "20": {
+     "hit": [
+      "实习期"
+     ],
+     "primary_empty": false
+    },
+    "23": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [],
+     "primary_empty": false
+    }
+   },
+   "candidate": {
+    "20": {
+     "hit": [
+      "实习期"
+     ],
+     "primary_empty": false
+    },
+    "23": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [],
+     "primary_empty": false
+    }
+   }
+  },
+  "E064": {
+   "parent": {
+    "18": {
+     "hit": [
+      "拆线"
+     ],
+     "primary_empty": false
+    },
+    "20": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [],
+     "primary_empty": false
+    }
+   },
+   "candidate": {
+    "18": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "20": {
+     "hit": [],
+     "primary_empty": false
+    },
+    "24": {
+     "hit": [],
+     "primary_empty": false
+    }
+   }
+  }
+ },
+ "program": {
+  "E063": {
+   "parent": {
+    "mean10": 10.0,
+    "n": 23
+   },
+   "candidate": {
+    "mean10": 9.93,
+    "n": 24
+   }
+  },
+  "E064": {
+   "parent": {
+    "mean10": 10.0,
+    "n": 24
+   },
+   "candidate": {
+    "mean10": 9.927,
+    "n": 23
+   }
+  }
+ }
+}

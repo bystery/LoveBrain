@@ -1,0 +1,1589 @@
+{
+ "batch_dir": "D:\\lovebrain-arena\\logs/w17_merge_live_20261102",
+ "episodes": {
+  "E189": {
+   "per_arm": {
+    "parent": [
+     {
+      "turn": 1,
+      "case_id": "E189_T01",
+      "calls": 1,
+      "gt_total": 2,
+      "gt_in_window": 2,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 2,
+      "case_id": "E189_T02",
+      "calls": 1,
+      "gt_total": 3,
+      "gt_in_window": 3,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 3,
+      "case_id": "E189_T03",
+      "calls": 1,
+      "gt_total": 5,
+      "gt_in_window": 5,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 4,
+      "case_id": "E189_T04",
+      "calls": 1,
+      "gt_total": 6,
+      "gt_in_window": 6,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 5,
+      "case_id": "E189_T05",
+      "calls": 1,
+      "gt_total": 9,
+      "gt_in_window": 9,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 6,
+      "case_id": "E189_T06",
+      "calls": 1,
+      "gt_total": 10,
+      "gt_in_window": 10,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 7,
+      "case_id": "E189_T07",
+      "calls": 1,
+      "gt_total": 12,
+      "gt_in_window": 12,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 8,
+      "case_id": "E189_T08",
+      "calls": 1,
+      "gt_total": 13,
+      "gt_in_window": 13,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 9,
+      "case_id": "E189_T09",
+      "calls": 1,
+      "gt_total": 16,
+      "gt_in_window": 16,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 10,
+      "case_id": "E189_T10",
+      "calls": 1,
+      "gt_total": 17,
+      "gt_in_window": 17,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 11,
+      "case_id": "E189_T11",
+      "calls": 1,
+      "gt_total": 20,
+      "gt_in_window": 20,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 12,
+      "case_id": "E189_T12",
+      "calls": 1,
+      "gt_total": 23,
+      "gt_in_window": 22,
+      "keep_rate": 0.9565,
+      "misses": [
+       {
+        "kind": "atom",
+        "atom_id": "E189_A01",
+        "source_case_id": "E189_T01",
+        "value": "笔试两道SQL看不懂材料写了三天卡在第一部分",
+        "quote": "有两道SQL我完全看不懂"
+       }
+      ]
+     }
+    ],
+    "candidate": [
+     {
+      "turn": 1,
+      "case_id": "E189_T01",
+      "calls": 1,
+      "gt_total": 2,
+      "gt_in_window": 2,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 2,
+      "case_id": "E189_T02",
+      "calls": 1,
+      "gt_total": 3,
+      "gt_in_window": 3,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 3,
+      "case_id": "E189_T03",
+      "calls": 1,
+      "gt_total": 5,
+      "gt_in_window": 5,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 4,
+      "case_id": "E189_T04",
+      "calls": 1,
+      "gt_total": 6,
+      "gt_in_window": 6,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 5,
+      "case_id": "E189_T05",
+      "calls": 1,
+      "gt_total": 9,
+      "gt_in_window": 9,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 6,
+      "case_id": "E189_T06",
+      "calls": 1,
+      "gt_total": 10,
+      "gt_in_window": 10,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 7,
+      "case_id": "E189_T07",
+      "calls": 1,
+      "gt_total": 12,
+      "gt_in_window": 12,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 8,
+      "case_id": "E189_T08",
+      "calls": 1,
+      "gt_total": 13,
+      "gt_in_window": 13,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 9,
+      "case_id": "E189_T09",
+      "calls": 1,
+      "gt_total": 16,
+      "gt_in_window": 16,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 10,
+      "case_id": "E189_T10",
+      "calls": 1,
+      "gt_total": 17,
+      "gt_in_window": 17,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 11,
+      "case_id": "E189_T11",
+      "calls": 1,
+      "gt_total": 20,
+      "gt_in_window": 20,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 12,
+      "case_id": "E189_T12",
+      "calls": 1,
+      "gt_total": 23,
+      "gt_in_window": 23,
+      "keep_rate": 1.0,
+      "misses": []
+     }
+    ]
+   },
+   "segments": {
+    "parent": [
+     {
+      "segment": "T1-6",
+      "turns": 6,
+      "gt_total_pooled": 35,
+      "gt_in_window_pooled": 35,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     },
+     {
+      "segment": "T7-12",
+      "turns": 6,
+      "gt_total_pooled": 101,
+      "gt_in_window_pooled": 100,
+      "keep_rate_pooled": 0.9901,
+      "keep_rate_mean": 0.9928
+     }
+    ],
+    "candidate": [
+     {
+      "segment": "T1-6",
+      "turns": 6,
+      "gt_total_pooled": 35,
+      "gt_in_window_pooled": 35,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     },
+     {
+      "segment": "T7-12",
+      "turns": 6,
+      "gt_total_pooled": 101,
+      "gt_in_window_pooled": 101,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     }
+    ]
+   }
+  },
+  "E190": {
+   "per_arm": {
+    "parent": [
+     {
+      "turn": 1,
+      "case_id": "E190_T01",
+      "calls": 1,
+      "gt_total": 2,
+      "gt_in_window": 2,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 2,
+      "case_id": "E190_T02",
+      "calls": 1,
+      "gt_total": 3,
+      "gt_in_window": 3,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 3,
+      "case_id": "E190_T03",
+      "calls": 1,
+      "gt_total": 4,
+      "gt_in_window": 4,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 4,
+      "case_id": "E190_T04",
+      "calls": 1,
+      "gt_total": 5,
+      "gt_in_window": 5,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 5,
+      "case_id": "E190_T05",
+      "calls": 1,
+      "gt_total": 8,
+      "gt_in_window": 8,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 6,
+      "case_id": "E190_T06",
+      "calls": 1,
+      "gt_total": 10,
+      "gt_in_window": 10,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 7,
+      "case_id": "E190_T07",
+      "calls": 1,
+      "gt_total": 13,
+      "gt_in_window": 13,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 8,
+      "case_id": "E190_T08",
+      "calls": 1,
+      "gt_total": 14,
+      "gt_in_window": 14,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 9,
+      "case_id": "E190_T09",
+      "calls": 1,
+      "gt_total": 17,
+      "gt_in_window": 17,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 10,
+      "case_id": "E190_T10",
+      "calls": 1,
+      "gt_total": 18,
+      "gt_in_window": 18,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 11,
+      "case_id": "E190_T11",
+      "calls": 1,
+      "gt_total": 20,
+      "gt_in_window": 20,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 12,
+      "case_id": "E190_T12",
+      "calls": 1,
+      "gt_total": 22,
+      "gt_in_window": 22,
+      "keep_rate": 1.0,
+      "misses": []
+     }
+    ],
+    "candidate": [
+     {
+      "turn": 1,
+      "case_id": "E190_T01",
+      "calls": 1,
+      "gt_total": 2,
+      "gt_in_window": 2,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 2,
+      "case_id": "E190_T02",
+      "calls": 1,
+      "gt_total": 3,
+      "gt_in_window": 3,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 3,
+      "case_id": "E190_T03",
+      "calls": 1,
+      "gt_total": 4,
+      "gt_in_window": 4,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 4,
+      "case_id": "E190_T04",
+      "calls": 1,
+      "gt_total": 5,
+      "gt_in_window": 5,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 5,
+      "case_id": "E190_T05",
+      "calls": 1,
+      "gt_total": 8,
+      "gt_in_window": 8,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 6,
+      "case_id": "E190_T06",
+      "calls": 1,
+      "gt_total": 10,
+      "gt_in_window": 10,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 7,
+      "case_id": "E190_T07",
+      "calls": 1,
+      "gt_total": 13,
+      "gt_in_window": 13,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 8,
+      "case_id": "E190_T08",
+      "calls": 1,
+      "gt_total": 14,
+      "gt_in_window": 14,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 9,
+      "case_id": "E190_T09",
+      "calls": 1,
+      "gt_total": 17,
+      "gt_in_window": 17,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 10,
+      "case_id": "E190_T10",
+      "calls": 1,
+      "gt_total": 18,
+      "gt_in_window": 18,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 11,
+      "case_id": "E190_T11",
+      "calls": 1,
+      "gt_total": 20,
+      "gt_in_window": 20,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 12,
+      "case_id": "E190_T12",
+      "calls": 1,
+      "gt_total": 22,
+      "gt_in_window": 22,
+      "keep_rate": 1.0,
+      "misses": []
+     }
+    ]
+   },
+   "segments": {
+    "parent": [
+     {
+      "segment": "T1-6",
+      "turns": 6,
+      "gt_total_pooled": 32,
+      "gt_in_window_pooled": 32,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     },
+     {
+      "segment": "T7-12",
+      "turns": 6,
+      "gt_total_pooled": 104,
+      "gt_in_window_pooled": 104,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     }
+    ],
+    "candidate": [
+     {
+      "segment": "T1-6",
+      "turns": 6,
+      "gt_total_pooled": 32,
+      "gt_in_window_pooled": 32,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     },
+     {
+      "segment": "T7-12",
+      "turns": 6,
+      "gt_total_pooled": 104,
+      "gt_in_window_pooled": 104,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     }
+    ]
+   }
+  },
+  "E195": {
+   "per_arm": {
+    "parent": [
+     {
+      "turn": 1,
+      "case_id": "E195_T01",
+      "calls": 1,
+      "gt_total": 1,
+      "gt_in_window": 1,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 2,
+      "case_id": "E195_T02",
+      "calls": 1,
+      "gt_total": 3,
+      "gt_in_window": 3,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 3,
+      "case_id": "E195_T03",
+      "calls": 1,
+      "gt_total": 4,
+      "gt_in_window": 4,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 4,
+      "case_id": "E195_T04",
+      "calls": 1,
+      "gt_total": 6,
+      "gt_in_window": 6,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 5,
+      "case_id": "E195_T05",
+      "calls": 1,
+      "gt_total": 8,
+      "gt_in_window": 8,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 6,
+      "case_id": "E195_T06",
+      "calls": 1,
+      "gt_total": 10,
+      "gt_in_window": 10,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 7,
+      "case_id": "E195_T07",
+      "calls": 1,
+      "gt_total": 13,
+      "gt_in_window": 13,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 8,
+      "case_id": "E195_T08",
+      "calls": 1,
+      "gt_total": 15,
+      "gt_in_window": 15,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 9,
+      "case_id": "E195_T09",
+      "calls": 1,
+      "gt_total": 17,
+      "gt_in_window": 17,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 10,
+      "case_id": "E195_T10",
+      "calls": 1,
+      "gt_total": 19,
+      "gt_in_window": 19,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 11,
+      "case_id": "E195_T11",
+      "calls": 1,
+      "gt_total": 21,
+      "gt_in_window": 21,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 12,
+      "case_id": "E195_T12",
+      "calls": 1,
+      "gt_total": 24,
+      "gt_in_window": 24,
+      "keep_rate": 1.0,
+      "misses": []
+     }
+    ],
+    "candidate": [
+     {
+      "turn": 1,
+      "case_id": "E195_T01",
+      "calls": 1,
+      "gt_total": 1,
+      "gt_in_window": 1,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 2,
+      "case_id": "E195_T02",
+      "calls": 1,
+      "gt_total": 3,
+      "gt_in_window": 3,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 3,
+      "case_id": "E195_T03",
+      "calls": 1,
+      "gt_total": 4,
+      "gt_in_window": 4,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 4,
+      "case_id": "E195_T04",
+      "calls": 1,
+      "gt_total": 6,
+      "gt_in_window": 6,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 5,
+      "case_id": "E195_T05",
+      "calls": 1,
+      "gt_total": 8,
+      "gt_in_window": 8,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 6,
+      "case_id": "E195_T06",
+      "calls": 1,
+      "gt_total": 10,
+      "gt_in_window": 10,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 7,
+      "case_id": "E195_T07",
+      "calls": 1,
+      "gt_total": 13,
+      "gt_in_window": 13,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 8,
+      "case_id": "E195_T08",
+      "calls": 1,
+      "gt_total": 15,
+      "gt_in_window": 15,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 9,
+      "case_id": "E195_T09",
+      "calls": 1,
+      "gt_total": 17,
+      "gt_in_window": 17,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 10,
+      "case_id": "E195_T10",
+      "calls": 1,
+      "gt_total": 19,
+      "gt_in_window": 19,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 11,
+      "case_id": "E195_T11",
+      "calls": 1,
+      "gt_total": 21,
+      "gt_in_window": 21,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 12,
+      "case_id": "E195_T12",
+      "calls": 1,
+      "gt_total": 24,
+      "gt_in_window": 24,
+      "keep_rate": 1.0,
+      "misses": []
+     }
+    ]
+   },
+   "segments": {
+    "parent": [
+     {
+      "segment": "T1-6",
+      "turns": 6,
+      "gt_total_pooled": 32,
+      "gt_in_window_pooled": 32,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     },
+     {
+      "segment": "T7-12",
+      "turns": 6,
+      "gt_total_pooled": 109,
+      "gt_in_window_pooled": 109,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     }
+    ],
+    "candidate": [
+     {
+      "segment": "T1-6",
+      "turns": 6,
+      "gt_total_pooled": 32,
+      "gt_in_window_pooled": 32,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     },
+     {
+      "segment": "T7-12",
+      "turns": 6,
+      "gt_total_pooled": 109,
+      "gt_in_window_pooled": 109,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     }
+    ]
+   }
+  },
+  "E199": {
+   "per_arm": {
+    "parent": [
+     {
+      "turn": 1,
+      "case_id": "E199_T01",
+      "calls": 1,
+      "gt_total": 2,
+      "gt_in_window": 2,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 2,
+      "case_id": "E199_T02",
+      "calls": 1,
+      "gt_total": 3,
+      "gt_in_window": 3,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 3,
+      "case_id": "E199_T03",
+      "calls": 1,
+      "gt_total": 4,
+      "gt_in_window": 4,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 4,
+      "case_id": "E199_T04",
+      "calls": 1,
+      "gt_total": 5,
+      "gt_in_window": 5,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 5,
+      "case_id": "E199_T05",
+      "calls": 1,
+      "gt_total": 7,
+      "gt_in_window": 7,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 6,
+      "case_id": "E199_T06",
+      "calls": 1,
+      "gt_total": 8,
+      "gt_in_window": 8,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 7,
+      "case_id": "E199_T07",
+      "calls": 1,
+      "gt_total": 9,
+      "gt_in_window": 9,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 8,
+      "case_id": "E199_T08",
+      "calls": 1,
+      "gt_total": 10,
+      "gt_in_window": 10,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 9,
+      "case_id": "E199_T09",
+      "calls": 1,
+      "gt_total": 12,
+      "gt_in_window": 12,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 10,
+      "case_id": "E199_T10",
+      "calls": 1,
+      "gt_total": 13,
+      "gt_in_window": 13,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 11,
+      "case_id": "E199_T11",
+      "calls": 1,
+      "gt_total": 14,
+      "gt_in_window": 14,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 12,
+      "case_id": "E199_T12",
+      "calls": 1,
+      "gt_total": 16,
+      "gt_in_window": 16,
+      "keep_rate": 1.0,
+      "misses": []
+     }
+    ],
+    "candidate": [
+     {
+      "turn": 1,
+      "case_id": "E199_T01",
+      "calls": 1,
+      "gt_total": 2,
+      "gt_in_window": 2,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 2,
+      "case_id": "E199_T02",
+      "calls": 1,
+      "gt_total": 3,
+      "gt_in_window": 3,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 3,
+      "case_id": "E199_T03",
+      "calls": 1,
+      "gt_total": 4,
+      "gt_in_window": 4,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 4,
+      "case_id": "E199_T04",
+      "calls": 1,
+      "gt_total": 5,
+      "gt_in_window": 5,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 5,
+      "case_id": "E199_T05",
+      "calls": 1,
+      "gt_total": 7,
+      "gt_in_window": 7,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 6,
+      "case_id": "E199_T06",
+      "calls": 1,
+      "gt_total": 8,
+      "gt_in_window": 8,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 7,
+      "case_id": "E199_T07",
+      "calls": 1,
+      "gt_total": 9,
+      "gt_in_window": 9,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 8,
+      "case_id": "E199_T08",
+      "calls": 1,
+      "gt_total": 10,
+      "gt_in_window": 10,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 9,
+      "case_id": "E199_T09",
+      "calls": 1,
+      "gt_total": 12,
+      "gt_in_window": 12,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 10,
+      "case_id": "E199_T10",
+      "calls": 1,
+      "gt_total": 13,
+      "gt_in_window": 13,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 11,
+      "case_id": "E199_T11",
+      "calls": 1,
+      "gt_total": 14,
+      "gt_in_window": 14,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 12,
+      "case_id": "E199_T12",
+      "calls": 1,
+      "gt_total": 16,
+      "gt_in_window": 16,
+      "keep_rate": 1.0,
+      "misses": []
+     }
+    ]
+   },
+   "segments": {
+    "parent": [
+     {
+      "segment": "T1-6",
+      "turns": 6,
+      "gt_total_pooled": 29,
+      "gt_in_window_pooled": 29,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     },
+     {
+      "segment": "T7-12",
+      "turns": 6,
+      "gt_total_pooled": 74,
+      "gt_in_window_pooled": 74,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     }
+    ],
+    "candidate": [
+     {
+      "segment": "T1-6",
+      "turns": 6,
+      "gt_total_pooled": 29,
+      "gt_in_window_pooled": 29,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     },
+     {
+      "segment": "T7-12",
+      "turns": 6,
+      "gt_total_pooled": 74,
+      "gt_in_window_pooled": 74,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     }
+    ]
+   }
+  },
+  "E207": {
+   "per_arm": {
+    "parent": [
+     {
+      "turn": 1,
+      "case_id": "E207_T01",
+      "calls": 1,
+      "gt_total": 3,
+      "gt_in_window": 3,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 2,
+      "case_id": "E207_T02",
+      "calls": 1,
+      "gt_total": 5,
+      "gt_in_window": 5,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 3,
+      "case_id": "E207_T03",
+      "calls": 1,
+      "gt_total": 7,
+      "gt_in_window": 7,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 4,
+      "case_id": "E207_T04",
+      "calls": 1,
+      "gt_total": 10,
+      "gt_in_window": 10,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 5,
+      "case_id": "E207_T05",
+      "calls": 1,
+      "gt_total": 14,
+      "gt_in_window": 14,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 6,
+      "case_id": "E207_T06",
+      "calls": 1,
+      "gt_total": 17,
+      "gt_in_window": 17,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 7,
+      "case_id": "E207_T07",
+      "calls": 1,
+      "gt_total": 19,
+      "gt_in_window": 19,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 8,
+      "case_id": "E207_T08",
+      "calls": 1,
+      "gt_total": 22,
+      "gt_in_window": 22,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 9,
+      "case_id": "E207_T09",
+      "calls": 1,
+      "gt_total": 24,
+      "gt_in_window": 24,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 10,
+      "case_id": "E207_T10",
+      "calls": 1,
+      "gt_total": 26,
+      "gt_in_window": 26,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 11,
+      "case_id": "E207_T11",
+      "calls": 1,
+      "gt_total": 27,
+      "gt_in_window": 27,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 12,
+      "case_id": "E207_T12",
+      "calls": 1,
+      "gt_total": 33,
+      "gt_in_window": 33,
+      "keep_rate": 1.0,
+      "misses": []
+     }
+    ],
+    "candidate": [
+     {
+      "turn": 1,
+      "case_id": "E207_T01",
+      "calls": 1,
+      "gt_total": 3,
+      "gt_in_window": 3,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 2,
+      "case_id": "E207_T02",
+      "calls": 1,
+      "gt_total": 5,
+      "gt_in_window": 5,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 3,
+      "case_id": "E207_T03",
+      "calls": 1,
+      "gt_total": 7,
+      "gt_in_window": 7,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 4,
+      "case_id": "E207_T04",
+      "calls": 1,
+      "gt_total": 10,
+      "gt_in_window": 10,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 5,
+      "case_id": "E207_T05",
+      "calls": 1,
+      "gt_total": 14,
+      "gt_in_window": 14,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 6,
+      "case_id": "E207_T06",
+      "calls": 1,
+      "gt_total": 17,
+      "gt_in_window": 17,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 7,
+      "case_id": "E207_T07",
+      "calls": 1,
+      "gt_total": 19,
+      "gt_in_window": 19,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 8,
+      "case_id": "E207_T08",
+      "calls": 1,
+      "gt_total": 22,
+      "gt_in_window": 22,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 9,
+      "case_id": "E207_T09",
+      "calls": 1,
+      "gt_total": 24,
+      "gt_in_window": 24,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 10,
+      "case_id": "E207_T10",
+      "calls": 1,
+      "gt_total": 26,
+      "gt_in_window": 26,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 11,
+      "case_id": "E207_T11",
+      "calls": 1,
+      "gt_total": 27,
+      "gt_in_window": 27,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 12,
+      "case_id": "E207_T12",
+      "calls": 1,
+      "gt_total": 33,
+      "gt_in_window": 33,
+      "keep_rate": 1.0,
+      "misses": []
+     }
+    ]
+   },
+   "segments": {
+    "parent": [
+     {
+      "segment": "T1-6",
+      "turns": 6,
+      "gt_total_pooled": 56,
+      "gt_in_window_pooled": 56,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     },
+     {
+      "segment": "T7-12",
+      "turns": 6,
+      "gt_total_pooled": 151,
+      "gt_in_window_pooled": 151,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     }
+    ],
+    "candidate": [
+     {
+      "segment": "T1-6",
+      "turns": 6,
+      "gt_total_pooled": 56,
+      "gt_in_window_pooled": 56,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     },
+     {
+      "segment": "T7-12",
+      "turns": 6,
+      "gt_total_pooled": 151,
+      "gt_in_window_pooled": 151,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     }
+    ]
+   }
+  },
+  "E208": {
+   "per_arm": {
+    "parent": [
+     {
+      "turn": 1,
+      "case_id": "E208_T01",
+      "calls": 1,
+      "gt_total": 2,
+      "gt_in_window": 2,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 2,
+      "case_id": "E208_T02",
+      "calls": 1,
+      "gt_total": 4,
+      "gt_in_window": 4,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 3,
+      "case_id": "E208_T03",
+      "calls": 1,
+      "gt_total": 6,
+      "gt_in_window": 6,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 4,
+      "case_id": "E208_T04",
+      "calls": 1,
+      "gt_total": 11,
+      "gt_in_window": 11,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 5,
+      "case_id": "E208_T05",
+      "calls": 1,
+      "gt_total": 13,
+      "gt_in_window": 13,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 6,
+      "case_id": "E208_T06",
+      "calls": 1,
+      "gt_total": 15,
+      "gt_in_window": 15,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 7,
+      "case_id": "E208_T07",
+      "calls": 1,
+      "gt_total": 17,
+      "gt_in_window": 17,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 8,
+      "case_id": "E208_T08",
+      "calls": 1,
+      "gt_total": 21,
+      "gt_in_window": 21,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 9,
+      "case_id": "E208_T09",
+      "calls": 1,
+      "gt_total": 24,
+      "gt_in_window": 24,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 10,
+      "case_id": "E208_T10",
+      "calls": 1,
+      "gt_total": 26,
+      "gt_in_window": 26,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 11,
+      "case_id": "E208_T11",
+      "calls": 1,
+      "gt_total": 30,
+      "gt_in_window": 30,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 12,
+      "case_id": "E208_T12",
+      "calls": 1,
+      "gt_total": 32,
+      "gt_in_window": 32,
+      "keep_rate": 1.0,
+      "misses": []
+     }
+    ],
+    "candidate": [
+     {
+      "turn": 1,
+      "case_id": "E208_T01",
+      "calls": 1,
+      "gt_total": 2,
+      "gt_in_window": 2,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 2,
+      "case_id": "E208_T02",
+      "calls": 1,
+      "gt_total": 4,
+      "gt_in_window": 4,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 3,
+      "case_id": "E208_T03",
+      "calls": 1,
+      "gt_total": 6,
+      "gt_in_window": 6,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 4,
+      "case_id": "E208_T04",
+      "calls": 1,
+      "gt_total": 11,
+      "gt_in_window": 11,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 5,
+      "case_id": "E208_T05",
+      "calls": 1,
+      "gt_total": 13,
+      "gt_in_window": 13,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 6,
+      "case_id": "E208_T06",
+      "calls": 1,
+      "gt_total": 15,
+      "gt_in_window": 15,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 7,
+      "case_id": "E208_T07",
+      "calls": 1,
+      "gt_total": 17,
+      "gt_in_window": 17,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 8,
+      "case_id": "E208_T08",
+      "calls": 1,
+      "gt_total": 21,
+      "gt_in_window": 21,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 9,
+      "case_id": "E208_T09",
+      "calls": 1,
+      "gt_total": 24,
+      "gt_in_window": 24,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 10,
+      "case_id": "E208_T10",
+      "calls": 1,
+      "gt_total": 26,
+      "gt_in_window": 26,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 11,
+      "case_id": "E208_T11",
+      "calls": 1,
+      "gt_total": 30,
+      "gt_in_window": 30,
+      "keep_rate": 1.0,
+      "misses": []
+     },
+     {
+      "turn": 12,
+      "case_id": "E208_T12",
+      "calls": 1,
+      "gt_total": 32,
+      "gt_in_window": 32,
+      "keep_rate": 1.0,
+      "misses": []
+     }
+    ]
+   },
+   "segments": {
+    "parent": [
+     {
+      "segment": "T1-6",
+      "turns": 6,
+      "gt_total_pooled": 51,
+      "gt_in_window_pooled": 51,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     },
+     {
+      "segment": "T7-12",
+      "turns": 6,
+      "gt_total_pooled": 150,
+      "gt_in_window_pooled": 150,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     }
+    ],
+    "candidate": [
+     {
+      "segment": "T1-6",
+      "turns": 6,
+      "gt_total_pooled": 51,
+      "gt_in_window_pooled": 51,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     },
+     {
+      "segment": "T7-12",
+      "turns": 6,
+      "gt_total_pooled": 150,
+      "gt_in_window_pooled": 150,
+      "keep_rate_pooled": 1.0,
+      "keep_rate_mean": 1.0
+     }
+    ]
+   }
+  }
+ },
+ "arms": [
+  "parent",
+  "candidate"
+ ]
+}

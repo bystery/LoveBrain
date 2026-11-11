@@ -1,0 +1,45 @@
+{
+ "document_type": "FASTLANE_G0_AUTHORIZATION",
+ "authorization_id": "AUTH-W22-FASTLANE-20261104-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "max_attempts": 104,
+ "authorized_by": "常设授权 AUTH-GLOBAL-CONTINUOUS-20261030-01；判据冻结 W22_01_ATTR_DESIGN_20261104.md；快车道启用登记 W19-06",
+ "authorized_at": "2026-11-04T07:30:00+08:00",
+ "scope_note": "W22-01 快车道 G0：uc_attr(归属锚定) vs uc，E157+LRE117 104 attempts；G1 主假设=归因错位族 severe cand<par；只淘汰不晋级",
+ "scope": {
+  "scope_id": "fastlane_w22_uc_attr",
+  "purpose": "W22-01 快车道 G0 淘汰闸 104 attempts；候选=归属锚定单变量；无重试（本候选不改崩坏域，重试另册不适用除非崩坏发生）",
+  "automatic_candidate_generations": true,
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "model_alias": "dsf"
+ },
+ "budget_authority": "持久账本 logs/auth_budget/AUTH-W22-FASTLANE-20261104-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 104
+ },
+ "rules": [
+  "base no_retry/no_makeup",
+  "fail_fast=true",
+  "live 独占 6 流",
+  "L0 全绿（E164 12/12 逐字节+E191 差异仅锚定块+capture 104/104）",
+  "LRE117 暴露状态抄录（BATCH-LD1-W13-20261102）",
+  "不碰 b_line/封板题"
+ ],
+ "frozen_bindings": {
+  "W22_FASTLANE": {
+   "batch_id": "BATCH-W22-FASTLANE-20261104",
+   "plan_sha256": "3310d4bd3edd56c19fe1e35df0f641ff6fff249c931ba69bd45d196e7613887b",
+   "attempts": 104,
+   "parent": "window_expand_b_norecap_uc",
+   "candidate": "window_expand_b_norecap_uc_attr",
+   "cards_file": "benchmark/stories_v2/wave3/GRADING_CARDS_W19_CROSS.json",
+   "parent_identity_sha256": "5b3266a91350d66a799f2d3c53274168f9c9b1d16a81f26d8b7193e1847c13df",
+   "candidate_identity_sha256": "29ae441893119b7393510e651f61a0a667544e854903191f0831e1368a1cac94"
+  }
+ },
+ "budget_ledger": "logs/auth_budget/AUTH-W22-FASTLANE-20261104-01.jsonl"
+}

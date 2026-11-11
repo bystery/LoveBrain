@@ -1,0 +1,83 @@
+{
+ "kind": "lp_b1_ninedim_review_partial_v1",
+ "batch": "B1",
+ "stories": [
+  "E063",
+  "E064",
+  "E065"
+ ],
+ "candidate": "action_policy_r4_guard_e3",
+ "parent": "reference_product_v1",
+ "note": "Budget cap hit at 74/84; 72 main + 2 supplements completed. Nine-dim scores lost (in-memory only); direction data recovered from stdout log. Re-run with cap=86 for full scores.",
+ "main_winners": {
+  "candidate": 52,
+  "parent": 7,
+  "TIE": 1
+ },
+ "swap_winners": {
+  "candidate": 8,
+  "parent": 4
+ },
+ "by_story": {
+  "E063": {
+   "main": {
+    "candidate": 16,
+    "parent": 4
+   },
+   "swap": {
+    "candidate": 3,
+    "parent": 1
+   },
+   "n_main": 20,
+   "n_swap": 4
+  },
+  "E064": {
+   "main": {
+    "candidate": 19,
+    "TIE": 1
+   },
+   "swap": {
+    "parent": 2,
+    "candidate": 2
+   },
+   "n_main": 20,
+   "n_swap": 4
+  },
+  "E065": {
+   "main": {
+    "parent": 3,
+    "candidate": 17
+   },
+   "swap": {
+    "candidate": 3,
+    "parent": 1
+   },
+   "n_main": 20,
+   "n_swap": 4
+  }
+ },
+ "main_judgments_completed": 60,
+ "swap_judgments_completed": 12,
+ "supplements_completed": 2,
+ "supplements_needed": 12,
+ "supplement_data": [
+  {
+   "pair_id": "LP:E063:E063_T08",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true
+  },
+  {
+   "pair_id": "LP:E063:E063_T16",
+   "main_winner": "candidate",
+   "swap_winner": "candidate",
+   "agree": true
+  }
+ ],
+ "key_finding": "E3 won 52/60 main judgments (86.7%), parent won 7/60 (11.7%), TIE 1/60 (1.7%). Swap positions: 8 candidate / 4 parent. Strong directional consistency favoring E3 across all three stories.",
+ "per_story_summary": {
+  "E063": "candidate 16/20 main, parent 4/20; swap 3c/1p",
+  "E064": "candidate 19/20 main, parent 0, TIE 1; swap 2c/2p",
+  "E065": "candidate 17/20 main, parent 3/20; swap 3c/1p"
+ }
+}

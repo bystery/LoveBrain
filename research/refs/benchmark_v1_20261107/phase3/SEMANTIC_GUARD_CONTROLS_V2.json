@@ -1,0 +1,1062 @@
+{
+ "kind": "semantic_guard_controls",
+ "version": 2,
+ "guards_version_target": "semantic_guards_v2",
+ "source": "v1(105, 2026-11-09, seed=20261109) + 12 例 cancel_ack（RESEARCH-P1 通宵 B 线审计 10 例误报类泛化，2026-11-11）",
+ "n_cases": 117,
+ "cases": [
+  {
+   "atom": "E090_A11",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "下周再说"
+   ],
+   "text": "嗯嗯，下周再说，就这么说定了。"
+  },
+  {
+   "atom": "E090_A11",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "下周再说"
+   ],
+   "text": "其实没到下周再说那一步，你别多想。"
+  },
+  {
+   "atom": "E090_A11",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "下周再说"
+   ],
+   "text": "下周再说？这事定了吗？"
+  },
+  {
+   "atom": "E090_A11",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "下周再说"
+   ],
+   "text": "要是下周再说就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E090_A11",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "下周再说"
+   ],
+   "text": "她原话是「下周再说」，我复述一下。"
+  },
+  {
+   "atom": "E090_A11",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "下周再说"
+   ],
+   "text": "上次取消的下周再说我还记得，挺可惜的。"
+  },
+  {
+   "atom": "D02_T03_a1",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "周六上午"
+   ],
+   "text": "嗯嗯，周六上午，就这么说定了。"
+  },
+  {
+   "atom": "D02_T03_a1",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "周六上午"
+   ],
+   "text": "其实没到周六上午那一步，你别多想。"
+  },
+  {
+   "atom": "D02_T03_a1",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "周六上午"
+   ],
+   "text": "周六上午？这事定了吗？"
+  },
+  {
+   "atom": "D02_T03_a1",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "周六上午"
+   ],
+   "text": "要是周六上午就麻烦了，得提前说。"
+  },
+  {
+   "atom": "D02_T03_a1",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "周六上午"
+   ],
+   "text": "她原话是「周六上午」，我复述一下。"
+  },
+  {
+   "atom": "D02_T03_a1",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "周六上午"
+   ],
+   "text": "上次取消的周六上午我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E076_A15",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "11月7"
+   ],
+   "text": "嗯嗯，11月7，就这么说定了。"
+  },
+  {
+   "atom": "E076_A15",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "11月7"
+   ],
+   "text": "其实没到11月7那一步，你别多想。"
+  },
+  {
+   "atom": "E076_A15",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "11月7"
+   ],
+   "text": "11月7？这事定了吗？"
+  },
+  {
+   "atom": "E076_A15",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "11月7"
+   ],
+   "text": "要是11月7就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E076_A15",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "11月7"
+   ],
+   "text": "她原话是「11月7」，我复述一下。"
+  },
+  {
+   "atom": "E076_A15",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "11月7"
+   ],
+   "text": "上次取消的11月7我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E097_A13",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "周六下午"
+   ],
+   "text": "嗯嗯，周六下午，就这么说定了。"
+  },
+  {
+   "atom": "E097_A13",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "周六下午"
+   ],
+   "text": "其实没到周六下午那一步，你别多想。"
+  },
+  {
+   "atom": "E097_A13",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "周六下午"
+   ],
+   "text": "周六下午？这事定了吗？"
+  },
+  {
+   "atom": "E097_A13",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "周六下午"
+   ],
+   "text": "要是周六下午就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E097_A13",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "周六下午"
+   ],
+   "text": "她原话是「周六下午」，我复述一下。"
+  },
+  {
+   "atom": "E097_A13",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "周六下午"
+   ],
+   "text": "上次取消的周六下午我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E210_A13b",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "有点冷"
+   ],
+   "text": "嗯嗯，有点冷，就这么说定了。"
+  },
+  {
+   "atom": "E210_A13b",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "有点冷"
+   ],
+   "text": "其实没到有点冷那一步，你别多想。"
+  },
+  {
+   "atom": "E210_A13b",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "有点冷"
+   ],
+   "text": "有点冷？这事定了吗？"
+  },
+  {
+   "atom": "E210_A13b",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "有点冷"
+   ],
+   "text": "要是有点冷就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E210_A13b",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "有点冷"
+   ],
+   "text": "她原话是「有点冷」，我复述一下。"
+  },
+  {
+   "atom": "E210_A13b",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "有点冷"
+   ],
+   "text": "上次取消的有点冷我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E137_A14",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "编制解冻"
+   ],
+   "text": "嗯嗯，编制解冻，就这么说定了。"
+  },
+  {
+   "atom": "E137_A14",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "编制解冻"
+   ],
+   "text": "其实没到编制解冻那一步，你别多想。"
+  },
+  {
+   "atom": "E137_A14",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "编制解冻"
+   ],
+   "text": "编制解冻？这事定了吗？"
+  },
+  {
+   "atom": "E137_A14",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "编制解冻"
+   ],
+   "text": "要是编制解冻就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E137_A14",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "编制解冻"
+   ],
+   "text": "她原话是「编制解冻」，我复述一下。"
+  },
+  {
+   "atom": "E137_A14",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "编制解冻"
+   ],
+   "text": "上次取消的编制解冻我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E161_E161_T07_A01",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "改到周三复尺"
+   ],
+   "text": "嗯嗯，改到周三复尺，就这么说定了。"
+  },
+  {
+   "atom": "E161_E161_T07_A01",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "改到周三复尺"
+   ],
+   "text": "其实没到改到周三复尺那一步，你别多想。"
+  },
+  {
+   "atom": "E161_E161_T07_A01",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "改到周三复尺"
+   ],
+   "text": "改到周三复尺？这事定了吗？"
+  },
+  {
+   "atom": "E161_E161_T07_A01",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "改到周三复尺"
+   ],
+   "text": "要是改到周三复尺就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E161_E161_T07_A01",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "改到周三复尺"
+   ],
+   "text": "她原话是「改到周三复尺」，我复述一下。"
+  },
+  {
+   "atom": "E161_E161_T07_A01",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "改到周三复尺"
+   ],
+   "text": "上次取消的改到周三复尺我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E158_T04_A01",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "两个插座"
+   ],
+   "text": "嗯嗯，两个插座，就这么说定了。"
+  },
+  {
+   "atom": "E158_T04_A01",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "两个插座"
+   ],
+   "text": "其实没到两个插座那一步，你别多想。"
+  },
+  {
+   "atom": "E158_T04_A01",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "两个插座"
+   ],
+   "text": "两个插座？这事定了吗？"
+  },
+  {
+   "atom": "E158_T04_A01",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "两个插座"
+   ],
+   "text": "要是两个插座就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E158_T04_A01",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "两个插座"
+   ],
+   "text": "她原话是「两个插座」，我复述一下。"
+  },
+  {
+   "atom": "E158_T04_A01",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "两个插座"
+   ],
+   "text": "上次取消的两个插座我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E097_A14",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "爬山局"
+   ],
+   "text": "嗯嗯，爬山局，就这么说定了。"
+  },
+  {
+   "atom": "E097_A14",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "爬山局"
+   ],
+   "text": "其实没到爬山局那一步，你别多想。"
+  },
+  {
+   "atom": "E097_A14",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "爬山局"
+   ],
+   "text": "爬山局？这事定了吗？"
+  },
+  {
+   "atom": "E097_A14",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "爬山局"
+   ],
+   "text": "要是爬山局就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E097_A14",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "爬山局"
+   ],
+   "text": "她原话是「爬山局」，我复述一下。"
+  },
+  {
+   "atom": "E097_A14",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "爬山局"
+   ],
+   "text": "上次取消的爬山局我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E077_A30",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "11月5"
+   ],
+   "text": "嗯嗯，11月5，就这么说定了。"
+  },
+  {
+   "atom": "E077_A30",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "11月5"
+   ],
+   "text": "其实没到11月5那一步，你别多想。"
+  },
+  {
+   "atom": "E077_A30",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "11月5"
+   ],
+   "text": "11月5？这事定了吗？"
+  },
+  {
+   "atom": "E077_A30",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "11月5"
+   ],
+   "text": "要是11月5就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E077_A30",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "11月5"
+   ],
+   "text": "她原话是「11月5」，我复述一下。"
+  },
+  {
+   "atom": "E077_A30",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "11月5"
+   ],
+   "text": "上次取消的11月5我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E051_A16",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "每天早上七点"
+   ],
+   "text": "嗯嗯，每天早上七点，就这么说定了。"
+  },
+  {
+   "atom": "E051_A16",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "每天早上七点"
+   ],
+   "text": "其实没到每天早上七点那一步，你别多想。"
+  },
+  {
+   "atom": "E051_A16",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "每天早上七点"
+   ],
+   "text": "每天早上七点？这事定了吗？"
+  },
+  {
+   "atom": "E051_A16",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "每天早上七点"
+   ],
+   "text": "要是每天早上七点就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E051_A16",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "每天早上七点"
+   ],
+   "text": "她原话是「每天早上七点」，我复述一下。"
+  },
+  {
+   "atom": "E051_A16",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "每天早上七点"
+   ],
+   "text": "上次取消的每天早上七点我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E073_A14",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "10月31"
+   ],
+   "text": "嗯嗯，10月31，就这么说定了。"
+  },
+  {
+   "atom": "E073_A14",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "10月31"
+   ],
+   "text": "其实没到10月31那一步，你别多想。"
+  },
+  {
+   "atom": "E073_A14",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "10月31"
+   ],
+   "text": "10月31？这事定了吗？"
+  },
+  {
+   "atom": "E073_A14",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "10月31"
+   ],
+   "text": "要是10月31就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E073_A14",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "10月31"
+   ],
+   "text": "她原话是「10月31」，我复述一下。"
+  },
+  {
+   "atom": "E073_A14",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "10月31"
+   ],
+   "text": "上次取消的10月31我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E103_A16",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "倒计时贴、请假条"
+   ],
+   "text": "嗯嗯，倒计时贴、请假条，就这么说定了。"
+  },
+  {
+   "atom": "E103_A16",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "倒计时贴、请假条"
+   ],
+   "text": "其实没到倒计时贴、请假条那一步，你别多想。"
+  },
+  {
+   "atom": "E103_A16",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "倒计时贴、请假条"
+   ],
+   "text": "倒计时贴、请假条？这事定了吗？"
+  },
+  {
+   "atom": "E103_A16",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "倒计时贴、请假条"
+   ],
+   "text": "要是倒计时贴、请假条就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E103_A16",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "倒计时贴、请假条"
+   ],
+   "text": "她原话是「倒计时贴、请假条」，我复述一下。"
+  },
+  {
+   "atom": "E103_A16",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "倒计时贴、请假条"
+   ],
+   "text": "上次取消的倒计时贴、请假条我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E139_A11",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "滨海半程马拉松参赛资格"
+   ],
+   "text": "嗯嗯，滨海半程马拉松参赛资格，就这么说定了。"
+  },
+  {
+   "atom": "E139_A11",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "滨海半程马拉松参赛资格"
+   ],
+   "text": "其实没到滨海半程马拉松参赛资格那一步，你别多想。"
+  },
+  {
+   "atom": "E139_A11",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "滨海半程马拉松参赛资格"
+   ],
+   "text": "滨海半程马拉松参赛资格？这事定了吗？"
+  },
+  {
+   "atom": "E139_A11",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "滨海半程马拉松参赛资格"
+   ],
+   "text": "要是滨海半程马拉松参赛资格就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E139_A11",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "滨海半程马拉松参赛资格"
+   ],
+   "text": "她原话是「滨海半程马拉松参赛资格」，我复述一下。"
+  },
+  {
+   "atom": "E139_A11",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "滨海半程马拉松参赛资格"
+   ],
+   "text": "上次取消的滨海半程马拉松参赛资格我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E197_A19",
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "markers": [
+    "大厅拼一桌"
+   ],
+   "text": "嗯嗯，大厅拼一桌，就这么说定了。"
+  },
+  {
+   "atom": "E197_A19",
+   "type": "negation",
+   "expect": "guard",
+   "markers": [
+    "大厅拼一桌"
+   ],
+   "text": "其实没到大厅拼一桌那一步，你别多想。"
+  },
+  {
+   "atom": "E197_A19",
+   "type": "question",
+   "expect": "guard",
+   "markers": [
+    "大厅拼一桌"
+   ],
+   "text": "大厅拼一桌？这事定了吗？"
+  },
+  {
+   "atom": "E197_A19",
+   "type": "conditional",
+   "expect": "guard",
+   "markers": [
+    "大厅拼一桌"
+   ],
+   "text": "要是大厅拼一桌就麻烦了，得提前说。"
+  },
+  {
+   "atom": "E197_A19",
+   "type": "quote",
+   "expect": "guard",
+   "markers": [
+    "大厅拼一桌"
+   ],
+   "text": "她原话是「大厅拼一桌」，我复述一下。"
+  },
+  {
+   "atom": "E197_A19",
+   "type": "past_mention",
+   "expect": "guard",
+   "markers": [
+    "大厅拼一桌"
+   ],
+   "text": "上次取消的大厅拼一桌我还记得，挺可惜的。"
+  },
+  {
+   "atom": "E337_T10_A01",
+   "type": "required_hit",
+   "expect": "affirm",
+   "markers": [
+    "11 月 22 号"
+   ],
+   "text": "好，11 月 22 号之前我把东西都准备好。"
+  },
+  {
+   "atom": "E337_T10_A01",
+   "type": "required_miss",
+   "expect": "none",
+   "markers": [
+    "11 月 22 号"
+   ],
+   "text": "收到，我这边尽快安排。"
+  },
+  {
+   "atom": "E337_T10_A02",
+   "type": "required_hit",
+   "expect": "affirm",
+   "markers": [
+    "八点半"
+   ],
+   "text": "好，八点半之前我把东西都准备好。"
+  },
+  {
+   "atom": "E337_T10_A02",
+   "type": "required_miss",
+   "expect": "none",
+   "markers": [
+    "八点半"
+   ],
+   "text": "收到，我这边尽快安排。"
+  },
+  {
+   "atom": "E337_T22_A02",
+   "type": "required_hit",
+   "expect": "affirm",
+   "markers": [
+    "65 克"
+   ],
+   "text": "好，65 克之前我把东西都准备好。"
+  },
+  {
+   "atom": "E337_T22_A02",
+   "type": "required_miss",
+   "expect": "none",
+   "markers": [
+    "65 克"
+   ],
+   "text": "收到，我这边尽快安排。"
+  },
+  {
+   "atom": "E338_T20_A01",
+   "type": "required_hit",
+   "expect": "affirm",
+   "markers": [
+    "10 号"
+   ],
+   "text": "好，10 号之前我把东西都准备好。"
+  },
+  {
+   "atom": "E338_T20_A01",
+   "type": "required_miss",
+   "expect": "none",
+   "markers": [
+    "10 号"
+   ],
+   "text": "收到，我这边尽快安排。"
+  },
+  {
+   "atom": "E338_T23_A01",
+   "type": "required_hit",
+   "expect": "affirm",
+   "markers": [
+    "C14"
+   ],
+   "text": "好，C14之前我把东西都准备好。"
+  },
+  {
+   "atom": "E338_T23_A01",
+   "type": "required_miss",
+   "expect": "none",
+   "markers": [
+    "C14"
+   ],
+   "text": "收到，我这边尽快安排。"
+  },
+  {
+   "atom": null,
+   "type": "rhetorical",
+   "expect": "guard",
+   "markers": [
+    "周六爬山"
+   ],
+   "text": "不是说周六爬山吗，怎么又变了"
+  },
+  {
+   "atom": null,
+   "type": "rhetorical",
+   "expect": "guard",
+   "markers": [
+    "周三交稿"
+   ],
+   "text": "你不是说周三交稿吗"
+  },
+  {
+   "atom": null,
+   "type": "rhetorical",
+   "expect": "guard",
+   "markers": [
+    "爸妈知情"
+   ],
+   "text": "不是说爸妈知情了吗"
+  },
+  {
+   "atom": null,
+   "type": "rhetorical",
+   "expect": "guard",
+   "markers": [
+    "改成周五"
+   ],
+   "text": "不是说改成周五了吗"
+  },
+  {
+   "atom": null,
+   "type": "rhetorical",
+   "expect": "guard",
+   "markers": [
+    "他来取件"
+   ],
+   "text": "不是他来取件吗"
+  },
+  {
+   "atom": "RP1_FP_01",
+   "type": "cancel_ack",
+   "expect": "guard",
+   "markers": [
+    "赌约"
+   ],
+   "text": "行，赌约作废就作废，不亏。"
+  },
+  {
+   "atom": "RP1_FP_02",
+   "type": "cancel_ack",
+   "expect": "guard",
+   "markers": [
+    "约"
+   ],
+   "text": "那次约取消就取消，下次再说。"
+  },
+  {
+   "atom": "RP1_FP_03",
+   "type": "cancel_ack",
+   "expect": "guard",
+   "markers": [
+    "计划"
+   ],
+   "text": "计划推迟了就推迟了，正好歇歇。"
+  },
+  {
+   "atom": "RP1_FP_04",
+   "type": "cancel_ack",
+   "expect": "guard",
+   "markers": [
+    "面试"
+   ],
+   "text": "面试黄了就黄了，我早有预感。"
+  },
+  {
+   "atom": "RP1_FP_05",
+   "type": "cancel_ack",
+   "expect": "guard",
+   "markers": [
+    "聚会"
+   ],
+   "text": "聚会吹了，没事。"
+  },
+  {
+   "atom": "RP1_FP_06",
+   "type": "cancel_ack",
+   "expect": "guard",
+   "markers": [
+    "退款"
+   ],
+   "text": "退款退了就行，不用再查。"
+  },
+  {
+   "atom": "RP1_FP_07",
+   "type": "cancel_ack",
+   "expect": "guard",
+   "markers": [
+    "那事"
+   ],
+   "text": "那事不算了，翻篇。"
+  },
+  {
+   "atom": "RP1_FP_08",
+   "type": "cancel_ack",
+   "expect": "guard",
+   "markers": [
+    "票"
+   ],
+   "text": "票退掉了，别惦记。"
+  },
+  {
+   "atom": "RP1_FP_09",
+   "type": "cancel_ack",
+   "expect": "guard",
+   "markers": [
+    "婚礼"
+   ],
+   "text": "婚礼延期了，好事多磨。"
+  },
+  {
+   "atom": "RP1_FP_10",
+   "type": "cancel_ack",
+   "expect": "guard",
+   "markers": [
+    "订单"
+   ],
+   "text": "订单落空就落空，再来。"
+  },
+  {
+   "atom": "RP1_FP_11",
+   "type": "cancel_ack",
+   "expect": "guard",
+   "markers": [
+    "比赛"
+   ],
+   "text": "比赛改天再打，今天先这样。"
+  },
+  {
+   "atom": "RP1_FP_12",
+   "type": "cancel_ack",
+   "expect": "guard",
+   "markers": [
+    "交易"
+   ],
+   "text": "交易告吹，各自安好。"
+  }
+ ]
+}

@@ -1,0 +1,52 @@
+{
+  "response": {
+    "recommended": "动作够快。三晚是哪三天？我假请13到15，刚好三晚，能对上就省得退了。",
+    "bad_boy": "先占着、不行再退，这手挺利落。三晚是哪三天——别到时候假和房对不上。",
+    "playful": "才村那家先被你占了。三晚是哪三天？我这边13到15能请，正好凑三晚。",
+    "warm": "你先订下来，我反而踏实了。三晚是哪三天？我按这个去报假。"
+  },
+  "directions": [
+    "客栈多少一晚，我先把一半转你。",
+    "三晚定在才村挺好，剩下两天不用赶，慢慢晃。",
+    "说实话，你先动手订房，我挺高兴的。",
+    "阿岚那边要不要提前说一声我们大概什么时候到。"
+  ],
+  "analysis": {
+    "signal": "积极",
+    "goal_category": "推进见面",
+    "action_taken": "承接",
+    "anchor": "m0",
+    "hook": {
+      "kind": "小选择",
+      "text": "三晚是哪三天"
+    },
+    "facts": [
+      {
+        "text": "她订了才村一家客栈",
+        "subject": "HER",
+        "relation": "旅行住宿",
+        "quote": "我先订了才村一家客栈",
+        "src_ids": ["m0"],
+        "certainty": "confirmed",
+        "event_time": "2026-11"
+      },
+      {
+        "text": "客栈三晚，11月8号前可退",
+        "subject": "HER",
+        "relation": "旅行住宿",
+        "quote": "三晚 11月8号前可退",
+        "src_ids": ["m1"],
+        "certainty": "confirmed",
+        "event_time": "2026-11-08 前可退"
+      }
+    ],
+    "tentatives": [
+      {
+        "text": "先占着房，不行再退",
+        "quote": "先占着 不行再退",
+        "src_ids": ["m2"]
+      }
+    ],
+    "updates": []
+  }
+}

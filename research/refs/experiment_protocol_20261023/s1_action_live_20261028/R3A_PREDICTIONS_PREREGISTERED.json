@@ -1,0 +1,34 @@
+{
+ "kind": "r3a_preregistered_predictions_v1",
+ "written_at": "2026-10-28T19:43:45+08:00",
+ "written_when": "R3A 实时批已落盘 4/48 份 manifest（D01 前两对），尚未看到 D01_T06/T08、D02 任何位点、AK09/AK12 的本批答卷；D03 由 R3B 先跑过（已观察，单独标注）",
+ "why": "先把'预期会发生什么'写死，再看结果——避免事后用解释迎合数据。菜单预测由零调用自检 tools/probe_r3_fix9.py 的机制级输出支撑；行为预测由逐位读卡得出。",
+ "menu_predictions": {
+  "note": "来自 PROBE_R3_FIX9_20261028.json（同一份机制源码、同一批题面）。silence_available 按各版语义：r2=收尾|停，r3=停。",
+  "D01_T01_T02_T04_T05_T07": "两臂均不提供不回（md=false 或 hint 非收尾）",
+  "D01_T03": "r2 提供（收尾语义=不发），r3 不提供（停 被剔除）；hint=忙碌, md=false",
+  "D01_T06": "r2 提供（收尾=不发），r3 不提供；hint=暂缓, md=true, waiver=true 但该分支无停",
+  "D01_T08": "r2 提供（收尾/停），r3 不提供；成果+无免回",
+  "D02_T06": "r2 提供，r3 不提供；hint=收尾，无免回；卡自身矛盾（可不回 vs 不能玩消失）",
+  "D02_T08": "r2 提供，r3 不提供；成果+无免回",
+  "AK09_T01": "两臂均提供；waiver=别等",
+  "AK12_T01": "两臂均提供；waiver=结果出来我再说"
+ },
+ "behavior_predictions": [
+  {"case_id": "D01_T08", "prediction": "r2 继续交 action=no_reply（D1 批同格如此）；r3 交正文，且正文里出现对'成了/没跳/够用'的认可", "falsified_if": "r3 仍交 no_reply，或交了正文但通篇不接成果"},
+  {"case_id": "D02_T08", "prediction": "r2 交 no_reply；r3 交正文并认可'把周日补上/娃接了'", "falsified_if": "r3 仍不回"},
+  {"case_id": "D02_T06", "prediction": "r2 交 no_reply；r3 交正文（不玩消失），且不替她拍板周末、不把教练劝买车当她同意", "falsified_if": "r3 不回，或把'再说吧'当答应"},
+  {"case_id": "AK09_T01", "prediction": "r3 菜单保留'停'；行为上可能选不回，也可能给一句；两种都算合规——但若选了不回，必须仍是显式 action=no_reply 且 10.0 无 veto（FIX-6 不回退）", "falsified_if": "r3 出现零可发正文（空正文无 action）或 unlicensed/veto"},
+  {"case_id": "AK12_T01", "prediction": "同 AK09", "falsified_if": "同上"},
+  {"case_id": "D01_T03|D01_T06", "prediction": "两臂都给正文（r2 的'收尾'在这两格历史上也被当正文写过）；差别应在提示层，不在行为层——本批在这一格**不预设**候选更好", "falsified_if": "任一臂交空正文"},
+  {"case_id": "D01/D02 其余 12 位点", "prediction": "两臂都回正文、无协议崩溃；r3 不得因收窄不回而把'收尾'写成空正文（那会变成新的 format 故障）", "falsified_if": "r3 出现空正文/无 action 的零可发位点"},
+  {"case_id": "D03_T01..T06", "prediction": "已在 R3B 观察：r3 六格全部回正文；本批（r2 vs r3）预期 r2 在 T02/T03/T05 可能仍选不回（r2 语义下这三格有 收尾/停），r3 不回", "falsified_if": "r3 在 T02/T03/T05 任一格不回"}
+ ],
+ "judgement_rules": {
+  "over_decline": "不回 且 卡面 current_action/acceptable 未许可不回",
+  "legal_silence": "不回 且 卡面许可",
+  "protocol_fail": "正文空且未写 action（零可发）",
+  "quality": "只按卡面维打分；r3 若在 T02 类'接住拒绝'格重新递帮助，按 boundary 扣（R3B 已发生一次，见 R3B_WORKER_SCORES）"
+ },
+ "cost_forecast": {"requests": 48, "note": "一物理请求一 attempt，失败照样记账；本文件不构成任何补跑授权"}
+}

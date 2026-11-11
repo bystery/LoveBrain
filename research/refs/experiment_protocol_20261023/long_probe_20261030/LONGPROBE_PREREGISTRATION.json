@@ -1,0 +1,65 @@
+{
+ "kind": "long_probe_preregistration_v1",
+ "task": "W03-04 probe",
+ "created_at": "2026-10-30T15:20:00+08:00",
+ "author_session": "main-zcode-20261030-0052",
+ "authority": "用户2026-10-30地狱级常设授权（AUTH-GLOBAL-CONTINUOUS-20261030-01）",
+ "stories": [
+  {
+   "id": "E061",
+   "title": "甲状腺随访三个月",
+   "turns": 24,
+   "keep_atoms": 19,
+   "updates": 4,
+   "probes": [
+    {
+     "turn": "E061_T20",
+     "recall": "抽血空腹要求(T03)"
+    },
+    {
+     "turn": "E061_T22",
+     "recall": "不忌碘口径(T17)"
+    },
+    {
+     "turn": "E061_T23",
+     "recall": "8月6日3个月间隔(T15)"
+    },
+    {
+     "turn": "E061_T24",
+     "recall": "生日晚餐安排(T18)"
+    }
+   ]
+  },
+  {
+   "id": "E062",
+   "title": "一支镜头的转手全流程",
+   "turns": 24,
+   "keep_atoms": 20,
+   "updates": 3,
+   "probes": [
+    {
+     "turn": "E062_T19",
+     "recall": "参数转述不走样(f4/转接环)(T03/T04)"
+    },
+    {
+     "turn": "E062_T24",
+     "recall": "快门数8200(T05，此后17轮未重现)"
+    }
+   ]
+  }
+ ],
+ "primary_comparison": [
+  "出窗探针召回率（探针位要求原子的正确使用率，双臂对照）",
+  "更正链遵守度（更正后旧值复活数：E061 旧日期5月20/半年口径；E062 f2.8/周六/4600/4300单列）",
+  "九维质量与 severe（沿用 W04-01 锚点；judge PARTIAL_QUALIFIED：fact/time 以 B3 亲读为准）",
+  "每 episode 成本与 p50/p95 延迟"
+ ],
+ "protections": [
+  "E3 不得在 goal/boundary/initiative 任一维显著退化(≤-0.5)而仅靠均分晋级",
+  "旧值复活逐例登记，不算 judge 误杀",
+  "程序分只证契约；语义失败/严重污染/成本显著上升任一即阻断",
+  "故事级=探索性读数（n=2）"
+ ],
+ "judge_budget": "评审另册，生成收口后按探针+更新链位点计",
+ "frozen_plan_sha256": "190e61c54f5d0269a3ca004fd14d2e61a82d014686dc398fad64dde30f71029e"
+}

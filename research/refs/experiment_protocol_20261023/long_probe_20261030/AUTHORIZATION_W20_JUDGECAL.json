@@ -1,0 +1,27 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-W20-JUDGE-CAL-20261103-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30持续授权+2026-11-02全量授权；W20-03 judge 锚点校准批按既有 scope 登记",
+ "phase": "W20-03",
+ "budget_ledger": "logs/auth_budget/AUTH-W20-JUDGE-CAL-20261103-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.0,
+  "max_attempts": 160
+ },
+ "scope": {
+  "purpose": "W20-03 judge anchor calibration: 36 constructed good-vs-neg pairs x 2 orders (72) + 12 W19CROSS historical recheck x 2 orders (24) + 6 identical-text sanity (6) = 102 planned judge calls, bounded retry 1 (headroom <=20%), hard cap 160 including retries; dsf temp0.0 non-stream; criteria frozen in W20_03_JUDGE_CAL_DESIGN_20261103.md before any call; fail-stop on budget exhaustion, no makeup runs",
+  "route": "judge_calibration_pairs_102",
+  "total_attempts": 102,
+  "planned_plus_retry_cap": 160,
+  "fail_fast": false,
+  "bounded_retry": 1,
+  "no_makeup": true,
+  "automatic_candidate_generations": false,
+  "concurrency_max": 6,
+  "forbidden_paths": ["benchmark/b_line/"]
+ }
+}

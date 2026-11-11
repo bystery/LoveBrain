@@ -1,0 +1,29 @@
+{
+  "test_p07_env_v2": {
+    "exit_code": 0,
+    "passed": 26,
+    "total": 26,
+    "kind": "independently_executed_zero_model"
+  },
+  "test_single_dispatch_guard": {
+    "exit_code": 0,
+    "passed": 3,
+    "total": 3,
+    "kind": "independently_executed_fake_gateway"
+  },
+  "stage2_validator": {
+    "exit_code": 0,
+    "stories_passed": 16,
+    "unique_cases": 192,
+    "errors": 0,
+    "report": "STAGE2_INDEPENDENT_VALIDATION.json"
+  },
+  "action_policy_contract": {
+    "exit_code": 0,
+    "passed": 10,
+    "total": 10,
+    "params_writes_redirected_to_temp": true,
+    "report": "LOGIC_CHECKS.json"
+  },
+  "note": "这些离线通过只证明覆盖的链路，不是聊天质量通过率；原候选和旧答卷未改。"
+}

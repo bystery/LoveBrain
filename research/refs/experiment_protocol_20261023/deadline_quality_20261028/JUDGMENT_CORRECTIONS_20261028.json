@@ -1,0 +1,65 @@
+{
+ "kind": "judgment_corrections_v1",
+ "date": "2026-10-28",
+ "why": "在写 FIX-9 复验时逐字重读 D02_T06 卡，发现该卡对'不回'同时给了两个相反的说法。先前把它计为候选的过度沉默错误，是只引了其中一句，属于判词口径不一致。按'同一证据两读时不得只取对候选不利的一读'的规矩，改为登记题卡矛盾、不计入候选严重错误。原判词不删，保留在 D1_WORKER_SCORES.py / D1_SCORECARD.json 里供复核。",
+ "corrections": [
+  {
+   "case_id": "D02_T06",
+   "batch": "BATCH-D1-GENERAL-20261028",
+   "old_judgment": "OVER_DECLINE：候选 action=no_reply，卡面要求接住；引用 private_guidance'既不能强推也不能玩消失'",
+   "new_judgment": "CARD_TENSION（题卡自相矛盾，不计候选胜负，也不计入严重错误）",
+   "evidence": {
+    "current_action_line": "……也不把教练劝买车当成她想买（可不回）。",
+    "private_guidance_line": "……但她已喊困收尾，此时既不能强推也不能玩消失、更不能替她和娃把安排敲死。",
+    "same_card_two_opposite_rules": true
+   },
+   "impact": {
+    "d1_over_decline_count": {
+     "before": 3,
+     "after": 2
+    },
+    "remaining_over_decline_cells": [
+     "D01_T08",
+     "D02_T08"
+    ],
+    "severe_error_count_d1": {
+     "before": 3,
+     "after": 2
+    },
+    "note": "两个剩余格子的卡面没有任何'可不回'字样，current_action 明确要求简短认可成果——这两格才是干净的过度沉默证据。"
+   }
+  },
+  {
+   "case_id": "D01_T06",
+   "batch": "BATCH-D1-GENERAL-20261028",
+   "old_judgment": "候选在 initiative 维 2 分（未按 lessons'她想我先拍板'拍板）",
+   "new_judgment": "维持 2 分，但把'卡缺陷'升级为显式登记：acceptable#1 要求'让她明早醒了再由她定'，与 required_this_turn 原子'她说再说吧其实是想我先拍板'语义相反",
+   "evidence": {
+    "acceptable_1": "顺着她先不折腾、不擅自抬电源，让她明早醒了再由她定用不用",
+    "required_atom": "D01_T06_a2 她说'再说吧'其实是想我先拍板 (required_this_turn=true)",
+    "note": "D03 的卡已刻意避免同类矛盾（见 D03 audit.md §5）"
+   },
+   "impact": {
+    "note": "不计候选严重错误；D1 的该格分数保留（按卡面字面扣），但归因写清是卡的问题。"
+   }
+  },
+  {
+   "case_id": "D03_T02",
+   "batch": "BATCH-R3B-D03-CONTROL-20261028",
+   "old_judgment": "boundary 扣候选：把“你谈完要是有拿不准的条款，拍给我看一眼就行”判成“换个方式贴上去”（候选 boundary 2，原版 3，该格判候选输）",
+   "new_judgment": "改判平（boundary 3/3），R3B 配对由 1 胜 1 负 4 平修正为 1 胜 0 负 5 平",
+   "evidence": {
+    "card_acceptable_1": "一句“行”接住拒绝，说明谈完需要拿主意随时喊，不加压也不追问为什么不用陪",
+    "r3a_parent_same_card": "R3A 批原版在 D03_T02 说：“行，你自己去谈。谈完告我结果，条款要是看着别扭，发我念一遍。”——条件式留入口是同一形状",
+    "standard_conflict": "初判用 private_guidance（别换个帮忙方式继续贴上去）压过了同一张卡的 acceptable#1（随时喊），属口径不一致"
+   },
+   "impact": {
+    "r3b_pairing": {
+     "before": "候选 1 胜 / 原版 1 负 / 4 平",
+     "after": "候选 1 胜 / 原版 0 负 / 5 平"
+    },
+    "note": "同类措辞在 R3A 的 r2 与 r3 两臂上都出现，若继续扣分会同时判两臂违规；按卡面 acceptable#1 一律不扣。"
+   }
+  }
+ ]
+}

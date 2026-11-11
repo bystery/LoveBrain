@@ -1,0 +1,353 @@
+{
+  "package": {
+    "payload": 4130,
+    "hash_errors": []
+  },
+  "frozen": {
+    "candidates/phase0_beta_single/mechanism/mechanism.py": true,
+    "candidates/phase1_retr_idf/mechanism/mechanism.py": true,
+    "candidates/phase2_expr/mechanism/mechanism.py": true,
+    "candidates/phase2_expr/assets/system_prompt/expression.md": true,
+    "candidates/phase0_beta_single/params.json": true,
+    "candidates/phase1_retr_idf/params.json": true,
+    "candidates/phase2_expr/params.json": true,
+    "arena/lb_scorer.py": true,
+    "arena/lb_assembly.py": true,
+    "arena/lb_runner.py": true,
+    "arena/lb_gateway.py": true,
+    "tools/expr_audit.py": true,
+    "benchmark/episodes/NCA_CORR_INTENT_v1.json": true,
+    "benchmark/episodes/NCB_ENTITY_DENSE_v1.json": true,
+    "refs/L3B_THREE_ARM_PLAN_20261020.md": true
+  },
+  "executor_sha256": "2d3e572499b8917f0ab6fe278a72ea871f4f88c3cdfe63984c9e2fa84cc68849",
+  "registered_executor_sha256": "2d3e572499b8917f0ab6fe278a72ea871f4f88c3cdfe63984c9e2fa84cc68849",
+  "config": {
+    "adapter": "openai_compat",
+    "model_env": "dsf",
+    "model_effective": "dsf",
+    "endpoint_env_name": "LB_API_BASE",
+    "endpoint_base": "http://127.0.0.1:17770/v1",
+    "key_set": true,
+    "temperature_effective": 0.7,
+    "temperature_note": "适配器归一化缺省 0.7（lb_gateway 出站实际值）",
+    "timeout_s_default": 120,
+    "chaos_attempt": null,
+    "cap": 66,
+    "retry_policy": "none（无重试额度；失败/未决即整批终止，恢复路径已禁用）",
+    "failure_policy": "fail-fast（v10 复核 §5：失败或 occupied 即终止整批；不作废失败槽继续；不自动新建批次重跑）",
+    "executor_sha256": "2d3e572499b8917f0ab6fe278a72ea871f4f88c3cdfe63984c9e2fa84cc68849",
+    "ts": "2026-10-21 10:33:17"
+  },
+  "slot_count": 66,
+  "slot_statuses": {
+    "success": 66
+  },
+  "errors": [],
+  "gateway_counts": {
+    "attempt_started": 66,
+    "attempt_completed": 66,
+    "restore_completed": 54
+  },
+  "event_pairing_errors": {},
+  "row_count": 66,
+  "group_count": 22,
+  "groups_three_arms": true,
+  "per_arm": {
+    "A1": {
+      "n": 22,
+      "recommended_nonempty": 22,
+      "nonempty_range": [
+        6,
+        8
+      ],
+      "nonempty_total": 163,
+      "score_counts": {
+        "10.0": 22
+      },
+      "expr_count_set": [
+        0
+      ]
+    },
+    "A2": {
+      "n": 22,
+      "recommended_nonempty": 22,
+      "nonempty_range": [
+        5,
+        8
+      ],
+      "nonempty_total": 167,
+      "score_counts": {
+        "10.0": 21,
+        "8.33": 1
+      },
+      "expr_count_set": [
+        0
+      ]
+    },
+    "A3": {
+      "n": 22,
+      "recommended_nonempty": 22,
+      "nonempty_range": [
+        6,
+        8
+      ],
+      "nonempty_total": 167,
+      "score_counts": {
+        "10.0": 22
+      },
+      "expr_count_set": [
+        1
+      ]
+    }
+  },
+  "nonempty_total": 497,
+  "alternative_total": 431,
+  "response_models": {
+    "dsf": 66
+  },
+  "response_ids_unique": true,
+  "start_end": [
+    "2026-10-21 10:33:17",
+    "2026-10-21 10:54:58"
+  ],
+  "elapsed_seconds": 1301.0,
+  "api_usage_totals": {
+    "prompt": 523145,
+    "completion": 19628
+  },
+  "nca_t5": [
+    {
+      "key": "A3|NCA|r1|NCA_t05",
+      "recommended": "周二晚上开。你那边不用准备太复杂，先问清楚新项目是做什么的、你进去负责哪块，见面提一句之前跟过集成项目就行。",
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "组会时间与新项目组准备",
+        "scene_facts": [
+          {
+            "text": "她今天21:12问我组会几点开",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:15说她领导让她下周先跟新项目组碰一下，问我该准备什么",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "10-27她工作变动",
+            "status": "进行中",
+            "state": "她确认是换项目组、仍在原部门，领导安排她下周先跟新组碰面"
+          }
+        ]
+      }
+    },
+    {
+      "key": "A1|NCA|r1|NCA_t05",
+      "recommended": "周二晚上七点开，两小时打底。新组那边不用准备太多，把手上做过的项目列三条，再问清你负责哪块，够用了。",
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "组会时间与新项目组准备",
+        "scene_facts": [
+          {
+            "text": "她问我周二组会几点开",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她领导让她下周先跟新项目组碰一下",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "2026-10-27 她换项目组",
+            "status": "进行中",
+            "state": "领导安排她下周先跟新项目组碰面"
+          },
+          {
+            "item": "她发良渚照片给我",
+            "status": "进行中",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "一起看纪录片",
+            "status": "进行中",
+            "state": "本轮未提及"
+          }
+        ]
+      }
+    },
+    {
+      "key": "A2|NCA|r1|NCA_t05",
+      "recommended": "周二晚上七点。碰面就问三件事：新项目现在做到哪一步、你负责哪一块、平时跟谁对接。",
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "组会时间与新项目组碰面准备",
+        "scene_facts": [
+          {
+            "text": "她今天21:12问我组会几点开",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:15说领导让她下周先跟新项目组碰一下，问我该准备什么",
+            "source_ids": [
+              "m2"
+            ]
+          },
+          {
+            "text": "我今晚21:00提过我们组会在搞检索加速",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "她发良渚照片",
+            "status": "进行中",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "2026-10-27一起看纪录片",
+            "status": "进行中",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "计划2026-11-02那周跟新项目组碰面",
+            "status": "新出现",
+            "state": "她领导安排她下周先跟新项目组碰一下，她在想准备什么"
+          }
+        ]
+      }
+    },
+    {
+      "key": "A1|NCA|r2|NCA_t05",
+      "recommended": "周二晚上七点。你那个碰头，先把项目背景和他们现在卡在哪摸清楚，带两个具体问题去，比带一堆材料管用。",
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "组会时间与新项目组碰头准备",
+        "scene_facts": [
+          {
+            "text": "她问我们组会几点开",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她领导让她下周先跟新项目组碰一下，她问该准备什么",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "2026-10-27 她换项目组",
+            "status": "进行中",
+            "state": "她下周要先跟新项目组碰头，问见面该准备什么"
+          }
+        ]
+      }
+    },
+    {
+      "key": "A2|NCA|r2|NCA_t05",
+      "recommended": "周二晚上开，具体几点我确认下跟你说。新组那边你先摸清三件事：项目现在到哪步、你接哪块、谁跟你对接。",
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "组会时间与新项目组准备",
+        "scene_facts": [
+          {
+            "text": "她问我周二组会几点开",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她领导让她下周先跟新项目组碰一下",
+            "source_ids": [
+              "m2"
+            ]
+          },
+          {
+            "text": "我提出周二组会内容是检索加速，她之前说想了解",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "10月换项目组",
+            "status": "进行中",
+            "state": "她领导下周让她先跟新项目组碰面，她在问要准备什么"
+          },
+          {
+            "item": "一起看纪录片",
+            "status": "进行中",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "良渚照片分享",
+            "status": "进行中",
+            "state": "本轮未提及"
+          }
+        ]
+      }
+    },
+    {
+      "key": "A3|NCA|r2|NCA_t05",
+      "recommended": "周二晚上七点多开。新组那边你先弄清楚两件事：项目卡在哪、谁拍板，别急着表态。",
+      "analysis": {
+        "topic_status": "drift",
+        "topic_label": "组会时间与新项目组准备",
+        "scene_facts": [
+          {
+            "text": "她今天21:12问我这边组会几点开",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:15说领导让她下周先跟新项目组碰一下",
+            "source_ids": [
+              "m2"
+            ]
+          },
+          {
+            "text": "她今天21:15问我新组碰面该准备什么",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ],
+        "ongoing": [
+          {
+            "item": "2026-10-27 一起看纪录片",
+            "status": "进行中",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "2026-10-27 她发良渚照片",
+            "status": "新出现",
+            "state": "本轮未提及"
+          },
+          {
+            "item": "2026-11-02 她跟新项目组碰面",
+            "status": "新出现",
+            "state": "领导安排她下周先去碰一下，具体日期未定"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W17_E208",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W17_E208_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w17_merge_live_20261102",
+ "n_queued": 1,
+ "queue": [
+  {
+   "pair_id": "LP:E208:E208_T01",
+   "order": "main",
+   "story": "E208",
+   "cid": "E208_T01",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 把'周师傅刚在群里回过我'当成已发生事实编造出来，属无据确定化；RIGHT 只承诺今晚再去确认，并把未知项标成待回话。",
+   "key_quote": "LEFT：周师傅刚在群里回过我，车没换人也没换",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 2,
+     "time": 3,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

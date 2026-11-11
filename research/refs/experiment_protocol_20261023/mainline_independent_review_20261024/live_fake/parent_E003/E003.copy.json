@@ -1,0 +1,221 @@
+{
+  "episode_id": "E003",
+  "persona": {
+    "me": "28岁成年人，常住成都；截至故事起点2026-11-09，经朋友认识对方两个月，已单独吃过两次饭，会互相打趣；通常不写长篇安慰。后续事件与关系变化以真实消息为准。",
+    "her": "27岁成年人，常住成都，工作偶尔出差；疲惫时说话直接；截至故事起点2026-11-09，双方尚未确认恋爱关系。后续事件与关系变化以真实消息为准。"
+  },
+  "initial_kb": {},
+  "turns": [
+    {
+      "case_id": "E003_T01",
+      "turn_type": "reply",
+      "input": {
+        "messages": [
+          {
+            "role": "ME",
+            "text": "我把最后一版文件发掉了",
+            "ts": "2026-11-09 22:31"
+          },
+          {
+            "role": "HER",
+            "text": "今天客户会总算讲完了",
+            "ts": "2026-11-09 22:33"
+          },
+          {
+            "role": "HER",
+            "text": "现在只想吃热的，不想再说一句“赋能”",
+            "ts": "2026-11-09 22:34"
+          }
+        ],
+        "clock": "2026-11-09 22:35",
+        "may_decline": false
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "E003_T02",
+      "turn_type": "reply",
+      "input": {
+        "messages": [
+          {
+            "role": "ME",
+            "text": "河边那家面馆，番茄牛腩还不错",
+            "ts": "2026-11-10 12:03"
+          },
+          {
+            "role": "HER",
+            "text": "你说的面馆我搜到了，离我公司十分钟",
+            "ts": "2026-11-10 12:07"
+          }
+        ],
+        "clock": "2026-11-10 12:08",
+        "note": "我周四晚上有空，还没有订位。",
+        "intent": {
+          "enabled": true,
+          "text": "想约她周四晚上吃面，先问问她有没有空。",
+          "status": "ACTIVE"
+        },
+        "may_decline": false
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "E003_T03",
+      "turn_type": "reply",
+      "input": {
+        "messages": [
+          {
+            "role": "ME",
+            "text": "周四晚上一起去吃？",
+            "ts": "2026-11-10 18:18"
+          },
+          {
+            "role": "HER",
+            "text": "周四不行，周五晚上倒是可以",
+            "ts": "2026-11-10 18:20"
+          },
+          {
+            "role": "HER",
+            "text": "先别订，我出差回来的时间还没定",
+            "ts": "2026-11-10 18:21"
+          }
+        ],
+        "clock": "2026-11-10 18:22",
+        "intent": {
+          "enabled": true,
+          "text": "想见她，但先等她确定返程，不催着订。",
+          "status": "ACTIVE"
+        },
+        "may_decline": false
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "E003_T04",
+      "turn_type": "reply",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "周五也够呛，我那趟车改到周六上午了",
+            "ts": "2026-11-12 16:40"
+          },
+          {
+            "role": "HER",
+            "text": "这周先不约了，我想回去好好睡一觉",
+            "ts": "2026-11-12 16:41"
+          }
+        ],
+        "clock": "2026-11-12 16:42",
+        "note": "我有点失落，这句只是给助手看的，不想发给她。",
+        "intent": {
+          "enabled": true,
+          "text": "这次先不约，接住她想休息的意思，不劝她硬挤时间。",
+          "status": "ACTIVE"
+        },
+        "may_decline": false
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "E003_T05",
+      "turn_type": "reply",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "今天还在武汉，刚从客户那儿出来",
+            "ts": "2026-11-13 23:56"
+          },
+          {
+            "role": "HER",
+            "text": "明早九点的车，回成都",
+            "ts": "2026-11-13 23:57"
+          }
+        ],
+        "clock": "2026-11-13 23:59",
+        "may_decline": false
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "E003_T06",
+      "turn_type": "reply",
+      "input": {
+        "messages": [
+          {
+            "role": "ME",
+            "text": "我还醒着",
+            "ts": "2026-11-14 00:03"
+          },
+          {
+            "role": "HER",
+            "text": "到酒店了",
+            "ts": "2026-11-14 00:05"
+          },
+          {
+            "role": "HER",
+            "text": "你要还醒着，借我吐槽两分钟",
+            "ts": "2026-11-14 00:06"
+          }
+        ],
+        "clock": "2026-11-14 00:07",
+        "may_decline": false
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "E003_T07",
+      "turn_type": "reply",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "到家睡了一下午，终于活了",
+            "ts": "2026-11-14 19:36"
+          },
+          {
+            "role": "HER",
+            "text": "突然觉得昨晚你没劝我振作，还挺好的",
+            "ts": "2026-11-14 19:37"
+          }
+        ],
+        "clock": "2026-11-14 19:38",
+        "intent": {
+          "enabled": false,
+          "text": "缓一缓，不推进邀约。",
+          "status": "DISABLED"
+        },
+        "may_decline": false
+      },
+      "gold": {}
+    },
+    {
+      "case_id": "E003_T08",
+      "turn_type": "reply",
+      "input": {
+        "messages": [
+          {
+            "role": "HER",
+            "text": "明晚要不要去那家面馆？这回我请",
+            "ts": "2026-11-15 18:26"
+          },
+          {
+            "role": "HER",
+            "text": "不过别给我点番茄，我不爱吃熟番茄",
+            "ts": "2026-11-15 18:27"
+          }
+        ],
+        "clock": "2026-11-15 18:28",
+        "note": "我周一晚上有空，六点半以后能到。",
+        "intent": {
+          "enabled": true,
+          "text": "我想答应，商量一下时间，口味让她自己选。",
+          "status": "ACTIVE"
+        },
+        "may_decline": false
+      },
+      "gold": {}
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-C4-SCREEN-20261026-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "supersedes": {
+  "file": "refs/experiment_protocol_20261023/c4_screen_20261026/AUTHORIZATION.json",
+  "why": "旧单从未消费（无账本、零真实调用）且 real_endpoint 为字符串，validate_authorization_doc 要求 {api_base,model,temperature,max_attempts} 对象；其登记的『v5 为锚、原版臂缺席』公式偏差已由两批互不重叠臂形消除。旧文件原样保留作历史，不再作派发依据。"
+ },
+ "granted_by": "持续执行授权（AGENTS.md §0 用户 2026-10-25 原话）+ WORKER_MARATHON_EXECUTION.md §0 阶段帽『机制筛选 128』；本文件是对既有授权的落地登记，不是新索取",
+ "budget_ledger": "logs/auth_budget/AUTH-C4-SCREEN-20261026-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 128
+ },
+ "api_config": "api_cfg:openai_compat_stream_true_v1(include_usage gated)——与 96 批/D5 同一共同流式身份；数字不与历史非流式批合并",
+ "scope": {
+  "purpose": "C4 机制筛选：四臂（原版/v5/目标动作候选/证据记忆候选）在 4 条开发故事×8 位的同一 32 个位点上各跑一次，共 128 次；与执行书 §4 公式逐字一致，无臂缺席、无偏差",
+  "stage_cap_reference": "WORKER_MARATHON_EXECUTION.md §0 表『机制筛选 128』",
+  "arms": [
+   "reference_product_v1",
+   "v5_purpose_aligned",
+   "goal_action_v1",
+   "evidence_memory_v1"
+  ],
+  "episodes": [
+   "E006",
+   "E007",
+   "E008",
+   "E012"
+  ],
+  "positions_per_arm": 32,
+  "batches": [
+   "sweep_a_orig_vs_goal",
+   "sweep_b_v5_vs_mem"
+  ],
+  "arm_pairing": {
+   "sweep_a_orig_vs_goal": "reference_product_v1(parent) vs goal_action_v1(candidate)",
+   "sweep_b_v5_vs_mem": "v5_purpose_aligned(parent) vs evidence_memory_v1(candidate)"
+  },
+  "comparability_note": "每臂状态只由自身历史演进、两批不共享 resident，故位点级四臂可比；批内交错为逐 slot parent_first/candidate_first 交替（E006/E012 父先，E008/E007 候选先）",
+  "cards": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json（32 张新建合并卡：03/04 选取 + 05 r2 覆盖 E007_T03/E008_T03；逐字回核与未改写断言见 .PROVENANCE.json；卡 split=dev_exposed、review_status 原样，不冒充人工认证）",
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "third_arm": false,
+  "automatic_judge": false,
+  "interleaving": "逐 slot 交错、两臂独立 resident 状态、整批预检后原子占额",
+  "stream_identity_separate_from": "AUTH-V5/AUTH-R2/AUTH-V3/AUTH-NEWSTORY-96/AUTH-STREAM-INT/AUTH-EVAL-JUDGE/AUTH-A3-JUDGE 均已 CLOSED，不得复用额度或冒充同一配置身份",
+  "perf_ledger_untouched": "AUTH-HARNESS-PERF-PHASE1-20261025-01（used 4/256）本批不写入；考生运行桶与评估桶分账"
+ },
+ "frozen_bindings": {
+  "sweep_a_orig_vs_goal": {
+   "plan_file": "refs/experiment_protocol_20261023/c4_screen_20261026/sweep_a_orig_vs_goal.INTERLEAVE_PLAN.json",
+   "plan_sha256": "7f158c57495e200dec990db48630228e8ea5a1724227b032b40c75ed1061736f",
+   "batch_id": "BATCH-C4-A-ORIG-VS-GOAL-20261026",
+   "cards_file": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+   "attempts": 64,
+   "parent": "reference_product_v1",
+   "candidate": "goal_action_v1",
+   "parent_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "candidate_identity_sha256": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59",
+   "api_config_identity": "5b5948ec5aed8093535c448f5e651f9235f7e18adad4c451d80e136f5905f2d3"
+  },
+  "sweep_b_v5_vs_mem": {
+   "plan_file": "refs/experiment_protocol_20261023/c4_screen_20261026/sweep_b_v5_vs_mem.INTERLEAVE_PLAN.json",
+   "plan_sha256": "1f0d78c6aecd8781a478927e85c8e3484370c619df6b4b209c422b0f90bfdf16",
+   "batch_id": "BATCH-C4-B-V5-VS-MEM-20261026",
+   "cards_file": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+   "attempts": 64,
+   "parent": "v5_purpose_aligned",
+   "candidate": "evidence_memory_v1",
+   "parent_identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+   "candidate_identity_sha256": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26",
+   "api_config_identity": "5b5948ec5aed8093535c448f5e651f9235f7e18adad4c451d80e136f5905f2d3"
+  }
+ },
+ "arm_identities_frozen": {
+  "reference_product_v1": [
+   "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+   "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+   "4f4ec9a887ae636d3e96e72270a54c7dea9d79a7b76ebfddfb6c466a698474dc",
+   "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+   "a05e26673c51fa19aaa17a845f4955fddf684fd76912ee11649a4b190164592f",
+   "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f",
+   "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+   "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba",
+   "ecca9f87326b3217a4226a46242871e3f5c82ffb0f6639244ab2aa9b998763da"
+  ],
+  "v5_purpose_aligned": [
+   "11eb79fbca6e5f06800bfa9a4570a39d33b45d8bf4b90b877d06888dd2500940",
+   "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+   "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+   "422ec2277b7a6d7801f61c8c17701f1fa3d7a8cda8d8ed01aef6c9101b32e2cf",
+   "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+   "876a5d8830e637899722d23801b461f2479fd6ef10f06a4c0a5a22d91ab9d03f",
+   "e5f072843cb300b35efce0a583120376e30dc56231478fba9d831045392ec11d",
+   "fe5221b5bdc4c00a5e8837841140e778fc7052ab38ac8043f8f4d1f16d007eb0"
+  ],
+  "goal_action_v1": [
+   "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+   "3233c428ab8e452b7bcbbb99cfae8489f935a236c241fb572c99f4591ab832c4",
+   "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+   "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+   "e0485722cfa6a682a091cad70212a6841c96d13c19f785e424c4f9d15b19f6d8",
+   "fe5221b5bdc4c00a5e8837841140e778fc7052ab38ac8043f8f4d1f16d007eb0",
+   "fe70f14c298dcfa75d5a3fc107b63a3c7a901f42b4e203f98dd0a9a07ca60c52"
+  ],
+  "evidence_memory_v1": [
+   "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf",
+   "3549d839180eeec68a1aee149d7c3c7c12dfcc83698bfc1e8662b1fe857b89c7",
+   "42759e76f0fc4fbf62deaafd829b5ab5faaf7615ada59370dd83423ece3fa19f",
+   "5881018ab1b370fa8617bfa1859c425e1a58556b061005f76da9162a4794e153",
+   "5e49be1119f2332def14229f746e0a18fa035673ca0437420767f1c327b2f9d6",
+   "81dfc794ab34d23941b72bd76fb92992ba562be08ac0bdf5c66008678f0f71c8",
+   "fe5221b5bdc4c00a5e8837841140e778fc7052ab38ac8043f8f4d1f16d007eb0"
+  ]
+ },
+ "identity_freeze_note": "重冻于派发前（本脚本产出）：臂源码在侧线 07:5x 之后未再变动；四臂目录现状哈希集与两批计划的 harness 身份由脚本重算而非手抄",
+ "approval_basis": "M0 收口完成（STATE_MAP 06:41/06:50 段 + refs/experiment_protocol_20261023/mainline_review_20261026/REVIEW.md）；C2/C3 候选已实现（candidates/goal_action_v1、candidates/evidence_memory_v1）；capture 预检两批 64/64 零网络通过（logs/c4_prep_a_20261026、logs/c4_prep_b_20261026）",
+ "real_model_calls_before_this": 0
+}

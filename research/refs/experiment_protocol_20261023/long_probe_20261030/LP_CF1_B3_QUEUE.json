@@ -1,0 +1,41 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "CF1",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_CF1_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/longprobe_cf1_live_20261102",
+ "n_queued": 1,
+ "queue": [
+  {
+   "pair_id": "LP:E151:E151_T09",
+   "order": "main",
+   "story": "E151",
+   "cid": "E151_T09",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT 把地形说成'25公里到码头那段是缓下坡，他推着不费劲'——这属于把明确未知的事项（大壮独自推车三公里是否顺利）当成已知确定事实来讲，而且自造了地形，属于无据确定化；另外没有落实'到码头发定位、确认上船'这一核验动作。LEFT 分工对调、18迈（她自己定的数）、定位确认上船、日落保底全部到位，按派工单口吻收尾，没有硬伤。",
+   "key_quote": "LEFT：就两条——18迈是你自己定的数，别骑着骑着上头；大壮到了码头，把定位发我，我确认他上了船。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

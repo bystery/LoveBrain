@@ -1,0 +1,61 @@
+{
+ "kind": "benchmark_v1_phase2_pilot_subset",
+ "authorization_id": "AUTH-BM1-PHASE2-PILOT-20261108-01",
+ "selected_at": "2026-11-08",
+ "selection_rule": "指导书 §10.1：T01-T08 各约4篇 + T09 2新2旧（审核推荐 E063/LRE121，需加载 overlay）+ T10 2组完整孪生；不取 HOLDOUT（HOLDOUT 尚未生成）",
+ "wave4_new": [
+  "E301",
+  "E302",
+  "E303",
+  "E304",
+  "E305",
+  "E306",
+  "E307",
+  "E308",
+  "E309",
+  "E310",
+  "E311",
+  "E312",
+  "E313",
+  "E314",
+  "E315",
+  "E316",
+  "E317",
+  "E318",
+  "E319",
+  "E320",
+  "E321",
+  "E322",
+  "E323",
+  "E324",
+  "E325",
+  "E326",
+  "E327",
+  "E328",
+  "E329",
+  "E330",
+  "E331",
+  "E332",
+  "E333",
+  "E334",
+  "E335",
+  "E336",
+  "E337",
+  "E338"
+ ],
+ "old_t09": [
+  "E063",
+  "LRE121"
+ ],
+ "excluded_from_subset": [],
+ "attempt_budget_estimate": {
+  "turns_wave4": "34*12 + 24 + 32 = 464",
+  "old_t09_turns": "E063=24, LRE121=40 (audit 数据)",
+  "attempts_if_full": "约 (464+64)*2 = 1056 <= cap 1500"
+ },
+ "arms": [
+  "DIRECT",
+  "CURRENT"
+ ],
+ "note": "LRE121 需加载 gold_overlays/LRE121_gold_overlay_v1.json；E065 overlay 不在本子集"
+}

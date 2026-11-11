@@ -1,0 +1,43 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-W17C-20261103-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30常设授权+2026-11-02全面授权重申",
+ "phase": "W17C",
+ "budget_ledger": "logs/auth_budget/AUTH-W17C-20261103-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 144
+ },
+ "scope": {
+  "purpose": "W17c 合并复评批（W17-03 判据冻结）：b_norecap_guard vs r9_slim on E157/E164/E170/E183/E191/E212（全部未暴露 12 轮篇），144 attempts。G1 九维最差>=-0.3 且 interact/emotion/initiative>=-0.2；G2 severe 亲读 cand<=par；G3 契约违规 cand<=par+1；G4 空回复 0；G5 成本只报告；全过→合并单冠军。--workers 6 与 W18 并行",
+  "route": "two_arm_batch_144",
+  "total_attempts": 144,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "W17C": "BATCH-W17C-MERGE-20261103"
+  },
+  "episodes": [],
+  "cards": "benchmark/stories_v2/wave3/GRADING_CARDS_W17C.json",
+  "plan_sha256": "b42cdf2c1e34747ddf482e9a7e01418223dba82da755c6d57c9b8ec05c6aee71"
+ },
+ "frozen_bindings": {
+  "W17C": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/W17C.INTERLEAVE_PLAN.json",
+   "plan_sha256": "b42cdf2c1e34747ddf482e9a7e01418223dba82da755c6d57c9b8ec05c6aee71",
+   "batch_id": "BATCH-W17C-MERGE-20261103",
+   "cards_file": "benchmark/stories_v2/wave3/GRADING_CARDS_W17C.json",
+   "attempts": 144,
+   "parent": "action_policy_r9_slim",
+   "candidate": "window_expand_b_norecap_guard",
+   "parent_identity_sha256": "2099c12f55337dd7dcfac0327cdd9411f7e5de2cdaa0a7083498bab6d12c9c03",
+   "candidate_identity_sha256": "9189e4f2a3739983c2726b992e0edbcd2a4d47c79ff8d2ff497f5e3b995cf7f7"
+  }
+ }
+}

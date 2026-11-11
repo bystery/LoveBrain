@@ -1,0 +1,4454 @@
+{
+ "kind": "output_repair_parity_v1",
+ "source_of_truth": "真实 live 答卷 reply_raw.txt（7 批 260 份）",
+ "summary": {
+  "raw_files": 260,
+  "old_sendable": 246,
+  "new_sendable": 247,
+  "extension_recoveries": 1,
+  "both_fail": 13,
+  "regressions": 0,
+  "invariant_failures": 0,
+  "pass": true
+ },
+ "extension_recovery_positions": [
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK02/out/turn_01_AK02_T01/reply_raw.txt",
+   "old_outcome": "delivery_failed",
+   "old_sendable_len": 0,
+   "new_sendable_len": 51,
+   "new_rule_count": 1,
+   "old_ok": false,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "E2_premature_top_level_brace"
+   ]
+  }
+ ],
+ "both_fail_positions": [
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK09/out/turn_01_AK09_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 1,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "R4_no_reply_expression_missing"
+   ]
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK12/out/turn_01_AK12_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 1,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "R4_no_reply_expression_missing"
+   ]
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK09/out/turn_01_AK09_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK12/out/turn_01_AK12_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK09/out/turn_01_AK09_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 1,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "R4_no_reply_expression_missing"
+   ]
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK12/out/turn_01_AK12_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 1,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "R4_no_reply_expression_missing"
+   ]
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D01/out/turn_08_D01_T08/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D02/out/turn_06_D02_T06/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D02/out/turn_08_D02_T08/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_AK12/out/turn_01_AK12_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D01/out/turn_08_D01_T08/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D02/out/turn_06_D02_T06/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D02/out/turn_08_D02_T08/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  }
+ ],
+ "failures": [],
+ "rows": [
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E024/out/turn_01_E024_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 40,
+   "new_sendable_len": 40,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E024/out/turn_02_E024_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 37,
+   "new_sendable_len": 37,
+   "new_rule_count": 2,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "E1_style_key_normalized",
+    "I2_I3_I4_inherited_normalize"
+   ]
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E024/out/turn_03_E024_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 29,
+   "new_sendable_len": 29,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E024/out/turn_04_E024_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 16,
+   "new_sendable_len": 16,
+   "new_rule_count": 2,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "I2_I3_I4_inherited_normalize",
+    "I3_directions_overflow_preserved"
+   ]
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E024/out/turn_05_E024_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 46,
+   "new_sendable_len": 46,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E024/out/turn_06_E024_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 20,
+   "new_sendable_len": 20,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E024/out/turn_07_E024_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 23,
+   "new_sendable_len": 23,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E024/out/turn_08_E024_T08/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 36,
+   "new_sendable_len": 36,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E024/out/turn_09_E024_T09/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 28,
+   "new_sendable_len": 28,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E024/out/turn_10_E024_T10/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 33,
+   "new_sendable_len": 33,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E024/out/turn_11_E024_T11/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 45,
+   "new_sendable_len": 45,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E024/out/turn_12_E024_T12/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 17,
+   "new_sendable_len": 17,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E027/out/turn_01_E027_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 43,
+   "new_sendable_len": 43,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E027/out/turn_02_E027_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 45,
+   "new_sendable_len": 45,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E027/out/turn_03_E027_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 33,
+   "new_sendable_len": 33,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E027/out/turn_04_E027_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E027/out/turn_05_E027_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 36,
+   "new_sendable_len": 36,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E027/out/turn_06_E027_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 24,
+   "new_sendable_len": 24,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E027/out/turn_07_E027_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 35,
+   "new_sendable_len": 35,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E027/out/turn_08_E027_T08/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E027/out/turn_09_E027_T09/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 38,
+   "new_sendable_len": 38,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E027/out/turn_10_E027_T10/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 22,
+   "new_sendable_len": 22,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E027/out/turn_11_E027_T11/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 37,
+   "new_sendable_len": 37,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E027/out/turn_12_E027_T12/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 7,
+   "new_sendable_len": 7,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E031/out/turn_01_E031_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 51,
+   "new_sendable_len": 51,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E031/out/turn_02_E031_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 20,
+   "new_sendable_len": 20,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E031/out/turn_03_E031_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E031/out/turn_04_E031_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E031/out/turn_05_E031_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 23,
+   "new_sendable_len": 23,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E031/out/turn_06_E031_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 17,
+   "new_sendable_len": 17,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E031/out/turn_07_E031_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 32,
+   "new_sendable_len": 32,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E031/out/turn_08_E031_T08/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 25,
+   "new_sendable_len": 25,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E031/out/turn_09_E031_T09/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 22,
+   "new_sendable_len": 22,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E031/out/turn_10_E031_T10/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 35,
+   "new_sendable_len": 35,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E031/out/turn_11_E031_T11/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 25,
+   "new_sendable_len": 25,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E031/out/turn_12_E031_T12/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 20,
+   "new_sendable_len": 20,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E034/out/turn_01_E034_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 33,
+   "new_sendable_len": 33,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E034/out/turn_02_E034_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 30,
+   "new_sendable_len": 30,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E034/out/turn_03_E034_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 49,
+   "new_sendable_len": 49,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E034/out/turn_04_E034_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 66,
+   "new_sendable_len": 66,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E034/out/turn_05_E034_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 41,
+   "new_sendable_len": 41,
+   "new_rule_count": 2,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "E1_unmappable_key",
+    "I2_I3_I4_inherited_normalize"
+   ]
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E034/out/turn_06_E034_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E034/out/turn_07_E034_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 34,
+   "new_sendable_len": 34,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E034/out/turn_08_E034_T08/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 28,
+   "new_sendable_len": 28,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E034/out/turn_09_E034_T09/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 28,
+   "new_sendable_len": 28,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E034/out/turn_10_E034_T10/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 29,
+   "new_sendable_len": 29,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E034/out/turn_11_E034_T11/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 51,
+   "new_sendable_len": 51,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/candidate_E034/out/turn_12_E034_T12/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 28,
+   "new_sendable_len": 28,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E024/out/turn_01_E024_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 22,
+   "new_sendable_len": 22,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E024/out/turn_02_E024_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 27,
+   "new_sendable_len": 27,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E024/out/turn_03_E024_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 30,
+   "new_sendable_len": 30,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E024/out/turn_04_E024_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 19,
+   "new_sendable_len": 19,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E024/out/turn_05_E024_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 19,
+   "new_sendable_len": 19,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E024/out/turn_06_E024_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 21,
+   "new_sendable_len": 21,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E024/out/turn_07_E024_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 16,
+   "new_sendable_len": 16,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E024/out/turn_08_E024_T08/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 12,
+   "new_sendable_len": 12,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E024/out/turn_09_E024_T09/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 12,
+   "new_sendable_len": 12,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E024/out/turn_10_E024_T10/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 26,
+   "new_sendable_len": 26,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E024/out/turn_11_E024_T11/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 16,
+   "new_sendable_len": 16,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E024/out/turn_12_E024_T12/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 23,
+   "new_sendable_len": 23,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E027/out/turn_01_E027_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 19,
+   "new_sendable_len": 19,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E027/out/turn_02_E027_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 36,
+   "new_sendable_len": 36,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E027/out/turn_03_E027_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 34,
+   "new_sendable_len": 34,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E027/out/turn_04_E027_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 38,
+   "new_sendable_len": 38,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E027/out/turn_05_E027_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 18,
+   "new_sendable_len": 18,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E027/out/turn_06_E027_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 13,
+   "new_sendable_len": 13,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E027/out/turn_07_E027_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 25,
+   "new_sendable_len": 25,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E027/out/turn_08_E027_T08/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 22,
+   "new_sendable_len": 22,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E027/out/turn_09_E027_T09/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 23,
+   "new_sendable_len": 23,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E027/out/turn_10_E027_T10/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 12,
+   "new_sendable_len": 12,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E027/out/turn_11_E027_T11/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 20,
+   "new_sendable_len": 20,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E027/out/turn_12_E027_T12/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 9,
+   "new_sendable_len": 9,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E031/out/turn_01_E031_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 23,
+   "new_sendable_len": 23,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E031/out/turn_02_E031_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 16,
+   "new_sendable_len": 16,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E031/out/turn_03_E031_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 17,
+   "new_sendable_len": 17,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E031/out/turn_04_E031_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 29,
+   "new_sendable_len": 29,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E031/out/turn_05_E031_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 24,
+   "new_sendable_len": 24,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E031/out/turn_06_E031_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 16,
+   "new_sendable_len": 16,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E031/out/turn_07_E031_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 17,
+   "new_sendable_len": 17,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E031/out/turn_08_E031_T08/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 28,
+   "new_sendable_len": 28,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E031/out/turn_09_E031_T09/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 17,
+   "new_sendable_len": 17,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E031/out/turn_10_E031_T10/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 22,
+   "new_sendable_len": 22,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E031/out/turn_11_E031_T11/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 19,
+   "new_sendable_len": 19,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E031/out/turn_12_E031_T12/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 6,
+   "new_sendable_len": 6,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E034/out/turn_01_E034_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 19,
+   "new_sendable_len": 19,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E034/out/turn_02_E034_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 25,
+   "new_sendable_len": 25,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E034/out/turn_03_E034_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 32,
+   "new_sendable_len": 32,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E034/out/turn_04_E034_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 24,
+   "new_sendable_len": 24,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E034/out/turn_05_E034_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 25,
+   "new_sendable_len": 25,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E034/out/turn_06_E034_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 28,
+   "new_sendable_len": 28,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E034/out/turn_07_E034_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 16,
+   "new_sendable_len": 16,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E034/out/turn_08_E034_T08/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 21,
+   "new_sendable_len": 21,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E034/out/turn_09_E034_T09/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 26,
+   "new_sendable_len": 26,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E034/out/turn_10_E034_T10/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 18,
+   "new_sendable_len": 18,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E034/out/turn_11_E034_T11/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 16,
+   "new_sendable_len": 16,
+   "new_rule_count": 2,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "I2_I3_I4_inherited_normalize",
+    "I3_directions_overflow_preserved"
+   ]
+  },
+  {
+   "path": "logs/p08_s1_live_20261028/parent_E034/out/turn_12_E034_T12/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 24,
+   "new_sendable_len": 24,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK01/out/turn_01_AK01_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 41,
+   "new_sendable_len": 41,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK02/out/turn_01_AK02_T01/reply_raw.txt",
+   "old_outcome": "delivery_failed",
+   "old_sendable_len": 0,
+   "new_sendable_len": 51,
+   "new_rule_count": 1,
+   "old_ok": false,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "E2_premature_top_level_brace"
+   ]
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK03/out/turn_01_AK03_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 40,
+   "new_sendable_len": 40,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK04/out/turn_01_AK04_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 30,
+   "new_sendable_len": 30,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK05/out/turn_01_AK05_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 45,
+   "new_sendable_len": 45,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK06/out/turn_01_AK06_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 53,
+   "new_sendable_len": 53,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK07/out/turn_01_AK07_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 29,
+   "new_sendable_len": 29,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK08/out/turn_01_AK08_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 59,
+   "new_sendable_len": 59,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK09/out/turn_01_AK09_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 1,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "R4_no_reply_expression_missing"
+   ]
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK10/out/turn_01_AK10_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 54,
+   "new_sendable_len": 54,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK11/out/turn_01_AK11_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 47,
+   "new_sendable_len": 47,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/candidate_AK12/out/turn_01_AK12_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 1,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "R4_no_reply_expression_missing"
+   ]
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/parent_AK01/out/turn_01_AK01_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/parent_AK02/out/turn_01_AK02_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 35,
+   "new_sendable_len": 35,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/parent_AK03/out/turn_01_AK03_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 26,
+   "new_sendable_len": 26,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/parent_AK04/out/turn_01_AK04_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 17,
+   "new_sendable_len": 17,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/parent_AK05/out/turn_01_AK05_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 18,
+   "new_sendable_len": 18,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/parent_AK06/out/turn_01_AK06_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 32,
+   "new_sendable_len": 32,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/parent_AK07/out/turn_01_AK07_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 21,
+   "new_sendable_len": 21,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/parent_AK08/out/turn_01_AK08_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 35,
+   "new_sendable_len": 35,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/parent_AK09/out/turn_01_AK09_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 19,
+   "new_sendable_len": 19,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/parent_AK10/out/turn_01_AK10_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 23,
+   "new_sendable_len": 23,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/parent_AK11/out/turn_01_AK11_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 33,
+   "new_sendable_len": 33,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2_live_20261028/parent_AK12/out/turn_01_AK12_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 22,
+   "new_sendable_len": 22,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK01/out/turn_01_AK01_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 43,
+   "new_sendable_len": 43,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK02/out/turn_01_AK02_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 41,
+   "new_sendable_len": 41,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK03/out/turn_01_AK03_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 35,
+   "new_sendable_len": 35,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK04/out/turn_01_AK04_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 36,
+   "new_sendable_len": 36,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK05/out/turn_01_AK05_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 49,
+   "new_sendable_len": 49,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK06/out/turn_01_AK06_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 39,
+   "new_sendable_len": 39,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK07/out/turn_01_AK07_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 26,
+   "new_sendable_len": 26,
+   "new_rule_count": 2,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "I2_I3_I4_inherited_normalize",
+    "I3_directions_overflow_preserved"
+   ]
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK08/out/turn_01_AK08_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 49,
+   "new_sendable_len": 49,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK09/out/turn_01_AK09_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK10/out/turn_01_AK10_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 62,
+   "new_sendable_len": 62,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK11/out/turn_01_AK11_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 36,
+   "new_sendable_len": 36,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/candidate_AK12/out/turn_01_AK12_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/parent_AK01/out/turn_01_AK01_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 39,
+   "new_sendable_len": 39,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/parent_AK02/out/turn_01_AK02_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/parent_AK03/out/turn_01_AK03_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 18,
+   "new_sendable_len": 18,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/parent_AK04/out/turn_01_AK04_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 20,
+   "new_sendable_len": 20,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/parent_AK05/out/turn_01_AK05_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 24,
+   "new_sendable_len": 24,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/parent_AK06/out/turn_01_AK06_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 30,
+   "new_sendable_len": 30,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/parent_AK07/out/turn_01_AK07_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 26,
+   "new_sendable_len": 26,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/parent_AK08/out/turn_01_AK08_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 45,
+   "new_sendable_len": 45,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/parent_AK09/out/turn_01_AK09_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 13,
+   "new_sendable_len": 13,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/parent_AK10/out/turn_01_AK10_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 23,
+   "new_sendable_len": 23,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/parent_AK11/out/turn_01_AK11_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 39,
+   "new_sendable_len": 39,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s2r_live_20261028/parent_AK12/out/turn_01_AK12_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 22,
+   "new_sendable_len": 22,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK01/out/turn_01_AK01_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 53,
+   "new_sendable_len": 53,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK02/out/turn_01_AK02_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 67,
+   "new_sendable_len": 67,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK03/out/turn_01_AK03_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 36,
+   "new_sendable_len": 36,
+   "new_rule_count": 2,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "I2_I3_I4_inherited_normalize",
+    "I3_directions_overflow_preserved"
+   ]
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK04/out/turn_01_AK04_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 21,
+   "new_sendable_len": 21,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK05/out/turn_01_AK05_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 49,
+   "new_sendable_len": 49,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK06/out/turn_01_AK06_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 45,
+   "new_sendable_len": 45,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK07/out/turn_01_AK07_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 45,
+   "new_sendable_len": 45,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK08/out/turn_01_AK08_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 56,
+   "new_sendable_len": 56,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK09/out/turn_01_AK09_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 1,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "R4_no_reply_expression_missing"
+   ]
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK10/out/turn_01_AK10_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 27,
+   "new_sendable_len": 27,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK11/out/turn_01_AK11_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 35,
+   "new_sendable_len": 35,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/candidate_AK12/out/turn_01_AK12_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 1,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "R4_no_reply_expression_missing"
+   ]
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/parent_AK01/out/turn_01_AK01_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 43,
+   "new_sendable_len": 43,
+   "new_rule_count": 2,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "E1_style_key_normalized",
+    "I2_I3_I4_inherited_normalize"
+   ]
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/parent_AK02/out/turn_01_AK02_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 45,
+   "new_sendable_len": 45,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/parent_AK03/out/turn_01_AK03_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 35,
+   "new_sendable_len": 35,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/parent_AK04/out/turn_01_AK04_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 36,
+   "new_sendable_len": 36,
+   "new_rule_count": 2,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "I2_I3_I4_inherited_normalize",
+    "I3_directions_overflow_preserved"
+   ]
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/parent_AK05/out/turn_01_AK05_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 32,
+   "new_sendable_len": 32,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/parent_AK06/out/turn_01_AK06_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 39,
+   "new_sendable_len": 39,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/parent_AK07/out/turn_01_AK07_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 41,
+   "new_sendable_len": 41,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/parent_AK08/out/turn_01_AK08_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 59,
+   "new_sendable_len": 59,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/parent_AK09/out/turn_01_AK09_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 34,
+   "new_sendable_len": 34,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/parent_AK10/out/turn_01_AK10_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 30,
+   "new_sendable_len": 30,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/parent_AK11/out/turn_01_AK11_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 47,
+   "new_sendable_len": 47,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_s3_live_20261028/parent_AK12/out/turn_01_AK12_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 24,
+   "new_sendable_len": 24,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D01/out/turn_01_D01_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 55,
+   "new_sendable_len": 55,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D01/out/turn_02_D01_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 56,
+   "new_sendable_len": 56,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D01/out/turn_03_D01_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 20,
+   "new_sendable_len": 20,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D01/out/turn_04_D01_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 35,
+   "new_sendable_len": 35,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D01/out/turn_05_D01_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 33,
+   "new_sendable_len": 33,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D01/out/turn_06_D01_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 21,
+   "new_sendable_len": 21,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D01/out/turn_07_D01_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 35,
+   "new_sendable_len": 35,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D01/out/turn_08_D01_T08/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D02/out/turn_01_D02_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 27,
+   "new_sendable_len": 27,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D02/out/turn_02_D02_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 46,
+   "new_sendable_len": 46,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D02/out/turn_03_D02_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 71,
+   "new_sendable_len": 71,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D02/out/turn_04_D02_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 46,
+   "new_sendable_len": 46,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D02/out/turn_05_D02_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 42,
+   "new_sendable_len": 42,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D02/out/turn_06_D02_T06/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D02/out/turn_07_D02_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 40,
+   "new_sendable_len": 40,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/candidate_D02/out/turn_08_D02_T08/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D01/out/turn_01_D01_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 39,
+   "new_sendable_len": 39,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D01/out/turn_02_D01_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 32,
+   "new_sendable_len": 32,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D01/out/turn_03_D01_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 26,
+   "new_sendable_len": 26,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D01/out/turn_04_D01_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 26,
+   "new_sendable_len": 26,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D01/out/turn_05_D01_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 38,
+   "new_sendable_len": 38,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D01/out/turn_06_D01_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 13,
+   "new_sendable_len": 13,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D01/out/turn_07_D01_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 24,
+   "new_sendable_len": 24,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D01/out/turn_08_D01_T08/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 5,
+   "new_sendable_len": 5,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D02/out/turn_01_D02_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 18,
+   "new_sendable_len": 18,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D02/out/turn_02_D02_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 13,
+   "new_sendable_len": 13,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D02/out/turn_03_D02_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 29,
+   "new_sendable_len": 29,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D02/out/turn_04_D02_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 34,
+   "new_sendable_len": 34,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D02/out/turn_05_D02_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 21,
+   "new_sendable_len": 21,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D02/out/turn_06_D02_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 15,
+   "new_sendable_len": 15,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D02/out/turn_07_D02_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 26,
+   "new_sendable_len": 26,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_d1_live_20261028/parent_D02/out/turn_08_D02_T08/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 14,
+   "new_sendable_len": 14,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_AK09/out/turn_01_AK09_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 20,
+   "new_sendable_len": 20,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_AK12/out/turn_01_AK12_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 26,
+   "new_sendable_len": 26,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D01/out/turn_01_D01_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 50,
+   "new_sendable_len": 50,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D01/out/turn_02_D01_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 61,
+   "new_sendable_len": 61,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D01/out/turn_03_D01_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D01/out/turn_04_D01_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 37,
+   "new_sendable_len": 37,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D01/out/turn_05_D01_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 45,
+   "new_sendable_len": 45,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D01/out/turn_06_D01_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 14,
+   "new_sendable_len": 14,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D01/out/turn_07_D01_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 27,
+   "new_sendable_len": 27,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D01/out/turn_08_D01_T08/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 24,
+   "new_sendable_len": 24,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D02/out/turn_01_D02_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 43,
+   "new_sendable_len": 43,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D02/out/turn_02_D02_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 2,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "I2_I3_I4_inherited_normalize",
+    "I3_directions_overflow_preserved"
+   ]
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D02/out/turn_03_D02_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 49,
+   "new_sendable_len": 49,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D02/out/turn_04_D02_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 40,
+   "new_sendable_len": 40,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D02/out/turn_05_D02_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 35,
+   "new_sendable_len": 35,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D02/out/turn_06_D02_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D02/out/turn_07_D02_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 69,
+   "new_sendable_len": 69,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D02/out/turn_08_D02_T08/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D03/out/turn_01_D03_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 57,
+   "new_sendable_len": 57,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D03/out/turn_02_D03_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 25,
+   "new_sendable_len": 25,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D03/out/turn_03_D03_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 27,
+   "new_sendable_len": 27,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D03/out/turn_04_D03_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 29,
+   "new_sendable_len": 29,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D03/out/turn_05_D03_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/candidate_D03/out/turn_06_D03_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 48,
+   "new_sendable_len": 48,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_AK09/out/turn_01_AK09_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 22,
+   "new_sendable_len": 22,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_AK12/out/turn_01_AK12_T01/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D01/out/turn_01_D01_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 53,
+   "new_sendable_len": 53,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D01/out/turn_02_D01_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 54,
+   "new_sendable_len": 54,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D01/out/turn_03_D01_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 33,
+   "new_sendable_len": 33,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D01/out/turn_04_D01_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 47,
+   "new_sendable_len": 47,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D01/out/turn_05_D01_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 38,
+   "new_sendable_len": 38,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D01/out/turn_06_D01_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 19,
+   "new_sendable_len": 19,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D01/out/turn_07_D01_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 53,
+   "new_sendable_len": 53,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D01/out/turn_08_D01_T08/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D02/out/turn_01_D02_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 38,
+   "new_sendable_len": 38,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D02/out/turn_02_D02_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 37,
+   "new_sendable_len": 37,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D02/out/turn_03_D02_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 59,
+   "new_sendable_len": 59,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D02/out/turn_04_D02_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 45,
+   "new_sendable_len": 45,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D02/out/turn_05_D02_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D02/out/turn_06_D02_T06/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D02/out/turn_07_D02_T07/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 39,
+   "new_sendable_len": 39,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D02/out/turn_08_D02_T08/reply_raw.txt",
+   "old_outcome": "no_reply_or_empty",
+   "old_sendable_len": 0,
+   "new_sendable_len": 0,
+   "new_rule_count": 0,
+   "old_ok": false,
+   "new_ok": false,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D03/out/turn_01_D03_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 95,
+   "new_sendable_len": 95,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D03/out/turn_02_D03_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 30,
+   "new_sendable_len": 30,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D03/out/turn_03_D03_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 24,
+   "new_sendable_len": 24,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D03/out/turn_04_D03_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 16,
+   "new_sendable_len": 16,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D03/out/turn_05_D03_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 38,
+   "new_sendable_len": 38,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3a_live_20261028/parent_D03/out/turn_06_D03_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 43,
+   "new_sendable_len": 43,
+   "new_rule_count": 1,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": [
+    "E1_unmappable_key"
+   ]
+  },
+  {
+   "path": "logs/p08_r3b_live_20261028/candidate_D03/out/turn_01_D03_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 119,
+   "new_sendable_len": 119,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3b_live_20261028/candidate_D03/out/turn_02_D03_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 30,
+   "new_sendable_len": 30,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3b_live_20261028/candidate_D03/out/turn_03_D03_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 24,
+   "new_sendable_len": 24,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3b_live_20261028/candidate_D03/out/turn_04_D03_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 36,
+   "new_sendable_len": 36,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3b_live_20261028/candidate_D03/out/turn_05_D03_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 43,
+   "new_sendable_len": 43,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3b_live_20261028/candidate_D03/out/turn_06_D03_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 43,
+   "new_sendable_len": 43,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3b_live_20261028/parent_D03/out/turn_01_D03_T01/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 48,
+   "new_sendable_len": 48,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3b_live_20261028/parent_D03/out/turn_02_D03_T02/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 19,
+   "new_sendable_len": 19,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3b_live_20261028/parent_D03/out/turn_03_D03_T03/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 24,
+   "new_sendable_len": 24,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3b_live_20261028/parent_D03/out/turn_04_D03_T04/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 23,
+   "new_sendable_len": 23,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3b_live_20261028/parent_D03/out/turn_05_D03_T05/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 26,
+   "new_sendable_len": 26,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  },
+  {
+   "path": "logs/p08_r3b_live_20261028/parent_D03/out/turn_06_D03_T06/reply_raw.txt",
+   "old_outcome": "send",
+   "old_sendable_len": 31,
+   "new_sendable_len": 31,
+   "new_rule_count": 0,
+   "old_ok": true,
+   "new_ok": true,
+   "checks": {
+    "A_same_recommended": true,
+    "B_extra_dirs_preserved": true,
+    "C_unmapped_preserved": true,
+    "D_no_truncation": true
+   },
+   "new_rules": []
+  }
+ ]
+}

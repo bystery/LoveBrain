@@ -1,0 +1,75 @@
+{
+  "episode_id": "E012",
+  "candidate": "reference_product_v1",
+  "adapter": "openai_compat",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "lifecycle": "v2",
+  "contract": "legacy",
+  "run_id": "iso_20261024_224215_b0cc1e",
+  "runner_pid": 47360,
+  "turns": 8,
+  "turns_total": 8,
+  "complete": true,
+  "resumed_from": null,
+  "mean_score10": 8.33,
+  "veto_turns": 0,
+  "first_pass_rate": 1.0,
+  "tokens_total": {
+    "prompt": 8,
+    "completion": 8
+  },
+  "latency_ms": {
+    "p50": 28,
+    "p95": 34,
+    "max": 35,
+    "n": 8
+  },
+  "integrity": {
+    "episode_sha256": "abfcd7fc77165028014cfc027d274caa8af554415c4c6a44e1a1f6a3b6048d6c",
+    "code": {
+      "lb_runner.py": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3",
+      "lb_gateway.py": "a1f46a632d76a5e4759b5d15f6cc8872ec9aee2eee491b638d864f3198de07b6",
+      "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+      "lb_scorer.py": "b3dbea758be36b25eaceb15c8c30259c4fdcd5ba7e7af1f7cf87904c206c4f65",
+      "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+    },
+    "candidate_tree": {
+      "IDENTITY.md": "4f4ec9a887ae636d3e96e72270a54c7dea9d79a7b76ebfddfb6c466a698474dc",
+      "params.json": "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f",
+      "product_memory.py": "a05e26673c51fa19aaa17a845f4955fddf684fd76912ee11649a4b190164592f",
+      "reference_chain.py": "ecca9f87326b3217a4226a46242871e3f5c82ffb0f6639244ab2aa9b998763da",
+      "assets/system_prompt/core.md": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+      "assets/system_prompt/format.md": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+      "assets/system_prompt/naturalness_check.md": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+      "assets/system_prompt/redline.md": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+      "mechanism/mechanism.py": "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba",
+      "mechanism/__pycache__/mechanism.cpython-312.pyc": "2c1a1b81e5a2d069a54d3f0095f8dfe4269bae3e848030b6d2deadfc794c9a52",
+      "__pycache__/product_memory.cpython-312.pyc": "5d14127263279fc2ac3c7de45f45ae84bbaa5997e2d8139959f1beb58d51fc41",
+      "__pycache__/reference_chain.cpython-312.pyc": "88bceec5f2827fc77583950310bb8ae44483961ea61fbcd362ab8d528c032867"
+    }
+  },
+  "isolated": true,
+  "settlement_pending_turns": [],
+  "execution_fingerprint": {
+    "episode_id": "E012",
+    "episode_sha256_16": "abfcd7fc77165028",
+    "candidate": "reference_product_v1",
+    "adapter": "openai_compat",
+    "model": "dsf",
+    "temperature": 0.7
+  },
+  "report_metadata": {
+    "authorization_id": "AUTH-REHEARSAL-20261024224214",
+    "budget": {
+      "authorization_id": "AUTH-REHEARSAL-20261024224214",
+      "used": 47,
+      "max_attempts": 48,
+      "remaining": 1,
+      "closed": false,
+      "close_reason": null,
+      "ledger": "D:\\lovebrain-arena\\logs\\auth_budget_rehearsal\\AUTH-REHEARSAL-20261024224214.jsonl"
+    },
+    "evidence_paths": "报告/路径元数据不参与执行指纹"
+  },
+  "ts": "2026-10-24 22:42:18"
+}

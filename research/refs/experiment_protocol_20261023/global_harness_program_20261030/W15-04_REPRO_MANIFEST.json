@@ -1,0 +1,157 @@
+{
+ "kind": "w1504_repro_manifest",
+ "date": "2026-10-31",
+ "sections": {
+  "engine": [
+   {
+    "file": "arena/lb_runner.py",
+    "sha256": "4bf704c0d3e7fab59482d3b5a71820087a3ded1692f3c151e32d3aa97d7e9bc3"
+   },
+   {
+    "file": "arena/lb_gateway.py",
+    "sha256": "56867a44380fe03df4e84e945b1ed854a211d2f0b92d93b80b9e42d54e051d8e"
+   },
+   {
+    "file": "arena/lb_assembly.py",
+    "sha256": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c"
+   },
+   {
+    "file": "arena/lb_mechanism.py",
+    "sha256": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+   },
+   {
+    "file": "arena/api_candidate.py",
+    "sha256": "5b5948ec5aed8093535c448f5e651f9235f7e18adad4c451d80e136f5905f2d3"
+   },
+   {
+    "file": "arena/lb_stream_timing.py",
+    "sha256": "b7959d3e57b6c0db975f6d37c3dae98fc6633c85b155afff4d7463799d1e2f24"
+   }
+  ],
+  "dispatch": [
+   {
+    "file": "tools/run_max288_batch.py",
+    "sha256": "908d58695cccdac8be6d261894b47037367f1802de40d46e1f0eb8ffdbf2c685"
+   },
+   {
+    "file": "tools/dispatch_challenge_tier.py",
+    "sha256": "e5d481e57fde9bee65cb51a4937bad815c8e10b3e9757c0c2b9d4813c3da0ef9"
+   },
+   {
+    "file": "tools/story_custody.py",
+    "sha256": "932680ac539bcc2a8c207bc5e2aea9a4a29889c1e5b7b3d6b287999a9fee0329"
+   }
+  ],
+  "champion_chain": [
+   {
+    "file": "candidates/action_policy_r9_slim/params.json",
+    "sha256": "eb3b66211572fec03f4132f895f3afe8016bfdf57cc4efffc21374a59f2c9787"
+   },
+   {
+    "file": "candidates/action_policy_r9_slim/mechanism/mechanism.py",
+    "sha256": "1190f57b922660e2b2a3a5f037acacc0b750205167096a46bb43696359190f29"
+   },
+   {
+    "file": "candidates/action_policy_r9_slim/assets/system_prompt/core.md",
+    "sha256": "446cb7aecc8eb40c198ee76d3d4c720336a14952e7b283d074d16dde877a2676"
+   },
+   {
+    "file": "candidates/action_policy_r9_slim/assets/system_prompt/format.md",
+    "sha256": "65b886f60e09330700dfc10c072034ffa588943c3e2d01af2f51c7fcf9c57b71"
+   },
+   {
+    "file": "candidates/action_policy_r9_slim/assets/system_prompt/redline.md",
+    "sha256": "cd835a092705efaa643f3666f7b404eb0c067b255c97458c8acd37119775f0ed"
+   },
+   {
+    "file": "candidates/action_policy_r9_slim/assets/system_prompt/naturalness_check.md",
+    "sha256": "19582a752705ccfdbbe3a74242d40596876cb51725c3cf02380a5737b1fc3bbf"
+   },
+   {
+    "file": "candidates/action_policy_r7_supersede/mechanism/mechanism.py",
+    "sha256": "1895144302b59ecde6c2eeb3cd7a13c7c46fe088d952ff28e82b52c5228f0242"
+   },
+   {
+    "file": "candidates/action_policy_r7_supersede/params.json",
+    "sha256": "22fb1c8d44b37d5e6a55b4cb5314d5bf21fa26078ec60be4380f754f2c3b0f90"
+   },
+   {
+    "file": "candidates/action_policy_r2/mechanism/mechanism.py",
+    "sha256": "24ae2791abc297f21c2a373c411f18d90ea908f1b8bf8402431f90a9c654ecbf"
+   },
+   {
+    "file": "candidates/action_policy_r1/mechanism/mechanism.py",
+    "sha256": "2cebe1f877fc627e2f7e0c0e6916b1dfcbc277613ff03e4a8679052606c7f827"
+   },
+   {
+    "file": "candidates/v6_goal_context/mechanism/mechanism.py",
+    "sha256": "083779764b669da287aeebeb0541dc1a31b39906b59ea0b141dc47267d736a76"
+   },
+   {
+    "file": "candidates/v5_purpose_aligned/mechanism/mechanism.py",
+    "sha256": "422ec2277b7a6d7801f61c8c17701f1fa3d7a8cda8d8ed01aef6c9101b32e2cf"
+   }
+  ],
+  "baseline": [
+   {
+    "file": "candidates/reference_product_v1/params.json",
+    "sha256": "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f"
+   }
+  ],
+  "materials": [
+   {
+    "file": "benchmark/stories_v2/stage2/STAGE2_MANIFEST.json",
+    "sha256": "ed651f210766273f336cf74a1135af9be1ffdb9158791a740078d3500b31e528"
+   },
+   {
+    "file": "benchmark/stories_v2/stage2/E021/episode.json",
+    "sha256": "b4cb29e2c4e0e38b894616b77e999bd0a48c233dc8ea20e70f2c8a07c4b58f8a"
+   },
+   {
+    "file": "benchmark/stories_v2/stage2/E021/reference.json",
+    "sha256": "5eb640c584ca80aec13c68dbcaca6cdfab319ca24c5afe9804b1ac7e1328db79"
+   },
+   {
+    "file": "benchmark/stories_v2/stage3/STAGE3_MANIFEST.json",
+    "sha256": "0af1f561b5c5d6534020b676553647e8f3b7c111e872cc603488286f035cec0d"
+   },
+   {
+    "file": "benchmark/stories_v2/stage3/GRADING_CARDS_STAGE3.json",
+    "sha256": "63496b9d5f0166a0b7cbdc181411c5f31abc37312320aad86580a80528e631a8"
+   },
+   {
+    "file": "benchmark/stories_v2/stage4/STAGE4_MANIFEST.json",
+    "sha256": "b7ede59afb9c6de221e9028bdcb36d4c202d71ad8a4e1fb4ec31f07ebdf7ad14"
+   },
+   {
+    "file": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+    "sha256": "02d5e5a340551a7607bdbae47fdfc3e18e658dd39e5330fe2643f6b39026013a"
+   },
+   {
+    "file": "benchmark/stories_v2/stage4_src/E061_thyroid_followup.json",
+    "sha256": "cf4758dcc16c263dd7849423f2b538e7045a747fc2c38713b0abf18408e10a2d"
+   }
+  ],
+  "custody": [
+   {
+    "file": "refs/experiment_protocol_20261023/global_harness_program_20261030/STORY_CUSTODY_LEDGER.json",
+    "sha256": "5d0348448fabeea8da12bf0f7aa0a8a15076c3928a1f04919c67d6e22792fcb8"
+   }
+  ]
+ },
+ "missing": [],
+ "repro_commands": [
+  "# 1. 探网关",
+  "curl -s http://127.0.0.1:17770/v1/models",
+  "# 2. 派发两臂批（示例：G1 冻结计划）",
+  "python tools/dispatch_challenge_tier.py --prepare G1",
+  "python tools/dispatch_challenge_tier.py --run G1",
+  "# 3. 评审（judge 另册）",
+  "python tools/run_lp_review_generic.py --batch-dir logs/longprobe_g1_live_20261030 --stories E037,E039,E041,E042 --auth <REVIEW_AUTH> --tag G1 --cand-name r9_slim",
+  "# 4. 记忆 KPI（零调用）",
+  "python tools/measure_memory_kpis.py",
+  "# 5. 暴露记账",
+  "python tools/story_custody.py expose --story E0xx --batch <批名> --arms <臂>"
+ ],
+ "env_note": "固定服务 dsf@http://127.0.0.1:17770/v1 temp0.7；辅助模型白名单 hy3/dsf/qwen3.8-flash/gemini-3.8-flash 每 alias ≤3，hy4-preview 硬禁；预算管理帽 16384；Python 3.11+ 无三方依赖（标准库实现）。"
+}

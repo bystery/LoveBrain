@@ -1,0 +1,282 @@
+{
+  "path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave15_v13_review_20261021\\closure_g2lzy26k\\results.json",
+  "passed": 5,
+  "total": 20,
+  "failed_tests": [
+    "IDEA不能冒充m0真实来源",
+    "IDEA不占编号且HER正常入库",
+    "同轮纠正不作废新值/negative_last",
+    "不同事件历史不因共享编号作废",
+    "真实更正不随摘要拒绝而丢失",
+    "ongoing不绕过邀请未确认约束",
+    "状态区分/confirmed",
+    "状态区分/happened",
+    "日期组件不能拼出无出处钟点",
+    "等价两盒到2盒不丢正确事实",
+    "场景/领导又来催不是与ME争执",
+    "场景/礼貌问句可以收尾",
+    "场景/晚安后重开话题",
+    "场景/收尾后HER自己补新事",
+    "实际检索依赖纳入冻结和快照"
+  ],
+  "results": [
+    {
+      "test": "原始错误到站事实继续被拒",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "test": "IDEA不能冒充m0真实来源",
+      "pass": false,
+      "detail": [
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "我坐E708",
+          "src": [
+            {
+              "speaker": "ME",
+              "text": "我坐E708",
+              "ts": "2026-10-29 21:30",
+              "key": "SRC:m0"
+            }
+          ],
+          "entities": [
+            "e708"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": false,
+          "superseded": false,
+          "superseded_by": null
+        }
+      ]
+    },
+    {
+      "test": "IDEA不占编号且HER正常入库",
+      "pass": false,
+      "detail": [
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "我坐E708",
+          "src": [
+            {
+              "speaker": "ME",
+              "text": "我坐E708",
+              "ts": "2026-10-29 21:30",
+              "key": "SRC:m0"
+            }
+          ],
+          "entities": [
+            "e708"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": false,
+          "superseded": false,
+          "superseded_by": null
+        }
+      ]
+    },
+    {
+      "test": "同轮纠正不作废新值/negative_last",
+      "pass": false,
+      "detail": [
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "她不坐G7812了",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "不是G7812了 我改签成D3145 你帮我看这趟",
+              "ts": "2026-10-29 21:30",
+              "key": "C2:m0"
+            }
+          ],
+          "entities": [
+            "g7812"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": true,
+          "superseded": false,
+          "superseded_by": null
+        }
+      ]
+    },
+    {
+      "test": "同轮纠正不作废新值/positive_last",
+      "pass": true,
+      "detail": [
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "她让我帮看D3145",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "不是G7812了 我改签成D3145 你帮我看这趟",
+              "ts": "2026-10-29 21:30",
+              "key": "C2:m0"
+            }
+          ],
+          "entities": [
+            "d3145"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": true,
+          "superseded": false,
+          "superseded_by": null
+        }
+      ]
+    },
+    {
+      "test": "不同事件历史不因共享编号作废",
+      "pass": false,
+      "detail": [
+        {
+          "clock": "2026-10-28 21:30",
+          "text": "她去年坐过D3145",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "我去年坐过D3145",
+              "ts": "2026-10-28 21:30",
+              "key": "H1:m0"
+            }
+          ],
+          "entities": [
+            "d3145"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-28 21:30",
+          "correction": false,
+          "superseded": true,
+          "superseded_by": "H2:m0"
+        },
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "她这次改签成D3145",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "这次不是G7812了 我改签成D3145",
+              "ts": "2026-10-29 21:30",
+              "key": "H2:m0"
+            }
+          ],
+          "entities": [
+            "d3145"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": true,
+          "superseded": false,
+          "superseded_by": null
+        }
+      ]
+    },
+    {
+      "test": "真实更正不随摘要拒绝而丢失",
+      "pass": false,
+      "detail": "# 【懂得】关系画像\n\n# 【此刻】场景上下文（仅供参考，以本次对话为准）\n距上次对话：约21小时前（间隔较久，话题可能已切换）\n当前话题：行程（⚠️ 此信息来自22小时前，可能已过时）\n## 场景状态链（条目后括号内为距今时间；同一事实只在最新条目保留一次）\n- [22小时前] 她从湖州坐G7812来合肥｜src=R1:m0\n\n\n\n# 【当前场景】（本轮属性，不改变长期阶段档案）\n场景：日常分享\n\n# 本次对话记录\n（按时间顺序。speaker 定义：PARTNER=对方，USER=用户本人。每条消息的 id 为来源ID，模型在 scene_facts 的 source_ids 中使用。）\n\n<chat>\n{\"id\":\"m0\",\"speaker\":\"PARTNER\",\"text\":\"我从湖州坐车到合肥了\",\"ts\":\"2026-10-30 18:52\"}\n</chat>\n\n\n【当前时间】2026-10-30 18:52\n最近一条消息时间：2026-10-30 18:52\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段。时间只认系统给定的当前时间与消息时间戳，不凭对话内容或主观感觉推测。"
+    },
+    {
+      "test": "ongoing不绕过邀请未确认约束",
+      "pass": false,
+      "detail": [
+        "10-29约定一起看纪录片 | 新出现"
+      ]
+    },
+    {
+      "test": "状态区分/offered",
+      "pass": true,
+      "detail": {
+        "status": "offer",
+        "rendered": "- [2026-10-29 21:30] 我们已约定一起看纪录片｜src=S:m0｜⚠提议未确认，不当已约定"
+      }
+    },
+    {
+      "test": "状态区分/confirmed",
+      "pass": false,
+      "detail": {
+        "status": "offer",
+        "rendered": "- [2026-10-29 21:30] 我们已约定今晚一起看｜src=S:m0,S:m1｜⚠提议未确认，不当已约定｜相对时间以出处消息日 2026-10-29 为锚"
+      }
+    },
+    {
+      "test": "状态区分/happened",
+      "pass": false,
+      "detail": {
+        "status": "offer",
+        "rendered": "- [2026-10-29 21:30] 我们昨晚已经一起看完那部片｜src=S:m0｜⚠提议未确认，不当已约定｜相对时间以出处消息日 2026-10-29 为锚"
+      }
+    },
+    {
+      "test": "日期组件不能拼出无出处钟点",
+      "pass": false,
+      "detail": [
+        {
+          "clock": "2026-10-29 20:35",
+          "text": "她20:29到合肥",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "正点 到合肥了",
+              "ts": "2026-10-29 20:35",
+              "key": "T:m0"
+            }
+          ],
+          "entities": [
+            "20",
+            "29"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 20:35",
+          "correction": false,
+          "superseded": false,
+          "superseded_by": null
+        }
+      ]
+    },
+    {
+      "test": "等价两盒到2盒不丢正确事实",
+      "pass": false,
+      "detail": []
+    },
+    {
+      "test": "场景/原坏消息",
+      "pass": true,
+      "detail": "认真沟通"
+    },
+    {
+      "test": "场景/原跨消息收尾",
+      "pass": true,
+      "detail": "收尾"
+    },
+    {
+      "test": "场景/领导又来催不是与ME争执",
+      "pass": false,
+      "detail": "争执"
+    },
+    {
+      "test": "场景/礼貌问句可以收尾",
+      "pass": false,
+      "detail": "日常分享"
+    },
+    {
+      "test": "场景/晚安后重开话题",
+      "pass": false,
+      "detail": "收尾"
+    },
+    {
+      "test": "场景/收尾后HER自己补新事",
+      "pass": false,
+      "detail": "收尾"
+    },
+    {
+      "test": "实际检索依赖纳入冻结和快照",
+      "pass": false,
+      "detail": null
+    }
+  ]
+}

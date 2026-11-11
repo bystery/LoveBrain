@@ -1,0 +1,37 @@
+{
+ "kind": "w1402_timing_compare",
+ "date": "2026-10-31",
+ "batch": "longprobe_g1_live_20261030",
+ "arms": {
+  "r7_supersede": {
+   "arm": "r7_supersede",
+   "attempts": 32,
+   "failures": 0,
+   "failure_dirs": [],
+   "p50_headers_ms": 4013.6,
+   "p95_headers_ms": 4018.2,
+   "p50_first_content_ms": 27318.9,
+   "p95_first_content_ms": 54254.9,
+   "p50_completion_ms": 35402.3,
+   "p95_completion_ms": 56578.7,
+   "prompt_tokens_sum": 188989,
+   "completion_tokens_sum": 12311,
+   "tokens_per_ok_result": 6290.6
+  },
+  "r9_slim": {
+   "arm": "r9_slim",
+   "attempts": 32,
+   "failures": 0,
+   "failure_dirs": [],
+   "p50_headers_ms": 4011.9,
+   "p95_headers_ms": 4017.7,
+   "p50_first_content_ms": 21158.6,
+   "p95_first_content_ms": 40640.1,
+   "p50_completion_ms": 25485.0,
+   "p95_completion_ms": 43393.0,
+   "prompt_tokens_sum": 181736,
+   "completion_tokens_sum": 11832,
+   "tokens_per_ok_result": 6049.0
+  }
+ }
+}

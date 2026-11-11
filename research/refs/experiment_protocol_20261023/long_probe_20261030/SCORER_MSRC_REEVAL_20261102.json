@@ -1,0 +1,42 @@
+{
+ "date": "2026-11-02",
+ "reason": "scorer source_ids 契约缺口修复后离线重评（m_src[i] i<prior_real_n 合法）",
+ "reevals": [
+  {
+   "turn_dir": "turn_02_E061_T02",
+   "old": {
+    "score10": 0.0,
+    "veto": "illegal_source_id"
+   },
+   "new": {
+    "score10": 10.0,
+    "veto": null
+   },
+   "prior_real_n": 1
+  },
+  {
+   "turn_dir": "turn_04_E061_T04",
+   "old": {
+    "score10": 0.0,
+    "veto": "illegal_source_id"
+   },
+   "new": {
+    "score10": 10.0,
+    "veto": null
+   },
+   "prior_real_n": 3
+  },
+  {
+   "turn_dir": "turn_03_LRE060_T03",
+   "old": {
+    "score10": 0.0,
+    "veto": "illegal_source_id"
+   },
+   "new": {
+    "score10": 10.0,
+    "veto": null
+   },
+   "prior_real_n": 2
+  }
+ ]
+}

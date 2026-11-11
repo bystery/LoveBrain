@@ -1,0 +1,73 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W17C_E170",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W17C_E170_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w17c_merge_live_20261103",
+ "n_queued": 2,
+ "queue": [
+  {
+   "pair_id": "LP:E170:E170_T02",
+   "order": "main",
+   "story": "E170",
+   "cid": "E170_T02",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "那条只管“客户原因”，量尺是木言的人来量的，就不是客户原因",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E170:E170_T05",
+   "order": "main",
+   "story": "E170",
+   "cid": "E170_T05",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "工期从十五号推到十七号，这七天合同怎么算，让门店在责任单里写清楚",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

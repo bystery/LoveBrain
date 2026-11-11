@@ -1,0 +1,157 @@
+{
+  "kind": "max288_v4_cross_window_continuation",
+  "as_of": "2026-10-28T10:39:09.063140+08:00",
+  "root": "D:\\lovebrain-arena",
+  "estimated_work_capacity_hours": [
+    144,
+    288
+  ],
+  "new_budget_added": 0,
+  "old_global_cap_reference": 16384,
+  "budget_rule": "先核实际消耗与更正后余额；菜单不是已授权保留额或支出目标；不复活旧单",
+  "product_integration": "PAUSED",
+  "first_critical_path": [
+    "fresh site recovery <=40min",
+    "inherit fixed intent/replay/accounting",
+    "bounded action/wait correction",
+    "S1 fixed stories reference vs action 96 calls",
+    "S2 feedback anchors reference vs action 24 calls",
+    "S3 parent attribution v6 vs action up to24 calls",
+    "quality verdict and next actual mechanism"
+  ],
+  "auxiliary_not_global_gate": [
+    "old W09 simulation",
+    "old P06 rater tail",
+    "personal W preferences"
+  ],
+  "phases": [
+    {
+      "id": "W01",
+      "name": "现场继承与常用链路收口",
+      "capacity_hours": [
+        4,
+        8
+      ],
+      "current_status": "PARTIAL_INHERIT_FIX_REMAINING"
+    },
+    {
+      "id": "W02",
+      "name": "已付费闭环收口和小额环境研究",
+      "capacity_hours": [
+        8,
+        16
+      ],
+      "current_status": "EXPLORATORY_PAUSED_AUXILIARY"
+    },
+    {
+      "id": "W03",
+      "name": "行动策略与正向互动",
+      "capacity_hours": [
+        16,
+        32
+      ],
+      "current_status": "IMPLEMENTED_NOT_LIVE_TESTED"
+    },
+    {
+      "id": "W04",
+      "name": "证据记忆语义与状态",
+      "capacity_hours": [
+        16,
+        32
+      ],
+      "current_status": "SCHEMA_EXISTS_SEMANTIC_EFFECT_NR"
+    },
+    {
+      "id": "W05",
+      "name": "上下文和资产架构",
+      "capacity_hours": [
+        12,
+        24
+      ],
+      "current_status": "READY"
+    },
+    {
+      "id": "W06",
+      "name": "自然故事与参考扩充",
+      "capacity_hours": [
+        16,
+        32
+      ],
+      "current_status": "16_STAGE2_STORIES_READY_REFERENCE_REVIEW_NEEDED"
+    },
+    {
+      "id": "W07",
+      "name": "共同面板机制对照",
+      "capacity_hours": [
+        16,
+        32
+      ],
+      "current_status": "READY_AFTER_W01_NOT_W02"
+    },
+    {
+      "id": "W08",
+      "name": "长期知识纠正与恢复",
+      "capacity_hours": [
+        12,
+        24
+      ],
+      "current_status": "READY_DESIGN"
+    },
+    {
+      "id": "W09",
+      "name": "反馈闭环扩展",
+      "capacity_hours": [
+        12,
+        24
+      ],
+      "current_status": "PAUSED_ENVIRONMENT_NOT_GLOBAL_BLOCK"
+    },
+    {
+      "id": "W10",
+      "name": "因果消融与重构",
+      "capacity_hours": [
+        16,
+        32
+      ],
+      "current_status": "READY_AFTER_REAL_CANDIDATE_RESULTS"
+    },
+    {
+      "id": "W11",
+      "name": "质量约束下性能费用",
+      "capacity_hours": [
+        8,
+        16
+      ],
+      "current_status": "MEASUREMENT_EXISTS_EFFECT_NR"
+    },
+    {
+      "id": "W12",
+      "name": "研究结论与下一周期",
+      "capacity_hours": [
+        8,
+        16
+      ],
+      "current_status": "CONTINUOUS_RESULTS_SYNTHESIS"
+    }
+  ],
+  "first_batch_menu": {
+    "S1_generations": 96,
+    "S2_generations": 24,
+    "S3_generations_max": 24,
+    "judge_attempt_cap": 256,
+    "harness_model": "dsf",
+    "temperature": 0.7,
+    "endpoint": "http://127.0.0.1:17770/v1",
+    "note": "S3 is separate two-arm rerun with12 new action-side generations, not free reuse"
+  },
+  "current_evidence": {
+    "pilot_complete": 6,
+    "pilot_incomplete": 7,
+    "w09_complete_reference": 8,
+    "w09_complete_v6": 0,
+    "w09_complete_pairs": 0,
+    "action_policy_real_calls": 0,
+    "stage2_stories": 16,
+    "stage2_positions": 192
+  }
+}

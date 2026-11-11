@@ -1,0 +1,2884 @@
+[
+  {
+    "key": "A1|NCA|r1|NCA_t01",
+    "accepted": [
+      {
+        "text": "她周末去了良渚，说那边人少景好",
+        "status": "event",
+        "src": [
+          "NCA_t01:m0"
+        ]
+      },
+      {
+        "text": "她说回头挑几张照片发我",
+        "status": "intent",
+        "src": [
+          "NCA_t01:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚照片给我",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCA|r1|NCA_t02",
+    "accepted": [
+      {
+        "text": "她今天12:38说她找到了之前提过的纪录片",
+        "status": "event",
+        "src": [
+          "NCA_t02:m1"
+        ]
+      },
+      {
+        "text": "她今天12:40说在B站就能看",
+        "status": "event",
+        "src": [
+          "NCA_t02:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚照片给我",
+        "status": "新出现"
+      },
+      {
+        "item": "一起看纪录片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        0,
+        1
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚照片给我"
+      ],
+      "topic": "周末良渚出行",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCA|r1|NCA_t03",
+    "accepted": [
+      {
+        "text": "她今天18:00说领导告知项目黄了",
+        "status": "event",
+        "src": [
+          "NCA_t03:m0"
+        ]
+      },
+      {
+        "text": "她今天18:03说可能要调岗",
+        "status": "event",
+        "src": [
+          "NCA_t03:m1"
+        ]
+      },
+      {
+        "text": "她今天18:05说烦死了",
+        "status": "event",
+        "src": [
+          "NCA_t03:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚照片给我",
+        "status": "新出现"
+      },
+      {
+        "item": "一起看纪录片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚照片给我",
+        "一起看纪录片"
+      ],
+      "topic": "一起看纪录片",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCA|r1|NCA_t04",
+    "accepted": [
+      {
+        "text": "她今天18:15更正不是调岗，是换项目组，还在原部门",
+        "status": "event",
+        "src": [
+          "NCA_t04:m1",
+          "NCA_t04:m2"
+        ]
+      },
+      {
+        "text": "她今天18:20说这是虚惊一场",
+        "status": "event",
+        "src": [
+          "NCA_t04:m3"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "2026-10-27 她换项目组",
+        "status": "新出现"
+      },
+      {
+        "item": "她发良渚照片给我",
+        "status": "新出现"
+      },
+      {
+        "item": "一起看纪录片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        5,
+        4
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚照片给我",
+        "一起看纪录片"
+      ],
+      "topic": "她项目黄了可能调岗",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCA|r1|NCA_t05",
+    "accepted": [
+      {
+        "text": "她问我周二组会几点开",
+        "status": "event",
+        "src": [
+          "NCA_t05:m1"
+        ]
+      },
+      {
+        "text": "她领导让她下周先跟新项目组碰一下",
+        "status": "intent",
+        "src": [
+          "NCA_t05:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "2026-10-27 她换项目组",
+        "status": "进行中"
+      },
+      {
+        "item": "她发良渚照片给我",
+        "status": "进行中"
+      },
+      {
+        "item": "一起看纪录片",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        4,
+        7
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "2026-10-27 她换项目组",
+        "她发良渚照片给我",
+        "一起看纪录片"
+      ],
+      "topic": "她换项目组虚惊一场",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCA|r1|NCA_t06",
+    "accepted": [
+      {
+        "text": "她今天22:35说不聊了，22:40去赶班车",
+        "status": "event",
+        "src": [
+          "NCA_t06:m0",
+          "NCA_t06:m1"
+        ]
+      },
+      {
+        "text": "她说好明天再聊",
+        "status": "event",
+        "src": [
+          "NCA_t06:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "2026-10-27 她换项目组",
+        "status": "进行中"
+      },
+      {
+        "item": "她发良渚照片给我",
+        "status": "进行中"
+      },
+      {
+        "item": "一起看纪录片",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "2026-10-27 她换项目组",
+        "她发良渚照片给我",
+        "一起看纪录片"
+      ],
+      "topic": "组会时间与新项目组准备",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCA|r2|NCA_t01",
+    "accepted": [
+      {
+        "text": "她周末去了良渚，说人少景好",
+        "status": "event",
+        "src": [
+          "NCA_t01:m0"
+        ]
+      },
+      {
+        "text": "她说拍了好多图，回头挑几张发我",
+        "status": "intent",
+        "src": [
+          "NCA_t01:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚周末照片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCA|r2|NCA_t02",
+    "accepted": [
+      {
+        "text": "她今天12:38说她找到了之前提过的纪录片，B站能看",
+        "status": "event",
+        "src": [
+          "NCA_t02:m1",
+          "NCA_t02:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚周末照片",
+        "status": "进行中"
+      },
+      {
+        "item": "一起看纪录片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        0,
+        1
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚周末照片"
+      ],
+      "topic": "她周末去良渚拍照",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCA|r2|NCA_t03",
+    "accepted": [
+      {
+        "text": "她今天18:00说领导告知她项目黄了",
+        "status": "event",
+        "src": [
+          "NCA_t03:m0"
+        ]
+      },
+      {
+        "text": "她说自己可能要调岗",
+        "status": "event",
+        "src": [
+          "NCA_t03:m1"
+        ]
+      },
+      {
+        "text": "她今天18:05说烦死了",
+        "status": "event",
+        "src": [
+          "NCA_t03:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚周末照片",
+        "status": "进行中"
+      },
+      {
+        "item": "一起看纪录片",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚周末照片",
+        "一起看纪录片"
+      ],
+      "topic": "一起看纪录片",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCA|r2|NCA_t04",
+    "accepted": [
+      {
+        "text": "她今天18:15-18:18更正：不是调岗，是换项目组，还在原部门",
+        "status": "event",
+        "src": [
+          "NCA_t04:m1",
+          "NCA_t04:m2"
+        ]
+      },
+      {
+        "text": "她今天18:20说虚惊一场",
+        "status": "event",
+        "src": [
+          "NCA_t04:m3"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚周末照片",
+        "status": "进行中"
+      },
+      {
+        "item": "一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "2026-10-27 她换项目组",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        4,
+        3
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚周末照片",
+        "一起看纪录片"
+      ],
+      "topic": "她项目黄了、可能调岗",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCA|r2|NCA_t05",
+    "accepted": [
+      {
+        "text": "她问我们组会几点开",
+        "status": "event",
+        "src": [
+          "NCA_t05:m1"
+        ]
+      },
+      {
+        "text": "她领导让她下周先跟新项目组碰一下，她问该准备什么",
+        "status": "intent",
+        "src": [
+          "NCA_t05:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚周末照片",
+        "status": "进行中"
+      },
+      {
+        "item": "一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "2026-10-27 她换项目组",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        3,
+        6
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚周末照片",
+        "一起看纪录片",
+        "2026-10-27 她换项目组"
+      ],
+      "topic": "她换项目组",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCA|r2|NCA_t06",
+    "accepted": [
+      {
+        "text": "她22:40要去赶班车，说好明天再聊",
+        "status": "event",
+        "src": [
+          "NCA_t06:m0",
+          "NCA_t06:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚周末照片",
+        "status": "进行中"
+      },
+      {
+        "item": "一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "2026-10-27 她换项目组",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚周末照片",
+        "一起看纪录片",
+        "2026-10-27 她换项目组"
+      ],
+      "topic": "组会时间与新项目组碰头准备",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCB|r1|NCB_t01",
+    "accepted": [
+      {
+        "text": "她这周五先回湖州，再从湖州上车坐G7812来合肥参加室友婚礼",
+        "status": "event",
+        "src": [
+          "NCB_t01:m0",
+          "NCB_t01:m2"
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "text": "她让我帮忙查G7812最近是否正点",
+        "reason": "gate_reject:entity_not_in_evidence:g7812",
+        "source_ids": [
+          "m3"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-31她来合肥参加室友婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCB|r1|NCB_t02",
+    "accepted": [
+      {
+        "text": "她今天把车次改签成了D3145",
+        "status": "event",
+        "src": [
+          "NCB_t02:m1",
+          "NCB_t02:m2"
+        ]
+      },
+      {
+        "text": "她让我帮她看D3145这趟车的情况",
+        "status": "event",
+        "src": [
+          "NCB_t02:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-31她来合肥参加室友婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-31她来合肥参加室友婚礼"
+      ],
+      "topic": "她周五来合肥参加婚礼的车次",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCB|r1|NCB_t03",
+    "accepted": [
+      {
+        "text": "她今天18:52坐车正点到合肥",
+        "status": "event",
+        "src": [
+          "NCB_t03:m0"
+        ]
+      },
+      {
+        "text": "她带了两盒定胜糕，其中一盒给我",
+        "status": "event",
+        "src": [
+          "NCB_t03:m1"
+        ]
+      },
+      {
+        "text": "她明天参加室友婚礼",
+        "status": "event",
+        "src": [
+          "NCB_t03:m1"
+        ]
+      },
+      {
+        "text": "她问我明天怎么把定胜糕给我",
+        "status": "event",
+        "src": [
+          "NCB_t03:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-31她来合肥参加室友婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        0
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-31她来合肥参加室友婚礼"
+      ],
+      "topic": "她改签后的车次D3145",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCB|r1|NCB_t04",
+    "accepted": [
+      {
+        "text": "她说定胜糕她上次拿过",
+        "status": "event",
+        "src": [
+          "NCB_t04:m1"
+        ]
+      },
+      {
+        "text": "她提醒我那盒定胜糕别放着、早点吃",
+        "status": "event",
+        "src": [
+          "NCB_t04:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-31她来合肥参加室友婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        4,
+        6,
+        3
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-31她来合肥参加室友婚礼"
+      ],
+      "topic": "她到合肥带定胜糕给我",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCB|r1|NCB_t05",
+    "accepted": [
+      {
+        "text": "她今天22:25说婚礼忙完，已回酒店",
+        "status": "event",
+        "src": [
+          "NCB_t05:m0"
+        ]
+      },
+      {
+        "text": "她说先这样，明天返程再说",
+        "status": "event",
+        "src": [
+          "NCB_t05:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-31她来合肥参加室友婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        5,
+        0
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-31她来合肥参加室友婚礼"
+      ],
+      "topic": "定胜糕",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCB|r2|NCB_t01",
+    "accepted": [
+      {
+        "text": "她周五先从杭州回湖州，再从湖州上车 G7812 来合肥参加室友婚礼",
+        "status": "event",
+        "src": [
+          "NCB_t01:m0",
+          "NCB_t01:m2"
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "text": "她让我帮她查 G7812 最近是否正点",
+        "reason": "gate_reject:entity_not_in_evidence:g7812",
+        "source_ids": [
+          "m3"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "计划10-30她来合肥参加室友婚礼",
+        "status": "进行中"
+      },
+      {
+        "item": "帮她查G7812正点情况",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCB|r2|NCB_t02",
+    "accepted": [
+      {
+        "text": "她把车次改签成了 D3145，让我帮看这趟车",
+        "status": "event",
+        "src": [
+          "NCB_t02:m1",
+          "NCB_t02:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "计划10-30她来合肥参加室友婚礼",
+        "status": "进行中"
+      },
+      {
+        "item": "帮她查G7812正点情况",
+        "status": "已取消"
+      },
+      {
+        "item": "帮她查D3145正点情况",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "计划10-30她来合肥参加室友婚礼",
+        "帮她查G7812正点情况"
+      ],
+      "topic": "周五合肥婚礼行程与车次",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCB|r2|NCB_t03",
+    "accepted": [
+      {
+        "text": "她今天18:52正点到合肥",
+        "status": "event",
+        "src": [
+          "NCB_t03:m0"
+        ]
+      },
+      {
+        "text": "她带了定胜糕两盒，其中一盒给我",
+        "status": "event",
+        "src": [
+          "NCB_t03:m1"
+        ]
+      },
+      {
+        "text": "她明天参加婚礼，问我明天怎么把东西给我",
+        "status": "event",
+        "src": [
+          "NCB_t03:m1",
+          "NCB_t03:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "计划10-30她来合肥参加室友婚礼",
+        "status": "进行中"
+      },
+      {
+        "item": "帮她查G7812正点情况",
+        "status": "已完成"
+      },
+      {
+        "item": "帮她查D3145正点情况",
+        "status": "已完成"
+      },
+      {
+        "item": "计划10-31交接定胜糕",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        0
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "计划10-30她来合肥参加室友婚礼",
+        "帮她查G7812正点情况",
+        "帮她查D3145正点情况"
+      ],
+      "topic": "周五合肥行程车次",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCB|r2|NCB_t04",
+    "accepted": [
+      {
+        "text": "我在今天20:30确认收到了定胜糕，觉得甜、正",
+        "status": "event",
+        "src": [
+          "NCB_t04:m0"
+        ]
+      },
+      {
+        "text": "她说定胜糕她上次拿过",
+        "status": "event",
+        "src": [
+          "NCB_t04:m1"
+        ]
+      },
+      {
+        "text": "她今天20:45提醒我那盒别放着、早点吃",
+        "status": "event",
+        "src": [
+          "NCB_t04:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "计划10-30她来合肥参加室友婚礼",
+        "status": "进行中"
+      },
+      {
+        "item": "帮她查G7812正点情况",
+        "status": "已完成"
+      },
+      {
+        "item": "帮她查D3145正点情况",
+        "status": "已完成"
+      },
+      {
+        "item": "计划10-31交接定胜糕",
+        "status": "已完成"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        3,
+        2
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "计划10-30她来合肥参加室友婚礼",
+        "帮她查G7812正点情况",
+        "帮她查D3145正点情况",
+        "计划10-31交接定胜糕"
+      ],
+      "topic": "她到合肥和定胜糕交接",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A1|NCB|r2|NCB_t05",
+    "accepted": [
+      {
+        "text": "她今天22:25回到酒店，婚礼已经结束",
+        "status": "event",
+        "src": [
+          "NCB_t05:m0"
+        ]
+      },
+      {
+        "text": "她今天22:30说先这样，明天返程再聊",
+        "status": "event",
+        "src": [
+          "NCB_t05:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "帮她查G7812正点情况",
+        "status": "已完成"
+      },
+      {
+        "item": "帮她查D3145正点情况",
+        "status": "已完成"
+      },
+      {
+        "item": "计划10-31交接定胜糕",
+        "status": "已完成"
+      },
+      {
+        "item": "计划10-30她来合肥参加室友婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        0,
+        4
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "计划10-30她来合肥参加室友婚礼",
+        "帮她查G7812正点情况",
+        "帮她查D3145正点情况",
+        "计划10-31交接定胜糕"
+      ],
+      "topic": "定胜糕交接",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCA|r1|NCA_t01",
+    "accepted": [
+      {
+        "text": "她刚过去的周末去了良渚，说人少景好",
+        "status": "event",
+        "src": [
+          "NCA_t01:m0"
+        ]
+      },
+      {
+        "text": "她说回头挑几张照片发我",
+        "status": "intent",
+        "src": [
+          "NCA_t01:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚照片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCA|r1|NCA_t02",
+    "accepted": [
+      {
+        "text": "她今天12:38说找到了之前提过的那部纪录片，b站能看",
+        "status": "event",
+        "src": [
+          "NCA_t02:m1",
+          "NCA_t02:m2"
+        ]
+      },
+      {
+        "text": "她问我是否要看",
+        "status": "event",
+        "src": [
+          "NCA_t02:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚照片",
+        "status": "进行中"
+      },
+      {
+        "item": "2026-10-27一起看纪录片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        0,
+        1
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚照片"
+      ],
+      "topic": "良渚周末出行",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCA|r1|NCA_t03",
+    "accepted": [
+      {
+        "text": "她今天18:00说领导告知她项目黄了",
+        "status": "event",
+        "src": [
+          "NCA_t03:m0"
+        ]
+      },
+      {
+        "text": "她今天18:03说可能要调岗",
+        "status": "event",
+        "src": [
+          "NCA_t03:m1"
+        ]
+      },
+      {
+        "text": "她今天18:05说烦死了",
+        "status": "event",
+        "src": [
+          "NCA_t03:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚照片",
+        "status": "进行中"
+      },
+      {
+        "item": "2026-10-27一起看纪录片",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚照片",
+        "2026-10-27一起看纪录片"
+      ],
+      "topic": "一起看纪录片",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCA|r1|NCA_t04",
+    "accepted": [
+      {
+        "text": "她今天18:15-18:18更正：不是调岗，是换项目组，还在原部门",
+        "status": "event",
+        "src": [
+          "NCA_t04:m1",
+          "NCA_t04:m2"
+        ]
+      },
+      {
+        "text": "她形容这件事是虚惊一场",
+        "status": "event",
+        "src": [
+          "NCA_t04:m3"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚照片",
+        "status": "进行中"
+      },
+      {
+        "item": "2026-10-27一起看纪录片",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        5,
+        4
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚照片",
+        "2026-10-27一起看纪录片"
+      ],
+      "topic": "她项目黄了可能调岗",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCA|r1|NCA_t05",
+    "accepted": [
+      {
+        "text": "她今天21:12问我组会几点开",
+        "status": "event",
+        "src": [
+          "NCA_t05:m1"
+        ]
+      },
+      {
+        "text": "她今天21:15说领导让她下周先跟新项目组碰一下，问我该准备什么",
+        "status": "intent",
+        "src": [
+          "NCA_t05:m2"
+        ]
+      },
+      {
+        "text": "我今晚21:00提过我们组会在搞检索加速",
+        "status": "event",
+        "src": [
+          "NCA_t05:m0"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚照片",
+        "status": "进行中"
+      },
+      {
+        "item": "2026-10-27一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "计划2026-11-02那周跟新项目组碰面",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        4,
+        7
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚照片",
+        "2026-10-27一起看纪录片"
+      ],
+      "topic": "她项目黄了换项目组",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCA|r1|NCA_t06",
+    "accepted": [
+      {
+        "text": "她今天22:40要去赶班车，说明天再聊",
+        "status": "event",
+        "src": [
+          "NCA_t06:m0",
+          "NCA_t06:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她发良渚照片",
+        "status": "进行中"
+      },
+      {
+        "item": "2026-10-27一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "计划2026-11-02那周跟新项目组碰面",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她发良渚照片",
+        "2026-10-27一起看纪录片",
+        "计划2026-11-02那周跟新项目组碰面"
+      ],
+      "topic": "组会时间与新项目组碰面准备",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCA|r2|NCA_t01",
+    "accepted": [
+      {
+        "text": "她周末去了良渚，说人少景好",
+        "status": "event",
+        "src": [
+          "NCA_t01:m0"
+        ]
+      },
+      {
+        "text": "她说回头挑几张照片发我",
+        "status": "intent",
+        "src": [
+          "NCA_t01:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCA|r2|NCA_t02",
+    "accepted": [
+      {
+        "text": "她今天12:38说找到了之前提过的纪录片，问我要不要看",
+        "status": "event",
+        "src": [
+          "NCA_t02:m1"
+        ]
+      },
+      {
+        "text": "她说这部纪录片在B站就能看",
+        "status": "event",
+        "src": [
+          "NCA_t02:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "一起看纪录片",
+        "status": "新出现"
+      },
+      {
+        "item": "良渚照片分享",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        0,
+        1
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "良渚周末出行",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCA|r2|NCA_t03",
+    "accepted": [
+      {
+        "text": "她领导今天18:00跟她说项目黄了",
+        "status": "event",
+        "src": [
+          "NCA_t03:m0"
+        ]
+      },
+      {
+        "text": "她可能要被调岗",
+        "status": "event",
+        "src": [
+          "NCA_t03:m1"
+        ]
+      },
+      {
+        "text": "她18:05说烦死了",
+        "status": "event",
+        "src": [
+          "NCA_t03:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "良渚照片分享",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "一起看纪录片",
+        "良渚照片分享"
+      ],
+      "topic": "一起看纪录片",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCA|r2|NCA_t04",
+    "accepted": [
+      {
+        "text": "她澄清不是调岗，是换项目组，仍在原部门",
+        "status": "event",
+        "src": [
+          "NCA_t04:m1",
+          "NCA_t04:m2"
+        ]
+      },
+      {
+        "text": "她说这是虚惊一场",
+        "status": "event",
+        "src": [
+          "NCA_t04:m3"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "良渚照片分享",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        5,
+        4
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "一起看纪录片",
+        "良渚照片分享"
+      ],
+      "topic": "项目黄了可能调岗",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCA|r2|NCA_t05",
+    "accepted": [
+      {
+        "text": "她问我周二组会几点开",
+        "status": "event",
+        "src": [
+          "NCA_t05:m1"
+        ]
+      },
+      {
+        "text": "她领导让她下周先跟新项目组碰一下",
+        "status": "intent",
+        "src": [
+          "NCA_t05:m2"
+        ]
+      },
+      {
+        "text": "我提出周二组会内容是检索加速，她之前说想了解",
+        "status": "event",
+        "src": [
+          "NCA_t05:m0"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10月换项目组",
+        "status": "进行中"
+      },
+      {
+        "item": "一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "良渚照片分享",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        4,
+        7
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "一起看纪录片",
+        "良渚照片分享"
+      ],
+      "topic": "换项目组",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCA|r2|NCA_t06",
+    "accepted": [
+      {
+        "text": "她今天22:40说要去赶班车，明天再聊",
+        "status": "event",
+        "src": [
+          "NCA_t06:m0",
+          "NCA_t06:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10月换项目组",
+        "status": "进行中"
+      },
+      {
+        "item": "一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "良渚照片分享",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10月换项目组",
+        "一起看纪录片",
+        "良渚照片分享"
+      ],
+      "topic": "组会时间与新项目组准备",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCB|r1|NCB_t01",
+    "accepted": [],
+    "rejected": [
+      {
+        "text": "她这周五（10-30）从湖州上车坐 G7812 到合肥，参加周六的室友婚礼",
+        "reason": "gate_reject:entity_not_in_evidence:30",
+        "source_ids": [
+          "m2"
+        ]
+      },
+      {
+        "text": "她请我帮她看 G7812 最近正不正点",
+        "reason": "gate_reject:entity_not_in_evidence:g7812",
+        "source_ids": [
+          "m3"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-30至11-01合肥婚礼行程",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCB|r1|NCB_t02",
+    "accepted": [
+      {
+        "text": "她把车次改签成 D3145",
+        "status": "event",
+        "src": [
+          "NCB_t02:m1",
+          "NCB_t02:m2"
+        ]
+      },
+      {
+        "text": "她让我帮看 D3145 这趟车的情况",
+        "status": "event",
+        "src": [
+          "NCB_t02:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-30至11-01合肥婚礼行程",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-30至11-01合肥婚礼行程"
+      ],
+      "topic": "合肥婚礼行程",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCB|r1|NCB_t03",
+    "accepted": [
+      {
+        "text": "她带了两盒定胜糕，其中一盒给我",
+        "status": "event",
+        "src": [
+          "NCB_t03:m1"
+        ]
+      },
+      {
+        "text": "她问我明天怎么把定胜糕给我",
+        "status": "event",
+        "src": [
+          "NCB_t03:m2"
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "text": "她今天18:52坐G7812正点到合肥",
+        "reason": "gate_reject:entity_not_in_evidence:g7812",
+        "source_ids": [
+          "m0"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-30至11-01合肥婚礼行程",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-30至11-01合肥婚礼行程"
+      ],
+      "topic": "合肥行程车次",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCB|r1|NCB_t04",
+    "accepted": [
+      {
+        "text": "我今晚20:30收到她带的一盒定胜糕，觉得甜度正好",
+        "status": "event",
+        "src": [
+          "NCB_t04:m0"
+        ]
+      },
+      {
+        "text": "她说她上次也拿过定胜糕",
+        "status": "event",
+        "src": [
+          "NCB_t04:m1"
+        ]
+      },
+      {
+        "text": "她今晚20:45提醒我别放着，早点吃掉那盒",
+        "status": "event",
+        "src": [
+          "NCB_t04:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-30至11-01合肥婚礼行程",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        2,
+        3
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-30至11-01合肥婚礼行程"
+      ],
+      "topic": "合肥特产交接",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCB|r1|NCB_t05",
+    "accepted": [
+      {
+        "text": "她今天22:25回到酒店，婚礼已经忙完",
+        "status": "event",
+        "src": [
+          "NCB_t05:m0"
+        ]
+      },
+      {
+        "text": "她说先聊到这，明天返程再说",
+        "status": "event",
+        "src": [
+          "NCB_t05:m1"
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "text": "她计划2026-11-01返程",
+        "reason": "gate_reject:entity_not_in_evidence:01,11",
+        "source_ids": [
+          "m1"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-30至11-01合肥婚礼行程",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-30至11-01合肥婚礼行程"
+      ],
+      "topic": "定胜糕交接",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCB|r2|NCB_t01",
+    "accepted": [
+      {
+        "text": "她10-29晚说周五从湖州上车，车次是G7812",
+        "status": "event",
+        "src": [
+          "NCB_t01:m2"
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "text": "她10-29 20:35让我帮她查G7812最近正不正点",
+        "reason": "gate_reject:entity_not_in_evidence:g7812",
+        "source_ids": [
+          "m3"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-31 合肥室友婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCB|r2|NCB_t02",
+    "accepted": [
+      {
+        "text": "她今天21:25说自己改签了车次",
+        "status": "event",
+        "src": [
+          "NCB_t02:m1"
+        ]
+      },
+      {
+        "text": "她今天21:30说现在坐的是 D3145，让我帮她看这趟",
+        "status": "event",
+        "src": [
+          "NCB_t02:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-31 合肥室友婚礼",
+        "status": "进行中"
+      },
+      {
+        "item": "10-30 她乘 D3145 到合肥",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-31 合肥室友婚礼"
+      ],
+      "topic": "周五车次与正点情况",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCB|r2|NCB_t03",
+    "accepted": [
+      {
+        "text": "她带了两盒定胜糕，其中一盒要给我",
+        "status": "event",
+        "src": [
+          "NCB_t03:m1"
+        ]
+      },
+      {
+        "text": "她问我明天怎么把定胜糕给我",
+        "status": "event",
+        "src": [
+          "NCB_t03:m2"
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "text": "她今天18:52乘D3145正点到合肥",
+        "reason": "gate_reject:entity_not_in_evidence:d3145",
+        "source_ids": [
+          "m0"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-31 合肥室友婚礼",
+        "status": "进行中"
+      },
+      {
+        "item": "10-30 她乘 D3145 到合肥",
+        "status": "已完成"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-31 合肥室友婚礼",
+        "10-30 她乘 D3145 到合肥"
+      ],
+      "topic": "周五车次改签与正点查询",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCB|r2|NCB_t04",
+    "accepted": [
+      {
+        "text": "她说她上次也拿过定胜糕",
+        "status": "event",
+        "src": [
+          "NCB_t04:m1"
+        ]
+      },
+      {
+        "text": "她让我那盒定胜糕别放着，早点吃",
+        "status": "event",
+        "src": [
+          "NCB_t04:m2"
+        ]
+      },
+      {
+        "text": "我今天20:30告诉她糕收到了，味道正",
+        "status": "event",
+        "src": [
+          "NCB_t04:m0"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-30 她乘 D3145 到合肥",
+        "status": "已完成"
+      },
+      {
+        "item": "10-31 合肥室友婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        3,
+        4
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-31 合肥室友婚礼",
+        "10-30 她乘 D3145 到合肥"
+      ],
+      "topic": "她到合肥与定胜糕交接",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A2|NCB|r2|NCB_t05",
+    "accepted": [
+      {
+        "text": "她今天22:25说婚礼忙完，已经回酒店",
+        "status": "event",
+        "src": [
+          "NCB_t05:m0"
+        ]
+      },
+      {
+        "text": "她说先这样，明天返程再说",
+        "status": "event",
+        "src": [
+          "NCB_t05:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-30 她乘 D3145 到合肥",
+        "status": "已完成"
+      },
+      {
+        "item": "10-31 合肥室友婚礼",
+        "status": "已完成"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-30 她乘 D3145 到合肥",
+        "10-31 合肥室友婚礼"
+      ],
+      "topic": "定胜糕",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCA|r1|NCA_t01",
+    "accepted": [
+      {
+        "text": "她拍了照片，说回头挑几张发我",
+        "status": "intent",
+        "src": [
+          "NCA_t01:m1"
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "text": "她上周末（10-25、10-26）去了良渚，说人少景好",
+        "reason": "gate_reject:entity_not_in_evidence:25,26",
+        "source_ids": [
+          "m0"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她10-27发良渚照片给我",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCA|r1|NCA_t02",
+    "accepted": [
+      {
+        "text": "她今天12:38说找到了上次提过的纪录片，问我要不要看",
+        "status": "event",
+        "src": [
+          "NCA_t02:m1"
+        ]
+      },
+      {
+        "text": "她说这片在b站就能看",
+        "status": "event",
+        "src": [
+          "NCA_t02:m2"
+        ]
+      },
+      {
+        "text": "我12:31让她哪天把良渚的照片发我看看",
+        "status": "event",
+        "src": [
+          "NCA_t02:m0"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她10-27发良渚照片给我",
+        "status": "进行中"
+      },
+      {
+        "item": "10-27约定一起看纪录片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        0
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她10-27发良渚照片给我"
+      ],
+      "topic": "周末良渚游玩",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCA|r1|NCA_t03",
+    "accepted": [
+      {
+        "text": "她今天18:00说领导告知项目黄了",
+        "status": "event",
+        "src": [
+          "NCA_t03:m0"
+        ]
+      },
+      {
+        "text": "她今天18:03说可能要调岗",
+        "status": "event",
+        "src": [
+          "NCA_t03:m1"
+        ]
+      },
+      {
+        "text": "她今天18:05说烦死了",
+        "status": "event",
+        "src": [
+          "NCA_t03:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她10-27发良渚照片给我",
+        "status": "进行中"
+      },
+      {
+        "item": "10-27约定一起看纪录片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她10-27发良渚照片给我",
+        "10-27约定一起看纪录片"
+      ],
+      "topic": "一起看纪录片",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCA|r1|NCA_t04",
+    "accepted": [
+      {
+        "text": "她今天18:15更正：不是调岗，是换项目组，仍在原部门",
+        "status": "event",
+        "src": [
+          "NCA_t04:m1",
+          "NCA_t04:m2"
+        ]
+      },
+      {
+        "text": "她今天18:20说虚惊一场",
+        "status": "event",
+        "src": [
+          "NCA_t04:m3"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "10-27她工作变动",
+        "status": "进行中"
+      },
+      {
+        "item": "她10-27发良渚照片给我",
+        "status": "进行中"
+      },
+      {
+        "item": "10-27约定一起看纪录片",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        5,
+        4
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她10-27发良渚照片给我",
+        "10-27约定一起看纪录片"
+      ],
+      "topic": "工作项目黄了与调岗",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCA|r1|NCA_t05",
+    "accepted": [
+      {
+        "text": "她今天21:12问我组会几点开",
+        "status": "event",
+        "src": [
+          "NCA_t05:m1"
+        ]
+      },
+      {
+        "text": "她今天21:15说她领导让她下周先跟新项目组碰一下，问我该准备什么",
+        "status": "intent",
+        "src": [
+          "NCA_t05:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她10-27发良渚照片给我",
+        "status": "进行中"
+      },
+      {
+        "item": "10-27约定一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "10-27她工作变动",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        4,
+        7
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "10-27她工作变动",
+        "她10-27发良渚照片给我",
+        "10-27约定一起看纪录片"
+      ],
+      "topic": "工作换组虚惊一场",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCA|r1|NCA_t06",
+    "accepted": [
+      {
+        "text": "她22:40要去赶班车，说好明天再聊",
+        "status": "event",
+        "src": [
+          "NCA_t06:m0",
+          "NCA_t06:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她10-27发良渚照片给我",
+        "status": "进行中"
+      },
+      {
+        "item": "10-27约定一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "10-27她工作变动",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她10-27发良渚照片给我",
+        "10-27约定一起看纪录片",
+        "10-27她工作变动"
+      ],
+      "topic": "组会时间与新项目组准备",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCA|r2|NCA_t01",
+    "accepted": [
+      {
+        "text": "她2026-10-27早上说周末去了良渚，人少景好",
+        "status": "event",
+        "src": [
+          "NCA_t01:m0"
+        ]
+      },
+      {
+        "text": "她2026-10-27 09:12说拍了很多图，回头挑几张发我",
+        "status": "intent",
+        "src": [
+          "NCA_t01:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "2026-10-27 她发良渚照片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCA|r2|NCA_t02",
+    "accepted": [
+      {
+        "text": "她说这个纪录片b站就能看",
+        "status": "event",
+        "src": [
+          "NCA_t02:m2"
+        ]
+      },
+      {
+        "text": "我12:31让她哪天发良渚的照片给我看",
+        "status": "event",
+        "src": [
+          "NCA_t02:m0"
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "text": "她12:40说纪录片找到了，问我要不要一起看",
+        "reason": "gate_reject:entity_not_in_evidence:40",
+        "source_ids": [
+          "m1"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "2026-10-27 她发良渚照片",
+        "status": "新出现"
+      },
+      {
+        "item": "2026-10-27 一起看纪录片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        0
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "2026-10-27 她发良渚照片"
+      ],
+      "topic": "良渚周末出行",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCA|r2|NCA_t03",
+    "accepted": [
+      {
+        "text": "她今天18:00说领导告知她项目黄了",
+        "status": "event",
+        "src": [
+          "NCA_t03:m0"
+        ]
+      },
+      {
+        "text": "她今天18:03说可能要调岗",
+        "status": "event",
+        "src": [
+          "NCA_t03:m1"
+        ]
+      },
+      {
+        "text": "她今天18:05表达烦躁",
+        "status": "event",
+        "src": [
+          "NCA_t03:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "2026-10-27 一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "2026-10-27 她发良渚照片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "2026-10-27 她发良渚照片",
+        "2026-10-27 一起看纪录片"
+      ],
+      "topic": "纪录片一起看",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCA|r2|NCA_t04",
+    "accepted": [
+      {
+        "text": "她今天18:15更正说不是调岗",
+        "status": "event",
+        "src": [
+          "NCA_t04:m1"
+        ]
+      },
+      {
+        "text": "她是换项目组，还在原部门",
+        "status": "event",
+        "src": [
+          "NCA_t04:m2"
+        ]
+      },
+      {
+        "text": "她自己说虚惊一场",
+        "status": "event",
+        "src": [
+          "NCA_t04:m3"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "2026-10-27 一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "2026-10-27 她发良渚照片",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        5,
+        4
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "2026-10-27 一起看纪录片",
+        "2026-10-27 她发良渚照片"
+      ],
+      "topic": "她项目黄了可能调岗",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCA|r2|NCA_t05",
+    "accepted": [
+      {
+        "text": "她今天21:12问我这边组会几点开",
+        "status": "event",
+        "src": [
+          "NCA_t05:m1"
+        ]
+      },
+      {
+        "text": "她今天21:15说领导让她下周先跟新项目组碰一下",
+        "status": "intent",
+        "src": [
+          "NCA_t05:m2"
+        ]
+      },
+      {
+        "text": "她今天21:15问我新组碰面该准备什么",
+        "status": "intent",
+        "src": [
+          "NCA_t05:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "2026-10-27 一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "2026-10-27 她发良渚照片",
+        "status": "新出现"
+      },
+      {
+        "item": "2026-11-02 她跟新项目组碰面",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        4,
+        8
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "2026-10-27 一起看纪录片",
+        "2026-10-27 她发良渚照片"
+      ],
+      "topic": "她项目黄了要换项目组",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCA|r2|NCA_t06",
+    "accepted": [
+      {
+        "text": "她今天22:40说要去赶班车，明天再聊",
+        "status": "event",
+        "src": [
+          "NCA_t06:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "2026-10-27 一起看纪录片",
+        "status": "进行中"
+      },
+      {
+        "item": "2026-10-27 她发良渚照片",
+        "status": "新出现"
+      },
+      {
+        "item": "2026-11-02 她跟新项目组碰面",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "2026-10-27 一起看纪录片",
+        "2026-10-27 她发良渚照片",
+        "2026-11-02 她跟新项目组碰面"
+      ],
+      "topic": "组会时间与新项目组准备",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCB|r1|NCB_t01",
+    "accepted": [
+      {
+        "text": "她周五从湖州上车，车次G7812，来合肥参加周六的婚礼",
+        "status": "event",
+        "src": [
+          "NCB_t01:m2"
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "text": "她让我帮她看看G7812最近正不正点",
+        "reason": "gate_reject:entity_not_in_evidence:g7812",
+        "source_ids": [
+          "m3"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她10-30来合肥参加婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCB|r1|NCB_t02",
+    "accepted": [
+      {
+        "text": "她今天21:30说她现在坐的是D3145，让我帮看这趟",
+        "status": "event",
+        "src": [
+          "NCB_t02:m2"
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "text": "她今天21:25说她改签了车次，不是G7812",
+        "reason": "gate_reject:entity_not_in_evidence:g7812",
+        "source_ids": [
+          "m1"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她10-30来合肥参加婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她10-30来合肥参加婚礼"
+      ],
+      "topic": "周五来合肥参加婚礼的车次",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCB|r1|NCB_t03",
+    "accepted": [
+      {
+        "text": "她带了定胜糕两盒，说一盒给我",
+        "status": "event",
+        "src": [
+          "NCB_t03:m1"
+        ]
+      },
+      {
+        "text": "她问我明天怎么把定胜糕给我",
+        "status": "event",
+        "src": [
+          "NCB_t03:m2"
+        ]
+      },
+      {
+        "text": "她明天周六参加婚礼",
+        "status": "event",
+        "src": [
+          "NCB_t03:m1"
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "text": "她今天18:52说G7812正点到合肥了",
+        "reason": "gate_reject:entity_not_in_evidence:g7812",
+        "source_ids": [
+          "m0"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她10-30来合肥参加婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        0
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她10-30来合肥参加婚礼"
+      ],
+      "topic": "周五来合肥的车次",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCB|r1|NCB_t04",
+    "accepted": [
+      {
+        "text": "她说定胜糕她上次拿过",
+        "status": "event",
+        "src": [
+          "NCB_t04:m1"
+        ]
+      },
+      {
+        "text": "她今晚20:45让我别把糕放着，早点吃",
+        "status": "event",
+        "src": [
+          "NCB_t04:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她10-30来合肥参加婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        2,
+        3
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她10-30来合肥参加婚礼"
+      ],
+      "topic": "她到合肥带定胜糕给我",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCB|r1|NCB_t05",
+    "accepted": [
+      {
+        "text": "她今天婚礼结束后已回酒店",
+        "status": "event",
+        "src": [
+          "NCB_t05:m0"
+        ]
+      },
+      {
+        "text": "她说先这样，明天返程再说",
+        "status": "event",
+        "src": [
+          "NCB_t05:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "她10-30来合肥参加婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        4
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "她10-30来合肥参加婚礼"
+      ],
+      "topic": "定胜糕",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCB|r2|NCB_t01",
+    "accepted": [
+      {
+        "text": "她周五先回湖州，从湖州上 G7812 来合肥参加周六室友婚礼",
+        "status": "event",
+        "src": [
+          "NCB_t01:m0",
+          "NCB_t01:m2"
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "text": "她让我帮她查 G7812 最近正不正点",
+        "reason": "gate_reject:entity_not_in_evidence:g7812",
+        "source_ids": [
+          "m3"
+        ]
+      }
+    ],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "计划10-30她来合肥参加室友婚礼",
+        "status": "新出现"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [],
+      "topic": "",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCB|r2|NCB_t02",
+    "accepted": [
+      {
+        "text": "她今天21:25说改签了，原来的G7812不坐了",
+        "status": "event",
+        "src": [
+          "NCB_t02:m0",
+          "NCB_t02:m1"
+        ]
+      },
+      {
+        "text": "她今天21:30说她现在坐的是D3145，让我帮她看这趟车",
+        "status": "event",
+        "src": [
+          "NCB_t02:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [
+      {
+        "superseded_text": "她周五先回湖州，从湖州上 G7812 来合肥参加周六室友婚礼",
+        "by": "NCB_t02:m0"
+      }
+    ],
+    "ongoing": [
+      {
+        "item": "计划10-30她来合肥参加室友婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "计划10-30她来合肥参加室友婚礼"
+      ],
+      "topic": "她周五来合肥的车次",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCB|r2|NCB_t03",
+    "accepted": [
+      {
+        "text": "她今天18:52到合肥，车次正点",
+        "status": "event",
+        "src": [
+          "NCB_t03:m0"
+        ]
+      },
+      {
+        "text": "她从湖州带了两盒定胜糕，其中一盒给我",
+        "status": "event",
+        "src": [
+          "NCB_t03:m1"
+        ]
+      },
+      {
+        "text": "她明天参加室友婚礼，问明天怎么把定胜糕给我",
+        "status": "event",
+        "src": [
+          "NCB_t03:m2"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "计划10-30她来合肥参加室友婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [],
+      "superseded_dropped": [
+        0
+      ],
+      "ongoing_all": [
+        "计划10-30她来合肥参加室友婚礼"
+      ],
+      "topic": "她周五来合肥的车次",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCB|r2|NCB_t04",
+    "accepted": [
+      {
+        "text": "她今天20:45提醒我早点吃掉那盒定胜糕",
+        "status": "event",
+        "src": [
+          "NCB_t04:m2"
+        ]
+      },
+      {
+        "text": "她说她上次拿过定胜糕",
+        "status": "event",
+        "src": [
+          "NCB_t04:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "计划10-30她来合肥参加室友婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        4,
+        3,
+        5
+      ],
+      "superseded_dropped": [],
+      "ongoing_all": [
+        "计划10-30她来合肥参加室友婚礼"
+      ],
+      "topic": "定胜糕交接时间",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  },
+  {
+    "key": "A3|NCB|r2|NCB_t05",
+    "accepted": [
+      {
+        "text": "她今晚婚礼忙完，已回酒店",
+        "status": "event",
+        "src": [
+          "NCB_t05:m0"
+        ]
+      },
+      {
+        "text": "她说返程的事明天再说，先不聊了",
+        "status": "event",
+        "src": [
+          "NCB_t05:m1"
+        ]
+      }
+    ],
+    "rejected": [],
+    "corrections": [],
+    "ongoing": [
+      {
+        "item": "计划10-30她来合肥参加室友婚礼",
+        "status": "进行中"
+      }
+    ],
+    "scene_chain": {
+      "scene_chain_fact_ids": [
+        5
+      ],
+      "superseded_dropped": [
+        0
+      ],
+      "ongoing_all": [
+        "计划10-30她来合肥参加室友婚礼"
+      ],
+      "topic": "定胜糕",
+      "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+    }
+  }
+]

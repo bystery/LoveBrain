@@ -1,0 +1,278 @@
+{
+ "ledger_version": "generation_isolation_ledger_v1",
+ "protocol": "refs/benchmark_v1_20261107/phase2/STORY_GENERATION_PROTOCOL.md",
+ "created_at": "2026-11-08T00:30:00+08:00",
+ "acks": [
+  {
+   "ack_id": "GIA-20261108-AUTHOR-A1",
+   "agent": "author-A1",
+   "role": "story_author",
+   "scope": "wave4_dev batch1: T01 x4 (E301-E304)",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "refs/ 判决与评审文档",
+    "GOLD_SIDECAR/**",
+    "其他 episode 正文（E117 结构样例除外）"
+   ],
+   "registered_at": "2026-11-08T00:48:55+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-AUTHOR-A2",
+   "agent": "author-A2",
+   "role": "story_author",
+   "scope": "wave4_dev batch1: T02 x4 (E305-E308)",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "refs/ 判决与评审文档",
+    "GOLD_SIDECAR/**",
+    "其他 episode 正文（E117 结构样例除外）"
+   ],
+   "registered_at": "2026-11-08T00:48:55+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-AUTHOR-A3",
+   "agent": "author-A3",
+   "role": "story_author",
+   "scope": "wave4_dev batch1: T03 x4 (E309-E312)",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "refs/ 判决与评审文档",
+    "GOLD_SIDECAR/**",
+    "其他 episode 正文（E117 结构样例除外）"
+   ],
+   "registered_at": "2026-11-08T00:48:55+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-AUTHOR-A4",
+   "agent": "author-A4",
+   "role": "story_author",
+   "scope": "wave4_dev batch1: T04 x4 (E313-E316)",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "refs/ 判决与评审文档",
+    "GOLD_SIDECAR/**",
+    "其他 episode 正文（E117 结构样例除外）"
+   ],
+   "registered_at": "2026-11-08T00:48:55+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-AUTHOR-A5",
+   "agent": "author-A5",
+   "role": "story_author",
+   "scope": "wave4_dev batch1: T05+T06 x8 (E317-E324)",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "refs/ 判决与评审文档",
+    "GOLD_SIDECAR/**",
+    "其他 episode 正文（E117 结构样例除外）"
+   ],
+   "registered_at": "2026-11-08T00:48:55+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-AUTHOR-A6",
+   "agent": "author-A6",
+   "role": "story_author",
+   "scope": "wave4_dev batch1: T07+T08 x8 (E325-E332)",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "refs/ 判决与评审文档",
+    "GOLD_SIDECAR/**",
+    "其他 episode 正文（E117 结构样例除外）"
+   ],
+   "registered_at": "2026-11-08T00:48:55+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-AUTHOR-A7",
+   "agent": "author-A7",
+   "role": "story_author",
+   "scope": "wave4_dev batch1: T09 x2 + T10 twin x2 groups (E333-E338)",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "refs/ 判决与评审文档",
+    "GOLD_SIDECAR/**",
+    "其他 episode 正文（E117 结构样例除外）"
+   ],
+   "registered_at": "2026-11-08T00:48:55+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-ANNOTATOR-B1",
+   "agent": "annotator-B1",
+   "role": "gold_annotator",
+   "scope": "wave4_dev: E301-E308 reference/audit/exposure 标注",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "候选 harness 在这些故事上的运行结果/失败案例/评审点评",
+    "GOLD_SIDECAR/**",
+    "refs/ 下判决/评审文档",
+    "其他 wave 的 episode 正文（E117 reference.json 结构样例除外）"
+   ],
+   "registered_at": "2026-11-08T01:30:00+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-ANNOTATOR-B2",
+   "agent": "annotator-B2",
+   "role": "gold_annotator",
+   "scope": "wave4_dev: E309-E316 reference/audit/exposure 标注",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "候选 harness 在这些故事上的运行结果/失败案例/评审点评",
+    "GOLD_SIDECAR/**",
+    "refs/ 下判决/评审文档",
+    "其他 wave 的 episode 正文（E117 reference.json 结构样例除外）"
+   ],
+   "registered_at": "2026-11-08T02:00:00+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-ANNOTATOR-B3",
+   "agent": "annotator-B3",
+   "role": "gold_annotator",
+   "scope": "wave4_dev: E317-E324 reference/audit/exposure 标注",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "候选 harness 在这些故事上的运行结果/失败案例/评审点评",
+    "GOLD_SIDECAR/**",
+    "refs/ 下判决/评审文档",
+    "其他 wave 的 episode 正文（E117 reference.json 结构样例除外）"
+   ],
+   "registered_at": "2026-11-08T02:30:00+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-ANNOTATOR-B4",
+   "agent": "annotator-B4",
+   "role": "gold_annotator",
+   "scope": "wave4_dev: E325-E332 reference/audit/exposure 标注",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "候选 harness 在这些故事上的运行结果/失败案例/评审点评",
+    "GOLD_SIDECAR/**",
+    "refs/ 下判决/评审文档",
+    "其他 wave 的 episode 正文（E117 reference.json 结构样例除外）"
+   ],
+   "registered_at": "2026-11-08T10:30:00+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-ANNOTATOR-B6",
+   "agent": "annotator-B6",
+   "role": "gold_annotator",
+   "scope": "wave4_dev: E337-E338 (T09 long-range) reference/audit/exposure 标注",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "候选 harness 在这些故事上的运行结果/失败案例/评审点评",
+    "GOLD_SIDECAR/**",
+    "refs/ 下判决/评审文档",
+    "其他 wave 的 episode 正文（E117 reference.json 结构样例除外）"
+   ],
+   "registered_at": "2026-11-08T11:00:00+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-ANNOTATOR-B5",
+   "agent": "annotator-B5",
+   "role": "gold_annotator",
+   "scope": "wave4_dev: E333-E336 (T10 twin groups) reference/audit/exposure 标注",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "候选 harness 在这些故事上的运行结果/失败案例/评审点评",
+    "GOLD_SIDECAR/**",
+    "refs/ 下判决/评审文档",
+    "其他 wave 的 episode 正文（E117 reference.json 结构样例除外）",
+    "其他作者的 wave4 篇目正文及 reference（E301-E332、E337-E338 均不读；孪生组标注自成一体）"
+   ],
+   "registered_at": "2026-11-08T03:56:00+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-AUDITOR-C1",
+   "agent": "auditor-C1",
+   "role": "independent_auditor",
+   "scope": "wave4_dev: E301-E316 story+gold audit (read-only)",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "任何模型输出",
+    "GOLD_SIDECAR/**",
+    "其他 auditor 的报告"
+   ],
+   "registered_at": "2026-11-08T20:00:00+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-AUDITOR-C2",
+   "agent": "auditor-C2",
+   "role": "independent_auditor",
+   "scope": "wave4_dev: E317-E332 story+gold audit (read-only)",
+   "forbidden_materials_ack": true,
+   "forbidden": [
+    "logs/**",
+    "candidates/**",
+    "任何模型输出",
+    "GOLD_SIDECAR/**",
+    "其他 auditor 的报告"
+   ],
+   "registered_at": "2026-11-08T22:00:00+08:00",
+   "coordinator": "main-zcode-bm1-phase2"
+  },
+  {
+   "ack_id": "GIA-20261108-REPAIRER-R1",
+   "agent": "repairer-R1",
+   "role": "repairer",
+   "scope": "wave4_dev E301-E316: C1 audit findings repair (episode.json/reference.json content only)",
+   "forbidden_materials_ack": true,
+   "registered_at": "2026-11-08"
+  },
+  {
+   "ack_id": "GIA-20261108-REPAIRER-R2",
+   "agent": "repairer-R2",
+   "role": "repairer",
+   "scope": "wave4_dev E317-E332: C2 audit findings repair (episode.json/reference.json content only)",
+   "forbidden_materials_ack": true,
+   "registered_at": "2026-11-08"
+  },
+  {
+   "ack_id": "GIA-20261108-AUDITOR-C3",
+   "agent": "auditor-C3",
+   "role": "independent_auditor",
+   "scope": "wave4_dev: E333-E338 story+gold audit + C1-repair targeted recheck (read-only)",
+   "forbidden_materials_ack": true,
+   "registered_at": "2026-11-08"
+  }
+ ]
+}

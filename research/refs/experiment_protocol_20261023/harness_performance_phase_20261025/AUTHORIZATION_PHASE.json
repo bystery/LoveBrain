@@ -1,0 +1,51 @@
+{
+  "authorization_id": "AUTH-HARNESS-PERF-PHASE1-20261025-01",
+  "authorized": true,
+  "status": "ACTIVE",
+  "kind": "user_continuing_authorization_with_phase_management_cap",
+  "granted_by": "human user in current independent-review conversation",
+  "approval_date": "2026-10-25 Asia/Shanghai",
+  "approval_text": "继续全面复核+继续全面推进主线！！！ 我额度很多！随便用！！！ 现在重点就是修复好bug之后推进主线！",
+  "real_endpoint": {
+    "api_base": "http://127.0.0.1:17770/v1",
+    "model": "dsf",
+    "temperature": 0.7,
+    "max_attempts": 256
+  },
+  "budget_ledger": "logs/auth_budget/AUTH-HARNESS-PERF-PHASE1-20261025-01.jsonl",
+  "scope": {
+    "phase_id": "HARNESS-PERF-PHASE1-20261025",
+    "objective": "Optimize full LoveBrain harness quality, reliability, end-to-end latency and cost together",
+    "allowed_work": [
+      "up to 4 transport timing capability probes",
+      "192 paired public-development generations in four frozen 48-attempt batches",
+      "up to 32 independently authored validation generations after development retention",
+      "up to 8 integration-check generations after deterministic replay passes"
+    ],
+    "public_episodes": [
+      "E007",
+      "E008",
+      "E009",
+      "E010",
+      "E011",
+      "E012"
+    ],
+    "models": [
+      "dsf"
+    ],
+    "endpoint": "http://127.0.0.1:17770/v1",
+    "third_party_messaging": false,
+    "automatic_judge_generations": false,
+    "candidate_and_episode_identities": "freeze each child manifest before its dispatch; no silent substitution",
+    "no_unbounded_retry": true
+  },
+  "planned_attempts": 236,
+  "management_cap_note": "256 is a conservative stage management cap chosen by reviewer, not a user-stated quota. Unscheduled remainder is not a spending target. All old closed authorization IDs stay closed. Further in-scope phases may be registered under the same human continuing authorization with concrete budgets; do not repeatedly ask for each 48-attempt batch.",
+  "limits": [
+    "fixed model/endpoint for paired comparisons",
+    "record all attempts, failures and unknown usage",
+    "do not buy other services or change model to claim harness improvement",
+    "do not overwrite prior paid evidence",
+    "stop on budget, identity or ledger integrity failure"
+  ]
+}

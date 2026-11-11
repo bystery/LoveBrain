@@ -1,0 +1,18 @@
+{
+ "kind": "p07_w09_dispatch_incident_record",
+ "date": "2026-10-28T08:22+08:00",
+ "session": "watchdog30-20261028-065658",
+ "what_happened": "a3 波（--repeat 3 补齐 v6 侧 7 单元）的 --skip-trajectories 清单漏列 I1__fbpositive__v6_integrated 的 r1/r2。runner 按 rep 1..3 循环把已 complete 的 r1 重派（覆盖写为 incomplete，sim=1 断）并新派了计划外的 r2（同样 incomplete，sim=0 断），随后触发 2 连续 sim 失败暂停，7 个目标单元一个都没跑到。",
+ "damage": {
+  "lost": "TRACE_I1__fbpositive__v6_integrated__r1.json 原始 complete 版（2 harness+2 sim）被覆盖；ctx 字典在网关日志只有渲染后 prompt，无法逐字节复原",
+  "wasted_spend": "重派 r1 消耗 ~2 笔 + 计划外 r2 消耗 ~1 笔（账本如实已记，不退款）",
+  "not_lost": "P07_PILOT_SUMMARY__w09a.json 的 complete 记录（harness=2 sim=2 sent=2）、GATEWAY.jsonl/EVENTS.jsonl 的原始载荷（raw_text 可考）、账本全部事件"
+ },
+ "disposition": [
+  "不伪造重构：不用网关日志半重建冒充原轨迹；I1pos v6 侧按预登记重复补干净 r3（新授权文书 a4 波单元，独立计费）",
+  "根因修复：tools/run_p07_pilot.py 派发处新增防覆盖护栏——TRACE 文件已存在的 id 一律 REFUSE（备份 .bak-20261028-0822-wd-refuseovw）",
+  "执行纪律补充：--repeat>1 时 skip 清单必须按 cells×reps 全枚举核对；此教训写入账本与心跳"
+ ],
+ "lesson": "并发双段触发 qwen sim 劣化（本日两次复现）已改单进程串行；而本次为第二个独立执行错误（skip 漏项），两者叠加说明补齐波必须：①单进程串行 ②skip 全枚举 ③防覆盖护栏兜底",
+ "honest_note": "本次事故由本看守会话的操作失误造成，非模型或环境问题；如实记录不掩盖。"
+}

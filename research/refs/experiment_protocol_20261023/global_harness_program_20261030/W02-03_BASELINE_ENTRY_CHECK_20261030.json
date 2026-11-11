@@ -1,0 +1,70 @@
+{
+ "kind": "w02_03_baseline_entry_check",
+ "date": "2026-10-30",
+ "real_model_calls": 0,
+ "checks": [
+  {
+   "check": "identity_reference_product_v1",
+   "verdict": "OK",
+   "sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "files": 9
+  },
+  {
+   "check": "identity_v0_minimal_events",
+   "verdict": "OK",
+   "sha256": "eb35df9a6cd600ab7558e2f5e71f285a8e4f356e231211ce6aa1e8bc16a9122c",
+   "files": 17
+  },
+  {
+   "check": "identity_action_policy_r4_guard_e3",
+   "verdict": "OK",
+   "sha256": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17",
+   "files": 68
+  },
+  {
+   "check": "drift_v0_vs_V0_FREEZE_20261024",
+   "verdict": "ERROR",
+   "detail": "TypeError: 'NoneType' object is not subscriptable"
+  },
+  {
+   "check": "drift_e3_vs_F5_FREEZE_20261029",
+   "verdict": "IDENTICAL",
+   "frozen": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17",
+   "current": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17"
+  },
+  {
+   "check": "reference_matches_BASELINE_SCOPE_V2_501bc426",
+   "verdict": "MATCH",
+   "current": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67"
+  },
+  {
+   "check": "dryrun_reference_product_v1",
+   "verdict": "PASS",
+   "turn1_current_input_in_prompt": true,
+   "turn2_history_reaches_prompt": true,
+   "seed_in_prompt": true,
+   "user_prompt_cu": 858
+  },
+  {
+   "check": "dryrun_v0_minimal_events",
+   "verdict": "PASS",
+   "turn1_current_input_in_prompt": true,
+   "turn2_history_reaches_prompt": true,
+   "seed_in_prompt": true,
+   "user_prompt_cu": 862
+  },
+  {
+   "check": "dryrun_action_policy_r4_guard_e3",
+   "verdict": "PASS",
+   "turn1_current_input_in_prompt": true,
+   "turn2_history_reaches_prompt": true,
+   "seed_in_prompt": true,
+   "user_prompt_cu": 3280
+  }
+ ],
+ "current_identities": {
+  "reference_product_v1": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+  "v0_minimal_events": "eb35df9a6cd600ab7558e2f5e71f285a8e4f356e231211ce6aa1e8bc16a9122c",
+  "action_policy_r4_guard_e3": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17"
+ }
+}

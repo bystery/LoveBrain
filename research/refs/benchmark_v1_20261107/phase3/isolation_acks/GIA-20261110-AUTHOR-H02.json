@@ -1,0 +1,22 @@
+{
+ "role": "story_author",
+ "session": "AUTHOR-H02",
+ "gia": "GIA-20261110-AUTHOR-H02",
+ "written_at": "2026-11-10",
+ "scope": "HOLDOUT wave6_holdout E411-E420 (T02 x10)",
+ "declarations": {
+  "no_dev_content_read": true,
+  "no_selection_content_read": true,
+  "no_run_results_read": true,
+  "no_audit_reports_read": true,
+  "holdout_vault": true
+ },
+ "allowed_read": [
+  "HOLDOUT_AUTHOR_BRIEF.md",
+  "NEW_STORY_SPEC_V1.md",
+  "TOPIC_RUBRIC_V1.md (T02)",
+  "E117/episode.json (structure sample only)",
+  "NAME_POOL_V1.json holdout_assignment + third_party_pool"
+ ],
+ "write_target": "D:/lovebrain-arena_holdout_vault/wave6_holdout/<EID>/"
+}

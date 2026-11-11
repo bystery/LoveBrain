@@ -1,0 +1,75 @@
+{
+ "schema": "F2_FREEZE_RECORD_20261029_V1",
+ "date": "2026-10-29",
+ "selected_base": "action_policy_r2",
+ "not_selected": "action_policy_r3",
+ "selection_reason": "F0 froze the three over-silence cells as not errors; FIX-9's 2->0 is a relabeling artifact. R3A worker aggregate 0 candidate wins / 1 parent win / 20 ties. No evidence-backed reason to replace r2.",
+ "final_candidate": "action_policy_r4_guard_final",
+ "identity_sha256": "9b8f4e1eae4c68c007c29f8f1696eafdc29220354d792ccd0c1f00a9783aafb4",
+ "identity_freeze_file": "refs/experiment_protocol_20261023/final_mainline_review_20261029/FINAL_CANDIDATE_FREEZE_20261029.json",
+ "parent_identity_sha256": "352c0c063e96a6dc728ca54b95c12aeaf8321aa4798d7a4e3c9f000679cb7333",
+ "parent_closure": [
+  "action_policy_r4_guard_final",
+  "action_policy_r2",
+  "action_policy_r1",
+  "v6_integrated",
+  "v6_goal_context",
+  "v5_purpose_aligned",
+  "v4_intent_context_r2",
+  "reference_product_v1"
+ ],
+ "fixes": [
+  {
+   "id": "F2-A",
+   "name": "hygiene_wording_fix",
+   "what": "Replace r2's false sentence '右花括号只能在 analysis 写完之后出现一次' with standard nested-JSON closure wording; response/directions close before analysis, top-level brace once at the end.",
+   "evidence": "INDEPENDENT_REVIEW.md §6; AK02_T01 premature top-level brace.",
+   "scope": "prompt text only; no action semantics change"
+  },
+  {
+   "id": "F2-B",
+   "name": "contract_guard_fix",
+   "what": "Deterministic output adapter before the parent parses analysis. Reuses tools/output_repair.py + tools/normalize_reply_contract.py (vendored verbatim under mechanism/_vendor/). Repairs fences/curly quotes/premature top-level brace/style-key aliases/directions overflow, preserves extra directions and alias conflicts in notes, keeps raw model text in calls.json.",
+   "evidence": "6 live cells with directions length != 4; AK02_T01 json parse failure; S1 E024_T02/E024_T04/E034_T05 reported families.",
+   "scope": "harness-side adapter; no scorer/rubric/card change; no extra model call"
+  },
+  {
+   "id": "F2-C",
+   "name": "subject_evidence_fix",
+   "what": "Conservative evidence-subject guard. A relationship claim sourced from a single message without both-party support is replaced by a role-tagged verbatim quote (or the correction is dropped). This prevents the C3/E008 ME-xiaolin -> ME-HER subject swap.",
+   "evidence": "C3_CONFIRMED_FACT_SEMANTIC_REVIEW.json fact 46b95529fb9ccc95; current _merge_facts only checks quote membership, not subject support.",
+   "scope": "analysis facts/updates only; no named-entity or episode special cases"
+  }
+ ],
+ "offline_tests": {
+  "file": "tools/test_final_guard_candidate.py",
+  "result": "FINAL_GUARD_PASS 9/9",
+  "covers": [
+   "load",
+   "hygiene wording",
+   "clean raw passthrough",
+   "premature brace",
+   "directions overflow",
+   "subject replacement",
+   "update drop",
+   "run_turn wiring",
+   "assets"
+  ]
+ },
+ "capture_smoke": {
+  "file": "logs/final_guard_smoke_20261029/INTERLEAVE_PLAN.json",
+  "result": "capture started=16/16, real_model_calls=0, staging includes contract_guard.py and vendored output_repair.py"
+ },
+ "pycache_disclosure": "api_trial._walk_candidate_dir hashes only .py/.md/.json; .pyc is not part of identity. Generated __pycache__ in the new candidate was moved out to the workspace .trash; r2's existing pycache is not hashed and its identity still equals 352c0c06….",
+ "unchanged_parent_hashes": {
+  "candidates/action_policy_r2/mechanism/mechanism.py": "24ae2791abc297f21c2a373c411f18d90ea908f1b8bf8402431f90a9c654ecbf",
+  "candidates/action_policy_r3/mechanism/mechanism.py": "ff0d64b7f5414d684460f80939ffc2d32afc027c65f0dec6f2c2150023b19e85",
+  "tools/output_repair.py": "42c82cd2222124a0727ab0e58b429e934fb30d5d00f4c2e8b3d3c85663f0a261",
+  "tools/normalize_reply_contract.py": "427fd5a6f845e22ae963cb23617b1c7d8ff1c4e6e2961867d0b6fe18a905e5ba"
+ },
+ "honest_boundaries": [
+  "The guard is deterministic but not a semantic judge; unparseable raw is left untouched and memory write-back failure is recorded, not fabricated.",
+  "The subject guard can over-trigger on legitimate relationship summaries; it is conservative by design and logged for review.",
+  "No F3/F4 quality result yet; this record only freezes code/assets/identity."
+ ]
+}

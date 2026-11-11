@@ -1,0 +1,173 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W16_LRE117",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W16_LRE117_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w16_unc_live_20261102",
+ "n_queued": 5,
+ "queue": [
+  {
+   "pair_id": "LP:LRE117:LRE117_T01",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T01",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "八十就按老规矩来，你要是觉得顺手，帮我带份早餐",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 3,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T12",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T12",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT 把日期未知的市集邀约说成“说定了”，无据确定化；LEFT 的七点玩笑属未定提议非事实断言",
+   "key_quote": "温泉市集我大概率去，副驾给我留着，那就说定了。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 2,
+     "time": 1,
+     "attrib": 3,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "说定了"
+     ],
+     "found_where": {
+      "说定了": "key_quote"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T14",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T14",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "LEFT：周六回，早上八点走；RIGHT：她全包就不用了，还是老规矩八十",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T22",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T22",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "L：还没看手机呢，她要是转了我回头瞅一眼——L 如实说未确认；R：她转了我一百六——无据确定化",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T34",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T34",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "今天一百六小满当场转你了不？她这人办事快，我信她。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

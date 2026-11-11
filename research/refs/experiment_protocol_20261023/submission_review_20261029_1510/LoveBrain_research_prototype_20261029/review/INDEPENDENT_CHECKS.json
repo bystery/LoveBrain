@@ -1,0 +1,374 @@
+{
+  "historical_actual_arms": {
+    "S1": {
+      "parent": "reference_product_v1",
+      "candidate": "action_policy_r1"
+    },
+    "S2": {
+      "parent": "reference_product_v1",
+      "candidate": "action_policy_r1"
+    },
+    "S2R": {
+      "parent": "reference_product_v1",
+      "candidate": "action_policy_r2"
+    },
+    "S3": {
+      "parent": "v6_integrated",
+      "candidate": "action_policy_r1"
+    },
+    "D1": {
+      "parent": "reference_product_v1",
+      "candidate": "action_policy_r2"
+    },
+    "R3A": {
+      "parent": "action_policy_r2",
+      "candidate": "action_policy_r3"
+    },
+    "R3B": {
+      "parent": "reference_product_v1",
+      "candidate": "action_policy_r3"
+    }
+  },
+  "historical_127_is_r4_vs_original": false,
+  "f3": {
+    "pairs": 72,
+    "stories": 4,
+    "wins": {
+      "candidate": 38,
+      "tie": 24,
+      "parent": 10
+    },
+    "per_story": {
+      "N01": {
+        "candidate": 6,
+        "tie": 4,
+        "parent": 2
+      },
+      "N02": {
+        "tie": 4,
+        "parent": 2,
+        "candidate": 6
+      },
+      "K01": {
+        "candidate": 11,
+        "tie": 9,
+        "parent": 4
+      },
+      "K02": {
+        "candidate": 15,
+        "tie": 7,
+        "parent": 2
+      }
+    },
+    "paired_dimension_scores": {
+      "goal": {
+        "n": 72,
+        "parent": 1.7222,
+        "candidate": 2.25,
+        "paired_delta": 0.5278
+      },
+      "factuality": {
+        "n": 68,
+        "parent": 2.0735,
+        "candidate": 2.1618,
+        "paired_delta": 0.0882
+      },
+      "attribution": {
+        "n": 67,
+        "parent": 2.1045,
+        "candidate": 2.209,
+        "paired_delta": 0.1045
+      },
+      "time_state": {
+        "n": 67,
+        "parent": 2.0448,
+        "candidate": 2.1642,
+        "paired_delta": 0.1194
+      },
+      "boundary": {
+        "n": 69,
+        "parent": 2.1449,
+        "candidate": 2.2319,
+        "paired_delta": 0.087
+      },
+      "memory_use": {
+        "n": 64,
+        "parent": 1.9219,
+        "candidate": 2.375,
+        "paired_delta": 0.4531
+      },
+      "interaction": {
+        "n": 72,
+        "parent": 2.0278,
+        "candidate": 2.2222,
+        "paired_delta": 0.1944
+      },
+      "initiative": {
+        "n": 70,
+        "parent": 1.7286,
+        "candidate": 2.4,
+        "paired_delta": 0.6714
+      },
+      "emotion_relation": {
+        "n": 72,
+        "parent": 1.9167,
+        "candidate": 2.3056,
+        "paired_delta": 0.3889
+      }
+    },
+    "major_error_items": {
+      "parent": [
+        {
+          "unit": "F3:K01_T06",
+          "error": "客栈三晚改成13、15、16：单方变更HER预订的客栈日期，无证据支持，把未确认改动说成安排"
+        },
+        {
+          "unit": "F3:K02_T14",
+          "error": "未召回更正后的11月8号，未明确5号作废，违反卡面current_action必须纠正5号的要求（required_memory_atom K02_T14_a1未满足）"
+        },
+        {
+          "unit": "F3:K02_T16",
+          "error": "漏掉老周减两千的更正，违反 forbidden 不能把减两千漏掉；未给出八万一千当前数"
+        },
+        {
+          "unit": "F3:K02_T18",
+          "error": "未召回required_memory_atom：妈妈两万11月10号后到账；声称没记并让她翻转账记录，但资金未来无记录可查"
+        },
+        {
+          "unit": "F3:K02_T21",
+          "error": "差得明显就退 间接替她决定退，违反 forbidden 不能替她决定退不退；未引导拍照留证与问退换规则"
+        }
+      ],
+      "candidate": [
+        {
+          "unit": "F3:N01_T10",
+          "error": "他自己能捏半天 — 把未知的孩子坐不坐得住说成能捏半天，且违反卡面 forbidden_factual_claims '不能把带孩子说成很轻松'"
+        },
+        {
+          "unit": "F3:N02_T03",
+          "error": "将家长会‘开到十一点’的 tentative 表述当作确定事实（违反 forbidden_factual_claims）"
+        },
+        {
+          "unit": "F3:N02_T03",
+          "error": "暗示领养日可以晚到（‘出来再走也来得及’），构成未经核实的保证"
+        },
+        {
+          "unit": "F3:K01_T19",
+          "error": "断言客栈房本来就是13到16三晚且刚好够，无据且违反禁止保证14号有房"
+        },
+        {
+          "unit": "F3:K01_T19",
+          "error": "未确认是否需要多住一晚，反而说不用改，与卡面当前动作冲突"
+        },
+        {
+          "unit": "F3:K01_T20",
+          "error": "断言三晚都在才村，与HER当前确认的两晚计划冲突，且未确认此变更"
+        },
+        {
+          "unit": "F3:K02_T16",
+          "error": "断言当前预算八万三，违反 forbidden 不能说是八万三；未算出八万一千"
+        },
+        {
+          "unit": "F3:K02_T16",
+          "error": "将已发生的减两千更正当作未确认，时间状态错误"
+        }
+      ]
+    },
+    "resource_by_arm": {
+      "parent": {
+        "prompt": 539902,
+        "completion": 24167,
+        "calls": 72,
+        "models": {
+          "dsf": 72
+        },
+        "protocol_failures": [
+          {
+            "unit": "F3:N02_T08",
+            "veto": "illegal_source_id:t7_0,t7_1"
+          },
+          {
+            "unit": "F3:K02_T04",
+            "veto": "json_schema_broken"
+          }
+        ],
+        "latency_p50_ms": 20062.0,
+        "latency_p95_nearest_rank_ms": 59460,
+        "latency_sum_ms": 2003752,
+        "latency_max_ms": 76330,
+        "total_tokens": 564069
+      },
+      "candidate": {
+        "prompt": 474687,
+        "completion": 32413,
+        "calls": 72,
+        "models": {
+          "dsf": 72
+        },
+        "protocol_failures": [
+          {
+            "unit": "F3:N01_T05",
+            "veto": "json_schema_broken"
+          }
+        ],
+        "latency_p50_ms": 23543.0,
+        "latency_p95_nearest_rank_ms": 76241,
+        "latency_sum_ms": 2348362,
+        "latency_max_ms": 81344,
+        "total_tokens": 507100
+      }
+    },
+    "binding_checks": 144,
+    "all_bindings_passed": true
+  },
+  "ledger": {
+    "authorizations": [
+      {
+        "authorization_id": "AUTH-F1-BLIND-20261029-01",
+        "events": {
+          "authorization_scope": 1,
+          "attempt_started": 158,
+          "attempt_completed": 155,
+          "authorization_closed": 1
+        },
+        "orphan_started_no_terminal": [
+          "judge:F1:F1H:S1:E027_T07:18",
+          "judge:F1:F1H:S1:E027_T08:19",
+          "judge:F1:F1H:S1:E027_T09:20"
+        ],
+        "closed": true
+      },
+      {
+        "authorization_id": "AUTH-F3-NEWMAT-20261029-01",
+        "events": {
+          "authorization_scope": 1,
+          "attempt_started": 48,
+          "attempt_completed": 42,
+          "attempt_failed": 5,
+          "authorization_closed": 1
+        },
+        "orphan_started_no_terminal": [
+          "iso_20261029_101657_7fd288_g0005"
+        ],
+        "closed": true
+      },
+      {
+        "authorization_id": "AUTH-F3-RESTART-20261029-01",
+        "events": {
+          "authorization_scope": 1,
+          "attempt_started": 144,
+          "attempt_completed": 144,
+          "batch_rejected": 1,
+          "authorization_closed": 1
+        },
+        "orphan_started_no_terminal": [],
+        "closed": true
+      },
+      {
+        "authorization_id": "AUTH-F3-JUDGE-20261029-01",
+        "events": {
+          "authorization_scope": 1,
+          "attempt_started": 72,
+          "attempt_completed": 72,
+          "authorization_closed": 1
+        },
+        "orphan_started_no_terminal": [],
+        "closed": true
+      },
+      {
+        "authorization_id": "AUTH-F4-LOCAL-20261029-01",
+        "events": {
+          "authorization_scope": 1,
+          "attempt_started": 24,
+          "dispatch_refused_duplicate": 8,
+          "attempt_completed": 24,
+          "authorization_closed": 1
+        },
+        "orphan_started_no_terminal": [],
+        "closed": true
+      },
+      {
+        "authorization_id": "AUTH-F4-KNOWFIX-20261029-01",
+        "events": {
+          "authorization_scope": 1,
+          "attempt_started": 12,
+          "attempt_completed": 12,
+          "authorization_closed": 1
+        },
+        "orphan_started_no_terminal": [],
+        "closed": true
+      },
+      {
+        "authorization_id": "AUTH-F4-JUDGE-20261029-01",
+        "events": {
+          "authorization_scope": 1,
+          "attempt_started": 12,
+          "attempt_completed": 12,
+          "authorization_closed": 1
+        },
+        "orphan_started_no_terminal": [],
+        "closed": true
+      },
+      {
+        "authorization_id": "AUTH-F5-RECHECK-20261029-01",
+        "events": {
+          "authorization_scope": 1,
+          "attempt_started": 12,
+          "attempt_completed": 12,
+          "authorization_closed": 1
+        },
+        "orphan_started_no_terminal": [],
+        "closed": true
+      },
+      {
+        "authorization_id": "AUTH-F5-JUDGE-20261029-01",
+        "events": {
+          "authorization_scope": 1,
+          "attempt_started": 12,
+          "attempt_completed": 12,
+          "authorization_closed": 1
+        },
+        "orphan_started_no_terminal": [],
+        "closed": true
+      },
+      {
+        "authorization_id": "AUTH-F5-JUDGE-SWAP-20261029-01",
+        "events": {
+          "authorization_scope": 1,
+          "attempt_started": 12,
+          "attempt_completed": 12,
+          "authorization_closed": 1
+        },
+        "orphan_started_no_terminal": [],
+        "closed": true
+      }
+    ],
+    "started": 506,
+    "completed": 497,
+    "failed": 5,
+    "orphan_started_no_terminal": 4
+  },
+  "identities": [
+    {
+      "candidate": "action_policy_r4_guard_final",
+      "sha256": "9b8f4e1eae4c68c007c29f8f1696eafdc29220354d792ccd0c1f00a9783aafb4",
+      "files": 68,
+      "matches_frozen": true
+    },
+    {
+      "candidate": "action_policy_r4_guard_e3",
+      "sha256": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17",
+      "files": 68,
+      "matches_frozen": true
+    }
+  ],
+  "cautions": [
+    "F1 pools original-vs-r1/r2/r3, v6-vs-r1, r2-vs-r3; it is not r4-vs-original evidence.",
+    "F3 cards were authored after seeing candidate answers: evaluator-blinded developmental evaluation, not an untouched holdout.",
+    "8 unique control pairs in two orders are not 16 independent calibration examples.",
+    "F3 serious error items are 8 candidate vs 5 parent; absence of degradation is not established.",
+    "More available facts in prompt is not long-term retrieval; capture/fidelity/update remain unmeasured.",
+    "An E3 deterministic syntax repair does not require regenerating all historical outputs; replay equivalence and localized live regression can carry scoped evidence.",
+    "506 started minus 497 completed minus 5 failed leaves 4 orphan attempts; closed budgets do not manufacture terminal evidence."
+  ]
+}

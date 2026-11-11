@@ -1,0 +1,69 @@
+{
+  "kind": "mainline_model_routing_policy",
+  "date": "2026-10-27",
+  "source": "Current explicit user request plus bounded independent diagnostics",
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "allowed_aliases": [
+    "dsf",
+    "hy3",
+    "qwen3.8-flash",
+    "gemini-3.8-flash"
+  ],
+  "forbidden_aliases": [
+    "hy4-preview"
+  ],
+  "harness_default": "dsf",
+  "harness_model_changes": "Freeze a new same-model baseline/candidate batch; never switch just one arm or mix historical models as harness gains.",
+  "routing": {
+    "dsf": {
+      "enabled": true,
+      "initial_slots": 1,
+      "max_slots": 3,
+      "roles": [
+        "harness",
+        "evidence_based_fact_review"
+      ]
+    },
+    "qwen3.8-flash": {
+      "enabled": true,
+      "initial_slots": 1,
+      "max_slots": 3,
+      "roles": [
+        "short_task_review",
+        "short_interaction_review",
+        "partner_simulation"
+      ],
+      "note": "All roles/processes share alias cap; short diagnostic speed is not full-rubric qualification."
+    },
+    "hy3": {
+      "enabled": true,
+      "initial_slots": 1,
+      "max_slots": 3,
+      "roles": [
+        "noncritical_authoring"
+      ],
+      "note": "Representative input timed out; not a critical dependency until stable on real load."
+    },
+    "gemini-3.8-flash": {
+      "enabled": false,
+      "initial_slots": 0,
+      "max_slots": 0,
+      "roles": [],
+      "note": "No new critical work now. Preserve old evidence; do not wait for recovery."
+    }
+  },
+  "global_initial_slots": 3,
+  "global_ramp_soft_limit": 6,
+  "global_hard_limit": 12,
+  "current_active_alias_theoretical_limit": 9,
+  "ramp": "Observe real short-workload valid completions, queueing and errors before adding slots. Never use 12 as a target or assume alias capacities are independent.",
+  "new_judge_item_timeout_s": 45,
+  "new_failure_policy": {
+    "audit_identity_budget_leakage": "stop global dispatch",
+    "isolated_empty_or_schema_failure": "preserve as failed/unassessed, do not kill all independent mainline work",
+    "two_consecutive_transport_or_empty_on_alias": "pause that model, continue other assigned work; no automatic retry/refill"
+  },
+  "enforcement_status": "AGENTS instruction and owned diagnostics enforce selected aliases. Existing mainline entrypoints must add pre-dispatch allowlist guard for future batches; no claim that historical runs were retroactively protected.",
+  "quality_policy": "Rater/profile/epoch explicit. Same paired case both arms graded by same rater. No naive pooling of replacement scores into old Gemini averages.",
+  "no_automatic_fallback_to_forbidden_model": true
+}

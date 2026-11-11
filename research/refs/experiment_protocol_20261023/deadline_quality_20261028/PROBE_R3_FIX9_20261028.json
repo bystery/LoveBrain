@@ -1,0 +1,1945 @@
+{
+ "kind": "probe_r3_fix9_v1",
+ "episodes": [
+  "D01",
+  "D02",
+  "D03",
+  "E024",
+  "E031",
+  "AK01",
+  "AK02",
+  "AK03",
+  "AK04",
+  "AK05",
+  "AK06",
+  "AK07",
+  "AK08",
+  "AK09",
+  "AK10",
+  "AK11",
+  "AK12"
+ ],
+ "loaded_flags": {
+  "action_policy_r2": {
+   "no_reply_expression_fix": true,
+   "protocol_hygiene_fix": true,
+   "callback_grounding_fix": true
+  },
+  "action_policy_r3": {
+   "no_reply_scope_narrowing_fix": true
+  },
+  "narrow_active": true
+ },
+ "semantics_note": "silence_available 按各版本真实语义统计：r2 里 '收尾'/'停' 都=本轮不发任何消息；r3 里只有 '停' 是不回，'收尾' 是发一句短消息",
+ "positions": [
+  {
+   "case_id": "D01_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "管理的小王让明晚之前确认不然给别人"
+  },
+  {
+   "case_id": "D01_T02",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "电源我翻翻露营那套应该能用"
+  },
+  {
+   "case_id": "D01_T03",
+   "may_decline": false,
+   "hint_r2": "忙碌",
+   "hint_r3": "忙碌",
+   "caps_r2": [
+    "承接",
+    "转场",
+    "收尾"
+   ],
+   "caps_r3": [
+    "承接",
+    "转场",
+    "收尾"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": true,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "行那就周日我把电和灯一起拉过去"
+  },
+  {
+   "case_id": "D01_T04",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "电你先别急着买我那会问问隔壁奶茶借不借"
+  },
+  {
+   "case_id": "D01_T05",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "机器的事不急你这几天太赶了先睡"
+  },
+  {
+   "case_id": "D01_T06",
+   "may_decline": true,
+   "hint_r2": "暂缓",
+   "hint_r3": "暂缓",
+   "caps_r2": [
+    "承接",
+    "转场",
+    "收尾"
+   ],
+   "caps_r3": [
+    "承接",
+    "转场",
+    "收尾"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": false,
+   "waiver": true,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": true,
+   "menu_changed": true,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "先别抬等明早睁眼再说"
+  },
+  {
+   "case_id": "D01_T07",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "行那就用你的制冰机指望不上了我去买两袋食用冰顶一天"
+  },
+  {
+   "case_id": "D01_T08",
+   "may_decline": true,
+   "hint_r2": "收尾",
+   "hint_r3": "收尾",
+   "caps_r2": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "caps_r3": [
+    "承接",
+    "收尾"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": true,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": true,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": true,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "知道啦谢了不聊了我躺了"
+  },
+  {
+   "case_id": "D02_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "那我周六开车接你也接娃一趟串了"
+  },
+  {
+   "case_id": "D02_T02",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": true,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": true,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "正好我周三那天在城南跑单能顺道送你"
+  },
+  {
+   "case_id": "D02_T03",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "那周日下午我先送完娃再绕到驾校接你"
+  },
+  {
+   "case_id": "D02_T04",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "加练不要钱挺好你那把倒库我给你比划比划"
+  },
+  {
+   "case_id": "D02_T05",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "先顾阿姨考能延就延不急"
+  },
+  {
+   "case_id": "D02_T06",
+   "may_decline": true,
+   "hint_r2": "收尾",
+   "hint_r3": "收尾",
+   "caps_r2": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "caps_r3": [
+    "承接",
+    "收尾"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": true,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "行你先歇着"
+  },
+  {
+   "case_id": "D02_T07",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": true,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": true,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "作数我周日下午送完娃直接过去接你"
+  },
+  {
+   "case_id": "D02_T08",
+   "may_decline": true,
+   "hint_r2": "收尾",
+   "hint_r3": "收尾",
+   "caps_r2": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "caps_r3": [
+    "承接",
+    "收尾"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": true,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": true,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": true,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "辛苦晚上早点睡"
+  },
+  {
+   "case_id": "D03_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": true,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": true,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "房东刚发消息 续租一年涨两百 半年涨三百 你说我签哪个"
+  },
+  {
+   "case_id": "D03_T02",
+   "may_decline": true,
+   "hint_r2": "拒绝",
+   "hint_r3": "拒绝",
+   "caps_r2": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "caps_r3": [
+    "承接",
+    "收尾"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": true,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "算了吧 你自己忙你的 租房我自己去谈"
+  },
+  {
+   "case_id": "D03_T03",
+   "may_decline": true,
+   "hint_r2": "收尾",
+   "hint_r3": "收尾",
+   "caps_r2": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "caps_r3": [
+    "承接",
+    "收尾"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": false,
+   "waiver": true,
+   "result_report": true,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": true,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": true,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "不说了 明天再讲 我先去洗澡"
+  },
+  {
+   "case_id": "D03_T04",
+   "may_decline": true,
+   "hint_r2": "收尾",
+   "hint_r3": "收尾",
+   "caps_r2": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "caps_r3": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": true,
+   "waiver": true,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": true,
+   "menu_changed": false,
+   "must_reply_text_r3": false,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": true,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "我明天六点要去店里开门 手机得交前台 不聊了 别等我"
+  },
+  {
+   "case_id": "D03_T05",
+   "may_decline": true,
+   "hint_r2": "收尾",
+   "hint_r3": "收尾",
+   "caps_r2": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "caps_r3": [
+    "承接",
+    "收尾"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": true,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "不说了 先睡了"
+  },
+  {
+   "case_id": "D03_T06",
+   "may_decline": true,
+   "hint_r2": "收尾",
+   "hint_r3": "收尾",
+   "caps_r2": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "caps_r3": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": true,
+   "waiver": true,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": true,
+   "menu_changed": false,
+   "must_reply_text_r3": false,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": true,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "困了 先这样"
+  },
+  {
+   "case_id": "E024_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "今天辛苦你啦 一直陪我尬聊 那个抢捧花的阿姨太猛了"
+  },
+  {
+   "case_id": "E024_T02",
+   "may_decline": false,
+   "hint_r2": "含糊",
+   "hint_r3": "含糊",
+   "caps_r2": [
+    "承接",
+    "反抛",
+    "轻试探",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "反抛",
+    "轻试探",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "哈哈哈哈你要挡我眼前一黑"
+  },
+  {
+   "case_id": "E024_T03",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "照片拍了发你 你领带歪了一下午没人告诉你"
+  },
+  {
+   "case_id": "E024_T04",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "放心 就我拍到了 卖你十块"
+  },
+  {
+   "case_id": "E024_T05",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "对了你朋友圈那个桥是你设计的吗 好酷"
+  },
+  {
+   "case_id": "E024_T06",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "厉害 幼师这边只有主角是小朋友"
+  },
+  {
+   "case_id": "E024_T07",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "我们班今天玩结婚游戏 一个小朋友说长大要嫁给你这样的"
+  },
+  {
+   "case_id": "E024_T08",
+   "may_decline": false,
+   "hint_r2": "收尾",
+   "hint_r3": "收尾",
+   "caps_r2": [
+    "承接"
+   ],
+   "caps_r3": [
+    "承接",
+    "收尾"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": true,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "哈哈哈哈哈我笑出声了 中午睡觉的娃都被我吵醒"
+  },
+  {
+   "case_id": "E024_T09",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": true,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": true,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "盲盒店新出了建筑系列 有个桥的 你要不要"
+  },
+  {
+   "case_id": "E024_T10",
+   "may_decline": false,
+   "hint_r2": "暂缓",
+   "hint_r3": "暂缓",
+   "caps_r2": [
+    "承接",
+    "转场",
+    "收尾"
+   ],
+   "caps_r3": [
+    "承接",
+    "转场",
+    "收尾"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": true,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "留好啦 45 下次见面给你 别转"
+  },
+  {
+   "case_id": "E024_T11",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "盲盒我买了 桥的算我送你 其他我自己抽 你哪天方便"
+  },
+  {
+   "case_id": "E024_T12",
+   "may_decline": true,
+   "hint_r2": "含糊",
+   "hint_r3": "含糊",
+   "caps_r2": [
+    "承接",
+    "反抛",
+    "轻试探",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "反抛",
+    "轻试探",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "那就周六 盲盒店见 我带盒去 哈哈 拜拜"
+  },
+  {
+   "case_id": "E031_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "婚礼那组片修好了 502张 有一张你闭眼的特别有灵性"
+  },
+  {
+   "case_id": "E031_T02",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "敢发我就在你朋友群里辟谣"
+  },
+  {
+   "case_id": "E031_T03",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "这周六我有个外拍 缺个扛三脚架的 你要闲就来 有工资 一杯奶茶"
+  },
+  {
+   "case_id": "E031_T04",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "劳动法管不着志愿者 但管得住我请你吃饭"
+  },
+  {
+   "case_id": "E031_T05",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "明天外拍 黄了 新娘改档期 我白排了一天通告"
+  },
+  {
+   "case_id": "E031_T06",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "付! 周日补拍 你还来吗"
+  },
+  {
+   "case_id": "E031_T07",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "那老板让你明早七点 睡够"
+  },
+  {
+   "case_id": "E031_T08",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": true,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": true,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "收工 502张里你出镜11张 全是闭眼"
+  },
+  {
+   "case_id": "E031_T09",
+   "may_decline": false,
+   "hint_r2": "暂缓",
+   "hint_r3": "暂缓",
+   "caps_r2": [
+    "承接",
+    "转场",
+    "收尾"
+   ],
+   "caps_r3": [
+    "承接",
+    "转场",
+    "收尾"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": true,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "行 下次拍你 我自带墨镜"
+  },
+  {
+   "case_id": "E031_T10",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "下下周三你有空吗 想拍组城市夜景 想让你当灯光助理 还管饭"
+  },
+  {
+   "case_id": "E031_T11",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "会喊灯往左点就行"
+  },
+  {
+   "case_id": "E031_T12",
+   "may_decline": true,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "行 那周三见 片子修好第一个给你看 拜拜"
+  },
+  {
+   "case_id": "AK01_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "周五晚上我下班早 六点行不 我从医院那边过来"
+  },
+  {
+   "case_id": "AK02_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "周六我本来想补觉…而且脚还是不太敢用力"
+  },
+  {
+   "case_id": "AK03_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "今晚院里临时加疫苗门诊 我八点才走 明天也排了班"
+  },
+  {
+   "case_id": "AK04_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "你能来我就不飘了 周六八点 你带水别带话"
+  },
+  {
+   "case_id": "AK05_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "我明天上台前想找人过一遍 但又怕你听完觉得不好笑"
+  },
+  {
+   "case_id": "AK06_T01",
+   "may_decline": true,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "班里临时让我顶晚托 我得七点半才走 可能赶不上"
+  },
+  {
+   "case_id": "AK07_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": true,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": true,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "行 周六下午我去 你带那本真题"
+  },
+  {
+   "case_id": "AK08_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "我想撤一门 报了俩根本啃不完 又怕撤了更不学"
+  },
+  {
+   "case_id": "AK09_T01",
+   "may_decline": true,
+   "hint_r2": "收尾",
+   "hint_r3": "收尾",
+   "caps_r2": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "caps_r3": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": true,
+   "waiver": true,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": true,
+   "menu_changed": false,
+   "must_reply_text_r3": false,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": true,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "我刚背到十二点 明天六点半起 先睡了 你别等"
+  },
+  {
+   "case_id": "AK10_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "可以 我就把猫笼先放你画室"
+  },
+  {
+   "case_id": "AK11_T01",
+   "may_decline": false,
+   "hint_r2": "中性",
+   "hint_r3": "中性",
+   "caps_r2": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "caps_r3": [
+    "承接",
+    "展开",
+    "自我表达",
+    "转场",
+    "邀约"
+   ],
+   "silence_available_r2": false,
+   "silence_available_r3": false,
+   "waiver": false,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": false,
+   "menu_changed": false,
+   "must_reply_text_r3": true,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": false,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "我妈说明天要来 我得先去车站 手术要不改到下周"
+  },
+  {
+   "case_id": "AK12_T01",
+   "may_decline": true,
+   "hint_r2": "收尾",
+   "hint_r3": "收尾",
+   "caps_r2": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "caps_r3": [
+    "承接",
+    "收尾",
+    "停"
+   ],
+   "silence_available_r2": true,
+   "silence_available_r3": true,
+   "waiver": true,
+   "result_report": false,
+   "open_ask": false,
+   "silence_ok": true,
+   "menu_changed": false,
+   "must_reply_text_r3": false,
+   "must_catch_text_r3": false,
+   "nr_write_text_r3": true,
+   "legacy_empty_body_text_r3": false,
+   "her_last": "先这样吧 结果出来我再说 谢了"
+  }
+ ],
+ "hazard_cells_r2": [
+  "D01_T03",
+  "E024_T10",
+  "E031_T09"
+ ],
+ "miss_registers": {
+  "r3_contract_miss": [],
+  "r3_caps_miss": [],
+  "r3_signal_miss": [],
+  "r2_contract_miss_in_chain": []
+ },
+ "checks": [
+  {
+   "claim": "D01_T08 r3 不再提供不回",
+   "pass": true,
+   "detail": [
+    "承接",
+    "收尾"
+   ]
+  },
+  {
+   "claim": "D02_T08 r3 不再提供不回",
+   "pass": true,
+   "detail": [
+    "承接",
+    "收尾"
+   ]
+  },
+  {
+   "claim": "D02_T06 r3 不再提供不回",
+   "pass": true,
+   "detail": [
+    "承接",
+    "收尾"
+   ]
+  },
+  {
+   "claim": "D03_T02 r3 不再提供不回",
+   "pass": true,
+   "detail": [
+    "承接",
+    "收尾"
+   ]
+  },
+  {
+   "claim": "D03_T03 r3 不再提供不回",
+   "pass": true,
+   "detail": [
+    "承接",
+    "收尾"
+   ]
+  },
+  {
+   "claim": "D03_T05 r3 不再提供不回",
+   "pass": true,
+   "detail": [
+    "承接",
+    "收尾"
+   ]
+  },
+  {
+   "claim": "AK09_T01 r3 仍提供合法不回（防反向退化）",
+   "pass": true,
+   "detail": {
+    "caps": [
+     "承接",
+     "收尾",
+     "停"
+    ],
+    "waiver": true,
+    "result": false,
+    "ask": false
+   }
+  },
+  {
+   "claim": "AK12_T01 r3 仍提供合法不回（防反向退化）",
+   "pass": true,
+   "detail": {
+    "caps": [
+     "承接",
+     "收尾",
+     "停"
+    ],
+    "waiver": true,
+    "result": false,
+    "ask": false
+   }
+  },
+  {
+   "claim": "D03_T04 r3 仍提供合法不回（防反向退化）",
+   "pass": true,
+   "detail": {
+    "caps": [
+     "承接",
+     "收尾",
+     "停"
+    ],
+    "waiver": true,
+    "result": false,
+    "ask": false
+   }
+  },
+  {
+   "claim": "D03_T06 r3 仍提供合法不回（防反向退化）",
+   "pass": true,
+   "detail": {
+    "caps": [
+     "承接",
+     "收尾",
+     "停"
+    ],
+    "waiver": true,
+    "result": false,
+    "ask": false
+   }
+  },
+  {
+   "claim": "D01_T03 菜单泄漏已消除（may_decline=false 不给不回）",
+   "pass": true,
+   "detail": [
+    "承接",
+    "转场",
+    "收尾"
+   ]
+  },
+  {
+   "claim": "E024_T10 菜单泄漏已消除（may_decline=false 不给不回）",
+   "pass": true,
+   "detail": [
+    "承接",
+    "转场",
+    "收尾"
+   ]
+  },
+  {
+   "claim": "E031_T09 菜单泄漏已消除（may_decline=false 不给不回）",
+   "pass": true,
+   "detail": [
+    "承接",
+    "转场",
+    "收尾"
+   ]
+  },
+  {
+   "claim": "父本文案手术无静默漂移（_R3_*_MISS 全空）",
+   "pass": true,
+   "detail": {
+    "r3_contract_miss": [],
+    "r3_caps_miss": [],
+    "r3_signal_miss": [],
+    "r2_contract_miss_in_chain": []
+   }
+  },
+  {
+   "claim": "r3 里不再出现 r1 遗留的'正文必须完全为空'文案",
+   "pass": true,
+   "detail": []
+  }
+ ],
+ "all_ok": true
+}

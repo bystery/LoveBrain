@@ -1,0 +1,18 @@
+{
+ "plan_len": 251,
+ "config": {
+  "system_sha256": "badc925bac00d3af78b1da6b1a96da54e79709b46a6821e8b258c075166223cb",
+  "model_alias": "gemini-3.8-flash",
+  "temperature": 0.7,
+  "stream": false,
+  "api_config_identity": "api_cfg:openai_compat_stream_false_v1",
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "manual": "QUALITY_MANUAL_V1_1",
+  "packet_plan_sha256": "8f849896c0fa978f78baa0cc58b7829b9002b61afd8fa78d9da25fc01a2da943",
+  "authorization_id": "AUTH-P06-JUDGE-GEM-20261027-01",
+  "cap": 256,
+  "timeout_s": 300,
+  "concurrency": 3,
+  "note": "P06 judge batch: advisory nine-dim development review; no willingness labels"
+ }
+}

@@ -1,0 +1,9 @@
+{
+  "blocked": true,
+  "reason": "live precheck 未通过",
+  "problems": [
+    "LB_API_KEY 未设置（用户须撤销泄露旧 key 并配置新 key）",
+    "provider 检查未通过: BLOCKED（LB_API_KEY 未设置：旧 key 已在聊天文本中泄露，须由用户在 USTC 平台撤销并重新生成，再以环境变量 LB_API_KEY 配置新 key 后重跑本检查。）"
+  ],
+  "ts": "2026-11-07 22:24:01"
+}

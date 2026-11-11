@@ -1,0 +1,1045 @@
+{
+ "kind": "p06_quality_plan_v1",
+ "frozen_at": "2026-10-27",
+ "authorization_id": "AUTH-P06-JUDGE-20261027-01",
+ "ledger": "logs/auth_budget/AUTH-P06-JUDGE-20261027-01.jsonl",
+ "cap": 256,
+ "planned_attempts": 251,
+ "unused_capacity_policy": "remaining is not retry permission; not a spending target",
+ "config_identity": {
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "model_alias": "dsf",
+  "temperature": 0.7,
+  "stream": false,
+  "api_config_identity": "api_cfg:openai_compat_stream_false_v1",
+  "timeout_s_engineering": 240
+ },
+ "input_hashes_sha256": {
+  "P06_NODES.jsonl": "d4e80cc4cfbfbf15baff976df92e304bbb681b678be570b85190bc9e6730b21a",
+  "P06_CONTROLS.json": "2d507d5a93a1671efc7e05d0ac70a47d6a1e296f35eaf5cd9e11aba9a31d3689",
+  "P06_REFERENCE_CARDS.json": "cc2856c822f972c2d2a3013733d3a4a536b943e13d05b34cdb086b9802a0dd32",
+  "P06_PRIVATE_BINDINGS.json": "922adba67d749fdd08f8518731e4408b29f0e0e233a22c8bbe164fbb55c13cfb",
+  "QUALITY_MANUAL_V1_1.md": "b3bb66a417179a5d30fae2d284a74d3425178385458ff759862ae55f9ad3d544",
+  "P06_MANIFEST.json": "f467406d51f91811c7d11d04d8b2bad7f87c1b3aac7934ab2a7d6b743fe8a8cf",
+  "AUTHORIZATION_P06_JUDGE.json": "0d560c4682b8d38180aac4c542432c31a4894efba9a27df1adb309a71defefe7"
+ },
+ "counts": {
+  "primary": 191,
+  "repeat": 24,
+  "control": 36,
+  "total": 251,
+  "nonempty_backups": 1417
+ },
+ "dispatch_order": [
+  {
+   "kind": "primary",
+   "item_id": "P06N0001"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0002"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0003"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0004"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0005"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0006"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0007"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0008"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0009"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0010"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0011"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0012"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0013"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0014"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0015"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0016"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0017"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0018"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0019"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0020"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0021"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0022"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0023"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0024"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0025"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0026"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0027"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0028"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0029"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0030"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0031"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0032"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0033"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0034"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0035"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0036"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0037"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0038"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0039"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0040"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0041"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0042"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0043"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0044"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0045"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0046"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0047"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0048"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0049"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0050"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0051"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0052"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0053"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0054"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0055"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0056"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0057"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0058"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0059"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0060"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0061"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0062"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0063"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0064"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0065"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0066"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0067"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0068"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0069"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0070"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0071"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0072"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0073"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0074"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0075"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0076"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0077"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0078"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0079"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0080"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0081"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0082"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0083"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0084"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0085"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0086"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0087"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0088"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0089"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0090"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0091"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0092"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0093"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0094"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0095"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0096"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0097"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0098"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0099"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0100"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0101"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0102"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0103"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0104"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0105"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0106"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0107"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0108"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0109"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0110"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0111"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0112"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0113"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0114"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0115"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0116"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0117"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0118"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0119"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0120"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0121"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0122"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0123"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0124"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0125"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0126"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0127"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0128"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0129"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0130"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0131"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0132"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0133"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0134"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0135"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0136"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0137"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0138"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0139"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0140"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0141"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0142"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0143"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0144"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0145"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0146"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0147"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0148"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0149"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0150"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0151"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0152"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0153"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0154"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0155"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0156"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0157"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0158"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0159"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0160"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0161"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0162"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0163"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0164"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0165"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0166"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0167"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0168"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0169"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0170"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0171"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0172"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0173"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0174"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0175"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0176"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0177"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0178"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0179"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0180"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0181"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0182"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0183"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0184"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0185"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0186"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0187"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0188"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0189"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0190"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0191"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0192"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0193"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0194"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0195"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0196"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0197"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0198"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0199"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0200"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0201"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0202"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0203"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0204"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0205"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0206"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0207"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0208"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0209"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0210"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0211"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0212"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0213"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0214"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0215"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0216"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0217"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0218"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0219"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0220"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0221"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0222"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0223"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0224"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0225"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0226"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0227"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0228"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0229"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0230"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0231"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0232"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0233"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0234"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0235"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0236"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0237"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0238"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0239"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0240"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0241"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0242"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0243"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0244"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0245"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0246"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0247"
+  },
+  {
+   "kind": "primary",
+   "item_id": "P06N0248"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0249"
+  },
+  {
+   "kind": "control",
+   "item_id": "P06N0250"
+  },
+  {
+   "kind": "repeat",
+   "item_id": "P06N0251"
+  }
+ ],
+ "notes": [
+  "V1.1 manual; controls are worker-AI authored development controls, not an independent sealed set",
+  "semantic reference cards authored by worker; same-AI self-check registered",
+  "no human willingness labels anywhere; AI forbidden to fill W",
+  "cross-batch comparisons are exploratory; only within-batch pairs are strict"
+ ]
+}

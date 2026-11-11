@@ -1,0 +1,17 @@
+scan_partial_string_open_until_quote_closed                PASS 截断处返回未收尾值且 closed=False：'好，那周'
+scan_closed_string_exact_and_unescaped                     PASS '好，那周六见，我提前到门口等你'
+scan_handles_json_escapes                                  PASS '行\n周末丁见'
+scan_missing_key_returns_none                              PASS 
+heartbeat_and_role_only_delta_are_not_first_content        PASS chunks=2 deltas=0（首内容未记）
+first_content_ignores_role_only_and_heartbeat              PASS deltas=13 chunks=26
+first_preview_recorded_mid_stream                          PASS preview=17.9 completion=57.7
+first_usable_can_precede_completion                        PASS usable=17.9
+segments_monotonic_and_no_negative                         PASS problems=[]
+pre_request_segment_separate_from_http                     PASS pre=50.0 headers=0.0
+no_verifier_falls_back_to_full_payload_honestly            PASS usable==completion, flagged
+missing_usage_recorded_as_unavailable_not_zero             PASS usage_source=unavailable_in_stream
+unprompted_usage_kept_as_api_usage_with_flag_false         PASS 服务端主动给 usage 时也如实标注配置
+stream_body_still_whitelisted_and_extra_key_blocked        PASS stream_options 需人类批准扩白名单，构造侧直接拒
+gateway_persists_timing_into_call_log                      PASS keys=['completion_ms', 'first_content_ms', 'first_preview_ms', 'first_usable_ms', 'requires_full_payload']
+
+STREAM_TIMING: PASS (15 checks, failed=0, real_model_calls=0)

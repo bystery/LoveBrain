@@ -1,0 +1,94 @@
+{
+ "route": "three_two_arm_batches_192",
+ "cards_path": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+ "episode_order": [
+  {
+   "episode": "E006",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E007",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E008",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E012",
+   "arm_order": "parent_first"
+  }
+ ],
+ "baseline": "reference_product_v1",
+ "batches": {
+  "A_BASE_VS_V5": {
+   "batch_id": "BATCH-P06-A-BASE-VS-V5-20261027",
+   "plan_file": "P06_A_BASE_VS_V5.INTERLEAVE_PLAN.json",
+   "plan_sha256": "8b10493a3ebb07e5c415edde3512d1f53addb1e3680c3ea82d1be52161b72fb2",
+   "attempts": 64,
+   "arm_map": {
+    "parent": "reference_product_v1",
+    "candidate": "v5_purpose_aligned"
+   },
+   "parent_identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "candidate_identity_sha256": "7c6b51cec9780049d11cb0aabdfe9c42f65ff1a33d2afe22f5a926034e6eb7ac",
+   "parent_closure": [
+    "reference_product_v1"
+   ],
+   "candidate_closure": [
+    "v5_purpose_aligned",
+    "v4_intent_context_r2",
+    "reference_product_v1"
+   ],
+   "config_file": "refs/experiment_protocol_20261023/p06_20261027/P06_A_BASE_VS_V5.BATCH_CONFIG.json",
+   "config_files_count": 23
+  },
+  "B_BASE_VS_V6G": {
+   "batch_id": "BATCH-P06-B-BASE-VS-V6G-20261027",
+   "plan_file": "P06_B_BASE_VS_V6G.INTERLEAVE_PLAN.json",
+   "plan_sha256": "183bc2699275956567d717dfbd2c33e01ce17ff75cecf809ae9ece2d04e8dde6",
+   "attempts": 64,
+   "arm_map": {
+    "parent": "reference_product_v1",
+    "candidate": "v6_goal_context"
+   },
+   "parent_identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "candidate_identity_sha256": "4e9d454aabd50a18f77fcd350ffe0ca8fd8a6271c8db99bc3249ed2fb7f157f6",
+   "parent_closure": [
+    "reference_product_v1"
+   ],
+   "candidate_closure": [
+    "v6_goal_context",
+    "v5_purpose_aligned",
+    "v4_intent_context_r2",
+    "reference_product_v1"
+   ],
+   "config_file": "refs/experiment_protocol_20261023/p06_20261027/P06_B_BASE_VS_V6G.BATCH_CONFIG.json",
+   "config_files_count": 23
+  },
+  "C_BASE_VS_V6I": {
+   "batch_id": "BATCH-P06-C-BASE-VS-V6I-20261027",
+   "plan_file": "P06_C_BASE_VS_V6I.INTERLEAVE_PLAN.json",
+   "plan_sha256": "11d7d1646c8409b8fc5ce02ffa0a2ff40d5b7e330b1303aa0899de63a0d22008",
+   "attempts": 64,
+   "arm_map": {
+    "parent": "reference_product_v1",
+    "candidate": "v6_integrated"
+   },
+   "parent_identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "candidate_identity_sha256": "ac2672ffac3ba82d799a49b753840573cb1933eb71d8110792e5e0f3448c127b",
+   "parent_closure": [
+    "reference_product_v1"
+   ],
+   "candidate_closure": [
+    "v6_integrated",
+    "v6_goal_context",
+    "v5_purpose_aligned",
+    "v4_intent_context_r2",
+    "reference_product_v1"
+   ],
+   "config_file": "refs/experiment_protocol_20261023/p06_20261027/P06_C_BASE_VS_V6I.BATCH_CONFIG.json",
+   "config_files_count": 23
+  }
+ }
+}

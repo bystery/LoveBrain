@@ -1,0 +1,340 @@
+{
+  "kind": "max288_v3_current_continuation_queue",
+  "date": "2026-10-28",
+  "root": "D:/lovebrain-arena",
+  "master": "D:/lovebrain-arena/refs/experiment_protocol_20261023/max288_v3_20261028/MASTER_EXECUTION_V3_288H.md",
+  "status": "WORK_ORDER_AND_INDEPENDENT_REVIEW_CREATED_NOT_288_HOURS_EXECUTED",
+  "priority": [
+    "harness_quality",
+    "knowledge_correctness_and_use",
+    "positive_interaction_and_goal",
+    "quality_constrained_efficiency"
+  ],
+  "carryover": {
+    "p06_generations": 192,
+    "p06_judge_assessed_formal": 154,
+    "p07_prototype_trajectories": 4,
+    "p07_prototype_harness_decisions": 12,
+    "p07_pilot2_api_starts": 24,
+    "recovery_logical_reservations": 18,
+    "recovery_physical_gateway_starts": 27,
+    "recovery_undercount": 9,
+    "recovery_small_batch_logical_units": 12
+  },
+  "estimated_work_capacity_hours": [
+    144,
+    288
+  ],
+  "first_actions": [
+    "inherit completed P05/P06 evidence",
+    "single request per reservation + reconcile 27/18",
+    "canonical intent + actual-sent ME replay + action semantics",
+    "corrected P07 pilot",
+    "parallel action/memory candidates and Stage2 content"
+  ],
+  "scheduling": {
+    "max_active_workstreams": 3,
+    "no_product_integration": true,
+    "no_new_windows_or_account_platform": true,
+    "no_full_qualification_repetition_as_critical_path": true,
+    "model_alias_hard_limit": 3,
+    "healthy_independent_work_can_overlap": true,
+    "stateful_trajectory_predecessors_sequential": true,
+    "review_tail_not_global_gate": true
+  },
+  "models": {
+    "harness": "dsf",
+    "helpers": [
+      "dsf",
+      "qwen3.8-flash",
+      "hy3"
+    ],
+    "gemini_new_critical_slots": 0,
+    "forbidden": [
+      "hy4-preview"
+    ],
+    "same_batch_harness_model_must_match": true
+  },
+  "budget": {
+    "existing_cycle_cap": 16384,
+    "new_extra_cap_added_by_V3": 0,
+    "phase_menu_total": 14688,
+    "planning_room_before_existing_spend": 1696,
+    "requires_actual_cumulative_reconciliation_before_reserving": true,
+    "recovery_physical_delta_to_add": 9,
+    "phase_ceilings_are_not_reserved_or_spending_targets": true,
+    "every_physical_client_generate_needs_unique_attempt_and_prior_reservation": true,
+    "no_implicit_retries": true,
+    "old_closed_scopes_never_reused": true
+  },
+  "quality": {
+    "rubric_scale": "0-3",
+    "primary_backups_separate": true,
+    "NA_NR_uncertain_distinct": true,
+    "human_willingness": "unknown until actually rated",
+    "same_rater_within_pair_not_sufficient_for_validity": true,
+    "semantic_support_not_lexical_or_ID_membership": true
+  },
+  "phases": [
+    {
+      "id": "W01",
+      "name": "共同链路修正与证据收口",
+      "estimated_hours": [
+        4,
+        8
+      ],
+      "phase_planning_ceilings": {},
+      "phase_planning_total": 0,
+      "status": "READY_CRITICAL_FIX",
+      "depends": [],
+      "outputs": [
+        "CALL_ACCOUNTING_RECONCILIATION.json",
+        "single-dispatch guard",
+        "P07 input/action fix"
+      ]
+    },
+    {
+      "id": "W02",
+      "name": "正确输入的真实闭环pilot",
+      "estimated_hours": [
+        8,
+        16
+      ],
+      "phase_planning_ceilings": {
+        "harness": 24,
+        "partner": 32,
+        "judge": 12,
+        "buffer": 28
+      },
+      "phase_planning_total": 96,
+      "status": "PROTOTYPE_EXISTS_NOT_EFFECT_VALIDATED",
+      "depends": [
+        "W01.dispatch_once",
+        "W01.p07_input_contract"
+      ],
+      "outputs": [
+        "P07_ENV_V2",
+        "pilot actual traces",
+        "simulator negative controls"
+      ]
+    },
+    {
+      "id": "W03",
+      "name": "意图行动与正向互动机制",
+      "estimated_hours": [
+        16,
+        32
+      ],
+      "phase_planning_ceilings": {
+        "harness": 768,
+        "judge": 384
+      },
+      "phase_planning_total": 1152,
+      "status": "BASE_V6_IMPLEMENTED_NEEDS_MEASURED_ITERATIONS",
+      "depends": [
+        "W01.p07_input_contract"
+      ],
+      "outputs": [
+        "action_policy_r1",
+        "at least two measured iterations",
+        "goal/feedback slices"
+      ]
+    },
+    {
+      "id": "W04",
+      "name": "知识主体与状态重构",
+      "estimated_hours": [
+        16,
+        32
+      ],
+      "phase_planning_ceilings": {
+        "harness": 768,
+        "judge": 384
+      },
+      "phase_planning_total": 1152,
+      "status": "MEMBERSHIP_IMPLEMENTED_SEMANTIC_GAPS_OPEN",
+      "depends": [],
+      "outputs": [
+        "evidence_state_r1",
+        "semantic provenance cases",
+        "knowledge-chain metrics"
+      ]
+    },
+    {
+      "id": "W05",
+      "name": "上下文与最小架构",
+      "estimated_hours": [
+        12,
+        24
+      ],
+      "phase_planning_ceilings": {
+        "harness": 512,
+        "judge": 256
+      },
+      "phase_planning_total": 768,
+      "status": "PLANNED_WITH_EXISTING_MINIMAL_REFERENCE",
+      "depends": [],
+      "outputs": [
+        "context selection candidates",
+        "information-boundary tests",
+        "minimal-vs-complex comparison"
+      ]
+    },
+    {
+      "id": "W06",
+      "name": "新自然故事和参考",
+      "estimated_hours": [
+        16,
+        32
+      ],
+      "phase_planning_ceilings": {
+        "authoring": 768,
+        "judge": 256
+      },
+      "phase_planning_total": 1024,
+      "status": "STAGE1_DONE_STAGE2_CONTENT_NOT_STARTED",
+      "depends": [],
+      "outputs": [
+        "stage2 first16 x12",
+        "64 natural stories incrementally",
+        "exposure/reference manifests"
+      ]
+    },
+    {
+      "id": "W07",
+      "name": "新共同面板真实机制对照",
+      "estimated_hours": [
+        16,
+        32
+      ],
+      "phase_planning_ceilings": {
+        "harness": 1024,
+        "judge": 512
+      },
+      "phase_planning_total": 1536,
+      "status": "OLD_P06_DONE_NEW_ENV_REQUIRED",
+      "depends": [
+        "candidate_frozen",
+        "input_and_consumer_frozen",
+        "W06.first_subset"
+      ],
+      "outputs": [
+        "new paired benchmark",
+        "case and story metrics",
+        "retain/modify/eliminate"
+      ]
+    },
+    {
+      "id": "W08",
+      "name": "长链与真实恢复",
+      "estimated_hours": [
+        12,
+        24
+      ],
+      "phase_planning_ceilings": {
+        "harness": 1536,
+        "judge": 512
+      },
+      "phase_planning_total": 2048,
+      "status": "PLANNED",
+      "depends": [
+        "W04.initial_candidate"
+      ],
+      "outputs": [
+        "2 then8 long stories",
+        "true window eviction",
+        "restart and continue evidence"
+      ]
+    },
+    {
+      "id": "W09",
+      "name": "扩展反馈分支实战",
+      "estimated_hours": [
+        12,
+        24
+      ],
+      "phase_planning_ceilings": {
+        "harness": 1024,
+        "partner": 1024,
+        "judge": 384
+      },
+      "phase_planning_total": 2432,
+      "status": "WAIT_CORRECTED_PILOT_NOT_ALL_JUDGE_CALIBRATION",
+      "depends": [
+        "W02.real_exit"
+      ],
+      "outputs": [
+        "128 harness + <=128 partner first wave",
+        "16 paired trajectories",
+        "positive/hesitant/busy/refusal"
+      ]
+    },
+    {
+      "id": "W10",
+      "name": "组件价值与架构消融",
+      "estimated_hours": [
+        16,
+        32
+      ],
+      "phase_planning_ceilings": {
+        "harness": 2048,
+        "judge": 768
+      },
+      "phase_planning_total": 2816,
+      "status": "PLANNED",
+      "depends": [
+        "measured_shortlist"
+      ],
+      "outputs": [
+        "component matrix",
+        "asset deletion experiments",
+        "simplified new architecture"
+      ]
+    },
+    {
+      "id": "W11",
+      "name": "质量约束的性能费用",
+      "estimated_hours": [
+        8,
+        16
+      ],
+      "phase_planning_ceilings": {
+        "harness": 512,
+        "judge": 128
+      },
+      "phase_planning_total": 640,
+      "status": "RAW_USAGE_EXISTS_FIRST_USABLE_NOT_FULLY_VALIDATED",
+      "depends": [
+        "quality_supported_scope"
+      ],
+      "outputs": [
+        "Praw/C/S/W",
+        "true usable response timing",
+        "quality-constrained efficiency"
+      ]
+    },
+    {
+      "id": "W12",
+      "name": "研究级结论和下一周期",
+      "estimated_hours": [
+        8,
+        16
+      ],
+      "phase_planning_ceilings": {
+        "harness": 768,
+        "judge": 256
+      },
+      "phase_planning_total": 1024,
+      "status": "PLANNED",
+      "depends": [
+        "evidence_for_scope_claims"
+      ],
+      "outputs": [
+        "FINAL_RESEARCH_RESULTS_V3.md/json",
+        "reproducible artifact index",
+        "NEXT_CYCLE_PLAN"
+      ]
+    }
+  ],
+  "continuation": "When current work finishes, select largest evidenced quality gap, pre-register hypothesis, implement, compare, review, keep/eliminate, then next task. No artificial waiting/call filling. After three stagnant tweaks change approach. Persist state across platform interruptions and never claim a background process without evidence."
+}

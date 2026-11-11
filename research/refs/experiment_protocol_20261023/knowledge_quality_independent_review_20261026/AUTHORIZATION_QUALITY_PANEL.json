@@ -1,0 +1,31 @@
+{
+  "authorization_id": "AUTH-QUALITY-PANEL-20261027-01",
+  "authorized": true,
+  "status": "ACTIVE",
+  "authorization_basis": {
+    "kind": "existing_explicit_user_standing_authorization",
+    "user_quote": "我额度很多！随便用！！！ 现在重点就是修复好bug之后推进主线！",
+    "interpretation": "Create this new bounded judge batch, preserve closed old grants; no new human signature or per-batch approval claimed."
+  },
+  "real_endpoint": {
+    "api_base": "http://127.0.0.1:17770/v1",
+    "model": "dsf",
+    "temperature": 0.7,
+    "max_attempts": 192
+  },
+  "budget_ledger": "D:\\lovebrain-arena\\logs\\auth_budget\\AUTH-QUALITY-PANEL-20261027-01.jsonl",
+  "scope": {
+    "scope_id": "quality_panel_semantic_review_20261027_v1",
+    "purpose": "Existing C4 128 answer sets plus 13 fixed repeats and 32 authored development controls; advisory nine-dimensional review, NOT personal willingness prediction.",
+    "endpoint": "http://127.0.0.1:17770/v1",
+    "model_alias": "dsf",
+    "temperature": 0.7,
+    "automatic_judge_generations": true,
+    "automatic_candidate_generations": false,
+    "failure_policy": "Failure consumes quota. No retries or automatic refill; stop on transport/audit failure. Invalid semantic response is preserved as unassessed, not regenerated.",
+    "gate_before_dispatch": "Freeze reference cards, review manual, schema, controls and full dispatch plan. Existing packet is ready; missing references are work to finish, not missing human approval."
+  },
+  "planned_attempts": 173,
+  "unused_capacity_policy": "19 remaining is not retry permission; not a spending target.",
+  "human_willingness": "unknown; model forbidden to fill user labels"
+}

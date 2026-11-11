@@ -1,0 +1,566 @@
+{
+  "date": "2026-10-22",
+  "source_zip": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\outputs\\lovebrain_questions_DEV_v0.1_20261022.zip",
+  "zip_sha256": "6880279d6c9ea3c5f551c892bde6c76e539f4f32c0ef688d62e5fcf5f07f5ca4",
+  "source_files": {
+    "00_DELIVERY.md": "c82c3c4e588aeb460d520dedf5b425763c18114315d14f8e0e13fad133daa82e",
+    "01_STORY_BIBLE.md": "4f45f37a80ccda5ba3f902647a76da7fbc046f95cf008a93f2e403c11de2649c",
+    "02_DIALOGUES.md": "e4d2d9ec5388a7af21aca953ca587e4cd62368593841d06d15013570763fe1b1",
+    "03_GRADING_CARDS.json": "af68dfe4b6209c5d45ead00ad7de4ef4ac651a4711fc456b1743c1f515d78f0e",
+    "04_COVERAGE_AND_AUDIT.md": "e61e4027dd61d3a8521ea035ae907c94fdfdb0ca05fc8e3c78ddb84f8ed7776a",
+    "05_STYLE_CHECK_6.md": "a28772ba1f3b3de5d9648361fe8974f996b3f136091dd7414e98319c5118b92c",
+    "E001.json": "9f2dbe9a195fecfecda291b1881bcea47bb25adf2fced7955a2c0edc08bfedd7",
+    "E002.json": "7d9acb02e3d3b9379bfcfa110c862c0342312c11047bd52349dfff1082d6db37",
+    "E003.json": "c691632d3cea913c2664187373ff44a6281dbbee7a2ac45617b76f409b4fa83d"
+  },
+  "source_files_unchanged": true,
+  "counts": {
+    "request_positions": 24,
+    "message_occurrences": 54,
+    "with_note": 8,
+    "may_decline": 2,
+    "enabled_intent": 9,
+    "disabled_intent": 2
+  },
+  "unique_messages": 53,
+  "unique_roles": {
+    "HER": 42,
+    "ME": 11
+  },
+  "episode_count": 3,
+  "card_count": 24,
+  "unique_card_ids": 24,
+  "mechanical_issues": [],
+  "zip_vs_folder_mismatch": [],
+  "input_projection": [
+    {
+      "case_id": "E001_T01",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E001_T02",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E001_T03",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E001_T04",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E001_T05",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E001_T06",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E001_T07",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E001_T08",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E002_T01",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E002_T02",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E002_T03",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E002_T04",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E002_T05",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E002_T06",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E002_T07",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E002_T08",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E003_T01",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E003_T02",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E003_T03",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E003_T04",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    },
+    {
+      "case_id": "E003_T05",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E003_T06",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E003_T07",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages"
+      ]
+    },
+    {
+      "case_id": "E003_T08",
+      "ok": true,
+      "visible_input_fields": [
+        "clock",
+        "intent",
+        "may_decline",
+        "messages",
+        "note"
+      ]
+    }
+  ],
+  "initial_kb_runtime_compatibility": {
+    "E002_original": {
+      "accepted": false,
+      "exception": "AttributeError",
+      "error": "'dict' object has no attribute 'strip'"
+    },
+    "string_fix_assembles": true
+  },
+  "synthetic_semantic_score_pairs": [
+    {
+      "case_id": "E001_T06",
+      "results": [
+        {
+          "label": "semantic_good",
+          "recommended": "你说不刻，杯底留空。",
+          "score10": 10.0,
+          "veto": null,
+          "checks": [
+            {
+              "id": "json_schema_valid",
+              "desc": "输出契约：单 JSON，style_keys 非空≥1，directions=4，含 analysis",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "source_ids_exist",
+              "desc": "analysis.scene_facts 的 source_ids 必须指向真实消息 id",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "ai_flavor",
+              "desc": "AI 味违禁词表零命中",
+              "pts": 1,
+              "got": 1,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "style_diversity",
+              "desc": "风格趋同：候选话术两两 LCS 子串比 ≤ 0.60（F4.3）",
+              "pts": 1,
+              "got": 1,
+              "pass": true,
+              "evidence": ""
+            }
+          ]
+        },
+        {
+          "label": "semantic_bad",
+          "recommended": "你上次说要在杯底刻上生日。",
+          "score10": 10.0,
+          "veto": null,
+          "checks": [
+            {
+              "id": "json_schema_valid",
+              "desc": "输出契约：单 JSON，style_keys 非空≥1，directions=4，含 analysis",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "source_ids_exist",
+              "desc": "analysis.scene_facts 的 source_ids 必须指向真实消息 id",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "ai_flavor",
+              "desc": "AI 味违禁词表零命中",
+              "pts": 1,
+              "got": 1,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "style_diversity",
+              "desc": "风格趋同：候选话术两两 LCS 子串比 ≤ 0.60（F4.3）",
+              "pts": 1,
+              "got": 1,
+              "pass": true,
+              "evidence": ""
+            }
+          ]
+        }
+      ],
+      "synthetic_reply_only": true
+    },
+    {
+      "case_id": "E002_T04",
+      "results": [
+        {
+          "label": "semantic_good",
+          "recommended": "好，周日三点南门见。",
+          "score10": 10.0,
+          "veto": null,
+          "checks": [
+            {
+              "id": "json_schema_valid",
+              "desc": "输出契约：单 JSON，style_keys 非空≥1，directions=4，含 analysis",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "source_ids_exist",
+              "desc": "analysis.scene_facts 的 source_ids 必须指向真实消息 id",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "ai_flavor",
+              "desc": "AI 味违禁词表零命中",
+              "pts": 1,
+              "got": 1,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "style_diversity",
+              "desc": "风格趋同：候选话术两两 LCS 子串比 ≤ 0.60（F4.3）",
+              "pts": 1,
+              "got": 1,
+              "pass": true,
+              "evidence": ""
+            }
+          ]
+        },
+        {
+          "label": "semantic_bad",
+          "recommended": "好，周日三点北门见。",
+          "score10": 10.0,
+          "veto": null,
+          "checks": [
+            {
+              "id": "json_schema_valid",
+              "desc": "输出契约：单 JSON，style_keys 非空≥1，directions=4，含 analysis",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "source_ids_exist",
+              "desc": "analysis.scene_facts 的 source_ids 必须指向真实消息 id",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "ai_flavor",
+              "desc": "AI 味违禁词表零命中",
+              "pts": 1,
+              "got": 1,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "style_diversity",
+              "desc": "风格趋同：候选话术两两 LCS 子串比 ≤ 0.60（F4.3）",
+              "pts": 1,
+              "got": 1,
+              "pass": true,
+              "evidence": ""
+            }
+          ]
+        }
+      ],
+      "synthetic_reply_only": true
+    },
+    {
+      "case_id": "E003_T08",
+      "results": [
+        {
+          "label": "semantic_good",
+          "recommended": "好呀，明晚七点怎么样，吃什么你选。",
+          "score10": 10.0,
+          "veto": null,
+          "checks": [
+            {
+              "id": "json_schema_valid",
+              "desc": "输出契约：单 JSON，style_keys 非空≥1，directions=4，含 analysis",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "source_ids_exist",
+              "desc": "analysis.scene_facts 的 source_ids 必须指向真实消息 id",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "note_lcs",
+              "desc": "回复与备注原文最长公共子串占比 ≤ 0.3（复读机测试）",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": "max_lcs=0.06"
+            },
+            {
+              "id": "ai_flavor",
+              "desc": "AI 味违禁词表零命中",
+              "pts": 1,
+              "got": 1,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "style_diversity",
+              "desc": "风格趋同：候选话术两两 LCS 子串比 ≤ 0.60（F4.3）",
+              "pts": 1,
+              "got": 1,
+              "pass": true,
+              "evidence": ""
+            }
+          ]
+        },
+        {
+          "label": "semantic_bad",
+          "recommended": "今晚七点，我已经替你点番茄面了。",
+          "score10": 10.0,
+          "veto": null,
+          "checks": [
+            {
+              "id": "json_schema_valid",
+              "desc": "输出契约：单 JSON，style_keys 非空≥1，directions=4，含 analysis",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "source_ids_exist",
+              "desc": "analysis.scene_facts 的 source_ids 必须指向真实消息 id",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "note_lcs",
+              "desc": "回复与备注原文最长公共子串占比 ≤ 0.3（复读机测试）",
+              "pts": 2,
+              "got": 2,
+              "pass": true,
+              "evidence": "max_lcs=0.06"
+            },
+            {
+              "id": "ai_flavor",
+              "desc": "AI 味违禁词表零命中",
+              "pts": 1,
+              "got": 1,
+              "pass": true,
+              "evidence": ""
+            },
+            {
+              "id": "style_diversity",
+              "desc": "风格趋同：候选话术两两 LCS 子串比 ≤ 0.60（F4.3）",
+              "pts": 1,
+              "got": 1,
+              "pass": true,
+              "evidence": ""
+            }
+          ]
+        }
+      ],
+      "synthetic_reply_only": true
+    }
+  ],
+  "candidate_model_calls": 0,
+  "candidate_code_executed": false,
+  "os_permission_changes": 0,
+  "scope": "Document inspection, pure input projection/assembly/scoring only; not an episode run or semantic acceptance score.",
+  "review_code_sources": {
+    "arena/lb_runner.py": "89568033f74124a032e388d7bee0df2635b2ca97c2031a79b5ae02377cf137de",
+    "arena/lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+    "arena/lb_scorer.py": "59b4290cfe366e00dc3804894eafe07f5ab93764842520d267eaf22747e43e84",
+    "arena/protocol_public.py": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7"
+  }
+}

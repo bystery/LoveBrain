@@ -1,0 +1,42 @@
+{
+  "authorization_id": "AUTH-R2-CTX-20261024-01",
+  "authorized": false,
+  "status": "CLOSED",
+  "exhausted": true,
+  "closed_reason": "48/48 attempts consumed (0 failed); ledger appended authorization_closed 2026-10-25. 总token −56.56% 成立、p95 +45.91%（提速未成立）。不得复活/覆盖/补跑（r2_real_independent_review_20261025 §二.2）。",
+  "kind": "signed_authorization_consumed",
+  "granted_by": "user natural-language approval 2026-10-24 22:43 (Asia/Shanghai)",
+  "approval_text": "批准 BATCH-R2-CTX-20261024：先按复核修正时间规则并重新冻结，再执行原版 reference_product_v1 vs v4_intent_context_r2，E007/E010/E012各8位×2臂，最多48次真实生成。固定17770/v1、dsf、温度0.7，失败停批，无重试、补跑、第三臂或自动judge。",
+  "scope": {
+    "batch_id": "BATCH-R2-CTX-20261024",
+    "arms": ["reference_product_v1", "v4_intent_context_r2"],
+    "episodes": ["E007", "E010", "E012"],
+    "attempts_per_arm": 24,
+    "total_hard_cap": 48,
+    "third_arm": false,
+    "auto_judge": false,
+    "no_auto_retry": true,
+    "no_makeup_pairing": true,
+    "fail_fast_on_transmission_error": true,
+    "separate_from": "AUTH-V3-DELETION-20261024-01（已 authorization_closed，48/48 耗尽，不得复活/挪用/补跑）"
+  },
+  "real_endpoint": {
+    "api_base": "http://127.0.0.1:17770/v1",
+    "model": "dsf",
+    "temperature": 0.7,
+    "max_attempts": 48
+  },
+  "frozen_bindings": {
+    "plan": "refs/experiment_protocol_20261023/r2_next_batch_20261024/INTERLEAVE_PLAN.json",
+    "parent_identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+    "candidate_identity_sha256": "37076a76b264d19368b3690ce6cdf911824bfa5d8d813a99bb5daa9594522322",
+    "candidate_mechanism_sha256": "ba25dee0fb4b0dfcac2bca64256ecdbb2fc4a96b590d1f102a37091060b049a2",
+    "candidate_identity_note": "为修正 _time_scope_rule(事件日≠发言日) 后重新冻结的 r2 身份(17文件闭包)，非上一版 eaf6d267…",
+    "cards_path": "benchmark/dev_expansion_v01/04_GRADING_CARDS_E007_E012.json",
+    "input_fairness_capture": "E007/E010/E012 双方均消费公开种子、私密邀约目标不再常驻种子（离线 probe + reference vs r2 双校, real_model_calls=0）"
+  },
+  "budget_ledger": "logs/auth_budget/AUTH-R2-CTX-20261024-01.jsonl",
+  "scheduling": "tools/exam_interleave_plan.execute_plan(mode=live) 逐 slot 交错; 整批 ensure_batch(48) 首发预检; fail_fast; no_makeup_pairing; no_auto_retry",
+  "selection_criteria_pre_registered": "质量收益路线: 核心互动/事实能力实质改善且其它关键维度无实质退化; 效率收益路线: 质量在预定可接受范围内相当而总资源/等待/维护复杂度实质改善即支持开发保留, 不要求回复更短。严重事实/状态错误或首选交付退化不得被省 token 抵消。三故事皆公开开发集, 不据此称泛化或生产冠军。归因诚实: 本批比较整套简化架构对原版, 不单独归因三护栏或意图模块; 固定剧情后续不证'她真被聊动'。",
+  "notes": "授权级持久账本以 authorization_id 为键; 换 run/进程/文件路径不获新额度; CLOSED/超额拒绝。真实调用 48 硬上限; 不含 judge/第三臂/旧回忆。完成或 fail-fast 停止后追加 authorization_closed。"
+}

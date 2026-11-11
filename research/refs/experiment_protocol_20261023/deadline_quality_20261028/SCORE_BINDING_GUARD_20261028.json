@@ -1,0 +1,89 @@
+{
+ "kind": "score_binding_guard_test_v1",
+ "batch": "R3B",
+ "mutated_case": "D03_T01",
+ "tests": {
+  "X1_mutation_rejected": {
+   "pass": true,
+   "detail": {
+    "rc": 3,
+    "rejected": [
+     "D03_T01"
+    ],
+    "judged": 5,
+    "reasons": {
+     "D03_T01": [
+      "candidate_case_input_sha256_mismatch",
+      "candidate_raw_reply_sha256_mismatch",
+      "candidate_primary_sha256_mismatch"
+     ]
+    }
+   }
+  },
+  "X2_binding_digest_tamper": {
+   "pass": true,
+   "detail": {
+    "rc": 2,
+    "stderr_tail": "ile=69bc724fbbd2fa61c37ef496883360826bd21f88f9d9a1cfe04bc2e7abc0e055 recomputed=58b1d6641c77a8616c9b8af9372867333cf8bfde19f752ead007215c170c860c —— 绑定文件被改过，整批拒收"
+   }
+  },
+  "X3_scores_digest_mismatch": {
+   "pass": true,
+   "detail": {
+    "rc": 2,
+    "stderr_tail": "ores=ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff binding=69bc724fbbd2fa61c37ef496883360826bd21f88f9d9a1cfe04bc2e7abc0e055 —— 判词写于另一批答案，整批拒收"
+   }
+  },
+  "X4_rebind_cannot_launder": {
+   "pass": true,
+   "detail": {
+    "bind_rc": 0,
+    "agg_rc": 2
+   }
+  },
+  "X5_unbound_requires_explicit_flag": {
+   "pass": true,
+   "detail": {
+    "rc_no_binding": 2,
+    "rc_allow_unbound": 0,
+    "status": "UNBOUND（显式 --allow-unbound，不得当已复核交付）"
+   }
+  },
+  "X6_clean_batch_passes": {
+   "pass": true,
+   "detail": {
+    "rc": 0,
+    "status": "VERIFIED_ALL",
+    "judged": 6
+   }
+  },
+  "X9_harness_identity_mismatch": {
+   "pass": true,
+   "detail": {
+    "rc": 3,
+    "rejected": 6
+   }
+  },
+  "X8_audit_S1_replay_rejected": {
+   "pass": true,
+   "detail": {
+    "rc": 3,
+    "case": "E024_T05",
+    "rejected": [
+     "E024_T05"
+    ],
+    "judged": 47,
+    "score_silently_preserved": false
+   }
+  },
+  "X7_originals_untouched": {
+   "pass": true,
+   "detail": {
+    "unchanged": true
+   }
+  }
+ },
+ "failures": [],
+ "pass": true,
+ "note": "攻击只在 tempfile 临时目录里复现；原件骨架/绑定/判词哈希前后一致；本测试零模型调用。"
+}

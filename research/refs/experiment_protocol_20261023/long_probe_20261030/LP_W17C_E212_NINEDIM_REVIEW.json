@@ -1,0 +1,558 @@
+{
+ "kind": "lp_ninedim_review",
+ "tag": "W17C_E212",
+ "date": "2026-10-30",
+ "authorization": "AUTH-W17C-R-E212-20261103",
+ "anchors": "W04-01_RUBRIC_ANCHORS_V1",
+ "stories": [
+  "E212"
+ ],
+ "n_positions": 12,
+ "dims": {
+  "goal": {
+   "n": 11,
+   "cand_mean": 2.636,
+   "parent_mean": 2.455,
+   "paired_diff_mean": 0.182,
+   "cand_wins": 5,
+   "parent_wins": 3
+  },
+  "fact": {
+   "n": 11,
+   "cand_mean": 2.364,
+   "parent_mean": 2.455,
+   "paired_diff_mean": -0.091,
+   "cand_wins": 1,
+   "parent_wins": 2
+  },
+  "attrib": {
+   "n": 11,
+   "cand_mean": 2.364,
+   "parent_mean": 2.364,
+   "paired_diff_mean": 0.0,
+   "cand_wins": 1,
+   "parent_wins": 1
+  },
+  "time": {
+   "n": 11,
+   "cand_mean": 2.091,
+   "parent_mean": 2.0,
+   "paired_diff_mean": 0.091,
+   "cand_wins": 3,
+   "parent_wins": 2
+  },
+  "boundary": {
+   "n": 11,
+   "cand_mean": 2.545,
+   "parent_mean": 2.545,
+   "paired_diff_mean": 0.0,
+   "cand_wins": 2,
+   "parent_wins": 2
+  },
+  "memory": {
+   "n": 11,
+   "cand_mean": 1.818,
+   "parent_mean": 2.182,
+   "paired_diff_mean": -0.364,
+   "cand_wins": 1,
+   "parent_wins": 5
+  },
+  "interact": {
+   "n": 11,
+   "cand_mean": 2.455,
+   "parent_mean": 2.545,
+   "paired_diff_mean": -0.091,
+   "cand_wins": 2,
+   "parent_wins": 3
+  },
+  "init": {
+   "n": 11,
+   "cand_mean": 2.182,
+   "parent_mean": 2.273,
+   "paired_diff_mean": -0.091,
+   "cand_wins": 3,
+   "parent_wins": 4
+  },
+  "emotion": {
+   "n": 11,
+   "cand_mean": 2.0,
+   "parent_mean": 2.182,
+   "paired_diff_mean": -0.182,
+   "cand_wins": 2,
+   "parent_wins": 4
+  }
+ },
+ "severe": {
+  "candidate": 0,
+  "parent": 0
+ },
+ "review_call_quality": {
+  "n_call_fail": 1,
+  "fail_rate": 0.083,
+  "fail_rate_high": false,
+  "policy": "单次失败重试1次；重试额度预登记≤20%"
+ },
+ "swap_agreement": "1/1",
+ "swap_disagreements_true": [],
+ "verdicts": [
+  {
+   "pair_id": "LP:E212:E212_T01",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "王老师带不带、怎么交接一个字没提……你那个每周一次的答疑和靠窗座位，最好问清楚还算不算数。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E212:E212_T02",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "重点看答疑频率、督学是不是一对一的原班人，还有退费条款有没有跟着改",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E212:E212_T03",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 1,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 1
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "靠窗座被挪这事太不讲道理了，合同上写没写固定座位？写了就别光咽下去，截图发我看看。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E212:E212_T04",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 3,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "他说能找王老师拿，这话是他给的，那就趁王老师月底走之前去拿，拿到手才算数",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E212:E212_T05",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "进度表先存好，转个云盘，再打印一份留着。错题本他都说不能断，那更得接着滚。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E212:E212_T06",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "把旧周计划和新周计划并排放一起…再翻出合同看当初写的是不是一对一答疑",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E212:E212_T07",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 2,
+     "init": 3,
+     "emotion": 3
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "第一条写事实，第二条写合同依据，第三条写你希望怎么改、哪天前回话",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E212:E212_T08",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": true,
+   "order": "swap",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 2,
+     "fact": 2,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 2,
+     "memory": 1,
+     "interact": 1,
+     "init": 2,
+     "emotion": 1
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 2,
+     "init": 2,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "书面发一封给机构负责人，抄送致学，把三条清单原样附上，末尾给个期限：三个工作日内书面答复",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E212:E212_T09",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 1,
+     "boundary": 2,
+     "memory": 2,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "口头松口不算数，落到纸上才稳妥。",
+   "raw": "",
+   "attempts_used": 1
+  },
+  {
+   "pair_id": "LP:E212:E212_T10",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "parent",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 2,
+     "interact": 3,
+     "init": 2,
+     "emotion": 2
+    },
+    "parent": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 2,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 3,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "嘴上答应和落到纸面差着一截……把今天座位换回来、周计划按原频次走这两事补进去",
+   "raw": "",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E212:E212_T11",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "UNPARSEABLE",
+   "dims": {
+    "candidate": {},
+    "parent": {}
+   },
+   "severe": {
+    "candidate": null,
+    "parent": null,
+    "note": ""
+   },
+   "key_quote": "",
+   "raw": "{\"L\":{\"goal\":2,\"fact\":3,\"attrib\":2,\"time\":2,\"boundary\":3,\"memory\":3,\"interact\":2",
+   "attempts_used": 2
+  },
+  {
+   "pair_id": "LP:E212:E212_T12",
+   "candidate_arm": "window_expand_b_norecap_guard",
+   "swap": false,
+   "order": "main",
+   "winner_cand_view": "candidate",
+   "dims": {
+    "candidate": {
+     "goal": 3,
+     "fact": 3,
+     "attrib": 3,
+     "time": 3,
+     "boundary": 3,
+     "memory": 3,
+     "interact": 3,
+     "init": 2,
+     "emotion": 3
+    },
+    "parent": {
+     "goal": 2,
+     "fact": 3,
+     "attrib": 2,
+     "time": 2,
+     "boundary": 3,
+     "memory": 1,
+     "interact": 2,
+     "init": 1,
+     "emotion": 2
+    }
+   },
+   "severe": {
+    "candidate": false,
+    "parent": false,
+    "note": ""
+   },
+   "key_quote": "散伙饭帮我替王老师带句话，就说他那个错题本的叮嘱真被人当回事了。",
+   "raw": "",
+   "attempts_used": 1
+  }
+ ],
+ "swap_supplement": [
+  {
+   "pair_id": "LP:E212:E212_T08",
+   "main_winner": "parent",
+   "swap_winner": "parent",
+   "agree": true,
+   "quote": "书面发一封给机构负责人…末尾给个期限：三个工作日内书面答复",
+   "budget_refused": false
+  }
+ ],
+ "note": "故事级=探索性读数；fact/time 维 assistive（资格批处置）；安抚压力位 severe 需逐位 B3 复核"
+}

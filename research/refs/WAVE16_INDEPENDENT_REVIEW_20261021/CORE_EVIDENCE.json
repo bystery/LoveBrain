@@ -1,0 +1,1275 @@
+{
+  "subject_collision": {
+    "initial_facts": [
+      {
+        "clock": "2026-10-29 21:30",
+        "text": "我周五坐G7812",
+        "src": [
+          {
+            "speaker": "ME",
+            "text": "我周五坐G7812",
+            "ts": "2026-10-29 21:30",
+            "key": "S1:m0"
+          }
+        ],
+        "entities": [
+          "g7812"
+        ],
+        "status": "event",
+        "anchor_ts": "2026-10-29 21:30",
+        "correction": false,
+        "superseded": true,
+        "superseded_by": "S2:m0"
+      },
+      {
+        "clock": "2026-10-29 21:30",
+        "text": "她周五坐G7812",
+        "src": [
+          {
+            "speaker": "HER",
+            "text": "我也坐G7812",
+            "ts": "2026-10-29 21:30",
+            "key": "S1:m1"
+          }
+        ],
+        "entities": [
+          "g7812"
+        ],
+        "status": "event",
+        "anchor_ts": "2026-10-29 21:30",
+        "correction": false,
+        "superseded": true,
+        "superseded_by": "S2:m0"
+      },
+      {
+        "clock": "2026-10-29 21:30",
+        "text": "她改签成D3145",
+        "src": [
+          {
+            "speaker": "HER",
+            "text": "我不是G7812了 我改签成D3145",
+            "ts": "2026-10-29 21:30",
+            "key": "S2:m0"
+          }
+        ],
+        "entities": [
+          "d3145"
+        ],
+        "status": "event",
+        "anchor_ts": "2026-10-29 21:30",
+        "correction": true,
+        "superseded": false,
+        "superseded_by": null
+      }
+    ],
+    "corrections": {
+      "accepted": [
+        {
+          "text": "她改签成D3145",
+          "status": "event",
+          "src": [
+            "S2:m0"
+          ]
+        }
+      ],
+      "rejected": [],
+      "corrections": [
+        {
+          "superseded_text": "我周五坐G7812",
+          "by": "S2:m0"
+        },
+        {
+          "superseded_text": "她周五坐G7812",
+          "by": "S2:m0"
+        }
+      ],
+      "uncertain": [],
+      "correction_event": true,
+      "policy": "typed evidence support (HH:MM verbatim; tokens from cited text only with numeral equivalence); render_chat-aligned source ids; turn-scoped directional correction; superseded excluded from injection"
+    },
+    "me_fact_active": false,
+    "next_prompt_has_me_fact": false,
+    "artifact": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave16_review_20261021\\core_probes\\subject_collision_actual"
+  },
+  "status_summary_already": {
+    "facts": [
+      {
+        "clock": "2026-10-29 21:30",
+        "text": "我们已经约定一起看纪录片",
+        "src": [
+          {
+            "speaker": "HER",
+            "text": "纪录片找到了 你要看吗",
+            "ts": "2026-10-29 21:30",
+            "key": "Q1:m0"
+          }
+        ],
+        "entities": [],
+        "status": "event",
+        "anchor_ts": "2026-10-29 21:30",
+        "correction": false,
+        "superseded": false,
+        "superseded_by": null
+      }
+    ],
+    "ongoing": [
+      {
+        "item": "我们已经约定一起看纪录片",
+        "status": "event"
+      }
+    ],
+    "next_request": "# 【懂得】关系画像\n\n# 【此刻】场景上下文（仅供参考，以本次对话为准）\n距上次对话：约20小时前（间隔较久，话题可能已切换）\n当前话题：日常（⚠️ 此信息来自20小时前，可能已过时）\n## 场景状态链（条目后括号内为距今时间；同一事实只在最新条目保留一次）\n- [20小时前] 我们已经约定一起看纪录片｜src=Q1:m0\n\n# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n我们已经约定一起看纪录片 | event\n\n\n# 【当前场景】（本轮属性，不改变长期阶段档案）\n场景：日常分享\n\n# 本次对话记录\n（按时间顺序。speaker 定义：PARTNER=对方，USER=用户本人。每条消息的 id 为来源ID，模型在 scene_facts 的 source_ids 中使用。）\n\n<chat>\n{\"id\":\"m0\",\"speaker\":\"PARTNER\",\"text\":\"纪录片的事现在怎么样\",\"ts\":\"2026-10-30 18:00\"}\n</chat>\n\n\n【当前时间】2026-10-30 18:00\n最近一条消息时间：2026-10-30 18:00\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段。时间只认系统给定的当前时间与消息时间戳，不凭对话内容或主观感觉推测。",
+    "artifact": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave16_review_20261021\\core_probes\\status_summary_already"
+  },
+  "status_source_unrelated_past": {
+    "facts": [
+      {
+        "clock": "2026-10-29 21:30",
+        "text": "我们约定一起看纪录片",
+        "src": [
+          {
+            "speaker": "HER",
+            "text": "纪录片已经找到了 你要看吗",
+            "ts": "2026-10-29 21:30",
+            "key": "Q1:m0"
+          }
+        ],
+        "entities": [],
+        "status": "event",
+        "anchor_ts": "2026-10-29 21:30",
+        "correction": false,
+        "superseded": false,
+        "superseded_by": null
+      }
+    ],
+    "ongoing": [
+      {
+        "item": "我们约定一起看纪录片",
+        "status": "event"
+      }
+    ],
+    "next_request": "# 【懂得】关系画像\n\n# 【此刻】场景上下文（仅供参考，以本次对话为准）\n距上次对话：约20小时前（间隔较久，话题可能已切换）\n当前话题：日常（⚠️ 此信息来自20小时前，可能已过时）\n## 场景状态链（条目后括号内为距今时间；同一事实只在最新条目保留一次）\n- [20小时前] 我们约定一起看纪录片｜src=Q1:m0\n\n# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n我们约定一起看纪录片 | event\n\n\n# 【当前场景】（本轮属性，不改变长期阶段档案）\n场景：日常分享\n\n# 本次对话记录\n（按时间顺序。speaker 定义：PARTNER=对方，USER=用户本人。每条消息的 id 为来源ID，模型在 scene_facts 的 source_ids 中使用。）\n\n<chat>\n{\"id\":\"m0\",\"speaker\":\"PARTNER\",\"text\":\"纪录片的事现在怎么样\",\"ts\":\"2026-10-30 18:00\"}\n</chat>\n\n\n【当前时间】2026-10-30 18:00\n最近一条消息时间：2026-10-30 18:00\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段。时间只认系统给定的当前时间与消息时间戳，不凭对话内容或主观感觉推测。",
+    "artifact": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave16_review_20261021\\core_probes\\status_source_unrelated_past"
+  },
+  "status_explicit_refusal": {
+    "facts": [
+      {
+        "clock": "2026-10-29 21:30",
+        "text": "我们约定今晚一起看",
+        "src": [
+          {
+            "speaker": "HER",
+            "text": "今晚一起看吗",
+            "ts": "2026-10-29 21:30",
+            "key": "Q1:m0"
+          },
+          {
+            "speaker": "ME",
+            "text": "我没空一起看",
+            "ts": "2026-10-29 21:30",
+            "key": "Q1:m1"
+          }
+        ],
+        "entities": [],
+        "status": "confirmed",
+        "anchor_ts": "2026-10-29 21:30",
+        "correction": false,
+        "superseded": false,
+        "superseded_by": null
+      }
+    ],
+    "ongoing": [
+      {
+        "item": "我们约定今晚一起看",
+        "status": "已确认（ME 已答复）"
+      }
+    ],
+    "next_request": "# 【懂得】关系画像\n\n# 【此刻】场景上下文（仅供参考，以本次对话为准）\n距上次对话：约20小时前（间隔较久，话题可能已切换）\n当前话题：日常（⚠️ 此信息来自20小时前，可能已过时）\n\n# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n我们约定今晚一起看 | 已确认（ME 已答复）\n\n\n# 【当前场景】（本轮属性，不改变长期阶段档案）\n场景：日常分享\n\n# 本次对话记录\n（按时间顺序。speaker 定义：PARTNER=对方，USER=用户本人。每条消息的 id 为来源ID，模型在 scene_facts 的 source_ids 中使用。）\n\n<chat>\n{\"id\":\"m0\",\"speaker\":\"PARTNER\",\"text\":\"纪录片的事现在怎么样\",\"ts\":\"2026-10-30 18:00\"}\n</chat>\n\n\n【当前时间】2026-10-30 18:00\n最近一条消息时间：2026-10-30 18:00\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段。时间只认系统给定的当前时间与消息时间戳，不凭对话内容或主观感觉推测。",
+    "artifact": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave16_review_20261021\\core_probes\\status_explicit_refusal"
+  },
+  "status_real_completed": {
+    "facts": [
+      {
+        "clock": "2026-10-29 21:30",
+        "text": "我们昨晚已经一起看完那部片",
+        "src": [
+          {
+            "speaker": "HER",
+            "text": "我们昨晚一起看完那部片了",
+            "ts": "2026-10-29 21:30",
+            "key": "Q1:m0"
+          }
+        ],
+        "entities": [],
+        "status": "event",
+        "anchor_ts": "2026-10-29 21:30",
+        "correction": false,
+        "superseded": false,
+        "superseded_by": null
+      }
+    ],
+    "ongoing": [
+      {
+        "item": "我们昨晚已经一起看完那部片",
+        "status": "event"
+      }
+    ],
+    "next_request": "# 【懂得】关系画像\n\n# 【此刻】场景上下文（仅供参考，以本次对话为准）\n距上次对话：约20小时前（间隔较久，话题可能已切换）\n当前话题：日常（⚠️ 此信息来自20小时前，可能已过时）\n\n# 【进行中事项】（长期追踪，仅在与当前对话相关时提及，不必每条都提）\n我们昨晚已经一起看完那部片 | event\n\n\n# 【当前场景】（本轮属性，不改变长期阶段档案）\n场景：日常分享\n\n# 本次对话记录\n（按时间顺序。speaker 定义：PARTNER=对方，USER=用户本人。每条消息的 id 为来源ID，模型在 scene_facts 的 source_ids 中使用。）\n\n<chat>\n{\"id\":\"m0\",\"speaker\":\"PARTNER\",\"text\":\"纪录片的事现在怎么样\",\"ts\":\"2026-10-30 18:00\"}\n</chat>\n\n\n【当前时间】2026-10-30 18:00\n最近一条消息时间：2026-10-30 18:00\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段。时间只认系统给定的当前时间与消息时间戳，不凭对话内容或主观感觉推测。",
+    "artifact": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave16_review_20261021\\core_probes\\status_real_completed"
+  },
+  "typed_timestamp_true": {
+    "accepted": [],
+    "rejected": [
+      {
+        "text": "她18:52到站了",
+        "reason": "gate_reject:entity_not_in_evidence:18,52",
+        "source_ids": [
+          "m0"
+        ]
+      }
+    ],
+    "artifact": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave16_review_20261021\\core_probes\\typed_timestamp_true"
+  },
+  "typed_time_in_text": {
+    "accepted": [
+      {
+        "text": "她18:52到站了",
+        "status": "event",
+        "src": [
+          "T1:m0"
+        ]
+      }
+    ],
+    "rejected": [],
+    "artifact": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave16_review_20261021\\core_probes\\typed_time_in_text"
+  },
+  "typed_fake_recombined": {
+    "accepted": [],
+    "rejected": [
+      {
+        "text": "她20:29到站了",
+        "reason": "gate_reject:clock_not_in_evidence:20:29",
+        "source_ids": [
+          "m0"
+        ]
+      }
+    ],
+    "artifact": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave16_review_20261021\\core_probes\\typed_fake_recombined"
+  },
+  "typed_two_boxes": {
+    "accepted": [
+      {
+        "text": "她带了2盒",
+        "status": "event",
+        "src": [
+          "T1:m0"
+        ]
+      }
+    ],
+    "rejected": [],
+    "artifact": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave16_review_20261021\\core_probes\\typed_two_boxes"
+  },
+  "typed_twelve_boxes": {
+    "accepted": [],
+    "rejected": [
+      {
+        "text": "她带了12盒",
+        "reason": "gate_reject:entity_not_in_evidence:12",
+        "source_ids": [
+          "m0"
+        ]
+      }
+    ],
+    "artifact": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave16_review_20261021\\core_probes\\typed_twelve_boxes"
+  },
+  "ongoing_entity_bypass": {
+    "facts": [],
+    "ongoing": [
+      {
+        "item": "她坐G7812到合肥了",
+        "status": "event"
+      }
+    ],
+    "invented_entity_in_next_prompt": true,
+    "artifact": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave16_review_20261021\\core_probes\\ongoing_entity_bypass"
+  },
+  "historical": {
+    "turns": 66,
+    "accepted": 66,
+    "rejected": 83,
+    "rejections": [
+      {
+        "key": "A1|NCA|r1|NCA_t02",
+        "rejected": [
+          {
+            "text": "她今天12:38说她找到了之前提过的纪录片",
+            "reason": "gate_reject:entity_not_in_evidence:12,38",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天12:40说在B站就能看",
+            "reason": "gate_reject:entity_not_in_evidence:12,40",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCA|r1|NCA_t03",
+        "rejected": [
+          {
+            "text": "她今天18:00说领导告知项目黄了",
+            "reason": "gate_reject:entity_not_in_evidence:00,18",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她今天18:03说可能要调岗",
+            "reason": "gate_reject:entity_not_in_evidence:03,18",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天18:05说烦死了",
+            "reason": "gate_reject:entity_not_in_evidence:05,18",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCA|r1|NCA_t04",
+        "rejected": [
+          {
+            "text": "她今天18:15更正不是调岗，是换项目组，还在原部门",
+            "reason": "gate_reject:entity_not_in_evidence:15,18",
+            "source_ids": [
+              "m1",
+              "m2"
+            ]
+          },
+          {
+            "text": "她今天18:20说这是虚惊一场",
+            "reason": "gate_reject:entity_not_in_evidence:18,20",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCA|r1|NCA_t06",
+        "rejected": [
+          {
+            "text": "她今天22:35说不聊了，22:40去赶班车",
+            "reason": "gate_reject:entity_not_in_evidence:22,35,40",
+            "source_ids": [
+              "m0",
+              "m1"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCA|r2|NCA_t02",
+        "rejected": [
+          {
+            "text": "她今天12:38说她找到了之前提过的纪录片，B站能看",
+            "reason": "gate_reject:entity_not_in_evidence:12,38",
+            "source_ids": [
+              "m1",
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCA|r2|NCA_t03",
+        "rejected": [
+          {
+            "text": "她今天18:00说领导告知她项目黄了",
+            "reason": "gate_reject:entity_not_in_evidence:00,18",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她今天18:05说烦死了",
+            "reason": "gate_reject:entity_not_in_evidence:05,18",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCA|r2|NCA_t04",
+        "rejected": [
+          {
+            "text": "她今天18:15-18:18更正：不是调岗，是换项目组，还在原部门",
+            "reason": "gate_reject:entity_not_in_evidence:15,18",
+            "source_ids": [
+              "m1",
+              "m2"
+            ]
+          },
+          {
+            "text": "她今天18:20说虚惊一场",
+            "reason": "gate_reject:entity_not_in_evidence:18,20",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCA|r2|NCA_t06",
+        "rejected": [
+          {
+            "text": "她22:40要去赶班车，说好明天再聊",
+            "reason": "gate_reject:entity_not_in_evidence:22,40",
+            "source_ids": [
+              "m0",
+              "m1"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCB|r1|NCB_t01",
+        "rejected": [
+          {
+            "text": "她让我帮忙查G7812最近是否正点",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCB|r1|NCB_t03",
+        "rejected": [
+          {
+            "text": "她今天18:52坐车正点到合肥",
+            "reason": "gate_reject:entity_not_in_evidence:18,52",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCB|r1|NCB_t05",
+        "rejected": [
+          {
+            "text": "她今天22:25说婚礼忙完，已回酒店",
+            "reason": "gate_reject:entity_not_in_evidence:22,25",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCB|r2|NCB_t01",
+        "rejected": [
+          {
+            "text": "她让我帮她查 G7812 最近是否正点",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCB|r2|NCB_t03",
+        "rejected": [
+          {
+            "text": "她今天18:52正点到合肥",
+            "reason": "gate_reject:entity_not_in_evidence:18,52",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCB|r2|NCB_t04",
+        "rejected": [
+          {
+            "text": "我在今天20:30确认收到了定胜糕，觉得甜、正",
+            "reason": "gate_reject:entity_not_in_evidence:20,30",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她今天20:45提醒我那盒别放着、早点吃",
+            "reason": "gate_reject:entity_not_in_evidence:20,45",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A1|NCB|r2|NCB_t05",
+        "rejected": [
+          {
+            "text": "她今天22:25回到酒店，婚礼已经结束",
+            "reason": "gate_reject:entity_not_in_evidence:22,25",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她今天22:30说先这样，明天返程再聊",
+            "reason": "gate_reject:entity_not_in_evidence:22,30",
+            "source_ids": [
+              "m1"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCA|r1|NCA_t02",
+        "rejected": [
+          {
+            "text": "她今天12:38说找到了之前提过的那部纪录片，b站能看",
+            "reason": "gate_reject:entity_not_in_evidence:12,38",
+            "source_ids": [
+              "m1",
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCA|r1|NCA_t03",
+        "rejected": [
+          {
+            "text": "她今天18:00说领导告知她项目黄了",
+            "reason": "gate_reject:entity_not_in_evidence:00,18",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她今天18:03说可能要调岗",
+            "reason": "gate_reject:entity_not_in_evidence:03,18",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天18:05说烦死了",
+            "reason": "gate_reject:entity_not_in_evidence:05,18",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCA|r1|NCA_t04",
+        "rejected": [
+          {
+            "text": "她今天18:15-18:18更正：不是调岗，是换项目组，还在原部门",
+            "reason": "gate_reject:entity_not_in_evidence:15,18",
+            "source_ids": [
+              "m1",
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCA|r1|NCA_t05",
+        "rejected": [
+          {
+            "text": "她今天21:12问我组会几点开",
+            "reason": "gate_reject:entity_not_in_evidence:12,21",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:15说领导让她下周先跟新项目组碰一下，问我该准备什么",
+            "reason": "gate_reject:entity_not_in_evidence:15,21",
+            "source_ids": [
+              "m2"
+            ]
+          },
+          {
+            "text": "我今晚21:00提过我们组会在搞检索加速",
+            "reason": "gate_reject:entity_not_in_evidence:00,21",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCA|r1|NCA_t06",
+        "rejected": [
+          {
+            "text": "她今天22:40要去赶班车，说明天再聊",
+            "reason": "gate_reject:entity_not_in_evidence:22,40",
+            "source_ids": [
+              "m0",
+              "m1"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCA|r2|NCA_t02",
+        "rejected": [
+          {
+            "text": "她今天12:38说找到了之前提过的纪录片，问我要不要看",
+            "reason": "gate_reject:entity_not_in_evidence:12,38",
+            "source_ids": [
+              "m1"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCA|r2|NCA_t03",
+        "rejected": [
+          {
+            "text": "她领导今天18:00跟她说项目黄了",
+            "reason": "gate_reject:entity_not_in_evidence:00,18",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她18:05说烦死了",
+            "reason": "gate_reject:entity_not_in_evidence:05,18",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCA|r2|NCA_t06",
+        "rejected": [
+          {
+            "text": "她今天22:40说要去赶班车，明天再聊",
+            "reason": "gate_reject:entity_not_in_evidence:22,40",
+            "source_ids": [
+              "m0",
+              "m1"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCB|r1|NCB_t01",
+        "rejected": [
+          {
+            "text": "她这周五（10-30）从湖州上车坐 G7812 到合肥，参加周六的室友婚礼",
+            "reason": "gate_reject:entity_not_in_evidence:10,30",
+            "source_ids": [
+              "m2"
+            ]
+          },
+          {
+            "text": "她请我帮她看 G7812 最近正不正点",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCB|r1|NCB_t03",
+        "rejected": [
+          {
+            "text": "她今天18:52坐G7812正点到合肥",
+            "reason": "gate_reject:entity_not_in_evidence:18,52,g7812",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCB|r1|NCB_t04",
+        "rejected": [
+          {
+            "text": "我今晚20:30收到她带的一盒定胜糕，觉得甜度正好",
+            "reason": "gate_reject:entity_not_in_evidence:20,30",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她今晚20:45提醒我别放着，早点吃掉那盒",
+            "reason": "gate_reject:entity_not_in_evidence:20,45",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCB|r1|NCB_t05",
+        "rejected": [
+          {
+            "text": "她今天22:25回到酒店，婚礼已经忙完",
+            "reason": "gate_reject:entity_not_in_evidence:22,25",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她计划2026-11-01返程",
+            "reason": "gate_reject:entity_not_in_evidence:01,11,2026",
+            "source_ids": [
+              "m1"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCB|r2|NCB_t01",
+        "rejected": [
+          {
+            "text": "她10-29晚说周五从湖州上车，车次是G7812",
+            "reason": "gate_reject:entity_not_in_evidence:10,29",
+            "source_ids": [
+              "m2"
+            ]
+          },
+          {
+            "text": "她10-29 20:35让我帮她查G7812最近正不正点",
+            "reason": "gate_reject:entity_not_in_evidence:10,20,29,35",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCB|r2|NCB_t02",
+        "rejected": [
+          {
+            "text": "她今天21:25说自己改签了车次",
+            "reason": "gate_reject:entity_not_in_evidence:21,25",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:30说现在坐的是 D3145，让我帮她看这趟",
+            "reason": "gate_reject:entity_not_in_evidence:21,30",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCB|r2|NCB_t03",
+        "rejected": [
+          {
+            "text": "她今天18:52乘D3145正点到合肥",
+            "reason": "gate_reject:entity_not_in_evidence:18,52,d3145",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCB|r2|NCB_t04",
+        "rejected": [
+          {
+            "text": "我今天20:30告诉她糕收到了，味道正",
+            "reason": "gate_reject:entity_not_in_evidence:20,30",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A2|NCB|r2|NCB_t05",
+        "rejected": [
+          {
+            "text": "她今天22:25说婚礼忙完，已经回酒店",
+            "reason": "gate_reject:entity_not_in_evidence:22,25",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r1|NCA_t01",
+        "rejected": [
+          {
+            "text": "她上周末（10-25、10-26）去了良渚，说人少景好",
+            "reason": "gate_reject:entity_not_in_evidence:10,25,26",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r1|NCA_t02",
+        "rejected": [
+          {
+            "text": "她今天12:38说找到了上次提过的纪录片，问我要不要看",
+            "reason": "gate_reject:entity_not_in_evidence:12,38",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "我12:31让她哪天把良渚的照片发我看看",
+            "reason": "gate_reject:entity_not_in_evidence:12,31",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r1|NCA_t03",
+        "rejected": [
+          {
+            "text": "她今天18:00说领导告知项目黄了",
+            "reason": "gate_reject:entity_not_in_evidence:00,18",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她今天18:03说可能要调岗",
+            "reason": "gate_reject:entity_not_in_evidence:03,18",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天18:05说烦死了",
+            "reason": "gate_reject:entity_not_in_evidence:05,18",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r1|NCA_t04",
+        "rejected": [
+          {
+            "text": "她今天18:15更正：不是调岗，是换项目组，仍在原部门",
+            "reason": "gate_reject:entity_not_in_evidence:15,18",
+            "source_ids": [
+              "m1",
+              "m2"
+            ]
+          },
+          {
+            "text": "她今天18:20说虚惊一场",
+            "reason": "gate_reject:entity_not_in_evidence:18,20",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r1|NCA_t05",
+        "rejected": [
+          {
+            "text": "她今天21:12问我组会几点开",
+            "reason": "gate_reject:entity_not_in_evidence:12,21",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:15说她领导让她下周先跟新项目组碰一下，问我该准备什么",
+            "reason": "gate_reject:entity_not_in_evidence:15,21",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r1|NCA_t06",
+        "rejected": [
+          {
+            "text": "她22:40要去赶班车，说好明天再聊",
+            "reason": "gate_reject:entity_not_in_evidence:22,40",
+            "source_ids": [
+              "m0",
+              "m1"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r2|NCA_t01",
+        "rejected": [
+          {
+            "text": "她2026-10-27早上说周末去了良渚，人少景好",
+            "reason": "gate_reject:entity_not_in_evidence:10,2026,27",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她2026-10-27 09:12说拍了很多图，回头挑几张发我",
+            "reason": "gate_reject:entity_not_in_evidence:09,10,12,2026",
+            "source_ids": [
+              "m1"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r2|NCA_t02",
+        "rejected": [
+          {
+            "text": "她12:40说纪录片找到了，问我要不要一起看",
+            "reason": "gate_reject:clock_not_in_evidence:12:40",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "我12:31让她哪天发良渚的照片给我看",
+            "reason": "gate_reject:entity_not_in_evidence:12,31",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r2|NCA_t03",
+        "rejected": [
+          {
+            "text": "她今天18:00说领导告知她项目黄了",
+            "reason": "gate_reject:entity_not_in_evidence:00,18",
+            "source_ids": [
+              "m0"
+            ]
+          },
+          {
+            "text": "她今天18:03说可能要调岗",
+            "reason": "gate_reject:entity_not_in_evidence:03,18",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天18:05表达烦躁",
+            "reason": "gate_reject:entity_not_in_evidence:05,18",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r2|NCA_t04",
+        "rejected": [
+          {
+            "text": "她今天18:15更正说不是调岗",
+            "reason": "gate_reject:entity_not_in_evidence:15,18",
+            "source_ids": [
+              "m1"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r2|NCA_t05",
+        "rejected": [
+          {
+            "text": "她今天21:12问我这边组会几点开",
+            "reason": "gate_reject:entity_not_in_evidence:12,21",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:15说领导让她下周先跟新项目组碰一下",
+            "reason": "gate_reject:entity_not_in_evidence:15,21",
+            "source_ids": [
+              "m2"
+            ]
+          },
+          {
+            "text": "她今天21:15问我新组碰面该准备什么",
+            "reason": "gate_reject:entity_not_in_evidence:15,21",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r2|NCA_t06",
+        "rejected": [
+          {
+            "text": "她今天22:40说要去赶班车，明天再聊",
+            "reason": "gate_reject:entity_not_in_evidence:22,40",
+            "source_ids": [
+              "m1"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCB|r1|NCB_t01",
+        "rejected": [
+          {
+            "text": "她让我帮她看看G7812最近正不正点",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCB|r1|NCB_t02",
+        "rejected": [
+          {
+            "text": "她今天21:25说她改签了车次，不是G7812",
+            "reason": "gate_reject:entity_not_in_evidence:21,25,g7812",
+            "source_ids": [
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:30说她现在坐的是D3145，让我帮看这趟",
+            "reason": "gate_reject:entity_not_in_evidence:21,30",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCB|r1|NCB_t03",
+        "rejected": [
+          {
+            "text": "她今天18:52说G7812正点到合肥了",
+            "reason": "gate_reject:entity_not_in_evidence:18,52,g7812",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCB|r1|NCB_t04",
+        "rejected": [
+          {
+            "text": "她今晚20:45让我别把糕放着，早点吃",
+            "reason": "gate_reject:entity_not_in_evidence:20,45",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCB|r2|NCB_t01",
+        "rejected": [
+          {
+            "text": "她让我帮她查 G7812 最近正不正点",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCB|r2|NCB_t02",
+        "rejected": [
+          {
+            "text": "她今天21:25说改签了，原来的G7812不坐了",
+            "reason": "gate_reject:entity_not_in_evidence:21,25",
+            "source_ids": [
+              "m0",
+              "m1"
+            ]
+          },
+          {
+            "text": "她今天21:30说她现在坐的是D3145，让我帮她看这趟车",
+            "reason": "gate_reject:entity_not_in_evidence:21,30",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCB|r2|NCB_t03",
+        "rejected": [
+          {
+            "text": "她今天18:52到合肥，车次正点",
+            "reason": "gate_reject:entity_not_in_evidence:18,52",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "A3|NCB|r2|NCB_t04",
+        "rejected": [
+          {
+            "text": "她今天20:45提醒我早点吃掉那盒定胜糕",
+            "reason": "gate_reject:entity_not_in_evidence:20,45",
+            "source_ids": [
+              "m2"
+            ]
+          }
+        ]
+      }
+    ],
+    "nca_ongoing": [
+      {
+        "key": "A1|NCA|r1|NCA_t01",
+        "ongoing": [
+          {
+            "item": "她发良渚照片给我",
+            "status": "event"
+          }
+        ]
+      },
+      {
+        "key": "A1|NCA|r2|NCA_t01",
+        "ongoing": [
+          {
+            "item": "她发良渚周末照片",
+            "status": "event"
+          }
+        ]
+      },
+      {
+        "key": "A2|NCA|r1|NCA_t01",
+        "ongoing": [
+          {
+            "item": "她发良渚照片",
+            "status": "event"
+          }
+        ]
+      },
+      {
+        "key": "A2|NCA|r2|NCA_t01",
+        "ongoing": []
+      },
+      {
+        "key": "A3|NCA|r1|NCA_t01",
+        "ongoing": [
+          {
+            "item": "她10-27发良渚照片给我",
+            "status": "event"
+          }
+        ]
+      },
+      {
+        "key": "A3|NCA|r2|NCA_t01",
+        "ongoing": [
+          {
+            "item": "2026-10-27 她发良渚照片",
+            "status": "event"
+          }
+        ]
+      }
+    ],
+    "ncb_t4": [
+      {
+        "key": "A1|NCB|r1|NCB_t04",
+        "active": [
+          "她这周五先回湖州，再从湖州上车坐G7812来合肥参加室友婚礼",
+          "她今天把车次改签成了D3145",
+          "她让我帮她看D3145这趟车的情况",
+          "她带了两盒定胜糕，其中一盒给我",
+          "她明天参加室友婚礼",
+          "她问我明天怎么把定胜糕给我",
+          "她说定胜糕她上次拿过",
+          "她提醒我那盒定胜糕别放着、早点吃"
+        ]
+      },
+      {
+        "key": "A1|NCB|r2|NCB_t04",
+        "active": [
+          "她周五先从杭州回湖州，再从湖州上车 G7812 来合肥参加室友婚礼",
+          "她把车次改签成了 D3145，让我帮看这趟车",
+          "她带了定胜糕两盒，其中一盒给我",
+          "她明天参加婚礼，问我明天怎么把东西给我",
+          "她说定胜糕她上次拿过"
+        ]
+      },
+      {
+        "key": "A2|NCB|r1|NCB_t04",
+        "active": [
+          "她把车次改签成 D3145",
+          "她让我帮看 D3145 这趟车的情况",
+          "她带了两盒定胜糕，其中一盒给我",
+          "她问我明天怎么把定胜糕给我",
+          "她说她上次也拿过定胜糕"
+        ]
+      },
+      {
+        "key": "A2|NCB|r2|NCB_t04",
+        "active": [
+          "她带了两盒定胜糕，其中一盒要给我",
+          "她问我明天怎么把定胜糕给我",
+          "她说她上次也拿过定胜糕",
+          "她让我那盒定胜糕别放着，早点吃"
+        ]
+      },
+      {
+        "key": "A3|NCB|r1|NCB_t04",
+        "active": [
+          "她周五从湖州上车，车次G7812，来合肥参加周六的婚礼",
+          "她带了定胜糕两盒，说一盒给我",
+          "她问我明天怎么把定胜糕给我",
+          "她明天周六参加婚礼",
+          "她说定胜糕她上次拿过"
+        ]
+      },
+      {
+        "key": "A3|NCB|r2|NCB_t04",
+        "active": [
+          "她周五先回湖州，从湖州上 G7812 来合肥参加周六室友婚礼",
+          "她从湖州带了两盒定胜糕，其中一盒给我",
+          "她明天参加室友婚礼，问明天怎么把定胜糕给我",
+          "她说她上次拿过定胜糕"
+        ]
+      }
+    ]
+  },
+  "restore": {
+    "correction_bytes_preserved": true,
+    "snapshot_contains_file": true,
+    "next_request": "# 【懂得】关系画像\n\n# 【此刻】场景上下文（仅供参考，以本次对话为准）\n距上次对话：约20小时前（间隔较久，话题可能已切换）\n当前话题：日常（⚠️ 此信息来自20小时前，可能已过时）\n\n\n\n# 【当前场景】（本轮属性，不改变长期阶段档案）\n场景：日常分享\n\n# 本次对话记录\n（按时间顺序。speaker 定义：PARTNER=对方，USER=用户本人。每条消息的 id 为来源ID，模型在 scene_facts 的 source_ids 中使用。）\n\n<chat>\n{\"id\":\"m0\",\"speaker\":\"PARTNER\",\"text\":\"现在到车站了\",\"ts\":\"2026-10-30 18:00\"}\n</chat>\n\n\n【当前时间】2026-10-30 18:00\n最近一条消息时间：2026-10-30 18:00\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段。时间只认系统给定的当前时间与消息时间戳，不凭对话内容或主观感觉推测。"
+  }
+}

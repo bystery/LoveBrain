@@ -1,0 +1,90 @@
+{
+  "calls": 12,
+  "valid_json": 7,
+  "rows": [
+    {
+      "model": "qwen3.8-flash",
+      "kind": "tiny_json",
+      "wall_s": 4.86,
+      "transport_ok": true,
+      "json_ok": true
+    },
+    {
+      "model": "dsf",
+      "kind": "representative_input",
+      "wall_s": 22.437,
+      "transport_ok": true,
+      "json_ok": true
+    },
+    {
+      "model": "hy3",
+      "kind": "fact_boundary",
+      "wall_s": 28.578,
+      "transport_ok": true,
+      "json_ok": true
+    },
+    {
+      "model": "dsf",
+      "kind": "fact_boundary",
+      "wall_s": 30.391,
+      "transport_ok": true,
+      "json_ok": true
+    },
+    {
+      "model": "qwen3.8-flash",
+      "kind": "fact_boundary",
+      "wall_s": 33.797,
+      "transport_ok": true,
+      "json_ok": true
+    },
+    {
+      "model": "dsf",
+      "kind": "tiny_json",
+      "wall_s": 35.969,
+      "transport_ok": false,
+      "json_ok": false
+    },
+    {
+      "model": "qwen3.8-flash",
+      "kind": "representative_input",
+      "wall_s": 35.89,
+      "transport_ok": false,
+      "json_ok": false
+    },
+    {
+      "model": "hy3",
+      "kind": "tiny_json",
+      "wall_s": 35.953,
+      "transport_ok": false,
+      "json_ok": false
+    },
+    {
+      "model": "hy3",
+      "kind": "representative_input",
+      "wall_s": 35.921,
+      "transport_ok": false,
+      "json_ok": false
+    },
+    {
+      "model": "qwen3.8-flash",
+      "kind": "representative_input",
+      "wall_s": 5.562,
+      "transport_ok": true,
+      "json_ok": true
+    },
+    {
+      "model": "dsf",
+      "kind": "representative_input",
+      "wall_s": 20.594,
+      "transport_ok": true,
+      "json_ok": true
+    },
+    {
+      "model": "hy3",
+      "kind": "representative_input",
+      "wall_s": 35.406,
+      "transport_ok": false,
+      "json_ok": false
+    }
+  ]
+}

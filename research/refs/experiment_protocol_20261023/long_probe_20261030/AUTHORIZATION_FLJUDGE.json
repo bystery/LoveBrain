@@ -1,0 +1,46 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-FLJUDGE-20261101-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30地狱级常设授权（AUTH-GLOBAL-CONTINUOUS-20261030-01）",
+ "phase": "W12_armB_gt24_judgment",
+ "budget_ledger": "logs/auth_budget/AUTH-FLJUDGE-20261101-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 168
+ },
+ "scope": {
+  "purpose": "W12 第二段判决批(>24轮域,设计§4.2判据冻结)：window_expand_b(回归门全过:keep 100%/prompt -51.5%/worst dim -0.167/severe 1/1) vs r9_slim on LRE060(40轮)+LRE048(32轮)(EXPOSED 复用,跨代对比口径)。KEEP=T25-32段真实保持率>=0.85(机械G-3+miss亲读扣等义/作废,artifact=0)+保护维goal/boundary/init>=-0.5+severe(cand)<=severe(parent)(基座族双杀位不计)+prompt usage<=r9_slim*1.15；淘汰=<0.80或保护维<=-0.5或prompt超限；0.80-0.85=不确定带不补跑。v0锚点=LR2存档(机械47.6%/50.4%,真实55.7%/38.6%)。评审另册 AUTH-FLJUDGE-REVIEW-20261101-01",
+  "route": "two_arm_batch_144",
+  "total_attempts": 144,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "FLJUDGE": "BATCH-FLJUDGE-LRE060LRE048-20261101"
+  },
+  "episodes": [
+   "LRE060",
+   "LRE048"
+  ],
+  "cards": "benchmark/stories_v2/wave1_ext/GRADING_CARDS_W12.json",
+  "design": "refs/experiment_protocol_20261023/global_harness_program_20261030/W12_FACT_LEDGER_DESIGN_20261101.md §4.2 + FLREG2_VERDICT_20261101.md(换向记录)"
+ },
+ "frozen_bindings": {
+  "FLJUDGE": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/LONGPROBE_FLJUDGE.INTERLEAVE_PLAN.json",
+   "plan_sha256": "7d1226e9ed63692434901057a1bc25c25f2beedd5b78e573a081dd257c0c74a1",
+   "batch_id": "BATCH-FLJUDGE-LRE060LRE048-20261101",
+   "cards_file": "benchmark/stories_v2/wave1_ext/GRADING_CARDS_W12.json",
+   "attempts": 144,
+   "parent": "action_policy_r9_slim",
+   "candidate": "window_expand_b",
+   "parent_identity_sha256": "2099c12f55337dd7dcfac0327cdd9411f7e5de2cdaa0a7083498bab6d12c9c03",
+   "candidate_identity_sha256": "e233ce314d5ee628425f22ab7c74f2fd58871ee367a4d91358d8be818bd88ba6"
+  }
+ }
+}

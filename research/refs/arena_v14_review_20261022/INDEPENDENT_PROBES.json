@@ -1,0 +1,422 @@
+{
+  "verifier": {
+    "residual_fail": {
+      "accepted": true,
+      "gates": {
+        "G08": {
+          "id": "G08",
+          "status": "PASS",
+          "evidence": [
+            "logs/residual_fail.json",
+            "refs/arena_v1/ISOLATION.md"
+          ],
+          "executed_command": "test_isolation_matrix",
+          "observed_result": "checks=18 expected=17 missing=none fail=none nonterminal=none bad_residual=none；upstream attempts=0 unkeyed_refused=0",
+          "note": "固定预期集合 17 项逐项终态核验；残差仅白名单 ['A6a_direct_socket']"
+        },
+        "G09": {
+          "id": "G09",
+          "status": "PASS",
+          "evidence": [
+            "logs/residual_fail.json"
+          ],
+          "executed_command": "test_isolation_matrix (A7/A8 subset)",
+          "observed_result": "A7/A8 checks=5 all_pass={'note': 'not a verified ledger'} ledger_sidecar=yes",
+          "note": null
+        }
+      }
+    },
+    "unexpected_fail": {
+      "accepted": true,
+      "gates": {
+        "G08": {
+          "id": "G08",
+          "status": "PASS",
+          "evidence": [
+            "logs/unexpected_fail.json",
+            "refs/arena_v1/ISOLATION.md"
+          ],
+          "executed_command": "test_isolation_matrix",
+          "observed_result": "checks=18 expected=17 missing=none fail=none nonterminal=none bad_residual=none；upstream attempts=0 unkeyed_refused=0",
+          "note": "固定预期集合 17 项逐项终态核验；残差仅白名单 ['A6a_direct_socket']"
+        },
+        "G09": {
+          "id": "G09",
+          "status": "PASS",
+          "evidence": [
+            "logs/unexpected_fail.json"
+          ],
+          "executed_command": "test_isolation_matrix (A7/A8 subset)",
+          "observed_result": "A7/A8 checks=5 all_pass={'note': 'not a verified ledger'} ledger_sidecar=yes",
+          "note": null
+        }
+      }
+    },
+    "duplicate_fail_then_pass": {
+      "accepted": true,
+      "gates": {
+        "G08": {
+          "id": "G08",
+          "status": "PASS",
+          "evidence": [
+            "logs/duplicate_fail_then_pass.json",
+            "refs/arena_v1/ISOLATION.md"
+          ],
+          "executed_command": "test_isolation_matrix",
+          "observed_result": "checks=19 expected=17 missing=none fail=none nonterminal=none bad_residual=none；upstream attempts=0 unkeyed_refused=0",
+          "note": "固定预期集合 17 项逐项终态核验；残差仅白名单 ['A6a_direct_socket']"
+        },
+        "G09": {
+          "id": "G09",
+          "status": "PASS",
+          "evidence": [
+            "logs/duplicate_fail_then_pass.json"
+          ],
+          "executed_command": "test_isolation_matrix (A7/A8 subset)",
+          "observed_result": "A7/A8 checks=5 all_pass={'note': 'not a verified ledger'} ledger_sidecar=yes",
+          "note": null
+        }
+      }
+    },
+    "integration_without_real_endpoint": {
+      "return_code": 0,
+      "gates": {
+        "G11": {
+          "id": "G11",
+          "status": "PASS",
+          "evidence": [
+            "logs/g11_standin_result.json"
+          ],
+          "executed_command": "test_g11_standin（本地 OpenAI 兼容替身完整演练）",
+          "observed_result": "standin rc=0（model/温度/图片/usage/不截断/账本）；真实上游批次待批（授权清单 real_endpoint.authorized 缺失）",
+          "note": null
+        }
+      },
+      "acceptance": {
+        "document_type": "arena_v1_acceptance",
+        "is_template": false,
+        "run_id": "integration",
+        "generated_at": "2026-10-22T09:17:30.126245",
+        "mode": "integration",
+        "overall_status": "NOT_READY",
+        "evaluation_mode": "human_supervised",
+        "separate_flags": {
+          "AUTO_JUDGE_READY": false,
+          "PROMOTION_AUTHORIZED": false,
+          "MONSTER_VALIDATED": false
+        },
+        "gates": [
+          {
+            "id": "G11",
+            "status": "PASS",
+            "evidence": [
+              "logs/g11_standin_result.json"
+            ],
+            "executed_command": "test_g11_standin（本地 OpenAI 兼容替身完整演练）",
+            "observed_result": "standin rc=0（model/温度/图片/usage/不截断/账本）；真实上游批次待批（授权清单 real_endpoint.authorized 缺失）",
+            "note": null
+          }
+        ]
+      }
+    }
+  },
+  "material_binding": {
+    "tampered_display_g07_pass": true,
+    "actual_content_validator_reasons": [
+      "review: 材料内容与映射绑定不一致（展示原文被篡改）"
+    ],
+    "gate": {
+      "G07": {
+        "id": "G07",
+        "status": "PASS",
+        "evidence": [
+          "refs/arena_v1/C_PACKAGE_REPORT_20261021.md"
+        ],
+        "executed_command": "binding recompute from live cases + ingest audit",
+        "observed_result": "materials=12 bad=0 accepted=11 rejected=1",
+        "note": null
+      }
+    }
+  },
+  "runtime": {
+    "controller_pid": 44264,
+    "host_pid": 29388,
+    "import_events": [
+      {
+        "pid": 29388,
+        "file": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\arena_v14_review_20261022\\evidence\\rt\\run\\staged\\candidates\\zz_review\\mechanism\\mechanism.py"
+      },
+      {
+        "pid": 44264,
+        "file": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\arena_v14_review_20261022\\package\\candidates\\zz_review\\mechanism\\mechanism.py"
+      }
+    ],
+    "candidate_executed_in_controller": true,
+    "controller_private_canary_read": true,
+    "production_deny_targets": [
+      "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\arena_v14_review_20261022\\evidence\\rt\\episode.json"
+    ],
+    "canary_is_outside_production_deny_set": true,
+    "acl_was_not_executed": true,
+    "turn_call_counts": [
+      1,
+      2
+    ],
+    "per_turn_manifest_gateway_calls": [
+      1,
+      2
+    ],
+    "episode_reported_tokens": {
+      "prompt": 21,
+      "completion": 747
+    },
+    "last_turn_cumulative_tokens": {
+      "prompt": 14,
+      "completion": 498,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "kotlin_len_chars",
+      "n_calls": 2,
+      "has_unknown_usage": false
+    },
+    "checkpoint_before_stage": true,
+    "checkpoint_after_stage": false,
+    "episode_manifest": {
+      "episode_id": "REVIEW_RT",
+      "candidate": "zz_review",
+      "adapter": "mock",
+      "mechanism": "candidate:mechanism/mechanism.py",
+      "lifecycle": "v2",
+      "contract": "legacy",
+      "run_id": "review_runtime",
+      "runner_pid": 44264,
+      "turns": 2,
+      "turns_total": 2,
+      "complete": true,
+      "resumed_from": null,
+      "mean_score10": 10.0,
+      "veto_turns": 0,
+      "first_pass_rate": 1.0,
+      "tokens_total": {
+        "prompt": 21,
+        "completion": 747
+      },
+      "latency_ms_p95": 13,
+      "integrity": {
+        "episode_sha256": "1665e9ddab0268769e9d2042a9ea51156b68e5c246aa051793ddfbe7abfe146a",
+        "code": {
+          "lb_runner.py": "89568033f74124a032e388d7bee0df2635b2ca97c2031a79b5ae02377cf137de",
+          "lb_gateway.py": "f7ea3fc0a114e3773be43d10e2395a9d9bda77cf96d48aa6b3367575a29ea868",
+          "lb_assembly.py": "e6c4b58900b3197e8583cfcabf2c5f8a6a147f10da3b471a6f3f6f705724425c",
+          "lb_scorer.py": "59b4290cfe366e00dc3804894eafe07f5ab93764842520d267eaf22747e43e84",
+          "lb_mechanism.py": "ab37fddfebdadc08bda8c9513127590e71d4acdbd5ec4496b08c7db95cd1eebd"
+        },
+        "candidate_tree": {
+          "params.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "assets/system_prompt/core.md": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+          "assets/system_prompt/format.md": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+          "assets/system_prompt/naturalness_check.md": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+          "assets/system_prompt/redline.md": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511",
+          "mechanism/mechanism.py": "cf469b7a31ce181dc586ee702323f03a938e0e6741283a633b9077d82046fd8a"
+        }
+      },
+      "isolated": true,
+      "ts": "2026-10-22 09:17:30"
+    }
+  },
+  "quota_audit": {
+    "persisted_events_before_reopen": 2,
+    "quota_one_second_proxy_request_accepted": true,
+    "same_identity_started": [
+      [
+        "same_run",
+        "episode",
+        1
+      ],
+      [
+        "same_run",
+        "episode",
+        1
+      ]
+    ],
+    "duplicate_attempt_keys": true,
+    "log_write_failure_request_accepted": true,
+    "audit_errors": [
+      "PermissionError: [Errno 13] Permission denied: 'C:\\\\Users\\\\abyss\\\\.codex\\\\.chatgpt-projects\\\\g-p-6abf72e02e2c819194f242ce5551c8b9\\\\arena_v14_review_20261022\\\\evidence\\\\proxy\\\\not_a_file'",
+      "PermissionError: [Errno 13] Permission denied: 'C:\\\\Users\\\\abyss\\\\.codex\\\\.chatgpt-projects\\\\g-p-6abf72e02e2c819194f242ce5551c8b9\\\\arena_v14_review_20261022\\\\evidence\\\\proxy\\\\not_a_file'"
+    ],
+    "log_failure_calls_actually_dispatched": 1
+  },
+  "media_proxy": {
+    "ok": true,
+    "dispatched_model": "candidate_override",
+    "dispatched_temperature": 1.23,
+    "unregistered_local_file_read_by_trusted_proxy": true,
+    "stub_requests": 1,
+    "local_only": true
+  },
+  "network_matrix": {
+    "attack_fixture_results": [
+      {
+        "check": "A6c_no_key",
+        "result": "BLOCKED_REFUSED",
+        "detail": ""
+      },
+      {
+        "check": "A6c_guess_key",
+        "result": "BLOCKED_REFUSED",
+        "detail": "<!DOCTYPE HTML>\n<html lang=\"en\">\n    <he"
+      }
+    ],
+    "valid_http_requests_reaching_handler_during_attacks": 0,
+    "correct_no_key_HTTP_status": 200,
+    "correct_request_reached_unprotected_server": true,
+    "existing_timeout_verdict": {
+      "check": "probe",
+      "expect": [
+        "BLOCKED"
+      ],
+      "actual": "BLOCKED:TimeoutExpired",
+      "detail": "",
+      "verdict": "PASS"
+    }
+  },
+  "inventory": {
+    "release_files": 223,
+    "episodes": [
+      {
+        "file": "benchmark/episodes/A_ch01_sample_v01.json",
+        "episode_id": "A_ch01_sample_v01",
+        "turns": 20,
+        "unique_inputs": 20
+      },
+      {
+        "file": "benchmark/episodes/L3B_MINI_CTRL.json",
+        "episode_id": "L3B_MINI_CTRL",
+        "turns": 3,
+        "unique_inputs": 3
+      },
+      {
+        "file": "benchmark/episodes/L3B_MINI_FULL.json",
+        "episode_id": "L3B_MINI_FULL",
+        "turns": 6,
+        "unique_inputs": 6
+      },
+      {
+        "file": "benchmark/episodes/NCA_CORR_INTENT_v1.json",
+        "episode_id": "NCA_CORR_INTENT_v1",
+        "turns": 6,
+        "unique_inputs": 6
+      },
+      {
+        "file": "benchmark/episodes/NCB_ENTITY_DENSE_v1.json",
+        "episode_id": "NCB_ENTITY_DENSE_v1",
+        "turns": 5,
+        "unique_inputs": 5
+      },
+      {
+        "file": "benchmark/episodes/PHASE05_INTENT_BASE.json",
+        "episode_id": "PHASE05_INTENT",
+        "turns": 4,
+        "unique_inputs": 4
+      },
+      {
+        "file": "benchmark/episodes/PHASE05_INTENT_flirt.json",
+        "episode_id": "PHASE05_INTENT_flirt",
+        "turns": 4,
+        "unique_inputs": 4
+      },
+      {
+        "file": "benchmark/episodes/PHASE05_INTENT_friend.json",
+        "episode_id": "PHASE05_INTENT_friend",
+        "turns": 4,
+        "unique_inputs": 4
+      },
+      {
+        "file": "benchmark/episodes/PHASE05_INTENT_none.json",
+        "episode_id": "PHASE05_INTENT_none",
+        "turns": 4,
+        "unique_inputs": 4
+      },
+      {
+        "file": "benchmark/episodes/PHASE05_INTENT_restraint.json",
+        "episode_id": "PHASE05_INTENT_restraint",
+        "turns": 4,
+        "unique_inputs": 4
+      },
+      {
+        "file": "benchmark/episodes/PHASE05_MEM.json",
+        "episode_id": "PHASE05_MEM",
+        "turns": 9,
+        "unique_inputs": 9
+      },
+      {
+        "file": "benchmark/episodes/PHASE0_GEN_220.json",
+        "episode_id": "PHASE0_GEN_220",
+        "turns": 220,
+        "unique_inputs": 220
+      },
+      {
+        "file": "benchmark/episodes/PILOT_L1_v1.json",
+        "episode_id": "PILOT_L1",
+        "turns": 12,
+        "unique_inputs": 12
+      },
+      {
+        "file": "benchmark/episodes/PILOT_L2_v1.json",
+        "episode_id": "PILOT_L2",
+        "turns": 22,
+        "unique_inputs": 22
+      },
+      {
+        "file": "benchmark/episodes/SMOKE_EP_001.json",
+        "episode_id": "SMOKE_EP_001",
+        "turns": 4,
+        "unique_inputs": 4
+      },
+      {
+        "file": "benchmark/episodes/dev/DEV_MEETING_FACTS_v1.json",
+        "episode_id": "DEV_MEETING_FACTS_v1",
+        "turns": 1,
+        "unique_inputs": 1
+      },
+      {
+        "file": "benchmark/episodes/dev/DEV_NEW_STATION_v1.json",
+        "episode_id": "DEV_NEW_STATION_v1",
+        "turns": 1,
+        "unique_inputs": 1
+      },
+      {
+        "file": "benchmark/episodes/dev/DEV_ROOMMATE_ADVICE_v1.json",
+        "episode_id": "DEV_ROOMMATE_ADVICE_v1",
+        "turns": 1,
+        "unique_inputs": 1
+      },
+      {
+        "file": "benchmark/episodes/dev/DEV_TWO_BOXES_v1.json",
+        "episode_id": "DEV_TWO_BOXES_v1",
+        "turns": 1,
+        "unique_inputs": 1
+      }
+    ],
+    "coverage_top_keys": [
+      "date",
+      "release",
+      "gate",
+      "rule",
+      "story_stats",
+      "families",
+      "c2_fields_audit",
+      "counts",
+      "gates"
+    ],
+    "archived_logs": [
+      "logs/g11_standin_result.json",
+      "logs/isolation_matrix_20261021_222827.json",
+      "logs/arena_v1_acceptance/20261021_r3closeout_FINAL/ACCEPTANCE.json",
+      "logs/arena_v1_acceptance/20261021_r3closeout_FINAL/ACCEPTANCE_REPORT.md"
+    ],
+    "release_contains_START_PROMPT": false,
+    "release_contains_iso_run": false
+  }
+}

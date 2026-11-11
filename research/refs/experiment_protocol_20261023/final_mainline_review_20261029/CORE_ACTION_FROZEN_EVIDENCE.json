@@ -1,0 +1,64 @@
+[
+  {
+    "case_id": "D01_T08",
+    "frozen_episode": "D:\\lovebrain-arena\\logs\\p08_d1_live_20261028\\parent_D01\\D01.copy.json",
+    "frozen_equals_current_input": true,
+    "messages": [
+      {
+        "role": "HER",
+        "text": "收摊了用你电源一天没跳冰也够用成了",
+        "ts": "2026-01-18 20:31"
+      },
+      {
+        "role": "ME",
+        "text": "成了就好回头那机器别自己垫钱",
+        "ts": "2026-01-18 20:34"
+      },
+      {
+        "role": "HER",
+        "text": "知道啦谢了不聊了我躺了",
+        "ts": "2026-01-18 20:38"
+      }
+    ],
+    "all_messages_in_actual_outbound": true,
+    "last_role": "HER",
+    "may_decline": true,
+    "intent": {
+      "text": "改成这周日北门出摊把电和位置落实",
+      "status": "COMPLETED",
+      "enabled": true
+    },
+    "outbound_calls": "D:\\lovebrain-arena\\logs\\p08_d1_live_20261028\\parent_D01\\out\\turn_08_D01_T08\\calls.json"
+  },
+  {
+    "case_id": "D02_T08",
+    "frozen_episode": "D:\\lovebrain-arena\\logs\\p08_d1_live_20261028\\parent_D02\\D02.copy.json",
+    "frozen_equals_current_input": true,
+    "messages": [
+      {
+        "role": "HER",
+        "text": "练完了虽然又熄一次火总算把周日补上了",
+        "ts": "2026-02-15 20:00"
+      },
+      {
+        "role": "HER",
+        "text": "娃也接了谢啦不聊了我给他做饭去",
+        "ts": "2026-02-15 20:04"
+      },
+      {
+        "role": "ME",
+        "text": "辛苦晚上早点睡",
+        "ts": "2026-02-15 20:08"
+      }
+    ],
+    "all_messages_in_actual_outbound": true,
+    "last_role": "ME",
+    "may_decline": true,
+    "intent": {
+      "text": "改成周日下午送完娃再去驾校接她",
+      "status": "COMPLETED",
+      "enabled": true
+    },
+    "outbound_calls": "D:\\lovebrain-arena\\logs\\p08_d1_live_20261028\\parent_D02\\out\\turn_08_D02_T08\\calls.json"
+  }
+]

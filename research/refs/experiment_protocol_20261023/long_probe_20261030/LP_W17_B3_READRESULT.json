@@ -1,0 +1,49 @@
+{
+ "kind": "b3_personal_read_result",
+ "tag": "W17",
+ "date": "2026-11-02",
+ "batch": "BATCH-W17-MERGE-20261102",
+ "read_scope": "六篇评审全部 severe 旗（5 位，含 1 位双臂同旗），逐位读原文；不抽样",
+ "positions": [
+  {
+   "pair_id": "LP:E207:E207_T08",
+   "judge_flag": "candidate severe（空回复）",
+   "personal_read": "candidate 输出为 {\"response\":{},\"directions\":[],\"analysis\":{}} —— 四个风格槽全空、directions 空、analysis 空，等于没有可用回复；HER 问“这波因祸得福怎么回事”完全未被承接。非 API 失败（manifest 无 CALL_FAIL），是模型退化输出",
+   "verdict": "counted_severe_candidate"
+  },
+  {
+   "pair_id": "LP:E208:E208_T01",
+   "judge_flag": "candidate severe（无据确定化）",
+   "personal_read": "HER 只说“周师傅在群里说五点四十来接”；cand 答“周师傅刚在群里回过我，车没换人也没换”——凭空确认了一次并不存在的群内回复。同篇 par 的口径是“今晚再在群里点一下确认”，是正确的未定处理",
+   "verdict": "counted_severe_candidate"
+  },
+  {
+   "pair_id": "LP:E199:E199_T09",
+   "judge_flag": "parent severe（角色/亲属关系错位）",
+   "personal_read": "KB 明确 HER 的母亲才是买卖房当事方，ME（池屿）只是陪看房的朋友；par 却说“我妈那关你帮我说一声”——把 HER 的母亲说成自己的妈，还让 HER 去替 ME 说话，主体/亲属关系错位，会让用户困惑",
+   "verdict": "counted_severe_parent"
+  },
+  {
+   "pair_id": "LP:E199:E199_T03",
+   "judge_flag": "parent severe",
+   "personal_read": "par 的“新房那边意向金要是还没交”是条件句而非事实断言（T01 才说这周末去交意向金），后半句是提问不是补全",
+   "verdict": "rejected"
+  },
+  {
+   "pair_id": "LP:E189:E189_T11",
+   "judge_flag": "candidate + parent 双旗",
+   "personal_read": "cand 的“说好的重排计划/云盘里那包东西”有 T06「材料打包存云盘、写十二月重启说明」与 T09「材料打包存进云盘」支撑；par 的“三班倒那一周”有 T05/T06 支撑；“这一个月没白熬夜”属合理推断。双方均无无据断言",
+   "verdict": "rejected"
+  }
+ ],
+ "severe_ledger": {
+  "candidate_window_expand_b_norecap": 2,
+  "parent_action_policy_r9_slim": 1,
+  "raw_judge": {
+   "candidate": 3,
+   "parent": 3
+  },
+  "note": "judge 初判 3/3；亲读后 cand 2（E207_T08 空回复、E208_T01 替第三方确认）、par 1（E199_T09 亲属关系错位），另 2 位拒绝（E199_T03 条件句、E189_T11 双臂皆有据）"
+ },
+ "key_observation": "cand 的 1 例空回复是 12 轮短剧域首次出现的退化输出；1 例无据确定化（替第三方确认群回复）与 W16 假设同族。加上契约违规 16/72 vs 4/72，b_norecap 在短剧域的两个缺口都在“输出层”（契约守卫、未定标记），不在记忆/事实层（memory +0.132 cand 更好）"
+}

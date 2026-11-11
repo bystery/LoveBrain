@@ -1,0 +1,38 @@
+{
+ "kind": "lp_b3_readresult_partial",
+ "batch": "BATCH-W18-UCSUPP-20261103",
+ "reader": "main_session",
+ "note": "批跑中增量亲读：先读预设已知位（judge 旗位未出，避免锚定）；批后把全部 judge severe 旗位并入本文件并转正。severe 口径 = 无据确定化/复活作废/坐实未确认/编造经历等 G1 类；算术/措辞另记 quality_note，不混入 G1 两族账。",
+ "positions": [
+  {
+   "case_id": "LRE117_T04",
+   "source": "preset",
+   "judge_flag": null,
+   "candidate_severe": false,
+   "parent_severe": false,
+   "candidate_note": "接受 55×2=110 的新分摊并确认后座与行李；未编造小满细节。'鱼干两盒、米酒两罐，都先跟我说一声'略啰嗦但非事实错误。analysis topic_status=drift 与本轮承接略不符（内部字段，非用户可见）。",
+   "parent_note": "算术自相矛盾：'老规矩一人八十，三个人我算你们俩一人五十，正好一百六'（50×2=100≠160），且'我少收你们十块'口径不清。对更正本身有承接，未编造。",
+   "quality_note": "本轮 parent 有金额/算术事实错误（本域 HER 记账清楚，属实质退化）；candidate 数字一致。不计入 G1 severe 两族账，但进判决的 factuality/质量叙述。"
+  },
+  {
+   "case_id": "LRE121_T06",
+   "source": "preset",
+   "judge_flag": null,
+   "candidate_severe": false,
+   "parent_severe": false,
+   "candidate_note": "接住压力但日期口径错位：把已取消的原 9:30 接种写成 2026-11-15（实际 11-14）、把饭局写成 11-22（实际 11-28），且漏掉 11-21 备选号；parent 同期三项均写对。playful 说'早上九点半的号没抢到'与事实相反（她是主动取消）；recommended'别又只剩上午的'逻辑倒置（上午已无号）。对'我好难'的安抚弱于 parent。",
+   "parent_note": "减压+时间核算清楚（四点留观到四点半、下下周六饭局不受影响；11-21 备选、11-28 饭局），承接'难'的情绪；无编造降温日期。",
+   "quality_note": "本轮 candidate 在 time_state/fact 上有实质滑移，parent 更稳；不计入 G1 severe 两族账（非复活作废/非坐实未确认），但属 G2 需盯的 time/emotion 退化点。"
+  },
+  {
+   "case_id": "LRE117_T12",
+   "source": "preset",
+   "judge_flag": null,
+   "candidate_severe": false,
+   "parent_severe": false,
+   "candidate_note": "接住感谢与市集邀约，问日期不替她定；八十/咖啡口径正确。小瑕疵：全篇半角逗号；bad_boy'别记账，记多了显得生分'与 HER'受人帮助必定回礼'的边界略拧（仅备选槽）。S 段在场（supp_cu=66/pairs=2），未复读已作废的 17:00 旧计划。",
+   "parent_note": "接住感谢与邀约，'时间你定了发我'不越权；八十/咖啡口径正确；无编造日期。",
+   "quality_note": "双方均无 severe；candidate 备选槽有一处与 HER 边界轻冲突，主槽无问题。"
+  }
+ ]
+}

@@ -1,0 +1,43 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-W16-20261102-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30常设授权+2026-11-02全面授权重申",
+ "phase": "W16",
+ "budget_ledger": "logs/auth_budget/AUTH-W16-20261102-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 240
+ },
+ "scope": {
+  "purpose": "W16 uncertain 标记判决批（W16_UNCERTAIN_DESIGN_20261102.md 判据冻结，含修订 R1-R5）：b_norecap_uc vs b_norecap on LRE117+LRE146(回归)+LRE148(泛化)，240 attempts。KEEP=G1 severe 亲读 cand<par+G2 九维最差>=-0.2 且 interact/emotion/initiative 各>=-0.2+G3 prompt<=+5% 且 0 额外调用+G4 触发面(10%,90%]；任一门破按设计判 ELIMINATE 或证据不足。并行执行器 --workers。评审另册",
+  "route": "two_arm_batch_240",
+  "total_attempts": 240,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "W16": "BATCH-W16-UNC-20261102"
+  },
+  "episodes": [],
+  "cards": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W16.json",
+  "plan_sha256": "48d394462b6391b493f9925e88966b0ad62eb3509105dc40a5a97f9601854455"
+ },
+ "frozen_bindings": {
+  "W16": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/W16.INTERLEAVE_PLAN.json",
+   "plan_sha256": "48d394462b6391b493f9925e88966b0ad62eb3509105dc40a5a97f9601854455",
+   "batch_id": "BATCH-W16-UNC-20261102",
+   "cards_file": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W16.json",
+   "attempts": 240,
+   "parent": "window_expand_b_norecap",
+   "candidate": "window_expand_b_norecap_uc",
+   "parent_identity_sha256": "ccf0f8fca5148d9f276fad2bb6fe6acef2e1c9db4c58d86f21ab37398e6b7076",
+   "candidate_identity_sha256": "5b3266a91350d66a799f2d3c53274168f9c9b1d16a81f26d8b7193e1847c13df"
+  }
+ }
+}

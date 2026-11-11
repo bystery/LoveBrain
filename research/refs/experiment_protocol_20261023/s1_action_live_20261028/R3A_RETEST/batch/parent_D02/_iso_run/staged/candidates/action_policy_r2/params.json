@@ -1,0 +1,12 @@
+{
+ "candidate": "action_policy_r2",
+ "role": "candidate",
+ "parent": "action_policy_r1",
+ "output_contract": null,
+ "mechanism_flags": {
+  "no_reply_expression_fix": true,
+  "protocol_hygiene_fix": true,
+  "callback_grounding_fix": true
+ },
+ "note": "截止日故障族修复分支：全量继承 action_policy_r1（机制其余部分零改动，运行时闭包引用不复制），只补三项已定位根因。FIX-6 no_reply_expression_fix：r1 教模型'用空正文表示不回'，而评分器（arena/lb_scorer.py v0.7/v0.8）只认顶层 action=no_reply/decline_reason——S2 锚点批 AK09/AK12（两轮 may_decline=True 收尾轮）因此判 json_schema_broken、零可发正文；本分支把 CAP_RULES[收尾]/[停] 与【发送合同】改成评分器认识的表达，并禁止'空正文却不写 action'的中间态。FIX-7 protocol_hygiene_fix：AK02_T01 模型在 directions 后提前闭合顶层 }（raw_decode 于 char330 截断，四风格正文完好但 analysis 记忆写回丢失）、S1 E024_T02 style 键名混入零宽字符、E024_T04/E034_T05 directions 给 5 条——动作块固定追加单 JSON/键名照抄/四槽 directions 三条硬约束。FIX-8 callback_grounding_fix：AK07_T01 directions[3] 编造'你上次说的那个考点笔记'（该锚点对话记录/persona/initial_kb/note 全无此物），core.md 的禁止条款已存在但不够，补一条可自检判据：回扣内容必须能在对话记录或记忆行里逐字找到。不改评分器、不改 rubric、不改题面与卡、不新增模型调用。诚实边界：三项修复的效果未经新身份真实复验前不声称已消除故障族；单项消融（逐 flag 关闭再实测）本轮排程未做，属剩余缺口。父本 action_policy_r1 磁盘与已付费答卷冻结不动。本文件只列本候选真正读取的三个 flag：r1 的五项修复 flag 由 r1 自己的 params.json 在加载期读取，在这里增删它们不产生任何行为变化（避免伪消融），要消融 r1 须改 r1=新身份。"
+}

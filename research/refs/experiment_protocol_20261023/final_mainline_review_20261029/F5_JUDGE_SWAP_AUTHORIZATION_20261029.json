@@ -1,0 +1,37 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-F5-JUDGE-SWAP-20261029-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-29持续实验授权（F5 预留：最多 64 次生成 + 32 次评审）；本单只取 12 次评审，不新增总帽、不复活旧单。",
+ "phase": "F5-JUDGE",
+ "budget_ledger": "logs/auth_budget/AUTH-F5-JUDGE-SWAP-20261029-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "hy3",
+  "temperature": 0.0,
+  "max_attempts": 12
+ },
+ "api_config": "api_cfg:openai_compat_stream_false_v1；hy3 单一裁判，整批同模型；非流式。",
+ "scope": {
+  "purpose": "F5 同臂重抽 12 对的顺序复测（A/B 整体互换，隔离裁判位置偏好）",
+  "stage": "F5",
+  "experiment": "F5_repair_recheck_blind_review_order_swap",
+  "allowed_models": [
+   "hy3"
+  ],
+  "forbidden_models": [
+   "hy4-preview",
+   "gemini-3.8-flash",
+   "qwen3.8-flash",
+   "dsf"
+  ],
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "total_attempts": 12,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "closed_history_not_reused": true
+ },
+ "registered_at": "2026-10-29T14:09:06"
+}

@@ -1,0 +1,98 @@
+{
+ "kind": "common_benchmark_freeze_proposal",
+ "version": "V1",
+ "date": "2026-10-26",
+ "status": "proposal_only_no_judging_authorized",
+ "frozen": {
+  "cards": {
+   "path": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+   "sha256": "bdd258bdcceee54d7c024e9d2e3860adcd3c64e48e3eee834f993c10714b788a",
+   "cases": 32
+  },
+  "loci": [
+   "E006_T01",
+   "E006_T02",
+   "E006_T03",
+   "E006_T04",
+   "E006_T05",
+   "E006_T06",
+   "E006_T07",
+   "E006_T08",
+   "E007_T01",
+   "E007_T02",
+   "E007_T03",
+   "E007_T04",
+   "E007_T05",
+   "E007_T06",
+   "E007_T07",
+   "E007_T08",
+   "E008_T01",
+   "E008_T02",
+   "E008_T03",
+   "E008_T04",
+   "E008_T05",
+   "E008_T06",
+   "E008_T07",
+   "E008_T08",
+   "E012_T01",
+   "E012_T02",
+   "E012_T03",
+   "E012_T04",
+   "E012_T05",
+   "E012_T06",
+   "E012_T07",
+   "E012_T08"
+  ],
+  "plans": {
+   "sweep_a": {
+    "path": "refs/experiment_protocol_20261023/c4_screen_20261026/sweep_a_orig_vs_goal.INTERLEAVE_PLAN.json",
+    "sha256": "7f158c57495e200dec990db48630228e8ea5a1724227b032b40c75ed1061736f"
+   },
+   "sweep_b": {
+    "path": "refs/experiment_protocol_20261023/c4_screen_20261026/sweep_b_v5_vs_mem.INTERLEAVE_PLAN.json",
+    "sha256": "1f0d78c6aecd8781a478927e85c8e3484370c619df6b4b209c422b0f90bfdf16"
+   }
+  },
+  "arms": [
+   "reference_product_v1",
+   "goal_action_v1",
+   "v5_purpose_aligned",
+   "evidence_memory_v1"
+  ],
+  "config_identity": "api_cfg:openai_compat_stream_true_v1 (include_usage gated)"
+ },
+ "exposure": {
+  "all_18_stories_exposed": true,
+  "panel_is_dev_set": true,
+  "generalization_claim_allowed": false
+ },
+ "judging": {
+  "rubric_dims": 9,
+  "calls_per_answer": 1,
+  "answers": 128,
+  "repeat_rate": 0.1,
+  "repeat_calls": 13,
+  "anchor_calls": 32,
+  "total_calls": 173,
+  "proposed_authorization": 192,
+  "gate": {
+   "self_consistency": "9维中≥7维完全一致、其余差≤1",
+   "anchor_agreement": ">=26/32 (81%) 每维",
+   "human_audit": "32份分层抽检；不一致>15%的维度降级NR"
+  },
+  "no_composite_score": true
+ },
+ "authorization_state": {
+  "AUTH-A3-JUDGE-20261026-01": "CLOSED (172/172)",
+  "AUTH-EVAL-JUDGE-20261025-01": "CLOSED (204 batch closed)",
+  "AUTH-HARNESS-PERF-PHASE1-20261025-01": "OPEN, 252 remaining, automatic_judge_generations=false",
+  "judge_attempts_available": 0
+ },
+ "confounds": {
+  "arms_from_batches": 2,
+  "loci_spanning_ge3_batches": "32/32",
+  "within_batch_pairs_clean": 6,
+  "only_ref_and_v5_repeated_across_batches": true
+ },
+ "real_model_calls_this_artifact": 0
+}

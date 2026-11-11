@@ -1,0 +1,37 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-F4-JUDGE-20261029-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-29持续实验授权；F4 组件盲评有限目的登记，不新增总帽、不复活旧单。",
+ "phase": "F4-JUDGE",
+ "budget_ledger": "logs/auth_budget/AUTH-F4-JUDGE-20261029-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "hy3",
+  "temperature": 0.0,
+  "max_attempts": 12
+ },
+ "api_config": "api_cfg:openai_compat_stream_false_v1；hy3 单一裁判；非流式。",
+ "scope": {
+  "purpose": "F4 12 对组件价值盲评（每对 1 次）。",
+  "stage": "F4",
+  "experiment": "F4_component_value_blind_review",
+  "allowed_models": [
+   "hy3"
+  ],
+  "forbidden_models": [
+   "hy4-preview",
+   "gemini-3.8-flash",
+   "qwen3.8-flash",
+   "dsf"
+  ],
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "total_attempts": 12,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "closed_history_not_reused": true
+ },
+ "registered_at": "2026-10-29T10:50:00"
+}

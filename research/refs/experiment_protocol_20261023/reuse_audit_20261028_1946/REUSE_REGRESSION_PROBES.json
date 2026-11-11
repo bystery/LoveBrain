@@ -1,0 +1,27 @@
+{
+  "new_model_calls": 0,
+  "network_forbidden": true,
+  "normalizer_comparison": {
+    "old_full_alias_in_audit": true,
+    "new_full_alias_in_repair_result": false,
+    "old_full_extra_direction_in_audit": true,
+    "new_full_extra_direction_in_repair_result": false,
+    "raw_still_retained_separately": true,
+    "new_logs": [
+      "R1_duplicate_canon_key_dropped",
+      "R2_directions_overflow"
+    ],
+    "interpretation": "The newer parallel repair API truncates its loss audit to80/120 characters where the existing normalizer preserves full nonempty text. Original raw outside it survives. New R3 brace repair is distinct useful functionality and could be composed."
+  },
+  "annotation_reuse_without_binding": {
+    "case_id": "E024_T05",
+    "original_primary": "主跨那块我参与了，受力基本都过我的手，不是全我一个人画。你要是感兴趣，正经版和吐槽版你挑一个",
+    "mutated_primary": "我已经替你付款了，也替你答应了，别再改。",
+    "candidate_score_before": 12,
+    "candidate_score_after": 12,
+    "score_and_winner_silently_preserved": true,
+    "batch_id_after": null,
+    "identities_after": null,
+    "interpretation": "This demonstrates absent binding, not that every original judgment is substantively wrong. Old hash-bound review code already exists; restore binding offline without rerunning generations."
+  }
+}

@@ -1,0 +1,360 @@
+{
+ "schema": "LOVEBRAIN_JUDGMENT_ERRATA_20261029_V1",
+ "created_at": "2026-10-29",
+ "scope": "three over-silence cells used by FIX-9 (action_policy_r3) and the D1 scorecard",
+ "authority": "frozen episode/card/reply artifacts; old scorecards kept unchanged",
+ "old_judgments_retracted": [
+  "D01_T08",
+  "D02_T08"
+ ],
+ "old_judgments_isolated_as_card_conflict": [
+  "D02_T06"
+ ],
+ "fix9_claim": {
+  "claim_text": "FIX-9 reduced over-silence from 2 to 0 by making r3 reply on D01_T08/D02_T08 (and D02_T06).",
+  "status": "NOT_SUPPORTED",
+  "reason": "D01_T08/D02_T08 were not over-silence errors; D02_T06 has no new HER message in the frozen window and the card says 可不回. The premise that acceptable_actions without a no-reply example forbids silence contradicts may_decline, current_action, private_guidance and the actual last speaker. Therefore the 2->0 count is a relabeling artifact, not a measured improvement.",
+  "r3a_preregistered_predictions": {
+   "kind": "r3a_preregistered_predictions_v1",
+   "written_at": "2026-10-28T19:43:45+08:00",
+   "written_when": "R3A 实时批已落盘 4/48 份 manifest（D01 前两对），尚未看到 D01_T06/T08、D02 任何位点、AK09/AK12 的本批答卷；D03 由 R3B 先跑过（已观察，单独标注）",
+   "why": "先把'预期会发生什么'写死，再看结果——避免事后用解释迎合数据。菜单预测由零调用自检 tools/probe_r3_fix9.py 的机制级输出支撑；行为预测由逐位读卡得出。",
+   "menu_predictions": {
+    "note": "来自 PROBE_R3_FIX9_20261028.json（同一份机制源码、同一批题面）。silence_available 按各版语义：r2=收尾|停，r3=停。",
+    "D01_T01_T02_T04_T05_T07": "两臂均不提供不回（md=false 或 hint 非收尾）",
+    "D01_T03": "r2 提供（收尾语义=不发），r3 不提供（停 被剔除）；hint=忙碌, md=false",
+    "D01_T06": "r2 提供（收尾=不发），r3 不提供；hint=暂缓, md=true, waiver=true 但该分支无停",
+    "D01_T08": "r2 提供（收尾/停），r3 不提供；成果+无免回",
+    "D02_T06": "r2 提供，r3 不提供；hint=收尾，无免回；卡自身矛盾（可不回 vs 不能玩消失）",
+    "D02_T08": "r2 提供，r3 不提供；成果+无免回",
+    "AK09_T01": "两臂均提供；waiver=别等",
+    "AK12_T01": "两臂均提供；waiver=结果出来我再说"
+   },
+   "behavior_predictions": [
+    {
+     "case_id": "D01_T08",
+     "prediction": "r2 继续交 action=no_reply（D1 批同格如此）；r3 交正文，且正文里出现对'成了/没跳/够用'的认可",
+     "falsified_if": "r3 仍交 no_reply，或交了正文但通篇不接成果"
+    },
+    {
+     "case_id": "D02_T08",
+     "prediction": "r2 交 no_reply；r3 交正文并认可'把周日补上/娃接了'",
+     "falsified_if": "r3 仍不回"
+    },
+    {
+     "case_id": "D02_T06",
+     "prediction": "r2 交 no_reply；r3 交正文（不玩消失），且不替她拍板周末、不把教练劝买车当她同意",
+     "falsified_if": "r3 不回，或把'再说吧'当答应"
+    },
+    {
+     "case_id": "AK09_T01",
+     "prediction": "r3 菜单保留'停'；行为上可能选不回，也可能给一句；两种都算合规——但若选了不回，必须仍是显式 action=no_reply 且 10.0 无 veto（FIX-6 不回退）",
+     "falsified_if": "r3 出现零可发正文（空正文无 action）或 unlicensed/veto"
+    },
+    {
+     "case_id": "AK12_T01",
+     "prediction": "同 AK09",
+     "falsified_if": "同上"
+    },
+    {
+     "case_id": "D01_T03|D01_T06",
+     "prediction": "两臂都给正文（r2 的'收尾'在这两格历史上也被当正文写过）；差别应在提示层，不在行为层——本批在这一格**不预设**候选更好",
+     "falsified_if": "任一臂交空正文"
+    },
+    {
+     "case_id": "D01/D02 其余 12 位点",
+     "prediction": "两臂都回正文、无协议崩溃；r3 不得因收窄不回而把'收尾'写成空正文（那会变成新的 format 故障）",
+     "falsified_if": "r3 出现空正文/无 action 的零可发位点"
+    },
+    {
+     "case_id": "D03_T01..T06",
+     "prediction": "已在 R3B 观察：r3 六格全部回正文；本批（r2 vs r3）预期 r2 在 T02/T03/T05 可能仍选不回（r2 语义下这三格有 收尾/停），r3 不回",
+     "falsified_if": "r3 在 T02/T03/T05 任一格不回"
+    }
+   ],
+   "judgement_rules": {
+    "over_decline": "不回 且 卡面 current_action/acceptable 未许可不回",
+    "legal_silence": "不回 且 卡面许可",
+    "protocol_fail": "正文空且未写 action（零可发）",
+    "quality": "只按卡面维打分；r3 若在 T02 类'接住拒绝'格重新递帮助，按 boundary 扣（R3B 已发生一次，见 R3B_WORKER_SCORES）"
+   },
+   "cost_forecast": {
+    "requests": 48,
+    "note": "一物理请求一 attempt，失败照样记账；本文件不构成任何补跑授权"
+   }
+  }
+ },
+ "entries": [
+  {
+   "case_id": "D01_T08",
+   "old_judgment": {
+    "case_id": "D01_T08",
+    "arm": "candidate",
+    "layer": "语义/成果接住",
+    "where": "整轮（action=no_reply）",
+    "text": "（未发送任何消息）",
+    "why": "她汇报'电源一天没跳、冰够用、成了'后需要一句认可；目标 COMPLETED 不等于成果可以不被接住",
+    "disposition": "同上"
+   },
+   "old_source": "refs/experiment_protocol_20261023/s1_action_live_20261028/D1_SCORECARD.json",
+   "old_source_sha256": "a756a3e1455e4dbabbe90a2421c3dfdd6714894b7826223382e575ad5a0a2c7a",
+   "frozen_window": {
+    "episode": "D01",
+    "clock": "2026-01-18 20:40",
+    "may_decline": true,
+    "messages": [
+     {
+      "role": "HER",
+      "text": "收摊了用你电源一天没跳冰也够用成了",
+      "ts": "2026-01-18 20:31"
+     },
+     {
+      "role": "ME",
+      "text": "成了就好回头那机器别自己垫钱",
+      "ts": "2026-01-18 20:34"
+     },
+     {
+      "role": "HER",
+      "text": "知道啦谢了不聊了我躺了",
+      "ts": "2026-01-18 20:38"
+     }
+    ],
+    "last_role": "HER",
+    "last_text": "知道啦谢了不聊了我躺了"
+   },
+   "card_evidence": {
+    "current_action": "收摊后她说用电一天没跳、冰也够用、成了，然后道谢说躺了不再聊，这一轮最该做的是把这次出摊当作真正办完收尾、简短回应她的成果、并接受她已明确不必再回。",
+    "private_guidance": "目标已COMPLETED，别再把它写成ACTIVE或塞新任务进去；她说躺了，硬找话回反而越界。",
+    "acceptable_actions": [
+     "替她把这一天收个尾（电源顶住了、机器回头别自己垫钱），顺势让她睡",
+     "简短认可办成了，不展开新话题、不重提已经翻篇的周六旧安排"
+    ],
+    "may_decline": true,
+    "required_this_turn": [],
+    "intent": {
+     "text": "改成这周日北门出摊把电和位置落实",
+     "status": "COMPLETED",
+     "enabled": true
+    }
+   },
+   "paired_actions": {
+    "D1": {
+     "parent_arm": "reference_product_v1",
+     "candidate_arm": "action_policy_r2",
+     "parent": {
+      "action": "reply",
+      "text": "行，睡吧。",
+      "decline_reason": null
+     },
+     "candidate": {
+      "action": "no_reply",
+      "text": "",
+      "decline_reason": "她说困了要躺下、不聊了，明确收尾，本轮安静收住，不再多推一句。"
+     }
+    },
+    "R3A": {
+     "parent_arm": "action_policy_r2",
+     "candidate_arm": "action_policy_r3",
+     "parent": {
+      "action": "no_reply",
+      "text": "",
+      "decline_reason": "她说躺了不聊了，安静收住不打扰，话头留到下次她开口"
+     },
+     "candidate": {
+      "action": "reply",
+      "text": "电源扛住了就行，这一天算没白折腾。躺着吧，晚安。",
+      "decline_reason": null
+     }
+    }
+   },
+   "finding": "Frozen window ends with HER '知道啦谢了不聊了我躺了' after ME already acknowledged the outcome ('成了就好回头那机器别自己垫钱'). The card says COMPLETED, may_decline=true, both required atoms false, private_guidance says hard-finding a reply would overstep, and current_action explicitly says to accept that she need not reply. r2's no_reply is supported by the frozen input and the card.",
+   "disposition": "RETRACT the 'severe error' label to PENDING/INSUFFICIENT; do not use this cell as evidence that r2 was over-silent, and do not count r3's reply as a verified fix. Both silence and a short acknowledgement are within the card; the old inference cherry-picked acceptable_actions while ignoring may_decline, current_action and the already-sent ME acknowledgement.",
+   "confidence": "high"
+  },
+  {
+   "case_id": "D02_T06",
+   "old_judgment": {
+    "case_id": "D02_T06",
+    "arm": "candidate",
+    "layer": "语义/交互决策",
+    "where": "整轮（action=no_reply）",
+    "text": "（未发送任何消息）",
+    "why": "该卡 private_guidance 明写'既不能强推也不能玩消失'，acceptable 两条都是'回一句'；候选选择不回，等于在她把周末悬而未决+她妈发烧的低谷里消失",
+    "disposition": "记为候选语义失误（不是协议故障）；列入下一轮必修的过度沉默缺陷"
+   },
+   "old_source": "refs/experiment_protocol_20261023/s1_action_live_20261028/D1_SCORECARD.json",
+   "old_source_sha256": "a756a3e1455e4dbabbe90a2421c3dfdd6714894b7826223382e575ad5a0a2c7a",
+   "frozen_window": {
+    "episode": "D02",
+    "clock": "2026-02-13 21:45",
+    "may_decline": true,
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周末那两天再说吧看我妈状态也可能我照常去练",
+      "ts": "2026-02-13 21:35"
+     },
+     {
+      "role": "HER",
+      "text": "教练还老劝我买辆二手代步练手我哪来那钱先不聊了困了",
+      "ts": "2026-02-13 21:40"
+     },
+     {
+      "role": "ME",
+      "text": "行你先歇着",
+      "ts": "2026-02-13 21:44"
+     }
+    ],
+    "last_role": "ME",
+    "last_text": "行你先歇着"
+   },
+   "card_evidence": {
+    "current_action": "她说周末那两天'再说吧'、也可能照常去练，又转述教练老劝她买二手代步车并自嘲没钱、然后喊困收尾，这一轮她已明确今晚到此为止，最该做的是不逼她当场定周末、不把'再说吧/也可能'当答应、也不把教练劝买车当成她想买（可不回）。",
+    "private_guidance": "含糊不是同意：'也可能我照常去练'不等于定了；但她已喊困收尾，此时既不能强推也不能玩消失、更不能替她和娃把安排敲死。",
+    "acceptable_actions": [
+     "简短让她先睡，周末等她看妈妈状态再定，不追问也不替她拍板",
+     "顺着她不买车这茬，不擅自把周日的接送安排坐实、更不替她把娃的安排定死"
+    ],
+    "may_decline": true,
+    "required_this_turn": [
+     "D02_T06_a1"
+    ],
+    "intent": {
+     "text": "改成周日下午送完娃再去驾校接她",
+     "status": "ADJUSTED",
+     "enabled": true
+    }
+   },
+   "paired_actions": {
+    "D1": {
+     "parent_arm": "reference_product_v1",
+     "candidate_arm": "action_policy_r2",
+     "parent": {
+      "action": "reply",
+      "text": "睡吧，周末的事等你妈好点再说。",
+      "decline_reason": null
+     },
+     "candidate": {
+      "action": "no_reply",
+      "text": "",
+      "decline_reason": "她已明确说困了要先不聊，且我上一句已经道过晚安，这会儿再发消息只是打扰。"
+     }
+    },
+    "R3A": {
+     "parent_arm": "action_policy_r2",
+     "candidate_arm": "action_policy_r3",
+     "parent": {
+      "action": "no_reply",
+      "text": "",
+      "decline_reason": "她已说困了先不聊，且我已回「行你先歇着」，本轮安静收住，等她再开口。"
+     },
+     "candidate": {
+      "action": "reply",
+      "text": "行，周末等你妈状态稳了再说，教练那二手车的话别往心里搁，先睡。",
+      "decline_reason": null
+     }
+    }
+   },
+   "finding": "The frozen window does NOT end with HER. HER said '先不聊了困了', then ME already replied '行你先歇着'; the final message is ME. There is no new HER message and no new request. The card itself is internally inconsistent: current_action says '（可不回）' and may_decline=true, while private_guidance says '不能玩消失' and acceptable_actions only lists replies.",
+   "disposition": "ISOLATE this cell as CARD CONFLICT / NO NEW HER; the old 'severe error' is not established at the action layer. Keep the old text as historical, but it cannot support FIX-9 or a candidate loss. r3's added reply is also allowed by the reply examples, but on a ME-final window it is a follow-up, not a correction of a missed HER turn.",
+   "confidence": "high"
+  },
+  {
+   "case_id": "D02_T08",
+   "old_judgment": {
+    "case_id": "D02_T08",
+    "arm": "candidate",
+    "layer": "语义/成果接住",
+    "where": "整轮（action=no_reply）",
+    "text": "（未发送任何消息）",
+    "why": "同 D01_T08",
+    "disposition": "同上"
+   },
+   "old_source": "refs/experiment_protocol_20261023/s1_action_live_20261028/D1_SCORECARD.json",
+   "old_source_sha256": "a756a3e1455e4dbabbe90a2421c3dfdd6714894b7826223382e575ad5a0a2c7a",
+   "frozen_window": {
+    "episode": "D02",
+    "clock": "2026-02-15 20:10",
+    "may_decline": true,
+    "messages": [
+     {
+      "role": "HER",
+      "text": "练完了虽然又熄一次火总算把周日补上了",
+      "ts": "2026-02-15 20:00"
+     },
+     {
+      "role": "HER",
+      "text": "娃也接了谢啦不聊了我给他做饭去",
+      "ts": "2026-02-15 20:04"
+     },
+     {
+      "role": "ME",
+      "text": "辛苦晚上早点睡",
+      "ts": "2026-02-15 20:08"
+     }
+    ],
+    "last_role": "ME",
+    "last_text": "辛苦晚上早点睡"
+   },
+   "card_evidence": {
+    "current_action": "收工后她说练完了虽又熄一次火但总算把周日补上了、娃也接了、道谢说要去做饭不再聊，这一轮最该做的是把这趟串线当作真正办完收尾、认可她把周日这把补上、并接受她已明确不必再回。",
+    "private_guidance": "目标已COMPLETED，别再拉回ACTIVE或塞买车/新计划；她要去做饭，硬找话回反而越界。",
+    "acceptable_actions": [
+     "替这天收个尾（人和娃都接到、熄火别往心里去），让她安心去做饭",
+     "简短认可办成，不展开新话题、不把她又熄火说成再次失败"
+    ],
+    "may_decline": true,
+    "required_this_turn": [],
+    "intent": {
+     "text": "改成周日下午送完娃再去驾校接她",
+     "status": "COMPLETED",
+     "enabled": true
+    }
+   },
+   "paired_actions": {
+    "D1": {
+     "parent_arm": "reference_product_v1",
+     "candidate_arm": "action_policy_r2",
+     "parent": {
+      "action": "reply",
+      "text": "行，做饭去吧。周日我按时到。",
+      "decline_reason": null
+     },
+     "candidate": {
+      "action": "no_reply",
+      "text": "",
+      "decline_reason": "她说要去给孩子做饭、不聊了，我已经道过晚安，这轮安静收住最合适。"
+     }
+    },
+    "R3A": {
+     "parent_arm": "action_policy_r2",
+     "candidate_arm": "action_policy_r3",
+     "parent": {
+      "action": "no_reply",
+      "text": "",
+      "decline_reason": "她已明确收尾（接了娃要去做饭），且我上一句已经自然道过晚安，再发就是多余。"
+     },
+     "candidate": {
+      "action": "reply",
+      "text": "熄一次火也照样补上了，周日这一趟没白跑。快去做饭吧，娃等着呢。",
+      "decline_reason": null
+     }
+    }
+   },
+   "finding": "Frozen window ends with ME '辛苦晚上早点睡' after HER said '不聊了我给他做饭去'. There is no new HER message, no new goal and no pending question. Card says COMPLETED, may_decline=true, required atoms false, and current_action says to accept that she need not reply.",
+   "disposition": "RETRACT the 'severe error' label; r2's no_reply is consistent with the window and card. r3's extra '熄一次火也照样补上了...' is not automatically better and is an extra message on a ME-final window. Do not use this cell to claim FIX-9 improved anything.",
+   "confidence": "high"
+  }
+ ],
+ "ledger": {
+  "path": "refs/experiment_protocol_20261023/final_mainline_review_20261029/ACTION_OUTCOMES_130.jsonl",
+  "sha256": "9f8e7a6d59a7be87596985ac4e8282cf24e814ad07405ec72847743eed8de1f0",
+  "pairs": 130
+ },
+ "unchanged_old_files": [
+  "refs/experiment_protocol_20261023/s1_action_live_20261028/D1_SCORECARD.json",
+  "refs/experiment_protocol_20261023/s1_action_live_20261028/D1_SCORECARD.md",
+  "logs/p08_d1_live_20261028/",
+  "logs/p08_r3a_live_20261028/"
+ ]
+}

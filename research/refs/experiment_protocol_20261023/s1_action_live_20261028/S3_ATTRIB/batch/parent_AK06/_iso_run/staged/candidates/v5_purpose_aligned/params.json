@@ -1,0 +1,6 @@
+{
+  "role": "candidate",
+  "parent": "v4_intent_context_r2",
+  "output_contract": null,
+  "note": "v5_purpose_aligned 是【用途对齐的简化 harness 候选】(r2_real_independent_review_20261025 §三 B 包)。继承 r2 的简化真实事件记忆与目标/上下文优先级、三项输入边界护栏(来源/媒体/时间作用域)，另做两项主假设: (B1) 删除本 harness 从不消费的内部摘要——analysis 固定输出空对象{}(r2 生成后只取 res['text']、不读回 topic/scene_facts/ongoing，却仍按旧格式每轮要求生成, 实测约占原始JSON字符41.87%，字符占比非token/非预计节省)，保留 response 四风格与 directions 四方向及合法 null 语义、不改用户可选文本数量与长度自由; (B2) 从多加禁止词转到【事实与行动的区分】通用装配规则: 信息不足仍可查/商量/建议/表达兴趣/推进(含玩笑调情), 只禁把未查明说成已查明、把希望说成已发生、把一般常识冒充本次现场/路线/设施/天气、把新提议冒充已有装备或既有亲历; 私下目标转自然商量不冒称她已同意; 关闭后不让其它备选再推同一邀约; 首选与方向槽都必须是可发正文而非‘你可以这样发’类操作指令; 已发生后据回顾收尾不复活旧约。effect 按整套 harness 对原版解释, 不单独归因某条护栏。system 资产自带副本(format.md 将 analysis 改为{}), 因此 v5 system 与 v3/r2 不再逐字节相同(属预期设计变量, 非漂移)。共享依赖 rc/语义块来自 reference_product_v1(进闭包)。output_contract 与父本一致(legacy 不声明)。EMPTY_ANALYSIS_PROTOCOL_PROBE 已离线复算 24 份候选原答卷 analysis→{} 合同仍合法、程序分不变(只证可沿用协议, 不证更快/质量不变/已省token, 须实跑)。fixtures 只证输入装配与协议路径, 不证更会聊; 真实质量/资源待 原版 vs v5 三故事实跑。未获新授权不发起真实调用。"
+}

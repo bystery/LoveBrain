@@ -1,0 +1,64 @@
+{
+  "kind": "morning_review_v4_delivery",
+  "as_of": "2026-10-28T10:40:32.756993+08:00",
+  "new_real_model_calls": 0,
+  "code_and_candidate_sources_unchanged": {
+    "tools/run_p07_pilot.py": true,
+    "tools/run_p06_recovery_review.py": true,
+    "tools/build_b3_simulator_request.py": true,
+    "tools/normalize_reply_contract.py": true,
+    "tools/validate_story_v2.py": true,
+    "candidates/action_policy_r1/mechanism/mechanism.py": true,
+    "candidates/action_policy_r1/params.json": true
+  },
+  "old_paid_outputs_modified": false,
+  "new_budget_added": 0,
+  "all_entry_paths_exist": true,
+  "queue_phases": 12,
+  "files": {
+    "AGENTS_BEFORE_V4.md": {
+      "bytes": 27065,
+      "sha256": "9d0ffb33e50a829ab3697a17035e29676ffbf93b17cc457a0512152304fa0ade"
+    },
+    "audit_site.py": {
+      "bytes": 6357,
+      "sha256": "406d41e757d3e59c5b5ecf52d4163622ec1a2dec8f3206087c5ae49fcd2e71c6"
+    },
+    "check_current_logic.py": {
+      "bytes": 4023,
+      "sha256": "d5fb7622bf3f6a4de334c6f144bfadaa373c5af6eb149fb3b02c82947950d9f8"
+    },
+    "CONTINUATION_QUEUE_V4.json": {
+      "bytes": 3926,
+      "sha256": "63a8bad14aed192948cf789d0b64c210510f96a60773ba42f1df15fb07fbe3ed"
+    },
+    "INDEPENDENT_CHECK_RECORD.json": {
+      "bytes": 762,
+      "sha256": "27f924a2b0511e641e3c7065cff02e134ee8d5a50834d0ee71d6ebb3ac68ba93"
+    },
+    "LOGIC_CHECKS.json": {
+      "bytes": 1615,
+      "sha256": "9cae84f59ab81e2163d9a56989247db48f6dbf871dacac48404f9394b2f19465"
+    },
+    "MASTER_EXECUTION_V4_288H.md": {
+      "bytes": 22928,
+      "sha256": "43035d58c3d2ec5637989c22966037c8e77567b663de72e3994706424e404dc2"
+    },
+    "MORNING_REVIEW.md": {
+      "bytes": 8043,
+      "sha256": "fde2bc15786105249e776abcc543fba75d9c2dc0ac863a45e8c83548d7098a3c"
+    },
+    "SITE_AUDIT.json": {
+      "bytes": 50270,
+      "sha256": "4c83693574d8e22e9b6ca6a186d931224e32653306474c6f4f15fa7a9ea1b9fe"
+    },
+    "STAGE2_INDEPENDENT_VALIDATION.json": {
+      "bytes": 4311,
+      "sha256": "b1be9f437b2edfd0adf87c31e00ab5b412c0617dcbf8ced85cbfddfdbe990299"
+    },
+    "START_PROMPT_ANY_WINDOW.md": {
+      "bytes": 4466,
+      "sha256": "8da19ee5454153c805d9ca1428974038a63f942684e83745f38031143076e866"
+    }
+  }
+}

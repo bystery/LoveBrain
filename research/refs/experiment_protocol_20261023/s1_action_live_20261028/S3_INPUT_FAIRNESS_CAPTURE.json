@@ -1,0 +1,84 @@
+{
+ "out": "refs/experiment_protocol_20261023/s1_action_live_20261028/S3_ATTRIB/batch",
+ "cards": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+ "episodes": [
+  "AK01",
+  "AK02",
+  "AK03",
+  "AK04",
+  "AK05",
+  "AK06",
+  "AK07",
+  "AK08",
+  "AK09",
+  "AK10",
+  "AK11",
+  "AK12"
+ ],
+ "arms": [
+  "parent",
+  "candidate"
+ ],
+ "positions_audited": 12,
+ "failures": [],
+ "passed": true,
+ "per_position": [
+  {
+   "case_id": "AK01_T01",
+   "arm_system_utf16": {
+    "parent": 3798,
+    "candidate": 3798
+   },
+   "arm_user_utf16": {
+    "parent": 2838,
+    "candidate": 3126
+   },
+   "user_len_diff": 288
+  },
+  {
+   "case_id": "AK01_F8_parent",
+   "note": "末轮未见本臂替身回复回投（可能在预算内被截断）"
+  },
+  {
+   "case_id": "AK01_F8_candidate",
+   "note": "末轮未见本臂替身回复回投（可能在预算内被截断）"
+  },
+  {
+   "case_id": "AK02_T01",
+   "arm_system_utf16": {
+    "parent": 3798,
+    "candidate": 3798
+   },
+   "arm_user_utf16": {
+    "parent": 2766,
+    "candidate": 3054
+   },
+   "user_len_diff": 288
+  },
+  {
+   "case_id": "AK02_F8_parent",
+   "note": "末轮未见本臂替身回复回投（可能在预算内被截断）"
+  },
+  {
+   "case_id": "AK02_F8_candidate",
+   "note": "末轮未见本臂替身回复回投（可能在预算内被截断）"
+  },
+  {
+   "case_id": "AK03_T01",
+   "arm_system_utf16": {
+    "parent": 3798,
+    "candidate": 3798
+   },
+   "arm_user_utf16": {
+    "parent": 2611,
+    "candidate": 2899
+   },
+   "user_len_diff": 288
+  },
+  {
+   "case_id": "AK03_F8_parent",
+   "note": "末轮未见本臂替身回复回投（可能在预算内被截断）"
+  }
+ ],
+ "rows_total": 36
+}

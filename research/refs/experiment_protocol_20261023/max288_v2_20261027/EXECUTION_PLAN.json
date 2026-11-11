@@ -1,0 +1,323 @@
+{
+  "kind": "max288_v2_executable_work_queue",
+  "date": "2026-10-27",
+  "root": "D:/lovebrain-arena",
+  "authority": "User explicitly requests complete long-running mainline work, maximum substantive work and continued harness iterations. Bounded per-experiment grants required; no revival of closed grants.",
+  "priority": [
+    "quality_and_task_ability",
+    "knowledge_correctness_and_use",
+    "natural_proactive_interaction",
+    "quality_constrained_cost_latency_reliability"
+  ],
+  "main_book": "D:/lovebrain-arena/refs/experiment_protocol_20261023/max288_v2_20261027/WORKER_MASTER_EXECUTION_V2.md",
+  "estimated_work_queue_hours": {
+    "min": 144,
+    "max": 288,
+    "meaning": "Capacity estimate including iterative experiments, not guaranteed wall time, proof of work or requirement to wait."
+  },
+  "current_primary_tasks": [
+    "P05 implement both new candidates now",
+    "P03 merge existing results concurrently",
+    "P02 first 8 new stories; not all dataset as a precondition"
+  ],
+  "not_started_by_document_creation": true,
+  "closed_history_to_inherit": {
+    "authorization_id": "AUTH-QUALITY-PANEL-20261027-01",
+    "started": 173,
+    "completed": 173,
+    "unassessed": 14,
+    "formal_answers_assessed": 117,
+    "formal_answers_unassessed": 11,
+    "controls_assessed": 32,
+    "repeats_assessed": 10,
+    "repeats_unassessed": 3
+  },
+  "budget": {
+    "new_cycle_management_cap": 16384,
+    "allocated_phase_ceilings": 15552,
+    "unallocated_reserve": 832,
+    "already_closed_173_excluded": true,
+    "existing_unused_grants_must_be_deduplicated": true,
+    "not_actual_dispatch_authorization_file": true,
+    "not_spending_target": true,
+    "all_failures_consume": true,
+    "no_retry_or_refill": true,
+    "grant_scope_separation": [
+      "harness",
+      "judge",
+      "authoring",
+      "partner_simulation"
+    ],
+    "continuation": "New hypothesis and bounded next-cycle registry under standing instruction, cumulative expenditure preserved; never reset/relabel failed old experiment."
+  },
+  "phase_rules": {
+    "partial_dependencies_allowed": true,
+    "do_not_restart_completed_P01_to_P04": true,
+    "max_active_workstreams": 3,
+    "report_every_effective_hours": [
+      4,
+      8
+    ],
+    "no_product_integration": true,
+    "no_built_in_agent_substitution": true,
+    "no_new_windows_or_scheduler_created": true,
+    "current_rubric_scale": "0-3",
+    "human_willingness": "unknown until user rates",
+    "algorithmic_self_report_not_evidence": true
+  },
+  "phases": [
+    {
+      "id": "P01",
+      "name": "继承证据与公平基线冻结",
+      "hours": [
+        2,
+        6
+      ],
+      "status": "PARTIAL_CARRYOVER",
+      "budget": {},
+      "deps": [],
+      "outputs": [
+        "VERSION_LINEAGE_V2.json",
+        "BASELINE_SCOPE_V2.md",
+        "RUN_STATE.json"
+      ],
+      "exit": "旧身份与修后身份分开；明确原生移植修复和候选增强，当前闭包可冻结。",
+      "max_attempts": 0
+    },
+    {
+      "id": "P02",
+      "name": "连续故事与语义参考",
+      "hours": [
+        12,
+        28
+      ],
+      "status": "PARTIAL_CARRYOVER",
+      "budget": {
+        "authoring": 768,
+        "judge": 256
+      },
+      "deps": [],
+      "outputs": [
+        "dataset_manifest.json",
+        "story/reference/timeline/exposure/audit"
+      ],
+      "exit": "先8条可用新故事；本周期64自然+8互动+8长链分批交付；开放表达及时间主体证据核对。",
+      "max_attempts": 1024
+    },
+    {
+      "id": "P03",
+      "name": "既有质量结果收口",
+      "hours": [
+        2,
+        6
+      ],
+      "status": "PARTIAL_CARRYOVER",
+      "budget": {
+        "judge": 256
+      },
+      "deps": [],
+      "outputs": [
+        "QUALITY_PANEL_SCORECARD_V2.md",
+        "QUALITY_PANEL_SCORECARD_V2.json"
+      ],
+      "exit": "117正式判词/11未评，首选与备选分开，知识分母明确，九维资格和争议透明；不重跑旧173。",
+      "max_attempts": 256
+    },
+    {
+      "id": "P04",
+      "name": "已修继承与剩余根因",
+      "hours": [
+        4,
+        12
+      ],
+      "status": "PARTIAL_CARRYOVER",
+      "budget": {},
+      "deps": [],
+      "outputs": [
+        "FAULT_FAMILY_IMPLEMENTATION.json"
+      ],
+      "exit": "主体/事件/时间/意图/输出契约的真实剩余故障并入新机制；不把字面门当语义验证。",
+      "max_attempts": 0
+    },
+    {
+      "id": "P05",
+      "name": "目标分支与整合新架构",
+      "hours": [
+        8,
+        20
+      ],
+      "status": "NOT_IMPLEMENTED_AT_REVIEW",
+      "budget": {},
+      "deps": [
+        "P01.current_comparison_identity"
+      ],
+      "outputs": [
+        "candidates/v6_goal_context",
+        "candidates/v6_integrated",
+        "new_identity_closures.json"
+      ],
+      "exit": "两个分支经真实装配和状态恢复可运行，包含实际行为差异与消融开关，不只是改名或草案。",
+      "max_attempts": 0
+    },
+    {
+      "id": "P06",
+      "name": "首轮真实新机制对照",
+      "hours": [
+        8,
+        20
+      ],
+      "status": "NOT_RUN_AT_REVIEW",
+      "budget": {
+        "harness": 192,
+        "judge": 256
+      },
+      "deps": [
+        "P05.functional_capture",
+        "P01.current_comparison_identity"
+      ],
+      "outputs": [
+        "P06_PLAN.json",
+        "P06_RESULTS.md",
+        "P06_RESULTS.json"
+      ],
+      "exit": "新冻结同批质量与原文证据、保留/修改/淘汰判断；四臂128或三对共同基线192路线事前登记。",
+      "max_attempts": 448
+    },
+    {
+      "id": "P07",
+      "name": "主动互动与受控闭环",
+      "hours": [
+        24,
+        40
+      ],
+      "status": "PLANNED",
+      "budget": {
+        "harness": 1024,
+        "partner_simulation": 512,
+        "judge": 512
+      },
+      "deps": [
+        "P05.functional_capture"
+      ],
+      "outputs": [
+        "INTERACTION_TRAJECTORIES.jsonl",
+        "POSITIVE_CAPABILITIES_RESULTS.md"
+      ],
+      "exit": "话题钩子、反撩/调情、深聊、邀约与四种反馈轨迹真实响应；模拟效果与固定回放分开。",
+      "max_attempts": 2048
+    },
+    {
+      "id": "P08",
+      "name": "未调参泛化与反事实",
+      "hours": [
+        20,
+        32
+      ],
+      "status": "PLANNED",
+      "budget": {
+        "harness": 1536,
+        "judge": 512
+      },
+      "deps": [
+        "P06.first_verdict",
+        "P02.validation_subset_frozen"
+      ],
+      "outputs": [
+        "GENERALIZATION_RESULTS.md",
+        "COUNTERFACTUAL_RESULTS.json"
+      ],
+      "exit": "候选冻结后新材料的逐故事表现；改题转开发；主体/否定/时间/目标的最小变化实验。",
+      "max_attempts": 2048
+    },
+    {
+      "id": "P09",
+      "name": "长期记忆与真实恢复",
+      "hours": [
+        16,
+        32
+      ],
+      "status": "PLANNED",
+      "budget": {
+        "harness": 1536,
+        "judge": 512
+      },
+      "deps": [
+        "P05.functional_capture",
+        "P02.long_story_subset"
+      ],
+      "outputs": [
+        "LONG_MEMORY_CHAIN_RESULTS.json",
+        "RESTORE_EVIDENCE.json"
+      ],
+      "exit": "相关事实确实离开近窗、纠正链与真实重启后继续；Capture/Fidelity/Update/Retrieve/Use/Contamination分报。",
+      "max_attempts": 2048
+    },
+    {
+      "id": "P10",
+      "name": "组件消融与结构重构",
+      "hours": [
+        24,
+        48
+      ],
+      "status": "PLANNED",
+      "budget": {
+        "harness": 2816,
+        "judge": 1280
+      },
+      "deps": [
+        "P06.first_verdict"
+      ],
+      "outputs": [
+        "ABLATION_MATRIX.json",
+        "ARCHITECTURE_DISPOSITION.md",
+        "next_candidate"
+      ],
+      "exit": "目标/记忆/选择/资产/调用策略贡献有控制证据；无收益组件删除；至少两轮有实测结论的有效迭代。",
+      "max_attempts": 4096
+    },
+    {
+      "id": "P11",
+      "name": "质量约束下性能费用",
+      "hours": [
+        12,
+        24
+      ],
+      "status": "PLANNED",
+      "budget": {
+        "harness": 1024,
+        "judge": 512
+      },
+      "deps": [
+        "quality_supported_shortlist"
+      ],
+      "outputs": [
+        "QUALITY_CONSTRAINED_PERFORMANCE.md"
+      ],
+      "exit": "传输/协议/消费/可发/语义分列；真实first_usable与完成等待、总用量与成功结果用量；不拿token抵消质量退化。",
+      "max_attempts": 1536
+    },
+    {
+      "id": "P12",
+      "name": "阶段验收与下一周期",
+      "hours": [
+        12,
+        20
+      ],
+      "status": "PLANNED",
+      "budget": {
+        "harness": 1536,
+        "judge": 512
+      },
+      "deps": [
+        "supported_evidence_for_current_claims"
+      ],
+      "outputs": [
+        "FINAL_COMPARISON_V2.md",
+        "FINAL_COMPARISON_V2.json",
+        "NEXT_CYCLE_PLAN.json"
+      ],
+      "exit": "范围内领先或无足够证据均可，报告未调参验证/消融/失败与限制；产品仍暂停；下一研究周期可直接恢复。",
+      "max_attempts": 2048
+    }
+  ]
+}

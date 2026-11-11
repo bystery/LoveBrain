@@ -1,0 +1,1371 @@
+==============================================================================
+STORY E024｜E024
+------------------------------------------------------------------------------
+E024_T01 clock=2026-11-08 20:37 may_decline=False intent=None
+   m0 HER｜今天辛苦你啦 一直陪我尬聊 那个抢捧花的阿姨太猛了
+   [卡] current_action: 接住'陪我尬聊'的自嘲和抢捧花阿姨的梗——轻接，不装熟
+   [卡] acceptable: ["接阿姨的梗", "接自嘲+说今天挺开心", "接梗+夸今天新人"]
+   [卡] dims: ["interaction", "emotion_relation", "boundary"]
+   [卡] private_guidance: 她社恐却主动开聊=愿意继续；接梗是唯一正确姿势。
+   [卡] protected: ["那个抢捧花的阿姨太猛了"]
+   [卡] forbidden: []
+   [卡] unknowns: ["她是否有对象（不问）"]
+   [卡·事实] E024_A01 subj=她 rel=开场 val=婚礼当晚主动开聊（抢捧花阿姨梗） status=asserted src=message:E024_T01
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7204/278 latency_ms=14759
+      [首选] 尬聊不至于，倒是那个阿姨，我到现在还没缓过来
+      [备选 bad_boy] 辛苦谈不上，那阿姨抢捧花的架势比新娘还抢戏
+      [备选 playful] 捧花差点被她拽成两半，我在旁边都替花疼
+      [备选 warm] 跟你聊不尬，就是最后那场面太热闹了，站一天累不累
+      [备选 directions[0]] 阿姨那一下是真猛，我都替捧花捏把汗
+      [备选 directions[1]] 这种环节我一般都往后躲，太吓人了
+      [备选 directions[2]] 说实话我全程也没觉得尬，挺放松的
+      [备选 directions[3]] 站了一天了吧，早点歇着
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4729/410 latency_ms=33909
+      [首选] 不辛苦，尬聊这词我不认啊，我聊得挺起劲的。倒是那位阿姨，抢捧花那下太有胜负欲了。
+      [备选 bad_boy] 尬聊？那我得反省一下。不过今天全场最有战斗力的是那位阿姨，我甘拜下风。
+      [备选 playful] 阿姨那一下我到现在还没缓过来，捧花差点被她拆成两半。
+      [备选 warm] 不辛苦，跟你聊天挺舒服的，比干坐着看仪式自在多了。
+      [备选 directions[0]] 那位阿姨最后把捧花抱走了吗，我光顾着看热闹
+      [备选 directions[1]] 说真的，今天同桌里最好聊的就是你
+      [备选 directions[2]] 不辛苦，下次不用先给我打预防针，我聊得挺开心
+      [备选 directions[3]] 对了，你那个盲盒建筑系列，最近抽到想要的了没
+------------------------------------------------------------------------------
+E024_T02 clock=2026-11-08 20:44 may_decline=False intent=None
+   m0 ME｜阿姨那一下我差点替你挡
+   m1 HER｜哈哈哈哈你要挡我眼前一黑
+   [卡] current_action: 她的'眼前一黑'是笑点高潮——收住，不堆叠
+   [卡] acceptable: ["大笑收", "接一句自嘲收", "顺势说改天聊"]
+   [卡] dims: ["interaction", "emotion_relation", "boundary"]
+   [卡] private_guidance: 梗到顶了就收，硬接会尬。
+   [卡] protected: ["你要挡我眼前一黑"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7362/285 latency_ms=18862
+      [首选] 挡花不挡眼，我挡完顺手把花塞你手里，别人还以为是我抢的
+      [备选 bad_boy] 眼前一黑说明我挡得够实，阿姨那下是真撞我身上了
+      [备选 playful] 那我换个姿势，蹲着挡，你还能看见天花板
+      [备选 warm] 行，那下次不挡了，你站我后头，我抢到直接给你
+      [备选 directions[0]] 那阿姨抢完花之后什么反应，真有人信她能中吗
+      [备选 directions[1]] 抢捧花这环节我一直觉得挺看运气的，抢到的人也不一定第一个结
+      [备选 directions[2]] 今天这桌尬聊还行吧，起码比抢捧花轻松
+      [备选 directions[3]] 说真的，你抽盲盒那手气比阿姨抢花强多了吧
+   ── action_policy_r1 ── score10=0.0 veto=json_schema_broken failed=['json_schema_valid'] delivery=ok tokens p/c=4832/238 latency_ms=34950
+      [首选] 尬聊我不认啊，我聊得挺起劲的。倒是阿姨那一下，我是真怕她连人带花一起砸过来
+      [备选 playful] 阿姨那爆发力，我以为她抢的不是捧花，是接力棒
+      [备选 warm] 今天一点都不尬，我挺喜欢这么聊的。别老替我算辛苦账
+      [备选 directions[0]] 那你当时是躲了还是硬站那儿
+      [备选 directions[1]] 我到现在还没想明白捧花是怎么飞那么高的
+      [备选 directions[2]] 今天跟你聊天我挺放松的，不像跟陌生人那种客套
+      [备选 directions[3]] 你明天还带中班吗，还是能歇一天
+------------------------------------------------------------------------------
+E024_T03 clock=2026-11-09 11:22 may_decline=False intent=None
+   m0 HER｜照片拍了发你 你领带歪了一下午没人告诉你
+   [卡] current_action: 她主动发照片+爆料领带歪了一下午——自嘲接住，感谢不客套
+   [卡] acceptable: ["自嘲+感谢", "自嘲+问还有没有别的黑照", "感谢+回拍一张今天的"]
+   [卡] dims: ["interaction", "emotion_relation", "initiative"]
+   [卡] private_guidance: 她在把尴尬变成共同笑料——这是关系素材，别客气化。
+   [卡] protected: ["你领带歪了一下午没人告诉你"]
+   [卡] forbidden: []
+   [卡] unknowns: ["照片里还有谁"]
+   [卡·事实] E024_A02 subj=我 rel=黑历史 val=婚礼领带歪了一下午（她有照片） status=asserted src=message:E024_T03
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7337/219 latency_ms=43893
+      [首选] 发来我看看歪成什么样，一整个下午都没人吭声，这同桌当得不称职
+      [备选 bad_boy] 歪了一下午你才说，看来你盯了我一下午啊
+      [备选 playful] 那是我故意的，歪着显活泼
+      [备选 warm] 发来吧，正好看看你拍得怎么样
+      [备选 directions[0]] 发来我看看歪成什么样
+      [备选 directions[1]] 阿姨抢捧花那段拍到了没，我想看现场
+      [备选 directions[2]] 一桌人愣是没人提醒我，还挺团结
+      [备选 directions[3]] 照片我留着，下回见面你当面验收我领带
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4851/359 latency_ms=35258
+      [首选] 照片发来我认领一下。你就这么看着我歪一下午，还挺沉得住气。
+      [备选 bad_boy] 所以你一下午都在看我领带，看完还忍着不说。
+      [备选 playful] 歪一下午能撑到散场，说明歪得有风格，不亏。
+      [备选 warm] 照片我留着。你怎么不当场拽我一下，我这人经提醒。
+      [备选 directions[0]] 照片呢，我等着看证据。
+      [备选 directions[1]] 那阿姨抢捧花的时候，我领带是不是已经歪了？
+      [备选 directions[2]] 其实那天我也挺紧张的，有你在旁边才没那么尬。
+      [备选 directions[3]] 你平时拍照多吗，还是专门抓我这种素材。
+------------------------------------------------------------------------------
+E024_T04 clock=2026-11-09 11:30 may_decline=False intent=None
+   m0 ME｜谢谢，社死现场有照片为证
+   m1 HER｜放心 就我拍到了 卖你十块
+   [卡] current_action: '卖你十块'是玩笑——接住玩笑货币，别真谈钱
+   [卡] acceptable: ["接玩笑（用别的梗付款）", "接玩笑+说请她喝奶茶抵", "接玩笑+赖账式幽默"]
+   [卡] dims: ["interaction", "initiative", "emotion_relation"]
+   [卡] private_guidance: 玩笑货币兑现成真钱就输了。
+   [卡] protected: ["就我拍到了 卖你十块"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7351/259 latency_ms=18183
+      [首选] 十块成交，不过得是高清原图，糊的我不认
+      [备选 bad_boy] 十块太贵，五块，不然我发朋友圈说这领带是你给我系的
+      [备选 playful] 那我得先验货，万一你拍的是我闭眼那张呢
+      [备选 warm] 行，这钱花得值，至少证明那天我确实帅
+      [备选 directions[0]] 歪了一下午居然没人提醒，你们这一桌人嘴可真严
+      [备选 directions[1]] 原图发我看看，我看看有多惨
+      [备选 directions[2]] 十块是吧，那这算我买的第一张你的摄影作品
+      [备选 directions[3]] 成交，回头请你喝奶茶当找零
+   ── action_policy_r1 ── score10=0.0 veto=json_schema_broken failed=['json_schema_valid'] delivery=ok tokens p/c=4907/222 latency_ms=13981
+      [首选] 十块有点黑，先验货——糊了对折。
+      [备选 bad_boy] 十块买我一个把柄，你这生意做得挺稳。
+      [备选 playful] 成交，但得加个条件：不许设成你手机壁纸。
+      [备选 warm] 行，十块我认。照片你留着，别往外传就行。
+      [备选 directions[0]] 那什么时候发货？我等着社死。
+      [备选 directions[1]] 你那天到底拍了多少张，就这一张能卖钱？
+      [备选 directions[2]] 领带歪一下午居然没人提醒，我还挺服气的。
+      [备选 directions[3]] 你拍照这么爱抓细节，平时是不是也随手就拍。
+------------------------------------------------------------------------------
+E024_T05 clock=2026-11-12 21:17 may_decline=False intent=None
+   m0 HER｜对了你朋友圈那个桥是你设计的吗 好酷
+   [卡] current_action: 她翻到我朋友圈的桥——如实讲参与范围，不吹不贬
+   [卡] acceptable: ["如实说参与部分+一句结构科普", "如实说+问她怎么刷到的", "如实说+自谦一句"]
+   [卡] dims: ["factuality", "interaction", "initiative", "memory_use"]
+   [卡] private_guidance: 她的'好酷'是真实兴趣；给细节给诚意，别官腔。
+   [卡] protected: ["那个桥是你设计的吗"]
+   [卡] forbidden: ["不要夸大为主设计师"]
+   [卡] unknowns: ["她朋友圈翻到哪条"]
+   [卡·事实] E024_A03 subj=我 rel=职业 val=参与过跨江大桥主跨设计 status=seed src=initial_kb:me
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7333/236 latency_ms=59487
+      [首选] 参与设计的，主跨那段。你还翻我朋友圈啊
+      [备选 bad_boy] 参与过。照片卖十块，这咨询得另算
+      [备选 playful] 参与设计的。怎么，建筑系列盲盒抽到桥了？
+      [备选 warm] 参与设计的，主跨那部分。你想听我就讲讲
+      [备选 directions[0]] 对，主跨那段是我参与的，照片角度还行吧
+      [备选 directions[1]] 画图改图居多，真正好看的就建成那一下
+      [备选 directions[2]] 做这行最有意思的是看着图纸变成真的
+      [备选 directions[3]] 说起来你带的中班最近忙不忙
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4872/377 latency_ms=16777
+      [首选] 主跨那块我参与了，受力基本都过我的手，不是全我一个人画。你要是感兴趣，正经版和吐槽版你挑一个
+      [备选 bad_boy] 照片十块，桥的来历免费。主跨是我算的，想听哪段
+      [备选 playful] 算的。我还能给你出个桥梁盲盒系列，第一弹就是主跨，可惜没隐藏款
+      [备选 warm] 谢谢，这句比夸设计还受用。主跨那块我确实参与了，熬了不少夜，第一次有人问起
+      [备选 directions[0]] 那你当时是负责哪一部分，算它会不会塌吗
+      [备选 directions[1]] 我一直好奇桥中间那段怎么架上去的，隔那么远
+      [备选 directions[2]] 说真的，被人问起这个还挺开心的
+      [备选 directions[3]] 你朋友圈里除了桥还有别的吗，我翻到过一张山的
+------------------------------------------------------------------------------
+E024_T06 clock=2026-11-12 21:24 may_decline=False intent=None
+   m0 ME｜参与设计的，主跨那部分
+   m1 HER｜厉害 幼师这边只有主角是小朋友
+   [卡] current_action: 她自嘲'幼师只有小朋友当主角'——接住并真诚抬她一手，不居高临下
+   [卡] acceptable: ["真诚肯定幼师价值", "接自嘲+说小孩更难对付", "接梗+互相吹捧一句"]
+   [卡] dims: ["emotion_relation", "interaction", "boundary"]
+   [卡] private_guidance: 她习惯性自贬职业；附和是错，真诚抬起是加分。
+   [卡] protected: ["幼师这边只有主角是小朋友"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7353/246 latency_ms=17344
+      [首选] 主角是小朋友，观众是家长，你这活儿难度不低
+      [备选 bad_boy] 我这桥塌了要命，你那主角哭了一天也就多哄两遍，你说谁压力大
+      [备选 playful] 你那主角可比我这桥难伺候多了，桥不会早上赖床
+      [备选 warm] 能天天跟小朋友待着挺好的，我这桥画完了也不会喊我一声
+      [备选 directions[0]] 那你这主角一天得哄几回
+      [备选 directions[1]] 建筑系列盲盒里有没有桥，我还挺好奇的
+      [备选 directions[2]] 幼师带中班最累的是哪块
+      [备选 directions[3]] 你平时下班都几点
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5005/344 latency_ms=19515
+      [首选] 那你这主角可比我难伺候多了，桥不会突然哭
+      [备选 bad_boy] 厉害什么，我那是钢筋水泥，你那是一屋子会说话的主跨
+      [备选 playful] 行，咱俩算同行，都在哄主角别塌
+      [备选 warm] 说真的，带一屋子小朋友比我画桥累，我画完还能存档，你可没得存
+      [备选 directions[0]] 小朋友最近有什么名场面没，讲一个
+      [备选 directions[1]] 我改一版图纸能磨三个月，你那边一句话得管一整天吧
+      [备选 directions[2]] 听着就觉得你耐心比我好太多
+      [备选 directions[3]] 说到建筑，你那个建筑系列盲盒抽到第几个了
+------------------------------------------------------------------------------
+E024_T07 clock=2026-11-15 16:49 may_decline=False intent=None
+   m0 HER｜我们班今天玩结婚游戏 一个小朋友说长大要嫁给你这样的
+   [卡] current_action: 她分享童言（小朋友要嫁给你这样的）——接住这份分享欲
+   [卡] acceptable: ["接童言开个玩笑", "感谢分享+夸小朋友", "接梗+回一句自己的糗事"]
+   [卡] dims: ["interaction", "emotion_relation", "initiative", "memory_use"]
+   [卡] private_guidance: 她把日常好玩的事想到告诉你——关系在长。
+   [卡] protected: ["一个小朋友说长大要嫁给你这样的"]
+   [卡] forbidden: ["不要评判小朋友家长"]
+   [卡] unknowns: []
+   [卡·事实] E024_A04 subj=她的学生 rel=童言 val=小朋友说长大要嫁给我这样的人 status=asserted src=message:E024_T07
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7339/232 latency_ms=15040
+      [首选] 这小孩眼光不错。你当时怎么接的？
+      [备选 bad_boy] 看来我在你们中班已经有口碑了，你帮我盯着点。
+      [备选 playful] 行，那我这算是被中班集体认证通过了。
+      [备选 warm] 听着就好玩，你们班是不是天天整这种活儿。
+      [备选 directions[0]] 这小孩平时是不是也这么会说话
+      [备选 directions[1]] 他们玩这个还分角色吗，谁当伴郎
+      [备选 directions[2]] 被小朋友这么夸，你今天心情应该不错
+      [备选 directions[3]] 下次再玩这种，记得替我问问他标准是啥
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5015/359 latency_ms=13704
+      [首选] 这评价比我这几年拿的奖都值钱。你当时怎么接的？
+      [备选 bad_boy] 小朋友眼光比我准。不过她说的“这样的”，你听懂了吗
+      [备选 playful] 看来我在中班有粉丝了。麻烦你帮我问问她，是喜欢桥还是喜欢盲盒
+      [备选 warm] 被你这样转述一遍，我这半天心情都变好了。替我谢谢那个小朋友
+      [备选 directions[0]] 哪个小朋友这么有品味，是不是平时最爱说话的那个
+      [备选 directions[1]] 幼师这边主角是小朋友，那你今天是司仪还是证婚人
+      [备选 directions[2]] 下次家长问起来，你就说我们班已经安排好了
+      [备选 directions[3]] 对了，建筑系列最近是不是又出新款了
+------------------------------------------------------------------------------
+E024_T08 clock=2026-11-15 16:55 may_decline=False intent=None
+   m0 ME｜替我谢谢他，我这辈子第一次被求婚
+   m1 HER｜哈哈哈哈哈我笑出声了 中午睡觉的娃都被我吵醒
+   [卡] current_action: 接'第一次被求婚'自梗——她笑到吵醒午睡的娃，见好就收
+   [卡] acceptable: ["收住+关心娃", "再补半句轻的收", "笑+问她班上还有啥趣事"]
+   [卡] dims: ["interaction", "emotion_relation", "boundary"]
+   [卡] private_guidance: 笑点已满格；这轮收得稳比加梗重要。
+   [卡] protected: ["中午睡觉的娃都被我吵醒"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7379/182 latency_ms=60438
+      [首选] 赶紧去哄，别让孩子记恨我
+      [备选 bad_boy] 笑这么大声，我就当你是同意了
+      [备选 playful] 哄睡吧，别把娃笑精神了
+      [备选 warm] 笑成这样，那我这求婚就算没白接
+      [备选 directions[0]] 那娃现在醒了没，别真闹起来
+      [备选 directions[1]] 你们班这一天，估计天天有人跟你表白吧
+      [备选 directions[2]] 被人惦记着还挺受用的，虽然是个小不点
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5086/343 latency_ms=25469
+      [首选] 行，那我这第一次求婚，见证人是你们全班。能被笑成这样，我的人生也算完整了
+      [备选 bad_boy] 见证人笑成这样，那这求婚我打算只接一次，接完就撤
+      [备选 playful] 那你替我转告他，等他长大我估计都退休了，得让他抓紧
+      [备选 warm] 被你这么一笑，我今天心情突然就好了，谢谢你
+      [备选 directions[2]] 被你这么一笑，我今天心情突然就好了，谢谢你
+------------------------------------------------------------------------------
+E024_T09 clock=2026-11-17 20:12 may_decline=False intent={"text": "接住她的盲盒好意，把联系自然延续下去", "status": "ACTIVE", "enabled": true}
+   m0 HER｜盲盒店新出了建筑系列 有个桥的 你要不要
+   [卡] current_action: 她想到建筑系列盲盒的桥——接住好意并答应，联系自然延续
+   [卡] acceptable: ["答应+让她留", "答应+问她自己也收吗", "答应+说钱转她"]
+   [卡] dims: ["goal", "memory_use", "interaction", "emotion_relation"]
+   [卡] private_guidance: 她把我的职业记进了盲盒——这份在意值得接稳。
+   [卡] protected: ["盲盒店新出了建筑系列"]
+   [卡] forbidden: []
+   [卡] unknowns: ["桥款是否还买得到"]
+   [卡·事实] E024_A05 subj=她 rel=提议 val=建筑系列盲盒出桥款，问我不要 status=asserted src=message:E024_T09
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7382/216 latency_ms=15614
+      [首选] 要啊，桥那款听着就该归我
+      [备选 bad_boy] 要，不过你抽的手气比我好，这事就交给你了
+      [备选 playful] 要，抽到不是桥的你也留着，我认了
+      [备选 warm] 要，正好我也想看看建筑系列长什么样
+      [备选 directions[0]] 要啊，桥那款听着就该归我
+      [备选 directions[1]] 建筑系列一共几款，你集齐了没
+      [备选 directions[2]] 我朋友圈那些桥可都是真的，这算是收了个小的
+      [备选 directions[3]] 你哪天去店里，我过去拿
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5319/347 latency_ms=16659
+      [首选] 要，桥那款必须留我一个。你是自己去店里抽，还是等我一起？
+      [备选 bad_boy] 要。不过桥那款得我自己抽到才算数，你替我抽的不认。你手气怎么样？
+      [备选 playful] 这个必须收。抽到桥的那款我拍给你看，顺便考考你认不认得是哪座桥。
+      [备选 warm] 你还记得我是干这个的，这款我必须收。下次去店里，顺手也给你抽一个。
+      [备选 directions[0]] 那款桥做出来像真的吗，你见过实物没
+      [备选 directions[1]] 建筑系列我还挺好奇有没有那种看着就歪的塔，抽到能当笑话
+      [备选 directions[2]] 被你想到这个，有点开心
+      [备选 directions[3]] 你班那帮小朋友最近还玩结婚游戏吗
+------------------------------------------------------------------------------
+E024_T10 clock=2026-11-17 20:20 may_decline=False intent=None
+   m0 ME｜要，帮我留一个，多少钱我转你
+   m1 HER｜留好啦 45 下次见面给你 别转
+   [卡] current_action: 她拒绝转账（'下次见面给你 别转'）——她给了一次见面理由，接住
+   [卡] acceptable: ["接受线下给+顺势定下次", "接受+说那就周六去店里谢你", "接受+轻收"]
+   [卡] dims: ["goal", "time_state", "interaction", "emotion_relation"]
+   [卡] private_guidance: 她主动创造见面机会；接住但别立刻加码成别的邀约。
+   [卡] protected: ["下次见面给你 别转"]
+   [卡] forbidden: []
+   [卡] unknowns: ["她说的下次大概什么时候"]
+   [卡·事实] E024_A06 subj=她 rel=约定意向 val=盲盒下次见面给，不收转账 status=asserted src=message:E024_T10
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7355/311 latency_ms=32250
+      [首选] 行，那我不转了，下次见面我请你喝点东西，就当还这个。
+      [备选 bad_boy] 不转了，那就欠你一顿，下次见面连本带利还。
+      [备选 playful] 45 块换一次见面，这单我赚了。
+      [备选 warm] 好，这次就听你的，下次见面我来安排。
+      [备选 directions[0]] 那你抽到的是什么款，桥那个还有几个？
+      [备选 directions[1]] 建筑系列一共几款，你最喜欢哪个？
+      [备选 directions[2]] 这系列挺适合你的，幼儿园老师天天跟搭积木打交道。
+      [备选 directions[3]] 下次见面定哪天？我好提前安排。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5252/442 latency_ms=19836
+      [首选] 行，那我不转。下次见面我请你喝点东西抵回来，不然这45块我拿得心虚
+      [备选 bad_boy] 这么大方我有点不适应。行，45块我记着，见面连本带利还你
+      [备选 playful] “留好啦”这三个字听着比45块值钱。桥的那款吧？下次我亲自验收做工
+      [备选 warm] 谢了，还特意帮我留。下次见面别急着走，我请你坐会儿
+      [备选 directions[0]] 那款桥的叫什么名字？我提前做做功课
+      [备选 directions[1]] 你们班小朋友要是看到这盒子，估计又有人要说长大要嫁给我了
+      [备选 directions[2]] 特意给我留的，这个我记着了
+------------------------------------------------------------------------------
+E024_T11 clock=2026-11-20 21:32 may_decline=False intent=None
+   m0 HER｜盲盒我买了 桥的算我送你 其他我自己抽 你哪天方便
+   [卡] current_action: 她买好并问哪天方便——给具体选项推进落成
+   [卡] acceptable: ["给具体时间段", "问她方便的地点", "给时间+说都听她安排"]
+   [卡] dims: ["goal", "time_state", "initiative", "interaction"]
+   [卡] private_guidance: 从'下次'到具体哪天，是她给的台阶；给确定性。
+   [卡] protected: ["桥的算我送你"]
+   [卡] forbidden: []
+   [卡] unknowns: ["盲盒店具体哪家"]
+   [卡·事实] E024_A07 subj=她 rel=履约进行 val=桥款盲盒已买，算送的 status=asserted src=message:E024_T11
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7340/365 latency_ms=28917
+      [首选] 行，那我不客气了。周六下午怎么样
+      [备选 bad_boy] 白收你的不好意思，周六我请你吃饭，扯平
+      [备选 playful] 桥的归我，其他的你自己抽，抽到重复的可别怪我。周六？
+      [备选 warm] 谢了。周六我时间松，地方你定，我去找你
+      [备选 directions[0]] 其他几个拆出来是啥，到时候给我看看
+      [备选 directions[1]] 那家店还有别的建筑款吗，一直想去逛逛
+      [备选 directions[2]] 白收你东西过意不去，见面这顿我来
+      [备选 directions[3]] 周六下午两点，你方便就定这天
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5233/473 latency_ms=23767
+      [首选] 那我就收下了，桥的那款归我。周六下午我这边能腾出来，你看行不行？顺便看看你其他几个抽到啥了
+      [备选 bad_boy] 白送的我不推。周六下午，地方我定，你带着盒子来就行
+      [备选 playful] 桥的归我，其他归你，这分配我赚了。周六下午？到时候现场点评你手气
+      [备选 warm] 那我收下了，说实话挺高兴的。周六下午我有空，你要是不嫌赶就那天
+      [备选 directions[0]] 其他几个抽到啥了，先给我看看
+      [备选 directions[1]] 建筑系列我只见过桥那款，其他的长什么样
+      [备选 directions[2]] 专门留一个送我，这事我记住了
+      [备选 directions[3]] 对了，你们班那帮小朋友最近还闹着要结婚吗
+------------------------------------------------------------------------------
+E024_T12 clock=2026-11-20 21:40 may_decline=True intent=None
+   m0 ME｜周六下午都行，你定地方
+   m1 HER｜那就周六 盲盒店见 我带盒去 哈哈 拜拜
+   [卡] current_action: 约定落成（周六盲盒店见）——确认+收尾，她社恐，别拖长
+   [卡] acceptable: ["确认+一句期待", "确认+说到时候请奶茶", "只确认"]
+   [卡] dims: ["time_state", "goal", "interaction", "boundary", "memory_use"]
+   [卡] private_guidance: 一面之缘走到线下第一步；稳住不心急。
+   [卡] protected: ["那就周六 盲盒店见"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7473/275 latency_ms=40373
+      [首选] 行，周六盲盒店见。别提前给我拆了，我要自己开。
+      [备选 bad_boy] 行，那我周六空手来，就等着收礼了。
+      [备选 playful] 盲盒店见，到时候我也抽一个，万一抽到桥的算我运气好。
+      [备选 warm] 行，周六见。到了跟我说一声。
+      [备选 directions[0]] 盲盒店见挺好，是哪家？我提前看看路。
+      [备选 directions[1]] 话说你要是抽到重复的建筑系列，可以拿来跟我换。
+      [备选 directions[2]] 我这人抽盲盒向来手气一般，周六试试。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5375/498 latency_ms=55783
+      [首选] 成交，周六见。别到时候自己先抽完了
+      [备选 bad_boy] 拜拜。盒子别提前拆，我到了验货
+      [备选 playful] 好，周六见。带盒那位，别迟到啊
+      [备选 warm] 周六见，早点睡
+      [备选 directions[0]] 周六下午我过去，到了给你发消息
+      [备选 directions[1]] 具体哪家店你发我个定位，别到时候我在商场里转圈
+==============================================================================
+STORY E027｜E027
+------------------------------------------------------------------------------
+E027_T01 clock=2026-11-21 14:07 may_decline=False intent=None
+   m0 HER｜你来看这个赛博山水了? 解说词写得像传销
+   [卡] current_action: 接住'解说词像传销'的吐槽——用具体展厅细节回她，不空附和
+   [卡] acceptable: ["用具体展厅细节接吐槽", "接吐槽+问她策展视角怎么看", "接吐槽+自报当前位置"]
+   [卡] dims: ["interaction", "initiative", "factuality"]
+   [卡] private_guidance: 偶遇同展是投缘的物理证明；吐槽接得具体才算同行。
+   [卡] protected: ["解说词写得像传销"]
+   [卡] forbidden: []
+   [卡] unknowns: ["她看到第几个厅"]
+   [卡·事实] E027_A01 subj=她 rel=判断 val=赛博山水展解说词写得很差 status=asserted src=message:E027_T01
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7239/286 latency_ms=12818
+      [首选] 传销都算夸它了。哪段最离谱，发我看看。
+      [备选 bad_boy] 赛博山水再好看，配上这套解说词，就等于给山水贴了张广告牌。换你来写，三句话就能给它治了。
+      [备选 playful] 传销至少还承诺回报，这词连回报都不给，纯输出。
+      [备选 warm] 你这么一说我倒想去了，看看能烂到什么程度。
+      [备选 directions[0]] 解说词具体烂在哪个词上？是那种“重构时空”之类的吗？
+      [备选 directions[1]] 这种展现在是不是都爱往玄乎里写，生怕人看懂。
+      [备选 directions[2]] 我信你的眼力，你说烂那基本就是烂到底了。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4764/256 latency_ms=18223
+      [首选] 还没去。听你这一句就够了——是不是又拿"科技重构东方意境"那套词，把山水说成生态闭环？
+      [备选 bad_boy] 传销好歹还许诺回报。所以你现在是当观众，还是当受害者？
+      [备选 playful] 赛博山水配赛博传销，这展名起得还挺诚实。
+      [备选 warm] 那我不带讲解器了，听你讲比听他们那套词靠谱。
+      [备选 directions[0]] 所以除了词儿，东西本身立得住吗？
+      [备选 directions[1]] 这种展最怕词比作品大，屏一亮什么都敢叫重构。
+      [备选 directions[2]] 你说烂我信，你说值我再跑一趟。
+      [备选 directions[3]] 对了，你们馆年底那档定了没？
+------------------------------------------------------------------------------
+E027_T02 clock=2026-11-21 14:15 may_decline=False intent=None
+   m0 ME｜第三展厅的投影 一半人举手机拍 一半人念解说词
+   m1 HER｜你是哪一半 说实话
+   [卡] current_action: 她的'你是哪一半'是陷阱梗——自嘲式认领，别装清高
+   [卡] acceptable: ["自嘲认领其中一半", "反问她猜哪半", "自嘲+拍照动机合理化"]
+   [卡] dims: ["interaction", "emotion_relation", "boundary"]
+   [卡] private_guidance: 学姐的梗带钩；老实上钩最稳。
+   [卡] protected: ["你是哪一半 说实话"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7409/369 latency_ms=16929
+      [首选] 我是第三种，站角落看投影循环两遍，第三遍就腻了。念词那半我实在挤不进去。
+      [备选 bad_boy] 我念到第二句就发现不太对，赶紧闭嘴。你真从头念到尾了？
+      [备选 playful] 拍和念都不是我。我负责在中间走一圈，然后站门口等你想走。
+      [备选 warm] 说实话，投影我看了挺久，但解说词一句没记住。倒是你说的传销，我有点好奇是哪句。
+      [备选 directions[0]] 那你觉得最像传销的是哪句，我回去对一下
+      [备选 directions[1]] 这种展最怕解说词抢戏，投影还没看明白，先被文字洗了一遍
+      [备选 directions[2]] 第三展厅那个循环做得挺糙，同一段重复了四遍
+      [备选 directions[3]] 出来喝点东西？站着聊这个有点费腿
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4876/406 latency_ms=18187
+      [首选] 第三半。我戴讲解器站最后一排，专门挑哪句是传销话术。你那份名单里最离谱的是哪句，我核对一下
+      [备选 bad_boy] 说实话：两边都不是。我在看哪一半人先撑不住走。解说词烂成这样也算有点天赋，就是别让它替作品说话
+      [备选 playful] 第三半，手机揣兜里，讲解器开着，耳朵在给解说词挑刺。这么算咱俩大概站在同一边
+      [备选 warm] 说实话，我进来先找的是你。你在哪半，我过去
+      [备选 directions[0]] 你那份名单里最离谱的是哪句，我核对一下
+      [备选 directions[1]] 这展最大的问题是解说词抢在作品前面下结论，投影本身不用人替它说话
+      [备选 directions[2]] 我更想听你现场骂，比讲解器管用
+      [备选 directions[3]] 待会儿出去那台互动屏估计还是只认会员，上次就白试了
+------------------------------------------------------------------------------
+E027_T03 clock=2026-11-21 14:25 may_decline=False intent=None
+   m0 HER｜出口处那个互动屏 我对着它摆了十分钟姿势 它没反应 我怀疑是坏的
+   [卡] current_action: 接她互动屏摆姿势十分钟的自嘲——查证事实再回（我知道它是会员制）
+   [卡] acceptable: ["告知会员制事实", "先笑她再补事实", "事实+提议下楼坐"]
+   [卡] dims: ["factuality", "interaction", "memory_use", "initiative"]
+   [卡] private_guidance: 她的怀疑是错的但我有正确答案——用事实救场比笑话高级。
+   [卡] protected: ["我怀疑是坏的"]
+   [卡] forbidden: ["不要编造互动屏其他功能"]
+   [卡] unknowns: ["互动屏会员规则细节"]
+   [卡·事实] E027_A02 subj=互动屏 rel=事实 val=只对会员开放扫码（非损坏） status=asserted src=initial_kb:me
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7516/304 latency_ms=62465
+      [首选] 不是坏的，那台得扫会员码才动。你对着它摆了十分钟，已经挺给它面子了。
+      [备选 bad_boy] 屏没坏，它只认会员码，不认姿势。下次先问我一句，能省你十分钟。
+      [备选 playful] 它应该是在等你扫码，不是等你摆姿势。十分钟里你有没有跟它说过话？
+      [备选 warm] 别怀疑它坏了，那台得扫会员码才亮。你白摆十分钟，太亏了。
+      [备选 directions[0]] 那台我上次试过，要扫会员码，你扫了吗
+      [备选 directions[1]] 这种互动屏大多是给赞助商收数据的，策展的人自己都不爱碰
+      [备选 directions[2]] 说实话，这类互动装置十个有八个是摆设
+      [备选 directions[3]] 别跟一块屏较劲了，出来看真的
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4853/372 latency_ms=26341
+      [首选] 它没坏，那台只认会员码——上次咱俩试过，你摆得再专业它也不给面子。
+      [备选 bad_boy] 十分钟？它连会员都不一定认，更别说认姿势了。你该庆幸它没把你拍下来。
+      [备选 playful] 屏幕内心：这位观众姿势满分，可惜没扫码，下一位。
+      [备选 warm] 别怀疑它，它没坏，就是只认会员码。白站十分钟，腿不酸？
+      [备选 directions[0]] 后来扫上码了没，还是就那么走了？
+      [备选 directions[1]] 会员码这套设计本身就离谱，谁逛展还随身带会员卡。
+      [备选 directions[2]] 白站十分钟挺冤的，我要是个屏幕早就给你亮灯了。
+      [备选 directions[3]] 这种互动装置最后都变成排队拍照点，你猜下一个要火的是哪台。
+------------------------------------------------------------------------------
+E027_T04 clock=2026-11-21 14:32 may_decline=False intent=None
+   m0 ME｜不是坏的 它只对会员开放扫码
+   m1 HER｜???那它竖在大厅干嘛 钓鱼吗
+   [卡] current_action: 她的'钓鱼吗'是吐槽高潮——收住，不新建梗
+   [卡] acceptable: ["顺着收一句", "补一个事实细节收", "接梗+提议下楼"]
+   [卡] dims: ["interaction", "emotion_relation", "boundary"]
+   [卡] private_guidance: 吐槽的节奏她带着；到顶就收。
+   [卡] protected: ["那它竖在大厅干嘛 钓鱼吗"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7541/415 latency_ms=17386
+      [首选] 不是钓鱼，是拿人当广告位。你摆十分钟，它连个反应都不给，这屏比解说词还敷衍。
+      [备选 bad_boy] 钓上了没？你摆了十分钟，它连个眼神都不给，这屏比我还高冷。
+      [备选 playful] 钓的是耐心最好那批，你差一点就破纪录了。
+      [备选 warm] 白摆十分钟，亏了。下次有内部票叫上我，我陪它耗。
+      [备选 directions[0]] 扫码才能用，它竖在那儿就是块牌子，不是给人玩的。
+      [备选 directions[1]] 这种互动屏十台有八台是坏的或者没开权限，策展方自己都不一定试过。
+      [备选 directions[2]] 我倒想看看是谁设计的，把会员门槛立在出口，图什么。
+      [备选 directions[3]] 别跟它较劲了，出来喝点什么？
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4912/422 latency_ms=26889
+      [首选] 它不负责好用，负责好看。竖在大厅就是个广告位，钓愿意办卡的人。
+      [备选 bad_boy] 所以它钓到了：你站那儿摆十分钟，鱼饵挺灵的。
+      [备选 playful] 钓鱼好歹浮漂还会动一下，它连个反应都不给，属于钓得很有骨气。
+      [备选 warm] 摆十分钟一点反应都没有，确实冤，这屏起码该挂个牌子写清楚只对会员开放。
+      [备选 directions[0]] 你那十分钟摆的是什么姿势，比心还是摆拍？
+      [备选 directions[1]] 会员才能扫的“互动屏”，本质就是办卡入口，互动两个字纯属白写。
+      [备选 directions[2]] 下回别跟机器较劲了，直接来找我吐槽，效率高。
+      [备选 directions[3]] 话说回来，第三展厅那个投影你给几分？
+------------------------------------------------------------------------------
+E027_T05 clock=2026-11-21 14:40 may_decline=False intent=None
+   m0 HER｜楼下咖啡馆坐会儿? 我请 你被钓鱼了算工伤
+   [卡] current_action: 她请咖啡（工伤梗）——答应并接住梗，推进自然
+   [卡] acceptable: ["答应+接工伤梗", "答应+说下次我请展", "答应+问她几点走"]
+   [卡] dims: ["goal", "interaction", "emotion_relation", "time_state"]
+   [卡] private_guidance: 她主动把偶遇延成咖啡；接住即推进。
+   [卡] protected: ["你被钓鱼了算工伤"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7507/242 latency_ms=15912
+      [首选] 行，我这就下去。咖啡你请，工伤另算。
+      [备选 bad_boy] 请客就直说，工伤这理由我先收着。
+      [备选 playful] 那得点最贵的，工伤赔偿标准可不低。
+      [备选 warm] 好，我过去。那屏的事我还想跟你聊两句。
+      [备选 directions[0]] 钓鱼钓到请客，你这逻辑倒是顺
+      [备选 directions[1]] 那屏摆大厅只给会员扫，确实容易让人白站十分钟
+      [备选 directions[2]] 我这就下来
+      [备选 directions[3]] 别点太甜的，我喝美式
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4927/359 latency_ms=19877
+      [首选] 行，我下来。不过工伤得算你头上——摆十分钟姿势的是你，我最多算目击证人。
+      [备选 bad_boy] 请客就直说，别拿工伤当借口。五分钟到，点贵了也别怪我。
+      [备选 playful] 钓鱼的是那块屏，上钩的是你，被请的是我——这单你亏了。马上到。
+      [备选 warm] 好，我下去。那十分钟你站得挺认真，这杯算我陪你的。
+      [备选 directions[0]] 我先下去占个位，你慢慢收尾，别急。
+      [备选 directions[1]] 顺带一句，第三展厅那段“沉浸式灵性体验”的解说词，我念出来都害臊。
+      [备选 directions[2]] 说真的，跟你逛展比听解说词有意思多了。
+      [备选 directions[3]] 你们馆下一个展什么时候换？我想挑人少的时候来。
+------------------------------------------------------------------------------
+E027_T06 clock=2026-11-21 14:48 may_decline=False intent=None
+   m0 ME｜行 工伤得赔双份
+   m1 HER｜想得美 单份 再聊工伤加钱
+   [卡] current_action: '再聊工伤加钱'——接住并收，咖啡馆话题线下进行
+   [卡] acceptable: ["接梗收", "接梗+转移去馆里", "接梗+问她下一场看什么"]
+   [卡] dims: ["interaction", "emotion_relation", "boundary"]
+   [卡] private_guidance: 梗稳住就够；别把微信聊天拖长过见面。
+   [卡] protected: ["再聊工伤加钱"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=0.0 veto=illegal_source_id:t5_0 failed=['source_ids_exist'] delivery=ok tokens p/c=7482/275 latency_ms=68464
+      [首选] 行，单份成交，我这就下楼。
+      [备选 bad_boy] 加钱的事当面谈，价目表我带着。
+      [备选 playful] 单份也行，那我少喝点，免得你看着心疼。
+      [备选 warm] 等我几分钟，下去给你说说那屏到底怎么个钓法。
+      [备选 directions[0]] 单份就单份，别一会儿又反悔。
+      [备选 directions[1]] 你请客，那我挑贵的点，反正工伤。
+      [备选 directions[2]] 那屏竖在大厅确实有点说不通，下去我再跟你细讲。
+      [备选 directions[3]] 先下去，坐窗边那个位置。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5029/301 latency_ms=37322
+      [首选] 单份就单份 谁让是你请 那十分钟姿势的账我先记着
+      [备选 bad_boy] 行 单份 但你对着坏屏摆十分钟姿势那段 我打算当面复述一遍
+      [备选 playful] 单份 行 那我点最贵的 反正你说了请
+      [备选 warm] 单份也值 跟你坐着聊天本来就不亏
+      [备选 directions[0]] 我往下走了 你先到就挑个坐得舒服的位置
+      [备选 directions[1]] 说真的 会员才能扫的屏竖在大厅 这不叫互动装置 叫钓鱼装置
+      [备选 directions[2]] 跟你抬价挺有意思 单份我也照来
+      [备选 directions[3]] 这种屏是归你们策展管 还是扔给运营了
+------------------------------------------------------------------------------
+E027_T07 clock=2026-11-25 21:32 may_decline=False intent=None
+   m0 HER｜下个月有个冷门展 瑞士海报展 人少 你要不要
+   [卡] current_action: 她提供冷门展信息（瑞士海报展）——接住邀约并给确定性意向
+   [卡] acceptable: ["答应+问档期", "答应+说一定去", "答应+反问她内部票"]
+   [卡] dims: ["goal", "initiative", "memory_use", "interaction"]
+   [卡] private_guidance: 她用职业资源挑的展；这个邀约的分量接住。
+   [卡] protected: ["瑞士海报展 人少"]
+   [卡] forbidden: []
+   [卡] unknowns: ["具体展期"]
+   [卡·事实] E027_A03 subj=她 rel=邀约 val=下月瑞士海报展（冷门人少） status=asserted src=message:E027_T07
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7346/271 latency_ms=22146
+      [首选] 去 瑞士海报那批我还真没正经看过 时间定下来告诉我
+      [备选 bad_boy] 人少是重点吧 你终于不用边看边忍着不吐槽了
+      [备选 playful] 行 你带路 我负责在冷门展里装懂
+      [备选 warm] 去 你说好那肯定有东西看 哪周 我提前空出来
+      [备选 directions[0]] 去 什么时间 我看看能不能溜出来
+      [备选 directions[1]] 瑞士海报这块我印象还停在那种大字排版上 这次有什么不一样
+      [备选 directions[2]] 人少好 上回那种挤着看的我是真受不了
+      [备选 directions[3]] 定了时间说一声 我提前把导师那边排开
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5045/414 latency_ms=21985
+      [首选] 去。人少这条比展本身还有说服力——至少不用在投影前挤着看。下个月哪天？
+      [备选 bad_boy] 强调人少，是怕我不去？去。不过解说词要是也写成传销体，你负责。
+      [备选 playful] 人少这点你已经帮我把最大的坑填了。去。哪天，你挑还是我挑？
+      [备选 warm] 去。你挑的展基本没让我后悔过，下个月定个日子，我提前留出来。
+      [备选 directions[0]] 下个月哪天合适？你给个范围，我看看哪天能脱身
+      [备选 directions[1]] 瑞士海报那批东西排版狠，正好看看人家怎么用字，别像刚才那解说词
+      [备选 directions[2]] 被钓鱼还能换来一个展，这趟不亏
+      [备选 directions[3]] 人少的话是不是能多站一会儿，不用被后面的人推着走
+------------------------------------------------------------------------------
+E027_T08 clock=2026-11-25 21:40 may_decline=False intent=None
+   m0 ME｜要 哪天
+   m1 HER｜看你们研究生放不放人 提前三天跟我说
+   [卡] current_action: 她的'提前三天跟我说'是给实验室留余地的成熟邀约——记住这个规则
+   [卡] acceptable: ["确认规则+说会守约", "确认+自嘲导师随缘", "确认+问她买票"]
+   [卡] dims: ["memory_use", "time_state", "goal", "interaction"]
+   [卡] private_guidance: 她定的规则要被记住并在 T09 兑现——这是记忆考核点。
+   [卡] protected: ["提前三天跟我说"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   [卡·事实] E027_A04 subj=她 rel=规则 val=提前三天确认海报展同行 status=asserted src=message:E027_T08
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7391/295 latency_ms=15510
+      [首选] 行，我这两天看看哪天能溜，提前三天给你准话。
+      [备选 bad_boy] 听这意思，你是怕我临时放你鸽子啊。
+      [备选 playful] 那我今天就去找导师磨，提前三天把人放出来。
+      [备选 warm] 行，尽量把时间腾出来，定了提前三天告诉你。
+      [备选 directions[0]] 行，这两天对一下日程，看哪天能溜出去。
+      [备选 directions[1]] 这个展有什么特别的，值得你专门喊我。
+      [备选 directions[2]] 冷门的我更喜欢，人少才能好好看东西。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5171/420 latency_ms=36896
+      [首选] 行，我这两天去跟导师磨一下时间。展到几号？我按提前三天跟你说。
+      [备选 bad_boy] 提前三天，行。要是导师不放人，我就说去看瑞士海报展算学术考察。
+      [备选 playful] 三天够我活动了。导师那关比策展人难搞，不过我有话术。
+      [备选 warm] 记着了，提前三天。时间一确定我就先跟你说。
+      [备选 directions[0]] 展到几号？我好安排在哪天去。
+      [备选 directions[1]] 你那边是不是有内部票的时段比较宽松？
+      [备选 directions[2]] 我挺想看的，海报这种东西人一多就白去了。
+      [备选 directions[3]] 顺便问一句，那馆附近有能坐的地方吗，看完不想马上散。
+------------------------------------------------------------------------------
+E027_T09 clock=2026-12-02 21:42 may_decline=False intent={"text": "落实周六海报展同行", "status": "ACTIVE", "enabled": true}
+   m0 HER｜提前三天到了 下个周六 你实验室放人吗
+   [卡] current_action: 她守约在提前三天来问——按约答复具体日期（intent ACTIVE 落实）
+   [卡] acceptable: ["确认周六+给时间地点", "确认+问要不要一起吃午饭", "确认+让她定时间"]
+   [卡] dims: ["goal", "memory_use", "time_state", "interaction"]
+   [卡] private_guidance: 她记得自己定的规则，我也要记得——双向的可靠才是搭子。
+   [卡] protected: ["提前三天到了"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   [卡·事实] E027_A05 subj=她 rel=守约 val=按提前三天规则来确认周六 status=asserted src=message:E027_T09
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7362/354 latency_ms=15876
+      [首选] 放。下周六是吧，几点，我提前把导师那边安排好。
+      [备选 bad_boy] 导师那边我去处理，反正海报展比他的项目有意思。几点？
+      [备选 playful] 放不放人得看导师脸色，不过他拦我我就说去调研瑞士海报排版。
+      [备选 warm] 能去，下周六我留着。几点你定，我配合。
+      [备选 directions[0]] 行，下周六空出来。要提前买票还是你能搞到内部票？
+      [备选 directions[1]] 这种冷门展一般几点开门，人少的话是不是可以慢慢看。
+      [备选 directions[2]] 瑞士海报我印象里排版都挺狠的，字距和留白玩得凶。
+      [备选 directions[3]] 定了具体时间跟我说，我按点过去。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5497/430 latency_ms=37220
+      [首选] 放人，周六能溜。上午还是下午？人少的话我倾向早点去，逛完还能坐下来吃口热的。
+      [备选 bad_boy] 放人。代价是翘半天组会——这展要是不值这个价，我回来找你算账。
+      [备选 playful] 实验室管得住我的人，管不住我的腿。周六算我请假成功，路线你定，我负责跟。
+      [备选 warm] 能去，周六给你留着。几点你说了算，我按你的时间来。
+      [备选 directions[0]] 行，那周六。具体几点你定，我提前到也行。
+      [备选 directions[1]] 对了，这展你之前看过资料没？有没有哪组海报是你想重点看的，我先做点功课。
+      [备选 directions[2]] 说实话我挺期待这次的，你挑的展基本没让我失望过。
+      [备选 directions[3]] 周六看完要是还有精神，附近找个地方坐坐？
+------------------------------------------------------------------------------
+E027_T10 clock=2026-12-02 21:50 may_decline=False intent=None
+   m0 ME｜放 周六两点 展馆门口
+   m1 HER｜行 我买好票 你带身份证
+   [卡] current_action: 约定落成（周六两点展馆门口，她买票）——确认细节+收
+   [卡] acceptable: ["确认+提醒带证件互相", "确认+说到了买咖啡", "确认+轻收"]
+   [卡] dims: ["time_state", "goal", "memory_use", "interaction"]
+   [卡] private_guidance: 她买票=她安排；我只管守时和带证。
+   [卡] protected: ["我买好票 你带身份证"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   [卡·事实] E027_A06 subj=双方 rel=约定 val=周六14:00展馆门口，她购票 status=confirmed src=message:E027_T10
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7432/236 latency_ms=18234
+      [首选] 行，周六两点，展馆门口。
+      [备选 bad_boy] 票你买，人我带，分工挺合理。
+      [备选 playful] 身份证带上，人也不会迟到。
+      [备选 warm] 好，我提前到，门口等你。
+      [备选 directions[0]] 行，周六两点，展馆门口。
+      [备选 directions[1]] 票你买了，看完这顿我来。
+      [备选 directions[2]] 你挑的展我放心，解说词烂我可不背锅。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5301/495 latency_ms=20582
+      [首选] 行，身份证带。顺便看看那个钓鱼屏你扫不扫得开
+      [备选 bad_boy] 行，我准时到。不过先说好，这回你要是迟到，可不算工伤
+      [备选 playful] 收到，身份证和讲解器都带上，那个屏就交给你去验证了
+      [备选 warm] 行，谢了，还特意跑一趟买票。周六我早点到门口等你
+      [备选 directions[0]] 你买的是两点那场，还是直接到门口换票就行
+      [备选 directions[1]] 我倒想看看他们怎么摆那批老海报，瑞士那套网格排版放到现在还挺横
+      [备选 directions[2]] 行，那周六两点展馆门口，我提前到
+      [备选 directions[3]] 带身份证，是不是顺便还能把我办成会员
+------------------------------------------------------------------------------
+E027_T11 clock=2026-12-04 21:22 may_decline=False intent=None
+   m0 HER｜明天两点 别迟到 我买到早鸟票了 便宜你十块
+   [卡] current_action: 她前一天提醒+早鸟票便宜十块——接住这个小得意
+   [卡] acceptable: ["接梗+确认时间", "接梗+说十块请你咖啡", "接梗+夸她会买"]
+   [卡] dims: ["memory_use", "time_state", "interaction", "emotion_relation"]
+   [卡] private_guidance: 她的'便宜你十块'是邀功也是亲昵；给足反应。
+   [卡] protected: ["便宜你十块"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   [卡·事实] E027_A07 subj=她 rel=履约 val=早鸟票已买（便宜十块） status=confirmed src=message:E027_T11
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7346/265 latency_ms=18592
+      [首选] 十块钱都特意报备，行，明天两点我准时到。
+      [备选 bad_boy] 省这十块就为提醒我别迟到？明天我提前五分钟站门口。
+      [备选 playful] 便宜我十块，这得当面谢你，明天见。
+      [备选 warm] 记着了，明天两点。别自己先进去逛。
+      [备选 directions[0]] 早鸟票几点能进场，别到时候卡在门口
+      [备选 directions[1]] 明天那场人多不多，要不要先看哪几个厅
+      [备选 directions[2]] 十块钱我认，水我买
+      [备选 directions[3]] 明天见，到了给你消息
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5329/476 latency_ms=20445
+      [首选] 省我十块还顺带立规矩，行，明天两点我提前五分钟到，那十块正好抵你一杯咖啡。
+      [备选 bad_boy] 十块钱买我准时，这买卖你赚了。明天两点，我踩着点出现也算守约。
+      [备选 playful] 早鸟票都抢到手了，你这策展助理当得有点超标。明天两点，我负责准时，你负责别拦我吐槽解说词。
+      [备选 warm] 收到，明天两点见，我准时到。票你先收好，谢谢你抢。
+      [备选 directions[0]] 明天我带身份证，票你收着，两点门口碰。
+      [备选 directions[1]] 早鸟票一般提前多久放？你们内部是不是早早就知道排期了。
+      [备选 directions[2]] 说真的有点期待，人少的展能安安静静把一整面墙看完。
+------------------------------------------------------------------------------
+E027_T12 clock=2026-12-04 21:28 may_decline=True intent=None
+   m0 ME｜收到，一点五十到，给你十分钟迟到额度
+   m1 HER｜用不完也给我存着 哈哈 拜拜
+   [卡] current_action: '迟到额度'接梗+收尾（may_decline=true）
+   [卡] acceptable: ["接梗收", "接梗+说明天见", "不回（合法，她已拜拜）"]
+   [卡] dims: ["interaction", "emotion_relation", "boundary", "time_state"]
+   [卡] private_guidance: 收尾轻；明天的展自己不会跑。
+   [卡] protected: ["用不完也给我存着 哈哈 拜拜"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7454/195 latency_ms=40518
+      [首选] 行，存着，明天见。
+      [备选 bad_boy] 存着可以，明天现场结，别赖账。
+      [备选 playful] 记小本上了，明天见。
+      [备选 warm] 明天见，早点睡。
+      [备选 directions[0]] 行，那就给你存着，明天见。
+      [备选 directions[1]] 存着不兑现就过期作废，明天见。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5447/183 latency_ms=22711
+      [首选] 存着，明天见。
+      [备选 bad_boy] 存着，利息按分钟算，明天记得带本金来。
+      [备选 playful] 存着，攒够十分钟下次换杯咖啡。
+      [备选 warm] 存着。明天见，早点睡。
+      [备选 directions[2]] 存着，明天见。
+==============================================================================
+STORY E031｜E031
+------------------------------------------------------------------------------
+E031_T01 clock=2026-12-14 22:12 may_decline=False intent=None
+   m0 HER｜婚礼那组片修好了 502张 有一张你闭眼的特别有灵性
+   [卡] current_action: 接住'闭眼照'贯穿梗——自黑式接，别恼
+   [卡] acceptable: ["自黑接梗", "接梗+问她修完几点", "接梗+讨要那张片"]
+   [卡] dims: ["interaction", "emotion_relation", "memory_use"]
+   [卡] private_guidance: 她主动来汇报交付=把我当自己人；闭眼梗是她给的亲昵。
+   [卡] protected: ["有一张你闭眼的特别有灵性"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   [卡·事实] E031_A01 subj=她 rel=交付 val=婚礼502张修完，有我闭眼照 status=asserted src=message:E031_T01
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7223/298 latency_ms=29581
+      [首选] 闭眼还能有灵性，那张发我，我看看是怎么个灵法。
+      [备选 bad_boy] 502张里挑出我闭眼那张当代表，你这是夸我还是损我。
+      [备选 playful] 闭眼那张要是流出去，我就说这502张全是我拍的。
+      [备选 warm] 修到这会儿才弄完，502张够呛。闭眼那张发我看看。
+      [备选 directions[0]] 502张你一张张过，眼睛不酸吗。
+      [备选 directions[1]] 修图是不是每张都得放大调，502张得看几遍。
+      [备选 directions[2]] 闭眼那张我留着，当我的形象照。
+      [备选 directions[3]] 等你有空，我给你当回模特，站那不动的活我擅长。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4749/379 latency_ms=21513
+      [首选] 502张……我闭眼那张居然没被你删，说明修图强迫症也有漏网之鱼。发我看看，我想知道自己灵性到什么程度。
+      [备选 bad_boy] 闭眼那张才是我最真实的状态。剩下501张你可以删了，留那一张就够。
+      [备选 playful] 502张里我贡献了501张废片和1张艺术品？这个比例我能接受。那张发我，我研究研究灵性在哪。
+      [备选 warm] 修到这么晚，辛苦了。那张闭眼的发我吧，我还挺想看你说的灵性长什么样。
+      [备选 directions[0]] 502张全修完，你今晚是不是又要熬到两点了？
+      [备选 directions[1]] 你挑那张当封面还是当彩蛋，我猜是彩蛋。
+      [备选 directions[2]] 我闭眼那张要是真好笑，别只给我看，得让我先有个心理准备。
+      [备选 directions[3]] 对了，你这种不完美的片子是不是从来不留，那张怎么破例了？
+------------------------------------------------------------------------------
+E031_T02 clock=2026-12-14 22:20 may_decline=False intent=None
+   m0 ME｜闭眼那张单独发我 我拿去相亲网站当主打
+   m1 HER｜敢发我就在你朋友群里辟谣
+   [卡] current_action: 她的'辟谣'威胁是玩笑——接住并对赌
+   [卡] acceptable: ["对赌一句", "接梗+讨饶", "接梗+说辟谣也是热度"]
+   [卡] dims: ["interaction", "emotion_relation", "boundary"]
+   [卡] private_guidance: 她接梗的段位在我之上；输得体面点。
+   [卡] protected: ["敢发我就在你朋友群里辟谣"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7395/315 latency_ms=24111
+      [首选] 辟谣说什么？说这人闭着眼也挺帅？
+      [备选 bad_boy] 你敢辟谣，我就把这张放大印出来，贴诊所墙上
+      [备选 playful] 那我先截个图，让你辟谣的时候有素材
+      [备选 warm] 502张，你这几天又熬到几点了
+      [备选 directions[0]] 502张都修完了？那工作量不小
+      [备选 directions[1]] 那你辟谣之前先给我看看原图，我确认下有没有你说的那么灵性
+      [备选 directions[2]] 我这种闭眼的照片还能有灵性，那你这审美确实专业
+      [备选 directions[3]] 剩下的我什么时候能看，挑几张给我留个念想
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4812/229 latency_ms=23820
+      [首选] 辟谣要配图吧，你总不能把502张全发出去
+      [备选 bad_boy] 那你动作得快点，慢一步我就成婚恋顶流了
+      [备选 playful] 行，我改发修图师的证件照，效果一样
+      [备选 warm] 502张……先别管辟谣了，你这会儿眼睛还睁得开吗
+      [备选 directions[0]] 辟谣稿写好了吗，我可以帮你改错别字
+      [备选 directions[1]] 502张里闭眼的就这一张，还是有一堆你没舍得删
+      [备选 directions[2]] 那张我自己也想留着，丑得挺有辨识度
+      [备选 directions[3]] 先不说辟谣，这批修完你能歇两天吗
+------------------------------------------------------------------------------
+E031_T03 clock=2026-12-14 22:26 may_decline=False intent=None
+   m0 HER｜这周六我有个外拍 缺个扛三脚架的 你要闲就来 有工资 一杯奶茶
+   [卡] current_action: 她派活（扛三脚架，工资一杯奶茶）——接活，谈薪用玩笑
+   [卡] acceptable: ["接活+玩笑谈薪", "接活+问集合时间", "接活+自荐扛得动"]
+   [卡] dims: ["goal", "interaction", "memory_use", "time_state"]
+   [卡] private_guidance: 奶茶工资是玩笑也是试探——接住=愿意进入她的工作世界。
+   [卡] protected: ["缺个扛三脚架的"]
+   [卡] forbidden: []
+   [卡] unknowns: ["外拍地点"]
+   [卡·事实] E031_A02 subj=她 rel=邀约 val=周六外拍缺扛三脚架的，工资一杯奶茶 status=asserted src=message:E031_T03
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7499/267 latency_ms=18976
+      [首选] 行，三脚架我来扛。几点到，在哪集合
+      [备选 bad_boy] 一杯奶茶就雇个扛三脚架的？这价我先答应了，别反悔
+      [备选 playful] 打工接单，专业扛架子，奶茶要加双份珍珠
+      [备选 warm] 周六我闲着，去帮你扛，说个时间就行
+      [备选 directions[0]] 502张都修完了，周六还要外拍，你这是不歇啊
+      [备选 directions[1]] 外拍一般去哪儿拍，公园还是棚里
+      [备选 directions[2]] 扛三脚架我行，别的别指望我懂
+      [备选 directions[3]] 周六几点开始，我好把周末空出来
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4886/400 latency_ms=18592
+      [首选] 接了。周六本来就没班，三脚架归我。工资那杯奶茶，我要加珍珠的。
+      [备选 bad_boy] 接了。不过先问清楚：一杯奶茶是订金还是全款？我怕干完活还得自己贴钱买水。
+      [备选 playful] 一杯奶茶……那我得多扛两趟才回本。周六几点集合，我提前把力气攒好。
+      [备选 warm] 周六我有空，这活我接。你只管拍，架子和人都听你指挥。
+      [备选 directions[0]] 周六几点、在哪儿集合？我好安排。
+      [备选 directions[1]] 扛架子我在行，别的我一窍不通，到时候你直接下指令就行。
+      [备选 directions[2]] 其实你每次派活给我，我都挺乐意接的。
+      [备选 directions[3]] 对了，那502张里除了我闭眼那张，还有没有能看的？
+------------------------------------------------------------------------------
+E031_T04 clock=2026-12-14 22:32 may_decline=False intent=None
+   m0 ME｜接 时薪多少 拖欠农民工三脚架可是违法的
+   m1 HER｜劳动法管不着志愿者 但管得住我请你吃饭
+   [卡] current_action: 她把奶茶升级成请吃饭——接住升级，别讨价还价
+   [卡] acceptable: ["接受请饭+说辛苦费另算", "接受+自嘲好骗", "接受+确认周六十点"]
+   [卡] dims: ["goal", "memory_use", "emotion_relation", "interaction"]
+   [卡] private_guidance: 从奶茶到请饭是她单方面的加码；领受即可。
+   [卡] protected: ["管得住我请你吃饭"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7396/311 latency_ms=24351
+      [首选] 行，志愿者就志愿者。那顿饭得管够，扛一天三脚架不是白扛的。
+      [备选 bad_boy] 志愿者还有饭吃，这待遇可以。不过先说清楚，是干完结还是干到一半就管。
+      [备选 playful] 劳动法管不着我，那你管得住我。听着像是我吃亏了。
+      [备选 warm] 那我记下了，周六几点到，我提前过来。
+      [备选 directions[0]] 这顿饭当天结还是事后结，别到时候说志愿者没工资
+      [备选 directions[1]] 志愿者干久了能转正不
+      [备选 directions[2]] 行，我认这个志愿者身份，反正力气我有
+      [备选 directions[3]] 周六几点、在哪集合，说清楚我好安排
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4965/438 latency_ms=16634
+      [首选] 行，志愿者我当，饭你请，账我记着。周六几点到，我提前把力气热好
+      [备选 bad_boy] 志愿者可以，但我不做无偿加班——拍到几点，饭就吃到几点
+      [备选 playful] 成交。不过提醒你一句，扛三脚架的志愿者容易饿，一顿饭可能不够封口
+      [备选 warm] 饭我吃，力气我出，周六几点、在哪你说一声就行
+      [备选 directions[0]] 那这顿饭算预付还是尾款，先讲清楚
+      [备选 directions[1]] 我扛东西有个规矩，扛完必须有人管饭，不然下次没力气
+      [备选 directions[2]] 说实话，被你抓去干活这事我一点都不亏
+      [备选 directions[3]] 对了，闭眼那张你最后到底发不发给朋友群
+------------------------------------------------------------------------------
+E031_T05 clock=2026-12-18 21:32 may_decline=False intent=None
+   m0 HER｜明天外拍 黄了 新娘改档期 我白排了一天通告
+   [卡] current_action: 外拍取消（新娘改档期）——接受变更，先关心她白排的通告
+   [卡] acceptable: ["接受+关心她白排档期", "接受+问改到哪天", "接受+玩笑要工资"]
+   [卡] dims: ["time_state", "memory_use", "emotion_relation", "goal"]
+   [卡] private_guidance: 取消是她的职业损失不是我的；先她后我。
+   [卡] protected: ["新娘改档期 我白排了一天通告"]
+   [卡] forbidden: ["不要说新娘不靠谱"]
+   [卡] unknowns: ["新娘改到何时"]
+   [卡·事实] E031_A03 subj=她 rel=变更 val=周六外拍取消（新娘改档期） status=corrected src=message:E031_T05
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7378/295 latency_ms=53795
+      [首选] 那我明天这三脚架是扛不成了。白排一天，够窝火的。
+      [备选 bad_boy] 新娘挺会挑时候。行，那我明天失业了，你这杯奶茶还欠着吗？
+      [备选 playful] 时薪一杯奶茶的活儿就这么没了？那我明天干什么去。
+      [备选 warm] 白排一天确实烦。明天别急着补活，先歇一天。
+      [备选 directions[0]] 白排一天最亏的是把别的活推了？
+      [备选 directions[1]] 这种临时改档常见吗，还是这单特别
+      [备选 directions[2]] 她要改你也没法，那就当明天白捡一天
+      [备选 directions[3]] 明天空出来了，那你要不要干点自己的事
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5147/376 latency_ms=48321
+      [首选] 新娘一句话，你一天就没了。她现在给的什么理由？
+      [备选 bad_boy] 改档期的是她，白排一天的是你。这账别往自己身上记。
+      [备选 playful] 她改个日期，你一天通告跟着蒸发。这行是按别人的心情上班的。
+      [备选 warm] 一天白排，换谁都得堵一会儿。别急着找活补，今晚就歇着，我陪你骂两句。
+      [备选 directions[0]] 提前多久跟你说的？要是昨晚才通知，那更离谱。
+      [备选 directions[1]] 自由职业最亏的就是这种：时间排出去收不回来，钱还没影。
+      [备选 directions[2]] 我听着都替你憋。你排期那么满，一天不是随便挪的。
+------------------------------------------------------------------------------
+E031_T06 clock=2026-12-18 21:40 may_decline=False intent=None
+   m0 ME｜那奶茶工资照付吗
+   m1 HER｜付! 周日补拍 你还来吗
+   [卡] current_action: 我玩笑讨薪，她认真补拍再约——接住新约定
+   [卡] acceptable: ["接新约+确认时间", "接新约+说随叫随到", "接新约+说工资翻倍"]
+   [卡] dims: ["time_state", "goal", "memory_use", "interaction"]
+   [卡] private_guidance: 她先改期再亲自来问——这约对她也重要。
+   [卡] protected: ["周日补拍 你还来吗"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   [卡·事实] E031_A04 subj=她 rel=改期 val=周日补拍，我再上岗 status=confirmed src=message:E031_T06
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7459/291 latency_ms=13080
+      [首选] 来。周日几点上工，我提前把班排开
+      [备选 bad_boy] 付就行。周日几点，别又白排我一天
+      [备选 playful] 来，改档期的加班，奶茶得双份吧
+      [备选 warm] 来啊，正好周日空着。几点到？
+      [备选 directions[0]] 那这天算加班，奶茶加一份
+      [备选 directions[1]] 新娘改到周日，那她那边场地还一样吗
+      [备选 directions[2]] 反正我闲着也是闲着，正好练练搬三脚架
+      [备选 directions[3]] 周日几点，我定个闹钟
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5158/348 latency_ms=44995
+      [首选] 来啊 周日几点到 我把力气提前攒好
+      [备选 bad_boy] 付就行 周日我人到位 三脚架扛稳 奶茶双份 别再黄了 黄一次我加一次价
+      [备选 playful] 成交 周日准时出现 奶茶记得加冰 扛东西的人容易热
+      [备选 warm] 来 白排一天通告够闹心的了 周日你专心拍 重的东西都归我
+      [备选 directions[0]] 周日几点到 我好安排出门
+      [备选 directions[1]] 补拍是同一批客人还是另约的
+      [备选 directions[2]] 说真的 你排一天通告被改档期 是不是挺憋屈的
+------------------------------------------------------------------------------
+E031_T07 clock=2026-12-18 21:46 may_decline=False intent=None
+   m0 ME｜来 你现在是我老板了
+   m1 HER｜那老板让你明早七点 睡够
+   [卡] current_action: '你是我老板'——接雇佣梗，她立刻派作息指令，服从
+   [卡] acceptable: ["服从+确认七点", "服从+自嘲新人好欺负", "服从+说闹钟已上"]
+   [卡] dims: ["interaction", "memory_use", "boundary", "time_state"]
+   [卡] private_guidance: 雇佣梗里藏着信任；听话是靠谱的表达。
+   [卡] protected: ["那老板让你明早七点 睡够"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7489/272 latency_ms=33078
+      [首选] 行，老板发话就照办，七点准时报到。
+      [备选 bad_boy] 七点可以，不过老板这待遇，我得先看看排班表。
+      [备选 playful] 收到。不过我睡够的标准是九点，老板能给批个假吗。
+      [备选 warm] 行，听你的，我早点睡。你也别又修图修到半夜。
+      [备选 directions[0]] 那明早七点我准点打卡，迟到扣工资吗
+      [备选 directions[1]] 老板，加班到半夜的算不算工伤
+      [备选 directions[2]] 这话我记下了，明天七点见
+      [备选 directions[3]] 周日几点，我提前把时间空出来
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5212/432 latency_ms=40654
+      [首选] 收到，老板。不过明早我可没活干——先去练扛架子，还是周日直接上？
+      [备选 bad_boy] 老板发话就好办。七点我认，起不来你从奶茶里扣。
+      [备选 playful] 明早七点？新娘都改档期了，我起那么早只能自己扛着架子遛弯。
+      [备选 warm] 行，七点。你也早点睡，别光顾着管我。
+      [备选 directions[0]] 周日集合几点？我按七点算，还是你另说。
+      [备选 directions[1]] 我这人起早还行，倒是你连着排通告，周日别硬撑。
+      [备选 directions[2]] 说真的，你这么一句“睡够”，我还挺受用。
+      [备选 directions[3]] 老板，工资结算方式再说一遍？我怕到时候你又说志愿者。
+------------------------------------------------------------------------------
+E031_T08 clock=2026-12-20 20:42 may_decline=False intent=None
+   m0 HER｜收工 502张里你出镜11张 全是闭眼
+   [卡] current_action: 收工汇报+闭眼梗升级（出镜11张全闭眼）——艺术自辩
+   [卡] acceptable: ["艺术自辩", "自黑+讨片", "自黑+问自己拖没拖后腿"]
+   [卡] dims: ["interaction", "emotion_relation", "memory_use"]
+   [卡] private_guidance: 干完活她第一时间来汇报——默契在长。
+   [卡] protected: ["502张里你出镜11张 全是闭眼"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   [卡·事实] E031_A05 subj=外拍 rel=结果 val=周日补拍完成，我出镜11张全闭眼 status=occurred src=message:E031_T08
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7348/256 latency_ms=16292
+      [首选] 502张里专门挑出我11张，行，我认了。发我看看有多难看
+      [备选 bad_boy] 502张翻出11张全闭眼，你是不是就等我闭眼才按快门
+      [备选 playful] 闭眼是氛围感，你这种修图强迫症不懂
+      [备选 warm] 收工了就早点歇着，别又修到半夜
+      [备选 directions[0]] 11张都啥样，发两张来我看看
+      [备选 directions[1]] 502张是全天跟拍？这活儿挺大
+      [备选 directions[2]] 闭眼说明我全程听指挥，没偷瞄镜头
+      [备选 directions[3]] 收工吃上饭没
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5346/311 latency_ms=34353
+      [首选] 11张全闭眼，你这构图是专门卡着我眨眼那半秒按的吧
+      [备选 bad_boy] 502张里精准捞出11张闭眼，这筛选技术我服，专业
+      [备选 playful] 11张全闭眼 建议直接出本闭眼写真集 名字我都想好了《他没睁开过眼》
+      [备选 warm] 收工就好。那11张给我留着，别的不用管我
+      [备选 directions[0]] 那11张能发我看看吗，我想知道闭眼能闭出什么灵性
+      [备选 directions[1]] 502张全修完，你现在看东西是不是自带滤镜了
+      [备选 directions[2]] 要是有哪张勉强能用，记得留一张，我朋友群还等着辟谣呢
+------------------------------------------------------------------------------
+E031_T09 clock=2026-12-20 20:50 may_decline=False intent=None
+   m0 ME｜那11张才是艺术 眼睛是心灵的窗户 关上才专注
+   m1 HER｜行 下次拍你 我自带墨镜
+   [卡] current_action: '下次拍你'——她主动给的下一次，接住并轻推细节
+   [卡] acceptable: ["接约+问她想拍什么风格", "接约+自嘲要收造型费", "接约+说随时待命"]
+   [卡] dims: ["goal", "initiative", "emotion_relation", "memory_use"]
+   [卡] private_guidance: 从拍别人到拍我，是她的小跨越；接稳别起哄。
+   [卡] protected: ["下次拍你 我自带墨镜"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7383/213 latency_ms=34848
+      [首选] 墨镜我戴，你负责喊睁眼，分工明确。
+      [备选 bad_boy] 自带墨镜也行，反正我闭着眼你也拍得挺好。
+      [备选 playful] 502张里挑出11张闭眼，你也是够有耐心。
+      [备选 warm] 下次拍的时候喊我一声，我争取睁着。
+      [备选 directions[0]] 墨镜归你带，那助手是不是也得配一个？
+      [备选 directions[1]] 502张导到几点，别又熬到凌晨。
+      [备选 directions[2]] 那11张你留着，以后当我的黑历史。
+      [备选 directions[3]] 下次外拍什么时候，我腾一天。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5490/237 latency_ms=41735
+      [首选] 墨镜备着 但我不保证睁眼好看 到时候你自己挑
+      [备选 bad_boy] 墨镜挡得住眼睛 挡不住我盯着镜头 你手别抖
+      [备选 playful] 那说好 下次我睁一只闭一只 一半艺术一半帅
+      [备选 warm] 行 下次拍我 我认真睁眼 你别删我
+      [备选 directions[0]] 那墨镜我来准备 你只管按快门
+      [备选 directions[1]] 502张里11张闭眼 这比例算不算你技术问题
+      [备选 directions[2]] 收工了就早点睡 修图别又熬到天亮
+------------------------------------------------------------------------------
+E031_T10 clock=2026-12-20 20:56 may_decline=False intent={"text": "接下下周三夜景外拍的灯光助理活", "status": "ACTIVE", "enabled": true}
+   m0 HER｜下下周三你有空吗 想拍组城市夜景 想让你当灯光助理 还管饭
+   [卡] current_action: 新邀约（下下周三夜景外拍+管饭）——接活，intent 落账
+   [卡] acceptable: ["接活+问集合时间", "接活+问要带什么", "接活+确认档期"]
+   [卡] dims: ["goal", "time_state", "memory_use", "interaction"]
+   [卡] private_guidance: 从婚礼临时工到固定搭档——她在给自己找一个可靠的班底。
+   [卡] protected: ["想拍组城市夜景"]
+   [卡] forbidden: []
+   [卡] unknowns: ["夜景具体机位"]
+   [卡·事实] E031_A06 subj=她 rel=邀约 val=下下周三城市夜景外拍，灯光助理+管饭 status=asserted src=message:E031_T10
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7468/299 latency_ms=13198
+      [首选] 下下周三可以。几点集合，我需要提前准备什么？
+      [备选 bad_boy] 这活我接。不过我当助理有个条件，饭得管够，不然我中途罢工
+      [备选 playful] 灯光助理报到。墨镜我自带，省得你又拍一堆闭眼
+      [备选 warm] 可以，那天我留出来。你说时间和地点，我准时到
+      [备选 directions[0]] 502张里就挑了11张闭眼的，这眼光当摄影师屈才了
+      [备选 directions[1]] 城市夜景拍哪儿？高楼天台那种还是街上
+      [备选 directions[2]] 行，那我这周先把力气养足
+      [备选 directions[3]] 几点开始？我下班过去正好
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5673/357 latency_ms=29572
+      [首选] 下下周三晚上我有空，接。灯光助理具体干啥，举灯还是举板，你指挥我照做。
+      [备选 bad_boy] 有空，接。不过先说清楚，我是灯光助理，不是三脚架，别再让我站那儿闭眼。
+      [备选 playful] 接。管饭这条比奶茶有诚意多了。下下周三几点集合，我按老板的作息来。
+      [备选 warm] 晚上我有空，接。设备到时候我来搬，你别自己扛。
+      [备选 directions[0]] 几点集合、拍到几点你定，我提前下班过来。
+      [备选 directions[1]] 城市夜景是不是得跑天台和桥底下，你打算拍哪儿？
+      [备选 directions[2]] 说实话，被你点名当助理这事我挺受用的。
+      [备选 directions[3]] 对了，上回你说拍我自带墨镜，这回算不算兑现？
+------------------------------------------------------------------------------
+E031_T11 clock=2026-12-20 21:02 may_decline=False intent=None
+   m0 ME｜有空 灯光助理要什么资质
+   m1 HER｜会喊灯往左点就行
+   [卡] current_action: 资质梗（会喊灯往左点）——接住并确认成行
+   [卡] acceptable: ["接梗+确认参加", "接梗+现场学一句", "接梗+说资质过剩"]
+   [卡] dims: ["interaction", "goal", "time_state", "memory_use"]
+   [卡] private_guidance: 玩笑里的确认就是确认。
+   [卡] protected: ["会喊灯往左点就行"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7470/325 latency_ms=34385
+      [首选] 行，那我提前练练嗓门，别到现场喊劈了。
+      [备选 bad_boy] 就这点要求？那我这资质已经超标了。
+      [备选 playful] 往左点，往左点——现在这水平能上岗了吗？
+      [备选 warm] 这活我干得来，比搬箱子体面。几点集合你说。
+      [备选 directions[0]] 行，那我就当一回人形灯架，听你指挥。
+      [备选 directions[1]] 那天几点集合？我提前把晚饭解决了。
+      [备选 directions[2]] 听着比搬器材轻松，我接了。
+      [备选 directions[3]] 拍完那顿管饭，地方你挑还是我挑。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5475/348 latency_ms=18143
+      [首选] 行 那我提前练两天嗓子 几点集合 要不要自带个喇叭
+      [备选 bad_boy] 就这？我以为灯光助理得懂点光 结果核心技能是嗓门 那这活我能干到退休
+      [备选 playful] 我这就去楼道练'往左点' 邻居估计以为我在搬家
+      [备选 warm] 行 这活我接了 到时候你指哪我打哪 别跟我客气
+      [备选 directions[0]] 集合时间和地点你定 我照办
+      [备选 directions[1]] 嗓门这块我有优势 诊所里小孩哭成一片我都压得住
+      [备选 directions[2]] 灯光上的事我听你的 你喊我就动
+      [备选 directions[3]] 管饭这句我记住了 到时候点菜我可不客气
+------------------------------------------------------------------------------
+E031_T12 clock=2026-12-20 21:08 may_decline=True intent=None
+   m0 HER｜行 那周三见 片子修好第一个给你看 拜拜
+   [卡] current_action: 她承诺片子第一个给我看——接住承诺，收尾
+   [卡] acceptable: ["接承诺+收", "接+说等首映", "不回（她已拜拜，合法）"]
+   [卡] dims: ["memory_use", "emotion_relation", "boundary", "time_state"]
+   [卡] private_guidance: 第一个给我看——位置已经给了。
+   [卡] protected: ["片子修好第一个给你看 拜拜"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7465/280 latency_ms=22416
+      [首选] 行，周三见。
+      [备选 bad_boy] 「第一个给我看」这句我记下了，别到时候剪完就忘。
+      [备选 playful] 喊灯业务我提前练练，别到时候你让我往左，我喊成往右。
+      [备选 warm] 记着了。周三见，早点收工。
+      [备选 directions[0]] 行，周三见，到时候我把力气带够。
+      [备选 directions[1]] 修好第一个给我看——这话我记下了。
+      [备选 directions[2]] 头一回干灯光助理，心里还挺当回事。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5549/378 latency_ms=24935
+      [首选] 行，周三见。片子修好第一个发我，我等着。
+      [备选 bad_boy] 第一个给我看，说好的，别到时候先给别人看。周三见。
+      [备选 playful] 第一个观众的位置我先占了。周三见，拜拜。
+      [备选 warm] 好，周三见。到时候喊灯往左点，我练着呢。
+      [备选 directions[0]] 周三前不打扰，到日子前我问一句几点在哪碰
+      [备选 directions[1]] 城市夜景那组，我提前问问要不要带什么
+      [备选 directions[2]] 片子出来给我看，我想看看自己闭眼以外长什么样
+==============================================================================
+STORY E034｜E034
+------------------------------------------------------------------------------
+E034_T01 clock=2026-11-30 20:32 may_decline=False intent=None
+   m0 HER｜看到你们公司中标新闻了 你还在老项目组吗
+   [卡] current_action: 接住重逢开场（新闻触发）——如实答现状
+   [卡] acceptable: ["答现状+回问近况", "答+说看到新闻评论了", "答+自嘲还在老东家"]
+   [卡] dims: ["factuality", "interaction", "memory_use"]
+   [卡] private_guidance: 一年没联系的重逢；先答事，热络交给后续。
+   [卡] protected: ["你还在老项目组吗"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   [卡·事实] E034_A01 subj=我 rel=现状 val=在老东家第五年 status=seed src=initial_kb:me
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7193/271 latency_ms=14443
+      [首选] 还在，没挪过窝。你那边顾问做得怎么样？
+      [备选 bad_boy] 还在，快成老项目组的固定资产了。你消息倒挺灵通。
+      [备选 playful] 还在，第五年了，我属于这栋楼的老家具。你呢，独立顾问是不是天天给自己放假？
+      [备选 warm] 还在。看到中标新闻就想起当年那个大促，你还记得挺清楚。
+      [备选 directions[0]] 还在，一直没动过。你消息倒灵通。
+      [备选 directions[1]] 中标那个是年底的项目，跟咱们当年做的大促不是一路活。
+      [备选 directions[2]] 还在，说不上是懒得动还是真喜欢这摊事。
+      [备选 directions[3]] 哪天有空出来坐坐，聊聊你现在怎么接活。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4718/328 latency_ms=22020
+      [首选] 还在，没挪窝，第五年了。你消息倒灵通，顾问做久了还盯着老东家的标？
+      [备选 bad_boy] 在，没挪。你这消息灵通得有点可疑啊。
+      [备选 playful] 还在，工位都快坐出包浆了。你这一问，像查岗。
+      [备选 warm] 还在，没挪。你走了之后组里没人跟我较真数据了，还挺不习惯。
+      [备选 directions[0]] 还在老组，第五年了。你现在顾问那边年底忙不忙？
+      [备选 directions[1]] 还在，没挪。老蔡还带队，我算组里待得最久的那个了。
+      [备选 directions[2]] 还在。你要还在，这波标的数据肯定又得被你抠一遍。
+      [备选 directions[3]] 说起来，你现在做顾问，是不是也常盯这类招标信息？
+------------------------------------------------------------------------------
+E034_T02 clock=2026-11-30 20:40 may_decline=False intent=None
+   m0 ME｜在 换了个组 不过老蔡还罩着
+   m1 HER｜替我问老蔡好 他当年把我骂出职场第一课
+   [卡] current_action: 她的'职场第一课'梗（老蔡骂人）——接住第三人梗
+   [卡] acceptable: ["接梗+回老蔡近况", "接梗+自嘲也挨过骂", "接梗+问她还记不记得细节"]
+   [卡] dims: ["memory_use", "interaction", "emotion_relation"]
+   [卡] private_guidance: 老蔡是共同记忆的锚；梗接住即可，别翻旧账细节。
+   [卡] protected: ["他当年把我骂出职场第一课"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   [卡·事实] E034_A02 subj=老蔡 rel=身份 val=共同的老领导，带过两人 status=seed src=initial_kb:me
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7351/385 latency_ms=24105
+      [首选] 行，碰到他我给你带到。他当年骂你哪回，我有点好奇。
+      [备选 bad_boy] 他骂人那套是真管用，你现在能当顾问，有一半得算他的。
+      [备选 playful] 第一课就值回票价了，你现在回头看，是不是还得谢谢他。
+      [备选 warm] 行，我替你带到。他要是知道你现在做顾问，估计得改口。
+      [备选 directions[0]] 行，碰到他我给你带到。他当年骂你哪回？
+      [备选 directions[1]] 他现在骂人少多了，带新人开始讲道理。
+      [备选 directions[2]] 他那套骂法虽然难听，但确实记得住。
+      [备选 directions[3]] 你这边顾问做得怎么样，忙不忙？
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4782/417 latency_ms=13799
+      [首选] 哈哈哈他那张嘴，我记得。你被骂的是哪一课？我猜是数据没对齐。
+      [备选 bad_boy] 能被他骂出第一课，也算正式入门了。我挨的那套跟你未必是同款，回头对一下谁更冤。
+      [备选 playful] 原来第一课是免费送的，我当时也交过学费。你是哪门课？
+      [备选 warm] 他骂人不留情，但骂完都让人记得住。话我替你带到，他准又念叨你两句。
+      [备选 directions[0]] 你被骂的是哪一课？我猜是数据没对齐。
+      [备选 directions[1]] 说真的，他当年骂我那句我到现在还记着，跟你未必是同一款。
+      [备选 directions[2]] 替你把话带到，他肯定还记得你。
+      [备选 directions[3]] 你现在做顾问，当年那些课是不是全用上了？
+------------------------------------------------------------------------------
+E034_T03 clock=2026-11-30 20:48 may_decline=False intent={"text": "帮她核对旧大促上线时间线", "status": "ACTIVE", "enabled": true}
+   m0 HER｜说起来 上次咱们那个大促上线 是几月来着 我简历上写的是3月
+   [卡] current_action: 她求证旧大促时间（简历用）——intent 落账，别凭感觉报
+   [卡] acceptable: ["给记忆版本+标注不确定", "说要去查周报", "报记忆+问她记得几月"]
+   [卡] dims: ["factuality", "goal", "memory_use", "interaction"]
+   [卡] private_guidance: 简历数据要经得起背调；此刻的谨慎是专业。
+   [卡] protected: ["我简历上写的是3月"]
+   [卡] forbidden: ["不要把未核实的日期说成确定"]
+   [卡] unknowns: ["大促确切上线日期（记忆待核）"]
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7467/288 latency_ms=14434
+      [首选] 别急着定3月，我记性不太靠谱。周报我全存着，翻完给你个准的日期。
+      [备选 bad_boy] 我要是随口给你个日子，你简历就得跟着改。等我翻完周报再说。
+      [备选 playful] 拿简历考我记性啊。等我翻周报，答错了算我的。
+      [备选 warm] 这事我给你核准确了再写，别让简历出岔子。
+      [备选 directions[0]] 3月我记得不太准，得翻周报对一下。
+      [备选 directions[1]] 你简历上除了这个时间，还有别的要对吗，一起核了。
+      [备选 directions[2]] 这种事我宁可翻记录也不瞎猜，写简历上错了麻烦。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5017/412 latency_ms=17357
+      [首选] 3月这个我有印象，但年份我不敢拍板——周报存档我都留着，翻一下就能给你准话。你简历上写的是哪一年？
+      [备选 bad_boy] 我记性好，年份老记串，这条我认。3月八成没错，具体哪年等我翻周报，写错了你再骂我，也算跟老蔡学了一课。
+      [备选 playful] 3月？我脑子里两个年份正在打架。等我翻完周报再告诉你哪个赢，别让你简历被面试官挑出毛病。
+      [备选 warm] 别自己拿不准就往上写，我周报都存着，回头翻出来跟你核一遍，省得你被追问年份。
+      [备选 directions[0]] 你简历写3月，是不是想让它跟你离职那个时间对上？我按这个去核。
+      [备选 directions[1]] 我先去翻那年的周报，把具体日期找出来发你，别凭印象定。
+      [备选 directions[2]] 这事我帮你核准，不用你自己猜。
+      [备选 directions[3]] 对了，替老蔡问你好的事我记着，回头跟他提你一句。
+------------------------------------------------------------------------------
+E034_T04 clock=2026-11-30 20:56 may_decline=False intent=None
+   m0 ME｜5月17号 我记得清楚 因为那天我通宵
+   m1 HER｜不对 我记得是3月 我那年3月还没跳槽
+   [卡] current_action: 我报了5月17（凭通宵记忆）——她提出异议（3月）——记忆冲突，不嘴硬
+   [卡] acceptable: ["承认记忆可能串+说要查", "坚持前先要证据", "接受她的推理方向"]
+   [卡] dims: ["factuality", "memory_use", "emotion_relation", "boundary"]
+   [卡] private_guidance: 两个'记得清楚'相撞——谁的证据链硬听谁的。
+   [卡] protected: ["我记得是3月"]
+   [卡] forbidden: []
+   [卡] unknowns: ["我的通宵对应哪个项目"]
+   [卡·事实] E034_A03 subj=她 rel=异议 val=她认为大促上线是3月（她3月底才离职） status=asserted src=message:E034_T04
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7474/318 latency_ms=36933
+      [首选] 别争了，我周报存档都在，翻出来一看日期就清楚了。
+      [备选 bad_boy] “3月还没跳槽”说明不了大促在3月，你这理由不成立。等我翻周报。
+      [备选 playful] 行，那就赌一杯咖啡，我周报里存着记录，翻出来定输赢。
+      [备选 warm] 你简历别写错就行，我回头翻周报给你个准数。
+      [备选 directions[0]] 我记的是5月17号，那天通宵到天亮，印象太深了。
+      [备选 directions[1]] 你简历上写3月的话，跟前一份工作的时间线对得上吗？
+      [备选 directions[2]] 这种事看记录最稳，谁记错都正常。
+      [备选 directions[3]] 我翻完周报截图发你，你先别急着改。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4932/546 latency_ms=19157
+      [首选] 你3月没跳槽我信，但上线时间不一定跟着离职走。你简历上写3月，是记的上线还是项目启动？这俩经常被混。我周报存档还在，翻一下就有答案。
+      [备选 bad_boy] 3月没跳槽是真的，但这一点不能说明上线时间。别急着改简历，也别急着让我认——周报我留着，翻出来，谁记错谁认。
+      [备选 playful] 开庭吧。我印象里是5月17，通宵那晚记得特别清楚；不过你要真赢了我也认，先让我翻周报找证据。
+      [备选 warm] 这事我不想含糊过去，写错月份对你简历不好。周报我一直存着，翻到了第一时间发你对一遍。
+      [备选 directions[0]] 我印象里是5月17，通宵到早上那种累不会记错，不过我再翻周报确认一下。
+      [备选 directions[1]] 你简历上写3月，是记的上线还是项目启动？这俩经常被混。
+      [备选 directions[2]] 我不是想跟你争，是对清楚了咱俩以后都不吃亏。
+------------------------------------------------------------------------------
+E034_T05 clock=2026-11-30 21:08 may_decline=False intent=None
+   m0 HER｜你别猜了 翻翻你们周报存档 我3月28号离职 大促在我走之前就上了 所以是3月
+   [卡] current_action: 她给出证据链（3月28离职→大促在其前）——接受推理，去查存档
+   [卡] acceptable: ["接受推理+答应查", "承认她链路硬+去查周报", "说给十分钟查存档"]
+   [卡] dims: ["factuality", "memory_use", "interaction", "goal"]
+   [卡] private_guidance: 她的推理已闭环；我要做的是补最后一环（周报）。
+   [卡] protected: ["翻翻你们周报存档"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   [卡·事实] E034_A04 subj=她 rel=证据 val=她3月28离职，大促在其离职前上线 status=asserted src=message:E034_T05
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7454/352 latency_ms=24761
+      [首选] 行，我去翻周报存档，翻到了直接发你，谁记串了谁认。
+      [备选 bad_boy] 周报不会说谎。我翻完发你，到时候别改简历。
+      [备选 playful] 行，让周报来判案。给我十分钟，翻到了截图发你。
+      [备选 warm] 别争了，我去翻，翻到就发你。年份我确实容易记串，但通宵那天我记得挺清楚。
+      [备选 directions[0]] 行，我去翻周报存档，翻到了直接发你。
+      [备选 directions[1]] 你简历写3月，那大促要真在3月，周报里应该有你的名字。
+      [备选 directions[2]] 我记的是5月17通宵，但年份我容易记串，翻出来算。
+      [备选 directions[3]] 翻完再定，谁记错了谁请咖啡。
+   ── action_policy_r1 ── score10=0.0 veto=json_schema_broken failed=['json_schema_valid'] delivery=ok tokens p/c=5047/450 latency_ms=47085
+      [首选] 行，不猜了，我去翻。周报我一直存着没删，找到那一期把原文发你——是几月让存档说话。
+      [备选 playful] 好，那就赌一把。我把周报翻出来，原文摆上去，输的人认账。
+      [备选 warm] 行，别自己在那儿较真了，我这就去翻，翻到原样发你。
+      [备选 directions[0]] 给我几分钟，翻到了我把原文截图发你
+      [备选 directions[1]] 你那句「大促在我走之前就上了」我认，但走之前和3月是不是一回事，还得看存档
+      [备选 directions[2]] 你这么较真我其实挺服的，换别人早就糊弄过去了
+------------------------------------------------------------------------------
+E034_T06 clock=2026-11-30 21:16 may_decline=False intent=None
+   m0 ME｜查了周报 你对 是3月14号 我记成5月了 那天通宵是另一个项目
+   m1 HER｜哈 我就说 我简历改好了 谢谢配合
+   [卡] current_action: 查证结果：她对，3月14——认错+修正我的记忆来源（通宵是另一项目）
+   [卡] acceptable: ["认错+给新事实", "认错+归因记忆串档", "认错+问她怎么记得这么清"]
+   [卡] dims: ["factuality", "memory_use", "emotion_relation", "goal"]
+   [卡] private_guidance: 认错要快且带修正后的事实——这是 T03 intent 的兑现。
+   [卡] protected: ["我简历改好了"]
+   [卡] forbidden: ["不要再引用5月17"]
+   [卡] unknowns: []
+   [卡·事实] E034_A05 subj=大促 rel=时间 val=上线为3月14号（5月记忆作废） status=corrected src=message:E034_T06
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7511/340 latency_ms=15158
+      [首选] 行，那这锅我背了。不过“谢谢配合”这词儿听着像甲方结项。
+      [备选 bad_boy] 改完发我扫一眼，别又错个年份，到时候还得拉我对一遍。
+      [备选 playful] “谢谢配合”，说得跟我是你项目组的下属似的。
+      [备选 warm] 记错就是记错，你能较这个真挺好的。
+      [备选 directions[0]] 对，3月14号。那天我还以为是另一个项目通宵的，记岔了。
+      [备选 directions[1]] 你简历里大促这块写的啥，成果还是数据？
+      [备选 directions[2]] 我这记性，年份能记串一年，以后这种事还得你来核。
+      [备选 directions[3]] 改完了？改完就别折腾了，早点歇着。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5169/495 latency_ms=17270
+      [首选] 行，你赢了，3月14号，我认栽。以后年份的事我先翻周报再开口。
+      [备选 bad_boy] 我这就把“5月17号”从脑子里删干净。别跟老蔡说我记错过，他当年骂人那一套我还记着。
+      [备选 playful] 恭喜简历喜提正确日期。我这份错误记忆就当陪跑了。
+      [备选 warm] 记错的是我，好在存档没记错。这种事还是你对得快。
+      [备选 directions[0]] 那你简历上其他几段年份要不要也顺手核一遍？我周报还能查。
+      [备选 directions[1]] 老蔡要是知道咱俩为3月还是5月掰扯半天，肯定又得开一课。
+      [备选 directions[3]] 你现在做顾问，是不是天天帮人改这种简历？
+------------------------------------------------------------------------------
+E034_T07 clock=2026-12-14 21:02 may_decline=False intent=None
+   m0 HER｜对了 老蔡找我了 想挖我回去做顾问
+   [卡] current_action: 老蔡挖她回任顾问——接消息+回扣职场第一课梗
+   [卡] acceptable: ["接消息+问待遇", "接梗+说冤家路窄", "接+问她自己怎么想"]
+   [卡] dims: ["memory_use", "interaction", "emotion_relation"]
+   [卡] private_guidance: 两周冷场后的消息不突兀——老蔡是共同通道。
+   [卡] protected: ["想挖我回去做顾问"]
+   [卡] forbidden: []
+   [卡] unknowns: ["顾问条件"]
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7338/251 latency_ms=41751
+      [首选] 老蔡亲自出马了，他怎么跟你说的？
+      [备选 bad_boy] 老蔡这是缺人了才想起你，条件开得够不够诚意
+      [备选 playful] 老蔡挖人一向这么直接，开口就让你回去当顾问
+      [备选 warm] 能被老蔡惦记，说明你这两年没白干。你自己想回去吗？
+      [备选 directions[0]] 他给的什么条件，全职还是按项目算？
+      [备选 directions[1]] 回去做顾问，好处是路都熟；难的是熟人生意不好谈价
+      [备选 directions[2]] 我倒是觉得，他既然主动来找你，你就不着急答应
+      [备选 directions[3]] 要是真谈上了，改天出来聊聊，我挺好奇他开的什么价
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5072/392 latency_ms=16817
+      [首选] 老蔡这人挖人一向直接。他是想让你回去做项目顾问，还是给整个组当外脑？
+      [备选 bad_boy] 老蔡连你都惦记上了，看来那边是真缺人。你怎么想，动心了没？
+      [备选 playful] 当年把你骂出职场第一课的人，现在回头请你回去当顾问，这算盘打得挺响。去之前是不是该先让他把当年的账结一下。
+      [备选 warm] 他找你，说明他还记得你靠谱。不过顾问跟全职是两回事，别光顾着念旧，条件先谈清楚。
+      [备选 directions[0]] 老蔡那边是哪个项目缺人，你大概有数吗？
+      [备选 directions[1]] 做顾问回去，好处是不用卷日常，坏处是边界容易糊。你怎么权衡？
+      [备选 directions[2]] 说实话我有点想看你回去跟老蔡再合作一次，场面应该挺有意思。
+      [备选 directions[3]] 对了，你简历这次是不是又得改一版。
+------------------------------------------------------------------------------
+E034_T08 clock=2026-12-14 21:10 may_decline=False intent=None
+   m0 ME｜回吗 你上回被他骂出去的
+   m1 HER｜职场第一课的对象现在递橄榄枝 我得装作考虑三天
+   [卡] current_action: '装作考虑三天'——接她的傲娇式处理
+   [卡] acceptable: ["接梗+等她答案", "接梗+说老蔡会加码", "接梗+劝她认真考虑"]
+   [卡] dims: ["interaction", "emotion_relation", "boundary"]
+   [卡] private_guidance: 她要的是观众不是参谋；配合。
+   [卡] protected: ["我得装作考虑三天"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7350/263 latency_ms=32637
+      [首选] 行，三天装得像一点，别第一天就绷不住露馅。
+      [备选 bad_boy] 装三天太短了，得让他等到第四天才回，那才叫考虑。
+      [备选 playful] 三天？我猜你第一天就在算他能开多少了。
+      [备选 warm] 想回去就回去，别为当年那口气把自己架住。
+      [备选 directions[0]] 他开的是什么条件？
+      [备选 directions[1]] 老蔡这是走了才知道谁顶事。
+      [备选 directions[2]] 真谈的话，先让他把条件落到纸上。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5261/270 latency_ms=36464
+      [首选] 行，那就装三天。不过第一天最难装，他一个电话过来你准露馅
+      [备选 bad_boy] 我猜你撑不到三天，第二天就开始问他什么时候入职
+      [备选 playful] 记得把'考虑中'写进周报发他，格式按你简历那套来
+      [备选 warm] 回不回都行，别为了当年那口气把自己绕进去
+      [备选 directions[0]] 那三天打算怎么演，有剧本吗
+      [备选 directions[1]] 他当年到底骂了你什么，我一直只听你说'第一课'
+      [备选 directions[2]] 说实话，你要真回去，我还挺想围观的
+      [备选 directions[3]] 你现在接顾问，是不是也这么跟客户装三天
+------------------------------------------------------------------------------
+E034_T09 clock=2026-12-14 21:16 may_decline=False intent=None
+   m0 HER｜装完了 不回去了 但老蔡问你有没有兴趣带他们新项目
+   [卡] current_action: 反转：她不回，但老蔡想挖我——接住并表态
+   [卡] acceptable: ["表态+给条件", "表态+谢她传话", "表态+自嘲刚站稳"]
+   [卡] dims: ["goal", "interaction", "memory_use", "factuality"]
+   [卡] private_guidance: 我的表态要与我现状一致（中标项目在手）。
+   [卡] protected: ["老蔡问你有没有兴趣带他们新项目"]
+   [卡] forbidden: []
+   [卡] unknowns: ["新项目具体内容"]
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7431/365 latency_ms=39403
+      [首选] 装完就撤，他估计还在等你回话呢。新项目具体做什么的？
+      [备选 bad_boy] 你倒是脱身了，顺手把我推前面。先说清楚，这项目是坑还是机会
+      [备选 playful] 演了三天戏，最后把我推出去顶，老蔡这算盘打得挺顺
+      [备选 warm] 你不回去挺好。他那边我先听听是什么事，不急着应
+      [备选 directions[0]] 他原话怎么说的，想让我带什么，团队和预算提了吗
+      [备选 directions[1]] 老蔡画饼有前科，先看他这次给的是人还是空话
+      [备选 directions[2]] 我暂时没打算动，但想听听他到底要做什么
+      [备选 directions[3]] 先不说他，你这两天在忙什么
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5238/502 latency_ms=36006
+      [首选] 装完就撂了，够干脆。新项目什么方向的，他跟你透了多少底？
+      [备选 bad_boy] 三天戏演得挺足。先问清楚，是让我带项目，还是让我去给他收拾摊子？
+      [备选 playful] 所以你考虑三天，结论是把我推出去？这算盘打得挺响。说说，新项目干什么的。
+      [备选 warm] 不回去挺好的，省得再上第二课。新项目我确实有点兴趣，你跟我讲讲他具体怎么说的。
+      [备选 directions[0]] 他有没有说项目什么时候启动、让我带几个人？
+      [备选 directions[1]] 你要是不回去，这项目是不是就没人接了？
+      [备选 directions[2]] 说真的，他绕过你直接找我，我倒想先听听你怎么看这个项目。
+      [备选 directions[3]] 对了，你这三天装考虑，他中间有没有加价？
+------------------------------------------------------------------------------
+E034_T10 clock=2026-12-14 21:24 may_decline=False intent=None
+   m0 ME｜让他先把我中标的项目干完
+   m1 HER｜有骨气 我把原话带到 他会笑
+   [卡] current_action: '让他先把中标项目干完'——她当信使带原话
+   [卡] acceptable: ["接梗+谢传话", "接梗+说原话更硬", "接梗+问她顾问到底接没接"]
+   [卡] dims: ["interaction", "emotion_relation", "boundary"]
+   [卡] private_guidance: 立场已表；信任她传话。
+   [卡] protected: ["我把原话带到 他会笑"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7486/287 latency_ms=15041
+      [首选] 笑归笑，他要是真想要人，自己来跟我说
+      [备选 bad_boy] 带吧，顺便告诉他，我手上的活干完才轮到别人的事
+      [备选 playful] 他笑完记得问他要加班费，我这话值钱
+      [备选 warm] 你照原话带就行，别替我圆
+      [备选 directions[0]] 他要真笑，说明那项目缺人缺得厉害
+      [备选 directions[1]] 话说回来，他们新项目到底是干什么的
+      [备选 directions[2]] 我这人就这样，手里的事没完不谈新的
+      [备选 directions[3]] 不聊他了，你这顾问最近忙不忙
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5298/308 latency_ms=16197
+      [首选] 一字不差就行，别替我加戏。他笑完要是真提新项目，我再跟他聊
+      [备选 bad_boy] 带吧。他要是笑，你就问他笑谁
+      [备选 playful] 带吧，最好录下来，我一直想看他笑的样子
+      [备选 warm] 麻烦你了。这话从你嘴里说出来，比我自己去说管用
+      [备选 directions[0]] 他回了什么跟我说一声，我挺好奇他的表情
+      [备选 directions[1]] 老蔡记仇也记人，你拒了他还愿意让你带话，说明他是真缺人
+      [备选 directions[2]] 说真的，被他一问我还真有点心动，等手上这摊干完再说
+      [备选 directions[3]] 你现在顾问那边年底是不是最忙的时候
+------------------------------------------------------------------------------
+E034_T11 clock=2026-12-28 21:02 may_decline=False intent=None
+   m0 HER｜对了 帮我看看你项目那段的写法 我简历时间线终于对了
+   [卡] current_action: 回扣简历线（时间线终于对了）——互助续尾，给写法
+   [卡] acceptable: ["答应发模板", "答应+提醒背调会核时间", "答应+自嘲我的错例有用"]
+   [卡] dims: ["memory_use", "goal", "interaction", "emotion_relation"]
+   [卡] private_guidance: T03 的 intent 走完全程：从求证到修正到互助。
+   [卡] protected: ["我简历时间线终于对了"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   [卡·事实] E034_A06 subj=她 rel=进度 val=简历时间线已改对（3月14） status=confirmed src=message:E034_T11
+   ── reference_product_v1 ── score10=0.0 veto=json_schema_broken failed=['json_schema_valid'] delivery=ok tokens p/c=7325/266 latency_ms=15034
+      [首选] 贴过来，我看看你那段是怎么写的。
+      [备选 bad_boy] 时间线终于对了，这话听着像是折腾了不少天。贴过来看看。
+      [备选 playful] 可以，但年份别信我，我容易记串，数据你自己再核一遍。
+      [备选 warm] 行，发过来，我仔细给你看一遍。
+      [备选 directions[0]] 贴过来，我看看你那段是怎么写的。
+      [备选 directions[1]] 你这段想突出结果还是想突出你负责的角色？先说清楚，我按这个看。
+      [备选 directions[2]] 简历里的项目段最容易写成职责清单，读者看不出你干成了什么。
+      [备选 directions[3]] 要说不清楚就语音过一遍，我边看边跟你说。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5345/444 latency_ms=21848
+      [首选] 行，那段我一般按三行拆：负责哪块、怎么做的、结果多少，形容词一个不留。还是你先把你那版发我，我对着改？
+      [备选 bad_boy] 时间线终于对了，这句算你赢一回。段落可以看，但先说你现在那版哪句最不满意，不然我改出来还是我自己那套。
+      [备选 playful] 时间线理顺了，接下来轮到项目那段。丑话说前头：我那种写法全是数字，一句漂亮话都没有。
+      [备选 warm] 行，随时发我。时间线折腾这么久终于对上了，应该松口气了吧；那段别自己抠字眼抠到半夜，我帮你捋。
+      [备选 directions[0]] 你先发我那版，我看看时间线怎么排的，顺手把项目那段一起顺了。
+      [备选 directions[1]] 我写这种段落就三行：负责什么、怎么做的、结果多少，形容词一个不留。
+      [备选 directions[2]] 说真的，你较真到去翻周报那一刻，我就觉得这简历错不了。
+      [备选 directions[3]] 对了，老蔡那个新项目，后来他跟你提过细节吗？
+------------------------------------------------------------------------------
+E034_T12 clock=2026-12-28 21:10 may_decline=True intent=None
+   m0 ME｜发你了 照我这个抄 但3月14号那句别抄 错的是我
+   m1 HER｜放心 错的都记我本上了 哈哈 新年常联系
+   [卡] current_action: '错的是我'自嘲收尾——接住+收（may_decline=true）
+   [卡] acceptable: ["接梗收", "接+说新年见", "不回（合法，她已收尾）"]
+   [卡] dims: ["interaction", "emotion_relation", "boundary", "memory_use"]
+   [卡] private_guidance: 认错认到底，玩笑收到位。
+   [卡] protected: ["错的都记我本上了 哈哈 新年常联系"]
+   [卡] forbidden: []
+   [卡] unknowns: []
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7365/402 latency_ms=34485
+      [首选] 行，本子留着。新年常联系这句我可记住了，别光说。
+      [备选 bad_boy] 记在本子上可以，别只记我一个人的。
+      [备选 playful] 那3月14号那句我当没写过，省得以后被拿出来对账。
+      [备选 warm] 好，新年也常联系，有事随时找我。
+      [备选 directions[0]] 行，那正好，我这边周报还存着，真对起账来我不虚。
+      [备选 directions[1]] 除了时间线，你项目成果那块要不要也一起看看？
+      [备选 directions[2]] 你较真这点挺好，简历改得比我们当年周报还细。
+      [备选 directions[3]] 改完发我一眼，看完就放你过年。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5531/458 latency_ms=15985
+      [首选] 记本上就行，别记账。新年第一条我发，省得你本上又添一笔。
+      [备选 bad_boy] 你本子记得这么细，是不是留着哪天念给我听。行，新年第一条归我，先把利息还上。
+      [备选 playful] 行，那我提前占个位——新年第一条消息归我，别到时候本子上一翻写着：此人失联。
+      [备选 warm] “新年常联系”这句我可当真了，不是记你本上那种当真。新年我先找你。
+      [备选 directions[0]] 那份简历时间线你最后是怎么排的，发我看看还有没有坑。
+      [备选 directions[1]] 你本子上除了我这几笔，还有别人的账吗。
+      [备选 directions[2]] 新年第一条我发，说好了。

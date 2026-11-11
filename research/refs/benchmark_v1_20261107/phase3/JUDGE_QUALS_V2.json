@@ -1,0 +1,120 @@
+{
+ "kind": "judge_qualification_v2",
+ "date": "2026-11-09",
+ "rule": "误杀≤10% 且 漏检≤20% 且 顺序一致率≥80%；任一分量未测=无法验证=不给 full",
+ "source": "W20_03_JUDGE_CAL_REPORT_20261103（数字照录，未重测）",
+ "dims": {
+  "goal": {
+   "w20_03": {
+    "false_kill": 0.0,
+    "miss": null,
+    "order": 0.829
+   },
+   "old_label": "full-qualified",
+   "new_label": "assistive（未校准，禁判死）",
+   "fail_reasons": [
+    "miss未测"
+   ]
+  },
+  "time": {
+   "w20_03": {
+    "false_kill": 0.043,
+    "miss": null,
+    "order": 0.714
+   },
+   "old_label": "full-qualified",
+   "new_label": "assistive（未校准，禁判死）",
+   "fail_reasons": [
+    "miss未测",
+    "order=0.714<0.80"
+   ]
+  },
+  "interact": {
+   "w20_03": {
+    "false_kill": 0.0,
+    "miss": 0.0,
+    "order": 0.857
+   },
+   "old_label": "full-qualified",
+   "new_label": "full-qualified",
+   "fail_reasons": []
+  },
+  "emotion": {
+   "w20_03": {
+    "false_kill": 0.0,
+    "miss": 0.0,
+    "order": 0.743
+   },
+   "old_label": "full-qualified",
+   "new_label": "assistive（未校准，禁判死）",
+   "fail_reasons": [
+    "order=0.743<0.80"
+   ]
+  },
+  "factuality": {
+   "w20_03": {
+    "false_kill": 0.0,
+    "miss": null,
+    "order": 0.743
+   },
+   "old_label": "full-qualified",
+   "new_label": "assistive（未校准，禁判死）",
+   "fail_reasons": [
+    "miss未测",
+    "order=0.743<0.80"
+   ]
+  },
+  "initiative": {
+   "w20_03": {
+    "false_kill": 0.0,
+    "miss": 0.0,
+    "order": 0.714
+   },
+   "old_label": "full-qualified",
+   "new_label": "assistive（未校准，禁判死）",
+   "fail_reasons": [
+    "order=0.714<0.80"
+   ]
+  },
+  "attribution": {
+   "w20_03": {
+    "false_kill": null,
+    "miss": null,
+    "order": 0.457
+   },
+   "old_label": "not-testable",
+   "new_label": "disqualified/assistive-only",
+   "fail_reasons": [
+    "false_kill未测",
+    "miss未测",
+    "order=0.457<0.80"
+   ]
+  },
+  "boundary": {
+   "w20_03": {
+    "false_kill": 0.022,
+    "miss": 0.864,
+    "order": 0.714
+   },
+   "old_label": "mechanical-disqualified",
+   "new_label": "disqualified/assistive-only",
+   "fail_reasons": [
+    "miss=0.864>0.20",
+    "order=0.714<0.80"
+   ]
+  },
+  "memory_use": {
+   "w20_03": {
+    "false_kill": 0.0,
+    "miss": 0.609,
+    "order": 0.514
+   },
+   "old_label": "mechanical-disqualified",
+   "new_label": "disqualified/assistive-only",
+   "fail_reasons": [
+    "miss=0.609>0.20",
+    "order=0.514<0.80"
+   ]
+  }
+ }
+}

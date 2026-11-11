@@ -1,0 +1,610 @@
+{
+  "frozen": {
+    "count": 19,
+    "errors": []
+  },
+  "dependency_mutation_refused": true,
+  "mock52": {
+    "run": {
+      "exit": "0",
+      "stdout": "6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6\n   ],\n   \"blank\": 0,\n   \"parse_fail_not_json\": 0,\n   \"schema_broken\": 0,\n   \"unknown_field\": 0,\n   \"unauthorized_no_reply\": 0,\n   \"action_violation\": 0,\n   \"scorer_crash\": 0,\n   \"legal_no_reply\": 0,\n   \"reply\": 18,\n   \"other_veto\": 8\n  },\n  \"F\": {\n   \"n\": 26,\n   \"success\": 26,\n   \"failed\": 0,\n   \"rec_sendable\": 18,\n   \"any_available\": 18,\n   \"deliveries\": [\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6,\n    6\n   ],\n   \"blank\": 0,\n   \"parse_fail_not_json\": 0,\n   \"schema_broken\": 0,\n   \"unknown_field\": 0,\n   \"unauthorized_no_reply\": 0,\n   \"action_violation\": 0,\n   \"scorer_crash\": 0,\n   \"legal_no_reply\": 0,\n   \"reply\": 18,\n   \"other_veto\": 8\n  }\n }\n}\n",
+      "stderr": ""
+    },
+    "summary": {
+      "batch_id": "l3b_52_independent_wave16_clean",
+      "cap": 52,
+      "slots_registered": 52,
+      "terminal_slots": 52,
+      "real_started": 52,
+      "real_completed": 52,
+      "real_failed": 0,
+      "pairing_verified": 52,
+      "verified_complete": true,
+      "failed_slots": [],
+      "occupied_slots": [],
+      "per_arm": {
+        "A3": {
+          "n": 26,
+          "success": 26,
+          "failed": 0,
+          "rec_sendable": 18,
+          "any_available": 18,
+          "deliveries": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "blank": 0,
+          "parse_fail_not_json": 0,
+          "schema_broken": 0,
+          "unknown_field": 0,
+          "unauthorized_no_reply": 0,
+          "action_violation": 0,
+          "scorer_crash": 0,
+          "legal_no_reply": 0,
+          "reply": 18,
+          "other_veto": 8
+        },
+        "F": {
+          "n": 26,
+          "success": 26,
+          "failed": 0,
+          "rec_sendable": 18,
+          "any_available": 18,
+          "deliveries": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "blank": 0,
+          "parse_fail_not_json": 0,
+          "schema_broken": 0,
+          "unknown_field": 0,
+          "unauthorized_no_reply": 0,
+          "action_violation": 0,
+          "scorer_crash": 0,
+          "legal_no_reply": 0,
+          "reply": 18,
+          "other_veto": 8
+        }
+      },
+      "rotation_log": [
+        "A3|NCA_CORR_INTENT_v1|r1|t1",
+        "F|NCA_CORR_INTENT_v1|r1|t1",
+        "F|NCA_CORR_INTENT_v1|r2|t1",
+        "A3|NCA_CORR_INTENT_v1|r2|t1",
+        "A3|NCA_CORR_INTENT_v1|r1|t2",
+        "F|NCA_CORR_INTENT_v1|r1|t2",
+        "F|NCA_CORR_INTENT_v1|r2|t2",
+        "A3|NCA_CORR_INTENT_v1|r2|t2",
+        "A3|NCA_CORR_INTENT_v1|r1|t3",
+        "F|NCA_CORR_INTENT_v1|r1|t3",
+        "F|NCA_CORR_INTENT_v1|r2|t3",
+        "A3|NCA_CORR_INTENT_v1|r2|t3",
+        "A3|NCA_CORR_INTENT_v1|r1|t4",
+        "F|NCA_CORR_INTENT_v1|r1|t4",
+        "F|NCA_CORR_INTENT_v1|r2|t4",
+        "A3|NCA_CORR_INTENT_v1|r2|t4",
+        "A3|NCA_CORR_INTENT_v1|r1|t5",
+        "F|NCA_CORR_INTENT_v1|r1|t5",
+        "F|NCA_CORR_INTENT_v1|r2|t5",
+        "A3|NCA_CORR_INTENT_v1|r2|t5",
+        "A3|NCA_CORR_INTENT_v1|r1|t6",
+        "F|NCA_CORR_INTENT_v1|r1|t6",
+        "F|NCA_CORR_INTENT_v1|r2|t6",
+        "A3|NCA_CORR_INTENT_v1|r2|t6",
+        "A3|NCB_ENTITY_DENSE_v1|r1|t1",
+        "F|NCB_ENTITY_DENSE_v1|r1|t1",
+        "F|NCB_ENTITY_DENSE_v1|r2|t1",
+        "A3|NCB_ENTITY_DENSE_v1|r2|t1",
+        "A3|NCB_ENTITY_DENSE_v1|r1|t2",
+        "F|NCB_ENTITY_DENSE_v1|r1|t2",
+        "F|NCB_ENTITY_DENSE_v1|r2|t2",
+        "A3|NCB_ENTITY_DENSE_v1|r2|t2",
+        "A3|NCB_ENTITY_DENSE_v1|r1|t3",
+        "F|NCB_ENTITY_DENSE_v1|r1|t3",
+        "F|NCB_ENTITY_DENSE_v1|r2|t3",
+        "A3|NCB_ENTITY_DENSE_v1|r2|t3",
+        "A3|NCB_ENTITY_DENSE_v1|r1|t4",
+        "F|NCB_ENTITY_DENSE_v1|r1|t4",
+        "F|NCB_ENTITY_DENSE_v1|r2|t4",
+        "A3|NCB_ENTITY_DENSE_v1|r2|t4",
+        "A3|NCB_ENTITY_DENSE_v1|r1|t5",
+        "F|NCB_ENTITY_DENSE_v1|r1|t5",
+        "F|NCB_ENTITY_DENSE_v1|r2|t5",
+        "A3|NCB_ENTITY_DENSE_v1|r2|t5",
+        "A3|DEV_MEETING_FACTS_v1|r1|t1",
+        "F|DEV_MEETING_FACTS_v1|r1|t1",
+        "F|DEV_TWO_BOXES_v1|r1|t1",
+        "A3|DEV_TWO_BOXES_v1|r1|t1",
+        "A3|DEV_NEW_STATION_v1|r1|t1",
+        "F|DEV_NEW_STATION_v1|r1|t1",
+        "F|DEV_ROOMMATE_ADVICE_v1|r1|t1",
+        "A3|DEV_ROOMMATE_ADVICE_v1|r1|t1"
+      ],
+      "events_tail": [
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "F|NCB_ENTITY_DENSE_v1|r2|t5"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "F|NCB_ENTITY_DENSE_v1|r2|t5 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "A3|NCB_ENTITY_DENSE_v1|r2|t5"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "A3|NCB_ENTITY_DENSE_v1|r2|t5 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "A3|DEV_MEETING_FACTS_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "A3|DEV_MEETING_FACTS_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "F|DEV_MEETING_FACTS_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "F|DEV_MEETING_FACTS_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "F|DEV_TWO_BOXES_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "F|DEV_TWO_BOXES_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "A3|DEV_TWO_BOXES_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "A3|DEV_TWO_BOXES_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "A3|DEV_NEW_STATION_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "A3|DEV_NEW_STATION_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:35",
+          "detail": "F|DEV_NEW_STATION_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:36",
+          "detail": "F|DEV_NEW_STATION_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:36",
+          "detail": "F|DEV_ROOMMATE_ADVICE_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:36",
+          "detail": "F|DEV_ROOMMATE_ADVICE_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:36",
+          "detail": "A3|DEV_ROOMMATE_ADVICE_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:36",
+          "detail": "A3|DEV_ROOMMATE_ADVICE_v1|r1|t1 -> success (attempt=[1])"
+        }
+      ]
+    },
+    "unique_run_ids": 52,
+    "dep_notes": 52,
+    "dep_arms": [
+      "A3",
+      "F"
+    ],
+    "dev_order": [
+      "A3|DEV_MEETING_FACTS_v1",
+      "F|DEV_MEETING_FACTS_v1",
+      "F|DEV_TWO_BOXES_v1",
+      "A3|DEV_TWO_BOXES_v1",
+      "A3|DEV_NEW_STATION_v1",
+      "F|DEV_NEW_STATION_v1",
+      "F|DEV_ROOMMATE_ADVICE_v1",
+      "A3|DEV_ROOMMATE_ADVICE_v1"
+    ],
+    "snapshot_hashes": {
+      "candidates/phase1_retr_idf/mechanism/mechanism.py": "50c095eb7ee021b24831f741d56ea7cad5e30466a11f25217b476ecee49f8727",
+      "candidates/phase2_expr/mechanism/mechanism.py": "31a1dd72e355257b75b12bb7f5d74cf104abea6084ba904972d2b1908dfd482a",
+      "candidates/phase3_facts/mechanism/mechanism.py": "e107ec0b352e39e823edf6e15aa03692596d070d897a0d5dac13336ceacf2561",
+      "candidates/phase2_expr/assets/system_prompt/expression.md": "707128023da1def0177210d120986ef67a3094ee74b40646a7c2399c4214c367",
+      "candidates/phase3_facts/assets/system_prompt/facts_evidence.md": "b9516d44f1a04b20bc36add6d841f3fb4c450ee245a013ba22ec080d9f65d1f7"
+    }
+  },
+  "fail13": {
+    "first": {
+      "exit": "SLOT_FAILED_STOP_BATCH: 槽 13（A3|NCA_CORR_INTENT_v1|r1|t4）TimeoutError: reviewer independent gateway failure。fail-fast：整批终止，不作废失败槽继续、不自动重跑。",
+      "stdout": "",
+      "stderr": ""
+    },
+    "restart": {
+      "exit": "BATCH_ABORTED_TERMINAL: 失败/未决槽存在，整批不可继续（fail-fast；不跳过、不猜测、不自动重发） failed=['A3|NCA_CORR_INTENT_v1|r1|t4'] occupied=[]",
+      "stdout": "",
+      "stderr": ""
+    },
+    "restore": {
+      "exit": "RECOVERY_DISABLED: 作废失败槽继续的路径已禁用（v10 复核 §5：失败即终止整批；失败批次不可恢复，如需继续请显式新建批次）",
+      "stdout": "",
+      "stderr": ""
+    },
+    "calls": 13,
+    "summary": {
+      "batch_id": "l3b_52_independent_wave16_fail13",
+      "cap": 52,
+      "slots_registered": 13,
+      "terminal_slots": 13,
+      "real_started": 13,
+      "real_completed": 12,
+      "real_failed": 1,
+      "pairing_verified": 12,
+      "verified_complete": false,
+      "failed_slots": [
+        "A3|NCA_CORR_INTENT_v1|r1|t4"
+      ],
+      "occupied_slots": [],
+      "per_arm": {
+        "A3": {
+          "n": 7,
+          "success": 6,
+          "failed": 1,
+          "rec_sendable": 4,
+          "any_available": 4,
+          "deliveries": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "blank": 0,
+          "parse_fail_not_json": 0,
+          "schema_broken": 0,
+          "unknown_field": 0,
+          "unauthorized_no_reply": 0,
+          "action_violation": 0,
+          "scorer_crash": 0,
+          "legal_no_reply": 0,
+          "reply": 4,
+          "other_veto": 2
+        },
+        "F": {
+          "n": 6,
+          "success": 6,
+          "failed": 0,
+          "rec_sendable": 4,
+          "any_available": 4,
+          "deliveries": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "blank": 0,
+          "parse_fail_not_json": 0,
+          "schema_broken": 0,
+          "unknown_field": 0,
+          "unauthorized_no_reply": 0,
+          "action_violation": 0,
+          "scorer_crash": 0,
+          "legal_no_reply": 0,
+          "reply": 4,
+          "other_veto": 2
+        }
+      },
+      "rotation_log": [
+        "A3|NCA_CORR_INTENT_v1|r1|t1",
+        "F|NCA_CORR_INTENT_v1|r1|t1",
+        "F|NCA_CORR_INTENT_v1|r2|t1",
+        "A3|NCA_CORR_INTENT_v1|r2|t1",
+        "A3|NCA_CORR_INTENT_v1|r1|t2",
+        "F|NCA_CORR_INTENT_v1|r1|t2",
+        "F|NCA_CORR_INTENT_v1|r2|t2",
+        "A3|NCA_CORR_INTENT_v1|r2|t2",
+        "A3|NCA_CORR_INTENT_v1|r1|t3",
+        "F|NCA_CORR_INTENT_v1|r1|t3",
+        "F|NCA_CORR_INTENT_v1|r2|t3",
+        "A3|NCA_CORR_INTENT_v1|r2|t3",
+        "A3|NCA_CORR_INTENT_v1|r1|t4"
+      ],
+      "events_tail": [
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:36",
+          "detail": "A3|NCA_CORR_INTENT_v1|r2|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:36",
+          "detail": "A3|NCA_CORR_INTENT_v1|r2|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:36",
+          "detail": "A3|NCA_CORR_INTENT_v1|r1|t2"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "A3|NCA_CORR_INTENT_v1|r1|t2 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "F|NCA_CORR_INTENT_v1|r1|t2"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "F|NCA_CORR_INTENT_v1|r1|t2 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "F|NCA_CORR_INTENT_v1|r2|t2"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "F|NCA_CORR_INTENT_v1|r2|t2 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "A3|NCA_CORR_INTENT_v1|r2|t2"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "A3|NCA_CORR_INTENT_v1|r2|t2 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "A3|NCA_CORR_INTENT_v1|r1|t3"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "A3|NCA_CORR_INTENT_v1|r1|t3 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "F|NCA_CORR_INTENT_v1|r1|t3"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "F|NCA_CORR_INTENT_v1|r1|t3 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "F|NCA_CORR_INTENT_v1|r2|t3"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "F|NCA_CORR_INTENT_v1|r2|t3 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "A3|NCA_CORR_INTENT_v1|r2|t3"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "A3|NCA_CORR_INTENT_v1|r2|t3 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "A3|NCA_CORR_INTENT_v1|r1|t4"
+        },
+        {
+          "kind": "slot_failed_stop_batch",
+          "ts": "2026-10-21 14:08:37",
+          "detail": "A3|NCA_CORR_INTENT_v1|r1|t4 -> gateway_or_transport_failure: TimeoutError: reviewer independent gateway failure"
+        }
+      ]
+    }
+  },
+  "request53": "CAP_EXCEEDED: 真实调用计数 52 / 槽登记 0 达硬上限 52，第 53 次真实请求发出前拒绝",
+  "checkpoints": {
+    "missing": {
+      "result": "CHECKPOINT_MISMATCH: A3|NCA_CORR_INTENT_v1|r1|t2 缺 checkpoint.json（前驱未完成，生成前拒绝）",
+      "events": [
+        0,
+        0,
+        0
+      ],
+      "slots": 0
+    },
+    "behind": {
+      "result": "CHECKPOINT_MISMATCH: A3|NCA_CORR_INTENT_v1|r1|t2 checkpoint.turns_done=0 ≠ 前一轮 1（缺失/过旧/超前，生成前拒绝——不得顺带重跑历史轮）",
+      "events": [
+        0,
+        0,
+        0
+      ],
+      "slots": 0
+    },
+    "ahead": {
+      "result": "CHECKPOINT_MISMATCH: A3|NCA_CORR_INTENT_v1|r1|t2 checkpoint.turns_done=5 ≠ 前一轮 1（缺失/过旧/超前，生成前拒绝——不得顺带重跑历史轮）",
+      "events": [
+        0,
+        0,
+        0
+      ],
+      "slots": 0
+    }
+  },
+  "materials": {
+    "identical": true,
+    "output": "绑定断言 PASS：共 27 个 (臂,重复) 槽题面与真实请求逐条一致\n产出 → C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave16_review_20261021\\package\\refs\\REAL66_ANON_GROUPS_V2_20261021.md",
+    "bound_rows": 27,
+    "parsed_intent": 27,
+    "id": "绑定断言失败(A1/NCA/r1/NCA_t01): 第0条 id='WRONG' ≠ m0",
+    "speaker": "绑定断言失败(A1/NCA/r1/NCA_t01): 第0条 speaker 'WRONG' ≠ episode 'HER'",
+    "clock_missing": "绑定断言失败(A1/r1/NCA_t01): 真实请求无【当前时间】",
+    "intent_missing": "intent 缺失(A1/r1/NCA_t01): episode 启用意图但请求无意图头",
+    "intent_extra": "intent 多余(A1/r1/NCA_t01): episode 未启用意图但请求有意图头 '请求中多余的意图'"
+  },
+  "historical_files": {
+    "count": 432,
+    "changed": []
+  },
+  "shared_asset_differences": [],
+  "source_locations": {
+    "candidates/phase3_facts/mechanism/mechanism.py": {
+      "_norm_cjk_nums": 91,
+      "_src_lookup": 98,
+      "_gate_fact": 118,
+      "_derive_status": 154,
+      "_is_correction": 180,
+      "_detect_correction_event": 186,
+      "_append_correction": 205,
+      "_load_corrections": 215,
+      "_apply_correction_to_prev": 231,
+      "_append_fact": 266,
+      "_load_facts": 271,
+      "_load_ongoing": 275,
+      "_save_ongoing": 279,
+      "_write_trace": 283,
+      "_hours_between": 287,
+      "_build_with_assets": 298,
+      "_render_scene_chain": 309,
+      "init": 361,
+      "set_memory_access": 365,
+      "run_turn": 369,
+      "snapshot": 602,
+      "restore": 620
+    },
+    "arena/lb_assembly.py": {
+      "kotlin_len": 17,
+      "read_asset": 22,
+      "last_h1_blocks": 36,
+      "purify_lessons": 44,
+      "extract_stage_section": 51,
+      "scene_chain_transform": 66,
+      "infer_scene": 145,
+      "build_system_prompt": 208,
+      "build_knowledge_block": 222,
+      "build_scene_block": 288,
+      "build_intent_block": 295,
+      "build_advisor_note_block": 314,
+      "render_chat": 330,
+      "build_persona_block": 361,
+      "build_timestamp_block": 372,
+      "by_blocks": 393,
+      "build_reply_prompts": 442
+    },
+    "tools/gen_anon_groups.py": {
+      "R": 38,
+      "_raw_recommended": 42,
+      "_turn": 80,
+      "_parse_calls_chat": 87,
+      "_assert_binding": 109,
+      "_msg_lines": 147,
+      "_prior_history": 151,
+      "main": 159
+    },
+    "tools/l3b_three_arm_executor.py": {
+      "_sha": 124,
+      "_now": 128,
+      "check_frozen": 132,
+      "batch_dir": 145,
+      "load_slots": 151,
+      "save_slots": 159,
+      "_log": 164,
+      "_consumed": 168,
+      "_slot_key": 172,
+      "_find_slot": 176,
+      "freeze_deps": 183,
+      "_effective_config": 198,
+      "init_config": 221,
+      "_gateway_event_counts": 258,
+      "_ep_case_id": 284,
+      "_verify_slot_attempts": 291,
+      "_verify_turn_evidence": 360,
+      "slot_out_dir": 395,
+      "expr_block_counts": 401,
+      "_fail_slot": 410,
+      "run_slot": 433,
+      "blocking_slots": 540,
+      "selftest_guards": 546,
+      "_classify_reply": 591,
+      "summarize": 625,
+      "main": 688
+    },
+    "tools/l3b_parent_child_executor.py": {}
+  }
+}

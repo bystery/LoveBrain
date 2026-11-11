@@ -1,0 +1,44 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-W18B-20261103-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30持续授权+2026-11-02全量授权；W18 事故后按既有scope重建（W18_EXECUTION_INCIDENT_20261103.md）",
+ "phase": "W18B",
+ "budget_ledger": "logs/auth_budget/AUTH-W18B-20261103-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 320
+ },
+ "scope": {
+  "purpose": "W18B：W18 全量重跑（uc_supp vs uc on LRE117/LRE121/LRE146/LRE138，320 attempts）。判据沿用 W18_UNC_SUPPRESS_DESIGN_20261102.md G1-G4。运行约束：live 独占 6 workers，不与任何评审/其它 live 并行；fail_fast/no_retry/no_makeup；批次须 320/320 manifest 齐全",
+  "route": "two_arm_batch_320",
+  "total_attempts": 320,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "W18B": "BATCH-W18B-UCSUPP-20261103"
+  },
+  "episodes": [],
+  "cards": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W18.json",
+  "plan_sha256": "150768ae735e893a2308b90e597ed9891da45ea51289ed02e00b21e5e4650f27"
+ },
+ "frozen_bindings": {
+  "W18B": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/W18B.INTERLEAVE_PLAN.json",
+   "plan_sha256": "150768ae735e893a2308b90e597ed9891da45ea51289ed02e00b21e5e4650f27",
+   "batch_id": "BATCH-W18B-UCSUPP-20261103",
+   "cards_file": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W18.json",
+   "attempts": 320,
+   "parent": "window_expand_b_norecap_uc",
+   "candidate": "window_expand_b_norecap_uc_supp",
+   "parent_identity_sha256": "5b3266a91350d66a799f2d3c53274168f9c9b1d16a81f26d8b7193e1847c13df",
+   "candidate_identity_sha256": "79e8c6a7ad7c9b9ff9de7520dbb88d331b829ca27dab37df29f0d5c24b5666fa"
+  }
+ },
+ "incident_ref": "refs/experiment_protocol_20261023/long_probe_20261030/W18_EXECUTION_INCIDENT_20261103.md"
+}

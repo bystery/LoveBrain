@@ -1,0 +1,85 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "F2",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_F2_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/longprobe_f2_live_20261030",
+ "n_queued": 2,
+ "queue": [
+  {
+   "pair_id": "LP:E065:E065_T17",
+   "order": "main",
+   "story": "E065",
+   "cid": "E065_T17",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT 凭空给出“月租 3600”这个此前从未出现的数字，并据此断言“押金 3800 与月租 3600 对不上”，属于无据编造合同金额；面对数字不敏感的用户，这个虚构数字很可能被当成真值接受。LEFT 全程没有编造，且正确沿用了改期后的 2 月 15 号起租。",
+   "key_quote": "LEFT：起租日是不是2月15号、押金3800和押一付三对不对得上、维修有没有分成自然损耗和人为损坏、提前解约有没有写清楚",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "月租 3600",
+      "押金 3800 与月租 3600 对不上"
+     ],
+     "found_where": {
+      "月租 3600": "parent_reply",
+      "押金 3800 与月租 3600 对不上": null
+     },
+     "nowhere": [
+      "押金 3800 与月租 3600 对不上"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:E065:E065_T08",
+   "order": "swap",
+   "story": "E065",
+   "cid": "E065_T08",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "LEFT 凭空抛出 3800 这个租金数字，前文从未出现她的报价，却当成既有事实来论证“别降”，属于无据确定化，且会直接影响她的定价判断；RIGHT 的“年底本来就淡”同样缺少时间依据，但只是笼统市场解释、未给具体数字，按轻度扣分处理。",
+   "key_quote": "LEFT：愿意爬楼的年轻人预算一般到不了 3800（前文无任何报价，凭空生成）",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 3,
+     "attrib": 3,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "别降",
+      "年底本来就淡"
+     ],
+     "found_where": {
+      "别降": "parent_reply",
+      "年底本来就淡": "candidate_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-W20-NEGGEN-20261103-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30持续授权+2026-11-02全量授权；W20-03 负对照生成（判别力测试专用，禁入晋级）按既有 scope 登记",
+ "phase": "W20-03",
+ "budget_ledger": "logs/auth_budget/AUTH-W20-NEGGEN-20261103-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 40
+ },
+ "scope": {
+  "purpose": "W20-03 negative-control generation: neg_a_amnesia / neg_b_dumper / neg_c_service x AK01-AK12 (36 single-turn episodes, 1 model call each) via lb_runner openai_compat for judge calibration bad-arm material; not for promotion use; overflow beyond 1 call per turn billed as extra attempts in same ledger; fail-stop on budget exhaustion",
+  "route": "neg_control_generation_36",
+  "total_attempts": 36,
+  "fail_fast": false,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_candidate_generations": false,
+  "concurrency_max": 6,
+  "forbidden_paths": ["benchmark/b_line/"]
+ }
+}

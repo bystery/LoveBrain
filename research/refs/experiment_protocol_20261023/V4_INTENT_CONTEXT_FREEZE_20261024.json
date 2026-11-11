@@ -1,0 +1,18 @@
+{
+ "generated_at": "2026-10-24",
+ "candidate": "v4_intent_context",
+ "status": "可运行初稿(VERDICT §6-C)；未实跑、未声称更会聊；等本次 v3 真实结果后决定是否申请实跑",
+ "parent": "reference_product_v1",
+ "identity_sha256": "bb6286212c8f563a004a9e435768a9b93100c70d6d8f2a59a54c15f93714b21a",
+ "file_count": 17,
+ "closure": [
+  "v4_intent_context",
+  "reference_product_v1"
+ ],
+ "parent_superset_in_closure": true,
+ "system_assets": "与 v3 同一份精简 system(自带副本，未改冻结 v3)；test_v4_intent_context g 断言 build_system_prompt 与 v3 逐字节相等",
+ "increment_over_v0": "仅加一层『当前目标作用域与上下文优先级』：目标进预算保护区/启停切换不留旧目标、目标可指导行动但不谎称已同意或复述、已确认事项(ongoing_plan 种子)独立于当前目标持续、note 四类分清、无题材词特判/无额外模型调用",
+ "fixtures": "tools/test_v4_intent_context.py 8/8 PASS(启用进请求/关闭清空/替换不留旧、行动指令+红线、plans跨关闭持续、note四类、source alias+ts+clock、草稿不写回、历史上限保当前)",
+ "not_yet": "自动从模型输出提取/写回已确认约定(初稿 plans 仅种子)、多层摘要/反思——留作后续对照,本稿不声称",
+ "real_model_calls": 0
+}

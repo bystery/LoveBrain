@@ -1,0 +1,107 @@
+{
+  "builder": {
+    "pass": true,
+    "detail": {
+      "copied": 156,
+      "missing": [],
+      "violations": [],
+      "smoke": "protocol rc=0 import=OK",
+      "sidecar": "package.sha256"
+    },
+    "stdout": ""
+  },
+  "release_dependency_missing": [
+    "tools/gen_split_manifest.py",
+    "tools/test_anon_binding_guards.py",
+    "tools/test_failure_persistence.py",
+    "tools/test_input_boundary.py",
+    "tools/test_isolation_matrix.py",
+    "tools/test_no_reply_protocol.py",
+    "tools/test_output_structure.py",
+    "tools/test_posttest_event_pairs.py",
+    "tools/test_scene_assembly.py"
+  ],
+  "runtime_required_missing": [
+    "tools/test_isolation_matrix.py",
+    "benchmark/releases/arena_v1/split_manifest.json",
+    "refs/arena_v1/seal_fixture/LOCK.json",
+    "refs/arena_v1/review_drill_spec.json",
+    "benchmark/releases/arena_v1/review_loop/mapping_secret.json",
+    "benchmark/releases/arena_v1/review_loop/ingest_result.json",
+    "candidates/reference_product_v1/assets",
+    "candidates/reference_product_v1/mechanism/mechanism.py"
+  ],
+  "manifest_files": 156,
+  "clean_payload_g01": {
+    "gates": {
+      "G01": {
+        "id": "G01",
+        "status": "FAIL",
+        "evidence": [
+          "refs\\arena_v1\\release.json"
+        ],
+        "executed_command": null,
+        "observed_result": "files=44 missing=9 mismatch=0",
+        "note": "release.json 逐文件散列核对；漂移=['tools/gen_split_manifest.py', 'tools/test_anon_binding_guards.py', 'tools/test_failure_persistence.py']"
+      }
+    },
+    "stdout": "  [FAIL] G01 release.json 逐文件散列核对；漂移=['tools/gen_split_manifest.py', 'tools/test_anon_binding_guards.py', 'tools/test_failu\n"
+  },
+  "safe_regressions": [
+    {
+      "name": "test_input_boundary.py",
+      "exit": 0,
+      "tail": "BOUNDARY TEST PASS：meta/gaps/gold/嵌套元数据 零泄漏；深拷贝生效；persona/消息 ts/may_decline 均到达模型请求；媒体单向登记 fail-fast；容器错型（messages 字符串/字符串列表/intent 列表/clock 对象/may_decline 字符串）入口拒绝；legacy 字符串 intent 保留不误杀。\n\n"
+    },
+    {
+      "name": "test_scoring_authority.py",
+      "exit": 0,
+      "tail": "SCORING AUTHORITY PASS：追加/删除/改角色/伪造 id_map 四类篡改均以原题快照评分（伪造 m3 稳定 veto=illegal_source_id:m3），真实来源对照组不误杀。\n\n"
+    },
+    {
+      "name": "test_no_reply_protocol.py",
+      "exit": 0,
+      "tail": "NO_REPLY PROTOCOL PASS：三候选 × {action,decline,normal} × {allow,required} 一致；越权/矛盾/非法动作全拦截；全部不回无法刷满分。\n\nNO_REPLY PROTOCOL PASS\n"
+    },
+    {
+      "name": "test_output_structure.py",
+      "exit": 0,
+      "tail": "PASS：嵌套反例格式失败+写回拦截+第二轮可审计（基线/β）+时钟前进+扩展契约正例+未声明拒绝\n\n"
+    },
+    {
+      "name": "test_failure_persistence.py",
+      "exit": 0,
+      "tail": "FAILURE PERSISTENCE TEST PASS：受控超时下网关事件日志/calls/error.json 全部落盘；usage 未知容错；judge 重试全尝试留证。\n\n"
+    }
+  ],
+  "acl_ledger_metadata": {
+    "entries": 161,
+    "unique_paths": 161,
+    "outside_project": [],
+    "operations_performed": 0
+  },
+  "coverage_families_without_control": [
+    "F3",
+    "F6",
+    "F7",
+    "F8",
+    "F12"
+  ],
+  "coverage_non_node_refs": [
+    {
+      "family": "F12",
+      "ref": "R1-R16契约矩阵",
+      "resolve": "INFRA_REF"
+    },
+    {
+      "family": "F12",
+      "ref": "15套既有测试",
+      "resolve": "INFRA_REF"
+    }
+  ],
+  "sealed_status_declared": [],
+  "source_original_stability": {
+    "checked_files": 419,
+    "changed": []
+  }
+}

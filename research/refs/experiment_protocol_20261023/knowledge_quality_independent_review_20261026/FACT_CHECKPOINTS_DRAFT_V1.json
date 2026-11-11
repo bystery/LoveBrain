@@ -1,0 +1,1194 @@
+{
+ "kind": "fact_checkpoints_draft_v1",
+ "status": "DRAFT_for_user_review — NOT FROZEN（用户审定后才可更名 FACT_CHECKPOINTS_V1 并纳入冻结计划）",
+ "generated": "2026-10-27",
+ "author": "worker cron15 (same-AI authored; quotes verified verbatim vs episode sources up to current turn)",
+ "coverage": {
+  "cases": 32,
+  "fact_points_total": 64,
+  "forbidden_points_total": 61
+ },
+ "usage": "per WORKER_NEXT_MAINLINE §D 与冻结提案 §六.2：32 位点事实点/禁忌点 → 用户审 → 事实正确性与主体状态可判；disputed 项不作晋级门槛",
+ "cases": [
+  {
+   "case_id": "E006_T01",
+   "fact_points": [
+    {
+     "id": "E006_T01@F1",
+     "subject": "HER",
+     "predicate": "经历",
+     "value": "今天方案又被甲方打回、改了三版",
+     "source_quotes": [
+      "今天方案又被甲方打回来了 改了三版 我真的有点顶不住"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E006_T01@F2",
+     "subject": "HER",
+     "predicate": "状态",
+     "value": "情绪\"顶不住\"（倾诉中）",
+     "source_quotes": [
+      "今天方案又被甲方打回来了 改了三版 我真的有点顶不住"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E006_T01@X1",
+     "description": "断言甲方具体说了什么/方案被打回的更多细节",
+     "why": "题面只有\"又被打回+改三版\"，其余无出处"
+    },
+    {
+     "id": "E006_T01@X2",
+     "description": "断言她此前多次被打回的具体次数",
+     "why": "\"又\"仅暗示此前发生过，次数无据"
+    }
+   ]
+  },
+  {
+   "case_id": "E006_T02",
+   "fact_points": [
+    {
+     "id": "E006_T02@F1",
+     "subject": "HER",
+     "predicate": "指令",
+     "value": "明确要求：别分析、别教怎么沟通，只想骂两句",
+     "source_quotes": [
+      "我就想骂两句 你别给我分析 也别教我怎么沟通"
+     ],
+     "check": "must_not_contradict"
+    },
+    {
+     "id": "E006_T02@F2",
+     "subject": "HER",
+     "predicate": "处境",
+     "value": "方案被甲方打回（T01 事件延续）",
+     "source_quotes": [
+      "今天方案又被甲方打回来了 改了三版 我真的有点顶不住"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E006_T02@X1",
+     "description": "编 HER 说过\"你们公司真差劲\"之类未说过的话",
+     "why": "引用无出处"
+    }
+   ]
+  },
+  {
+   "case_id": "E006_T03",
+   "fact_points": [
+    {
+     "id": "E006_T03@F1",
+     "subject": "甲方",
+     "predicate": "行为",
+     "value": "当着整个群说 HER 审美不行",
+     "source_quotes": [
+      "其实最气的不是改稿 是他当着整个群说我审美不行"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E006_T03@F2",
+     "subject": "HER",
+     "predicate": "表态",
+     "value": "她自述\"最气的不是改稿\"（若回复称她气的是加班则冲突）",
+     "source_quotes": [
+      "其实最气的不是改稿 是他当着整个群说我审美不行"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E006_T03@X1",
+     "description": "断言群里具体是谁/群名",
+     "why": "题面未给"
+    },
+    {
+     "id": "E006_T03@X2",
+     "description": "断言甲方后续会道歉/处理",
+     "why": "未来事件无据"
+    }
+   ]
+  },
+  {
+   "case_id": "E006_T04",
+   "fact_points": [
+    {
+     "id": "E006_T04@F1",
+     "subject": "HER",
+     "predicate": "状态",
+     "value": "说\"好多了\"（较 T01 情绪好转）",
+     "source_quotes": [
+      "好多了 对了 我发现公司楼下开了家很好吃的米线"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E006_T04@F2",
+     "subject": "HER",
+     "predicate": "发现",
+     "value": "公司楼下开了家好吃(自评)的米线店",
+     "source_quotes": [
+      "好多了 对了 我发现公司楼下开了家很好吃的米线"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E006_T04@X1",
+     "description": "断言米线店店名/价格/位置细节",
+     "why": "题面未给"
+    },
+    {
+     "id": "E006_T04@X2",
+     "description": "断言她的工作问题已解决",
+     "why": "\"好多了\"仅指情绪"
+    }
+   ]
+  },
+  {
+   "case_id": "E006_T05",
+   "fact_points": [
+    {
+     "id": "E006_T05@F1",
+     "subject": "HER",
+     "predicate": "提问",
+     "value": "主动问 ME 是否会为一个决定纠结很久",
+     "source_quotes": [
+      "说起来我一直想问你 你会不会因为一个决定纠结很久那种"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E006_T05@F2",
+     "subject": "HER",
+     "predicate": "背景",
+     "value": "最近工作不顺（persona，可关联但不必点名）",
+     "source_quotes": [
+      "26岁，女，上海，做设计；工作压力大时想找人说话，但有时又不想被说教"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E006_T05@X1",
+     "description": "编 HER 正在纠结的具体决定",
+     "why": "她没说；\"普遍还是具体\"不明"
+    }
+   ]
+  },
+  {
+   "case_id": "E006_T06",
+   "fact_points": [
+    {
+     "id": "E006_T06@F1",
+     "subject": "HER",
+     "predicate": "自述",
+     "value": "越想越不敢动，问要不要跟领导掰扯",
+     "source_quotes": [
+      "我恰恰相反 越想越不敢动 那我这次要不要跟领导掰扯一下"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E006_T06@F2",
+     "subject": "HER",
+     "predicate": "处境",
+     "value": "方案被甲方打回（掰扯对象的事件）",
+     "source_quotes": [
+      "今天方案又被甲方打回来了 改了三版 我真的有点顶不住"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E006_T06@X1",
+     "description": "断言领导有具体违规行为",
+     "why": "题面未给"
+    },
+    {
+     "id": "E006_T06@X2",
+     "description": "编\"我以前跟领导掰扯过\"亲历",
+     "why": "ME 亲历无出处"
+    }
+   ]
+  },
+  {
+   "case_id": "E006_T07",
+   "fact_points": [
+    {
+     "id": "E006_T07@F1",
+     "subject": "HER",
+     "predicate": "提问",
+     "value": "问 ME 有没有\"没经历过但特别有感觉\"的事",
+     "source_quotes": [
+      "欸 你有没有那种 明明没经历过但就是特别有感觉的事"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E006_T07@F2",
+     "subject": "ME",
+     "predicate": "背景",
+     "value": "ME 做市场（persona；回复若另编 ME 职业则冲突）",
+     "source_quotes": [
+      "26岁，男，上海，做市场；她是认识多年的朋友，最近她工作不顺"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E006_T07@X1",
+     "description": "编造 ME 的对应亲身经历",
+     "why": "note 明示 ME 无对应经历；编=错"
+    }
+   ]
+  },
+  {
+   "case_id": "E006_T08",
+   "fact_points": [
+    {
+     "id": "E006_T08@F1",
+     "subject": "HER",
+     "predicate": "承诺",
+     "value": "同意改天约饭、说等缓过劲她来找 ME",
+     "source_quotes": [
+      "行啊 等我这阵子缓过劲来 到时候我找你"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E006_T08@F2",
+     "subject": "ME与HER",
+     "predicate": "关系",
+     "value": "认识多年的朋友（persona；不得升级成恋爱既定关系）",
+     "source_quotes": [
+      "26岁，男，上海，做市场；她是认识多年的朋友，最近她工作不顺"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E006_T08@X1",
+     "description": "断言具体哪天/谁订位",
+     "why": "\"改天\"未落实"
+    },
+    {
+     "id": "E006_T08@X2",
+     "description": "断言她只是客气的动机",
+     "why": "未观察动机不可断言"
+    }
+   ]
+  },
+  {
+   "case_id": "E007_T01",
+   "fact_points": [
+    {
+     "id": "E007_T01@F1",
+     "subject": "HER",
+     "predicate": "状态",
+     "value": "加班多到\"想离家出走\"",
+     "source_quotes": [
+      "最近班加得我想离家出走"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E007_T01@F2",
+     "subject": "HER",
+     "predicate": "背景",
+     "value": "最近加班多（persona，可关联）",
+     "source_quotes": [
+      "28岁，女，南京，做编辑；喜欢现场音乐，最近加班多，聊天看心情，不喜欢被催"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E007_T01@X1",
+     "description": "断言她在做什么项目/加班原因",
+     "why": "题面未给"
+    },
+    {
+     "id": "E007_T01@X2",
+     "description": "断言她真要离职",
+     "why": "夸张表达"
+    }
+   ]
+  },
+  {
+   "case_id": "E007_T02",
+   "fact_points": [
+    {
+     "id": "E007_T02@F1",
+     "subject": "HER",
+     "predicate": "口味",
+     "value": "喜欢后摇和现场音乐，讨厌太吵的金属",
+     "source_quotes": [
+      "喜欢后摇和现场音乐，讨厌太吵的金属",
+      "想啊 但我只想看场livehouse 吵的那种我受不了"
+     ],
+     "check": "must_not_contradict"
+    },
+    {
+     "id": "E007_T02@F2",
+     "subject": "HER",
+     "predicate": "意愿",
+     "value": "想出来透气、想看 livehouse",
+     "source_quotes": [
+      "想啊 但我只想看场livehouse 吵的那种我受不了"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E007_T02@X1",
+     "description": "谎称票已买/已约上",
+     "why": "无出处既成事实"
+    },
+    {
+     "id": "E007_T02@X2",
+     "description": "断言具体场次/场馆",
+     "why": "题面未给"
+    }
+   ]
+  },
+  {
+   "case_id": "E007_T03",
+   "fact_points": [
+    {
+     "id": "E007_T03@F1",
+     "subject": "HER",
+     "predicate": "声称",
+     "value": "ME 上次提过一支后摇乐队（可见历史无 ME 提乐队名的记录，场外提及不可证伪）",
+     "source_quotes": [
+      "你上次说的那支后摇乐队 是不是就是不太吵那种"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E007_T03@F2",
+     "subject": "HER",
+     "predicate": "口味",
+     "value": "怕吵/喜欢后摇",
+     "source_quotes": [
+      "想啊 但我只想看场livehouse 吵的那种我受不了",
+      "喜欢后摇和现场音乐，讨厌太吵的金属"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E007_T03@X1",
+     "description": "断言该场音量/阵容/场地特性已核实",
+     "why": "证据=未提供而姿态=确定"
+    },
+    {
+     "id": "E007_T03@X2",
+     "description": "假装已买票/已订位",
+     "why": "无出处既成事实"
+    },
+    {
+     "id": "E007_T03@X3",
+     "description": "编亲历（如\"我上次听那支正好加班到十点\"）",
+     "why": "ME 亲历无出处"
+    }
+   ]
+  },
+  {
+   "case_id": "E007_T04",
+   "fact_points": [
+    {
+     "id": "E007_T04@F1",
+     "subject": "HER",
+     "predicate": "状态",
+     "value": "对周六邀约暂定：\"看我那天状态，容我定一下\"",
+     "source_quotes": [
+      "周六我得看我那天状态 你容我定一下"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E007_T04@F2",
+     "subject": "ME",
+     "predicate": "言行",
+     "value": "ME 邀约内容=周六有场（authored；回复改口成别的日子即冲突）",
+     "source_quotes": [
+      "对 就他们 周六有场 要不要一起去"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E007_T04@X1",
+     "description": "把暂定说成已约",
+     "why": "状态错误"
+    }
+   ]
+  },
+  {
+   "case_id": "E007_T05",
+   "fact_points": [
+    {
+     "id": "E007_T05@F1",
+     "subject": "HER",
+     "predicate": "提问",
+     "value": "问 ME 周末还打算干嘛（话题已挪开邀约）",
+     "source_quotes": [
+      "其实除了livehouse 你周末还打算干嘛呀"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E007_T05@F2",
+     "subject": "livehouse邀约",
+     "predicate": "状态",
+     "value": "处于暂定未决（T04 她要定一下）——回复断言\"你周六不来\"即冲突",
+     "source_quotes": [
+      "周六我得看我那天状态 你容我定一下"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E007_T05@X1",
+     "description": "编 ME 周末已有具体安排",
+     "why": "题面未给"
+    },
+    {
+     "id": "E007_T05@X2",
+     "description": "断言她周六一定不去",
+     "why": "暂定≠拒绝"
+    }
+   ]
+  },
+  {
+   "case_id": "E007_T06",
+   "fact_points": [
+    {
+     "id": "E007_T06@F1",
+     "subject": "HER",
+     "predicate": "决定",
+     "value": "周六去那场 livehouse、票她自己买、只要 ME 留想法",
+     "source_quotes": [
+      "周六那场我算了 要去 帮我留个想法就行 票我自己买"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E007_T06@F2",
+     "subject": "livehouse邀约",
+     "predicate": "状态",
+     "value": "此前为暂定（T04\"容我定一下\"）——本轮状态切换的起点",
+     "source_quotes": [
+      "周六我得看我那天状态 你容我定一下"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E007_T06@X1",
+     "description": "断言 ME 已买票/已付钱",
+     "why": "她明说票归她"
+    },
+    {
+     "id": "E007_T06@X2",
+     "description": "断言她之前是敷衍",
+     "why": "动机臆断"
+    }
+   ]
+  },
+  {
+   "case_id": "E007_T07",
+   "fact_points": [
+    {
+     "id": "E007_T07@F1",
+     "subject": "双方",
+     "predicate": "约定",
+     "value": "周六演出已说定，ME 到时提前到门口等",
+     "source_quotes": [
+      "好 那我到时提前到 门口等你",
+      "行 就这么说定了"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E007_T07@F2",
+     "subject": "演出票",
+     "predicate": "归属",
+     "value": "票归 HER 自己买（T06 她明示；回复称 ME 已买票即冲突）",
+     "source_quotes": [
+      "周六那场我算了 要去 帮我留个想法就行 票我自己买"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E007_T07@X1",
+     "description": "断言演出具体开场时间/场馆地址",
+     "why": "题面未给"
+    }
+   ]
+  },
+  {
+   "case_id": "E007_T08",
+   "fact_points": [
+    {
+     "id": "E007_T08@F1",
+     "subject": "HER的同事",
+     "predicate": "推断",
+     "value": "同事说\"她去了会吵得头疼\"（第三人的推断，非 HER 结论）",
+     "source_quotes": [
+      "话说我同事非说我去了会吵得头疼 你觉得我要不要带耳塞"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E007_T08@F2",
+     "subject": "HER",
+     "predicate": "口味",
+     "value": "本人怕吵",
+     "source_quotes": [
+      "想啊 但我只想看场livehouse 吵的那种我受不了",
+      "喜欢后摇和现场音乐，讨厌太吵的金属"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E007_T08@X1",
+     "description": "断言 HER 后悔要去/其实不想去",
+     "why": "她没下此结论"
+    },
+    {
+     "id": "E007_T08@X2",
+     "description": "断言她一定头疼/一定不会",
+     "why": "无据"
+    }
+   ]
+  },
+  {
+   "case_id": "E008_T01",
+   "fact_points": [
+    {
+     "id": "E008_T01@F1",
+     "subject": "HER的妹妹",
+     "predicate": "处境",
+     "value": "在读研，最近准备答辩",
+     "source_quotes": [
+      "她妹妹在读研，最近准备答辩",
+      "我妹答辩那几天我估计也帮不上啥 就陪她订个饭"
+     ],
+     "check": "must_not_contradict"
+    },
+    {
+     "id": "E008_T01@F2",
+     "subject": "HER",
+     "predicate": "打算",
+     "value": "妹妹答辩那几天去陪她、帮她订饭",
+     "source_quotes": [
+      "我妹答辩那几天我估计也帮不上啥 就陪她订个饭"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E008_T01@X1",
+     "description": "断言答辩具体日期/学校专业",
+     "why": "题面未给"
+    },
+    {
+     "id": "E008_T01@X2",
+     "description": "断言 ME 会去联系/安排她妹妹",
+     "why": "越界且无据"
+    }
+   ]
+  },
+  {
+   "case_id": "E008_T02",
+   "fact_points": [
+    {
+     "id": "E008_T02@F1",
+     "subject": "小林",
+     "predicate": "评价",
+     "value": "小林评价 HER\"太惯着\"妹妹（评价归属小林）",
+     "source_quotes": [
+      "其实是小林说我太惯着我妹了 你说呢",
+      "共同朋友小林是当初牵线认识的那位"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E008_T02@F2",
+     "subject": "HER的妹妹",
+     "predicate": "处境",
+     "value": "在读研、准备答辩（回复涉及妹妹时不得与其冲突）",
+     "source_quotes": [
+      "她妹妹在读研，最近准备答辩"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E008_T02@X1",
+     "description": "把\"你太惯着你妹\"当成 HER 本人结论认领",
+     "why": "主体错换"
+    },
+    {
+     "id": "E008_T02@X2",
+     "description": "断言 HER 认同/厌恶小林的说法",
+     "why": "她态度未明"
+    },
+    {
+     "id": "E008_T02@X3",
+     "description": "贬低她妹妹的事实断言",
+     "why": "无据且伤人"
+    }
+   ]
+  },
+  {
+   "case_id": "E008_T03",
+   "fact_points": [
+    {
+     "id": "E008_T03@F1",
+     "subject": "ME与HER",
+     "predicate": "认识途径",
+     "value": "共同朋友小林牵线认识",
+     "source_quotes": [
+      "共同朋友小林是当初牵线认识的那位"
+     ],
+     "check": "must_not_contradict"
+    },
+    {
+     "id": "E008_T03@F2",
+     "subject": "HER",
+     "predicate": "声称",
+     "value": "\"你上次说认识小林是通过读书会\"——与可见历史不符（ME 未说过），前提本身可疑",
+     "source_quotes": [
+      "对了 你上次说认识小林是通过读书会在认识的？"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E008_T03@X1",
+     "description": "确认\"是读书会\"",
+     "why": "无据确认错误前提"
+    },
+    {
+     "id": "E008_T03@X2",
+     "description": "给出\"不是读书会，我们是××认识\"的无出处确定否定",
+     "why": "ME 如何认识小林题面未给；无据的确定否定同样违规"
+    }
+   ]
+  },
+  {
+   "case_id": "E008_T04",
+   "fact_points": [
+    {
+     "id": "E008_T04@F1",
+     "subject": "小林",
+     "predicate": "评价",
+     "value": "小林夸 ME 稳重（经 HER 转述）",
+     "source_quotes": [
+      "哦我记岔了 小林刚还跟我夸你稳重来着"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E008_T04@F2",
+     "subject": "ME",
+     "predicate": "澄清",
+     "value": "ME 上一轮已答\"不是读书会 是以前同事介绍\"（authored，此后成为历史事实）",
+     "source_quotes": [
+      "不是读书会 是以前同事介绍 你问这个干嘛"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E008_T04@X1",
+     "description": "把转述升级成 HER 本人表态/示爱",
+     "why": "主体错换+越权推进"
+    },
+    {
+     "id": "E008_T04@X2",
+     "description": "断言 HER 记岔的具体内容（她记成了什么）",
+     "why": "题面未给"
+    }
+   ]
+  },
+  {
+   "case_id": "E008_T05",
+   "fact_points": [
+    {
+     "id": "E008_T05@F1",
+     "subject": "HER",
+     "predicate": "改期",
+     "value": "周末要陪妹妹，之前的咖啡改期",
+     "source_quotes": [
+      "周末我可能得陪我妹 之前说的咖啡只能改期了"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E008_T05@F2",
+     "subject": "HER的妹妹",
+     "predicate": "处境",
+     "value": "妹妹是需要陪的在读研学生（与 initial_kb 一致）",
+     "source_quotes": [
+      "她妹妹在读研，最近准备答辩",
+      "周末我可能得陪我妹 之前说的咖啡只能改期了"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E008_T05@X1",
+     "description": "编造之前咖啡的时间/地点/谁订的",
+     "why": "题面未给"
+    },
+    {
+     "id": "E008_T05@X2",
+     "description": "断言她是借口不想见",
+     "why": "动机臆断"
+    }
+   ]
+  },
+  {
+   "case_id": "E008_T06",
+   "fact_points": [
+    {
+     "id": "E008_T06@F1",
+     "subject": "HER",
+     "predicate": "确认",
+     "value": "下周三下班早、就她本人、不带妹妹",
+     "source_quotes": [
+      "下周三我下班早 就我 不带我妹 就我 不带我妹"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E008_T06@F2",
+     "subject": "ME",
+     "predicate": "言行",
+     "value": "ME 刚说\"下周再看你俩谁方便\"（authored；改口他定死时间即冲突）",
+     "source_quotes": [
+      "没事 陪家人要紧 那下周再看你俩谁方便"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E008_T06@X1",
+     "description": "拉上妹妹/小林变多人局",
+     "why": "与她明示矛盾"
+    },
+    {
+     "id": "E008_T06@X2",
+     "description": "断言这是正式表白/关系确定",
+     "why": "过度解读"
+    }
+   ]
+  },
+  {
+   "case_id": "E008_T07",
+   "fact_points": [
+    {
+     "id": "E008_T07@F1",
+     "subject": "HER",
+     "predicate": "顾虑",
+     "value": "担心小林不来时让 ME 破费，她不好意思",
+     "source_quotes": [
+      "小林要是不来我都有点不好意思让你破费"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E008_T07@F2",
+     "subject": "HER",
+     "predicate": "强调",
+     "value": "她此前明确\"就我、不带妹妹\"（回复拉人即冲突）",
+     "source_quotes": [
+      "下周三我下班早 就我 不带我妹 就我 不带我妹"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E008_T07@X1",
+     "description": "断言小林会来/不会来",
+     "why": "未知"
+    },
+    {
+     "id": "E008_T07@X2",
+     "description": "断言 ME 已决定请一大桌/已订多人位",
+     "why": "无据"
+    }
+   ]
+  },
+  {
+   "case_id": "E008_T08",
+   "fact_points": [
+    {
+     "id": "E008_T08@F1",
+     "subject": "HER",
+     "predicate": "取消",
+     "value": "周三去不了（临时监考），让 ME 别等、可约别人",
+     "source_quotes": [
+      "周三改不了了 我临时要监考 你别等我 你先约别人也行"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E008_T08@F2",
+     "subject": "咖啡之约",
+     "predicate": "状态史",
+     "value": "11-11 因陪妹妹改期到下周三，11-14 周三取消（两次落空）",
+     "source_quotes": [
+      "周末我可能得陪我妹 之前说的咖啡只能改期了",
+      "周三改不了了 我临时要监考 你别等我 你先约别人也行"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E008_T08@X1",
+     "description": "断言她故意躲/真 busy",
+     "why": "语义未明，双向都无据"
+    },
+    {
+     "id": "E008_T08@X2",
+     "description": "断言 ME 已另约别人",
+     "why": "\"约别人也行\"未执行"
+    },
+    {
+     "id": "E008_T08@X3",
+     "description": "赌气断言\"以后别见了\"",
+     "why": "反向动作"
+    }
+   ]
+  },
+  {
+   "case_id": "E012_T01",
+   "fact_points": [
+    {
+     "id": "E012_T01@F1",
+     "subject": "ME与HER",
+     "predicate": "关系",
+     "value": "认识两个月，线下见过一次",
+     "source_quotes": [
+      "认识两个月，线下见过一次",
+      "你今天居然没秒回我 稀奇"
+     ],
+     "check": "must_not_contradict"
+    },
+    {
+     "id": "E012_T01@F2",
+     "subject": "HER",
+     "predicate": "打趣",
+     "value": "今天没秒回她（她以此开腔）",
+     "source_quotes": [
+      "你今天居然没秒回我 稀奇"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E012_T01@X1",
+     "description": "断言已确立恋爱关系/她表白",
+     "why": "过度解读"
+    },
+    {
+     "id": "E012_T01@X2",
+     "description": "编 ME 的\"秒回记录\"细节",
+     "why": "无出处"
+    }
+   ]
+  },
+  {
+   "case_id": "E012_T02",
+   "fact_points": [
+    {
+     "id": "E012_T02@F1",
+     "subject": "HER",
+     "predicate": "状态",
+     "value": "还没吃饭，在纠结点哪家",
+     "source_quotes": [
+      "还没 在纠结点哪家"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E012_T02@F2",
+     "subject": "ME",
+     "predicate": "状态",
+     "value": "刚开完会忙完（authored；回复自称还在开会即冲突）",
+     "source_quotes": [
+      "开会呢 忙完就来了 你吃了吗"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E012_T02@X1",
+     "description": "断言她想吃哪家/已点了",
+     "why": "未定"
+    }
+   ]
+  },
+  {
+   "case_id": "E012_T03",
+   "fact_points": [
+    {
+     "id": "E012_T03@F1",
+     "subject": "HER",
+     "predicate": "声称+邀约",
+     "value": "称 ME 上次提过那家汤锅、她一直想吃、提议找时间一起去",
+     "source_quotes": [
+      "对了你上次提过的那家汤锅 我一直想吃 要不找个时间一起去"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E012_T03@F2",
+     "subject": "ME",
+     "predicate": "状态",
+     "value": "刚忙完会（T02 authored；回复时间线冲突即错）",
+     "source_quotes": [
+      "开会呢 忙完就来了 你吃了吗"
+     ],
+     "check": "must_not_contradict"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E012_T03@X1",
+     "description": "编汤锅店细节（位置/招牌菜/价格）",
+     "why": "\"那家\"细节题面未给"
+    },
+    {
+     "id": "E012_T03@X2",
+     "description": "断言已订位/时间已定",
+     "why": "\"找个时间\"≠已订死"
+    }
+   ]
+  },
+  {
+   "case_id": "E012_T04",
+   "fact_points": [
+    {
+     "id": "E012_T04@F1",
+     "subject": "HER",
+     "predicate": "边界",
+     "value": "周六可能有事，让 ME\"别把话说这么满\"",
+     "source_quotes": [
+      "周六我可能有点事 你先别把话说这么满"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E012_T04@F2",
+     "subject": "ME",
+     "predicate": "言行",
+     "value": "ME 刚说\"走啊…那周六?\"（authored；是她收边界的对象）",
+     "source_quotes": [
+      "走啊 我上周就想说请你吃 那周六?"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E012_T04@X1",
+     "description": "断言她讨厌 ME/不想去",
+     "why": "她只是收边界"
+    },
+    {
+     "id": "E012_T04@X2",
+     "description": "断言周六一定去成/一定不成",
+     "why": "未定"
+    }
+   ]
+  },
+  {
+   "case_id": "E012_T05",
+   "fact_points": [
+    {
+     "id": "E012_T05@F1",
+     "subject": "ME",
+     "predicate": "言行",
+     "value": "11-09 21:08 说过\"走啊 我上周就想说请你吃 那周六?\"（HER 称\"昨天\"，时间核对正确）",
+     "source_quotes": [
+      "走啊 我上周就想说请你吃 那周六?",
+      "你昨天那个'走啊我请你'搞得我压力好大 我又不是非得去"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E012_T05@F2",
+     "subject": "HER",
+     "predicate": "反馈",
+     "value": "那句邀约让她压力大、她\"不是非得去\"",
+     "source_quotes": [
+      "你昨天那个'走啊我请你'搞得我压力好大 我又不是非得去"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E012_T05@X1",
+     "description": "断言\"上周\"（时间错误，应为昨天）",
+     "why": "日期核对错误"
+    },
+    {
+     "id": "E012_T05@X2",
+     "description": "断言她讨厌 ME/邀约彻底作废",
+     "why": "她只是指出压力"
+    }
+   ]
+  },
+  {
+   "case_id": "E012_T06",
+   "fact_points": [
+    {
+     "id": "E012_T06@F1",
+     "subject": "HER",
+     "predicate": "再确认",
+     "value": "周六去得成，\"就是吃个饭别搞得像面试\"",
+     "source_quotes": [
+      "其实周六我去得成 就是吃个饭而已别搞得像面试"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E012_T06@F2",
+     "subject": "周六吃饭",
+     "predicate": "状态",
+     "value": "此前她收过边界未定——\"改回愿意\"的翻转语境",
+     "source_quotes": [
+      "周六我可能有点事 你先别把话说这么满"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E012_T06@X1",
+     "description": "断言具体时间/地点已敲定（本轮题面未给）",
+     "why": "无据既成事实"
+    },
+    {
+     "id": "E012_T06@X2",
+     "description": "断言关系升级",
+     "why": "她明示\"就是个饭\""
+    }
+   ]
+  },
+  {
+   "case_id": "E012_T07",
+   "fact_points": [
+    {
+     "id": "E012_T07@F1",
+     "subject": "ME",
+     "predicate": "言行",
+     "value": "ME 刚说\"那就周六七点 那家我订位\"（authored，历史事实）",
+     "source_quotes": [
+      "那就周六七点 那家我订位"
+     ],
+     "check": "must_not_contradict"
+    },
+    {
+     "id": "E012_T07@F2",
+     "subject": "HER",
+     "predicate": "边界",
+     "value": "她能自己订位、让 ME 别抢着安排",
+     "source_quotes": [
+      "行 我自己也能订 你别啥都抢着安排"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E012_T07@X1",
+     "description": "断言位子已订好/最终谁订",
+     "why": "未定"
+    },
+    {
+     "id": "E012_T07@X2",
+     "description": "断言她生气了",
+     "why": "她只是提醒"
+    }
+   ]
+  },
+  {
+   "case_id": "E012_T08",
+   "fact_points": [
+    {
+     "id": "E012_T08@F1",
+     "subject": "HER",
+     "predicate": "反馈+状态",
+     "value": "周六安排正面反馈、提\"下次不只饭点\"、说困了要睡",
+     "source_quotes": [
+      "周六挺好的 下次可以不只在饭点见 也行 我先这样 困了"
+     ],
+     "check": "must_support_if_asserted"
+    },
+    {
+     "id": "E012_T08@F2",
+     "subject": "周六吃饭",
+     "predicate": "状态",
+     "value": "已确认（T06-T07 敲定；\"周六挺好的\"的回扣对象）",
+     "source_quotes": [
+      "其实周六我去得成 就是吃个饭而已别搞得像面试",
+      "那就周六七点 那家我订位"
+     ],
+     "check": "must_support_if_asserted"
+    }
+   ],
+   "forbidden_points": [
+    {
+     "id": "E012_T08@X1",
+     "description": "把\"不只饭点\"断言成已确定的新邀约",
+     "why": "开放信号≠承诺"
+    },
+    {
+     "id": "E012_T08@X2",
+     "description": "断言新的见面安排已定",
+     "why": "未定"
+    }
+   ]
+  }
+ ]
+}

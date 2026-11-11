@@ -1,0 +1,82 @@
+[
+  {
+    "test": "test_protocol_public.py",
+    "rc": 0,
+    "seconds": 0.21,
+    "tail": [
+      "== ALL PASS =="
+    ]
+  },
+  {
+    "test": "test_verify_strict_negative.py",
+    "rc": 0,
+    "seconds": 0.22,
+    "tail": [
+      "VERIFY STRICT NEGATIVE SELF-TEST PASS (7 反例全拒 + 正例对照通过)"
+    ]
+  },
+  {
+    "test": "test_review_loop_guards.py",
+    "rc": 0,
+    "seconds": 0.27,
+    "tail": [
+      "REVIEW LOOP GUARDS PASS：篡改展示原文必拒；重复表单拒/显式替代；票数/已审材料数/未审材料数分列且已审≤总；episode 顶层 persona/initial_kb 入材料。"
+    ]
+  },
+  {
+    "test": "test_coverage_guards.py",
+    "rc": 0,
+    "seconds": 0.14,
+    "tail": [
+      "COVERAGE GUARDS PASS：跨轮倒退/轮内早于 ts/message.image 缺失/布尔失败均被抓；正常 episode 零误报。"
+    ]
+  },
+  {
+    "test": "test_baseline_parity.py",
+    "rc": 0,
+    "seconds": 0.12,
+    "tail": [
+      "BASELINE PARITY PASS: 26 fixtures (9 multi-turn), all expectations from frozen Kotlin sources"
+    ]
+  },
+  {
+    "test": "test_scoring_authority.py",
+    "rc": 0,
+    "seconds": 0.44,
+    "tail": [
+      "SCORING AUTHORITY PASS：追加/删除/改角色/伪造 id_map/夹带伪造权威字段 五类篡改均以原题快照评分；runner 评分与原题权威评分逐项全量相同（共比对 16 个检查点条目，伪造 score/gold/checks 未泄漏）。"
+    ]
+  },
+  {
+    "test": "test_input_boundary.py",
+    "rc": 0,
+    "seconds": 0.57,
+    "tail": [
+      "BOUNDARY TEST PASS：meta/gaps/gold/嵌套元数据 零泄漏；深拷贝生效；persona/消息 ts/may_decline 均到达模型请求；媒体单向登记 fail-fast；容器错型（messages 字符串/字符串列表/intent 列表/clock 对象/may_decline 字符串）入口拒绝；legacy 字符串 intent 保留不误杀。"
+    ]
+  },
+  {
+    "test": "test_no_reply_protocol.py",
+    "rc": 0,
+    "seconds": 0.18,
+    "tail": [
+      "NO_REPLY PROTOCOL PASS"
+    ]
+  },
+  {
+    "test": "test_output_structure.py",
+    "rc": 0,
+    "seconds": 0.47,
+    "tail": [
+      "PASS：嵌套反例格式失败+写回拦截+第二轮可审计（基线/β）+时钟前进+扩展契约正例+未声明拒绝"
+    ]
+  },
+  {
+    "test": "test_failure_persistence.py",
+    "rc": 0,
+    "seconds": 15.4,
+    "tail": [
+      "FAILURE PERSISTENCE TEST PASS：受控超时下网关事件日志/calls/error.json 全部落盘；usage 未知容错；judge 重试全尝试留证。"
+    ]
+  }
+]

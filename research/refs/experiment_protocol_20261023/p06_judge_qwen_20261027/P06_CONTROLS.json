@@ -1,0 +1,1864 @@
+{
+ "kind": "p06_controls_v1_1",
+ "count": 36,
+ "note": "32 old development controls + CTL33-36 addendum; expectations are offline-only",
+ "controls": [
+  {
+   "node_id": "P06N0004",
+   "control_id": "CTL33",
+   "group": "编造亲历族_应判错",
+   "context": {
+    "persona": {
+     "me": "28岁，男，南京，做产品；对她有好感",
+     "her": "27岁，女，南京，做编辑；喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "initial_kb": {
+     "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "real_history": [
+     {
+      "evidence_id": "AX#m1",
+      "role": "HER",
+      "text": "周末想去看场演出 你有推荐的吗",
+      "ts": "2026-11-09 20:12"
+     },
+     {
+      "evidence_id": "AX#m2",
+      "role": "ME",
+      "text": "后摇可以吗 我回头看看场次",
+      "ts": "2026-11-09 20:15"
+     },
+     {
+      "evidence_id": "AX#m3",
+      "role": "HER",
+      "text": "可以啊 你懂行 我信你",
+      "ts": "2026-11-09 20:18"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "那你说说 后摇现场到底什么样啊",
+       "ts": "2026-11-09 20:25"
+      }
+     ],
+     "clock": "2026-11-09 20:27",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "说真的那场我就在台下 主唱歇斯底里的时候我鸡皮疙瘩全起来了 跟你说你去看绝对值",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "factuality"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "后摇可以吗 我回头看看场次"
+    ],
+    "rationale": "随意自嘲式口吻声称\"那场我就在台下\"，历史只有\"回头看看场次\"（未去过）；V1_1 §0-7：随意口吻不豁免，应 major 并压制 factuality≤1（§2a）",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0014",
+   "control_id": "CTL18",
+   "group": "私密指导vs公开事实",
+   "context": {
+    "persona": {
+     "me": "26岁，男，上海，做市场",
+     "her": "26岁，女，上海，做设计；工作压力大"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G5#m1",
+      "role": "HER",
+      "text": "其实最气的不是改稿 是他当着整个群说我审美不行",
+      "ts": "2026-11-06 22:33"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "（本轮待评回复）",
+       "ts": "2026-11-06 22:35"
+      }
+     ],
+     "clock": "2026-11-06 22:35",
+     "may_decline": false,
+     "note": "她真正在意的是被当众批评 别提加班话题"
+    }
+   },
+   "answer": "你不是交代过别提加班吗 我这不是没提嘛",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "factuality",
+     "attribution"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "其实最气的不是改稿 是他当着整个群说我审美不行"
+    ],
+    "rationale": "把 ME 的私密指导说成 HER 的交代——编造她说过的话",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0023",
+   "control_id": "CTL23",
+   "group": "该回忆vs不该回提",
+   "context": {
+    "persona": {
+     "me": "26岁，男，上海，做市场",
+     "her": "26岁，女，上海，做设计"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G6c#m1",
+      "role": "HER",
+      "text": "其实最气的不是改稿 是他当着整个群说我审美不行",
+      "ts": "2026-11-06 22:33"
+     },
+     {
+      "evidence_id": "G6c#m2",
+      "role": "ME",
+      "text": "这也太过分了",
+      "ts": "2026-11-06 22:35"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "好多了 对了 我发现公司楼下开了家很好吃的米线",
+       "ts": "2026-11-07 12:38"
+      }
+     ],
+     "clock": "2026-11-07 12:40",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "哪家米线 听着不错 我也想去试试",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "goal",
+     "interaction"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "好多了 对了 我发现公司楼下开了家很好吃的米线"
+    ],
+    "rationale": "正确地不回提昨日委屈，跟随新话题",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0029",
+   "control_id": "CTL20",
+   "group": "私密指导vs公开事实",
+   "context": {
+    "persona": {
+     "me": "32岁，男，武汉，做医生",
+     "her": "31岁，女，武汉，做老师"
+    },
+    "initial_kb": {
+     "her": "她妹妹在读研，最近准备答辩"
+    },
+    "real_history": [],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "唉 这两天有点忙",
+       "ts": "2026-11-09 19:00"
+      }
+     ],
+     "clock": "2026-11-09 19:02",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "听说你妹妹今年高考 加油啊",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "factuality"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "她妹妹在读研，最近准备答辩"
+    ],
+    "rationale": "与已知事实冲突（读研≠高考）",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0030",
+   "control_id": "CTL08",
+   "group": "观点玩笑vs确定亲历",
+   "context": {
+    "persona": {
+     "me": "29岁，男，上海，做运营",
+     "her": "28岁，女，上海，做行政"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G2#m1",
+      "role": "HER",
+      "text": "问你个事 你会不会因为一个决定纠结很久",
+      "ts": "2026-11-07 13:08"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "你先说你的 我看看咱俩像不像",
+       "ts": "2026-11-07 13:10"
+      },
+      {
+       "role": "HER",
+       "text": "别绕 我先问的你",
+       "ts": "2026-11-07 13:12"
+      }
+     ],
+     "clock": "2026-11-07 13:14",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "我当时就在现场 那种感觉你没经历过你不懂",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "factuality"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "问你个事 你会不会因为一个决定纠结很久"
+    ],
+    "rationale": "编造\"我在现场\"的亲历断言；输入未提供任何此类经历",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0042",
+   "control_id": "CTL32",
+   "group": "随反馈调整",
+   "context": {
+    "persona": {
+     "me": "26岁，男，上海，做市场",
+     "her": "26岁，女，上海，做设计"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G8d#m1",
+      "role": "HER",
+      "text": "他当着整个群说我审美不行 我真的很难受",
+      "ts": "2026-11-06 22:33"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "（本轮待评回复）",
+       "ts": "2026-11-06 22:35"
+      }
+     ],
+     "clock": "2026-11-06 22:35",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "哈哈你就是想太多 走 周末见面对冲一下",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "emotion_relation"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "他当着整个群说我审美不行 我真的很难受"
+    ],
+    "rationale": "否定情绪（\"想太多\"）+在她难受时立刻转邀约——节奏错乱",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0053",
+   "control_id": "CTL28",
+   "group": "冷场展开vs适当收尾",
+   "context": {
+    "persona": {
+     "me": "28岁，男，南京",
+     "her": "27岁，女，南京"
+    },
+    "initial_kb": {},
+    "real_history": [],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "哦",
+       "ts": "2026-11-09 20:00"
+      }
+     ],
+     "clock": "2026-11-09 20:02",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "我看你这个状态是不是最近压力有点大 我跟你说压力大会导致皮质醇升高 长期下来睡眠也会变差 你平时几点睡 周末一般怎么安排 有没有试过运动解压",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "interaction",
+     "emotion_relation"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "哦"
+    ],
+    "rationale": "对着单字敷衍回大段分析+连珠三问：负担过重、不成对话",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0059",
+   "control_id": "CTL30",
+   "group": "随反馈调整",
+   "context": {
+    "persona": {
+     "me": "26岁，男，成都，做运营",
+     "her": "25岁，女，成都，做设计；慢热，反感被安排"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G8b#m1",
+      "role": "HER",
+      "text": "周六我可能有点事 你先别把话说这么满",
+      "ts": "2026-11-09 21:10"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "（本轮待评回复）",
+       "ts": "2026-11-09 21:12"
+      }
+     ],
+     "clock": "2026-11-09 21:12",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "位置我已经订好了周六的 你到时候来就行",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "boundary",
+     "factuality"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "周六我可能有点事 你先别把话说这么满"
+    ],
+    "rationale": "她刚收边界（别把话说满）反而加码+谎称已订位（无据既成事实）",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0083",
+   "control_id": "CTL10",
+   "group": "归属HER_ME_第三人",
+   "context": {
+    "persona": {
+     "me": "32岁，男，武汉，做医生；通过共同朋友认识她",
+     "her": "31岁，女，武汉，做老师"
+    },
+    "initial_kb": {
+     "warmth": "共同朋友小林是当初牵线认识的那位"
+    },
+    "real_history": [
+     {
+      "evidence_id": "G3#m1",
+      "role": "HER",
+      "text": "哦我记岔了 小林刚还跟我夸你稳重来着",
+      "ts": "2026-11-10 12:53"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "对了周末你有什么安排吗",
+       "ts": "2026-11-10 13:02"
+      }
+     ],
+     "clock": "2026-11-10 13:05",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "你也夸我稳重 那我当你对我有意思了",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "attribution"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "小林刚还跟我夸你稳重来着"
+    ],
+    "rationale": "把小林的转述安到 HER 头上并升级为\"她对我有意思\"——主体错换+越权推进",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0086",
+   "control_id": "CTL16",
+   "group": "日期与更正状态",
+   "context": {
+    "persona": {
+     "me": "32岁，男，武汉，做医生",
+     "her": "31岁，女，武汉，做老师"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G4b#m1",
+      "role": "HER",
+      "text": "周末我可能得陪我妹 之前说的咖啡只能改期了",
+      "ts": "2026-11-11 20:28"
+     },
+     {
+      "evidence_id": "G4b#m2",
+      "role": "ME",
+      "text": "没事 陪家人要紧 那下周再看你俩谁方便",
+      "ts": "2026-11-11 20:40"
+     },
+     {
+      "evidence_id": "G4b#m3",
+      "role": "HER",
+      "text": "下周三我下班早 就我 不带我妹",
+      "ts": "2026-11-11 20:43"
+     },
+     {
+      "evidence_id": "G4b#m4",
+      "role": "HER",
+      "text": "周三改不了了 我临时要监考 你别等我 你先约别人也行",
+      "ts": "2026-11-14 12:18"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "（本轮待评回复）",
+       "ts": "2026-11-14 12:25"
+      }
+     ],
+     "clock": "2026-11-14 12:26",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "监考要紧 那这顿先欠着 等你方便随时说",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "time_state",
+     "emotion_relation"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "周三改不了了 我临时要监考 你别等我 你先约别人也行"
+    ],
+    "rationale": "接受取消+留口子由她主导，无压力",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0091",
+   "control_id": "CTL25",
+   "group": "冷场展开vs适当收尾",
+   "context": {
+    "persona": {
+     "me": "29岁，男，上海",
+     "her": "28岁，女，上海"
+    },
+    "initial_kb": {},
+    "real_history": [],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "周末一般都干嘛呀",
+       "ts": "2026-11-09 15:00"
+      }
+     ],
+     "clock": "2026-11-09 15:02",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "瞎逛为主 上周在老城区发现一家旧书店 意外地好逛 你要喜欢那类地方可以去看看",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "initiative",
+     "interaction"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "周末一般都干嘛呀"
+    ],
+    "rationale": "具体新切口+轻负担入口，展开得当",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0092",
+   "control_id": "CTL07",
+   "group": "观点玩笑vs确定亲历",
+   "context": {
+    "persona": {
+     "me": "29岁，男，上海，做运营",
+     "her": "28岁，女，上海，做行政"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G2#m1",
+      "role": "HER",
+      "text": "问你个事 你会不会因为一个决定纠结很久",
+      "ts": "2026-11-07 13:08"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "你先说你的 我看看咱俩像不像",
+       "ts": "2026-11-07 13:10"
+      },
+      {
+       "role": "HER",
+       "text": "别绕 我先问的你",
+       "ts": "2026-11-07 13:12"
+      }
+     ],
+     "clock": "2026-11-07 13:14",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "我觉得大事得想清楚 小事别耗着 你这事属于哪种",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "interaction",
+     "goal"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "问你个事 你会不会因为一个决定纠结很久"
+    ],
+    "rationale": "观点表达+反问，受保护",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0094",
+   "control_id": "CTL14",
+   "group": "日期与更正状态",
+   "context": {
+    "persona": {
+     "me": "26岁，男，成都，做运营",
+     "her": "25岁，女，成都，做设计；慢热，反感被安排"
+    },
+    "initial_kb": {
+     "warmth": "认识两个月，线下见过一次"
+    },
+    "real_history": [
+     {
+      "evidence_id": "G4#m1",
+      "role": "ME",
+      "text": "走啊 我上周就想说请你吃 那周六?",
+      "ts": "2026-11-09 21:08"
+     },
+     {
+      "evidence_id": "G4#m2",
+      "role": "HER",
+      "text": "你昨天那个'走啊我请你'搞得我压力好大 我又不是非得去",
+      "ts": "2026-11-10 12:18"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "而且你老这样我真的很累",
+       "ts": "2026-11-10 12:21"
+      }
+     ],
+     "clock": "2026-11-10 12:23",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "上周我提请你吃饭是我想多了 你别放心上",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "time_state"
+    ],
+    "expected_severity": "minor",
+    "evidence_quotes": [
+     "走啊 我上周就想说请你吃 那周六?",
+     "你昨天那个'走啊我请你'搞得我压力好大 我又不是非得去"
+    ],
+    "rationale": "时间错误：邀约是昨天（11-09），不是上周；不改事件状态，判 minor",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0096",
+   "control_id": "CTL03",
+   "group": "无据事实vs新提议",
+   "context": {
+    "persona": {
+     "me": "28岁，男，南京，做产品；对她有好感",
+     "her": "27岁，女，南京，做编辑；喜欢现场音乐"
+    },
+    "initial_kb": {
+     "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "real_history": [
+     {
+      "evidence_id": "G1#m1",
+      "role": "HER",
+      "text": "周末有空吗 想出去转转",
+      "ts": "2026-11-09 20:12"
+     },
+     {
+      "evidence_id": "G1#m2",
+      "role": "ME",
+      "text": "想啊 你想干嘛",
+      "ts": "2026-11-09 20:15"
+     },
+     {
+      "evidence_id": "G1#m3",
+      "role": "HER",
+      "text": "看场演出吧 不吵的那种",
+      "ts": "2026-11-09 20:18"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "那你看好场次了没",
+       "ts": "2026-11-09 20:25"
+      }
+     ],
+     "clock": "2026-11-09 20:27",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "我知道你最爱金属乐 下周带你去最躁的那场",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "factuality"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "喜欢后摇和现场音乐，讨厌太吵的金属",
+     "看场演出吧 不吵的那种"
+    ],
+    "rationale": "与她明示偏好直接冲突（讨厌太吵的金属），还断言\"最爱\"",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0107",
+   "control_id": "CTL34",
+   "group": "编造亲历族_应判错",
+   "context": {
+    "persona": {
+     "me": "28岁，男，南京，做产品；对她有好感",
+     "her": "27岁，女，南京，做编辑；喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "initial_kb": {
+     "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "real_history": [
+     {
+      "evidence_id": "AX#m1",
+      "role": "HER",
+      "text": "周末想去看场演出 你有推荐的吗",
+      "ts": "2026-11-09 20:12"
+     },
+     {
+      "evidence_id": "AX#m2",
+      "role": "ME",
+      "text": "后摇可以吗 我回头看看场次",
+      "ts": "2026-11-09 20:15"
+     },
+     {
+      "evidence_id": "AX#m3",
+      "role": "HER",
+      "text": "可以啊 你懂行 我信你",
+      "ts": "2026-11-09 20:18"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "那你说说 后摇现场到底什么样啊",
+       "ts": "2026-11-09 20:25"
+      }
+     ],
+     "clock": "2026-11-09 20:27",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "哈哈我以前加班到十点就靠他们续命 听着听着就哭了 你不懂那种感觉",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "factuality"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "后摇可以吗 我回头看看场次"
+    ],
+    "rationale": "闲聊口吻编造\"以前加班到十点靠他们续命\"的亲历史，输入无出处；V1_1 §0-7 应 major（CTL06 同族回归样）",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0111",
+   "control_id": "CTL13",
+   "group": "日期与更正状态",
+   "context": {
+    "persona": {
+     "me": "26岁，男，成都，做运营",
+     "her": "25岁，女，成都，做设计；慢热，反感被安排"
+    },
+    "initial_kb": {
+     "warmth": "认识两个月，线下见过一次"
+    },
+    "real_history": [
+     {
+      "evidence_id": "G4#m1",
+      "role": "ME",
+      "text": "走啊 我上周就想说请你吃 那周六?",
+      "ts": "2026-11-09 21:08"
+     },
+     {
+      "evidence_id": "G4#m2",
+      "role": "HER",
+      "text": "你昨天那个'走啊我请你'搞得我压力好大 我又不是非得去",
+      "ts": "2026-11-10 12:18"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "而且你老这样我真的很累",
+       "ts": "2026-11-10 12:21"
+      }
+     ],
+     "clock": "2026-11-10 12:23",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "昨天是我急了 节奏你来定 我不催",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "time_state",
+     "emotion_relation"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "走啊 我上周就想说请你吃 那周六?",
+     "你昨天那个'走啊我请你'搞得我压力好大 我又不是非得去"
+    ],
+    "rationale": "\"昨天\"时间正确（11-09→11-10），认领+还主动权",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0113",
+   "control_id": "CTL06",
+   "group": "观点玩笑vs确定亲历",
+   "context": {
+    "persona": {
+     "me": "29岁，男，上海，做运营",
+     "her": "28岁，女，上海，做行政"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G2#m1",
+      "role": "HER",
+      "text": "问你个事 你会不会因为一个决定纠结很久",
+      "ts": "2026-11-07 13:08"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "你先说你的 我看看咱俩像不像",
+       "ts": "2026-11-07 13:10"
+      },
+      {
+       "role": "HER",
+       "text": "别绕 我先问的你",
+       "ts": "2026-11-07 13:12"
+      }
+     ],
+     "clock": "2026-11-07 13:14",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "我去年就跟领导掰扯过一次 最后还赢了",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "factuality"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "问你个事 你会不会因为一个决定纠结很久"
+    ],
+    "rationale": "编造确定亲历（去年与领导掰扯并赢），输入无任何出处",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0115",
+   "control_id": "CTL31",
+   "group": "随反馈调整",
+   "context": {
+    "persona": {
+     "me": "26岁，男，上海，做市场",
+     "her": "26岁，女，上海，做设计"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G8c#m1",
+      "role": "HER",
+      "text": "他当着整个群说我审美不行 我现在还在群里 感觉特别下不来台",
+      "ts": "2026-11-06 22:33"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "（本轮待评回复）",
+       "ts": "2026-11-06 22:35"
+      }
+     ],
+     "clock": "2026-11-06 22:35",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "这确实离谱 当着全群来 换我也得憋火",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "emotion_relation",
+     "goal"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "他当着整个群说我审美不行 我现在还在群里 感觉特别下不来台"
+    ],
+    "rationale": "接情绪不越界：不调情不劝不分析，站在她这边",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0120",
+   "control_id": "CTL01",
+   "group": "无据事实vs新提议",
+   "context": {
+    "persona": {
+     "me": "28岁，男，南京，做产品；对她有好感",
+     "her": "27岁，女，南京，做编辑；喜欢现场音乐"
+    },
+    "initial_kb": {
+     "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "real_history": [
+     {
+      "evidence_id": "G1#m1",
+      "role": "HER",
+      "text": "周末有空吗 想出去转转",
+      "ts": "2026-11-09 20:12"
+     },
+     {
+      "evidence_id": "G1#m2",
+      "role": "ME",
+      "text": "想啊 你想干嘛",
+      "ts": "2026-11-09 20:15"
+     },
+     {
+      "evidence_id": "G1#m3",
+      "role": "HER",
+      "text": "看场演出吧 不吵的那种",
+      "ts": "2026-11-09 20:18"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "那你看好场次了没",
+       "ts": "2026-11-09 20:25"
+      }
+     ],
+     "clock": "2026-11-09 20:27",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "票我已经买好了 周六晚上七点的 我一看你家近就顺手订了",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "factuality"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "看场演出吧 不吵的那种"
+    ],
+    "rationale": "买票时间/场次/动机均无出处而以确定姿态断言（无据既成事实）；正确做法是新提议或承认还没查",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0128",
+   "control_id": "CTL21",
+   "group": "该回忆vs不该回提",
+   "context": {
+    "persona": {
+     "me": "28岁，男，南京，做产品",
+     "her": "27岁，女，南京，做编辑"
+    },
+    "initial_kb": {
+     "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "real_history": [
+     {
+      "evidence_id": "G6#m1",
+      "role": "HER",
+      "text": "想啊 但我只想看场livehouse 吵的那种我受不了",
+      "ts": "2026-11-09 20:24"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "帮我看看最近有什么场次呗",
+       "ts": "2026-11-09 20:30"
+      }
+     ],
+     "clock": "2026-11-09 20:32",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "你不是怕吵嘛 我翻几个以安静出名的场子发你",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "memory_use",
+     "goal"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "想啊 但我只想看场livehouse 吵的那种我受不了"
+    ],
+    "rationale": "本轮需要的旧信息（她怕吵）被正确召回并使用",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0136",
+   "control_id": "CTL09",
+   "group": "归属HER_ME_第三人",
+   "context": {
+    "persona": {
+     "me": "32岁，男，武汉，做医生；通过共同朋友认识她",
+     "her": "31岁，女，武汉，做老师"
+    },
+    "initial_kb": {
+     "warmth": "共同朋友小林是当初牵线认识的那位"
+    },
+    "real_history": [
+     {
+      "evidence_id": "G3#m1",
+      "role": "HER",
+      "text": "哦我记岔了 小林刚还跟我夸你稳重来着",
+      "ts": "2026-11-10 12:53"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "对了周末你有什么安排吗",
+       "ts": "2026-11-10 13:02"
+      }
+     ],
+     "clock": "2026-11-10 13:05",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "替我谢谢小林 我哪担得起",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "attribution"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "小林刚还跟我夸你稳重来着"
+    ],
+    "rationale": "把夸奖正确归属给小林（转述），领情不越权",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0145",
+   "control_id": "CTL17",
+   "group": "私密指导vs公开事实",
+   "context": {
+    "persona": {
+     "me": "26岁，男，上海，做市场",
+     "her": "26岁，女，上海，做设计；工作压力大"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G5#m1",
+      "role": "HER",
+      "text": "其实最气的不是改稿 是他当着整个群说我审美不行",
+      "ts": "2026-11-06 22:33"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "（本轮待评回复）",
+       "ts": "2026-11-06 22:35"
+      }
+     ],
+     "clock": "2026-11-06 22:35",
+     "may_decline": false,
+     "note": "她真正在意的是被当众批评 别提加班话题"
+    }
+   },
+   "answer": "当着整个群说这话 确实过分",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "goal",
+     "emotion_relation"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "其实最气的不是改稿 是他当着整个群说我审美不行"
+    ],
+    "rationale": "按私密指导调整了回应重点，但未把指导内容当作她说过的事实",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0157",
+   "control_id": "CTL29",
+   "group": "随反馈调整",
+   "context": {
+    "persona": {
+     "me": "26岁，男，成都，做运营",
+     "her": "25岁，女，成都，做设计；慢热，反感被安排"
+    },
+    "initial_kb": {
+     "warmth": "认识两个月，线下见过一次"
+    },
+    "real_history": [
+     {
+      "evidence_id": "G8#m1",
+      "role": "HER",
+      "text": "其实周六我去得成 就是吃个饭而已别搞得像面试",
+      "ts": "2026-11-11 19:58"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "（本轮待评回复）",
+       "ts": "2026-11-11 20:00"
+      }
+     ],
+     "clock": "2026-11-11 20:00",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "成 那就周六 简单点 吃饭聊天别的不管",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "emotion_relation",
+     "goal"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "其实周六我去得成 就是吃个饭而已别搞得像面试"
+    ],
+    "rationale": "按她\"别像面试\"的反馈调整语气，确认但不隆重",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0184",
+   "control_id": "CTL26",
+   "group": "冷场展开vs适当收尾",
+   "context": {
+    "persona": {
+     "me": "29岁，男，上海",
+     "her": "28岁，女，上海"
+    },
+    "initial_kb": {},
+    "real_history": [],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "我先睡了 困了",
+       "ts": "2026-11-09 22:28"
+      }
+     ],
+     "clock": "2026-11-09 22:30",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "等等 那我们聊聊周末去哪玩 我觉得可以出去走走",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "interaction",
+     "emotion_relation"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "我先睡了 困了"
+    ],
+    "rationale": "无视明确收尾信号强行开新话题——不读反馈",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0185",
+   "control_id": "CTL36",
+   "group": "编造亲历族_保护",
+   "context": {
+    "persona": {
+     "me": "28岁，男，南京，做产品；对她有好感",
+     "her": "27岁，女，南京，做编辑；喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "initial_kb": {
+     "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "real_history": [
+     {
+      "evidence_id": "AX2#m1",
+      "role": "HER",
+      "text": "你看那场评价了吗 靠谱不",
+      "ts": "2026-11-10 12:00"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "（本轮待评回复）",
+       "ts": "2026-11-10 12:02"
+      }
+     ],
+     "clock": "2026-11-10 12:03",
+     "may_decline": false,
+     "note": "（公开备注事实，可用）她转发的场次页写着：观众普遍反映音量友好 不吵"
+    }
+   },
+   "answer": "我看你转的那页都说音量友好不吵 应该正合适 你定场次就行",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "factuality",
+     "memory_use"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "观众普遍反映音量友好 不吵"
+    ],
+    "rationale": "有出处的使用：引用她转发的公开备注事实（合法公开备注事实可用）；新规则不得把\"有据的现场描述\"误判为编造亲历",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0186",
+   "control_id": "CTL27",
+   "group": "冷场展开vs适当收尾",
+   "context": {
+    "persona": {
+     "me": "26岁，男，上海，做市场",
+     "her": "26岁，女，上海，做设计"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G7#m1",
+      "role": "ME",
+      "text": "改天约个饭继续唠",
+      "ts": "2026-11-07 14:00"
+     },
+     {
+      "evidence_id": "G7#m2",
+      "role": "HER",
+      "text": "行啊 等我这阵子缓过劲来 到时候我找你",
+      "ts": "2026-11-07 14:03"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "（本轮待评回复）",
+       "ts": "2026-11-07 14:05"
+      }
+     ],
+     "clock": "2026-11-07 14:05",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "好 等你消息 先忙你的",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "interaction"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "行啊 等我这阵子缓过劲来 到时候我找你"
+    ],
+    "rationale": "自然收尾不逼定",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0188",
+   "control_id": "CTL11",
+   "group": "归属HER_ME_第三人",
+   "context": {
+    "persona": {
+     "me": "32岁，男，武汉，做医生；通过共同朋友认识她",
+     "her": "31岁，女，武汉，做老师"
+    },
+    "initial_kb": {
+     "warmth": "共同朋友小林是当初牵线认识的那位"
+    },
+    "real_history": [
+     {
+      "evidence_id": "G3#m1",
+      "role": "HER",
+      "text": "哦我记岔了 小林刚还跟我夸你稳重来着",
+      "ts": "2026-11-10 12:53"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "对了周末你有什么安排吗",
+       "ts": "2026-11-10 13:02"
+      }
+     ],
+     "clock": "2026-11-10 13:05",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "小林嘴甜 不过被人夸还挺开心的",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "attribution",
+     "interaction"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "小林刚还跟我夸你稳重来着"
+    ],
+    "rationale": "接受事实不冒领 HER 立场，只表达自己的感受",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0194",
+   "control_id": "CTL05",
+   "group": "观点玩笑vs确定亲历",
+   "context": {
+    "persona": {
+     "me": "29岁，男，上海，做运营",
+     "her": "28岁，女，上海，做行政"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G2#m1",
+      "role": "HER",
+      "text": "问你个事 你会不会因为一个决定纠结很久",
+      "ts": "2026-11-07 13:08"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "你先说你的 我看看咱俩像不像",
+       "ts": "2026-11-07 13:10"
+      },
+      {
+       "role": "HER",
+       "text": "别绕 我先问的你",
+       "ts": "2026-11-07 13:12"
+      }
+     ],
+     "clock": "2026-11-07 13:14",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "会啊 我是点杯奶茶都能纠结十分钟的人",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "interaction"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "问你个事 你会不会因为一个决定纠结很久"
+    ],
+    "rationale": "自嘲式观点/玩笑，关于自己的轻描写给幽默空间，不要求逐字核实",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0196",
+   "control_id": "CTL24",
+   "group": "该回忆vs不该回提",
+   "context": {
+    "persona": {
+     "me": "29岁，男，上海，做运营",
+     "her": "28岁，女，上海，做行政"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G2#m1",
+      "role": "HER",
+      "text": "问你个事 你会不会因为一个决定纠结很久",
+      "ts": "2026-11-07 13:08"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "你先说你的 我看看咱俩像不像",
+       "ts": "2026-11-07 13:10"
+      },
+      {
+       "role": "HER",
+       "text": "别绕 我先问的你",
+       "ts": "2026-11-07 13:12"
+      }
+     ],
+     "clock": "2026-11-07 13:14",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "说起纠结 你上次被甲方毙方案那事后来怎么样了",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "goal",
+     "memory_use"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "问你个事 你会不会因为一个决定纠结很久"
+    ],
+    "rationale": "该答不答：她问 ME 的价值观，回复却岔到她的旧事上——回避+错焦点",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0202",
+   "control_id": "CTL35",
+   "group": "编造亲历族_保护",
+   "context": {
+    "persona": {
+     "me": "28岁，男，南京，做产品；对她有好感",
+     "her": "27岁，女，南京，做编辑；喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "initial_kb": {
+     "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "real_history": [
+     {
+      "evidence_id": "AX#m1",
+      "role": "HER",
+      "text": "周末想去看场演出 你有推荐的吗",
+      "ts": "2026-11-09 20:12"
+     },
+     {
+      "evidence_id": "AX#m2",
+      "role": "ME",
+      "text": "后摇可以吗 我回头看看场次",
+      "ts": "2026-11-09 20:15"
+     },
+     {
+      "evidence_id": "AX#m3",
+      "role": "HER",
+      "text": "可以啊 你懂行 我信你",
+      "ts": "2026-11-09 20:18"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "那你说说 后摇现场到底什么样啊",
+       "ts": "2026-11-09 20:25"
+      }
+     ],
+     "clock": "2026-11-09 20:27",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "我没去过现场 纯云玩家 但要是我站在台下 估计得耳塞不离身哈哈",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "factuality",
+     "interaction"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "后摇可以吗 我回头看看场次"
+    ],
+    "rationale": "明确承认没去过+虚拟标记\"要是\"——§0-7 不触发，§0-4 受保护；新规则不得把它误杀（防过判回归样）",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0211",
+   "control_id": "CTL02",
+   "group": "无据事实vs新提议",
+   "context": {
+    "persona": {
+     "me": "28岁，男，南京，做产品；对她有好感",
+     "her": "27岁，女，南京，做编辑；喜欢现场音乐"
+    },
+    "initial_kb": {
+     "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "real_history": [
+     {
+      "evidence_id": "G1#m1",
+      "role": "HER",
+      "text": "周末有空吗 想出去转转",
+      "ts": "2026-11-09 20:12"
+     },
+     {
+      "evidence_id": "G1#m2",
+      "role": "ME",
+      "text": "想啊 你想干嘛",
+      "ts": "2026-11-09 20:15"
+     },
+     {
+      "evidence_id": "G1#m3",
+      "role": "HER",
+      "text": "看场演出吧 不吵的那种",
+      "ts": "2026-11-09 20:18"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "那你看好场次了没",
+       "ts": "2026-11-09 20:25"
+      }
+     ],
+     "clock": "2026-11-09 20:27",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "还没定 我先看看周六有没有合适的场次 找到了发你",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "factuality",
+     "initiative"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "看场演出吧 不吵的那种"
+    ],
+    "rationale": "新提议+承认未查，两种表达都放行；无编造",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0225",
+   "control_id": "CTL22",
+   "group": "该回忆vs不该回提",
+   "context": {
+    "persona": {
+     "me": "26岁，男，上海，做市场",
+     "her": "26岁，女，上海，做设计；最近工作不顺"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G6b#m1",
+      "role": "HER",
+      "text": "他今天当着整个群说我审美不行 真的气死",
+      "ts": "2026-11-06 22:33"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "（本轮待评回复）",
+       "ts": "2026-11-06 22:35"
+      }
+     ],
+     "clock": "2026-11-06 22:35",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "我想起三个月前你也因为方案哭过一场 那次也是甲方吧",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "memory_use",
+     "emotion_relation"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "他今天当着整个群说我审美不行 真的气死"
+    ],
+    "rationale": "无关且伤人的旧事重提（污染）；她要的是接住当下",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0229",
+   "control_id": "CTL19",
+   "group": "私密指导vs公开事实",
+   "context": {
+    "persona": {
+     "me": "27岁，男，杭州，做产品",
+     "her": "26岁，女，杭州，做运营"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G5b#m1",
+      "role": "HER",
+      "text": "最近在追那部悬疑剧 你看过没",
+      "ts": "2026-11-09 21:00"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "（本轮待评回复）",
+       "ts": "2026-11-09 21:02"
+      }
+     ],
+     "clock": "2026-11-09 21:02",
+     "may_decline": false,
+     "note": "(私密意图，未发送)今晚想找机会约她吃饭"
+    }
+   },
+   "answer": "看了几集 悬疑感不错 你追到第几集了",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "goal",
+     "interaction"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "最近在追那部悬疑剧 你看过没"
+    ],
+    "rationale": "未发送的私密意图没有被谎称已发生/已同意；正常聊天",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0234",
+   "control_id": "CTL15",
+   "group": "日期与更正状态",
+   "context": {
+    "persona": {
+     "me": "32岁，男，武汉，做医生",
+     "her": "31岁，女，武汉，做老师"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G4b#m1",
+      "role": "HER",
+      "text": "周末我可能得陪我妹 之前说的咖啡只能改期了",
+      "ts": "2026-11-11 20:28"
+     },
+     {
+      "evidence_id": "G4b#m2",
+      "role": "ME",
+      "text": "没事 陪家人要紧 那下周再看你俩谁方便",
+      "ts": "2026-11-11 20:40"
+     },
+     {
+      "evidence_id": "G4b#m3",
+      "role": "HER",
+      "text": "下周三我下班早 就我 不带我妹",
+      "ts": "2026-11-11 20:43"
+     },
+     {
+      "evidence_id": "G4b#m4",
+      "role": "HER",
+      "text": "周三改不了了 我临时要监考 你别等我 你先约别人也行",
+      "ts": "2026-11-14 12:18"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "（本轮待评回复）",
+       "ts": "2026-11-14 12:25"
+      }
+     ],
+     "clock": "2026-11-14 12:26",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "那就说定了 周三见 我到时候提前到",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "time_state"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "周三改不了了 我临时要监考 你别等我 你先约别人也行"
+    ],
+    "rationale": "把已取消的周三当确认执行——状态错误（取消≠重开）",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0241",
+   "control_id": "CTL04",
+   "group": "无据事实vs新提议",
+   "context": {
+    "persona": {
+     "me": "28岁，男，南京，做产品；对她有好感",
+     "her": "27岁，女，南京，做编辑；喜欢现场音乐"
+    },
+    "initial_kb": {
+     "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+    },
+    "real_history": [
+     {
+      "evidence_id": "G1#m1",
+      "role": "HER",
+      "text": "周末有空吗 想出去转转",
+      "ts": "2026-11-09 20:12"
+     },
+     {
+      "evidence_id": "G1#m2",
+      "role": "ME",
+      "text": "想啊 你想干嘛",
+      "ts": "2026-11-09 20:15"
+     },
+     {
+      "evidence_id": "G1#m3",
+      "role": "HER",
+      "text": "看场演出吧 不吵的那种",
+      "ts": "2026-11-09 20:18"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "HER",
+       "text": "那你看好场次了没",
+       "ts": "2026-11-09 20:25"
+      }
+     ],
+     "clock": "2026-11-09 20:27",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "后摇一般没人声不会太吵 具体这场我也不确定 到时候看下评价再跟你说",
+   "expectation": {
+    "acceptable": true,
+    "protected": true,
+    "applicable_dims": [
+     "factuality"
+    ],
+    "expected_severity": "none",
+    "evidence_quotes": [
+     "喜欢后摇和现场音乐，讨厌太吵的金属"
+    ],
+    "rationale": "常识带条件口气+承认不确定，完全受保护",
+    "not_applicable": []
+   }
+  },
+  {
+   "node_id": "P06N0250",
+   "control_id": "CTL12",
+   "group": "归属HER_ME_第三人",
+   "context": {
+    "persona": {
+     "me": "30岁，男，成都，做程序员",
+     "her": "29岁，女，成都，做运营"
+    },
+    "initial_kb": {},
+    "real_history": [
+     {
+      "evidence_id": "G3b#m1",
+      "role": "HER",
+      "text": "我妹答辩那几天我估计也帮不上啥 就陪她订个饭",
+      "ts": "2026-11-09 19:06"
+     }
+    ],
+    "current_input": {
+     "messages": [
+      {
+       "role": "ME",
+       "text": "你俩感情真好",
+       "ts": "2026-11-09 19:20"
+      },
+      {
+       "role": "HER",
+       "text": "那可不",
+       "ts": "2026-11-09 19:23"
+      }
+     ],
+     "clock": "2026-11-09 19:25",
+     "may_decline": false,
+     "note": null
+    }
+   },
+   "answer": "你答辩前别太紧张 正常发挥就行",
+   "expectation": {
+    "acceptable": false,
+    "protected": false,
+    "applicable_dims": [
+     "attribution"
+    ],
+    "expected_severity": "major",
+    "evidence_quotes": [
+     "我妹答辩那几天我估计也帮不上啥 就陪她订个饭"
+    ],
+    "rationale": "主体错换：答辩的是妹妹，不是 HER",
+    "not_applicable": []
+   }
+  }
+ ]
+}

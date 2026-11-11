@@ -1,0 +1,200 @@
+{
+ "kind": "f5_analysis",
+ "note": "同臂重抽对比（不是组件消融）：A/B 为同一身份两次独立实跑。",
+ "ratings": "logs/f5_judge_20261029_134800/F5_RATINGS.jsonl",
+ "n": 12,
+ "schema_ok": 12,
+ "transport_ok": 12,
+ "wins": {
+  "tie": 2,
+  "frozen": 6,
+  "repaired": 4
+ },
+ "dims_mean": {
+  "frozen": {
+   "goal": 2.083,
+   "factuality": 1.917,
+   "attribution": 2.273,
+   "time_state": 2.273,
+   "boundary": 2.273,
+   "memory_use": 2.364,
+   "interaction": 2.0,
+   "initiative": 2.364,
+   "emotion_relation": 2.273
+  },
+  "repaired": {
+   "goal": 2.083,
+   "factuality": 2.167,
+   "attribution": 2.25,
+   "time_state": 2.083,
+   "boundary": 2.25,
+   "memory_use": 2.083,
+   "interaction": 2.0,
+   "initiative": 1.917,
+   "emotion_relation": 2.25
+  }
+ },
+ "major_errors": {
+  "frozen": 2,
+  "repaired": 0
+ },
+ "action_fit": {
+  "frozen": {
+   "appropriate": 8,
+   "bad": 1,
+   "acceptable": 3
+  },
+  "repaired": {
+   "appropriate": 7,
+   "acceptable": 5
+  }
+ },
+ "card_conflicts": [],
+ "per_case": {
+  "F5:N01_T01": {
+   "verdict": "tie",
+   "winner_arm": "tie",
+   "card_conflict": false,
+   "schema_ok": true,
+   "answer_kinds": {
+    "A": "reply",
+    "B": "reply"
+   }
+  },
+  "F5:N01_T02": {
+   "verdict": "A",
+   "winner_arm": "frozen",
+   "card_conflict": false,
+   "schema_ok": true,
+   "answer_kinds": {
+    "A": "reply",
+    "B": "reply"
+   }
+  },
+  "F5:N01_T03": {
+   "verdict": "B",
+   "winner_arm": "frozen",
+   "card_conflict": false,
+   "schema_ok": true,
+   "answer_kinds": {
+    "A": "reply",
+    "B": "reply"
+   }
+  },
+  "F5:N01_T04": {
+   "verdict": "A",
+   "winner_arm": "frozen",
+   "card_conflict": false,
+   "schema_ok": true,
+   "answer_kinds": {
+    "A": "reply",
+    "B": "reply"
+   }
+  },
+  "F5:N01_T05": {
+   "verdict": "B",
+   "winner_arm": "repaired",
+   "card_conflict": false,
+   "schema_ok": true,
+   "answer_kinds": {
+    "A": "format_fail",
+    "B": "reply"
+   }
+  },
+  "F5:N01_T06": {
+   "verdict": "tie",
+   "winner_arm": "tie",
+   "card_conflict": false,
+   "schema_ok": true,
+   "answer_kinds": {
+    "A": "reply",
+    "B": "reply"
+   }
+  },
+  "F5:N01_T07": {
+   "verdict": "B",
+   "winner_arm": "frozen",
+   "card_conflict": false,
+   "schema_ok": true,
+   "answer_kinds": {
+    "A": "reply",
+    "B": "reply"
+   }
+  },
+  "F5:N01_T08": {
+   "verdict": "A",
+   "winner_arm": "frozen",
+   "card_conflict": false,
+   "schema_ok": true,
+   "answer_kinds": {
+    "A": "reply",
+    "B": "reply"
+   }
+  },
+  "F5:N01_T09": {
+   "verdict": "A",
+   "winner_arm": "frozen",
+   "card_conflict": false,
+   "schema_ok": true,
+   "answer_kinds": {
+    "A": "reply",
+    "B": "reply"
+   }
+  },
+  "F5:N01_T10": {
+   "verdict": "B",
+   "winner_arm": "repaired",
+   "card_conflict": false,
+   "schema_ok": true,
+   "answer_kinds": {
+    "A": "reply",
+    "B": "reply"
+   }
+  },
+  "F5:N01_T11": {
+   "verdict": "B",
+   "winner_arm": "repaired",
+   "card_conflict": false,
+   "schema_ok": true,
+   "answer_kinds": {
+    "A": "reply",
+    "B": "reply"
+   }
+  },
+  "F5:N01_T12": {
+   "verdict": "B",
+   "winner_arm": "repaired",
+   "card_conflict": false,
+   "schema_ok": true,
+   "answer_kinds": {
+    "A": "reply",
+    "B": "reply"
+   }
+  }
+ },
+ "format_fail_cases": {
+  "F5:N01_T05": {
+   "undeliverable_arm": "frozen",
+   "winner_arm": "repaired",
+   "judge_penalized_undeliverable": true
+  }
+ },
+ "swap": {
+  "ratings": "logs/f5_judge_20261029_140906/F5_RATINGS.jsonl",
+  "n": 12,
+  "schema_ok": 12,
+  "transport_ok": 12,
+  "wins": {
+   "tie": 5,
+   "frozen": 4,
+   "repaired": 3
+  },
+  "agreement_with_forward": 9,
+  "agreement_rate": 0.75,
+  "flipped_cases": [
+   "F5:N01_T08",
+   "F5:N01_T07",
+   "F5:N01_T10"
+  ]
+ }
+}

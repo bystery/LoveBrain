@@ -1,0 +1,237 @@
+{
+  "kind": "independent_max288_v3_audit",
+  "model_calls": 0,
+  "recovery_accounting": {
+    "budget_reservations": 18,
+    "gateway_started": 27,
+    "unreserved_extra_gateway_starts": 9,
+    "reused_attempt_ids": {
+      "p06rec:FP001-task:1793113707:2": 2,
+      "p06rec:FP001-interaction:1793113707:3": 4,
+      "p06rec:FP001-task:q120:2": 4,
+      "p06rec:FP001-task:small12:5": 2,
+      "p06rec:FP005-task:small12:8": 2
+    },
+    "gateway_ids_missing_from_budget": [],
+    "budget_terminal_counts": {
+      "authorization_scope": 1,
+      "attempt_started": 18,
+      "attempt_completed": 17,
+      "attempt_failed": 1
+    },
+    "gateway_terminal_counts": {
+      "attempt_started": 27,
+      "attempt_completed": 17,
+      "attempt_failed": 10
+    }
+  },
+  "recovery_latest_qualification": [
+    {
+      "item_id": "FP001-facts",
+      "profile": "facts",
+      "model": "dsf",
+      "ok": true,
+      "why": "ok",
+      "left": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "right": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "issues": [],
+      "na": [],
+      "ms": 44025,
+      "raw": "{\"item_id\":\"FP001-facts\",\"left\":[3,3,3,3],\"right\":[3,3,3,3],\"issues\":[],\"na\":[]}"
+    },
+    {
+      "item_id": "FP001-task",
+      "profile": "task",
+      "model": "qwen3.8-flash",
+      "ok": true,
+      "why": "ok",
+      "left": [
+        3,
+        3
+      ],
+      "right": [
+        2,
+        2
+      ],
+      "issues": [
+        {
+          "side": "right",
+          "evidence_id": "current_card",
+          "dimension": "goal",
+          "severity": "minor",
+          "quote": "他们到底想改哪儿？",
+          "note": "前半能接住情绪，但后半转向追问甲方具体要求，开始带出解决/分析倾向。"
+        },
+        {
+          "side": "right",
+          "evidence_id": "current_card",
+          "dimension": "memory_use",
+          "severity": "minor",
+          "quote": "而且改到后面常常不是变好，是被改散了。",
+          "note": "复用了三版被打回的事实，但加入未经本轮材料确认的泛化判断。"
+        }
+      ],
+      "na": [],
+      "ms": 397820,
+      "raw": "{\"item_id\":\"FP001-task\",\"left\":[3,3],\"right\":[2,2],\"issues\":[{\"side\":\"right\",\"evidence_id\":\"current_card\",\"dimension\":\"goal\",\"severity\":\"minor\",\"quote\":\"他们到底想改哪儿？\",\"note\":\"前半能接住情绪，但后半转向追问甲方具体要求，开始带出解决/分析倾向。\"},{\"side\":\"right\",\"evidence_id\":\"current_card\",\"dimension\":\"memory_use\",\"severity\":\"minor\",\"quote\":\"而且改到后面常常不是变好，是被改散了。\",\"note\":\"复用了三版被打回的事实，但加入未经本轮材料确认的泛化判断。\"}],\"na\":[]}"
+    },
+    {
+      "item_id": "FP001-interaction",
+      "profile": "interaction",
+      "model": "qwen3.8-flash",
+      "ok": true,
+      "why": "ok",
+      "left": [
+        3,
+        3,
+        3
+      ],
+      "right": [
+        1,
+        2,
+        1
+      ],
+      "issues": [
+        {
+          "side": "right",
+          "evidence_id": "E006_T01#m0",
+          "dimension": "interaction",
+          "severity": "major",
+          "quote": "而且改到后面常常不是变好，是被改散了。他们到底想改哪儿？",
+          "note": "从接住情绪滑向分析甲方需求，偏离当前“不急于解决”的互动目标。"
+        },
+        {
+          "side": "right",
+          "evidence_id": "E006_T01#m0",
+          "dimension": "emotion_relation",
+          "severity": "major",
+          "quote": "他们到底想改哪儿？",
+          "note": "在她明确说“顶不住”后进入方案/甲方分析，未充分依据她当下需要被承接的情绪调整。"
+        }
+      ],
+      "na": [],
+      "ms": 24181,
+      "raw": "{\"item_id\":\"FP001-interaction\",\"left\":[3,3,3],\"right\":[1,2,1],\"issues\":[{\"side\":\"right\",\"evidence_id\":\"E006_T01#m0\",\"dimension\":\"interaction\",\"severity\":\"major\",\"quote\":\"而且改到后面常常不是变好，是被改散了。他们到底想改哪儿？\",\"note\":\"从接住情绪滑向分析甲方需求，偏离当前“不急于解决”的互动目标。\"},{\"side\":\"right\",\"evidence_id\":\"E006_T01#m0\",\"dimension\":\"emotion_relation\",\"severity\":\"major\",\"quote\":\"他们到底想改哪儿？\",\"note\":\"在她明确说“顶不住”后进入方案/甲方分析，未充分依据她当下需要被承接的情绪调整。\"}],\"na\":[]}"
+    }
+  ],
+  "recovery_small_batch": {
+    "logical_units": 12,
+    "schema_ok": 12,
+    "longest_logical_unit_ms": 166456
+  },
+  "controlled_probes": {
+    "bad_suffix": [
+      true,
+      "ok"
+    ],
+    "missing_id": [
+      true,
+      "ok"
+    ],
+    "bool_scores": [
+      true,
+      "ok"
+    ],
+    "current_driver_goal_field_effective": false,
+    "canonical_goal_field_effective": true,
+    "empty_output_action": [
+      "no_reply",
+      ""
+    ],
+    "reply_no_reply_conflict": [
+      "send",
+      "这是正文"
+    ],
+    "second_turn_messages": [
+      {
+        "role": "HER",
+        "text": "那我知道啦",
+        "ts": "2026-10-28T00:05:10"
+      }
+    ],
+    "actual_sent_ME_replayed_next_turn": false,
+    "consumer_alias_collision": {
+      "before_bad_boy": "选项A",
+      "before_bad_boys": "选项B",
+      "after_response": {
+        "recommended": "好呀",
+        "bad_boy": "选项A",
+        "playful": null,
+        "warm": null
+      },
+      "repairs": [
+        "style_key_drop_dup:bad_boys",
+        "directions_truncate_to_4"
+      ]
+    }
+  },
+  "p07_traces": [
+    {
+      "file": "D:\\lovebrain-arena\\logs\\p07_pilot2_20261027\\TRACE_I2_reference_product_v1.json",
+      "scenario": "I2",
+      "arm": "reference_product_v1",
+      "turns": 3,
+      "sent": 3,
+      "delivery_failed": 0,
+      "missing_reply_as_ME_text": 0,
+      "primary_texts": [
+        "夜班第三天就贤者了，那第五天是不是该给你剃度了。",
+        "行，周日这条命先给你留着，球场上见真章。",
+        "会不会挥拍，周日你就知道了。倒是你，别到时候拿夜班当借口。"
+      ]
+    },
+    {
+      "file": "D:\\lovebrain-arena\\logs\\p07_pilot2_20261027\\TRACE_I2_v6_integrated.json",
+      "scenario": "I2",
+      "arm": "v6_integrated",
+      "turns": 3,
+      "sent": 3,
+      "delivery_failed": 0,
+      "missing_reply_as_ME_text": 0,
+      "primary_texts": [
+        "贤者模式第三天，那你现在是夜班界的扫地僧，不悲不喜，病人按铃你都想先打坐三秒再起身。",
+        "抢毛肚模式，这形容太贴切了。那你按完铃回过神，会不会顺口问病人一句“熟了没”",
+        "大爷那句\"还没开锅\"才是最后一击，你站在他面前社死了整整一个回合。"
+      ]
+    },
+    {
+      "file": "D:\\lovebrain-arena\\logs\\p07_pilot2_20261027\\TRACE_I4_reference_product_v1.json",
+      "scenario": "I4",
+      "arm": "reference_product_v1",
+      "turns": 3,
+      "sent": 2,
+      "delivery_failed": 1,
+      "missing_reply_as_ME_text": 1,
+      "primary_texts": [
+        "",
+        "周六下午可以，我不赶时间。你几点开始逛，我过去找你。",
+        "行，两点展厅门口。你上完烘焙课直接过来就行。"
+      ]
+    },
+    {
+      "file": "D:\\lovebrain-arena\\logs\\p07_pilot2_20261027\\TRACE_I4_v6_integrated.json",
+      "scenario": "I4",
+      "arm": "v6_integrated",
+      "turns": 3,
+      "sent": 3,
+      "delivery_failed": 0,
+      "missing_reply_as_ME_text": 0,
+      "primary_texts": [
+        "我记的也是月底前后，没敢当准的。你查到是几号撤？要真是这周末，那这周随便挑个晚上去一趟也行，不用非等周末。",
+        "那就周四，展看完再拐去咖啡店，正好赶在撤展前。你几点能脱身？我按你的时间定。",
+        "周四六点半，我提前到展门口等你。展的闭馆时间我今晚查一下，别到那儿吃闭门羹。八点前撤的话，咖啡店就当收尾，你是想垫点东西还是纯喝一杯？"
+      ]
+    }
+  ],
+  "limits": "Controlled probes demonstrate input/consumer/accounting bugs, NOT candidate quality or real human outcomes."
+}

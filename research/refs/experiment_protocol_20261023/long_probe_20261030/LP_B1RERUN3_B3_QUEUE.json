@@ -1,0 +1,188 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "B1RERUN3",
+ "review": "refs/experiment_protocol_20261023/long_probe_20261030/LP_B1RERUN3_NINEDIM_REVIEW.json",
+ "batch_root": "logs/longprobe_b1_live_20261030",
+ "n_queued": 5,
+ "queue": [
+  {
+   "pair_id": "LP:E063:E063_T17",
+   "order": "main",
+   "story": "E063",
+   "cid": "E063_T17",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 用“还是上次那条断头路”虚构双方过去的练车约定；此前的对话只说过她周末早上在场地练，从未提到过断头路，也没有和我说好去那里。这是编造已发生的安排，因此 memory=0 并判 severe。另外 LEFT 把考前周末说成“19号还是20号”，但具体星期没有依据。",
+   "key_quote": "R：你26号上午几点考？我好倒着往前排时间。",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 0
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "还是上次那条断头路",
+      "19号还是20号"
+     ],
+     "found_where": {
+      "还是上次那条断头路": "candidate_reply",
+      "19号还是20号": "candidate_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E063:E063_T20",
+   "order": "swap",
+   "story": "E063",
+   "cid": "E063_T20",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "RIGHT 把“你不是早说要第一时间贴”当成她说过的话，但此前对话里她从没提过实习标，这是无依据的编造，并把她没有说过的话算在她头上。",
+   "key_quote": "RIGHT：你不是早说要第一时间贴？贴好拍张照给我看看。",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 2,
+     "time": 2,
+     "attrib": 0,
+     "memory": 0
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "你不是早说要第一时间贴"
+     ],
+     "found_where": {
+      "你不是早说要第一时间贴": "candidate_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E064:E064_T12",
+   "order": "main",
+   "story": "E064",
+   "cid": "E064_T12",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT 声称“我到楼下了”，但此前双方从未确定具体时间；她当天满课，她最后一句只是问几点下楼。这属于凭空编造已经发生的接送安排，也等于把未定的时间当成已定。",
+   "key_quote": "LEFT：我八点半下楼，箱子垫子你都弄好了吧，直接交给我，到了给你拍段视频。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 0,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "我到楼下了"
+     ],
+     "found_where": {
+      "我到楼下了": "parent_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E064:E064_T21",
+   "order": "main",
+   "story": "E064",
+   "cid": "E064_T21",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 把未发生过的情节当成确定事实：此前她只说团子到家后“蜷在我腿上”，从未提过“在箱子里叫”，“三周前还在箱子里叫”属于编造已发生细节，还用“又”暗示已有凌晨折腾的旧事，这些都无依据。RIGHT 没有这类问题，对“抓沙发”的呼应也是真发生过的事。",
+   "key_quote": "LEFT：三周前还在箱子里叫，现在满屋子跑酷了",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "蜷在我腿上",
+      "在箱子里叫",
+      "三周前还在箱子里叫",
+      "抓沙发"
+     ],
+     "found_where": {
+      "蜷在我腿上": "episode_context",
+      "在箱子里叫": "candidate_reply",
+      "三周前还在箱子里叫": "candidate_reply",
+      "抓沙发": "parent_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E065:E065_T22",
+   "order": "main",
+   "story": "E065",
+   "cid": "E065_T22",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT虚构了一段过去的具体场景（她翻出毛线箱坐着哭），对话与背景都没有依据，却被当成已经发生的事复述；这是把无根据的细节确定化。",
+   "key_quote": "LEFT：上回你翻出那箱坐着哭，现在成了屋里的摆设",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": null,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  }
+ ]
+}

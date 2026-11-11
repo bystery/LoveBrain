@@ -1,0 +1,50 @@
+{
+  "id": "CHALLENGE_02_RESEARCH_CFR",
+  "name": "ACL 2027 冲刺：基于 CFR 范式的无训练推理机制设计与 4 臂实验调度",
+  "source_document": "D:\\research_factory\\LLM_test_time\\test4\\指导书.md",
+  "target_project": "D:\\research_factory\\LLM_test_time\\test4",
+  "ground_truth_requirements": [
+    {
+      "req_id": "REQ-01",
+      "topic": "硬件沙箱与目录隔离约束",
+      "intent": "严格锁定在 A100 GPU 2 执行，且只能在 fanfl9922 私有子目录下操作，严禁污染其他租户环境",
+      "keywords": ["A100", "GPU2", "fanfl9922", "隔离"],
+      "target_scope": "GPU Resource Controller / CUDA_VISIBLE_DEVICES"
+    },
+    {
+      "req_id": "REQ-02",
+      "topic": "4 臂对比实验设计 (Four-arm Evaluation)",
+      "intent": "规范构建 Vanilla CoT、Self-Consistency (SC)、DELA 与 BISAT 的对照组与实验矩阵",
+      "keywords": ["CoT", "SC", "4臂", "对比", "baseline"],
+      "target_scope": "exp_fourarm / BenchmarkDriver"
+    },
+    {
+      "req_id": "REQ-03",
+      "topic": "科研防火墙 (Research Firewall)",
+      "intent": "实验原始数据一旦落盘至 frozen/ 目录，任何论文起草部门严禁篡改数据，只能据实引用",
+      "keywords": ["科研防火墙", "frozen", "严禁修改", "数据真实"],
+      "target_scope": "PolicyGateway / EvidenceIntegrity"
+    },
+    {
+      "req_id": "REQ-04",
+      "topic": "Demo 先行小样本试错原则",
+      "intent": "严禁直接跑全量 1000 题；必须先在 20-30 题 Demo 上跑通判定，有效后才允许授权全量",
+      "keywords": ["demo", "先行", "20-30", "小样本", "全量"],
+      "target_scope": "PhaseGate / CostBudget"
+    },
+    {
+      "req_id": "REQ-05",
+      "topic": "逐题机器证据与 Token 耗时全量记账",
+      "intent": "每个 case 必须落盘原始 raw jsonl，精确记录 token/call/latency 证据链",
+      "keywords": ["raw", "token", "latency", "call", "jsonl"],
+      "target_scope": "TaskLedger / MetricsRecorder"
+    },
+    {
+      "req_id": "REQ-06",
+      "topic": "跨部门调度 (Research -> PaperOps)",
+      "intent": "管家作为大脑仅负责派发 task-packet.json，由 Research 部在独立窗口跑实验，由 PaperOps 在独立窗口写方法论，二者靠文件交接",
+      "keywords": ["task-packet", "独立窗口", "research", "paperops", "跨部门"],
+      "target_scope": "DepartmentManager / SessionBroker"
+    }
+  ]
+}

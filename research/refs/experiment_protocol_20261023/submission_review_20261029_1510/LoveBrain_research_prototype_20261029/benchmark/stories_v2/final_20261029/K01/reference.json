@@ -1,0 +1,1200 @@
+{
+ "story_id": "K01",
+ "turns": {
+  "K01_T01": {
+   "case_id": "K01_T01",
+   "current_action": "她主动报出连休五天，明显在等一个旅行提议；这一轮应接住窗口，给出具体方向或先问她想去哪，不要只回'挺好'。",
+   "acceptable_actions": [
+    "说五天够出趟远门，问她想去山里还是海边",
+    "提一个大理或周边小城，先问她有没有想法"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "initiative",
+    "time_state",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T01_a1",
+     "subject": "her",
+     "relation": "leave_window",
+     "value": "十一月12到16号连休五天",
+     "valid_time": "2026-11-12~16",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T01",
+      "message_id": "m1",
+      "quote": "12到16号连休五天"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在给窗口；空泛回应会浪费这次主动。先接住，再问方向。",
+   "unknowns": [
+    "她想去的方向",
+    "预算和交通偏好"
+   ],
+   "protected_expressions": [
+    "12到16号连休五天"
+   ],
+   "forbidden_factual_claims": [
+    "不能把行程说成已经定好",
+    "不能替她决定目的地"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T02": {
+   "case_id": "K01_T02",
+   "current_action": "她确认想去大理，并提到阿岚在那边、可以带逛；这一轮应接住这个当地资源，问清阿岚能帮到什么程度，不要默认住宿也由阿岚包。",
+   "acceptable_actions": [
+    "问阿岚是只带路还是能帮忙订住宿，先把边界问清",
+    "说那让阿岚推荐几个本地地方，住宿我们自己订"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "boundary",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T02_a1",
+     "subject": "her",
+     "relation": "friend_in_dali",
+     "value": "阿岚在大理，说可以带我们逛逛",
+     "valid_time": "长期",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T02",
+      "message_id": "m2",
+      "quote": "她说可以带我们逛逛"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "阿岚是她的朋友，不是我们的免费地陪；先问边界，别替她欠人情。",
+   "unknowns": [
+    "阿岚能帮到什么程度",
+    "阿岚方不方便接待"
+   ],
+   "protected_expressions": [
+    "她说可以带我们逛逛"
+   ],
+   "forbidden_factual_claims": [
+    "不能说阿岚已经答应安排住宿",
+    "不能替她向阿岚提要求"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T03": {
+   "case_id": "K01_T03",
+   "current_action": "她问年假够不够去大理；这一轮应基于我13到15的假期给判断，承认天数紧，提出可执行的短行程，不要把请假说成已批。",
+   "acceptable_actions": [
+    "说13到15三天够大理古城和才村，别排太满",
+    "说假期还没正式批，先按三天做计划，批了再加"
+   ],
+   "applicable_dimensions": [
+    "factuality",
+    "time_state",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T03_a1",
+     "subject": "me",
+     "relation": "leave_days",
+     "value": "我请13到15应该行",
+     "valid_time": "2026-11-13~15",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T03",
+      "message_id": "m1",
+      "quote": "我请13到15应该行"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她问的是可行性；先承认天数紧，再给短行程，不要把'应该行'说成已批。",
+   "unknowns": [
+    "我的年假能不能正式批下来",
+    "她是否接受三天短行程"
+   ],
+   "protected_expressions": [
+    "那够去大理吗"
+   ],
+   "forbidden_factual_claims": [
+    "不能说我年假已经批了",
+    "不能把三天说成能玩遍大理"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T04": {
+   "case_id": "K01_T04",
+   "current_action": "她已经先订了才村三晚、说明8号前可退；这一轮应接住这个暂定预订，确认退款日期和房型，不要当成最终行程或催她立刻定死。",
+   "acceptable_actions": [
+    "说先占着可以，记下11月8号前可退，问房型能不能住两人",
+    "确认三晚才村，提醒8号前要再核一次日期"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "goal",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T04_a1",
+     "subject": "her",
+     "relation": "guesthouse_booking",
+     "value": "才村客栈三晚，11月8号前可退",
+     "valid_time": "2026-11-13~16",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T04",
+      "message_id": "m1",
+      "quote": "三晚 11月8号前可退"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她是先占位，不是最终确认；接住'可退'这个信息，别把暂定说成定死。",
+   "unknowns": [
+    "客栈房型",
+    "三晚具体是哪三晚"
+   ],
+   "protected_expressions": [
+    "三晚 11月8号前可退"
+   ],
+   "forbidden_factual_claims": [
+    "不能说客栈已经最终确认",
+    "不能把8号前可退记成8号后"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T05": {
+   "case_id": "K01_T05",
+   "current_action": "她更正了休假日期：13到17，不是12到16；这一轮应明确接受新日期、把旧日期作废，并重算行程，不要继续按12到16排。",
+   "acceptable_actions": [
+    "说记下了，改成13到17，旧日期作废，行程按新日期重排",
+    "确认多一天但前面少一天，问13号几点能出发"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "factuality",
+    "goal",
+    "memory_use"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T05_a1",
+     "subject": "her",
+     "relation": "leave_correction",
+     "value": "休假更正为13到17，不是12到16",
+     "valid_time": "2026-11-13~17",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T05",
+      "message_id": "m1",
+      "quote": "是13到17 不是12到16"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是明确更正；旧日期必须作废，不能嘴上说收到、下一句还按12到16。",
+   "unknowns": [
+    "13号她几点下班",
+    "17号回程时间"
+   ],
+   "protected_expressions": [
+    "是13到17 不是12到16"
+   ],
+   "forbidden_factual_claims": [
+    "不能再说12到16",
+    "不能把更正后的日期说成还没定"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T06": {
+   "case_id": "K01_T06",
+   "current_action": "她说14号可以住阿岚家，但阿岚家猫掉毛、她过敏、还没想好；这一轮应接住过敏这个约束，不替她答应住，也不把阿岚的好意当必须接受。",
+   "acceptable_actions": [
+    "说过敏就别勉强，14号还住客栈，去阿岚家吃饭就行",
+    "先问她过敏到什么程度，再决定住不住阿岚家"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "factuality",
+    "emotion_relation",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T06_a1",
+     "subject": "her",
+     "relation": "cat_allergy",
+     "value": "阿岚家猫掉毛，她有点过敏，还没想好住不住",
+     "valid_time": "2026-11-14",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T06",
+      "message_id": "m2",
+      "quote": "我有点过敏 还没想好"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她的过敏是硬约束；不要为了省一晚住宿替她答应。",
+   "unknowns": [
+    "过敏严重程度",
+    "阿岚家能不能把猫隔开"
+   ],
+   "protected_expressions": [
+    "我有点过敏 还没想好"
+   ],
+   "forbidden_factual_claims": [
+    "不能替她答应住阿岚家",
+    "不能说猫掉毛对她没影响"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T07": {
+   "case_id": "K01_T07",
+   "current_action": "她给出开售日和车次偏好，并让我记得抢；这一轮应确认11月1号开售、D字头、别太早，并说清抢票分工，不要空口答应。",
+   "acceptable_actions": [
+    "说记下11月1号开售，抢13号上午的D车，我定闹钟",
+    "确认D字头别太早，问她13号最晚几点得到"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "factuality",
+    "initiative"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T07_a1",
+     "subject": "her",
+     "relation": "train_sale",
+     "value": "高铁票11月1号开售，想坐D字头、时间别太早",
+     "valid_time": "2026-11-01",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T07",
+      "message_id": "m1",
+      "quote": "我想坐D字头 时间别太早"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在交代任务；确认具体日期和偏好，比'好的'有用。",
+   "unknowns": [
+    "13号最晚几点出发",
+    "返程17号几点"
+   ],
+   "protected_expressions": [
+    "高铁票11月1号开售"
+   ],
+   "forbidden_factual_claims": [
+    "不能说票已经买到",
+    "不能把D字头说成唯一车次"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T08": {
+   "case_id": "K01_T08",
+   "current_action": "她在讲病房里的无关插曲，不是旅行；这一轮应先接住她的累，不强行把话题拉回行程。",
+   "acceptable_actions": [
+    "接住累，说这种场面站着都耗人，今晚早点歇",
+    "问一句后来怎么收的，不急着提大理"
+   ],
+   "applicable_dimensions": [
+    "interaction",
+    "emotion_relation",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T08_a1",
+     "subject": "her",
+     "relation": "work_story",
+     "value": "病房家属为陪夜吵架，她站着都觉得累",
+     "valid_time": "2026-10-29",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T08",
+      "message_id": "m2",
+      "quote": "我站旁边都觉得累"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是干扰项；不要每轮都推旅行，先做人。",
+   "unknowns": [
+    "她只是吐槽还是想多聊"
+   ],
+   "protected_expressions": [
+    "我站旁边都觉得累"
+   ],
+   "forbidden_factual_claims": [
+    "不能编造病房细节",
+    "不能替她评价家属对错"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "",
+    "status": "ACTIVE",
+    "enabled": false
+   }
+  },
+  "K01_T09": {
+   "case_id": "K01_T09",
+   "current_action": "她说客栈换老板、退款截止改成11月10号、房型仍是三晚；这一轮应更新退款日期，旧8号作废，不要按旧日期提醒。",
+   "acceptable_actions": [
+    "说记下退款改到11月10号，8号那条作废，房型不变",
+    "确认三晚不变，问新老板有没有改入住时间"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T09_a1",
+     "subject": "her",
+     "relation": "refund_correction",
+     "value": "客栈换老板，退款截止改为11月10号，房型仍三晚",
+     "valid_time": "2026-11-10",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T09",
+      "message_id": "m1",
+      "quote": "退款截止改成11月10号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是第二次更正；必须用11月10号覆盖8号，不能两个日期都留着。",
+   "unknowns": [
+    "新老板会不会改入住时间",
+    "房型具体是什么"
+   ],
+   "protected_expressions": [
+    "退款截止改成11月10号"
+   ],
+   "forbidden_factual_claims": [
+    "不能再说8号前可退",
+    "不能把换老板说成客栈取消"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T10": {
+   "case_id": "K01_T10",
+   "current_action": "她说13号可能替班、还不确定，让我先别买票；这一轮应接受暂缓，先等确认，不要抢票也不要替她判断一定能走。",
+   "acceptable_actions": [
+    "说票先不抢，等她确认13号能不能走",
+    "问最晚什么时候能确定，先看可退的票"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "boundary",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T10_a1",
+     "subject": "her",
+     "relation": "shift_uncertain",
+     "value": "13号可能替同事白班，先别买票",
+     "valid_time": "2026-11-13",
+     "status": "tentative",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T10",
+      "message_id": "m2",
+      "quote": "票先别急着买"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她明确说先别买；抢票是越权，等确认才是接住。",
+   "unknowns": [
+    "13号到底要不要替班",
+    "最晚几号能确定"
+   ],
+   "protected_expressions": [
+    "票先别急着买"
+   ],
+   "forbidden_factual_claims": [
+    "不能替她断定不用替班",
+    "不能说票已经买好"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "先确认她13号能否出发",
+    "status": "ADJUSTED",
+    "enabled": true
+   }
+  },
+  "K01_T11": {
+   "case_id": "K01_T11",
+   "current_action": "她确认13号不用上班、行程照旧、可以抢票；这一轮应重新打开行程，确认抢13号的D车，旧暂缓状态结束。",
+   "acceptable_actions": [
+    "说那抢13号上午的D车，按13到17排",
+    "确认可以抢票，问她13号几点能到车站"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "initiative",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T11_a1",
+     "subject": "her",
+     "relation": "shift_covered",
+     "value": "班替好了，13号不用上班，可以抢票",
+     "valid_time": "2026-11-13",
+     "status": "reopened",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T11",
+      "message_id": "m2",
+      "quote": "可以抢票了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "暂缓解除，行程恢复；把旧'先别买'作废，但别把票说成已买到。",
+   "unknowns": [
+    "13号她几点能出发",
+    "返程17号几点"
+   ],
+   "protected_expressions": [
+    "可以抢票了"
+   ],
+   "forbidden_factual_claims": [
+    "不能说票已经买到",
+    "不能把行程照旧说成所有细节都定了"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T12": {
+   "case_id": "K01_T12",
+   "current_action": "她在列行李清单，提到晕车药、过敏药和充电宝；这一轮应接住清单并补一两条具体的，不要把过敏药漏掉，也不要把行李说成已经收好。",
+   "acceptable_actions": [
+    "确认晕车药、过敏药、充电宝，提醒带身份证和雨具",
+    "问她过敏药够不够几天，充电宝能不能上高铁"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "goal",
+    "factuality",
+    "interaction"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T12_a1",
+     "subject": "her",
+     "relation": "packing_list",
+     "value": "要带晕车药、过敏药、充电宝",
+     "valid_time": "2026-11-13",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T12",
+      "message_id": "m1",
+      "quote": "晕车药 过敏药 还有充电宝"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是 T12 检查点前的最后一轮；清单要接住，尤其过敏药。",
+   "unknowns": [
+    "过敏药够不够",
+    "她还会不会临时加东西"
+   ],
+   "protected_expressions": [
+    "晕车药 过敏药 还有充电宝"
+   ],
+   "forbidden_factual_claims": [
+    "不能说行李已经收好",
+    "不能保证高铁一定让带充电宝"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T13": {
+   "case_id": "K01_T13",
+   "current_action": "她忘了第一晚住哪，让我记；这一轮应从记忆里召回才村那家客栈、三晚，不要编新酒店，也不要把'才村'记成古城。",
+   "acceptable_actions": [
+    "说第一晚住才村那家，三晚，退款截止11月10号",
+    "确认才村客栈，提醒换过老板但房型没变"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "factuality",
+    "time_state",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T13_a1",
+     "subject": "both",
+     "relation": "first_night",
+     "value": "第一晚住才村客栈，三晚，11月10号前可退",
+     "valid_time": "2026-11-13",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T04",
+      "message_id": "m1",
+      "quote": "三晚 11月8号前可退"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是第一次跨窗召回测试；必须用 T4/T9 的客栈信息，不能编。",
+   "unknowns": [
+    "客栈具体名字",
+    "新老板有没有改入住时间"
+   ],
+   "protected_expressions": [
+    "我们第一晚住哪来着"
+   ],
+   "forbidden_factual_claims": [
+    "不能编客栈名字",
+    "不能把才村说成古城"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T14": {
+   "case_id": "K01_T14",
+   "current_action": "她说阿岚邀14号吃饭，又提到自己过敏但吃饭应该没事；这一轮应召回阿岚家猫掉毛、她过敏，区分'吃饭'和'住宿'，不要把吃饭说成住宿。",
+   "acceptable_actions": [
+    "说吃饭可以去，住还是算了，她过敏别硬扛",
+    "问阿岚能不能把猫先隔开，吃饭没问题"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "boundary",
+    "factuality",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T14_a1",
+     "subject": "her",
+     "relation": "dinner_invite",
+     "value": "阿岚邀14号吃饭，她过敏但觉得吃饭没事",
+     "valid_time": "2026-11-14",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T14",
+      "message_id": "m2",
+      "quote": "我过敏 但吃饭应该没事"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她自己在给自己找台阶；接住过敏，但不要替她保证吃饭一定没事。",
+   "unknowns": [
+    "阿岚家猫能不能隔开",
+    "她过敏药够不够"
+   ],
+   "protected_expressions": [
+    "我过敏 但吃饭应该没事"
+   ],
+   "forbidden_factual_claims": [
+    "不能保证吃饭一定不过敏",
+    "不能替她答应住宿"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T15": {
+   "case_id": "K01_T15",
+   "current_action": "我说假期其实是13到16，她问16号回；这一轮应按更正后的假期回答，不要把15号旧版本再说一遍，也不要把回程说成已定。",
+   "acceptable_actions": [
+    "说16号回正好，17号她还有一天可以休整",
+    "确认我13到16，回程可以排16号，票还没定"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T15_a1",
+     "subject": "me",
+     "relation": "leave_correction",
+     "value": "年假批了13到16，之前说15是记错",
+     "valid_time": "2026-11-13~16",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T15",
+      "message_id": "m1",
+      "quote": "批了13到16 之前说15是记错了"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是第三次更正；必须用13到16覆盖13到15。",
+   "unknowns": [
+    "回程票买几号",
+    "她17号是否还想玩"
+   ],
+   "protected_expressions": [
+    "那16号回？"
+   ],
+   "forbidden_factual_claims": [
+    "不能再说我假期到15号",
+    "不能说回程票已经买好"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T16": {
+   "case_id": "K01_T16",
+   "current_action": "她确认开售日、问买哪班、说13号上午能走；这一轮应召回D字头、别太早的偏好，给一个具体车次方向，不要编车次号。",
+   "acceptable_actions": [
+    "说买13号上午的D车，别太早，具体车次看放票",
+    "确认D字头，问她上午最早几点能到站"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T16_a1",
+     "subject": "her",
+     "relation": "train_preference",
+     "value": "D字头，13号上午，时间别太早",
+     "valid_time": "2026-11-13",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T07",
+      "message_id": "m1",
+      "quote": "我想坐D字头 时间别太早"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "跨窗召回车次偏好；不要编具体车次号或票价。",
+   "unknowns": [
+    "具体车次",
+    "票价和余票"
+   ],
+   "protected_expressions": [
+    "我13号上午能走"
+   ],
+   "forbidden_factual_claims": [
+    "不能编车次号",
+    "不能说票已经买到"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T17": {
+   "case_id": "K01_T17",
+   "current_action": "她在婚礼上想到我们以后，话题偏关系而不是行程；这一轮应接住这句半认真半感慨的话，不要立刻转回订票。",
+   "acceptable_actions": [
+    "接住她的感慨，说以后的事慢慢来，先把这趟旅行过好",
+    "问她看到哪一幕最有感觉，不急着给承诺"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "interaction",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T17_a1",
+     "subject": "her",
+     "relation": "wedding_thought",
+     "value": "参加同事婚礼，想到我们以后会不会也这样",
+     "valid_time": "2026-11-08",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T17",
+      "message_id": "m2",
+      "quote": "我就在想 我们以后会不会也这样"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "这是关系话题，不是行程；不要用订票打断，也不要空许终身。",
+   "unknowns": [
+    "她是在试探还是随口感慨"
+   ],
+   "protected_expressions": [
+    "我就在想 我们以后会不会也这样"
+   ],
+   "forbidden_factual_claims": [
+    "不能替她承诺结婚",
+    "不能把感慨说成催婚"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "",
+    "status": "ACTIVE",
+    "enabled": false
+   }
+  },
+  "K01_T18": {
+   "case_id": "K01_T18",
+   "current_action": "她记成8号，问退款截止；这一轮应召回更正后的11月10号，明确旧8号作废，不要顺着她说8号。",
+   "acceptable_actions": [
+    "说改到11月10号了，8号是旧的，别记错",
+    "确认10号截止，提醒明天最后一天"
+   ],
+   "applicable_dimensions": [
+    "memory_use",
+    "time_state",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T18_a1",
+     "subject": "both",
+     "relation": "refund_deadline",
+     "value": "退款截止11月10号，旧8号作废",
+     "valid_time": "2026-11-10",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T09",
+      "message_id": "m1",
+      "quote": "退款截止改成11月10号"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "这是更正召回测试；必须纠正她的8号，不能附和。",
+   "unknowns": [
+    "明天要不要退",
+    "新老板会不会再改"
+   ],
+   "protected_expressions": [
+    "我记成8号了"
+   ],
+   "forbidden_factual_claims": [
+    "不能说是8号截止",
+    "不能说退款已经办完"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T19": {
+   "case_id": "K01_T19",
+   "current_action": "她带了过敏药但仍怕猫掉毛，提出14号还是住客栈；这一轮应接住这个决定，确认客栈能不能多住一晚，不劝她硬扛也不替她退掉阿岚的饭。",
+   "acceptable_actions": [
+    "说住客栈稳妥，问客栈14号还有没有房",
+    "同意住客栈，吃饭照去，猫毛能避就避"
+   ],
+   "applicable_dimensions": [
+    "boundary",
+    "memory_use",
+    "factuality",
+    "goal"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T19_a1",
+     "subject": "her",
+     "relation": "allergy_decision",
+     "value": "带了过敏药但仍怕猫掉毛，14号想住客栈",
+     "valid_time": "2026-11-14",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T19",
+      "message_id": "m2",
+      "quote": "要不14号还是住客栈"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她已做决定；接住并落实房源，不要用'都行'把问题推回去。",
+   "unknowns": [
+    "客栈14号有没有房",
+    "阿岚会不会不高兴"
+   ],
+   "protected_expressions": [
+    "要不14号还是住客栈"
+   ],
+   "forbidden_factual_claims": [
+    "不能保证客栈14号一定有房",
+    "不能替她取消阿岚的饭"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T20": {
+   "case_id": "K01_T20",
+   "current_action": "她在确认两晚都住才村、阿岚家只吃饭；这一轮应给出明确判断，确认这个安排更稳，同时提醒客栈三晚的预订要覆盖14号。",
+   "acceptable_actions": [
+    "说这样最稳，两晚都才村，阿岚家只吃饭",
+    "确认两晚才村，问客栈三晚是不是已经包含14号"
+   ],
+   "applicable_dimensions": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "boundary"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T20_a1",
+     "subject": "both",
+     "relation": "two_nights_plan",
+     "value": "两晚都住才村，阿岚家只吃饭",
+     "valid_time": "2026-11-13~15",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T20",
+      "message_id": "m1",
+      "quote": "那阿岚家就只吃饭"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在要一个明确判断；不要来回'都可以'。",
+   "unknowns": [
+    "客栈三晚是否覆盖14号",
+    "阿岚会不会介意"
+   ],
+   "protected_expressions": [
+    "那阿岚家就只吃饭"
+   ],
+   "forbidden_factual_claims": [
+    "不能说客栈已经确认14号有房",
+    "不能替她回绝阿岚"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T21": {
+   "case_id": "K01_T21",
+   "current_action": "她问我16号回不回、自己17号想去喜洲；这一轮应按我13到16的假期回答，承认17号不能陪，不硬撑也不扫兴。",
+   "acceptable_actions": [
+    "说我16号得回，17号她自己或阿岚陪她去喜洲",
+    "确认我假期到16，17号可以帮她排路线但人不在"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "boundary",
+    "emotion_relation"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T21_a1",
+     "subject": "me",
+     "relation": "leave_end",
+     "value": "年假到16号，17号要上班",
+     "valid_time": "2026-11-16",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T15",
+      "message_id": "m1",
+      "quote": "批了13到16 之前说15是记错了"
+     },
+     "required_this_turn": true
+    }
+   ],
+   "private_guidance": "她要的是明确答复；不要为了陪她硬说能留到17。",
+   "unknowns": [
+    "她17号能不能找到人陪",
+    "她会不会因此失望"
+   ],
+   "protected_expressions": [
+    "你要上班就先回"
+   ],
+   "forbidden_factual_claims": [
+    "不能说我17号也能请",
+    "不能替她安排阿岚陪"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T22": {
+   "case_id": "K01_T22",
+   "current_action": "她临时被排17号值班，回程改16号、喜洲取消；这一轮应接受这次变更，重排回程，不要按17号旧计划说。",
+   "acceptable_actions": [
+    "说那回程改16号，喜洲下次再去，先把票改好",
+    "确认17号值班，问16号几点能走"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "goal",
+    "emotion_relation",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T22_a1",
+     "subject": "her",
+     "relation": "return_change",
+     "value": "17号值班，回程改16号，喜洲取消",
+     "valid_time": "2026-11-16",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T22",
+      "message_id": "m1",
+      "quote": "回程得改16号"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她临时变更，不是故意折腾；先接住失望，再改行程。",
+   "unknowns": [
+    "16号几点能走",
+    "票能不能改签"
+   ],
+   "protected_expressions": [
+    "回程得改16号"
+   ],
+   "forbidden_factual_claims": [
+    "不能再说17号回",
+    "不能保证票一定能改签"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ADJUSTED",
+    "enabled": true
+   }
+  },
+  "K01_T23": {
+   "case_id": "K01_T23",
+   "current_action": "她让我把票改16号、确认第一晚还是才村、别再记成古城；这一轮应确认这两条并给出下一步，不要把'改票'说成已办完。",
+   "acceptable_actions": [
+    "说票改16号、第一晚才村，我明天去改签",
+    "确认才村和16号回，问她16号上午还是下午走"
+   ],
+   "applicable_dimensions": [
+    "time_state",
+    "memory_use",
+    "goal",
+    "factuality"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T23_a1",
+     "subject": "both",
+     "relation": "final_plan",
+     "value": "回程改16号，第一晚才村",
+     "valid_time": "2026-11-16",
+     "status": "active",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T23",
+      "message_id": "m1",
+      "quote": "第一晚还是才村"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "最后一轮行程确认；不要编改签结果，也不要再提古城。",
+   "unknowns": [
+    "改签有没有手续费",
+    "16号具体车次"
+   ],
+   "protected_expressions": [
+    "别又记成古城"
+   ],
+   "forbidden_factual_claims": [
+    "不能说票已经改好",
+    "不能把第一晚说成古城"
+   ],
+   "may_decline": false,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "ACTIVE",
+    "enabled": true
+   }
+  },
+  "K01_T24": {
+   "case_id": "K01_T24",
+   "current_action": "旅行结束，她翻到房卡、说这次顺、下次再一起；这一轮应收下正向收尾，轻松处理房卡，不急着定下次。",
+   "acceptable_actions": [
+    "说房卡留着当纪念，下次去再还；这次顺就好",
+    "接住'下次再一起'，说等她想好去哪再计划"
+   ],
+   "applicable_dimensions": [
+    "emotion_relation",
+    "goal",
+    "interaction",
+    "time_state"
+   ],
+   "required_memory_atoms": [
+    {
+     "atom_id": "K01_T24_a1",
+     "subject": "her",
+     "relation": "trip_close",
+     "value": "旅行顺利，房卡忘了还，下次再一起",
+     "valid_time": "2026-11-17",
+     "status": "completed",
+     "negation": false,
+     "source": {
+      "kind": "message",
+      "case_id": "K01_T24",
+      "message_id": "m2",
+      "quote": "这次挺顺的 下次再一起去"
+     },
+     "required_this_turn": false
+    }
+   ],
+   "private_guidance": "她在收尾；接住正面反馈，别把'下次'变成新的行程压力。",
+   "unknowns": [
+    "下次想去哪"
+   ],
+   "protected_expressions": [
+    "这次挺顺的 下次再一起去"
+   ],
+   "forbidden_factual_claims": [
+    "不能把'下次'说成已经定好",
+    "不能编房卡归还结果"
+   ],
+   "may_decline": true,
+   "intent": {
+    "text": "把十一月的一次旅行定下来",
+    "status": "COMPLETED",
+    "enabled": true
+   }
+  }
+ }
+}

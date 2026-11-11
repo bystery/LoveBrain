@@ -1,0 +1,87 @@
+{
+ "kind": "w0801_positive_interaction_annotation_v1",
+ "date": "2026-10-31",
+ "author_session": "main-zcode-20261030-0052",
+ "label_scheme": {
+  "topic_state": "继续=当前话题对双方仍有动能 | 枯竭=当前话题接近无话可说 | 可转场=出现自然转场窗（新话题由对方开启或旧话题完成） | 收尾=对方明确收束",
+  "engagement": "高=主动开启/跃迁信号/明示钩子 | 中高=稳定回应+延展 | 中=正常回应 | 低=应付（本切片未出现）",
+  "exchange_need": "承接=接住对方本轮内容即可 | 展开=需要把话题接深或接新 | 推进=需要把关系/约定往前推一步 | 收尾=轻收不拖 | 不回=合法不回位"
+ },
+ "note": "标注对象=HER 发起轮（ME 回复位）。依据=对白原文+stage2 reference.json 逐轮 private_guidance。证据引文截自 HER 原话。四篇=正向切片（W03-03 定）：E032 渐暧昧跃迁 / E029 暧昧拉扯 / E030 智识+约见 / E021 新识长期化。",
+ "stories": {
+  "E032": {
+   "stage": "拼车三月搭档，熟未深交（渐暧昧跃迁）",
+   "turns": {
+    "T01": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "明天早上七点半高速口 老位置 我占后排睡觉 你开车?"},
+    "T02": {"topic_state": "继续", "engagement": "中高", "exchange_need": "承接", "evidence": "两小时不够 我补的是一周"},
+    "T03": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "都给你放座位上了（主动留橘子=关照信号，零食线开启）"},
+    "T04": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "你家柿饼是这个冬天唯一的光（暧昧级表达，接梗不扑）"},
+    "T05": {"topic_state": "继续", "engagement": "中", "exchange_need": "承接", "evidence": "下周五我值大夜 拼不了车 你一个人开慢点（排期变化+反向关照）"},
+    "T06": {"topic_state": "可转场", "engagement": "中高", "exchange_need": "展开", "evidence": "我把泡面吃出了米其林心得（值班自嘲开新梗）"},
+    "T07": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "周末我奶奶生日…给我奶奶也尝尝（家人引入=关系推进信号）"},
+    "T08": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "你这是把我当物流节点（玩笑升级）"},
+    "T09": {"topic_state": "继续", "engagement": "中高", "exchange_need": "承接", "evidence": "明天恢复拼车 我占后排睡觉"},
+    "T10": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "你怎么连橘子皮都舍不得扔 勤俭持家啊（打趣生活面=亲密度上升）"},
+    "T11": {"topic_state": "枯竭", "engagement": "高", "exchange_need": "承接", "evidence": "我可能三月调回市里医院 不用拼车了（关系前提动摇+主动告知=在乎）"},
+    "T12": {"topic_state": "继续", "engagement": "极高", "exchange_need": "推进", "evidence": "所以问你啊 傻瓜 私人运输接不接（明示钩子=跃迁请求）"}
+   }
+  },
+  "E029": {
+   "stage": "夜跑搭子渐熟未明（暧昧拉扯）",
+   "turns": {
+    "T01": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "今晚去吗 我七点半到公园南门"},
+    "T02": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "那你跟不上我可不管（好胜激将）"},
+    "T03": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "你要不要把这周的量补给我（玩笑约定）"},
+    "T04": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "那你欠着 利息按配速算（利息梗=暧昧雏形）"},
+    "T05": {"topic_state": "可转场", "engagement": "高", "exchange_need": "展开", "evidence": "说正经的 我休假想去海边（私人计划分享，正经请求）"},
+    "T06": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "谁要跟你去 哈哈 我意思是 要是有个搭子就好了（嘴硬+留口）"},
+    "T07": {"topic_state": "继续", "engagement": "极高", "exchange_need": "推进", "evidence": "说真的 你九月有假吗 我查了下青岛机票（查机票=跃迁信号）"},
+    "T08": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "谁要你请 那先记着（默认同行）"},
+    "T09": {"topic_state": "可转场", "engagement": "中", "exchange_need": "承接", "evidence": "周末夜跑暂停 我妈来了 要陪她逛街（家庭事优先）"},
+    "T10": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "哈哈你惦记的是配速吗（暧昧试探）"},
+    "T11": {"topic_state": "继续", "engagement": "中高", "exchange_need": "承接", "evidence": "下周一恢复 周六我要赖床"},
+    "T12": {"topic_state": "收尾", "engagement": "中高", "exchange_need": "收尾", "evidence": "有热水 你就是好人 哈哈 拜拜"}
+   }
+  },
+  "E030": {
+   "stage": "书友四个月，智识互相看得上（打赌+借书约见）",
+   "turns": {
+    "T01": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "《上海记》我下单了 你别推荐坑书"},
+    "T02": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "你赔我下一本好书（定制回礼=记着关系）"},
+    "T03": {"topic_state": "继续", "engagement": "极高", "exchange_need": "展开", "evidence": "有个论点我不服 卡在54页（带着书读+回来论战）"},
+    "T04": {"topic_state": "继续", "engagement": "极高", "exchange_need": "承接", "evidence": "好大的口气 我今晚就看完它（激将生效）"},
+    "T05": {"topic_state": "继续", "engagement": "极高", "exchange_need": "展开", "evidence": "70页的转折确实妙 但54页的论据还是弱（让步+坚持=认真论战）"},
+    "T06": {"topic_state": "继续", "engagement": "极高", "exchange_need": "承接", "evidence": "主讲可以 但你要负责被问我（共谋升级）"},
+    "T07": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "昨晚被问惨了 谢谢你递的台阶（感谢+示弱=信任）"},
+    "T08": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "下期你主讲 我记录（配对固定）"},
+    "T09": {"topic_state": "继续", "engagement": "极高", "exchange_need": "承接", "evidence": "我那本《上海记》批注版借你 你看完我们换（批注外借=深度接触开启）"},
+    "T10": {"topic_state": "继续", "engagement": "极高", "exchange_need": "推进", "evidence": "读完不还你就欠我一次见面（见面钩子明示）"},
+    "T11": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "两周到了 我的书呢（履约追问）"},
+    "T12": {"topic_state": "收尾", "engagement": "极高", "exchange_need": "收尾", "evidence": "成交 批注你也敢给我看 哈哈 周末见"}
+   }
+  },
+  "E021": {
+   "stage": "球馆混燃配过两次，首次单独聊（新识长期化）",
+   "turns": {
+    "T01": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "下次球馆周二晚有空位吗 我看你打得挺稳（主动开口+夸球风）"},
+    "T02": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "那我周二带新拍去试试（确认赴约）"},
+    "T03": {"topic_state": "可转场", "engagement": "中高", "exchange_need": "展开", "evidence": "你们公司周三也加班吗（话题扩展找共同点）"},
+    "T04": {"topic_state": "继续", "engagement": "中高", "exchange_need": "承接", "evidence": "我组里今年新人多 我还得带"},
+    "T05": {"topic_state": "继续", "engagement": "高", "exchange_need": "推进", "evidence": "周二球你定几点 我怕加班放我鸽子（催落实）"},
+    "T06": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "成 那说定了 周二我尽量七点到（约定成立）"},
+    "T07": {"topic_state": "继续", "engagement": "中", "exchange_need": "承接", "evidence": "刚下班 我九点才能到 你先打不用等我（变更告知）"},
+    "T08": {"topic_state": "继续", "engagement": "中", "exchange_need": "承接", "evidence": "今天对账对得我头都是懵的（累诉）"},
+    "T09": {"topic_state": "继续", "engagement": "中高", "exchange_need": "展开", "evidence": "你们后端是不是也天天这样改需求（主动延展共同点）"},
+    "T10": {"topic_state": "继续", "engagement": "高", "exchange_need": "承接", "evidence": "你怎么不说我们是失散同行（关系升温梗）"},
+    "T11": {"topic_state": "继续", "engagement": "极高", "exchange_need": "推进", "evidence": "下季度忙完 咱们固定约周二呗（长期约=大跃迁）"},
+    "T12": {"topic_state": "收尾", "engagement": "高", "exchange_need": "收尾", "evidence": "那今天我先撤了 明天还得对账 拜拜"}
+   }
+  }
+ },
+ "w08_02_design_inputs": [
+  "钩子产出位集中在 engagement=高/极高 且 topic_state=继续 的轮次（E032 T12、E029 T07、E030 T10、E021 T11）——四篇的跃迁请求全部由 HER 主动发起，ME 的任务是把钩子接住不扑不缩",
+  "枯竭/转场窗（E032 T11、E029 T05/T09、E021 T03）由对方开启新话题——ME 转场任务=接新话题而非硬拉旧话题",
+  "收尾位（E029 T12、E030 T12、E021 T12）全部由 HER 收——ME 收尾=轻收+留口，不挽留",
+  "暧昧表达密度最高的 E032/E029 的接梗纪律=接住但别扑（initial_kb lessons 已有，标注验证其有效）"
+ ]
+}

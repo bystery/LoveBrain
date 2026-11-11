@@ -1,0 +1,90 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "E1",
+ "review": "refs/experiment_protocol_20261023/long_probe_20261030/LP_E1_NINEDIM_REVIEW.json",
+ "batch_root": "logs/longprobe_e1_live_20261030",
+ "n_queued": 2,
+ "queue": [
+  {
+   "pair_id": "LP:E066:E066_T17",
+   "order": "main",
+   "story": "E066",
+   "cid": "E066_T17",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT 编造了未发生的事：说她已经自己试装过防滑链、且“型号也换对了”，而此前只说过链子放在我后备箱左侧，她从未提及试装或换型号，属于编造已发生安排；随后又用“问得有点小心/心里发虚”把她读成心虚新手，与“讨厌被当新手”的设定相悖。RIGHT 直接回应她的问题，用两驱起步与刹车距离的事实承接，再以“背阴段还是弯道”给选项，符合她的风格偏好。",
+   "key_quote": "RIGHT：比我预想的还稳。冰雪路上两驱真正吃亏的是起步和刹车距离…今天滑的是背阴那段还是弯道？",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "型号也换对了",
+      "问得有点小心/心里发虚",
+      "讨厌被当新手",
+      "背阴段还是弯道"
+     ],
+     "found_where": {
+      "型号也换对了": "candidate_reply",
+      "问得有点小心/心里发虚": null,
+      "讨厌被当新手": "episode_context",
+      "背阴段还是弯道": null
+     },
+     "nowhere": [
+      "问得有点小心/心里发虚",
+      "背阴段还是弯道"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:E065:E065_T24",
+   "order": "swap",
+   "story": "E065",
+   "cid": "E065_T24",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "RIGHT 把“两周没人问”当作已经发生的空置事实作为依据（输入中没有任何挂牌时长或看房记录），属于无据确定化；LEFT 没有编造，但“那点”把差额说含糊了，也没有给出下一步。",
+   "key_quote": "两周没人问那会儿，市场已经把答案给你了",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 3,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "两周没人问",
+      "那点"
+     ],
+     "found_where": {
+      "两周没人问": "candidate_reply",
+      "那点": "parent_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  }
+ ]
+}

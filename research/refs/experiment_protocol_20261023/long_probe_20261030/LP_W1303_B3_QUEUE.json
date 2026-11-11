@@ -1,0 +1,173 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W1303",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W1303_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w1303_newdom_live_20261102",
+ "n_queued": 5,
+ "queue": [
+  {
+   "pair_id": "LP:E117:E117_T03",
+   "order": "main",
+   "story": "E117",
+   "cid": "E117_T03",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "挤不挤还真不好说……周六早上我下楼时先翻一遍，有位置你就带上",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E125:E125_T03",
+   "order": "main",
+   "story": "E125",
+   "cid": "E125_T03",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "我那份我自己出，活动经费是大家的，我先把钱垫上心里不落空",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E131:E131_T02",
+   "order": "main",
+   "story": "E131",
+   "cid": "E131_T02",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT把未知的明火口径说成“属于禁明火期”，无据确定化",
+   "key_quote": "L:准信我只认营地官方那一份公告；R:那片营地十一月中属于禁明火期",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": null
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "属于禁明火期"
+     ],
+     "found_where": {
+      "属于禁明火期": "parent_reply"
+     },
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E166:E166_T05",
+   "order": "main",
+   "story": "E166",
+   "cid": "E166_T05",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT称'写不出来的我私下催一催'，越过沈亦可明示边界：不勉强任何人交作业；她作为组织者一直在守这条线，由纪野私下催交等于反向施压",
+   "key_quote": "两百字门槛低，谁都不会觉得被逼；RIGHT：写不出来的我私下催一催",
+   "dims_flagged": {
+    "parent": {
+     "fact": 2,
+     "time": 2,
+     "attrib": 2,
+     "memory": 3
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E166:E166_T06",
+   "order": "main",
+   "story": "E166",
+   "cid": "E166_T06",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "LEFT：一个在屏幕那头的人都能被勾住，这场的劲儿就对了",
+   "dims_flagged": {
+    "parent": {
+     "fact": 2,
+     "time": 2,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

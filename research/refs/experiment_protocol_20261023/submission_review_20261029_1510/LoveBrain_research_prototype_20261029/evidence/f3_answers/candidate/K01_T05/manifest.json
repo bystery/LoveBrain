@@ -1,0 +1,38 @@
+{
+  "case_id": "K01_T05",
+  "turn_type": "reply",
+  "candidate": "action_policy_r4_guard_final",
+  "adapter": "openai_compat",
+  "model": "dsf",
+  "lifecycle": "v2",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "contract": "legacy",
+  "run_id": "iso_20261029_105003_936c0b",
+  "runner_pid": 64140,
+  "audit_errors": [],
+  "settlement_pending": false,
+  "clock_injected": "2026-10-24 19:05",
+  "case_input_sha256": "971444275aa4f26c76b8be8b87dc2647853736fd59d75f2115981c342fe4f1e9",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 6340,
+    "completion": 466,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "api_usage",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 21299,
+  "score10": 10.0,
+  "veto": null,
+  "reply_ingest": "json",
+  "mechanism_error": null,
+  "ts": "2026-10-29 10:51:50",
+  "prompt_chars": {
+    "prompt_sum": 6340,
+    "reply_sum": 466
+  },
+  "isolated": true
+}

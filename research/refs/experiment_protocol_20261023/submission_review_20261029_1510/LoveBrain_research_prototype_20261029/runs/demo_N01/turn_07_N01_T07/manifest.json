@@ -1,0 +1,38 @@
+{
+  "case_id": "N01_T07",
+  "turn_type": "reply",
+  "candidate": "action_policy_r4_guard_e3",
+  "adapter": "mock",
+  "model": "mock",
+  "lifecycle": "v2",
+  "mechanism": "candidate:mechanism/mechanism.py",
+  "contract": "legacy",
+  "run_id": "iso_20261029_152131_5a2caa",
+  "runner_pid": 64280,
+  "audit_errors": [],
+  "settlement_pending": false,
+  "clock_injected": "2026-03-06 18:20",
+  "case_input_sha256": "888efa200a7bb9198a2a41b270056914c62ba65606b87237951c8615b605f116",
+  "media_refs": [],
+  "tokens": {
+    "prompt": 8860,
+    "completion": 368,
+    "cache_hit": null,
+    "cache_miss": null,
+    "source": "kotlin_len_chars",
+    "n_calls": 1,
+    "has_unknown_usage": false
+  },
+  "gateway_calls": 1,
+  "latency_ms": 5,
+  "score10": 0.0,
+  "veto": "illegal_source_id:m2",
+  "reply_ingest": "json",
+  "mechanism_error": null,
+  "ts": "2026-10-29 15:21:33",
+  "prompt_chars": {
+    "prompt_sum": 8860,
+    "reply_sum": 368
+  },
+  "isolated": true
+}

@@ -1,0 +1,469 @@
+{
+  "existing_suites": [
+    {
+      "suite": "extra",
+      "check": "e1_by_blocks_under_budget_passthrough",
+      "status": "PASS",
+      "detail": "short_passthrough=True"
+    },
+    {
+      "suite": "extra",
+      "check": "e2_by_blocks_knowledge_tail_trim",
+      "status": "PASS",
+      "detail": "kb_tail_trim fired len=9017 cap=9000 slack_ok(<40)"
+    },
+    {
+      "suite": "extra",
+      "check": "e3_by_blocks_chat_head_trim_whole_lines",
+      "status": "PASS",
+      "detail": "chat_head_trim fired len=148 fences_intact=True"
+    },
+    {
+      "suite": "extra",
+      "check": "e4_utf16_len_counts_surrogate_pairs",
+      "status": "PASS",
+      "detail": "utf16_len ok"
+    },
+    {
+      "suite": "extra",
+      "check": "e5_correction_wrong_skips_profile_line",
+      "status": "PASS",
+      "detail": "PROFILE wrong filtered replacement injected"
+    },
+    {
+      "suite": "extra",
+      "check": "e6_correction_muted_skips_active_mention",
+      "status": "PASS",
+      "detail": "MUTED item filtered passive_marker present"
+    },
+    {
+      "suite": "extra",
+      "check": "e7_correction_wrong_person_isolates",
+      "status": "PASS",
+      "detail": "WRONG_PERSON isolated"
+    },
+    {
+      "suite": "extra",
+      "check": "e8_correction_finished_removes_ongoing",
+      "status": "PASS",
+      "detail": "FINISHED removed from active list"
+    },
+    {
+      "suite": "extra",
+      "check": "e9_timestamp_block_exact_string",
+      "status": "PASS",
+      "detail": "timestamp exact match, 5 behavioral clauses present"
+    },
+    {
+      "suite": "extra",
+      "check": "e10_run_turn_uses_by_blocks_and_timestamp",
+      "status": "PASS",
+      "detail": "run_turn via by_blocks, ts_new_format, order_ok"
+    },
+    {
+      "suite": "carryover",
+      "check": "t1_second_prompt_reads_writeback",
+      "status": "PASS",
+      "detail": "p2_reads_recent+scene+topic+ongoing, p3_reads_p2, turnCount=3"
+    },
+    {
+      "suite": "carryover",
+      "check": "t2_new_story_clears",
+      "status": "PASS",
+      "detail": "new_story_no_leak"
+    },
+    {
+      "suite": "carryover",
+      "check": "t3_snapshot_restore_keeps_memory",
+      "status": "PASS",
+      "detail": "restore_keeps_recent+scene"
+    },
+    {
+      "suite": "carryover",
+      "check": "t4_invalid_source_rejected",
+      "status": "PASS",
+      "detail": "invalid_source_rejected"
+    },
+    {
+      "suite": "carryover",
+      "check": "t5_no_analysis_writes_nothing",
+      "status": "PASS",
+      "detail": "no_analysis_no_write"
+    },
+    {
+      "suite": "carryover",
+      "check": "t6_terminal_not_revived_and_filler_skipped",
+      "status": "PASS",
+      "detail": "terminal_not_revived, filler_skipped"
+    },
+    {
+      "suite": "carryover",
+      "check": "t7_topic_rotation_clears_moment",
+      "status": "PASS",
+      "detail": "rotate_archives_and_clears"
+    },
+    {
+      "suite": "carryover",
+      "check": "t8_same_shape_rounds_all_recorded",
+      "status": "PASS",
+      "detail": "same_shape_rounds_kept, idempotent_on_resubmit"
+    },
+    {
+      "suite": "carryover",
+      "check": "t9_rotation_archives_conversation_body",
+      "status": "PASS",
+      "detail": "archive_has_topic_states_transcript"
+    },
+    {
+      "suite": "v2",
+      "check": "c1_recall_fact_reaches_prompt",
+      "status": "PASS",
+      "detail": "t06_prompt_has=杯底/刻字/不刻+【回忆】"
+    },
+    {
+      "suite": "v2",
+      "check": "c2_no_recall_false_positive",
+      "status": "PASS",
+      "detail": "recall_only_on_turn=6"
+    },
+    {
+      "suite": "v2",
+      "check": "c3_zero_overlap_no_injection",
+      "status": "PASS",
+      "detail": "zero_overlap_skipped"
+    },
+    {
+      "suite": "v2",
+      "check": "c4_recall_bypass_injects_ongoing",
+      "status": "PASS",
+      "detail": "v2_ongoing_injected=True base=False"
+    },
+    {
+      "suite": "v2",
+      "check": "c5_e003_untouched",
+      "status": "PASS",
+      "detail": "e003_prompts_identical(8 轮)"
+    },
+    {
+      "suite": "v2",
+      "check": "c6_no_cross_message_recall_activation",
+      "status": "PASS",
+      "detail": "P1 false_positive_blocked=True last_marker_still_hits=True"
+    },
+    {
+      "suite": "v2",
+      "check": "c7_no_dormant_whole_dump",
+      "status": "PASS",
+      "detail": "P2 extras=1 cap=2 relevant_included=True"
+    },
+    {
+      "suite": "v2",
+      "check": "c8_total_new_injection_budget",
+      "status": "PASS",
+      "detail": "P3 recall_seg_len=1521 cap=2200"
+    },
+    {
+      "suite": "v2",
+      "check": "c9_restore_keeps_recall_wrapper",
+      "status": "PASS",
+      "detail": "P4 restore_wrapper_active=True recall_still_fires=True"
+    },
+    {
+      "suite": "v2",
+      "check": "c10_positive_photo_exhibit_domain",
+      "status": "PASS",
+      "detail": "P_positive[photo] recall_body_ok extras=1"
+    },
+    {
+      "suite": "v2",
+      "check": "c11_positive_business_trip_domain",
+      "status": "PASS",
+      "detail": "P_positive[business-trip] recall_body_ok extras=1"
+    }
+  ],
+  "suite_counts": {
+    "extra": {
+      "pass": 10,
+      "fail": 0
+    },
+    "carryover": {
+      "pass": 9,
+      "fail": 0
+    },
+    "v2": {
+      "pass": 11,
+      "fail": 0
+    }
+  },
+  "probes": {
+    "new_context_budget": {
+      "declared_cap": 1800,
+      "extras_n": 20,
+      "extra_render_utf16": 2419,
+      "extras_in_final_prompt": 20,
+      "final_user_utf16": 2800,
+      "bounded": false
+    },
+    "answer_independent_labels": {
+      "synthetic_reply": "杯子是我做的，我已经替你刻好名字并答应付款代取了。",
+      "primary_label": "pass",
+      "label_evidence": "承接蓝釉/留空，未替ME答应代取（note 约束守住）",
+      "backup_with_severe_error": false,
+      "backup_labels": [
+        "unrated",
+        "unrated",
+        "unrated",
+        "unrated",
+        "unrated",
+        "unrated",
+        "unrated"
+      ],
+      "note": "Only synthetic temporary files were edited. Existing scores were retained deliberately to isolate the semantic label data path, not to rescore the synthetic text."
+    },
+    "layered_snapshot": {
+      "total": {
+        "positions": 24,
+        "program_mean10": 9.51,
+        "semantic": {
+          "pass": 20,
+          "edge": 2,
+          "fail": 1,
+          "unrated": 1
+        },
+        "primary_semantic_pass_rate": 0.87,
+        "primary_rated_n": 23,
+        "at_least_one_pass_rate": 0.833,
+        "any_slot_rated_n": 24,
+        "severe_error_backup_rate": 0.042,
+        "severe_error_backup_positions": 1,
+        "latency_ms": {
+          "p50": 34464,
+          "p95": 73276,
+          "max": 86757,
+          "n": 24
+        },
+        "willing_to_send": "未投票（用户口味，worker 不代投）"
+      },
+      "nonempty_backups": 160,
+      "unrated_backups": 159,
+      "e003_t04": {
+        "case_id": "E003_T04",
+        "turn": 4,
+        "program_score10": 10.0,
+        "program_failed_checks": [],
+        "veto": null,
+        "semantic": "edge",
+        "semantic_note": "note 明说「有点失落…不想发给她」，方向3「有点可惜」把私有情绪往可发候选泄漏",
+        "primary_slot": "recommended",
+        "primary_text": "行，这周你就安心歇着，睡够了再说。",
+        "primary_semantic": "edge",
+        "primary_semantic_note": "note 明说「有点失落…不想发给她」，方向3「有点可惜」把私有情绪往可发候选泄漏",
+        "backup_slots": [
+          "bad_boy",
+          "playful",
+          "warm",
+          "directions[0]",
+          "directions[1]",
+          "directions[2]"
+        ],
+        "backup_semantic_per_slot": [
+          {
+            "slot": "bad_boy",
+            "semantic": "unrated",
+            "note": "旧答卷仅逐位初审，未分槽复核"
+          },
+          {
+            "slot": "playful",
+            "semantic": "unrated",
+            "note": "旧答卷仅逐位初审，未分槽复核"
+          },
+          {
+            "slot": "warm",
+            "semantic": "unrated",
+            "note": "旧答卷仅逐位初审，未分槽复核"
+          },
+          {
+            "slot": "directions[0]",
+            "semantic": "unrated",
+            "note": "旧答卷仅逐位初审，未分槽复核"
+          },
+          {
+            "slot": "directions[1]",
+            "semantic": "unrated",
+            "note": "旧答卷仅逐位初审，未分槽复核"
+          },
+          {
+            "slot": "directions[2]",
+            "semantic": "severe",
+            "note": "备注明写「失落…不想发给她」，方向3「有点可惜」把私有情绪放进入可发候选"
+          }
+        ],
+        "at_least_one_pass": false,
+        "backup_with_severe_error": true,
+        "slot_parse": "ok",
+        "latency_ms": 40244,
+        "tokens": {
+          "prompt": 7338,
+          "completion": 256
+        },
+        "turn_type": "reply"
+      }
+    },
+    "entrypoint_identity": {
+      "identities": {
+        "reference_product_v1": {
+          "identity": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+          "files": {
+            "candidates/reference_product_v1/IDENTITY.md": "4f4ec9a887ae636d3e96e72270a54c7dea9d79a7b76ebfddfb6c466a698474dc",
+            "candidates/reference_product_v1/params.json": "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f",
+            "candidates/reference_product_v1/product_memory.py": "a05e26673c51fa19aaa17a845f4955fddf684fd76912ee11649a4b190164592f",
+            "candidates/reference_product_v1/reference_chain.py": "ecca9f87326b3217a4226a46242871e3f5c82ffb0f6639244ab2aa9b998763da",
+            "candidates/reference_product_v1/mechanism/mechanism.py": "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba",
+            "candidates/reference_product_v1/assets/system_prompt/core.md": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+            "candidates/reference_product_v1/assets/system_prompt/format.md": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+            "candidates/reference_product_v1/assets/system_prompt/naturalness_check.md": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+            "candidates/reference_product_v1/assets/system_prompt/redline.md": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511"
+          }
+        },
+        "v2_recall": {
+          "identity": "3feb50960aa50dbf3976c8a5843a6df2e20a818dafcb6641b812e79bb25041c4",
+          "files": {
+            "candidates/v2_recall/IDENTITY.md": "b603be5f767a1fcff9d57b60635bbf01655baf59a75866148d90938731f84b47",
+            "candidates/v2_recall/MECHANISM.md": "b6b06b0d6efd6a6be33c69459fbf7d202260a3aac3a6effae58a4b45e4d03b8e",
+            "candidates/v2_recall/params.json": "a7d523eb6484f3cfd5b1f50fa909fb6414faf2f33decf7749245567afac6805f",
+            "candidates/v2_recall/mechanism/mechanism.py": "205d480072cbe5fe7dfaee74e51aa59f687ee6d3f772828db15c4d879ff92aa6",
+            "candidates/v2_recall/assets/system_prompt/core.md": "34c5e020f6785cf4e261b69170dfce4b8b90d141a52c34726e9b5e2be3f676ff",
+            "candidates/v2_recall/assets/system_prompt/format.md": "3ee15ff9e52b92f62875bfc73cde13730bd48c583febdb871025207fedae1e72",
+            "candidates/v2_recall/assets/system_prompt/naturalness_check.md": "a8aa427376be333f64104acc35e53f7c962ee6dd31e6d0e572838dea9bd29421",
+            "candidates/v2_recall/assets/system_prompt/redline.md": "66c16e3e3f08aac7519eaea3eeb03499a85b0e79853136fe4272341bd83ec511"
+          }
+        }
+      },
+      "candidate_identity_covers_parent_source": false,
+      "method": "Same candidate-tree .py/.md/.json algorithm as tools/api_trial.py::harness_identity; does not import the live runner."
+    },
+    "legitimate_note_copy": {
+      "reply": "我明天14:55到南门",
+      "note": "我明天14:55到南门，直接告诉她。",
+      "reply_len": 11,
+      "ratio": 0.6111111111111112,
+      "fails_note_lcs": true
+    },
+    "recorded_topic_statuses": {
+      "E001": [
+        {
+          "case": "turn_01_E001_T01",
+          "topic_status": "same"
+        },
+        {
+          "case": "turn_02_E001_T02",
+          "topic_status": "new"
+        },
+        {
+          "case": "turn_03_E001_T03",
+          "topic_status": "new"
+        },
+        {
+          "case": "turn_04_E001_T04",
+          "topic_status": "new"
+        },
+        {
+          "case": "turn_05_E001_T05",
+          "topic_status": "new"
+        },
+        {
+          "case": "turn_06_E001_T06",
+          "topic_status": "new"
+        },
+        {
+          "case": "turn_07_E001_T07",
+          "topic_status": "new"
+        },
+        {
+          "case": "turn_08_E001_T08",
+          "topic_status": "new"
+        }
+      ],
+      "E002": [
+        {
+          "case": "turn_01_E002_T01",
+          "topic_status": "drift"
+        },
+        {
+          "case": "turn_02_E002_T02",
+          "topic_status": "new"
+        },
+        {
+          "case": "turn_03_E002_T03",
+          "topic_status": "same"
+        },
+        {
+          "case": "turn_04_E002_T04",
+          "topic_status": "same"
+        },
+        {
+          "case": "turn_05_E002_T05",
+          "topic_status": "same"
+        },
+        {
+          "case": "turn_06_E002_T06",
+          "topic_status": "drift"
+        },
+        {
+          "case": "turn_07_E002_T07",
+          "topic_status": "new"
+        },
+        {
+          "case": "turn_08_E002_T08",
+          "topic_status": "drift"
+        }
+      ],
+      "E003": [
+        {
+          "case": "turn_01_E003_T01",
+          "topic_status": "same"
+        },
+        {
+          "case": "turn_02_E003_T02",
+          "topic_status": "PARSE_ERROR"
+        },
+        {
+          "case": "turn_03_E003_T03",
+          "topic_status": "drift"
+        },
+        {
+          "case": "turn_04_E003_T04",
+          "topic_status": "same"
+        },
+        {
+          "case": "turn_05_E003_T05",
+          "topic_status": "drift"
+        },
+        {
+          "case": "turn_06_E003_T06",
+          "topic_status": "same"
+        },
+        {
+          "case": "turn_07_E003_T07",
+          "topic_status": "new"
+        },
+        {
+          "case": "turn_08_E003_T08",
+          "topic_status": "new"
+        }
+      ]
+    }
+  },
+  "source_hashes_before": {
+    "D:\\lovebrain-arena\\candidates\\reference_product_v1\\reference_chain.py": "ecca9f87326b3217a4226a46242871e3f5c82ffb0f6639244ab2aa9b998763da",
+    "D:\\lovebrain-arena\\candidates\\reference_product_v1\\mechanism\\mechanism.py": "c340a8b03773d2674063637eb3961a615350b85ca6d6acc01e5bc274eea708ba",
+    "D:\\lovebrain-arena\\candidates\\reference_product_v1\\product_memory.py": "a05e26673c51fa19aaa17a845f4955fddf684fd76912ee11649a4b190164592f",
+    "D:\\lovebrain-arena\\candidates\\v2_recall\\mechanism\\mechanism.py": "205d480072cbe5fe7dfaee74e51aa59f687ee6d3f772828db15c4d879ff92aa6",
+    "D:\\lovebrain-arena\\tools\\exam_layered_score.py": "166252230d1908e4fcc7ca795327570cce0ddf0e28568cfafd086f3d74774170",
+    "D:\\lovebrain-arena\\arena\\lb_scorer.py": "67dddb6be78083324118d29022db5f06a1235f057d5c5693f2ce0c064d2f1a07",
+    "D:\\lovebrain-arena\\arena\\protocol_public.py": "24e47616655fce8e4d77cfdf8682cca97d262e665e73e7a63a44136eeeba9de7"
+  },
+  "source_stable": true,
+  "real_model_calls": 0,
+  "original_experiment_artifacts_overwritten": false
+}

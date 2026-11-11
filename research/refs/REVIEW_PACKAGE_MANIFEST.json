@@ -1,0 +1,9 @@
+{
+ "package": "lovebrain_review_v13_wave15_20261021.zip",
+ "built_at": "2026-10-21 12:42:38",
+ "zip_sha256_full": "3e8b1f7276083e8fd4075ed92f2bb754229ff9c9af30dc14f581184b9d7418e6",
+ "n_payload_files": 4170,
+ "in_package_manifest": "REVIEW_PACKAGE_MANIFEST.json",
+ "exclusion_assertion": "PASS",
+ "note": "sidecar 在包外（refs/），包内无自引用。核包步骤：① 对 zip 算 sha256 与本文件 zip_sha256_full 比对；② 解包后 REVIEW_PACKAGE_MANIFEST.json 逐文件 sha256 可复核。"
+}

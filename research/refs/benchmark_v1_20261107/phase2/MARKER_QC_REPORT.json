@@ -1,0 +1,26 @@
+{
+ "kind": "benchmark_v1_phase2_marker_qc_report",
+ "generated": "2026-11-08",
+ "source_of_truth": "benchmark/stories_v2/GOLD_SIDECAR/GOLD_INDEX.json#marker_qc",
+ "marker_qc": {
+  "n_markers": 1370,
+  "verbatim_violations": 0
+ },
+ "history": [
+  {
+   "date": "2026-11-08",
+   "event": "首轮构建 QC=43 违例（事实压缩词非题面原文）",
+   "fix": "STORY_BATCH_REPORTS/REPAIR_MARKER_FIX_1.md：43 处替换为逐字等价特征词组，0 置空"
+  },
+  {
+   "date": "2026-11-08",
+   "event": "复检 QC=0（n=1370）",
+   "evidence": "GOLD_INDEX.json marker_qc"
+  },
+  {
+   "date": "2026-11-08",
+   "event": "unknowns 303 处'非逐字'裁决：unknowns.markers=候选侧断言探测词，按 GOLD_SCHEMA §5 设计即不要求题面逐字，官方 QC 只扫原子属正确口径，不修"
+  }
+ ],
+ "rule": "原子 affirm_markers/item_markers 必须逐字出现在题面语料或来源消息（build_gold_sidecar L677）"
+}

@@ -1,0 +1,41 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-F3-RESTART-20261029-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-29持续实验授权；F3重启批有限目的登记（主机内存泄漏修复后的干净复现），不新增总帽、不复活旧单。",
+ "phase": "F3-RESTART",
+ "budget_ledger": "logs/auth_budget/AUTH-F3-RESTART-20261029-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 144
+ },
+ "api_config": "api_cfg:openai_compat_stream_false_v1；dsf 单一基座，两臂同端点/model/温度/非流式配置；不与旧批或流式表拼接。",
+ "scope": {
+  "purpose": "F3 新材料干净复现：N01/N02（12位）+K01/K02（24位，T12 checkpoint 后复制目录、新进程 resume）两臂真实生成；72位×2臂=144次物理请求。旧批 AUTH-F3-NEWMAT-20261029-01 在 10:22 因宿主内存泄漏被人工终止，仅完成42轮、5次上游超时；旧批结果保留为事故证据，不进入质量表，本次是全新批次的完整复现，不是对旧失败位置的选择性重试。",
+  "stage": "F3",
+  "experiment": "F3_new_material_restart_after_host_memory_fix",
+  "allowed_models": ["dsf"],
+  "forbidden_models": ["hy4-preview", "gemini-3.8-flash", "hy3", "qwen3.8-flash"],
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "positions_per_arm": 72,
+  "total_attempts": 144,
+  "episodes": ["N01", "N02", "K01", "K02"],
+  "episode_turns": {"N01": 12, "N02": 12, "K01": 24, "K02": 24},
+  "cards": "benchmark/stories_v2/final_20261029/GRADING_CARDS_N01_N02_K01_K02.json",
+  "arms": ["reference_product_v1", "action_policy_r4_guard_final"],
+  "checkpoint_policy": "K01/K02 在 T12 真实 checkpoint 后复制 out 与 staged 目录，新进程 --resume 生成 T13–T24；不重跑前史。",
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "judge_separate": "F3 评审另建 judge scope（hy3），本单只覆盖 harness 生成。",
+  "closed_history_not_reused": "旧批 AUTH-F3-NEWMAT-20261029-01 关闭，不复活、不挪用、不抵扣；旧单剩余额度不用于本批。",
+  "host_incident": "2026-10-29 10:22 宿主内存被 17770 网关派生的 codebuddy 子进程耗尽；用户已修复网关会话池上限并重启，本批在其后启动。"
+ },
+ "execution_entry": "tools/run_f3_new_material.py",
+ "notes": "一物理请求一 attempt、事前占额，失败/空返/超时照样记账；不补配对、不改 nonce 重跑；live 输出目录已有 turn_* 即拒绝覆盖。并发2，避免再次压垮宿主。",
+ "registered_at": "2026-10-29T10:35:00"
+}

@@ -1,0 +1,40 @@
+{
+ "kind": "wave_skeleton_dedupe",
+ "wave": "wave4_dev",
+ "isolated": false,
+ "total_scanned": 222,
+ "wave_stories": 38,
+ "near_dup_clusters_all": [
+  {
+   "ids": [
+    "E333",
+    "E334"
+   ],
+   "max_jaccard": 0.71
+  },
+  {
+   "ids": [
+    "E335",
+    "E336"
+   ],
+   "max_jaccard": 0.71
+  }
+ ],
+ "near_dup_clusters_involving_wave": [
+  {
+   "ids": [
+    "E333",
+    "E334"
+   ],
+   "max_jaccard": 0.71
+  },
+  {
+   "ids": [
+    "E335",
+    "E336"
+   ],
+   "max_jaccard": 0.71
+  }
+ ],
+ "note": "近重判据与 story_skeleton_dedupe 相同：同域且主题 Jaccard>=0.6"
+}

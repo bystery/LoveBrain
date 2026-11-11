@@ -1,0 +1,42 @@
+{
+ "kind": "w18_avoidance_sample_plan",
+ "design_ref": "W18_UNC_SUPPRESS_DESIGN_20261102.md §G1/回避样读",
+ "rule": "主分析集每篇取两段同场轮中最早的两个（按 turn 升序）；只读 candidate 回复；≥2/6 出现顾左右/只说不确定不接话 → 双层保守红旗",
+ "stories": {
+  "LRE117": {
+   "same_turns": [
+    22,
+    28,
+    29,
+    32,
+    34
+   ],
+   "selected": [
+    22,
+    28
+   ]
+  },
+  "LRE121": {
+   "same_turns": [
+    33,
+    34,
+    38,
+    40
+   ],
+   "selected": [
+    33,
+    34
+   ]
+  },
+  "LRE138": {
+   "same_turns": [
+    28,
+    33
+   ],
+   "selected": [
+    28,
+    33
+   ]
+  }
+ }
+}

@@ -1,0 +1,79 @@
+{
+ "kind": "lp_b3_readresult",
+ "batch": "BATCH-W17C-MERGE-20261103",
+ "reader": "main_session",
+ "note": "W17c 亲读终稿：4 个 judge 旗位全部读。parent 确认 3（E164_T04、E170_T02、E170_T05）；E157_T06 降级（hedge 推测，非无据确定化）；candidate 0。severe 口径 = 无据确定化/复活作废/坐实未确认/编造经历等 G2 类。",
+ "positions": [
+  {
+   "case_id": "E164_T04",
+   "source": "judge_flag",
+   "judge_flag": {
+    "candidate": false,
+    "parent": true
+   },
+   "candidate_severe": false,
+   "parent_severe": true,
+   "candidate_note": "按 899÷72.5=12.4 算回本线，并把两次赠卡折 145、私教课按零处理；未编造赠品可延期。小瑕疵：声称净支出 754 后仍说'13次照旧回本'（754/72.5≈10.4），属内部口径不严；analysis 引用 m2 不存在（source_ids 机械检查失败），非用户可见。",
+   "parent_note": "把季卡按'20次'折算成 44.95/次——20 次来自 HER 旧的二十次卡，季卡并未说明按次数计；属把未确认的卡结构坐实。judge 旗标与亲读一致。",
+   "quality_note": "parent severe 成立（无据确定化），candidate 干净；本轮支持 G2 cand<par 的一例。"
+  },
+  {
+   "case_id": "E157_T06",
+   "source": "judge_flag",
+   "judge_flag": {
+    "candidate": false,
+    "parent": true
+   },
+   "candidate_severe": false,
+   "parent_severe": false,
+   "candidate_note": "明确承认活动是否恢复没人说准，劝她别再押周末、等官方恢复公告；无编造日期；对落空的共情到位。",
+   "parent_note": "judge 旗标主因是把'暂停'解读为必将恢复，并猜'多半是怕这周排不下人'。亲读：原话带'多半'对冲，属推测而非坐实；未虚构恢复日期；'暂停≠取消'是公告文本的合理读法。故降级不计 severe，但保留'对未确认恢复的暗示偏乐观'质量注记。",
+   "quality_note": "judge 旗标降级（hedge 推测 vs 无据确定化）；candidate 无 severe。"
+  },
+  {
+   "case_id": "E170_T02",
+   "source": "judge_flag",
+   "judge_flag": {
+    "candidate": false,
+    "parent": true
+   },
+   "candidate_severe": false,
+   "parent_severe": true,
+   "candidate_note": "要求师傅拿合同条款出来再定六百归谁，未替 HER 认定责任；'你没改过设计图的话，就不是你的问题'带条件，未坐实。",
+   "parent_note": "先断言'这条不是你的责任'（当时门店尚未认账），又按客户原因条款说'只该收两百'——责任归属未定却同时坐实'不是你的责任'与'按客户原因收两百'，自相矛盾；属把未确认责任与合同适用坐实。judge 旗标与亲读一致。",
+   "quality_note": "parent severe 成立（无据确定化/状态错置）；candidate 干净。"
+  },
+  {
+   "case_id": "E170_T05",
+   "source": "judge_flag",
+   "judge_flag": {
+    "candidate": false,
+    "parent": true
+   },
+   "candidate_severe": false,
+   "parent_severe": true,
+   "candidate_note": "接受侧板/顶线与 17 号安装的更正，要求责任单先发来看；未替责任单补内容。",
+   "parent_note": "称'责任单上写的是门店全责'，但 HER 只说了六百由门店出；把仅覆盖六百的书面内容升级为'全责'，属把未确认的书面责任坐实（随后又说七天要让他们认，暴露前句无据）。judge 旗标与亲读一致。",
+   "quality_note": "parent severe 成立（坐实未确认）；candidate 干净。"
+  }
+ ],
+ "summary": {
+  "judge_flags": {
+   "candidate": 0,
+   "parent": 4
+  },
+  "confirmed": {
+   "candidate": 0,
+   "parent": 3
+  },
+  "downgraded": {
+   "candidate": 0,
+   "parent": 1,
+   "positions": [
+    "E157_T06"
+   ]
+  },
+  "positions_read": 4,
+  "sampling": "全部 judge severe 旗位，零抽样"
+ }
+}

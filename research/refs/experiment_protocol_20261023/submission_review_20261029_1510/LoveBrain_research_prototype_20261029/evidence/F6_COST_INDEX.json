@@ -1,0 +1,209 @@
+{
+ "kind": "f6_cost_index",
+ "date": "2026-10-29",
+ "rule": "一物理请求一 attempt；失败与作废一律消耗，不重试、不补跑、不退款；已关闭授权单不得复活，也不得用新单覆盖旧结论。",
+ "authorizations": [
+  {
+   "phase": "F1",
+   "authorization_id": "AUTH-F1-BLIND-20261029-01",
+   "note": "盲审 158（155 完成 + 3 孤儿不重试）",
+   "ledger": "logs/auth_budget/AUTH-F1-BLIND-20261029-01.jsonl",
+   "attempt_started": 158,
+   "attempt_completed": 155,
+   "attempt_failed": 0,
+   "dispatch_refused_duplicate": 0,
+   "batch_rejected": 0,
+   "closed": true,
+   "close_reason": "F1 complete: 155 ratings; 3 orphan attempts excluded no-retry after host stop",
+   "prompt_tokens_ledger": 414734,
+   "completion_tokens_ledger": 95477
+  },
+  {
+   "phase": "F3-gen-aborted",
+   "authorization_id": "AUTH-F3-NEWMAT-20261029-01",
+   "note": "首批被上游超时与主机内存事故打断，作废不补跑",
+   "ledger": "logs/auth_budget/AUTH-F3-NEWMAT-20261029-01.jsonl",
+   "attempt_started": 48,
+   "attempt_completed": 42,
+   "attempt_failed": 5,
+   "dispatch_refused_duplicate": 0,
+   "batch_rejected": 0,
+   "closed": true,
+   "close_reason": "aborted 2026-10-29 10:22 by host memory exhaustion; partial evidence retained, not reused",
+   "prompt_tokens_ledger": 0,
+   "completion_tokens_ledger": 0
+  },
+  {
+   "phase": "F3-gen",
+   "authorization_id": "AUTH-F3-RESTART-20261029-01",
+   "note": "内存修复后整批重跑 144/144",
+   "ledger": "logs/auth_budget/AUTH-F3-RESTART-20261029-01.jsonl",
+   "attempt_started": 144,
+   "attempt_completed": 144,
+   "attempt_failed": 0,
+   "dispatch_refused_duplicate": 0,
+   "batch_rejected": 1,
+   "closed": true,
+   "close_reason": "F3 restart batch complete: 144/144 attempts, K02 candidate resumed manually after expect-attempts fix",
+   "prompt_tokens_ledger": 0,
+   "completion_tokens_ledger": 0
+  },
+  {
+   "phase": "F3-judge",
+   "authorization_id": "AUTH-F3-JUDGE-20261029-01",
+   "note": "72 对新材料盲评",
+   "ledger": "logs/auth_budget/AUTH-F3-JUDGE-20261029-01.jsonl",
+   "attempt_started": 72,
+   "attempt_completed": 72,
+   "attempt_failed": 0,
+   "dispatch_refused_duplicate": 0,
+   "batch_rejected": 0,
+   "closed": true,
+   "close_reason": "F3新材料72对盲评72/72完成（schema 72/72，transport 72/72）关闭",
+   "prompt_tokens_ledger": 251377,
+   "completion_tokens_ledger": 50970
+  },
+  {
+   "phase": "F4-gen",
+   "authorization_id": "AUTH-F4-LOCAL-20261029-01",
+   "note": "组件消融 24 次实调用（另有 8 次重复派发被拒，0 调用）",
+   "ledger": "logs/auth_budget/AUTH-F4-LOCAL-20261029-01.jsonl",
+   "attempt_started": 24,
+   "attempt_completed": 24,
+   "attempt_failed": 0,
+   "dispatch_refused_duplicate": 8,
+   "batch_rejected": 0,
+   "closed": true,
+   "close_reason": "F4行动层消融24/24完成（8次重复派发被拒未计费）；按要求关闭",
+   "prompt_tokens_ledger": 75753,
+   "completion_tokens_ledger": 3815
+  },
+  {
+   "phase": "F4-knowfix",
+   "authorization_id": "AUTH-F4-KNOWFIX-20261029-01",
+   "note": "知识探针去答案数字重跑 12 次",
+   "ledger": "logs/auth_budget/AUTH-F4-KNOWFIX-20261029-01.jsonl",
+   "attempt_started": 12,
+   "attempt_completed": 12,
+   "attempt_failed": 0,
+   "dispatch_refused_duplicate": 0,
+   "batch_rejected": 0,
+   "closed": true,
+   "close_reason": "F4知识探针去数字重跑12/12完成；消融仍无效但额度用尽关闭",
+   "prompt_tokens_ledger": 38423,
+   "completion_tokens_ledger": 1891
+  },
+  {
+   "phase": "F4-judge",
+   "authorization_id": "AUTH-F4-JUDGE-20261029-01",
+   "note": "12 对消融盲评",
+   "ledger": "logs/auth_budget/AUTH-F4-JUDGE-20261029-01.jsonl",
+   "attempt_started": 12,
+   "attempt_completed": 12,
+   "attempt_failed": 0,
+   "dispatch_refused_duplicate": 0,
+   "batch_rejected": 0,
+   "closed": true,
+   "close_reason": "F4盲评12/12完成关闭",
+   "prompt_tokens_ledger": 45447,
+   "completion_tokens_ledger": 7507
+  },
+  {
+   "phase": "F5-gen",
+   "authorization_id": "AUTH-F5-RECHECK-20261029-01",
+   "note": "E3 修复身份复测：N01 全链 12 次",
+   "ledger": "logs/auth_budget/AUTH-F5-RECHECK-20261029-01.jsonl",
+   "attempt_started": 12,
+   "attempt_completed": 12,
+   "attempt_failed": 0,
+   "dispatch_refused_duplicate": 0,
+   "batch_rejected": 0,
+   "closed": true,
+   "close_reason": "F5 复测 12/12 用尽并关闭。授权单登记身份 0053815a…（当时 E3 代码还写在 r4 目录里）；随后 r4 已按 FINAL_CANDIDATE_FREEZE 逐字节还原（重算身份 =9b8f4e…），E3 代码单独注册为 action_policy_r4_guard_e3（17fd2160…），其 8 个机制/资产文件与本批 staged 副本逐字节相同（F5_CANDIDATE_FREEZE_20261029.json.code_byte_provenance），故本批证据归属该新身份。",
+   "prompt_tokens_ledger": 0,
+   "completion_tokens_ledger": 0
+  },
+  {
+   "phase": "F5-judge",
+   "authorization_id": "AUTH-F5-JUDGE-20261029-01",
+   "note": "同臂重抽 12 对盲评",
+   "ledger": "logs/auth_budget/AUTH-F5-JUDGE-20261029-01.jsonl",
+   "attempt_started": 12,
+   "attempt_completed": 12,
+   "attempt_failed": 0,
+   "dispatch_refused_duplicate": 0,
+   "batch_rejected": 0,
+   "closed": true,
+   "close_reason": "F5 同臂重抽 12 对盲评 12/12 用尽并关闭（schema 12/12、transport 12/12）。",
+   "prompt_tokens_ledger": 38400,
+   "completion_tokens_ledger": 7988
+  },
+  {
+   "phase": "F5-judge-swap",
+   "authorization_id": "AUTH-F5-JUDGE-SWAP-20261029-01",
+   "note": "同批 12 对 A/B 顺序复测",
+   "ledger": "logs/auth_budget/AUTH-F5-JUDGE-SWAP-20261029-01.jsonl",
+   "attempt_started": 12,
+   "attempt_completed": 12,
+   "attempt_failed": 0,
+   "dispatch_refused_duplicate": 0,
+   "batch_rejected": 0,
+   "closed": true,
+   "close_reason": "F5 顺序复测 12/12 用尽并关闭（schema 12/12、transport 12/12）；与正向 12 对合并成 24 份评分，逐位两次一致 9/12。",
+   "prompt_tokens_ledger": 38400,
+   "completion_tokens_ledger": 8481
+  }
+ ],
+ "totals": {
+  "attempt_started": 506,
+  "attempt_completed": 497,
+  "attempt_failed": 5,
+  "dispatch_or_batch_refused": 9
+ },
+ "generation_token_basis": [
+  {
+   "phase": "F3-gen",
+   "run_dir": "logs/f3_newmat_live_restart_20261029",
+   "note": "长故事只数 *_resume 终链（前 12 轮是 checkpoint 副本，避免重复计数）",
+   "chains": [
+    "candidate_N01",
+    "candidate_N02",
+    "parent_N01",
+    "parent_N02",
+    "candidate_K01_resume",
+    "candidate_K02_resume",
+    "parent_K01_resume",
+    "parent_K02_resume"
+   ],
+   "calls_with_usage": 144,
+   "prompt_tokens": 1014589,
+   "completion_tokens": 56580,
+   "basis": "只数最终交付链（去重）"
+  },
+  {
+   "phase": "F3-gen-aborted",
+   "run_dir": "logs/f3_newmat_live_live_20261029",
+   "note": "作废批：只记 attempt，不进结论",
+   "calls_with_usage": 47,
+   "prompt_tokens": 293133,
+   "completion_tokens": 15816,
+   "basis": "全目录计数（作废批）"
+  },
+  {
+   "phase": "F5-gen",
+   "run_dir": "logs/f5_recheck_live2_20261029_133653",
+   "note": "E3 身份复测链",
+   "chains": [
+    "candidate_N01"
+   ],
+   "calls_with_usage": 12,
+   "prompt_tokens": 77184,
+   "completion_tokens": 5115,
+   "basis": "只数最终交付链（去重）"
+  }
+ ],
+ "token_grand_total": {
+  "judge_from_ledger": 1078663,
+  "generation_from_answers": 1153468
+ }
+}

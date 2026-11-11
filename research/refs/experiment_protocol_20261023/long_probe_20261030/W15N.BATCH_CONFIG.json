@@ -1,0 +1,19 @@
+{
+ "batch_id": "BATCH-W15N-NORECAP-20261102",
+ "arm_map": {
+  "parent": "window_expand_b",
+  "candidate": "window_expand_b_norecap"
+ },
+ "episode_order": [
+  {
+   "episode": "LRE117",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "LRE146",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_LD1.json",
+ "recall_capable": false
+}

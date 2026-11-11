@@ -1,0 +1,217 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W15N_A",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W15N_A_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w15n_norecap_live_20261102",
+ "n_queued": 6,
+ "queue": [
+  {
+   "pair_id": "LP:LRE117:LRE117_T35",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T35",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT 把“第二罐留到过年”写成“已完成”交付闭环，且编造2026-11-28等未发生日期事项，属无据确定化",
+   "key_quote": "外婆不让动，说要留着过年",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "第二罐留到过年",
+      "已完成"
+     ],
+     "found_where": {
+      "第二罐留到过年": null,
+      "已完成": null
+     },
+     "nowhere": [
+      "第二罐留到过年",
+      "已完成"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "pending_personal_read",
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T22",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T22",
+   "flagged_arms": [
+    "candidate",
+    "parent"
+   ],
+   "note": "两侧均将未知的转账状态说成已收（L还编出用户本人已转八十），属无据确定化；L自相矛盾",
+   "key_quote": "她转了，一百六收到了/小满那八十转了",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 1,
+     "memory": 2
+    },
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 2
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T04",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T04",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "我跟她一人五十五，你看行不行？",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 2,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T14",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T14",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "回，周六上午照常走。你跟小满说费用还是老规矩八十就行，全包那话别让她当真",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 1,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T15",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T15",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT把日期推算错成周五晚装车、明早搬，与周六出发冲突；且把油费、两罐等未定事项当确定复述；LEFT把待澄清的老时间直接定成八点，属轻度无据确定化",
+   "key_quote": "LEFT：周六八点小区门口，你的位子留着；R：周六老地方…周五晚上你把两罐都装好",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 0,
+     "attrib": 2,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE117:LRE117_T34",
+   "order": "main",
+   "story": "",
+   "cid": "LRE117_T34",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "转没转我得看一眼手机才知道",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 2,
+     "attrib": 1,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

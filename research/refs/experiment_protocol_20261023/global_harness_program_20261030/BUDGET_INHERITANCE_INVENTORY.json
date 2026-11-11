@@ -1,0 +1,719 @@
+{
+  "scope": "Canonical logs/auth_budget/*.jsonl file inventory; not automatically the accounting boundary of any historical management cap",
+  "ledgers": [
+    {
+      "ledger": "logs\\auth_budget\\AUTH-A3-JUDGE-20261026-01.jsonl",
+      "started": 172,
+      "completed": 168,
+      "failed_events": 4,
+      "closed": true,
+      "bytes": 91409,
+      "sha256": "98ababec1522d5bc88ce3f2dae53a0b5c73a362b28a4baf656dff284ad5a9071"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-C-CONTRAST-20261029-01.jsonl",
+      "started": 24,
+      "completed": 24,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 14557,
+      "sha256": "a912d82592bced32c25756787d01ea083a0c8eeba7a4f6cc8d570255bc798a6a"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-C-CONTRAST2-20261029-01.jsonl",
+      "started": 19,
+      "completed": 19,
+      "failed_events": 1,
+      "closed": true,
+      "bytes": 12279,
+      "sha256": "326fea0a5fcfd5e662fe21a99adaef8034ab5402d744fec62a6d89b344ce7b6d"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-C4-SCREEN-20261026-01.jsonl",
+      "started": 128,
+      "completed": 128,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 51688,
+      "sha256": "dbbe75ef16c5c9424daf71cbf2c0d15ba6d37da265e40b48818ef3e5699a23ef"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-EVAL-JUDGE-20261025-01.jsonl",
+      "started": 204,
+      "completed": 200,
+      "failed_events": 3,
+      "closed": true,
+      "bytes": 112527,
+      "sha256": "d36c6c556a4066deef225ea961bddf3fd481b9aef1c98705ac9b93355596f276"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-EXAM1-20261023-01.jsonl",
+      "started": 24,
+      "completed": 24,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 9448,
+      "sha256": "b644764acee7479b8cdedc00f1c3c851b6f2381109f52a645b1e97925fc23e17"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-F1-BLIND-20261029-01.jsonl",
+      "started": 158,
+      "completed": 155,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 85721,
+      "sha256": "bdee5a1b83c909ea76f4e0111207168413851809a4f7406de2aa1728e9f8afd6"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-F3-JUDGE-20261029-01.jsonl",
+      "started": 72,
+      "completed": 72,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 38979,
+      "sha256": "774d83c372293fe41ac16a36c3b17d850e4a7c659401af311fcf52614a16c3b5"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-F3-NEWMAT-20261029-01.jsonl",
+      "started": 48,
+      "completed": 42,
+      "failed_events": 5,
+      "closed": true,
+      "bytes": 18946,
+      "sha256": "3f13e7f05540b47b0584eea8eac6dc7fc5079d5f1079ea2cccb2648e42665f61"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-F3-RESTART-20261029-01.jsonl",
+      "started": 144,
+      "completed": 144,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 56585,
+      "sha256": "3f5698483e96389ea0611bb1d5b52e3782850e503ad6510a2c46c01a7f6b5605"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-F4-JUDGE-20261029-01.jsonl",
+      "started": 12,
+      "completed": 12,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 7218,
+      "sha256": "e79a1c4aacca62bad9efd08b3cad0cf06d7e167b8f31d8e6881844af89f61463"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-F4-KNOWFIX-20261029-01.jsonl",
+      "started": 12,
+      "completed": 12,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 6428,
+      "sha256": "44fc7d55c4a5c56fba4286bc0ca970f78e9dd5b01001db75467578ef39551918"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-F4-LOCAL-20261029-01.jsonl",
+      "started": 24,
+      "completed": 24,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 13396,
+      "sha256": "b34c71d622e6020ed2a2104f7d26a6007cb4d797e9f1712f4b7ce74d626ec7ef"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-F5-JUDGE-20261029-01.jsonl",
+      "started": 12,
+      "completed": 12,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 7148,
+      "sha256": "22dc2e3882ae33e2b94dd679c1e3fd6e2e6d5886ec93fff9b032990db997dae5"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-F5-JUDGE-SWAP-20261029-01.jsonl",
+      "started": 12,
+      "completed": 12,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 7354,
+      "sha256": "8c01e767a6febfa4fed69507283acfeb4ab68e4de1a0cd25d645d321aeb05a9b"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-F5-RECHECK-20261029-01.jsonl",
+      "started": 12,
+      "completed": 12,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 5380,
+      "sha256": "5ca0c41d2827c405279465056d25f40ffc5724d27de4fa9048f0f898178033cd"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-G11-STANDIN-105911de45.jsonl",
+      "started": 7,
+      "completed": 7,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 2871,
+      "sha256": "e55dda51de7e2293d8aedbabf8237d97a29bc4d2e5e4a19da115ba0e92582e33"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-G11-STANDIN-110222a48f.jsonl",
+      "started": 7,
+      "completed": 7,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 2871,
+      "sha256": "a897beaba8fd5e5d3e75096199bb69c68cb001d3429f91785d46296b1a5a1902"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-G11-STANDIN-1242037f81.jsonl",
+      "started": 7,
+      "completed": 7,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 2871,
+      "sha256": "7013f812f3633e52c57a03c9cc3ba45b90d0d777d20b39fcbebc654459991bb4"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-G11-STANDIN-165652c2a3.jsonl",
+      "started": 7,
+      "completed": 7,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 2871,
+      "sha256": "7484104368fdc71d9c77ba1dbfc5fd50231fa089e00ad5cc44438219912912ce"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-G11-STANDIN-170157d404.jsonl",
+      "started": 7,
+      "completed": 7,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 2871,
+      "sha256": "304521e77b1ad6be0297bea5184727e72164856a2ff53d6dc15748bd6c9e868a"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-G11-STANDIN-170718a43d.jsonl",
+      "started": 7,
+      "completed": 7,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 2871,
+      "sha256": "2e03c638106ddae42e4395875c291cb035ae98f5c753e2b3b6c3f2f6567fb3b9"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-G11-STANDIN-2017359087.jsonl",
+      "started": 7,
+      "completed": 7,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 2871,
+      "sha256": "7e82d7ccb609433092f3cdb690ecbc95fca10840dc776ff66b8077b43d7a4a1d"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-HARNESS-PERF-PHASE1-20261025-01.jsonl",
+      "started": 4,
+      "completed": 4,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 3190,
+      "sha256": "f9757f8b2a2724740b2d13721b07575d4c0a1ee35ea738597f07e26e776b8e29"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-KB-PROBE-20261029-01.jsonl",
+      "started": 24,
+      "completed": 24,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 17135,
+      "sha256": "f05175881616c69eeb0fc9e69141c1011ece721b8cbfd5f03e5ba164e2348304"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-004106_a739.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "0b70a572dd434e61b86806f81861f9f279dbf43f4565b93e4f58f8051dabb0c8"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-004257_2b3f.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "898cf8b3294f34784143fc014cc367d531d3e93f1b8aecbdd27a6de2ab16afde"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-010245_d6cf.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "678fa6ffe9502c36f2a326219ae5785c8461ef5627b37aae91788d0883709cd8"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-011513_43a7.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "5820ce8c7f09ffca7533ca1335438c1c7960d630cee23416e9af058aac1b2a0a"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-011712_17b9.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "1ab842d8deab007ad1a25added58ded9ae27d89c92646bccae39f1f010798036"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-105916_4471.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "3d2f3640040b584b922d6d49d4ac67e680c87fa2dd28a79d9c925f7fa3195b2d"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-110226_87a8.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "d534bb9565946dbe06931b3d3916c3b0ad3ca51630729065bd9b8c7e3f9e7018"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-124207_3f02.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "378653d55e5380a6354426b556f357ee5bcb2797f732b387b4c647e731aed6bb"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-162856_77c6.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "42722e2d9fddf81f20282fa19ef7300fa2d500ac1c1767cfb07fb4a8d9a28ac7"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-164300_8900.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "cfa1adec07edb24bf1d1236d33b76393980eafff475f49af64155bbcc873406a"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-165511_0d0f.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "bfc6c3c78757847bde5275cab24d7b46946f6d4e4576bf4c88cdf8e43ddeb20c"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-170038_2128.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "e6a27ed19da7e4fb909e9c02b4e6120387a00c41c3f5c52d3be4f05eef30fd23"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-170418_8ed3.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "2a6650502f10b05b60af40a7b6673f72f4ce28885212cdedfbccf8f1569b06e5"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-170601_5752.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "1b8e6594e83c64828a584feb1d45e1855978f0191e630338592d33c99e8cf928"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-172418_b2f3.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 541,
+      "sha256": "e3c32f8e620ae0d456bb458b3ee88124e185c2c3c289f5626362ff9e0af26f22"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-201153_f236.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "d7521e144e922d01d41aadfdcdab21f6bdf5cfb9eefbb518d5261d461b40d4e8"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-201300_4d84.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "b658c89026204866052f3481dfc3f2ead5b14cf5bb949fe198c4f223dfc65b1b"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-201424_5f37.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "fd91dac123db4e7a58ac2693240c4725ad175c105d2457b9d931f3da1b10c7bc"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-201617_15f2.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "fd4a2d2f0470246674efb4b82764f4d3d708eca615a49ed1d022feca34c42c77"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-MATRIX-keyed-201818_55cd.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 542,
+      "sha256": "d078cac3b96b3b679870e047adfd8c9c83c6d55e6ed0b24259a22d7c4430f71f"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-NEWSTORY-96-20261026-01.jsonl",
+      "started": 96,
+      "completed": 96,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 38957,
+      "sha256": "044b473c209616e0c23a051378b693c9e679201f168b05e294eaa6e8214a7d9c"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-FASTSCREEN-DSF-20261027-01.jsonl",
+      "started": 3,
+      "completed": 2,
+      "failed_events": 1,
+      "closed": true,
+      "bytes": 2259,
+      "sha256": "8d3b88d8c37842753aa226bcac822e072f7d2e4f5f12402b6c6cb6c89b12b81e"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-FASTSCREEN-HY3-20261027-01.jsonl",
+      "started": 3,
+      "completed": 1,
+      "failed_events": 2,
+      "closed": true,
+      "bytes": 2193,
+      "sha256": "61e5fc50a9a2e2eebca6ebe990b80e5945d5702f19f88a5c6607f6da3d62362b"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-FASTSCREEN-LOW-DSF-20261027-01.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 1270,
+      "sha256": "d7bd949bd6fd5ab822b26398001762f173bf832524bd73f44ab183623b901c76"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-FASTSCREEN-LOW-HY3-20261027-01.jsonl",
+      "started": 1,
+      "completed": 0,
+      "failed_events": 1,
+      "closed": true,
+      "bytes": 1203,
+      "sha256": "7b7c69b857bfa259cb30cd6ff774ab497f494c7739445b4c52208181a5917c37"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-FASTSCREEN-LOW-QWEN3_8-FLASH-20261027-01.jsonl",
+      "started": 1,
+      "completed": 1,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 1349,
+      "sha256": "bf2db0b204620a47f58c1599459c2777d9a0e7b827b23933015134c71010bee7"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-FASTSCREEN-QWEN3_8-FLASH-20261027-01.jsonl",
+      "started": 3,
+      "completed": 2,
+      "failed_events": 1,
+      "closed": true,
+      "bytes": 2416,
+      "sha256": "2c64e5ec2107f8fa7e0fe18743adc9b2883abd8a5a1086f54a52c2bebbda34ba"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-JUDGE-20261027-01.jsonl",
+      "started": 35,
+      "completed": 31,
+      "failed_events": 2,
+      "closed": true,
+      "bytes": 20064,
+      "sha256": "30c255231eba17d75a2807c33208ee7498ee91440acfb8c054064be8d2533aac"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-JUDGE-GEM-20261027-01.jsonl",
+      "started": 251,
+      "completed": 212,
+      "failed_events": 39,
+      "closed": true,
+      "bytes": 140451,
+      "sha256": "7bee0cd3133cfdc927a10c1c86639bd268f3503c94e97005c95b279258a4b333"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-JUDGE-QWEN-20261027-01.jsonl",
+      "started": 3,
+      "completed": 0,
+      "failed_events": 3,
+      "closed": true,
+      "bytes": 2674,
+      "sha256": "e9fcb5a22700e5b1b60ae380a230a06cdf88dcf821fee4097b9fa0528bd4f1ff"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-JUDGE-QWEN-20261027-02.jsonl",
+      "started": 2,
+      "completed": 0,
+      "failed_events": 2,
+      "closed": true,
+      "bytes": 2054,
+      "sha256": "8081a6b57ac09c10e8dd0fd4ec486d9a20d469954d2cce445fdf12b55bd87a2d"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-MAX288V2-20261027-01.jsonl",
+      "started": 192,
+      "completed": 192,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 77217,
+      "sha256": "590db3bfdc70f48f430efb6b18380e692da44dd3238c2cc7da3a0e3fb8b3d135"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-PAIRED-QWEN-20261027-01.jsonl",
+      "started": 2,
+      "completed": 0,
+      "failed_events": 2,
+      "closed": true,
+      "bytes": 1820,
+      "sha256": "8c67cfe8798d20b10b81052bb500687a6b850d2bf1eb13d2310ec9e9d705646f"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P06-RECOVERY-20261027-01.jsonl",
+      "started": 18,
+      "completed": 17,
+      "failed_events": 1,
+      "closed": true,
+      "bytes": 11342,
+      "sha256": "c964399f70a4e16cfc3abeecd1b7e5d80be6b0f95f3a43bba7c629bd01bc6152"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P07-PILOT-20261027-01.jsonl",
+      "started": 8,
+      "completed": 7,
+      "failed_events": 1,
+      "closed": false,
+      "bytes": 4235,
+      "sha256": "67d30c69b9fdc3575a2fcaa8ee4abc472d22ae06b2749f0801b231071ea8b2c8"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P07-PILOT-20261027-02.jsonl",
+      "started": 24,
+      "completed": 23,
+      "failed_events": 1,
+      "closed": false,
+      "bytes": 12460,
+      "sha256": "152cf7252e0829bc5f8dd805c0a8047fad4548059b59f26091c725e60c5dd151"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P07-V2-20261028-01.jsonl",
+      "started": 86,
+      "completed": 67,
+      "failed_events": 19,
+      "closed": false,
+      "bytes": 43098,
+      "sha256": "0b1e12dd9fef31429524fa577f15dad6d45c409c6012ca1fd7b9dea467aa3401"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P07-W09-20261028-01.jsonl",
+      "started": 142,
+      "completed": 125,
+      "failed_events": 17,
+      "closed": false,
+      "bytes": 73010,
+      "sha256": "5226029b865009aa6e6dd2ade9c3b148eecc3664479368729c50bc9474416454"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P08-D1-20261028-01.jsonl",
+      "started": 32,
+      "completed": 32,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 13473,
+      "sha256": "9f34c1e34b216b769e6723a29d9631f721be53d72ab525f0bfa054886cabe236"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P08-R3A-20261028-01.jsonl",
+      "started": 48,
+      "completed": 48,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 20089,
+      "sha256": "e320c627a5cb2a59ef0c3a7f85377eb655431e9734d27ce4ba97a5820d25daeb"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P08-R3B-20261028-01.jsonl",
+      "started": 12,
+      "completed": 12,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 6015,
+      "sha256": "c993a8c1b5d6225a98391b3fb3ab62d7badcf5e321577c423210b1e831658daa"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P08-S1-20261028-01.jsonl",
+      "started": 96,
+      "completed": 96,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 38030,
+      "sha256": "5585ab2f370667860aece7c7c5ea339602f6271b5126a21f63f2e8be7f946706"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P08-S2-20261028-01.jsonl",
+      "started": 24,
+      "completed": 24,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 10655,
+      "sha256": "e3163e776c75217ac3f196b8c26003771fabc3b261cada71f4dc4e16f6ed6338"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P08-S2R-20261028-01.jsonl",
+      "started": 24,
+      "completed": 24,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 11077,
+      "sha256": "b85398c2b4cb017d8f61ecb55bea2de5bd9e52e12a33270468f21113ac8c5764"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-P08-S3-20261028-01.jsonl",
+      "started": 24,
+      "completed": 24,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 10641,
+      "sha256": "03f554d687f263c676ecddf1e19a5c6049e5aa16d426d8c61d138b2bcb19d99a"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-QUALITY-PANEL-20261027-01.jsonl",
+      "started": 173,
+      "completed": 173,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 98332,
+      "sha256": "3ba1a2473f4b571bdf72a309f1216f183c4f968c09e702d185a82b2baba51350"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-R2-CTX-20261024-01.jsonl",
+      "started": 48,
+      "completed": 48,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 19298,
+      "sha256": "561b7553ca6c8fdfc85e93f3e05345a041b4ffb6af59fbc1ae16265265caa594"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-STREAM-INT-20261025-01.jsonl",
+      "started": 8,
+      "completed": 8,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 5333,
+      "sha256": "76c27541bddbbcd8c2280ce98cd987a9dc1759770f98f81d50223e85d2587f64"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-TEST-CAPTURE-20261022200918.jsonl",
+      "started": 24,
+      "completed": 24,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 9729,
+      "sha256": "4651e8dd7a467ece650a53b1617a40e40c0a841ceaeb5f8d5756cbf112323359"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-TEST-CAPTURE-20261022200945.jsonl",
+      "started": 24,
+      "completed": 24,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 9729,
+      "sha256": "0bd62775944146c17a9564801f6bfe494d10bf950af16ddd2aa227871fe2a960"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-TEST-CAPTURE-20261022201015.jsonl",
+      "started": 24,
+      "completed": 24,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 9729,
+      "sha256": "007847ca23b22c33a5e7bdcf2e993d61362f58b46b7f4565e7854af66448ff16"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-TEST-CAPTURE-20261023004014.jsonl",
+      "started": 24,
+      "completed": 24,
+      "failed_events": 0,
+      "closed": false,
+      "bytes": 9729,
+      "sha256": "5948fac598d380e41631ab0ee221c03fc27a2ed501e8b6556095092442a30524"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-V3-DELETION-20261024-01.jsonl",
+      "started": 48,
+      "completed": 48,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 19540,
+      "sha256": "30a792e5384a480de303b27d625552dca25d058fce5fecf16473fe5942bf2dc6"
+    },
+    {
+      "ledger": "logs\\auth_budget\\AUTH-V5-CTX-20261025-01.jsonl",
+      "started": 48,
+      "completed": 48,
+      "failed_events": 0,
+      "closed": true,
+      "bytes": 19393,
+      "sha256": "5dfb3e32014ef733201a305fe41173d0ac15fdaccedbd1f08434d04176298bdc"
+    }
+  ],
+  "all_files_started_sum": 2726,
+  "bad_ledgers": 0,
+  "no_new_model_calls": true
+}

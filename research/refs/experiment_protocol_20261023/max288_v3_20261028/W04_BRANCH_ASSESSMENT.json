@@ -1,0 +1,17 @@
+{
+  "kind": "w04_branch_assessment",
+  "date": "2026-10-28T04:35+08:00",
+  "session": "watchdog30-20261028-042651",
+  "question": "是否需要按 MASTER_EXECUTION_V3 W04 新建 evidence_state_r1 分支？",
+  "verdict": "NO——不新建。理由与证据：",
+  "evidence": [
+    "candidates/v6_integrated/mechanism/mechanism.py 头注与实现已含 W04 要求的全套机制：fact_id/subject/relation/evidence_uids/evidence_quotes/certainty/status/event_time/valid_from/valid_to/supersedes（第8-9行）；",
+    "更正路径 _apply_updates 对 action=correct 只改指定 fact_id 并写 supersedes='%s@v%d'（第334-365行）；",
+    "历史版本分离 _archive_version（unverified_src/superseded 与历史版本分离，第142行）；STATUS_DEAD=('cancelled','completed','superseded')（第69行）；",
+    "否定缺席不生成反面事实、unverified_src 只存不投影均已实现（头注第11行，P04-02 修复时经 7/7 离线回归）。",
+    "若新建仅复制以上实现的分支，即'为凑候选数量生成无实质差别的目录'——违反 MASTER_EXECUTION_V3 §W10 与 AGENTS §0.1。"
+  ],
+  "real_gap": "语义主体正确性（主体错换：来源ID合法、存储字段齐全，但 subject 语义仍可能错——如'我怎么认识小林'存成'我和她怎么认识'）。该缺口属语义层，任何机械字段追加都无法闭合；需在 W02 出口后的真实对照迭代中，以主体错换实测案例驱动（W04 的'依据真实失分而不只按旧题人名修补'）。",
+  "next_condition": "当 W02 出口（两臂分叉+评审）产出后，若主体错换族在实测中复现，再按真实失分案例建 evidence_state_r1，首个变更候选=主体锚定机制（subject 语义核验层），并带正负对照离线回归。",
+  "disposition": "本轮不建分支、不改机制；本评估文件即防重走弯路的证据。"
+}

@@ -1,0 +1,71 @@
+{
+ "exam_dir": "refs\\experiment_protocol_20261023\\s1_action_live_20261028\\S2_ANCHORS\\_reports\\EXAM_parent",
+ "annotations_source": "NONE",
+ "annotations_bound_slots": 0,
+ "episodes": [],
+ "turns": [],
+ "index": {
+  "started_at": "2026-10-28T13:09:20",
+  "harness": "reference_product_v1",
+  "harness_identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+  "authorization_id": "AUTH-REHEARSAL-20261028130906",
+  "batch_id": "AUTH-REHEARSAL-20261028130906",
+  "model": "dsf",
+  "temperature": 0.7,
+  "status": "capture"
+ },
+ "id_binding": {
+  "authorization_id": "AUTH-REHEARSAL-20261028130906",
+  "batch_id": "AUTH-REHEARSAL-20261028130906",
+  "annotation_match_key": "run_id = 批/授权级绑定（跨 run 复用，非每 run 唯一）",
+  "per_episode_run_id": {
+   "AK01": "iso_20261028_130906_69741b",
+   "AK02": "iso_20261028_130907_f5129c",
+   "AK03": "iso_20261028_130908_43b24e",
+   "AK04": "iso_20261028_130909_10bc26",
+   "AK05": "iso_20261028_130909_a03daf",
+   "AK06": "iso_20261028_130910_4254d9",
+   "AK07": "iso_20261028_130911_f58252",
+   "AK08": "iso_20261028_130912_9b6eab",
+   "AK09": "iso_20261028_130913_39698f",
+   "AK10": "iso_20261028_130914_ae0d1f",
+   "AK11": "iso_20261028_130914_3b0d72",
+   "AK12": "iso_20261028_130916_28838a"
+  }
+ },
+ "total": {
+  "primary_semantic_pass": 0,
+  "primary_rated_n": 0,
+  "primary_coverage_ratio": 0.0,
+  "primary_semantic_pass_rate_on_rated": null,
+  "primary_semantic_pass_rate_e2e": 0.0,
+  "at_least_one_pass_true": 0,
+  "at_least_one_pass_false": 0,
+  "at_least_one_pass_unknown": 0,
+  "at_least_one_pass_rate_on_decided": null,
+  "severe_error_backup_true": 0,
+  "severe_error_backup_false": 0,
+  "severe_error_backup_unknown": 0,
+  "severe_error_backup_lower_bound_rate": 0.0,
+  "severe_error_backup_rate_on_decided": null,
+  "backup_slots_total": 0,
+  "backup_slots_rated": 0,
+  "backup_slot_coverage_ratio": 0.0,
+  "annotations_sufficient_for_gate": false,
+  "positions": 0,
+  "program_mean10": 0.0,
+  "semantic": {
+   "pass": 0,
+   "edge": 0,
+   "fail": 0,
+   "unrated": 0
+  },
+  "latency_ms": {
+   "p50": null,
+   "p95": null,
+   "max": 0,
+   "n": 0
+  },
+  "willing_to_send": "未投票（用户口味，worker 不代投）"
+ }
+}

@@ -1,0 +1,165 @@
+{
+ "date": "2026-10-21",
+ "fixtures": [
+  {
+   "id": "B-T01",
+   "capability": "静态装配：header 逐字/IDEA 不占号/别名映射",
+   "multi_turn": false,
+   "evidence": "ChatTranscriptBlock.kt L43-63 + PromptByteFreezeBaselineTest"
+  },
+  {
+   "id": "B-T02",
+   "capability": "输出解析：JSON 转义防注入/围栏完整",
+   "multi_turn": false,
+   "evidence": "ChatTranscriptBlock.kt L14-17, L69-84"
+  },
+  {
+   "id": "B-T03",
+   "capability": "静态装配：>60 掐尾+注记+编号重起（多轮长会话）",
+   "multi_turn": true,
+   "evidence": "ChatTranscriptBlock.kt L46-50, L66-68 + AppConfig.kt L70"
+  },
+  {
+   "id": "B-T04",
+   "capability": "意图：有效性判据四态 + 区块逐字",
+   "multi_turn": false,
+   "evidence": "Models.kt L446-447 + IntentIdeaBlock.kt L30-33 + IntentPolicyTest"
+  },
+  {
+   "id": "B-T05",
+   "capability": "军师备注：逐字全量/空正文不留空标题",
+   "multi_turn": false,
+   "evidence": "IntentIdeaBlock.kt L36, L44-54"
+  },
+  {
+   "id": "B-T06",
+   "capability": "场景：收尾词表冻结 + 优先级碰撞",
+   "multi_turn": false,
+   "evidence": "CurrentSceneInjection.kt L16-18, L38-46 + SceneChainInjectionTest"
+  },
+  {
+   "id": "B-T07",
+   "capability": "场景：认错只看 ME 本人（SpeakerSubject 语义）",
+   "multi_turn": false,
+   "evidence": "CurrentSceneInjection.kt L19, L49-51 + SpeakerSubjectRegressionTest"
+  },
+  {
+   "id": "B-T08",
+   "capability": "场景：无真实消息→空 + 默认链全分支",
+   "multi_turn": false,
+   "evidence": "CurrentSceneInjection.kt L30-33, L60-68"
+  },
+  {
+   "id": "B-T09",
+   "capability": "场景块：标题逐字/空场景省略",
+   "multi_turn": false,
+   "evidence": "CurrentSceneInjection.kt L75-78"
+  },
+  {
+   "id": "B-T10",
+   "capability": "纠正：瞬时 mute 判定矩阵（8 组合）",
+   "multi_turn": false,
+   "evidence": "MemoryCorrectionPolicy.kt L22-34 + Test L23-39"
+  },
+  {
+   "id": "B-T11",
+   "capability": "纠正：四动作文案互异/失败文案不撞车",
+   "multi_turn": false,
+   "evidence": "MemoryCorrectionPolicy.kt L41-53 + Test L57-76"
+  },
+  {
+   "id": "B-T12",
+   "capability": "纠正：RoundCorrectionStore 副本语义 + remove 二次（多步）",
+   "multi_turn": true,
+   "evidence": "MemoryCorrectionPolicy.kt L62-81 + Test L81-107"
+  },
+  {
+   "id": "B-T13",
+   "capability": "纠正：revision 单调（save/undo/再 save 多轮）+ 库不在",
+   "multi_turn": true,
+   "evidence": "KnowledgeMemoryStore.kt L39-51, L72-110 + 单调性承诺"
+  },
+  {
+   "id": "B-T14",
+   "capability": "纠正：写失败不写 revision + 坏 JSON 恢复（异常/恢复）",
+   "multi_turn": true,
+   "evidence": "KnowledgeMemoryStore.kt L118-134 + AtomicWriteRegressionTest"
+  },
+  {
+   "id": "B-T15",
+   "capability": "ongoing：空 plan→空结果",
+   "multi_turn": false,
+   "evidence": "OngoingContextSelector.kt L108-109 + Test L55-61"
+  },
+  {
+   "id": "B-T16",
+   "capability": "ongoing：首见不相关不注入（默认拒绝）",
+   "multi_turn": false,
+   "evidence": "OngoingContextSelector.kt L25-33 + Test L73-84"
+  },
+  {
+   "id": "B-T17",
+   "capability": "ongoing：冷却中且不相关不注入（多轮）",
+   "multi_turn": true,
+   "evidence": "OngoingContextSelector.kt L176-187 + Test L88-100"
+  },
+  {
+   "id": "B-T18",
+   "capability": "ongoing：滑窗撤除/整词命中",
+   "multi_turn": false,
+   "evidence": "OngoingContextSelector.kt L234-241 + Test L112-138"
+  },
+  {
+   "id": "B-T19",
+   "capability": "ongoing：意图/想法注入但不伪造证据（多轮冷却账本）",
+   "multi_turn": true,
+   "evidence": "OngoingContextSelector.kt L77-79, L147-166, L379-397 + Test L147-198"
+  },
+  {
+   "id": "B-T20",
+   "capability": "ongoing：日期临近不单独授权 + eventDate 提取",
+   "multi_turn": false,
+   "evidence": "OngoingContextSelector.kt L335-347 + Test L198-210"
+  },
+  {
+   "id": "B-T21",
+   "capability": "ongoing：DORMANT 5 轮推导与复活（多轮）",
+   "multi_turn": true,
+   "evidence": "OngoingContextSelector.kt L128-139 + Test L214-243"
+  },
+  {
+   "id": "B-T22",
+   "capability": "ongoing：FINISHED/CANCELLED 永不注入",
+   "multi_turn": false,
+   "evidence": "OngoingContextSelector.kt L161-164 + Test L247-271"
+  },
+  {
+   "id": "B-T23",
+   "capability": "ongoing：plan 解析（itemId 前缀/chain）+ 状态推导",
+   "multi_turn": false,
+   "evidence": "OngoingContextSelector.kt L300-333"
+  },
+  {
+   "id": "B-T24",
+   "capability": "ongoing：证据轮独立于注入轮（不误入 DORMANT，多轮）",
+   "multi_turn": true,
+   "evidence": "OngoingContextSelector.kt L124-127, L370-377"
+  },
+  {
+   "id": "B-T25",
+   "capability": "ongoing：fail-closed + 冷却文件损坏恢复（异常/恢复）",
+   "multi_turn": true,
+   "evidence": "OngoingContextSelector.kt L100-102, L362-367"
+  },
+  {
+   "id": "B-T26",
+   "capability": "时效常量：2h/2 条/60 条/冷却 3/休眠 5 冻结",
+   "multi_turn": false,
+   "evidence": "AppConfig.kt L61-70 + OngoingContextSelector.kt L407-412"
+  }
+ ],
+ "reference_port": "candidates/reference_product_v1/reference_chain.py",
+ "frozen_source": "D:/LoveBrain (Kotlin), hashes in BASELINE_PARITY.md",
+ "model_outputs": "fixed-text substitutes（无采样噪声）",
+ "note": "预期值来自原仓库源码逐字常量与自带单元测试（文件+行号已注明）；基线保真=与原产品相符，不是通过全部能力题。"
+}

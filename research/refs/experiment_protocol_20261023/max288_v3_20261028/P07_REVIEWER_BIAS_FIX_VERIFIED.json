@@ -1,0 +1,26 @@
+{
+  "kind": "p07_reviewer_bias_fix_verification",
+  "date": "2026-10-28",
+  "session": "watchdog30-20261028-062704 (main-takeover)",
+  "problem": "首对真实评审（I2_hesitant_pair01，修偏置前）出现强 left 位置偏置：正常序与交换序均为左臂获胜（margin +5/+8），本对结果不可作两臂证据（evaluation/P07_V2_PAIR_REVIEW_RESULTS_V1.md 五条修正清单）。",
+  "fix": "tools/run_p07_traj_review.py SYS_TMPL 增加独立性纪律块：①左右顺序随机、位置不代表质量；②允许两臂同分、禁止硬造差异；③两臂独立打分；④任何 <=1 的维度及两臂各自最好/最差维度必须给逐字 quote 与依据。备份 .bak-20261028-0630-wd-biasfix。",
+  "synthetic_gate": {
+    "method": "人工构造强/弱轨迹对（STRONG=自适应低压、落点具体潮锅邀约；WEAK=泛化加油热水/天气/clickbait 含糊邀约），双序各 1 笔 qwen3.8-flash 评审",
+    "dir": "logs/p07_review_bias_check_20261028/",
+    "orders": [
+      {"file": "TRAJ_REVIEW__SYN_bias_check01.json", "seed": 7, "result": "STRONG=20 vs WEAK=5，STRONG 胜"},
+      {"file": "TRAJ_REVIEW__SYN_bias_check01.swap.json", "seed": 8, "swapped": true, "result": "WEAK=8 vs STRONG=20，STRONG 胜"}
+    ],
+    "verdict": "PASS —— 强臂在两个位置均大胜（20 vs 5 / 20 vs 8），位置不再决定胜负，评审器恢复判别力"
+  },
+  "real_pair_rereview": {
+    "pair_id": "I2_hesitant_pair01_v2",
+    "arms": "I2__fbhesitant__reference_product_v1__r2 vs I2__fbhesitant__v6_integrated__r1",
+    "order1_seed11": {"left": "reference_product_v1__r2", "left_total": 20, "right_total": 10, "note": "reference 胜；v6 仅 promise_confirmation 3 vs 2 领先，factual_safety 3=3 平，其余维度全落后"},
+    "order2_seed12_swap": {"status": "in_progress", "note": "首跑超时按消耗计（无退款无隐式重试），重跑为新预登记 1 笔"}
+  },
+  "budget_note": "轨迹评审额度 <=12：修偏置前真实对 2 + 人工强弱对照 2 = 4（旧 4 笔作废不作两臂证据）；修后 v2 真实对首序 1 + 超时 1 = 6；本次交换序重跑为第 7 笔。",
+  "unfreeze": "评审额度解除冻结，恢复消费；真实对判定需双序一致方向方出结论。",
+  "map_semantics_note": "swap 文件的 map_left_right 在 2026-10-28 06:45 前记的是规范序（与实际显示位相反：实际左=map.right）；0645-wd-mapfix 修正后一律记实际显示位。此前已落盘 swap 文件（SYN_bias_check01.swap、修偏置前 I2_hesitant_pair01.swap）按旧语义解码。",
+  "synthetic_decode_confirmed": "SYN_bias_check01.swap.json 旧语义解码：map.left=SYN__strong 实际显示在右，得分 20 vs 左位 WEAK 8 —— 强臂胜；SYN_bias_check01.json 正常序强臂左位 20 vs 5 胜。两序皆强臂胜，gate PASS 维持。"
+}

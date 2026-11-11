@@ -1,0 +1,75 @@
+{
+ "kind": "p07_v2_pilot_blockage",
+ "date": "2026-10-28T01:40+08:00",
+ "authorization_id": "AUTH-P07-V2-20261028-01",
+ "session": "main-20261028-002629",
+ "status": "PARTIAL_PAIRS_PENDING_REPEAT_DECISION",
+ "consumed_attempt_starts": 16,
+ "cap": 96,
+ "runs": [
+  {
+   "run_tag": "005344",
+   "outdir": "logs/p07_pilot_v2_20261028_005344",
+   "neg_controls": "6 dispatched: 4 ok / 2 timeout；假停（旗标统计bug）后停发，无轨迹"
+  },
+  {
+   "run_tag": "010448",
+   "outdir": "logs/p07_pilot_v2_20261028_010448",
+   "neg_controls": "合并10笔：ok=5 env_fail=5 flagged=0（模拟器有效性无旗标失效）",
+   "trajectories": "2/8 incomplete_environment_failure（I2 positive/hesitant × reference_product_v1；qwen sim 超时）",
+   "halt": "partner_sim_two_consecutive_failures（模型政策：同模型连续两次失败暂停该模型派发）"
+  }
+ ],
+ "cause": "qwen3.8-flash 上游持续超时（150s SLA 不变；按 FIRST_8H/MASTER_EXECUTION 4.2 禁止 45→120→240 阶梯）",
+ "fixed_items_verified_in_real_run": [
+  "B1 意图规范形 {text,status:ACTIVE,enabled} 进入实际出站请求（TRACE T1/T2）",
+  "B2 上一轮实际已发 ME 原文+message_uid 回放进下一轮 ctx（T2 ctx_msgs=[ME m002, HER m003]）",
+  "B4 模拟失败=轨迹 incomplete_environment_failure，无 '…' 伪 HER",
+  "B5 praw_ok/动作判定/只发首选（send=2/0 fail）"
+ ],
+ "simulator_quality_observation": "负对照 5 笔 ok：两次越界强推被正确拒绝（I2 边界+1、I4 推回非正式框架）；尊重邀请正常接受；无'任何话都接受'失效。I2 探针超时率偏高（unknown 是否与人物长度相关）。模拟器内部独白曾以'她'指代对话方（性别代词混乱，小瑕疵登记）。",
+ "disposition": {
+  "no_makeup": "已消耗 16 笔不退款；2 条 incomplete 轨迹保留原样不重跑；env_fail 负对照不重派",
+  "resume_plan": "qwen 恢复后（下轮先单笔探针验证再批量）续跑剩余 6 轨迹（同 aid，filter 跳过已派单元）+ 轨迹成对评审 ≤12",
+  "parallel_mainline": "暂停期间转离线主线：Stage2 E025–E036 续写、W03/W04 改进分支实现（0 模型）"
+ },
+ "resume_log": [
+  {
+   "run_tag": "032742",
+   "at": "2026-10-28 03:27-04:00",
+   "result": "I4__fbpositive__ref COMPLETE(3send/3sim, 闭环教科书级)；I4__fbhesitant__ref/I2__fbpositive__v6 incomplete（qwen再劣化，政策暂停）"
+  },
+  {
+   "run_tag": "052708",
+   "at": "2026-10-28 05:27-05:5x",
+   "result": "I2__fbhesitant__v6 COMPLETE(2send+1fail/3sim)；I4__fbhesitant__v6 COMPLETE(3send/3sim)；I4__fbpositive__v6 incomplete（sim首轮超时）"
+  }
+ ],
+ "current_state": {
+  "as_of": "2026-10-28 07:15+08:00",
+  "ledger_started": 81,
+  "cap": 96,
+  "remaining": 15,
+  "complete_trajectories": [
+   "I4__fbpositive__reference_product_v1__r1",
+   "I4__fbpositive__v6_integrated__r3",
+   "I4__fbhesitant__v6_integrated__r1",
+   "I4__fbhesitant__reference_product_v1__r3",
+   "I2__fbhesitant__v6_integrated__r1",
+   "I2__fbhesitant__reference_product_v1__r2"
+  ],
+  "incomplete_trajectories": "7条原样保留(见各run目录)，I4两对侧三次内跑通=间歇性环境故障非内容相关",
+  "clean_pairs": 3,
+  "pair_verdicts": {
+   "I2__fbhesitant": "REF 20/21 vs V6 10/14 双序一致 REF 胜（判决）",
+   "I4__fbpositive": "normal 20=20 平 + swap V6 21 vs REF 18（接近持平 V6 微弱）",
+   "I4__fbhesitant": "单序 V6 21 vs REF 16，双序未确认（unknown，不作判决）"
+  },
+  "review_budget": {
+   "cap": 12,
+   "used": 12,
+   "note": "用满；含2笔超时按消耗计+1笔判词JSON损坏离线正则补救(parsed_recovered_offline)"
+  },
+  "w02_exit": "PASS_WITH_CAVEATS=W02_EXIT_VERDICT.json（七项全过）；后续=W09扩展新scope预登记+W03迭代(保留promise收敛,修goal语气与no_reply分支)"
+ }
+}

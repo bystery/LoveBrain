@@ -1,0 +1,12 @@
+{
+ "candidate": "action_policy_r4_guard_final",
+ "role": "candidate",
+ "parent": "action_policy_r2",
+ "output_contract": null,
+ "mechanism_flags": {
+  "hygiene_wording_fix": true,
+  "contract_guard_fix": true,
+  "subject_evidence_fix": true
+ },
+ "note": "2026-10-29 final evidence-backed candidate. F0 retracted the three over-silence cells and the FIX-9 2->0 claim (D01_T08 ends with HER's explicit close; D02_T06/D02_T08 end with an already-sent ME message and no new HER turn). r2 remains the base; r3 is retired. This candidate adds only: (1) corrected _HYGIENE wording (standard nested JSON closure; removes the false 'only close after analysis' sentence), (2) a deterministic output guard that reuses tools/output_repair.py + normalize_reply_contract.py (vendored verbatim) before the parent parses analysis, so memory write-back sees repaired analysis while ModelGateway keeps the raw text in calls.json; (3) a conservative evidence-subject guard replacing unsupported relationship paraphrases with role-tagged verbatim quotes or dropping unsupported corrections. No action-policy change, no scorer/rubric/card change, no extra model calls."
+}

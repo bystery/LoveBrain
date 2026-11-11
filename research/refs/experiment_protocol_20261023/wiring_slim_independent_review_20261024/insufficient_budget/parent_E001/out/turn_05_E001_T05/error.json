@@ -1,0 +1,7 @@
+{
+  "case_id": "E001_T05",
+  "turn_index": 5,
+  "error": "HOST_EXCEPTION: RuntimeError: gateway generate failed: budget refused: 额度拒绝：授权 AUTH-OFFLINE-REVIEW-insufficient-07c5df1d 已用 8/8 | frame={'error': 'HOST_EXCEPTION', 'detail': 'RuntimeError: gateway generate failed: budget refused: 额度拒绝：授权 AUTH-OFFLINE-REVIEW-insufficient-07c5df1d 已用 8/8', 'trace_tail': '\\n    res = gw.generate(h[\"system_prompt\"], prompt, images=images or None,\\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"D:\\\\lovebrain-arena\\\\refs\\\\experiment_protocol_20261023\\\\wiring_slim_indep",
+  "adapter": "openai_compat",
+  "ts": "2026-10-24 11:45:06"
+}

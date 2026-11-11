@@ -1,0 +1,1503 @@
+{
+ "kind": "benchmark_v1_human_review_queue_phase3",
+ "version": "hrq_v2_phase3",
+ "generated_from_run": "D:\\lovebrain-arena\\runs\\pilot2_wave4_live_b",
+ "n_anchors": 40,
+ "distribution": {
+  "T02": 12,
+  "T03": 8,
+  "T04": 6,
+  "T01": 4,
+  "T05": 4,
+  "T07": 2,
+  "T08": 2,
+  "T09": 1,
+  "T10": 1
+ },
+ "fill_discipline": "PENDING_USER=人工填写，工具不代填；未填=NOT_COLLECTED",
+ "t02_extra_rule": "E305-E308 各补 1 锚；轮位=候选 [3, n//4, n//2+1, 3n//4, n-2] 中与该篇已用轮距离最大者（并列取靠前，无随机源）",
+ "blinding": "臂A/臂B 按锚序奇偶交换；映射在 blind_key_anchor_phase3.json",
+ "anchors": [
+  {
+   "anchor_id": "A01",
+   "topic": "T02",
+   "topic_label": "调情/暧昧/反撩/拉扯",
+   "episode": "E305",
+   "case_id": "E305_T04",
+   "turn_index": 4,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "腹肌是爬出来的，赖不着我。大猩猩就算了，教练听见要加练。周五我留，爬到九点半，剩下时间给你搭手。",
+    "臂B": "大猩猩不行，阿姨要的是会爬墙的。刚好岩馆里有个周二周五都在的，就是话少了点。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A02",
+   "topic": "T02",
+   "topic_label": "调情/暧昧/反撩/拉扯",
+   "episode": "E305",
+   "case_id": "E305_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_t02_extra",
+   "arms_texts": {
+    "臂A": "买十送一正好，我这杯就当凑数凑来的。周五七点到，前台拿水平仪，顺手把写我名字那杯领走。",
+    "臂B": "周五我爬完就过去，陪你到十一点，水平仪我前台拿。奶茶收到，买十送一这理由挺好，那我就不客气了。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A03",
+   "topic": "T02",
+   "topic_label": "调情/暧昧/反撩/拉扯",
+   "episode": "E305",
+   "case_id": "E305_T12",
+   "turn_index": 12,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "手别比脚先动，记下了，这句得练两周。米粉那顿我请，山上山下都算。",
+    "臂B": "手别比脚先动，这句我记下了，下回爬的时候你盯着我。辣那勺也记着。D档现在还剩几个位？山下那碗米粉我暂时不太想吃。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A04",
+   "topic": "T02",
+   "topic_label": "调情/暧昧/反撩/拉扯",
+   "episode": "E306",
+   "case_id": "E306_T04",
+   "turn_index": 4,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "防你？多的一双是给你备的。你中午端着饭盒过来，总不至于上手抓我鸡腿。",
+    "臂B": "彩蛋排上了，先别跟露露说，我要看她当场原地起飞。混剪那十五秒给我糊个马赛克，不然我真去找老蒋报销网线费。至于筷子——多一双是备着的，你要真来抢，总不能让你上手抓。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A05",
+   "topic": "T02",
+   "topic_label": "调情/暧昧/反撩/拉扯",
+   "episode": "E306",
+   "case_id": "E306_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_t02_extra",
+   "arms_texts": {
+    "臂A": "天台五分钟到。奶茶我收下，多要的珍珠算利息；那句“谢谢”先欠着，等你的年度混剪出来我连本带利还你。",
+    "臂B": "二十分钟换九天半，这买卖我亏了。天台等我，吸管是不是也多要两根，防谁？"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A06",
+   "topic": "T02",
+   "topic_label": "调情/暧昧/反撩/拉扯",
+   "episode": "E306",
+   "case_id": "E306_T12",
+   "turn_index": 12,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "行，账攒着。胃我自带，卡你带好，别到时候掏出来是张食堂饭卡。下周三午休，楼下酸菜鱼，我记上了。",
+    "臂B": "行，周三午休，卡你带，胃我提前饿两天。酸菜鱼我负责挑刺，你负责别在念名字那段又卡壳。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A07",
+   "topic": "T02",
+   "topic_label": "调情/暧昧/反撩/拉扯",
+   "episode": "E307",
+   "case_id": "E307_T04",
+   "turn_index": 4,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "汽水这名字绝了，开瓶那声我脑补出来了。睡不着别数猫，数我报站名，数到第三站准迷糊。周六九点半我记住了，药那天去前台拿，饭前半小时，冰美式不碰了，谢了。",
+    "臂B": "汽水这名字起对了，开瓶就炸。睡得直是真的，代价是四点半闹钟一响，全城就我和环卫醒着。你数猫被嫌，那就数我，我四点半准醒，你发消息我接。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A08",
+   "topic": "T02",
+   "topic_label": "调情/暧昧/反撩/拉扯",
+   "episode": "E307",
+   "case_id": "E307_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_t02_extra",
+   "arms_texts": {
+    "臂A": "打折的不退不换。龟背竹靠窗搁好了，刚喷了点水，叶子上水珠还没干——给你看看。",
+    "臂B": "图给你，刚喷的水，叶子上还挂着。室友要是再问，你就说打折那位挺乐意的。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A09",
+   "topic": "T02",
+   "topic_label": "调情/暧昧/反撩/拉扯",
+   "episode": "E307",
+   "case_id": "E307_T12",
+   "turn_index": 12,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "档期给你留着，月底具体哪天？我照着排班表调。苦力兼吉祥物这活儿我接了，就是别让我站摊前吆喝，我嘴笨，只会搬笼子。",
+    "臂B": "行，档期给你留着。先说清楚，吉祥物要干什么活？别到时候给我套个猫耳朵站一天。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A10",
+   "topic": "T02",
+   "topic_label": "调情/暧昧/反撩/拉扯",
+   "episode": "E308",
+   "case_id": "E308_T04",
+   "turn_index": 4,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "肠粉跑不了，下次营业时间我来查。挡风那事不用记，下坡本来就该压着速度。倒是姜茶袋拿去包链条，这用法我没想到。",
+    "臂B": "肠粉跑不了，等你这波忙完再补，加双蛋。下坡压速是应该的，不用记着。链条袋翻个面再用，油别蹭到包上。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A11",
+   "topic": "T02",
+   "topic_label": "调情/暧昧/反撩/拉扯",
+   "episode": "E308",
+   "case_id": "E308_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_t02_extra",
+   "arms_texts": {
+    "臂A": "还是那么快，我在后面压着速度，一个没落。你先忙，等你忙完这阵，肠粉加蛋补上，下坡照旧给你挡风。",
+    "臂B": "下坡还是那么快，我在后面压着，没人敢飞。你忙完一笔就翻群，是累了吧？"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A12",
+   "topic": "T02",
+   "topic_label": "调情/暧昧/反撩/拉扯",
+   "episode": "E308",
+   "case_id": "E308_T12",
+   "turn_index": 12,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "行，账我认。姜茶我出门就带上，肠粉你付，半秒的事下坡再说。",
+    "臂B": "半秒给你，下坡别慌就行。姜茶收到了，肠粉你付我不抢。早点出门，别踩点。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A13",
+   "topic": "T03",
+   "topic_label": "深聊/价值观/思想交流",
+   "episode": "E309",
+   "case_id": "E309_T04",
+   "turn_index": 4,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "不成熟这顶帽子我不给你戴，陈叔那八年缩水是真的，体验有窗口期这条我也认。但你把我的顺序听岔了：我不是买房垫底，我是先扣四成、剩下六成随便花。去年川西三万、每周攀岩、相机攒三年，全从这六成里出，一样没省。要说省，我省的是那些没想清楚花在哪的钱，不是生活质量。你那两块压舱石我不碰，环湖和潜水课照去。我只讲我自己：这四成买的不是房，是我花那六成的时候不用回头看余额。",
+    "臂B": "你问的那个问题我不糊弄：我存四成，省掉的不是生活质量，是我不想要的东西。相机攒三年、川西三万、每周攀岩，一样没少。存钱不是把日子押后，是我本来就想这么花。医疗备用金每月五百这条，我认。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A14",
+   "topic": "T03",
+   "topic_label": "深聊/价值观/思想交流",
+   "episode": "E309",
+   "case_id": "E309_T12",
+   "turn_index": 12,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "名额我要了，陈叔那根鱼竿继续吃灰。十二月我调一天假，相机我带——条件我应，但讲完理论得让我拍几张能进群相册的，不然这趟随行就亏了。",
+    "臂B": "名额我接，别给陈叔的鱼竿。十二月几号？我带机身去，理论你讲完整版，我听完再表态——中途不下车这条我认，但你也别指望我一路点头。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A15",
+   "topic": "T03",
+   "topic_label": "深聊/价值观/思想交流",
+   "episode": "E310",
+   "case_id": "E310_T04",
+   "turn_index": 4,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "不安慰。你自己已经把关键那句说出来了——被排除在决定之外。担忧额度不算借口，问题在于它只在你这边执行；你爸妈那边也按同一套来。判据我不替你改。就问一句实在的：28号你回不回？",
+    "臂B": "行，不安慰。但你把两件事搅一起了：想自己说了算，和想被算进去，不是一回事。你气的是后者——那份报告要真不是良性，你连请假回去陪复查的决定权都没有。这跟控制欲是两码事。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A16",
+   "topic": "T03",
+   "topic_label": "深聊/价值观/思想交流",
+   "episode": "E310",
+   "case_id": "E310_T12",
+   "turn_index": 12,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "看。几点、哪个平台？讲稿改完先发我一遍，软的地方我先挑出来。",
+    "臂B": "直播我看，十分钟我掐着表。火锅四月，账我记着，别赖。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A17",
+   "topic": "T03",
+   "topic_label": "深聊/价值观/思想交流",
+   "episode": "E311",
+   "case_id": "E311_T04",
+   "turn_index": 4,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "松口气不叫有病。两年每周推着它往前走，累是真的；毙了那一下不用再推了，松一下太正常了。不疼，说明你确实扛了很久。老毛那边照实说就行，他信的是你，不是选题会。",
+    "臂B": "不有病。松了口气说明这两年你是真扛着，不是混着。累是真的，松口气也是真的，这两件事不冲突。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A18",
+   "topic": "T03",
+   "topic_label": "深聊/价值观/思想交流",
+   "episode": "E311",
+   "case_id": "E311_T12",
+   "turn_index": 12,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "'又是一个有项目的绘本编辑'——这句我记下了。周四宵夜我准时到，不拒绝；下周二那杯咖啡我也认了，你话都铺到这儿了。",
+    "臂B": "宵夜我吃，不拒绝；咖啡也记着，下周二。印厂报价我不装懂，纸价我是真不知道，但你要去问厂子，我可以陪你去，多个人在旁边听着不容易被绕。周四见，发球我少发两个刁的。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A19",
+   "topic": "T03",
+   "topic_label": "深聊/价值观/思想交流",
+   "episode": "E312",
+   "case_id": "E312_T04",
+   "turn_index": 4,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "先别急着给这个心动定罪。反过来问一句：要是你妈不在南充，这offer你还接吗？还接，那成都本身就站得住，离家近只是加分项；不接了，那你真正想谈的其实是回南充，不是去成都。这俩问题不一样，别混一块儿想。",
+    "臂B": "那先把'离家近'这条从表里划掉，剩下的你还心动几成？剩下的那部分，才是你自己要的。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A20",
+   "topic": "T03",
+   "topic_label": "深聊/价值观/思想交流",
+   "episode": "E312",
+   "case_id": "E312_T12",
+   "turn_index": 12,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "30号我过去。搬家公司照留着，三个箱子我两趟就搬完了，地址和几点开始发我，我直接从院里过去。",
+    "臂B": "30号我查下排班，能挪开就去搭把手，搬完这顿我请。驻站那个你问了我就直答：不去。想过，但我这条线熟，走了没人接得住，这理由够我用七年了。你不一样，你是自己一步步走过去的。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A21",
+   "topic": "T04",
+   "topic_label": "主动推进/邀约/关系发展",
+   "episode": "E313",
+   "case_id": "E313_T04",
+   "turn_index": 4,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "好，三点正门喷泉，我记下了。上午先陪阿姨复查，不用赶。要不我直接去文化宫站B口等你？出站就能看见我，省得你找路。",
+    "臂B": "收到。三点正门，我提前到；路线我再看一遍，你上午忙完直接过来就行，别赶。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A22",
+   "topic": "T04",
+   "topic_label": "主动推进/邀约/关系发展",
+   "episode": "E313",
+   "case_id": "E313_T12",
+   "turn_index": 12,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "晚安。今天腿走断了就早点睡，书店不急，等我把路线查好再叫你。",
+    "臂B": "晚安，快睡吧。书店我记着呢，等我定好哪天去，提前跟你说一声。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A23",
+   "topic": "T04",
+   "topic_label": "主动推进/邀约/关系发展",
+   "episode": "E314",
+   "case_id": "E314_T04",
+   "turn_index": 4,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "设计院这周还行，图改完两轮了，吃饭我自己能对付。你先熬过这三天，便利店也不是不能吃。22号周日你要是想多睡会儿，我可以早上去禾木帮你带几个碱水结，要的话提前说一声。",
+    "臂B": "设计院这周还行，我能准点下楼。三个饺子撑不到上线，我中午打饭时多带一份，放你工位就走，不用你挪窝。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A24",
+   "topic": "T04",
+   "topic_label": "主动推进/邀约/关系发展",
+   "episode": "E314",
+   "case_id": "E314_T12",
+   "turn_index": 12,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "谢什么，我这四个也是排出来的。复热大法写仔细点，我今晚就拿一个试。",
+    "臂B": "客气啥，我还白蹭了个帆布袋。复热大法等你发，我今晚就试一个，成不成明天跟你汇报。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A25",
+   "topic": "T04",
+   "topic_label": "主动推进/邀约/关系发展",
+   "episode": "E315",
+   "case_id": "E315_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "这个折中挺聪明，白天玩半天，晚上零下二谁爱扛谁扛。帐篷先扔着，你不过夜也用不上；回头拉链我帮你看看，修不好再想别的。周六九点营地门口见，我背个保温壶，热水管够。",
+    "臂B": "报上就好，80 还带午饭，这波你算得挺明白。我周五下午到，先把营地转一圈，哪块背风、哪儿烧水方便都摸清楚，周六早上九点门口见。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A26",
+   "topic": "T04",
+   "topic_label": "主动推进/邀约/关系发展",
+   "episode": "E316",
+   "case_id": "E316_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "九张我一张张放大看。蜘蛛那只先记着——作业要的是鸟，它顶多算彩蛋。你先说一句：这张你想让人第一眼看鸟，还是看整片芦苇荡？我按这个挑。",
+    "臂B": "第七张先划掉，蜘蛛太抢镜，老师第一眼准找它。作业要的是特征清楚，震旦鸦雀那两张里挑最实的一张，能看清嘴形和羽毛纹路就行，不用追求好看。你按序号跟我说说九张里哪几张是鸦雀、哪几张是小天鹅，我帮你排个序。脚泡着别刷太久手机。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A27",
+   "topic": "T01",
+   "topic_label": "日常聊天/自然接话/幽默",
+   "episode": "E301",
+   "case_id": "E301_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "九块转了，债清了。键盘也拿到了，谢啦，青轴今晚开始替我发言。批注侠那案子，证人请保持沉默。",
+    "臂B": "九块转过去了。键盘也拿到了，青轴的，明天要是吵到你，你直接说。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A28",
+   "topic": "T01",
+   "topic_label": "日常聊天/自然接话/幽默",
+   "episode": "E302",
+   "case_id": "E302_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "谈完了没崩，还赚一盒糖，这波你赢麻了。图书馆追剧……管理员怕是要接棒瞪人了。",
+    "臂B": "行啊，谈成了还白赚一盒糖，这波不亏。糖你自己留着，熬夜含着正合适，枸杞我自备。肖八到了，分数先欠着不提，等你毛中特正确率刷回来再说。昨晚没睡好，今晚早点收摊，别又熬到一点。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A29",
+   "topic": "T01",
+   "topic_label": "日常聊天/自然接话/幽默",
+   "episode": "E303",
+   "case_id": "E303_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "白袋子看见了，这就趁热吃。咖啡、饭团、煎饼全齐了，今天这车里快成早餐铺了，谢了啊。",
+    "臂B": "白袋子看见了，还烫手。香菜辣子都记得，谢了苏叶，我这就开吃。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A30",
+   "topic": "T01",
+   "topic_label": "日常聊天/自然接话/幽默",
+   "episode": "E304",
+   "case_id": "E304_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "行啊蒋一楠，组局的活都让你干了，我这“韩组”当得有点虚。4点能进我记下了，6点我准到。甜汤那份给你留着，别问为什么。",
+    "臂B": "收到，都记下了。生日的事到我这儿就封口，群里谁问我都是不知道，明天你该吃吃该喝喝，我不整那些虚的。KTV 咱统一口径，散场我就说家里有事，绝不先松口。明天我提前半小时到，账我先垫，散场跟你一块儿收。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A31",
+   "topic": "T05",
+   "topic_label": "情绪理解/关心/安慰",
+   "episode": "E317",
+   "case_id": "E317_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "我上午在家改两张图，下午就空着了。你妈能吃早餐说明状态不差，指标周三才出，先别自己在那儿猜。你要是懒得开火，我下午出门顺路给你带点吃的，说一声就行。",
+    "臂B": "阿姨能坐下来吃早餐，这关就先过了一半，指标周三再操心。我今天没什么事——你是想接着补觉，还是想出门转转？"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A32",
+   "topic": "T05",
+   "topic_label": "情绪理解/关心/安慰",
+   "episode": "E318",
+   "case_id": "E318_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "那就投。铜鸟配候鸟，这巧合挺妙的。你能站阳台上替她高兴，说明这口气你自己顺过来了。离12月5号还有半个月，够你把那八张再翻一遍。",
+    "臂B": "翅膀补上了，名字也改回来了，现在又定了12月5号投新人单元——你这几步走得挺稳的。阿澄那个小铜鸟你看着高兴，还去阳台站了会儿，这些我都记着。新人单元要准备什么，你说一声，我这边能帮上忙的随时喊我。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A33",
+   "topic": "T05",
+   "topic_label": "情绪理解/关心/安慰",
+   "episode": "E319",
+   "case_id": "E319_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "0.3秒，老曹要是真打飞回来，你俩能吵到天亮。明天要打的提前发我，我给你留着机子。",
+    "臂B": "0.3秒，老曹那套玄学输得彻底。门开着，进来搜给我看。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A34",
+   "topic": "T05",
+   "topic_label": "情绪理解/关心/安慰",
+   "episode": "E320",
+   "case_id": "E320_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "不贪心。想两头都做好，是因为两头都是你放不下的人。你妈月底回来之前这段，能把爸这边顾稳就已经很够了。",
+    "臂B": "不贪心，这叫两头都放不下，正常。淤青只要不变大、不发热，就先冷敷观察，冰袋我明天上班顺路放你门口，别自己跑一趟。家长会材料别等阿姨回来才动，今晚先列三行框架，跟写教案一样，填完就收；爸那边服药表都贴冰箱了，你已经是带两个班还兼班主任的水平。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A35",
+   "topic": "T07",
+   "topic_label": "事实/人物归属/不确定性",
+   "episode": "E326",
+   "case_id": "E326_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "一条条对：钥匙我从头说的都是找值班的小马领，没提过冯姐，估计是记串了，别尴尬。21号确实是周六，下午两点，地点是203，汇演28号下午三点在201，我记牢了。姐姐那句正好反过来：她说21号来听彩排，这话是你跟我说的；后来改到28号汇演来，也是你说的，我这边就按这个记。21号我提前十分钟到，帮你搬横幅。",
+    "臂B": "这条不是我说的，11号中午你自己跟我讲的——“我姐21号过来坐后排听听”。改到28号也挺好，那天在201，正场，比彩排有看头。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A36",
+   "topic": "T07",
+   "topic_label": "事实/人物归属/不确定性",
+   "episode": "E327",
+   "case_id": "E327_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "收到，7点20我在小区门口等你。水带一瓶，别的就蹭你车。农家那事儿明天到山脚看菜单就清楚了，先睡吧，明早见。",
+    "臂B": "行，明早7点20我在小区门口等你，8点南门见。农家那价差我明天下山前打个电话问一声，别到时候白跑。水我自己带一瓶，够了~"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A37",
+   "topic": "T08",
+   "topic_label": "记忆/知识库/相关信息提取",
+   "episode": "E330",
+   "case_id": "E330_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "（no_reply：合法不回，无正文）",
+    "臂B": "脚踝不疼就是最好的消息，快去洗漱，明天细说。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A38",
+   "topic": "T08",
+   "topic_label": "记忆/知识库/相关信息提取",
+   "episode": "E331",
+   "case_id": "E331_T07",
+   "turn_index": 7,
+   "turn_count": 12,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "稳了就好。康老师那句“连无糖都想到了”，比什么评价都值。你抱了一下午没打喷嚏，说明尤加利叶换对了。",
+    "臂B": "顺利就好，无糖那款赶上了，这一趟就没白折腾。尤加利叶换得值，花稳人也稳，康老师那句算是把心意接住了。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A39",
+   "topic": "T09",
+   "topic_label": "长程聊天/状态变化/纠错取消",
+   "episode": "E338",
+   "case_id": "E338_T17",
+   "turn_index": 17,
+   "turn_count": 32,
+   "source": "wave4_dev",
+   "arms_texts": {
+    "臂A": "G1373 记下了，17:25，那你这会儿该出门了。腊肠到驿站我去拎，不辣的那份我先替你存着，辣的你回来自己扛。10 号周四晚七点装车不变，C14 我也记牢了。寿宴顶住，别被七大姑八大姨推上台唱《女驸马》。",
+    "臂B": "G1373，17:25，收到。别磨蹭了，先上车，到了吱一声。"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  },
+  {
+   "anchor_id": "A40",
+   "topic": "T10",
+   "topic_label": "反事实/边界/抗干扰/状态污染",
+   "episode": "E334",
+   "case_id": "E334_T04",
+   "turn_index": 4,
+   "turn_count": 12,
+   "source": "twin_T10-G1",
+   "arms_texts": {
+    "臂A": "拷贝出问题，又不是你手速出问题。别急着把气往自己身上撒，我这就翻翻别的影院有没有同片场次，有合适的立刻发你。",
+    "臂B": "服了，拷贝问题，这运气也太背了。退款五个工作日，跑不掉，先等等。片子等重映或者别的场次，我帮你一起盯。周六要不还是 19:15 碰头，馄饨照吃？"
+   },
+   "arms_available": {
+    "臂A": true,
+    "臂B": true
+   },
+   "fill_status": "PENDING_USER",
+   "fill_options": {
+    "判定": [
+     "PASS",
+     "FAIL",
+     "UNSURE"
+    ],
+    "更愿发送": [
+     "臂A",
+     "臂B",
+     "都不错",
+     "都不愿发送"
+    ],
+    "行为分_T02": [
+     "0",
+     "1",
+     "2"
+    ]
+   }
+  }
+ ],
+ "shortfall": {}
+}

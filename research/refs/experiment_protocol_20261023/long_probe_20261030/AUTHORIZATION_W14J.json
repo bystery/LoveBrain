@@ -1,0 +1,48 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-W14J-JUDG-20261102-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30地狱级常设授权(AUTH-GLOBAL-CONTINUOUS-20261030-01)+用户2026-11-02全面授权重申",
+ "phase": "W14_suppression_judgment",
+ "budget_ledger": "logs/auth_budget/AUTH-W14J-JUDG-20261102-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 288
+ },
+ "scope": {
+  "purpose": "W14 判决批（W14_SUPPRESSION_DESIGN_20261102.md §3.2 判据冻结）：window_expand_b2 vs window_expand_b（冠军对冠军）on LRE121(40轮,医疗)/LRE127(32轮,数码)/LRE145(32轮,出行)/LRE146(40轮,家庭) 共288 attempts。KEEP：同类 severe（复活已作废口径/坐实未定）b2=0 且九维最差维>=-0.5 且 T25-32 真实保持>=0.85 且 severe 总账 b2<=b（亲读）；淘汰 H_SUP_null：同类 severe>=1 或总账 b2>b。fail_fast/no_retry/no_makeup。评审另册",
+  "route": "two_arm_batch_288",
+  "total_attempts": 288,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "W14J": "BATCH-W14J-LONG4-20261102"
+  },
+  "episodes": [
+   "LRE121",
+   "LRE127",
+   "LRE145",
+   "LRE146"
+  ],
+  "cards": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W14.json",
+  "plan_sha256": "7e89a47fc35c1240a450395211254f67d6c41341e42757cc2efb926a6cb428b4"
+ },
+ "frozen_bindings": {
+  "W14J": {
+   "plan_file": "refs/experiment_protocol_20261023/long_probe_20261030/W14J.INTERLEAVE_PLAN.json",
+   "plan_sha256": "7e89a47fc35c1240a450395211254f67d6c41341e42757cc2efb926a6cb428b4",
+   "batch_id": "BATCH-W14J-LONG4-20261102",
+   "cards_file": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W14.json",
+   "attempts": 288,
+   "parent": "window_expand_b",
+   "candidate": "window_expand_b2",
+   "parent_identity_sha256": "e233ce314d5ee628425f22ab7c74f2fd58871ee367a4d91358d8be818bd88ba6",
+   "candidate_identity_sha256": "cce1a7ea0e5be5acc8c2592c6005581bc7e07720e89eea98b88f979d191076de"
+  }
+ }
+}

@@ -1,0 +1,22 @@
+{
+  "authorization_id": "AUTH-V3-DELETION-20261024-01",
+  "authorized": true,
+  "status": "ACTIVE",
+  "granted_by": "user natural-language approval 2026-10-24",
+  "approval_text": "批准 BATCH-V3-DELETION-20261024：完成 E004 偏好种子字段映射校正、验证两臂实际收到并重新冻结后，以 reference_product_v1 和 v3_system_slim 在修订 E004/E005/E006 上执行最多48次真实调用。固定端点 http://127.0.0.1:17770/v1、model=dsf、temperature=0.7；逐轮交错，传输失败停批，无重试、补跑或额外生成冒烟。不含旧回忆实验、v0第三臂及judge调用。",
+  "scope": {
+    "batch_id": "BATCH-V3-DELETION-20261024",
+    "arms": ["reference_product_v1", "v3_system_slim"],
+    "episodes": ["E004", "E005", "E006"],
+    "separate_from": "AUTH-EXAM1-20261023-01(已关闭,旧回忆先导24次,不可挪用)"
+  },
+  "real_endpoint": {
+    "api_base": "http://127.0.0.1:17770/v1",
+    "model": "dsf",
+    "temperature": 0.7,
+    "max_attempts": 48
+  },
+  "budget_ledger": "logs/auth_budget/AUTH-V3-DELETION-20261024-01.jsonl",
+  "scheduling": "tools/exam_interleave_plan.execute_plan(mode=live) 逐slot交错;整批ensure_batch(48)首发预检;fail_fast;no_makeup_pairing;no_auto_retry",
+  "notes": "授权级持久账本以 authorization_id 为键;换 run/进程/文件路径不获新额度;CLOSED/超额拒绝。真实调用 48 上限;不含 judge/第三臂/旧回忆。"
+}

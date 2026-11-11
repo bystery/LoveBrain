@@ -1,0 +1,37 @@
+{
+  "verdict": "HOLD_REAL_AB_PENDING_MERGED_OFFLINE_REMEDIATION",
+  "existing_suites": {
+    "extra": {
+      "pass": 10,
+      "fail": 0
+    },
+    "carryover": {
+      "pass": 9,
+      "fail": 0
+    },
+    "v2": {
+      "pass": 11,
+      "fail": 0
+    }
+  },
+  "real_model_calls": 0,
+  "source_stable_during_primary_checks": true,
+  "files": [
+    {
+      "name": "REVIEW.md",
+      "sha256": "69413b30c928f0182c9d3531871e94b8a7b505116ae4772f50731a606d6db37f",
+      "bytes": 11749
+    },
+    {
+      "name": "INDEPENDENT_CHECKS.json",
+      "sha256": "20fe8f6a81df779aeb30bbaa42e26f69e4e9aebe1c8080ed1bd8bb5bc83efe8c",
+      "bytes": 15960
+    },
+    {
+      "name": "run_independent_checks.py",
+      "sha256": "abfddbfa370f2bc45fd0879cbea347382d4552e6bd5f7315c5c7eb61bd16bac3",
+      "bytes": 8725
+    }
+  ],
+  "worker_source_or_experiment_artifacts_modified": false
+}

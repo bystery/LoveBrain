@@ -1,0 +1,71 @@
+{
+ "generated_at": "2026-10-24T12:17:28",
+ "note": "v3_system_slim 资产删减候选【B 修正后】重冻结：note 公开/私下信息边界四类分明 + format 旧事回扣正向保护；机制仍逐字转发父本。",
+ "single_variable_verified": "tools/test_v3_slim_replay.py 录制回复重放：24/24 user prompt 逐字节同、E001-3 记忆写回逐字节同、system 每轮更短",
+ "system_asset_utf16_codeunits": {
+  "parent_total": 8295,
+  "v3_total": 2598,
+  "saved": 5697,
+  "saved_pct": 68.7,
+  "per_asset": {
+   "core.md": [
+    3010,
+    696
+   ],
+   "naturalness_check.md": [
+    356,
+    132
+   ],
+   "redline.md": [
+    465,
+    142
+   ],
+   "format.md": [
+    4316,
+    1480
+   ]
+  },
+  "caveat": "UTF-16 码元，非真实 token；真实 token/延迟/质量留 §4 授权内实跑"
+ },
+ "mock_run_artifact": {
+  "note": "mock/替身 mean_score 非质量成绩；固定回复重放非新生成质量"
+ },
+ "to_test_claims": [
+  "删减后意图执行/事实/互动有无变差",
+  "框架压平的主动性/调侃/推进有无改善",
+  "真实 token 与等待变化",
+  "可归因于缺任务信息的失败"
+ ],
+ "comparison_plan": {
+  "armA": "reference_product_v1",
+  "armB": "v3_system_slim",
+  "isolation": "同机制仅资产差，单变量",
+  "budget": "独立批次，不计入当前 48 回忆预算",
+  "scheduling": "§4 逐 slot 交错同题同卡同采样"
+ },
+ "identities": {
+  "reference_product_v1": {
+   "identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "closure": [
+    "reference_product_v1"
+   ],
+   "file_count": 9
+  },
+  "v2_recall": {
+   "identity_sha256": "36dc54d6220c8099f5c058a78b550925d46ce58d318ff70de5411c78149c0ac2",
+   "closure": [
+    "v2_recall",
+    "reference_product_v1"
+   ],
+   "file_count": 17
+  },
+  "v3_system_slim": {
+   "identity_sha256": "c1944e1d931c0747856ed48e7b9161c34e266f6d1da950d97145055d8839f3ac",
+   "closure": [
+    "v3_system_slim",
+    "reference_product_v1"
+   ],
+   "file_count": 17
+  }
+ }
+}

@@ -1,0 +1,181 @@
+{
+ "kind": "f1_blind_analysis",
+ "ratings": "logs/f1_blind_review_20261029_094731/F1_RATINGS.jsonl",
+ "rows": 16,
+ "schema_ok": 16,
+ "transport_ok": 16,
+ "controls": {
+  "total": 16,
+  "scored": 16,
+  "correct": 16,
+  "accuracy_pct": 100.0,
+  "rows": [
+   {
+    "unit_id": "F1C:C01_fact_new_proposal",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 65098
+   },
+   {
+    "unit_id": "F1C:C01_fact_new_proposal:R",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 54523
+   },
+   {
+    "unit_id": "F1C:C02_subject_attribution",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 89217
+   },
+   {
+    "unit_id": "F1C:C02_subject_attribution:R",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 97512
+   },
+   {
+    "unit_id": "F1C:C03_time_cancel_state",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 65605
+   },
+   {
+    "unit_id": "F1C:C03_time_cancel_state:R",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 111701
+   },
+   {
+    "unit_id": "F1C:C04_protected_joke",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 51126
+   },
+   {
+    "unit_id": "F1C:C04_protected_joke:R",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 49533
+   },
+   {
+    "unit_id": "F1C:C05_should_answer_vs_wrong_focus",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 63212
+   },
+   {
+    "unit_id": "F1C:C05_should_answer_vs_wrong_focus:R",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 76902
+   },
+   {
+    "unit_id": "F1C:C06_time_minor",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 59155
+   },
+   {
+    "unit_id": "F1C:C06_time_minor:R",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 109853
+   },
+   {
+    "unit_id": "F1C:C07_positive_memory_hook",
+    "expected": "A",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 91866
+   },
+   {
+    "unit_id": "F1C:C07_positive_memory_hook:R",
+    "expected": "B",
+    "got": null,
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 48774
+   },
+   {
+    "unit_id": "F1C:C08_allowed_no_reply",
+    "expected": "tie_or_uncertain",
+    "got": "tie",
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 71491
+   },
+   {
+    "unit_id": "F1C:C08_allowed_no_reply:R",
+    "expected": "tie_or_uncertain",
+    "got": "tie",
+    "ok": true,
+    "schema_ok": true,
+    "latency_ms": 84125
+   }
+  ]
+ },
+ "historical": {
+  "total": 0,
+  "wins": {
+   "parent": 0,
+   "candidate": 0,
+   "tie": 0,
+   "uncertain": 0,
+   "missing": 0
+  },
+  "worker_agreement": {
+   "n": 0,
+   "agree": 0,
+   "pct": null
+  },
+  "card_conflict": 0,
+  "rows": []
+ },
+ "swaps": {
+  "total": 0,
+  "consistent": 0,
+  "pct": null,
+  "rows": []
+ },
+ "order_effect": {
+  "A_wins": 7,
+  "B_wins": 7,
+  "ties": 2,
+  "uncertain": 0
+ },
+ "usage": {
+  "prompt_tokens": 0,
+  "completion_tokens": 0
+ },
+ "latency_ms": {
+  "p50": 71491,
+  "p95": 109853,
+  "max": 111701
+ }
+}

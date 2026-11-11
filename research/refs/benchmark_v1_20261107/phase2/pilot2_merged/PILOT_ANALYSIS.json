@@ -1,0 +1,6659 @@
+{
+  "analysis_version": "pilot_analysis_v0",
+  "arm_diff": {
+    "direction_convention": "signed_diff_direct_minus_current；direction ∈ DIRECT_higher/CURRENT_higher/equal；n/a=一侧无该读数",
+    "overall": {
+      "arms": {
+        "CURRENT": {
+          "contract_ok_n": 550,
+          "contract_ok_rate": 0.9964,
+          "diag_cancel_affirm_violations": 0,
+          "diag_ok_rows": 38,
+          "diag_required_hit_rate": 0.0,
+          "diag_required_hits": 0,
+          "diag_required_total": 46,
+          "rows": 552,
+          "score10_mean": 9.9577,
+          "score10_rows": 552,
+          "veto_count": 2
+        },
+        "DIRECT": {
+          "contract_ok_n": 551,
+          "contract_ok_rate": 0.9982,
+          "diag_cancel_affirm_violations": 0,
+          "diag_ok_rows": 38,
+          "diag_required_hit_rate": 0.0,
+          "diag_required_hits": 0,
+          "diag_required_total": 46,
+          "rows": 552,
+          "score10_mean": 0.1449,
+          "score10_rows": 552,
+          "veto_count": 544
+        }
+      },
+      "diff_direct_vs_current": {
+        "contract_ok_rate": {
+          "abs_diff": 0.0018,
+          "current": 0.9964,
+          "direct": 0.9982,
+          "direction": "DIRECT_higher",
+          "signed_diff_direct_minus_current": 0.0018
+        },
+        "diag_cancel_affirm_violations": {
+          "abs_diff": 0,
+          "current": 0,
+          "direct": 0,
+          "direction": "equal",
+          "signed_diff_direct_minus_current": 0
+        },
+        "diag_required_hit_rate": {
+          "abs_diff": 0.0,
+          "current": 0.0,
+          "direct": 0.0,
+          "direction": "equal",
+          "signed_diff_direct_minus_current": 0.0
+        },
+        "score10_mean": {
+          "abs_diff": 9.8128,
+          "current": 9.9577,
+          "direct": 0.1449,
+          "direction": "CURRENT_higher",
+          "signed_diff_direct_minus_current": -9.8128
+        },
+        "veto_count": {
+          "abs_diff": 542,
+          "current": 2,
+          "direct": 544,
+          "direction": "DIRECT_higher",
+          "signed_diff_direct_minus_current": 542
+        }
+      },
+      "rows": {
+        "CURRENT": 552,
+        "DIRECT": 552
+      }
+    },
+    "per_topic": {
+      "T01": {
+        "arms": {
+          "CURRENT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 0,
+            "diag_required_hit_rate": null,
+            "diag_required_hits": 0,
+            "diag_required_total": 0,
+            "rows": 48,
+            "score10_mean": 10.0,
+            "score10_rows": 48,
+            "veto_count": 0
+          },
+          "DIRECT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 0,
+            "diag_required_hit_rate": null,
+            "diag_required_hits": 0,
+            "diag_required_total": 0,
+            "rows": 48,
+            "score10_mean": 0.0,
+            "score10_rows": 48,
+            "veto_count": 48
+          }
+        },
+        "diff_direct_vs_current": {
+          "contract_ok_rate": {
+            "abs_diff": 0.0,
+            "current": 1.0,
+            "direct": 1.0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0.0
+          },
+          "diag_cancel_affirm_violations": {
+            "abs_diff": 0,
+            "current": 0,
+            "direct": 0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0
+          },
+          "diag_required_hit_rate": {
+            "abs_diff": null,
+            "current": null,
+            "direct": null,
+            "direction": "n/a",
+            "signed_diff_direct_minus_current": null
+          },
+          "score10_mean": {
+            "abs_diff": 10.0,
+            "current": 10.0,
+            "direct": 0.0,
+            "direction": "CURRENT_higher",
+            "signed_diff_direct_minus_current": -10.0
+          },
+          "veto_count": {
+            "abs_diff": 48,
+            "current": 0,
+            "direct": 48,
+            "direction": "DIRECT_higher",
+            "signed_diff_direct_minus_current": 48
+          }
+        },
+        "rows": {
+          "CURRENT": 48,
+          "DIRECT": 48
+        }
+      },
+      "T02": {
+        "arms": {
+          "CURRENT": {
+            "contract_ok_n": 47,
+            "contract_ok_rate": 0.9792,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 0,
+            "diag_required_hit_rate": null,
+            "diag_required_hits": 0,
+            "diag_required_total": 0,
+            "rows": 48,
+            "score10_mean": 9.7917,
+            "score10_rows": 48,
+            "veto_count": 1
+          },
+          "DIRECT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 0,
+            "diag_required_hit_rate": null,
+            "diag_required_hits": 0,
+            "diag_required_total": 0,
+            "rows": 48,
+            "score10_mean": 0.0,
+            "score10_rows": 48,
+            "veto_count": 48
+          }
+        },
+        "diff_direct_vs_current": {
+          "contract_ok_rate": {
+            "abs_diff": 0.0208,
+            "current": 0.9792,
+            "direct": 1.0,
+            "direction": "DIRECT_higher",
+            "signed_diff_direct_minus_current": 0.0208
+          },
+          "diag_cancel_affirm_violations": {
+            "abs_diff": 0,
+            "current": 0,
+            "direct": 0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0
+          },
+          "diag_required_hit_rate": {
+            "abs_diff": null,
+            "current": null,
+            "direct": null,
+            "direction": "n/a",
+            "signed_diff_direct_minus_current": null
+          },
+          "score10_mean": {
+            "abs_diff": 9.7917,
+            "current": 9.7917,
+            "direct": 0.0,
+            "direction": "CURRENT_higher",
+            "signed_diff_direct_minus_current": -9.7917
+          },
+          "veto_count": {
+            "abs_diff": 47,
+            "current": 1,
+            "direct": 48,
+            "direction": "DIRECT_higher",
+            "signed_diff_direct_minus_current": 47
+          }
+        },
+        "rows": {
+          "CURRENT": 48,
+          "DIRECT": 48
+        }
+      },
+      "T03": {
+        "arms": {
+          "CURRENT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 0,
+            "diag_required_hit_rate": null,
+            "diag_required_hits": 0,
+            "diag_required_total": 0,
+            "rows": 48,
+            "score10_mean": 10.0,
+            "score10_rows": 48,
+            "veto_count": 0
+          },
+          "DIRECT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 0,
+            "diag_required_hit_rate": null,
+            "diag_required_hits": 0,
+            "diag_required_total": 0,
+            "rows": 48,
+            "score10_mean": 0.0,
+            "score10_rows": 48,
+            "veto_count": 48
+          }
+        },
+        "diff_direct_vs_current": {
+          "contract_ok_rate": {
+            "abs_diff": 0.0,
+            "current": 1.0,
+            "direct": 1.0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0.0
+          },
+          "diag_cancel_affirm_violations": {
+            "abs_diff": 0,
+            "current": 0,
+            "direct": 0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0
+          },
+          "diag_required_hit_rate": {
+            "abs_diff": null,
+            "current": null,
+            "direct": null,
+            "direction": "n/a",
+            "signed_diff_direct_minus_current": null
+          },
+          "score10_mean": {
+            "abs_diff": 10.0,
+            "current": 10.0,
+            "direct": 0.0,
+            "direction": "CURRENT_higher",
+            "signed_diff_direct_minus_current": -10.0
+          },
+          "veto_count": {
+            "abs_diff": 48,
+            "current": 0,
+            "direct": 48,
+            "direction": "DIRECT_higher",
+            "signed_diff_direct_minus_current": 48
+          }
+        },
+        "rows": {
+          "CURRENT": 48,
+          "DIRECT": 48
+        }
+      },
+      "T04": {
+        "arms": {
+          "CURRENT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 0,
+            "diag_required_hit_rate": null,
+            "diag_required_hits": 0,
+            "diag_required_total": 0,
+            "rows": 48,
+            "score10_mean": 10.0,
+            "score10_rows": 48,
+            "veto_count": 0
+          },
+          "DIRECT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 0,
+            "diag_required_hit_rate": null,
+            "diag_required_hits": 0,
+            "diag_required_total": 0,
+            "rows": 48,
+            "score10_mean": 0.2083,
+            "score10_rows": 48,
+            "veto_count": 47
+          }
+        },
+        "diff_direct_vs_current": {
+          "contract_ok_rate": {
+            "abs_diff": 0.0,
+            "current": 1.0,
+            "direct": 1.0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0.0
+          },
+          "diag_cancel_affirm_violations": {
+            "abs_diff": 0,
+            "current": 0,
+            "direct": 0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0
+          },
+          "diag_required_hit_rate": {
+            "abs_diff": null,
+            "current": null,
+            "direct": null,
+            "direction": "n/a",
+            "signed_diff_direct_minus_current": null
+          },
+          "score10_mean": {
+            "abs_diff": 9.7917,
+            "current": 10.0,
+            "direct": 0.2083,
+            "direction": "CURRENT_higher",
+            "signed_diff_direct_minus_current": -9.7917
+          },
+          "veto_count": {
+            "abs_diff": 47,
+            "current": 0,
+            "direct": 47,
+            "direction": "DIRECT_higher",
+            "signed_diff_direct_minus_current": 47
+          }
+        },
+        "rows": {
+          "CURRENT": 48,
+          "DIRECT": 48
+        }
+      },
+      "T05": {
+        "arms": {
+          "CURRENT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 1,
+            "diag_required_hit_rate": 0.0,
+            "diag_required_hits": 0,
+            "diag_required_total": 1,
+            "rows": 48,
+            "score10_mean": 9.9652,
+            "score10_rows": 48,
+            "veto_count": 0
+          },
+          "DIRECT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 1,
+            "diag_required_hit_rate": 0.0,
+            "diag_required_hits": 0,
+            "diag_required_total": 1,
+            "rows": 48,
+            "score10_mean": 0.625,
+            "score10_rows": 48,
+            "veto_count": 45
+          }
+        },
+        "diff_direct_vs_current": {
+          "contract_ok_rate": {
+            "abs_diff": 0.0,
+            "current": 1.0,
+            "direct": 1.0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0.0
+          },
+          "diag_cancel_affirm_violations": {
+            "abs_diff": 0,
+            "current": 0,
+            "direct": 0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0
+          },
+          "diag_required_hit_rate": {
+            "abs_diff": 0.0,
+            "current": 0.0,
+            "direct": 0.0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0.0
+          },
+          "score10_mean": {
+            "abs_diff": 9.3402,
+            "current": 9.9652,
+            "direct": 0.625,
+            "direction": "CURRENT_higher",
+            "signed_diff_direct_minus_current": -9.3402
+          },
+          "veto_count": {
+            "abs_diff": 45,
+            "current": 0,
+            "direct": 45,
+            "direction": "DIRECT_higher",
+            "signed_diff_direct_minus_current": 45
+          }
+        },
+        "rows": {
+          "CURRENT": 48,
+          "DIRECT": 48
+        }
+      },
+      "T06": {
+        "arms": {
+          "CURRENT": {
+            "contract_ok_n": 47,
+            "contract_ok_rate": 0.9792,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 0,
+            "diag_required_hit_rate": null,
+            "diag_required_hits": 0,
+            "diag_required_total": 0,
+            "rows": 48,
+            "score10_mean": 9.7569,
+            "score10_rows": 48,
+            "veto_count": 1
+          },
+          "DIRECT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 0,
+            "diag_required_hit_rate": null,
+            "diag_required_hits": 0,
+            "diag_required_total": 0,
+            "rows": 48,
+            "score10_mean": 0.0,
+            "score10_rows": 48,
+            "veto_count": 48
+          }
+        },
+        "diff_direct_vs_current": {
+          "contract_ok_rate": {
+            "abs_diff": 0.0208,
+            "current": 0.9792,
+            "direct": 1.0,
+            "direction": "DIRECT_higher",
+            "signed_diff_direct_minus_current": 0.0208
+          },
+          "diag_cancel_affirm_violations": {
+            "abs_diff": 0,
+            "current": 0,
+            "direct": 0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0
+          },
+          "diag_required_hit_rate": {
+            "abs_diff": null,
+            "current": null,
+            "direct": null,
+            "direction": "n/a",
+            "signed_diff_direct_minus_current": null
+          },
+          "score10_mean": {
+            "abs_diff": 9.7569,
+            "current": 9.7569,
+            "direct": 0.0,
+            "direction": "CURRENT_higher",
+            "signed_diff_direct_minus_current": -9.7569
+          },
+          "veto_count": {
+            "abs_diff": 47,
+            "current": 1,
+            "direct": 48,
+            "direction": "DIRECT_higher",
+            "signed_diff_direct_minus_current": 47
+          }
+        },
+        "rows": {
+          "CURRENT": 48,
+          "DIRECT": 48
+        }
+      },
+      "T07": {
+        "arms": {
+          "CURRENT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 6,
+            "diag_required_hit_rate": 0.0,
+            "diag_required_hits": 0,
+            "diag_required_total": 7,
+            "rows": 48,
+            "score10_mean": 10.0,
+            "score10_rows": 48,
+            "veto_count": 0
+          },
+          "DIRECT": {
+            "contract_ok_n": 47,
+            "contract_ok_rate": 0.9792,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 6,
+            "diag_required_hit_rate": 0.0,
+            "diag_required_hits": 0,
+            "diag_required_total": 7,
+            "rows": 48,
+            "score10_mean": 0.2083,
+            "score10_rows": 48,
+            "veto_count": 47
+          }
+        },
+        "diff_direct_vs_current": {
+          "contract_ok_rate": {
+            "abs_diff": 0.0208,
+            "current": 1.0,
+            "direct": 0.9792,
+            "direction": "CURRENT_higher",
+            "signed_diff_direct_minus_current": -0.0208
+          },
+          "diag_cancel_affirm_violations": {
+            "abs_diff": 0,
+            "current": 0,
+            "direct": 0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0
+          },
+          "diag_required_hit_rate": {
+            "abs_diff": 0.0,
+            "current": 0.0,
+            "direct": 0.0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0.0
+          },
+          "score10_mean": {
+            "abs_diff": 9.7917,
+            "current": 10.0,
+            "direct": 0.2083,
+            "direction": "CURRENT_higher",
+            "signed_diff_direct_minus_current": -9.7917
+          },
+          "veto_count": {
+            "abs_diff": 47,
+            "current": 0,
+            "direct": 47,
+            "direction": "DIRECT_higher",
+            "signed_diff_direct_minus_current": 47
+          }
+        },
+        "rows": {
+          "CURRENT": 48,
+          "DIRECT": 48
+        }
+      },
+      "T08": {
+        "arms": {
+          "CURRENT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 0,
+            "diag_required_hit_rate": null,
+            "diag_required_hits": 0,
+            "diag_required_total": 0,
+            "rows": 48,
+            "score10_mean": 10.0,
+            "score10_rows": 48,
+            "veto_count": 0
+          },
+          "DIRECT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 0,
+            "diag_required_hit_rate": null,
+            "diag_required_hits": 0,
+            "diag_required_total": 0,
+            "rows": 48,
+            "score10_mean": 0.625,
+            "score10_rows": 48,
+            "veto_count": 45
+          }
+        },
+        "diff_direct_vs_current": {
+          "contract_ok_rate": {
+            "abs_diff": 0.0,
+            "current": 1.0,
+            "direct": 1.0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0.0
+          },
+          "diag_cancel_affirm_violations": {
+            "abs_diff": 0,
+            "current": 0,
+            "direct": 0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0
+          },
+          "diag_required_hit_rate": {
+            "abs_diff": null,
+            "current": null,
+            "direct": null,
+            "direction": "n/a",
+            "signed_diff_direct_minus_current": null
+          },
+          "score10_mean": {
+            "abs_diff": 9.375,
+            "current": 10.0,
+            "direct": 0.625,
+            "direction": "CURRENT_higher",
+            "signed_diff_direct_minus_current": -9.375
+          },
+          "veto_count": {
+            "abs_diff": 45,
+            "current": 0,
+            "direct": 45,
+            "direction": "DIRECT_higher",
+            "signed_diff_direct_minus_current": 45
+          }
+        },
+        "rows": {
+          "CURRENT": 48,
+          "DIRECT": 48
+        }
+      },
+      "T09": {
+        "arms": {
+          "CURRENT": {
+            "contract_ok_n": 120,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 29,
+            "diag_required_hit_rate": 0.0,
+            "diag_required_hits": 0,
+            "diag_required_total": 36,
+            "rows": 120,
+            "score10_mean": 10.0,
+            "score10_rows": 120,
+            "veto_count": 0
+          },
+          "DIRECT": {
+            "contract_ok_n": 120,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 29,
+            "diag_required_hit_rate": 0.0,
+            "diag_required_hits": 0,
+            "diag_required_total": 36,
+            "rows": 120,
+            "score10_mean": 0.0,
+            "score10_rows": 120,
+            "veto_count": 120
+          }
+        },
+        "diff_direct_vs_current": {
+          "contract_ok_rate": {
+            "abs_diff": 0.0,
+            "current": 1.0,
+            "direct": 1.0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0.0
+          },
+          "diag_cancel_affirm_violations": {
+            "abs_diff": 0,
+            "current": 0,
+            "direct": 0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0
+          },
+          "diag_required_hit_rate": {
+            "abs_diff": 0.0,
+            "current": 0.0,
+            "direct": 0.0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0.0
+          },
+          "score10_mean": {
+            "abs_diff": 10.0,
+            "current": 10.0,
+            "direct": 0.0,
+            "direction": "CURRENT_higher",
+            "signed_diff_direct_minus_current": -10.0
+          },
+          "veto_count": {
+            "abs_diff": 120,
+            "current": 0,
+            "direct": 120,
+            "direction": "DIRECT_higher",
+            "signed_diff_direct_minus_current": 120
+          }
+        },
+        "rows": {
+          "CURRENT": 120,
+          "DIRECT": 120
+        }
+      },
+      "T10": {
+        "arms": {
+          "CURRENT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 2,
+            "diag_required_hit_rate": 0.0,
+            "diag_required_hits": 0,
+            "diag_required_total": 2,
+            "rows": 48,
+            "score10_mean": 10.0,
+            "score10_rows": 48,
+            "veto_count": 0
+          },
+          "DIRECT": {
+            "contract_ok_n": 48,
+            "contract_ok_rate": 1.0,
+            "diag_cancel_affirm_violations": 0,
+            "diag_ok_rows": 2,
+            "diag_required_hit_rate": 0.0,
+            "diag_required_hits": 0,
+            "diag_required_total": 2,
+            "rows": 48,
+            "score10_mean": 0.0,
+            "score10_rows": 48,
+            "veto_count": 48
+          }
+        },
+        "diff_direct_vs_current": {
+          "contract_ok_rate": {
+            "abs_diff": 0.0,
+            "current": 1.0,
+            "direct": 1.0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0.0
+          },
+          "diag_cancel_affirm_violations": {
+            "abs_diff": 0,
+            "current": 0,
+            "direct": 0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0
+          },
+          "diag_required_hit_rate": {
+            "abs_diff": 0.0,
+            "current": 0.0,
+            "direct": 0.0,
+            "direction": "equal",
+            "signed_diff_direct_minus_current": 0.0
+          },
+          "score10_mean": {
+            "abs_diff": 10.0,
+            "current": 10.0,
+            "direct": 0.0,
+            "direction": "CURRENT_higher",
+            "signed_diff_direct_minus_current": -10.0
+          },
+          "veto_count": {
+            "abs_diff": 48,
+            "current": 0,
+            "direct": 48,
+            "direction": "DIRECT_higher",
+            "signed_diff_direct_minus_current": 48
+          }
+        },
+        "rows": {
+          "CURRENT": 48,
+          "DIRECT": 48
+        }
+      }
+    }
+  },
+  "arm_similarity": {
+    "both_no_text": [],
+    "definition": "同 case_id 的 DIRECT 与 CURRENT primary_text；identical=strip 后完全相同；near_dup=SequenceMatcher ratio>=0.9（autojunk=False）；高雷同篇=篇内 >=70% 轮位 near_dup",
+    "high_dup_episodes": [],
+    "one_side_no_text": [
+      {
+        "arm_no_text": "DIRECT",
+        "case_id": "E314_T05",
+        "episode_id": "E314",
+        "turn_index": 5
+      },
+      {
+        "arm_no_text": "DIRECT",
+        "case_id": "E318_T08",
+        "episode_id": "E318",
+        "turn_index": 8
+      },
+      {
+        "arm_no_text": "DIRECT",
+        "case_id": "E319_T05",
+        "episode_id": "E319",
+        "turn_index": 5
+      },
+      {
+        "arm_no_text": "DIRECT",
+        "case_id": "E320_T08",
+        "episode_id": "E320",
+        "turn_index": 8
+      },
+      {
+        "arm_no_text": "DIRECT",
+        "case_id": "E325_T01",
+        "episode_id": "E325",
+        "turn_index": 1
+      },
+      {
+        "arm_no_text": "DIRECT",
+        "case_id": "E328_T12",
+        "episode_id": "E328",
+        "turn_index": 12
+      },
+      {
+        "arm_no_text": "DIRECT",
+        "case_id": "E329_T07",
+        "episode_id": "E329",
+        "turn_index": 7
+      },
+      {
+        "arm_no_text": "DIRECT",
+        "case_id": "E330_T07",
+        "episode_id": "E330",
+        "turn_index": 7
+      },
+      {
+        "arm_no_text": "DIRECT",
+        "case_id": "E332_T07",
+        "episode_id": "E332",
+        "turn_index": 7
+      }
+    ],
+    "pairs": [
+      {
+        "case_id": "E063_T01",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.3542,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E063_T02",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.2727,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E063_T03",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.3053,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E063_T04",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.2963,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E063_T05",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.219,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E063_T06",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.4182,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E063_T07",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.1935,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E063_T08",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.2887,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E063_T09",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.5932,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E063_T10",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.1987,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E063_T11",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.2197,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E063_T12",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.1875,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E063_T13",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.2899,
+        "turn_index": 13
+      },
+      {
+        "case_id": "E063_T14",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.4545,
+        "turn_index": 14
+      },
+      {
+        "case_id": "E063_T15",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.1295,
+        "turn_index": 15
+      },
+      {
+        "case_id": "E063_T16",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.1224,
+        "turn_index": 16
+      },
+      {
+        "case_id": "E063_T17",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.3226,
+        "turn_index": 17
+      },
+      {
+        "case_id": "E063_T18",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.3818,
+        "turn_index": 18
+      },
+      {
+        "case_id": "E063_T19",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.2667,
+        "turn_index": 19
+      },
+      {
+        "case_id": "E063_T20",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.416,
+        "turn_index": 20
+      },
+      {
+        "case_id": "E063_T21",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.2453,
+        "turn_index": 21
+      },
+      {
+        "case_id": "E063_T22",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.4375,
+        "turn_index": 22
+      },
+      {
+        "case_id": "E063_T23",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.1724,
+        "turn_index": 23
+      },
+      {
+        "case_id": "E063_T24",
+        "episode_id": "E063",
+        "identical": false,
+        "ratio": 0.1622,
+        "turn_index": 24
+      },
+      {
+        "case_id": "E301_T01",
+        "episode_id": "E301",
+        "identical": false,
+        "ratio": 0.1628,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E301_T02",
+        "episode_id": "E301",
+        "identical": false,
+        "ratio": 0.1905,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E301_T03",
+        "episode_id": "E301",
+        "identical": false,
+        "ratio": 0.5965,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E301_T04",
+        "episode_id": "E301",
+        "identical": false,
+        "ratio": 0.2353,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E301_T05",
+        "episode_id": "E301",
+        "identical": false,
+        "ratio": 0.354,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E301_T06",
+        "episode_id": "E301",
+        "identical": false,
+        "ratio": 0.1687,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E301_T07",
+        "episode_id": "E301",
+        "identical": false,
+        "ratio": 0.3947,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E301_T08",
+        "episode_id": "E301",
+        "identical": false,
+        "ratio": 0.2826,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E301_T09",
+        "episode_id": "E301",
+        "identical": false,
+        "ratio": 0.3883,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E301_T10",
+        "episode_id": "E301",
+        "identical": false,
+        "ratio": 0.1042,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E301_T11",
+        "episode_id": "E301",
+        "identical": false,
+        "ratio": 0.4533,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E301_T12",
+        "episode_id": "E301",
+        "identical": false,
+        "ratio": 0.1273,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E302_T01",
+        "episode_id": "E302",
+        "identical": false,
+        "ratio": 0.3333,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E302_T02",
+        "episode_id": "E302",
+        "identical": false,
+        "ratio": 0.4,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E302_T03",
+        "episode_id": "E302",
+        "identical": false,
+        "ratio": 0.2476,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E302_T04",
+        "episode_id": "E302",
+        "identical": false,
+        "ratio": 0.2065,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E302_T05",
+        "episode_id": "E302",
+        "identical": false,
+        "ratio": 0.1116,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E302_T06",
+        "episode_id": "E302",
+        "identical": false,
+        "ratio": 0.3514,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E302_T07",
+        "episode_id": "E302",
+        "identical": false,
+        "ratio": 0.1774,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E302_T08",
+        "episode_id": "E302",
+        "identical": false,
+        "ratio": 0.5224,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E302_T09",
+        "episode_id": "E302",
+        "identical": false,
+        "ratio": 0.22,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E302_T10",
+        "episode_id": "E302",
+        "identical": false,
+        "ratio": 0.125,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E302_T11",
+        "episode_id": "E302",
+        "identical": false,
+        "ratio": 0.3731,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E302_T12",
+        "episode_id": "E302",
+        "identical": false,
+        "ratio": 0.4167,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E303_T01",
+        "episode_id": "E303",
+        "identical": false,
+        "ratio": 0.4898,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E303_T02",
+        "episode_id": "E303",
+        "identical": false,
+        "ratio": 0.1163,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E303_T03",
+        "episode_id": "E303",
+        "identical": false,
+        "ratio": 0.4509,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E303_T04",
+        "episode_id": "E303",
+        "identical": false,
+        "ratio": 0.0806,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E303_T05",
+        "episode_id": "E303",
+        "identical": false,
+        "ratio": 0.2772,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E303_T06",
+        "episode_id": "E303",
+        "identical": false,
+        "ratio": 0.192,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E303_T07",
+        "episode_id": "E303",
+        "identical": false,
+        "ratio": 0.338,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E303_T08",
+        "episode_id": "E303",
+        "identical": false,
+        "ratio": 0.5,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E303_T09",
+        "episode_id": "E303",
+        "identical": false,
+        "ratio": 0.2,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E303_T10",
+        "episode_id": "E303",
+        "identical": false,
+        "ratio": 0.4194,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E303_T11",
+        "episode_id": "E303",
+        "identical": false,
+        "ratio": 0.2462,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E303_T12",
+        "episode_id": "E303",
+        "identical": false,
+        "ratio": 0.4494,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E304_T01",
+        "episode_id": "E304",
+        "identical": false,
+        "ratio": 0.4658,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E304_T02",
+        "episode_id": "E304",
+        "identical": false,
+        "ratio": 0.2826,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E304_T03",
+        "episode_id": "E304",
+        "identical": false,
+        "ratio": 0.1322,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E304_T04",
+        "episode_id": "E304",
+        "identical": false,
+        "ratio": 0.146,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E304_T05",
+        "episode_id": "E304",
+        "identical": false,
+        "ratio": 0.1795,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E304_T06",
+        "episode_id": "E304",
+        "identical": false,
+        "ratio": 0.2453,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E304_T07",
+        "episode_id": "E304",
+        "identical": false,
+        "ratio": 0.1146,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E304_T08",
+        "episode_id": "E304",
+        "identical": false,
+        "ratio": 0.1311,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E304_T09",
+        "episode_id": "E304",
+        "identical": false,
+        "ratio": 0.2069,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E304_T10",
+        "episode_id": "E304",
+        "identical": false,
+        "ratio": 0.1789,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E304_T11",
+        "episode_id": "E304",
+        "identical": false,
+        "ratio": 0.227,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E304_T12",
+        "episode_id": "E304",
+        "identical": false,
+        "ratio": 0.1844,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E305_T01",
+        "episode_id": "E305",
+        "identical": false,
+        "ratio": 0.5714,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E305_T02",
+        "episode_id": "E305",
+        "identical": false,
+        "ratio": 0.3111,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E305_T03",
+        "episode_id": "E305",
+        "identical": false,
+        "ratio": 0.1758,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E305_T04",
+        "episode_id": "E305",
+        "identical": false,
+        "ratio": 0.2558,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E305_T05",
+        "episode_id": "E305",
+        "identical": false,
+        "ratio": 0.2857,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E305_T06",
+        "episode_id": "E305",
+        "identical": false,
+        "ratio": 0.1786,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E305_T07",
+        "episode_id": "E305",
+        "identical": false,
+        "ratio": 0.1778,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E305_T08",
+        "episode_id": "E305",
+        "identical": false,
+        "ratio": 0.1695,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E305_T09",
+        "episode_id": "E305",
+        "identical": false,
+        "ratio": 0.2439,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E305_T10",
+        "episode_id": "E305",
+        "identical": false,
+        "ratio": 0.2692,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E305_T11",
+        "episode_id": "E305",
+        "identical": false,
+        "ratio": 0.3846,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E305_T12",
+        "episode_id": "E305",
+        "identical": false,
+        "ratio": 0.3636,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E306_T01",
+        "episode_id": "E306",
+        "identical": false,
+        "ratio": 0.1176,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E306_T02",
+        "episode_id": "E306",
+        "identical": false,
+        "ratio": 0.2549,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E306_T03",
+        "episode_id": "E306",
+        "identical": false,
+        "ratio": 0.176,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E306_T04",
+        "episode_id": "E306",
+        "identical": false,
+        "ratio": 0.2435,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E306_T05",
+        "episode_id": "E306",
+        "identical": false,
+        "ratio": 0.1279,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E306_T06",
+        "episode_id": "E306",
+        "identical": false,
+        "ratio": 0.1879,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E306_T07",
+        "episode_id": "E306",
+        "identical": false,
+        "ratio": 0.1667,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E306_T08",
+        "episode_id": "E306",
+        "identical": false,
+        "ratio": 0.3065,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E306_T09",
+        "episode_id": "E306",
+        "identical": false,
+        "ratio": 0.1391,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E306_T10",
+        "episode_id": "E306",
+        "identical": false,
+        "ratio": 0.1562,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E306_T11",
+        "episode_id": "E306",
+        "identical": false,
+        "ratio": 0.1509,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E306_T12",
+        "episode_id": "E306",
+        "identical": false,
+        "ratio": 0.2697,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E307_T01",
+        "episode_id": "E307",
+        "identical": false,
+        "ratio": 0.5231,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E307_T02",
+        "episode_id": "E307",
+        "identical": false,
+        "ratio": 0.3146,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E307_T03",
+        "episode_id": "E307",
+        "identical": false,
+        "ratio": 0.2017,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E307_T04",
+        "episode_id": "E307",
+        "identical": false,
+        "ratio": 0.3099,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E307_T05",
+        "episode_id": "E307",
+        "identical": false,
+        "ratio": 0.1951,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E307_T06",
+        "episode_id": "E307",
+        "identical": false,
+        "ratio": 0.198,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E307_T07",
+        "episode_id": "E307",
+        "identical": false,
+        "ratio": 0.274,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E307_T08",
+        "episode_id": "E307",
+        "identical": false,
+        "ratio": 0.1524,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E307_T09",
+        "episode_id": "E307",
+        "identical": false,
+        "ratio": 0.1935,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E307_T10",
+        "episode_id": "E307",
+        "identical": false,
+        "ratio": 0.1837,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E307_T11",
+        "episode_id": "E307",
+        "identical": false,
+        "ratio": 0.3158,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E307_T12",
+        "episode_id": "E307",
+        "identical": false,
+        "ratio": 0.2979,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E308_T01",
+        "episode_id": "E308",
+        "identical": false,
+        "ratio": 0.4468,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E308_T02",
+        "episode_id": "E308",
+        "identical": false,
+        "ratio": 0.1386,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E308_T03",
+        "episode_id": "E308",
+        "identical": false,
+        "ratio": 0.1026,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E308_T04",
+        "episode_id": "E308",
+        "identical": false,
+        "ratio": 0.3301,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E308_T05",
+        "episode_id": "E308",
+        "identical": false,
+        "ratio": 0.2826,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E308_T06",
+        "episode_id": "E308",
+        "identical": false,
+        "ratio": 0.4412,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E308_T07",
+        "episode_id": "E308",
+        "identical": false,
+        "ratio": 0.4691,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E308_T08",
+        "episode_id": "E308",
+        "identical": false,
+        "ratio": 0.6216,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E308_T09",
+        "episode_id": "E308",
+        "identical": false,
+        "ratio": 0.2353,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E308_T10",
+        "episode_id": "E308",
+        "identical": false,
+        "ratio": 0.1875,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E308_T11",
+        "episode_id": "E308",
+        "identical": false,
+        "ratio": 0.1185,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E308_T12",
+        "episode_id": "E308",
+        "identical": false,
+        "ratio": 0.3125,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E309_T01",
+        "episode_id": "E309",
+        "identical": false,
+        "ratio": 0.2143,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E309_T02",
+        "episode_id": "E309",
+        "identical": false,
+        "ratio": 0.218,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E309_T03",
+        "episode_id": "E309",
+        "identical": false,
+        "ratio": 0.1824,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E309_T04",
+        "episode_id": "E309",
+        "identical": false,
+        "ratio": 0.2344,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E309_T05",
+        "episode_id": "E309",
+        "identical": false,
+        "ratio": 0.09,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E309_T06",
+        "episode_id": "E309",
+        "identical": false,
+        "ratio": 0.1918,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E309_T07",
+        "episode_id": "E309",
+        "identical": false,
+        "ratio": 0.1284,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E309_T08",
+        "episode_id": "E309",
+        "identical": false,
+        "ratio": 0.1058,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E309_T09",
+        "episode_id": "E309",
+        "identical": false,
+        "ratio": 0.2564,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E309_T10",
+        "episode_id": "E309",
+        "identical": false,
+        "ratio": 0.1608,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E309_T11",
+        "episode_id": "E309",
+        "identical": false,
+        "ratio": 0.3473,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E309_T12",
+        "episode_id": "E309",
+        "identical": false,
+        "ratio": 0.3281,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E310_T01",
+        "episode_id": "E310",
+        "identical": false,
+        "ratio": 0.2073,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E310_T02",
+        "episode_id": "E310",
+        "identical": false,
+        "ratio": 0.1376,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E310_T03",
+        "episode_id": "E310",
+        "identical": false,
+        "ratio": 0.1351,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E310_T04",
+        "episode_id": "E310",
+        "identical": false,
+        "ratio": 0.1882,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E310_T05",
+        "episode_id": "E310",
+        "identical": false,
+        "ratio": 0.1333,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E310_T06",
+        "episode_id": "E310",
+        "identical": false,
+        "ratio": 0.2672,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E310_T07",
+        "episode_id": "E310",
+        "identical": false,
+        "ratio": 0.1711,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E310_T08",
+        "episode_id": "E310",
+        "identical": false,
+        "ratio": 0.2095,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E310_T09",
+        "episode_id": "E310",
+        "identical": false,
+        "ratio": 0.18,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E310_T10",
+        "episode_id": "E310",
+        "identical": false,
+        "ratio": 0.1739,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E310_T11",
+        "episode_id": "E310",
+        "identical": false,
+        "ratio": 0.2584,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E310_T12",
+        "episode_id": "E310",
+        "identical": false,
+        "ratio": 0.1429,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E311_T01",
+        "episode_id": "E311",
+        "identical": false,
+        "ratio": 0.2913,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E311_T02",
+        "episode_id": "E311",
+        "identical": false,
+        "ratio": 0.1509,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E311_T03",
+        "episode_id": "E311",
+        "identical": false,
+        "ratio": 0.2105,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E311_T04",
+        "episode_id": "E311",
+        "identical": false,
+        "ratio": 0.2439,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E311_T05",
+        "episode_id": "E311",
+        "identical": false,
+        "ratio": 0.2655,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E311_T06",
+        "episode_id": "E311",
+        "identical": false,
+        "ratio": 0.1457,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E311_T07",
+        "episode_id": "E311",
+        "identical": false,
+        "ratio": 0.229,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E311_T08",
+        "episode_id": "E311",
+        "identical": false,
+        "ratio": 0.2644,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E311_T09",
+        "episode_id": "E311",
+        "identical": false,
+        "ratio": 0.2222,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E311_T10",
+        "episode_id": "E311",
+        "identical": false,
+        "ratio": 0.048,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E311_T11",
+        "episode_id": "E311",
+        "identical": false,
+        "ratio": 0.3009,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E311_T12",
+        "episode_id": "E311",
+        "identical": false,
+        "ratio": 0.1752,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E312_T01",
+        "episode_id": "E312",
+        "identical": false,
+        "ratio": 0.2766,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E312_T02",
+        "episode_id": "E312",
+        "identical": false,
+        "ratio": 0.1714,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E312_T03",
+        "episode_id": "E312",
+        "identical": false,
+        "ratio": 0.1333,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E312_T04",
+        "episode_id": "E312",
+        "identical": false,
+        "ratio": 0.1135,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E312_T05",
+        "episode_id": "E312",
+        "identical": false,
+        "ratio": 0.2025,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E312_T06",
+        "episode_id": "E312",
+        "identical": false,
+        "ratio": 0.2227,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E312_T07",
+        "episode_id": "E312",
+        "identical": false,
+        "ratio": 0.1254,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E312_T08",
+        "episode_id": "E312",
+        "identical": false,
+        "ratio": 0.1071,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E312_T09",
+        "episode_id": "E312",
+        "identical": false,
+        "ratio": 0.0947,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E312_T10",
+        "episode_id": "E312",
+        "identical": false,
+        "ratio": 0.1394,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E312_T11",
+        "episode_id": "E312",
+        "identical": false,
+        "ratio": 0.2705,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E312_T12",
+        "episode_id": "E312",
+        "identical": false,
+        "ratio": 0.1985,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E313_T01",
+        "episode_id": "E313",
+        "identical": false,
+        "ratio": 0.359,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E313_T02",
+        "episode_id": "E313",
+        "identical": false,
+        "ratio": 0.2321,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E313_T03",
+        "episode_id": "E313",
+        "identical": false,
+        "ratio": 0.4578,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E313_T04",
+        "episode_id": "E313",
+        "identical": false,
+        "ratio": 0.2391,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E313_T05",
+        "episode_id": "E313",
+        "identical": false,
+        "ratio": 0.3269,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E313_T06",
+        "episode_id": "E313",
+        "identical": false,
+        "ratio": 0.521,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E313_T07",
+        "episode_id": "E313",
+        "identical": false,
+        "ratio": 0.5882,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E313_T08",
+        "episode_id": "E313",
+        "identical": false,
+        "ratio": 0.2286,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E313_T09",
+        "episode_id": "E313",
+        "identical": false,
+        "ratio": 0.2826,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E313_T10",
+        "episode_id": "E313",
+        "identical": false,
+        "ratio": 0.6296,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E313_T11",
+        "episode_id": "E313",
+        "identical": false,
+        "ratio": 0.2128,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E313_T12",
+        "episode_id": "E313",
+        "identical": false,
+        "ratio": 0.3667,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E314_T01",
+        "episode_id": "E314",
+        "identical": false,
+        "ratio": 0.1188,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E314_T02",
+        "episode_id": "E314",
+        "identical": false,
+        "ratio": 0.1308,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E314_T03",
+        "episode_id": "E314",
+        "identical": false,
+        "ratio": 0.2115,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E314_T04",
+        "episode_id": "E314",
+        "identical": false,
+        "ratio": 0.2748,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E314_T06",
+        "episode_id": "E314",
+        "identical": false,
+        "ratio": 0.175,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E314_T07",
+        "episode_id": "E314",
+        "identical": false,
+        "ratio": 0.3467,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E314_T08",
+        "episode_id": "E314",
+        "identical": false,
+        "ratio": 0.5424,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E314_T09",
+        "episode_id": "E314",
+        "identical": false,
+        "ratio": 0.4722,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E314_T10",
+        "episode_id": "E314",
+        "identical": false,
+        "ratio": 0.3276,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E314_T11",
+        "episode_id": "E314",
+        "identical": false,
+        "ratio": 0.3051,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E314_T12",
+        "episode_id": "E314",
+        "identical": false,
+        "ratio": 0.4384,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E315_T01",
+        "episode_id": "E315",
+        "identical": false,
+        "ratio": 0.2549,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E315_T02",
+        "episode_id": "E315",
+        "identical": false,
+        "ratio": 0.3351,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E315_T03",
+        "episode_id": "E315",
+        "identical": false,
+        "ratio": 0.3735,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E315_T04",
+        "episode_id": "E315",
+        "identical": false,
+        "ratio": 0.1471,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E315_T05",
+        "episode_id": "E315",
+        "identical": false,
+        "ratio": 0.1302,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E315_T06",
+        "episode_id": "E315",
+        "identical": false,
+        "ratio": 0.1404,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E315_T07",
+        "episode_id": "E315",
+        "identical": false,
+        "ratio": 0.1958,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E315_T08",
+        "episode_id": "E315",
+        "identical": false,
+        "ratio": 0.3235,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E315_T09",
+        "episode_id": "E315",
+        "identical": false,
+        "ratio": 0.2353,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E315_T10",
+        "episode_id": "E315",
+        "identical": false,
+        "ratio": 0.1538,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E315_T11",
+        "episode_id": "E315",
+        "identical": false,
+        "ratio": 0.4457,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E315_T12",
+        "episode_id": "E315",
+        "identical": false,
+        "ratio": 0.4912,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E316_T01",
+        "episode_id": "E316",
+        "identical": false,
+        "ratio": 0.4583,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E316_T02",
+        "episode_id": "E316",
+        "identical": false,
+        "ratio": 0.3492,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E316_T03",
+        "episode_id": "E316",
+        "identical": false,
+        "ratio": 0.35,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E316_T04",
+        "episode_id": "E316",
+        "identical": false,
+        "ratio": 0.1046,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E316_T05",
+        "episode_id": "E316",
+        "identical": false,
+        "ratio": 0.2194,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E316_T06",
+        "episode_id": "E316",
+        "identical": false,
+        "ratio": 0.259,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E316_T07",
+        "episode_id": "E316",
+        "identical": false,
+        "ratio": 0.1591,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E316_T08",
+        "episode_id": "E316",
+        "identical": false,
+        "ratio": 0.2075,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E316_T09",
+        "episode_id": "E316",
+        "identical": false,
+        "ratio": 0.34,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E316_T10",
+        "episode_id": "E316",
+        "identical": false,
+        "ratio": 0.237,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E316_T11",
+        "episode_id": "E316",
+        "identical": false,
+        "ratio": 0.2439,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E316_T12",
+        "episode_id": "E316",
+        "identical": false,
+        "ratio": 0.4375,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E317_T01",
+        "episode_id": "E317",
+        "identical": false,
+        "ratio": 0.3333,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E317_T02",
+        "episode_id": "E317",
+        "identical": false,
+        "ratio": 0.2367,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E317_T03",
+        "episode_id": "E317",
+        "identical": false,
+        "ratio": 0.4124,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E317_T04",
+        "episode_id": "E317",
+        "identical": false,
+        "ratio": 0.2128,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E317_T05",
+        "episode_id": "E317",
+        "identical": false,
+        "ratio": 0.5053,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E317_T06",
+        "episode_id": "E317",
+        "identical": false,
+        "ratio": 0.3148,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E317_T07",
+        "episode_id": "E317",
+        "identical": false,
+        "ratio": 0.2063,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E317_T08",
+        "episode_id": "E317",
+        "identical": false,
+        "ratio": 0.45,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E317_T09",
+        "episode_id": "E317",
+        "identical": false,
+        "ratio": 0.3065,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E317_T10",
+        "episode_id": "E317",
+        "identical": false,
+        "ratio": 0.3667,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E317_T11",
+        "episode_id": "E317",
+        "identical": false,
+        "ratio": 0.1197,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E317_T12",
+        "episode_id": "E317",
+        "identical": false,
+        "ratio": 0.1099,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E318_T01",
+        "episode_id": "E318",
+        "identical": false,
+        "ratio": 0.368,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E318_T02",
+        "episode_id": "E318",
+        "identical": false,
+        "ratio": 0.4909,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E318_T03",
+        "episode_id": "E318",
+        "identical": false,
+        "ratio": 0.3303,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E318_T04",
+        "episode_id": "E318",
+        "identical": false,
+        "ratio": 0.2797,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E318_T05",
+        "episode_id": "E318",
+        "identical": false,
+        "ratio": 0.186,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E318_T06",
+        "episode_id": "E318",
+        "identical": false,
+        "ratio": 0.303,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E318_T07",
+        "episode_id": "E318",
+        "identical": false,
+        "ratio": 0.1358,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E318_T09",
+        "episode_id": "E318",
+        "identical": false,
+        "ratio": 0.1231,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E318_T10",
+        "episode_id": "E318",
+        "identical": false,
+        "ratio": 0.2706,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E318_T11",
+        "episode_id": "E318",
+        "identical": false,
+        "ratio": 0.3401,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E318_T12",
+        "episode_id": "E318",
+        "identical": false,
+        "ratio": 0.0851,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E319_T01",
+        "episode_id": "E319",
+        "identical": false,
+        "ratio": 0.3429,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E319_T02",
+        "episode_id": "E319",
+        "identical": false,
+        "ratio": 0.4138,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E319_T03",
+        "episode_id": "E319",
+        "identical": false,
+        "ratio": 0.1687,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E319_T04",
+        "episode_id": "E319",
+        "identical": false,
+        "ratio": 0.2982,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E319_T06",
+        "episode_id": "E319",
+        "identical": false,
+        "ratio": 0.2609,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E319_T07",
+        "episode_id": "E319",
+        "identical": false,
+        "ratio": 0.2647,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E319_T08",
+        "episode_id": "E319",
+        "identical": false,
+        "ratio": 0.1333,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E319_T09",
+        "episode_id": "E319",
+        "identical": false,
+        "ratio": 0.3438,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E319_T10",
+        "episode_id": "E319",
+        "identical": false,
+        "ratio": 0.5278,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E319_T11",
+        "episode_id": "E319",
+        "identical": false,
+        "ratio": 0.3571,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E319_T12",
+        "episode_id": "E319",
+        "identical": false,
+        "ratio": 0.2188,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E320_T01",
+        "episode_id": "E320",
+        "identical": false,
+        "ratio": 0.456,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E320_T02",
+        "episode_id": "E320",
+        "identical": false,
+        "ratio": 0.2333,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E320_T03",
+        "episode_id": "E320",
+        "identical": false,
+        "ratio": 0.3077,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E320_T04",
+        "episode_id": "E320",
+        "identical": false,
+        "ratio": 0.0755,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E320_T05",
+        "episode_id": "E320",
+        "identical": false,
+        "ratio": 0.5909,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E320_T06",
+        "episode_id": "E320",
+        "identical": false,
+        "ratio": 0.1544,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E320_T07",
+        "episode_id": "E320",
+        "identical": false,
+        "ratio": 0.2118,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E320_T09",
+        "episode_id": "E320",
+        "identical": false,
+        "ratio": 0.3697,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E320_T10",
+        "episode_id": "E320",
+        "identical": false,
+        "ratio": 0.1957,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E320_T11",
+        "episode_id": "E320",
+        "identical": false,
+        "ratio": 0.1412,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E320_T12",
+        "episode_id": "E320",
+        "identical": false,
+        "ratio": 0.2857,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E321_T01",
+        "episode_id": "E321",
+        "identical": false,
+        "ratio": 0.2821,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E321_T02",
+        "episode_id": "E321",
+        "identical": false,
+        "ratio": 0.5532,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E321_T03",
+        "episode_id": "E321",
+        "identical": false,
+        "ratio": 0.1143,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E321_T04",
+        "episode_id": "E321",
+        "identical": false,
+        "ratio": 0.4127,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E321_T05",
+        "episode_id": "E321",
+        "identical": false,
+        "ratio": 0.2044,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E321_T06",
+        "episode_id": "E321",
+        "identical": false,
+        "ratio": 0.0976,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E321_T07",
+        "episode_id": "E321",
+        "identical": false,
+        "ratio": 0.3333,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E321_T08",
+        "episode_id": "E321",
+        "identical": false,
+        "ratio": 0.2083,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E321_T09",
+        "episode_id": "E321",
+        "identical": false,
+        "ratio": 0.4211,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E321_T10",
+        "episode_id": "E321",
+        "identical": false,
+        "ratio": 0.3836,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E321_T11",
+        "episode_id": "E321",
+        "identical": false,
+        "ratio": 0.5283,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E321_T12",
+        "episode_id": "E321",
+        "identical": false,
+        "ratio": 0.4286,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E322_T01",
+        "episode_id": "E322",
+        "identical": false,
+        "ratio": 0.2883,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E322_T02",
+        "episode_id": "E322",
+        "identical": false,
+        "ratio": 0.5128,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E322_T03",
+        "episode_id": "E322",
+        "identical": false,
+        "ratio": 0.3409,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E322_T04",
+        "episode_id": "E322",
+        "identical": false,
+        "ratio": 0.3357,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E322_T05",
+        "episode_id": "E322",
+        "identical": false,
+        "ratio": 0.2895,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E322_T06",
+        "episode_id": "E322",
+        "identical": false,
+        "ratio": 0.2472,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E322_T07",
+        "episode_id": "E322",
+        "identical": false,
+        "ratio": 0.6349,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E322_T08",
+        "episode_id": "E322",
+        "identical": false,
+        "ratio": 0.5763,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E322_T09",
+        "episode_id": "E322",
+        "identical": false,
+        "ratio": 0.1982,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E322_T10",
+        "episode_id": "E322",
+        "identical": false,
+        "ratio": 0.2857,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E322_T11",
+        "episode_id": "E322",
+        "identical": false,
+        "ratio": 0.1895,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E322_T12",
+        "episode_id": "E322",
+        "identical": false,
+        "ratio": 0.4952,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E323_T01",
+        "episode_id": "E323",
+        "identical": false,
+        "ratio": 0.5057,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E323_T02",
+        "episode_id": "E323",
+        "identical": false,
+        "ratio": 0.225,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E323_T03",
+        "episode_id": "E323",
+        "identical": false,
+        "ratio": 0.5088,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E323_T04",
+        "episode_id": "E323",
+        "identical": false,
+        "ratio": 0.3387,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E323_T05",
+        "episode_id": "E323",
+        "identical": false,
+        "ratio": 0.2955,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E323_T06",
+        "episode_id": "E323",
+        "identical": false,
+        "ratio": 0.2299,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E323_T07",
+        "episode_id": "E323",
+        "identical": false,
+        "ratio": 0.208,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E323_T08",
+        "episode_id": "E323",
+        "identical": false,
+        "ratio": 0.5,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E323_T09",
+        "episode_id": "E323",
+        "identical": false,
+        "ratio": 0.3478,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E323_T10",
+        "episode_id": "E323",
+        "identical": false,
+        "ratio": 0.5278,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E323_T11",
+        "episode_id": "E323",
+        "identical": false,
+        "ratio": 0.1892,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E323_T12",
+        "episode_id": "E323",
+        "identical": false,
+        "ratio": 0.3958,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E324_T01",
+        "episode_id": "E324",
+        "identical": false,
+        "ratio": 0.557,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E324_T02",
+        "episode_id": "E324",
+        "identical": false,
+        "ratio": 0.3548,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E324_T03",
+        "episode_id": "E324",
+        "identical": false,
+        "ratio": 0.6512,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E324_T04",
+        "episode_id": "E324",
+        "identical": false,
+        "ratio": 0.4685,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E324_T05",
+        "episode_id": "E324",
+        "identical": false,
+        "ratio": 0.2474,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E324_T06",
+        "episode_id": "E324",
+        "identical": false,
+        "ratio": 0.2453,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E324_T07",
+        "episode_id": "E324",
+        "identical": false,
+        "ratio": 0.3696,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E324_T08",
+        "episode_id": "E324",
+        "identical": false,
+        "ratio": 0.3758,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E324_T09",
+        "episode_id": "E324",
+        "identical": false,
+        "ratio": 0.2202,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E324_T10",
+        "episode_id": "E324",
+        "identical": false,
+        "ratio": 0.189,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E324_T11",
+        "episode_id": "E324",
+        "identical": false,
+        "ratio": 0.1963,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E324_T12",
+        "episode_id": "E324",
+        "identical": false,
+        "ratio": 0.2222,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E325_T02",
+        "episode_id": "E325",
+        "identical": false,
+        "ratio": 0.3648,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E325_T03",
+        "episode_id": "E325",
+        "identical": false,
+        "ratio": 0.35,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E325_T04",
+        "episode_id": "E325",
+        "identical": false,
+        "ratio": 0.1364,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E325_T05",
+        "episode_id": "E325",
+        "identical": false,
+        "ratio": 0.2326,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E325_T06",
+        "episode_id": "E325",
+        "identical": false,
+        "ratio": 0.4463,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E325_T07",
+        "episode_id": "E325",
+        "identical": false,
+        "ratio": 0.3969,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E325_T08",
+        "episode_id": "E325",
+        "identical": false,
+        "ratio": 0.1964,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E325_T09",
+        "episode_id": "E325",
+        "identical": false,
+        "ratio": 0.2667,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E325_T10",
+        "episode_id": "E325",
+        "identical": false,
+        "ratio": 0.1282,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E325_T11",
+        "episode_id": "E325",
+        "identical": false,
+        "ratio": 0.1558,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E325_T12",
+        "episode_id": "E325",
+        "identical": false,
+        "ratio": 0.2456,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E326_T01",
+        "episode_id": "E326",
+        "identical": false,
+        "ratio": 0.2516,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E326_T02",
+        "episode_id": "E326",
+        "identical": false,
+        "ratio": 0.1961,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E326_T03",
+        "episode_id": "E326",
+        "identical": false,
+        "ratio": 0.2796,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E326_T04",
+        "episode_id": "E326",
+        "identical": false,
+        "ratio": 0.3457,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E326_T05",
+        "episode_id": "E326",
+        "identical": false,
+        "ratio": 0.3286,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E326_T06",
+        "episode_id": "E326",
+        "identical": false,
+        "ratio": 0.2913,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E326_T07",
+        "episode_id": "E326",
+        "identical": false,
+        "ratio": 0.1963,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E326_T08",
+        "episode_id": "E326",
+        "identical": false,
+        "ratio": 0.1364,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E326_T09",
+        "episode_id": "E326",
+        "identical": false,
+        "ratio": 0.3743,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E326_T10",
+        "episode_id": "E326",
+        "identical": false,
+        "ratio": 0.3636,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E326_T11",
+        "episode_id": "E326",
+        "identical": false,
+        "ratio": 0.1682,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E326_T12",
+        "episode_id": "E326",
+        "identical": false,
+        "ratio": 0.4476,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E327_T01",
+        "episode_id": "E327",
+        "identical": false,
+        "ratio": 0.382,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E327_T02",
+        "episode_id": "E327",
+        "identical": false,
+        "ratio": 0.1176,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E327_T03",
+        "episode_id": "E327",
+        "identical": false,
+        "ratio": 0.5045,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E327_T04",
+        "episode_id": "E327",
+        "identical": false,
+        "ratio": 0.2241,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E327_T05",
+        "episode_id": "E327",
+        "identical": false,
+        "ratio": 0.2647,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E327_T06",
+        "episode_id": "E327",
+        "identical": false,
+        "ratio": 0.1852,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E327_T07",
+        "episode_id": "E327",
+        "identical": false,
+        "ratio": 0.4035,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E327_T08",
+        "episode_id": "E327",
+        "identical": false,
+        "ratio": 0.5,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E327_T09",
+        "episode_id": "E327",
+        "identical": false,
+        "ratio": 0.383,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E327_T10",
+        "episode_id": "E327",
+        "identical": false,
+        "ratio": 0.1522,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E327_T11",
+        "episode_id": "E327",
+        "identical": false,
+        "ratio": 0.4632,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E327_T12",
+        "episode_id": "E327",
+        "identical": false,
+        "ratio": 0.1875,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E328_T01",
+        "episode_id": "E328",
+        "identical": false,
+        "ratio": 0.2576,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E328_T02",
+        "episode_id": "E328",
+        "identical": false,
+        "ratio": 0.3235,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E328_T03",
+        "episode_id": "E328",
+        "identical": false,
+        "ratio": 0.5055,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E328_T04",
+        "episode_id": "E328",
+        "identical": false,
+        "ratio": 0.254,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E328_T05",
+        "episode_id": "E328",
+        "identical": false,
+        "ratio": 0.463,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E328_T06",
+        "episode_id": "E328",
+        "identical": false,
+        "ratio": 0.2636,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E328_T07",
+        "episode_id": "E328",
+        "identical": false,
+        "ratio": 0.2222,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E328_T08",
+        "episode_id": "E328",
+        "identical": false,
+        "ratio": 0.5467,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E328_T09",
+        "episode_id": "E328",
+        "identical": false,
+        "ratio": 0.2353,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E328_T10",
+        "episode_id": "E328",
+        "identical": false,
+        "ratio": 0.4176,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E328_T11",
+        "episode_id": "E328",
+        "identical": false,
+        "ratio": 0.2045,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E329_T01",
+        "episode_id": "E329",
+        "identical": false,
+        "ratio": 0.5479,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E329_T02",
+        "episode_id": "E329",
+        "identical": false,
+        "ratio": 0.2667,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E329_T03",
+        "episode_id": "E329",
+        "identical": false,
+        "ratio": 0.3789,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E329_T04",
+        "episode_id": "E329",
+        "identical": false,
+        "ratio": 0.24,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E329_T05",
+        "episode_id": "E329",
+        "identical": false,
+        "ratio": 0.3495,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E329_T06",
+        "episode_id": "E329",
+        "identical": false,
+        "ratio": 0.1915,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E329_T08",
+        "episode_id": "E329",
+        "identical": false,
+        "ratio": 0.4938,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E329_T09",
+        "episode_id": "E329",
+        "identical": false,
+        "ratio": 0.3774,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E329_T10",
+        "episode_id": "E329",
+        "identical": false,
+        "ratio": 0.3168,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E329_T11",
+        "episode_id": "E329",
+        "identical": false,
+        "ratio": 0.8511,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E329_T12",
+        "episode_id": "E329",
+        "identical": false,
+        "ratio": 0.4696,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E330_T01",
+        "episode_id": "E330",
+        "identical": false,
+        "ratio": 0.3299,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E330_T02",
+        "episode_id": "E330",
+        "identical": false,
+        "ratio": 0.2807,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E330_T03",
+        "episode_id": "E330",
+        "identical": false,
+        "ratio": 0.3404,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E330_T04",
+        "episode_id": "E330",
+        "identical": false,
+        "ratio": 0.2571,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E330_T05",
+        "episode_id": "E330",
+        "identical": false,
+        "ratio": 0.1913,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E330_T06",
+        "episode_id": "E330",
+        "identical": false,
+        "ratio": 0.2407,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E330_T08",
+        "episode_id": "E330",
+        "identical": false,
+        "ratio": 0.2524,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E330_T09",
+        "episode_id": "E330",
+        "identical": false,
+        "ratio": 0.0638,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E330_T10",
+        "episode_id": "E330",
+        "identical": false,
+        "ratio": 0.3333,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E330_T11",
+        "episode_id": "E330",
+        "identical": false,
+        "ratio": 0.1786,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E330_T12",
+        "episode_id": "E330",
+        "identical": false,
+        "ratio": 0.6731,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E331_T01",
+        "episode_id": "E331",
+        "identical": false,
+        "ratio": 0.2837,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E331_T02",
+        "episode_id": "E331",
+        "identical": false,
+        "ratio": 0.4651,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E331_T03",
+        "episode_id": "E331",
+        "identical": false,
+        "ratio": 0.2188,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E331_T04",
+        "episode_id": "E331",
+        "identical": false,
+        "ratio": 0.3973,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E331_T05",
+        "episode_id": "E331",
+        "identical": false,
+        "ratio": 0.256,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E331_T06",
+        "episode_id": "E331",
+        "identical": false,
+        "ratio": 0.3409,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E331_T07",
+        "episode_id": "E331",
+        "identical": false,
+        "ratio": 0.303,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E331_T08",
+        "episode_id": "E331",
+        "identical": false,
+        "ratio": 0.15,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E331_T09",
+        "episode_id": "E331",
+        "identical": false,
+        "ratio": 0.2803,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E331_T10",
+        "episode_id": "E331",
+        "identical": false,
+        "ratio": 0.32,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E331_T11",
+        "episode_id": "E331",
+        "identical": false,
+        "ratio": 0.2992,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E331_T12",
+        "episode_id": "E331",
+        "identical": false,
+        "ratio": 0.3308,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E332_T01",
+        "episode_id": "E332",
+        "identical": false,
+        "ratio": 0.4096,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E332_T02",
+        "episode_id": "E332",
+        "identical": false,
+        "ratio": 0.2222,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E332_T03",
+        "episode_id": "E332",
+        "identical": false,
+        "ratio": 0.3673,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E332_T04",
+        "episode_id": "E332",
+        "identical": false,
+        "ratio": 0.2759,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E332_T05",
+        "episode_id": "E332",
+        "identical": false,
+        "ratio": 0.2885,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E332_T06",
+        "episode_id": "E332",
+        "identical": false,
+        "ratio": 0.3171,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E332_T08",
+        "episode_id": "E332",
+        "identical": false,
+        "ratio": 0.4516,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E332_T09",
+        "episode_id": "E332",
+        "identical": false,
+        "ratio": 0.2637,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E332_T10",
+        "episode_id": "E332",
+        "identical": false,
+        "ratio": 0.422,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E332_T11",
+        "episode_id": "E332",
+        "identical": false,
+        "ratio": 0.0789,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E332_T12",
+        "episode_id": "E332",
+        "identical": false,
+        "ratio": 0.36,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E333_T01",
+        "episode_id": "E333",
+        "identical": false,
+        "ratio": 0.0909,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E333_T02",
+        "episode_id": "E333",
+        "identical": false,
+        "ratio": 0.5306,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E333_T03",
+        "episode_id": "E333",
+        "identical": false,
+        "ratio": 0.1975,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E333_T04",
+        "episode_id": "E333",
+        "identical": false,
+        "ratio": 0.2936,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E333_T05",
+        "episode_id": "E333",
+        "identical": false,
+        "ratio": 0.1609,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E333_T06",
+        "episode_id": "E333",
+        "identical": false,
+        "ratio": 0.3279,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E333_T07",
+        "episode_id": "E333",
+        "identical": false,
+        "ratio": 0.1481,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E333_T08",
+        "episode_id": "E333",
+        "identical": false,
+        "ratio": 0.24,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E333_T09",
+        "episode_id": "E333",
+        "identical": false,
+        "ratio": 0.1488,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E333_T10",
+        "episode_id": "E333",
+        "identical": false,
+        "ratio": 0.4615,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E333_T11",
+        "episode_id": "E333",
+        "identical": false,
+        "ratio": 0.2785,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E333_T12",
+        "episode_id": "E333",
+        "identical": false,
+        "ratio": 0.4474,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E334_T01",
+        "episode_id": "E334",
+        "identical": false,
+        "ratio": 0.5763,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E334_T02",
+        "episode_id": "E334",
+        "identical": false,
+        "ratio": 0.4587,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E334_T03",
+        "episode_id": "E334",
+        "identical": false,
+        "ratio": 0.0787,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E334_T04",
+        "episode_id": "E334",
+        "identical": false,
+        "ratio": 0.2063,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E334_T05",
+        "episode_id": "E334",
+        "identical": false,
+        "ratio": 0.3404,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E334_T06",
+        "episode_id": "E334",
+        "identical": false,
+        "ratio": 0.16,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E334_T07",
+        "episode_id": "E334",
+        "identical": false,
+        "ratio": 0.2,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E334_T08",
+        "episode_id": "E334",
+        "identical": false,
+        "ratio": 0.2889,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E334_T09",
+        "episode_id": "E334",
+        "identical": false,
+        "ratio": 0.3056,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E334_T10",
+        "episode_id": "E334",
+        "identical": false,
+        "ratio": 0.4746,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E334_T11",
+        "episode_id": "E334",
+        "identical": false,
+        "ratio": 0.2836,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E334_T12",
+        "episode_id": "E334",
+        "identical": false,
+        "ratio": 0.4082,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E335_T01",
+        "episode_id": "E335",
+        "identical": false,
+        "ratio": 0.4865,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E335_T02",
+        "episode_id": "E335",
+        "identical": false,
+        "ratio": 0.6032,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E335_T03",
+        "episode_id": "E335",
+        "identical": false,
+        "ratio": 0.1905,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E335_T04",
+        "episode_id": "E335",
+        "identical": false,
+        "ratio": 0.1702,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E335_T05",
+        "episode_id": "E335",
+        "identical": false,
+        "ratio": 0.2045,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E335_T06",
+        "episode_id": "E335",
+        "identical": false,
+        "ratio": 0.3611,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E335_T07",
+        "episode_id": "E335",
+        "identical": false,
+        "ratio": 0.4483,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E335_T08",
+        "episode_id": "E335",
+        "identical": false,
+        "ratio": 0.1351,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E335_T09",
+        "episode_id": "E335",
+        "identical": false,
+        "ratio": 0.359,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E335_T10",
+        "episode_id": "E335",
+        "identical": false,
+        "ratio": 0.1573,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E335_T11",
+        "episode_id": "E335",
+        "identical": false,
+        "ratio": 0.3077,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E335_T12",
+        "episode_id": "E335",
+        "identical": false,
+        "ratio": 0.2121,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E336_T01",
+        "episode_id": "E336",
+        "identical": false,
+        "ratio": 0.6349,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E336_T02",
+        "episode_id": "E336",
+        "identical": false,
+        "ratio": 0.4194,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E336_T03",
+        "episode_id": "E336",
+        "identical": false,
+        "ratio": 0.2157,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E336_T04",
+        "episode_id": "E336",
+        "identical": false,
+        "ratio": 0.1412,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E336_T05",
+        "episode_id": "E336",
+        "identical": false,
+        "ratio": 0.0822,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E336_T06",
+        "episode_id": "E336",
+        "identical": false,
+        "ratio": 0.3182,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E336_T07",
+        "episode_id": "E336",
+        "identical": false,
+        "ratio": 0.3692,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E336_T08",
+        "episode_id": "E336",
+        "identical": false,
+        "ratio": 0.3333,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E336_T09",
+        "episode_id": "E336",
+        "identical": false,
+        "ratio": 0.3836,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E336_T10",
+        "episode_id": "E336",
+        "identical": false,
+        "ratio": 0.2553,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E336_T11",
+        "episode_id": "E336",
+        "identical": false,
+        "ratio": 0.1852,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E336_T12",
+        "episode_id": "E336",
+        "identical": false,
+        "ratio": 0.3333,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E337_T01",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.4375,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E337_T02",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.1509,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E337_T03",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.1429,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E337_T04",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.3784,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E337_T05",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.5,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E337_T06",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.2381,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E337_T07",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.338,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E337_T08",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.4727,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E337_T09",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.2308,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E337_T10",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.359,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E337_T11",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.1724,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E337_T12",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.3019,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E337_T13",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.3556,
+        "turn_index": 13
+      },
+      {
+        "case_id": "E337_T14",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.8485,
+        "turn_index": 14
+      },
+      {
+        "case_id": "E337_T15",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.4615,
+        "turn_index": 15
+      },
+      {
+        "case_id": "E337_T16",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.1282,
+        "turn_index": 16
+      },
+      {
+        "case_id": "E337_T17",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.3056,
+        "turn_index": 17
+      },
+      {
+        "case_id": "E337_T18",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.3902,
+        "turn_index": 18
+      },
+      {
+        "case_id": "E337_T19",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.1316,
+        "turn_index": 19
+      },
+      {
+        "case_id": "E337_T20",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.3636,
+        "turn_index": 20
+      },
+      {
+        "case_id": "E337_T21",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.5672,
+        "turn_index": 21
+      },
+      {
+        "case_id": "E337_T22",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.3171,
+        "turn_index": 22
+      },
+      {
+        "case_id": "E337_T23",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.5854,
+        "turn_index": 23
+      },
+      {
+        "case_id": "E337_T24",
+        "episode_id": "E337",
+        "identical": false,
+        "ratio": 0.1786,
+        "turn_index": 24
+      },
+      {
+        "case_id": "E338_T01",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.2059,
+        "turn_index": 1
+      },
+      {
+        "case_id": "E338_T02",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.2817,
+        "turn_index": 2
+      },
+      {
+        "case_id": "E338_T03",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.1053,
+        "turn_index": 3
+      },
+      {
+        "case_id": "E338_T04",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.2,
+        "turn_index": 4
+      },
+      {
+        "case_id": "E338_T05",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.24,
+        "turn_index": 5
+      },
+      {
+        "case_id": "E338_T06",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.5366,
+        "turn_index": 6
+      },
+      {
+        "case_id": "E338_T07",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.1915,
+        "turn_index": 7
+      },
+      {
+        "case_id": "E338_T08",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.6545,
+        "turn_index": 8
+      },
+      {
+        "case_id": "E338_T09",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.4225,
+        "turn_index": 9
+      },
+      {
+        "case_id": "E338_T10",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.2143,
+        "turn_index": 10
+      },
+      {
+        "case_id": "E338_T11",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.3409,
+        "turn_index": 11
+      },
+      {
+        "case_id": "E338_T12",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.3043,
+        "turn_index": 12
+      },
+      {
+        "case_id": "E338_T13",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.2069,
+        "turn_index": 13
+      },
+      {
+        "case_id": "E338_T14",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.44,
+        "turn_index": 14
+      },
+      {
+        "case_id": "E338_T15",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.3226,
+        "turn_index": 15
+      },
+      {
+        "case_id": "E338_T16",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.3333,
+        "turn_index": 16
+      },
+      {
+        "case_id": "E338_T17",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.2105,
+        "turn_index": 17
+      },
+      {
+        "case_id": "E338_T18",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.25,
+        "turn_index": 18
+      },
+      {
+        "case_id": "E338_T19",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.3137,
+        "turn_index": 19
+      },
+      {
+        "case_id": "E338_T20",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.3095,
+        "turn_index": 20
+      },
+      {
+        "case_id": "E338_T21",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.0899,
+        "turn_index": 21
+      },
+      {
+        "case_id": "E338_T22",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.2069,
+        "turn_index": 22
+      },
+      {
+        "case_id": "E338_T23",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.3077,
+        "turn_index": 23
+      },
+      {
+        "case_id": "E338_T24",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.2609,
+        "turn_index": 24
+      },
+      {
+        "case_id": "E338_T25",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.3696,
+        "turn_index": 25
+      },
+      {
+        "case_id": "E338_T26",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.3261,
+        "turn_index": 26
+      },
+      {
+        "case_id": "E338_T27",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.2222,
+        "turn_index": 27
+      },
+      {
+        "case_id": "E338_T28",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.0762,
+        "turn_index": 28
+      },
+      {
+        "case_id": "E338_T29",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.2314,
+        "turn_index": 29
+      },
+      {
+        "case_id": "E338_T30",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.3492,
+        "turn_index": 30
+      },
+      {
+        "case_id": "E338_T31",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.2432,
+        "turn_index": 31
+      },
+      {
+        "case_id": "E338_T32",
+        "episode_id": "E338",
+        "identical": false,
+        "ratio": 0.3261,
+        "turn_index": 32
+      },
+      {
+        "case_id": "LRE121_T01",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.375,
+        "turn_index": 1
+      },
+      {
+        "case_id": "LRE121_T02",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.35,
+        "turn_index": 2
+      },
+      {
+        "case_id": "LRE121_T03",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.1616,
+        "turn_index": 3
+      },
+      {
+        "case_id": "LRE121_T04",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2062,
+        "turn_index": 4
+      },
+      {
+        "case_id": "LRE121_T05",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2479,
+        "turn_index": 5
+      },
+      {
+        "case_id": "LRE121_T06",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2797,
+        "turn_index": 6
+      },
+      {
+        "case_id": "LRE121_T07",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.192,
+        "turn_index": 7
+      },
+      {
+        "case_id": "LRE121_T08",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.4694,
+        "turn_index": 8
+      },
+      {
+        "case_id": "LRE121_T09",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2338,
+        "turn_index": 9
+      },
+      {
+        "case_id": "LRE121_T10",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.3544,
+        "turn_index": 10
+      },
+      {
+        "case_id": "LRE121_T11",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2051,
+        "turn_index": 11
+      },
+      {
+        "case_id": "LRE121_T12",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.1682,
+        "turn_index": 12
+      },
+      {
+        "case_id": "LRE121_T13",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2286,
+        "turn_index": 13
+      },
+      {
+        "case_id": "LRE121_T14",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2222,
+        "turn_index": 14
+      },
+      {
+        "case_id": "LRE121_T15",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.1775,
+        "turn_index": 15
+      },
+      {
+        "case_id": "LRE121_T16",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.1121,
+        "turn_index": 16
+      },
+      {
+        "case_id": "LRE121_T17",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.08,
+        "turn_index": 17
+      },
+      {
+        "case_id": "LRE121_T18",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.4412,
+        "turn_index": 18
+      },
+      {
+        "case_id": "LRE121_T19",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.1818,
+        "turn_index": 19
+      },
+      {
+        "case_id": "LRE121_T20",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.1319,
+        "turn_index": 20
+      },
+      {
+        "case_id": "LRE121_T21",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2718,
+        "turn_index": 21
+      },
+      {
+        "case_id": "LRE121_T22",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.4211,
+        "turn_index": 22
+      },
+      {
+        "case_id": "LRE121_T23",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.5507,
+        "turn_index": 23
+      },
+      {
+        "case_id": "LRE121_T24",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.3363,
+        "turn_index": 24
+      },
+      {
+        "case_id": "LRE121_T25",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.381,
+        "turn_index": 25
+      },
+      {
+        "case_id": "LRE121_T26",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.0702,
+        "turn_index": 26
+      },
+      {
+        "case_id": "LRE121_T27",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.189,
+        "turn_index": 27
+      },
+      {
+        "case_id": "LRE121_T28",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.1553,
+        "turn_index": 28
+      },
+      {
+        "case_id": "LRE121_T29",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.1802,
+        "turn_index": 29
+      },
+      {
+        "case_id": "LRE121_T30",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2062,
+        "turn_index": 30
+      },
+      {
+        "case_id": "LRE121_T31",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.3,
+        "turn_index": 31
+      },
+      {
+        "case_id": "LRE121_T32",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.3738,
+        "turn_index": 32
+      },
+      {
+        "case_id": "LRE121_T33",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.1607,
+        "turn_index": 33
+      },
+      {
+        "case_id": "LRE121_T34",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.1231,
+        "turn_index": 34
+      },
+      {
+        "case_id": "LRE121_T35",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2424,
+        "turn_index": 35
+      },
+      {
+        "case_id": "LRE121_T36",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2362,
+        "turn_index": 36
+      },
+      {
+        "case_id": "LRE121_T37",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.1739,
+        "turn_index": 37
+      },
+      {
+        "case_id": "LRE121_T38",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2247,
+        "turn_index": 38
+      },
+      {
+        "case_id": "LRE121_T39",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2564,
+        "turn_index": 39
+      },
+      {
+        "case_id": "LRE121_T40",
+        "episode_id": "LRE121",
+        "identical": false,
+        "ratio": 0.2759,
+        "turn_index": 40
+      }
+    ],
+    "per_episode": {
+      "E063": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2895,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 24
+      },
+      "E301": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2882,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E302": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2904,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E303": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3133,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E304": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2079,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E305": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2823,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E306": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.1914,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E307": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2633,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E308": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3072,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E309": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2048,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E310": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.1837,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E311": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2123,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E312": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.1713,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E313": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3704,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E314": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3039,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 11
+      },
+      "E315": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2689,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E316": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2805,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E317": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2979,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E318": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2648,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 11
+      },
+      "E319": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3027,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 11
+      },
+      "E320": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2747,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 11
+      },
+      "E321": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3306,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E322": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3662,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E323": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.356,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E324": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3414,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E325": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2654,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 11
+      },
+      "E326": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2816,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E327": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.314,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E328": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3358,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 11
+      },
+      "E329": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.4076,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 11
+      },
+      "E330": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2856,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 11
+      },
+      "E331": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3038,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E332": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3143,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 11
+      },
+      "E333": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2771,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E334": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3151,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E335": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.303,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E336": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.306,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 12
+      },
+      "E337": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.3481,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 24
+      },
+      "E338": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2842,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 32
+      },
+      "LRE121": {
+        "high_dup_episode": false,
+        "identical": 0,
+        "mean_ratio": 0.2487,
+        "near_dup": 0,
+        "near_dup_share": 0.0,
+        "pairs": 40
+      }
+    },
+    "summary": {
+      "both_no_text_positions": 0,
+      "high_dup_episode_count": 0,
+      "identical": 0,
+      "near_dup_ratio_ge_0.9": 0,
+      "near_dup_share": 0.0,
+      "one_side_no_text_positions": 9,
+      "pair_positions_with_both_texts": 543
+    }
+  },
+  "coverage": {
+    "arms_present": [
+      "DIRECT",
+      "CURRENT"
+    ],
+    "duplicate_arm_case_rows": [],
+    "episodes": {
+      "E063": {
+        "arms": {
+          "CURRENT": {
+            "positions": 24,
+            "rows": 24
+          },
+          "DIRECT": {
+            "positions": 24,
+            "rows": 24
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T09",
+        "topic_source": "phase1_DATASET_INVENTORY",
+        "union_positions": 24
+      },
+      "E301": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T01",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E302": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T01",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E303": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T01",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E304": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T01",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E305": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T02",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E306": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T02",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E307": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T02",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E308": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T02",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E309": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T03",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E310": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T03",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E311": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T03",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E312": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T03",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E313": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T04",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E314": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T04",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E315": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T04",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E316": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T04",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E317": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T05",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E318": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T05",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E319": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T05",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E320": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T05",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E321": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T06",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E322": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T06",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E323": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T06",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E324": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T06",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E325": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T07",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E326": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T07",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E327": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T07",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E328": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T07",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E329": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T08",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E330": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T08",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E331": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T08",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E332": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T08",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E333": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T10",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E334": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T10",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E335": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T10",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E336": {
+        "arms": {
+          "CURRENT": {
+            "positions": 12,
+            "rows": 12
+          },
+          "DIRECT": {
+            "positions": 12,
+            "rows": 12
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T10",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 12
+      },
+      "E337": {
+        "arms": {
+          "CURRENT": {
+            "positions": 24,
+            "rows": 24
+          },
+          "DIRECT": {
+            "positions": 24,
+            "rows": 24
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T09",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 24
+      },
+      "E338": {
+        "arms": {
+          "CURRENT": {
+            "positions": 32,
+            "rows": 32
+          },
+          "DIRECT": {
+            "positions": 32,
+            "rows": 32
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T09",
+        "topic_source": "wave4_dev_exposure",
+        "union_positions": 32
+      },
+      "LRE121": {
+        "arms": {
+          "CURRENT": {
+            "positions": 40,
+            "rows": 40
+          },
+          "DIRECT": {
+            "positions": 40,
+            "rows": 40
+          }
+        },
+        "missing_case_ids": {
+          "CURRENT": [],
+          "DIRECT": []
+        },
+        "topic": "T09",
+        "topic_source": "phase1_DATASET_INVENTORY",
+        "union_positions": 40
+      }
+    },
+    "missing_positions_total": {}
+  },
+  "degeneration": {
+    "note": "开头 8-gram 取 strip 后前 8 个字符（含空格）；长度<8 的回复不计入 openings；count>=2 视为跨轮重复；share 分母=n_openings",
+    "repeated_opening_8gram": {
+      "CURRENT": {
+        "max_repeated": null,
+        "n_openings": 552,
+        "top3": [
+          {
+            "count": 1,
+            "gram": "'又是一个有项目",
+            "share": 0.0018
+          },
+          {
+            "count": 1,
+            "gram": "0.3秒，老曹那",
+            "share": 0.0018
+          },
+          {
+            "count": 1,
+            "gram": "1.5 倍客流，",
+            "share": 0.0018
+          }
+        ]
+      },
+      "DIRECT": {
+        "max_repeated": {
+          "count": 3,
+          "gram": "收到，都记下了：",
+          "share": 0.0055
+        },
+        "n_openings": 543,
+        "top3": [
+          {
+            "count": 3,
+            "gram": "收到，都记下了：",
+            "share": 0.0055
+          },
+          {
+            "count": 2,
+            "gram": "姜茶收到了，包装",
+            "share": 0.0037
+          },
+          {
+            "count": 2,
+            "gram": "小天鹅你认得没错",
+            "share": 0.0037
+          }
+        ]
+      }
+    },
+    "text_length": {
+      "CURRENT": {
+        "max": 197,
+        "min": 11,
+        "n_rows": 552,
+        "n_texts": 552,
+        "p10": 28,
+        "p50": 44,
+        "p90": 70
+      },
+      "DIRECT": {
+        "max": 322,
+        "min": 10,
+        "n_rows": 552,
+        "n_texts": 543,
+        "p10": 31,
+        "p50": 56,
+        "p90": 109
+      }
+    },
+    "universal_phrases": {
+      "per_arm": {
+        "CURRENT": {
+          "n_texts": 552,
+          "per_phrase_counts": {
+            "一切都会好起来": 0,
+            "你已经很不容易了": 0,
+            "多喝热水": 0,
+            "我理解你": 0,
+            "都会过去的": 0
+          },
+          "rate": 0.0,
+          "rows_with_any_hit": 0
+        },
+        "DIRECT": {
+          "n_texts": 543,
+          "per_phrase_counts": {
+            "一切都会好起来": 0,
+            "你已经很不容易了": 0,
+            "多喝热水": 0,
+            "我理解你": 0,
+            "都会过去的": 0
+          },
+          "rate": 0.0,
+          "rows_with_any_hit": 0
+        }
+      },
+      "phrases": [
+        "我理解你",
+        "你已经很不容易了",
+        "都会过去的",
+        "多喝热水",
+        "一切都会好起来"
+      ],
+      "source": "任务指定 3 句（我理解你/你已经很不容易了/都会过去的）+ TOPIC_RUBRIC_V1.md §2 T05 必避免退化形态'万能句'、§2 T01 首批实证教训①（C1 万能句生存空间检查，'我理解你/多喝热水'式）；'一切都会好起来'为同族泛化安慰代表句，凑足 5 句"
+    }
+  },
+  "discipline_note": "本工具只输出确定性证据数字与清单；判别力是否成立等结论由 Worker 在报告中人工作出。词族/万能句命中是粗匹配证据，不是行为锚判定（TOPIC_RUBRIC_V1.md §0.1/§2 禁止关键词命中判定替代行为分档）。缺臂位如实计入 missing_positions，不计入任何 rate 分母、不冒充 0 分。",
+  "error_positions": [
+    {
+      "arm_id": "DIRECT",
+      "case_id": "E325_T01",
+      "episode_id": "E325",
+      "error_type": "parse",
+      "turn_index": 1
+    },
+    {
+      "arm_id": "CURRENT",
+      "case_id": "E307_T02",
+      "episode_id": "E307",
+      "error_type": "veto:illegal_source_id:1,1",
+      "turn_index": 2
+    },
+    {
+      "arm_id": "CURRENT",
+      "case_id": "E322_T02",
+      "episode_id": "E322",
+      "error_type": "veto:illegal_source_id:1,1",
+      "turn_index": 2
+    }
+  ],
+  "generated_at": "2026-11-08 18:09:37",
+  "inputs": {
+    "arms_present": [
+      "DIRECT",
+      "CURRENT"
+    ],
+    "csv_path": "D:\\lovebrain-arena\\refs\\benchmark_v1_20261107\\phase2\\pilot2_merged\\PILOT_RESULTS_MERGED.csv",
+    "csv_sha256": "3097548bbdafd7738817389b499db18de66167c74d00fdf43d0b4f52978bb523",
+    "episodes_total": 40,
+    "rows_total": 1104,
+    "topics_missing": [],
+    "topics_resolved": {
+      "E063": {
+        "source": "phase1_DATASET_INVENTORY",
+        "topic": "T09"
+      },
+      "E301": {
+        "source": "wave4_dev_exposure",
+        "topic": "T01"
+      },
+      "E302": {
+        "source": "wave4_dev_exposure",
+        "topic": "T01"
+      },
+      "E303": {
+        "source": "wave4_dev_exposure",
+        "topic": "T01"
+      },
+      "E304": {
+        "source": "wave4_dev_exposure",
+        "topic": "T01"
+      },
+      "E305": {
+        "source": "wave4_dev_exposure",
+        "topic": "T02"
+      },
+      "E306": {
+        "source": "wave4_dev_exposure",
+        "topic": "T02"
+      },
+      "E307": {
+        "source": "wave4_dev_exposure",
+        "topic": "T02"
+      },
+      "E308": {
+        "source": "wave4_dev_exposure",
+        "topic": "T02"
+      },
+      "E309": {
+        "source": "wave4_dev_exposure",
+        "topic": "T03"
+      },
+      "E310": {
+        "source": "wave4_dev_exposure",
+        "topic": "T03"
+      },
+      "E311": {
+        "source": "wave4_dev_exposure",
+        "topic": "T03"
+      },
+      "E312": {
+        "source": "wave4_dev_exposure",
+        "topic": "T03"
+      },
+      "E313": {
+        "source": "wave4_dev_exposure",
+        "topic": "T04"
+      },
+      "E314": {
+        "source": "wave4_dev_exposure",
+        "topic": "T04"
+      },
+      "E315": {
+        "source": "wave4_dev_exposure",
+        "topic": "T04"
+      },
+      "E316": {
+        "source": "wave4_dev_exposure",
+        "topic": "T04"
+      },
+      "E317": {
+        "source": "wave4_dev_exposure",
+        "topic": "T05"
+      },
+      "E318": {
+        "source": "wave4_dev_exposure",
+        "topic": "T05"
+      },
+      "E319": {
+        "source": "wave4_dev_exposure",
+        "topic": "T05"
+      },
+      "E320": {
+        "source": "wave4_dev_exposure",
+        "topic": "T05"
+      },
+      "E321": {
+        "source": "wave4_dev_exposure",
+        "topic": "T06"
+      },
+      "E322": {
+        "source": "wave4_dev_exposure",
+        "topic": "T06"
+      },
+      "E323": {
+        "source": "wave4_dev_exposure",
+        "topic": "T06"
+      },
+      "E324": {
+        "source": "wave4_dev_exposure",
+        "topic": "T06"
+      },
+      "E325": {
+        "source": "wave4_dev_exposure",
+        "topic": "T07"
+      },
+      "E326": {
+        "source": "wave4_dev_exposure",
+        "topic": "T07"
+      },
+      "E327": {
+        "source": "wave4_dev_exposure",
+        "topic": "T07"
+      },
+      "E328": {
+        "source": "wave4_dev_exposure",
+        "topic": "T07"
+      },
+      "E329": {
+        "source": "wave4_dev_exposure",
+        "topic": "T08"
+      },
+      "E330": {
+        "source": "wave4_dev_exposure",
+        "topic": "T08"
+      },
+      "E331": {
+        "source": "wave4_dev_exposure",
+        "topic": "T08"
+      },
+      "E332": {
+        "source": "wave4_dev_exposure",
+        "topic": "T08"
+      },
+      "E333": {
+        "source": "wave4_dev_exposure",
+        "topic": "T10"
+      },
+      "E334": {
+        "source": "wave4_dev_exposure",
+        "topic": "T10"
+      },
+      "E335": {
+        "source": "wave4_dev_exposure",
+        "topic": "T10"
+      },
+      "E336": {
+        "source": "wave4_dev_exposure",
+        "topic": "T10"
+      },
+      "E337": {
+        "source": "wave4_dev_exposure",
+        "topic": "T09"
+      },
+      "E338": {
+        "source": "wave4_dev_exposure",
+        "topic": "T09"
+      },
+      "LRE121": {
+        "source": "phase1_DATASET_INVENTORY",
+        "topic": "T09"
+      }
+    },
+    "topics_source_errors": [],
+    "topics_source_mode": "default(exposure_dir 优先 + phase1 inventory 回退)",
+    "topics_sources": [
+      "D:\\lovebrain-arena\\benchmark\\stories_v2\\wave4_dev",
+      "D:\\lovebrain-arena\\refs\\benchmark_v1_20261107\\phase1\\DATASET_INVENTORY.csv"
+    ]
+  },
+  "missing_positions": [],
+  "topic_keyword_families": {
+    "T01": {
+      "keywords": [
+        "哈哈",
+        "嘿嘿",
+        "笑",
+        "梗",
+        "绝了",
+        "离谱",
+        "好家伙",
+        "摸鱼",
+        "搭子",
+        "走起",
+        "凑热闹",
+        "开黑",
+        "吃瓜",
+        "摆烂",
+        "整活"
+      ],
+      "source": "TOPIC_RUBRIC_V1.md §2 T01 必测能力点（情境幽默/复用细节接话/轻快口语 register）"
+    },
+    "T02": {
+      "keywords": [
+        "心动",
+        "喜欢",
+        "暧昧",
+        "撩",
+        "脸红",
+        "害羞",
+        "想我",
+        "抱抱",
+        "亲",
+        "陪你",
+        "专属",
+        "小心思",
+        "逗你",
+        "来电",
+        "暗恋",
+        "紧张"
+      ],
+      "source": "TOPIC_RUBRIC_V1.md §2 T02 必测能力点（暧昧义承接/推进-退让节奏/半开玩笑试探）"
+    },
+    "T03": {
+      "keywords": [
+        "观点",
+        "立场",
+        "价值观",
+        "分歧",
+        "认同",
+        "坚持",
+        "妥协",
+        "台阶",
+        "换个角度",
+        "说正经",
+        "认真说",
+        "想清楚",
+        "值得",
+        "更重要",
+        "优先",
+        "让步",
+        "底线"
+      ],
+      "source": "TOPIC_RUBRIC_V1.md §2 T03 必测能力点（论点交锋/立场/给台阶/换挡后思想交流）"
+    },
+    "T04": {
+      "keywords": [
+        "约",
+        "见面",
+        "下次",
+        "要不要",
+        "一起去",
+        "我来订",
+        "我订",
+        "等你",
+        "吱一声",
+        "挑个",
+        "定个",
+        "占个",
+        "周末",
+        "走一趟",
+        "改天",
+        "抽空"
+      ],
+      "source": "TOPIC_RUBRIC_V1.md §2 T04 必测能力点（接钩给具体下一步/自出钩/邀约时机）"
+    },
+    "T05": {
+      "keywords": [
+        "辛苦",
+        "累",
+        "心疼",
+        "压力",
+        "撑",
+        "委屈",
+        "难过",
+        "烦躁",
+        "焦虑",
+        "怕",
+        "喘口气",
+        "歇",
+        "陪你",
+        "别硬撑",
+        "慢慢来",
+        "情绪",
+        "睡不着"
+      ],
+      "source": "TOPIC_RUBRIC_V1.md §2 T05 必测能力点（读懂情绪真意/关心具体化/安慰不越界）"
+    },
+    "T06": {
+      "keywords": [
+        "改好",
+        "改成",
+        "换了个说法",
+        "重新写",
+        "重新组织",
+        "按你说的",
+        "照办",
+        "收到",
+        "口吻",
+        "换种",
+        "换法",
+        "遵命",
+        "办妥",
+        "改完",
+        "润色",
+        "改写"
+      ],
+      "source": "TOPIC_RUBRIC_V1.md §2 T06 必测能力点（行为方向契约/口吻改写不换事实）"
+    },
+    "T07": {
+      "keywords": [
+        "算",
+        "账",
+        "对不上",
+        "单价",
+        "总价",
+        "总额",
+        "核实",
+        "不确定",
+        "存疑",
+        "口径",
+        "来源",
+        "大概",
+        "至少",
+        "指南",
+        "医生",
+        "网上的",
+        "先核",
+        "再核",
+        "差了"
+      ],
+      "source": "TOPIC_RUBRIC_V1.md §2 T07 必测能力点（账目/报错数/显式不确定/口径来源）"
+    },
+    "T08": {
+      "keywords": [
+        "上次",
+        "上回",
+        "之前",
+        "那天",
+        "你说",
+        "你提",
+        "你讲",
+        "记得",
+        "老规矩",
+        "老样子",
+        "照旧",
+        "说过",
+        "记着",
+        "那会儿",
+        "按之前"
+      ],
+      "source": "TOPIC_RUBRIC_V1.md §2 T08 必测能力点（跨轮回指/记忆正确取用/KB 约束遵守）"
+    },
+    "T09": {
+      "keywords": [
+        "更正",
+        "取消",
+        "先不",
+        "改成",
+        "重新",
+        "维持",
+        "新时间",
+        "新口径",
+        "转场",
+        "先这样",
+        "回头说",
+        "到了吱",
+        "说一声",
+        "不弄了",
+        "重来",
+        "改口",
+        "按新"
+      ],
+      "source": "TOPIC_RUBRIC_V1.md §2 T09 必测能力点（更正链新口径/取消维持/话题转场/收尾留口）"
+    },
+    "T10": {
+      "keywords": [
+        "不对",
+        "不是",
+        "确认",
+        "记岔",
+        "说错",
+        "没答应",
+        "不方便",
+        "不透露",
+        "隐私",
+        "保密",
+        "拒绝",
+        "你没说",
+        "她没说",
+        "别听",
+        "记错",
+        "哪有",
+        "明明"
+      ],
+      "source": "TOPIC_RUBRIC_V1.md §2 T10 必测能力点（CF 跟随/边界拒绝/诱导不坐实）"
+    }
+  },
+  "topic_recognition": {
+    "denominator_note": "rate 分母=该 (topic, arm) 有非空 primary_text 的轮位；no_reply/空文本轮单列 no_text_rows，不进分母",
+    "no_topic_rows": {},
+    "per_topic": {
+      "T01": {
+        "arms": {
+          "CURRENT": {
+            "hit_case_ids": [],
+            "no_text_rows": 0,
+            "rate": 0.0,
+            "recognized": 0,
+            "rows": 48
+          },
+          "DIRECT": {
+            "hit_case_ids": [
+              "E301_T02",
+              "E302_T04"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.0417,
+            "recognized": 2,
+            "rows": 48
+          }
+        },
+        "episodes": [
+          "E301",
+          "E302",
+          "E303",
+          "E304"
+        ]
+      },
+      "T02": {
+        "arms": {
+          "CURRENT": {
+            "hit_case_ids": [],
+            "no_text_rows": 0,
+            "rate": 0.0,
+            "recognized": 0,
+            "rows": 48
+          },
+          "DIRECT": {
+            "hit_case_ids": [
+              "E305_T05",
+              "E305_T07"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.0417,
+            "recognized": 2,
+            "rows": 48
+          }
+        },
+        "episodes": [
+          "E305",
+          "E306",
+          "E307",
+          "E308"
+        ]
+      },
+      "T03": {
+        "arms": {
+          "CURRENT": {
+            "hit_case_ids": [
+              "E309_T02",
+              "E309_T10",
+              "E310_T08",
+              "E310_T09"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.0833,
+            "recognized": 4,
+            "rows": 48
+          },
+          "DIRECT": {
+            "hit_case_ids": [
+              "E309_T04"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.0208,
+            "recognized": 1,
+            "rows": 48
+          }
+        },
+        "episodes": [
+          "E309",
+          "E310",
+          "E311",
+          "E312"
+        ]
+      },
+      "T04": {
+        "arms": {
+          "CURRENT": {
+            "hit_case_ids": [
+              "E313_T03",
+              "E313_T06",
+              "E314_T03",
+              "E314_T07",
+              "E314_T08",
+              "E316_T10"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.125,
+            "recognized": 6,
+            "rows": 48
+          },
+          "DIRECT": {
+            "hit_case_ids": [
+              "E313_T04",
+              "E313_T06",
+              "E313_T07",
+              "E313_T11",
+              "E314_T01",
+              "E314_T02",
+              "E314_T03",
+              "E314_T06",
+              "E314_T07",
+              "E314_T08",
+              "E314_T12",
+              "E315_T03",
+              "E315_T06",
+              "E315_T08",
+              "E316_T01",
+              "E316_T10",
+              "E316_T12"
+            ],
+            "no_text_rows": 1,
+            "rate": 0.3617,
+            "recognized": 17,
+            "rows": 48
+          }
+        },
+        "episodes": [
+          "E313",
+          "E314",
+          "E315",
+          "E316"
+        ]
+      },
+      "T05": {
+        "arms": {
+          "CURRENT": {
+            "hit_case_ids": [
+              "E320_T02"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.0208,
+            "recognized": 1,
+            "rows": 48
+          },
+          "DIRECT": {
+            "hit_case_ids": [
+              "E317_T01",
+              "E318_T01",
+              "E318_T09",
+              "E320_T02",
+              "E320_T10",
+              "E320_T11"
+            ],
+            "no_text_rows": 3,
+            "rate": 0.1333,
+            "recognized": 6,
+            "rows": 48
+          }
+        },
+        "episodes": [
+          "E317",
+          "E318",
+          "E319",
+          "E320"
+        ]
+      },
+      "T06": {
+        "arms": {
+          "CURRENT": {
+            "hit_case_ids": [
+              "E321_T11",
+              "E323_T11",
+              "E324_T01",
+              "E324_T07"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.0833,
+            "recognized": 4,
+            "rows": 48
+          },
+          "DIRECT": {
+            "hit_case_ids": [
+              "E324_T01"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.0208,
+            "recognized": 1,
+            "rows": 48
+          }
+        },
+        "episodes": [
+          "E321",
+          "E322",
+          "E323",
+          "E324"
+        ]
+      },
+      "T07": {
+        "arms": {
+          "CURRENT": {
+            "hit_case_ids": [
+              "E325_T01",
+              "E325_T04",
+              "E325_T06",
+              "E325_T07",
+              "E327_T03",
+              "E328_T01",
+              "E328_T03",
+              "E328_T05",
+              "E328_T11",
+              "E328_T12"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.2083,
+            "recognized": 10,
+            "rows": 48
+          },
+          "DIRECT": {
+            "hit_case_ids": [
+              "E325_T02",
+              "E325_T03",
+              "E325_T07",
+              "E325_T08",
+              "E325_T09",
+              "E325_T10",
+              "E325_T11",
+              "E327_T03",
+              "E327_T11",
+              "E328_T02",
+              "E328_T11"
+            ],
+            "no_text_rows": 2,
+            "rate": 0.2391,
+            "recognized": 11,
+            "rows": 48
+          }
+        },
+        "episodes": [
+          "E325",
+          "E326",
+          "E327",
+          "E328"
+        ]
+      },
+      "T08": {
+        "arms": {
+          "CURRENT": {
+            "hit_case_ids": [
+              "E329_T09",
+              "E329_T12",
+              "E330_T04",
+              "E331_T02",
+              "E331_T04",
+              "E332_T03",
+              "E332_T04",
+              "E332_T05",
+              "E332_T06"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.1875,
+            "recognized": 9,
+            "rows": 48
+          },
+          "DIRECT": {
+            "hit_case_ids": [
+              "E329_T06",
+              "E329_T08",
+              "E329_T10",
+              "E330_T04",
+              "E332_T02",
+              "E332_T03",
+              "E332_T04",
+              "E332_T06",
+              "E332_T08",
+              "E332_T09"
+            ],
+            "no_text_rows": 3,
+            "rate": 0.2222,
+            "recognized": 10,
+            "rows": 48
+          }
+        },
+        "episodes": [
+          "E329",
+          "E330",
+          "E331",
+          "E332"
+        ]
+      },
+      "T09": {
+        "arms": {
+          "CURRENT": {
+            "hit_case_ids": [
+              "E063_T05",
+              "E063_T11",
+              "E063_T22",
+              "E337_T19",
+              "E338_T05",
+              "E338_T12",
+              "E338_T17",
+              "LRE121_T19",
+              "LRE121_T33",
+              "LRE121_T36"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.0833,
+            "recognized": 10,
+            "rows": 120
+          },
+          "DIRECT": {
+            "hit_case_ids": [
+              "E063_T05",
+              "E063_T18",
+              "E337_T20",
+              "E337_T22",
+              "E338_T31",
+              "LRE121_T04",
+              "LRE121_T19",
+              "LRE121_T20",
+              "LRE121_T28",
+              "LRE121_T33",
+              "LRE121_T37",
+              "LRE121_T38"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.1,
+            "recognized": 12,
+            "rows": 120
+          }
+        },
+        "episodes": [
+          "E063",
+          "E337",
+          "E338",
+          "LRE121"
+        ]
+      },
+      "T10": {
+        "arms": {
+          "CURRENT": {
+            "hit_case_ids": [
+              "E333_T04",
+              "E334_T01",
+              "E334_T04",
+              "E334_T09",
+              "E336_T10"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.1042,
+            "recognized": 5,
+            "rows": 48
+          },
+          "DIRECT": {
+            "hit_case_ids": [
+              "E335_T11"
+            ],
+            "no_text_rows": 0,
+            "rate": 0.0208,
+            "recognized": 1,
+            "rows": 48
+          }
+        },
+        "episodes": [
+          "E333",
+          "E334",
+          "E335",
+          "E336"
+        ]
+      }
+    }
+  }
+}

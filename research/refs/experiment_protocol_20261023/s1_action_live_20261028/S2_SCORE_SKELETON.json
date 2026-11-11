@@ -1,0 +1,2440 @@
+{
+ "kind": "pair_review_skeleton_v1",
+ "cards_file": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+ "exam_dir": "logs/p08_s2_live_20261028/_reports",
+ "arms": {
+  "parent": "reference_product_v1",
+  "candidate": "action_policy_r1"
+ },
+ "scale": "0-3（0反向/严重错 1关键不足 2合理完成 3本情境实质增益）；NA不适用 NR未测 uncertain审过不确定",
+ "positions": [
+  {
+   "case_id": "AK01_T01",
+   "episode": "AK01",
+   "card_dims": [
+    "goal",
+    "time_state",
+    "initiative",
+    "interaction"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "六点行。你从医院过来，顺路在哪碰头方便，你定个地方，我提前到。",
+     "backups": [
+      [
+       "bad_boy",
+       "六点。脚是你自己的，走着疼了当场收工，别硬撑两圈。"
+      ],
+      [
+       "playful",
+       "六点行，一个从小区出发，一个从医院出发，中间接头，地点你定。"
+      ],
+      [
+       "warm",
+       "六点行。你下班直接过来，不用赶，我提前到等你。"
+      ],
+      [
+       "directions[0]",
+       "消肿就好，那周五先按快走的来，别急。"
+      ],
+      [
+       "directions[1]",
+       "两圈走不下来就一圈，慢慢加，不着急。"
+      ],
+      [
+       "directions[2]",
+       "我这体能也就快走的份，跑是真跑不动。"
+      ],
+      [
+       "directions[3]",
+       "碰头地点你定一个，我提前十分钟到。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"六点行。你从医院过来，顺路在哪碰头方便，你定个地方，我提前到。\",\"bad_boy\":\"六点。脚是你自己的，走着疼了当场收工，别硬撑两圈。\",\"playful\":\"六点行，一个从小区出发，一个从医院出发，中间接头，地点你定。\",\"warm\":\"六点行。你下班直接过来，不用赶，我提前到等你。\"},\"directions\":[\"消肿就好，那周五先按快走的来，别急。\",\"两圈走不下来就一圈，慢慢加，不着急。\",\"我这体能也就快走的份，跑是真跑不动。\",\"碰头地点你定一个，我提前十分钟到。\"],\"analysis\":{\"topic_status\":\"drift\",\"topic_label\":\"周五晚快走碰头\",\"scene_facts\":[{\"text\":\"她右脚已基本消肿，医生说可以快走、暂不能跑\",\"source_ids\":[\"m1\"]},{\"text\":\"她周五（2026-12-04）下班早，18:00可以，从医院那边过来\",\"source_ids\":[\"m3\"]},{\"text\":\"我提出绕小区外圈快走两圈、不追速度\",\"source_ids\":[\"m2\"]}],\"ongoing\":[{\"item\":\"2026-12-04晚快走\",\"status\":\"进行中\",\"state\":\"她确认18:00可，从医院过来，碰头地点未定\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "ae4907e45bf2794c3512401c33bb9e0a8069cb3d27124f41bb6a3adf99dfb545",
+     "run_id": "iso_20261028_133811_8e44b4",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7313,
+      "completion": 351,
+      "cache": null
+     },
+     "latency_ms": 23589,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r1": {
+     "present": true,
+     "primary": "六点行，小区门口碰头？你从医院过来顺路。先走外圈两圈，不追速度，脚一有感觉就喊停。",
+     "backups": [
+      [
+       "bad_boy",
+       "六点定了。说好不追速度，你要是一上来就冲，我就在旁边拦着。"
+      ],
+      [
+       "playful",
+       "六点没问题。你从医院过来要是堵在路上，我就先替你把外圈走一遍，等你到了再走第二圈。"
+      ],
+      [
+       "warm",
+       "六点可以，小区门口等你。脚刚消肿，走慢点不丢人，我陪你走完两圈。"
+      ],
+      [
+       "directions[0]",
+       "那周五六点小区门口见，我到得早就在门口等"
+      ],
+      [
+       "directions[1]",
+       "外圈两圈大概二十来分钟，走完你要是还撑得住，就再慢走一小段"
+      ],
+      [
+       "directions[2]",
+       "你从医院过来那段路不近，路上别赶，晚几分钟我等着"
+      ],
+      [
+       "directions[3]",
+       "要是明晚临时有事，提前说一声，改周六早上也行"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"六点行，小区门口碰头？你从医院过来顺路。先走外圈两圈，不追速度，脚一有感觉就喊停。\",\"bad_boy\":\"六点定了。说好不追速度，你要是一上来就冲，我就在旁边拦着。\",\"playful\":\"六点没问题。你从医院过来要是堵在路上，我就先替你把外圈走一遍，等你到了再走第二圈。\",\"warm\":\"六点可以，小区门口等你。脚刚消肿，走慢点不丢人，我陪你走完两圈。\"},\"directions\":[\"那周五六点小区门口见，我到得早就在门口等\",\"外圈两圈大概二十来分钟，走完你要是还撑得住，就再慢走一小段\",\"你从医院过来那段路不近，路上别赶，晚几分钟我等着\",\"要是明晚临时有事，提前说一声，改周六早上也行\"],\"analysis\":{\"signal\":\"积极\",\"goal_category\":\"推进见面\",\"action_taken\":\"邀约\",\"anchor\":\"m3\",\"hook\":{\"kind\":\"小选择\",\"text\":\"小区门口碰头？\"},\"facts\":[{\"text\":\"她右脚消肿差不多，医生说可以快走、先别跑\",\"subject\":\"HER\",\"relation\":\"脚伤恢复\",\"quote\":\"消差不多了 医生说可以快走 先别跑\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-01\"},{\"text\":\"我提过快走绕小区外圈两圈、不追速度\",\"subject\":\"ME\",\"relation\":\"运动安排\",\"quote\":\"那就快走 绕小区外圈两圈 不追速度\",\"src_ids\":[\"m2\"],\"certainty\":\"tentative\",\"event_time\":\"\"},{\"text\":\"她周五下班早，六点可以，从医院那边过来\",\"subject\":\"HER\",\"relation\":\"周五时间\",\"quote\":\"周五晚上我下班早 六点行不 我从医院那边过来\",\"src_ids\":[\"m3\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-04 18:00\"}],\"tentatives\":[{\"text\":\"周五六点快走，见面地点还没定\",\"quote\":\"周五晚上我下班早 六点行不 我从医院那边过来\",\"src_ids\":[\"m3\"]}],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "ae4907e45bf2794c3512401c33bb9e0a8069cb3d27124f41bb6a3adf99dfb545",
+     "run_id": "iso_20261028_133811_379194",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 5067,
+      "completion": 568,
+      "cache": null
+     },
+     "latency_ms": 16618,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "AK02_T01",
+   "episode": "AK02",
+   "card_dims": [
+    "goal",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "行，七点取消。那改下午四点，走二十分钟，脚不舒服就折回来，你看行不行。",
+     "backups": [
+      [
+       "bad_boy",
+       "补觉是正事。等你脚敢用力了再喊我，别硬撑。"
+      ],
+      [
+       "playful",
+       "七点取消，改成睡到自然醒。这计划先记你账上。"
+      ],
+      [
+       "warm",
+       "那就先补觉，脚别硬撑。等你能用力了，我陪你走一小段。"
+      ],
+      [
+       "directions[0]",
+       "脚现在走平地还疼吗，还是只是不敢使劲"
+      ],
+      [
+       "directions[1]",
+       "下坡崴的那次是不是挺重，肿三天才消"
+      ],
+      [
+       "directions[2]",
+       "说实话我也没长性，所以慢走比跑靠谱"
+      ],
+      [
+       "directions[3]",
+       "那就先不定，你哪天真觉得能用力了再说"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"行，七点取消。那改下午四点，走二十分钟，脚不舒服就折回来，你看行不行。\",\"bad_boy\":\"补觉是正事。等你脚敢用力了再喊我，别硬撑。\",\"playful\":\"七点取消，改成睡到自然醒。这计划先记你账上。\",\"warm\":\"那就先补觉，脚别硬撑。等你能用力了，我陪你走一小段。\"},\"directions\":[\"脚现在走平地还疼吗，还是只是不敢使劲\",\"下坡崴的那次是不是挺重，肿三天才消\",\"说实话我也没长性，所以慢走比跑靠谱\",\"那就先不定，你哪天真觉得能用力了再说\"],\"analysis\":{\"topic_status\":\"new\",\"topic_label\":\"周六早上河边快走邀约\",\"scene_facts\":[{\"text\":\"我提议周六早上七点去河边快走一圈\",\"source_ids\":[\"m0\"]},{\"text\":\"她说周六本来想补觉，脚还是不太敢用力\",\"source_ids\":[\"m1\"]}],\"ongoing\":[{\"item\":\"计划河边快走\",\"status\":\"进行中\",\"state\":\"她以补觉和脚不敢用力为由推回，早上七点待调整\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "e4bf427e73ced10edcdf8035343eab82d02c64727d05c075344ee0c3b8463c8a",
+     "run_id": "iso_20261028_133812_783d88",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7399,
+      "completion": 317,
+      "cache": null
+     },
+     "latency_ms": 26574,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r1": {
+     "present": true,
+     "primary": "那周六早上七点这条我收回，补觉要紧，你下夜班睡不够比走两圈严重多了。脚不敢用力就先别走，等踩实了再说。",
+     "backups": [
+      [
+       "bad_boy",
+       "行，七点是我起猛了，撤。你睡你的，脚什么时候敢全掌落地，你说了算。"
+      ],
+      [
+       "playful",
+       "七点确实有点狠，我一激动把闹钟定到你头上了。你补觉，脚养着，我不催。"
+      ],
+      [
+       "warm",
+       "补觉优先，脚别硬撑，肿过的地方用力早了容易反复。周六早上不占你了，等你脚好了想走再叫我。"
+      ],
+      [
+       "directions[0]",
+       "那脚现在走路还疼吗，还是只是不敢使劲"
+      ],
+      [
+       "directions[1]",
+       "不上强度也能改成你楼下慢走十分钟，脚说了算"
+      ],
+      [
+       "directions[2]",
+       "其实我更想跟你一块儿走，走多久无所谓"
+      ],
+      [
+       "directions[3]",
+       "你夜班是几点下班，我按你睡醒的点来"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"那周六早上七点这条我收回，补觉要紧，你下夜班睡不够比走两圈严重多了。脚不敢用力就先别走，等踩实了再说。\",\"bad_boy\":\"行，七点是我起猛了，撤。你睡你的，脚什么时候敢全掌落地，你说了算。\",\"playful\":\"七点确实有点狠，我一激动把闹钟定到你头上了。你补觉，脚养着，我不催。\",\"warm\":\"补觉优先，脚别硬撑，肿过的地方用力早了容易反复。周六早上不占你了，等你脚好了想走再叫我。\"},\"directions\":[\"那脚现在走路还疼吗，还是只是不敢使劲\",\"不上强度也能改成你楼下慢走十分钟，脚说了算\",\"其实我更想跟你一块儿走，走多久无所谓\",\"你夜班是几点下班，我按你睡醒的点来\"]},\"analysis\":{\"signal\":\"暂缓\",\"goal_category\":\"暂缓\",\"action_taken\":\"承接\",\"anchor\":\"m1\",\"hook\":{\"kind\":\"观察\",\"text\":\"脚什么时候敢全掌落地，你说了算\"},\"facts\":[{\"text\":\"她周六本来想补觉，脚还不太敢用力\",\"subject\":\"HER\",\"relation\":\"身体状态/日程\",\"quote\":\"周六我本来想补觉…而且脚还是不太敢用力\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"周六\"}],\"tentatives\":[{\"text\":\"周六早上七点河边走一圈（我提的，未敲定，已收回）\",\"quote\":\"周六早上七点 河边走一圈 不上强度\",\"src_ids\":[\"m0\"]}],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "e4bf427e73ced10edcdf8035343eab82d02c64727d05c075344ee0c3b8463c8a",
+     "run_id": "iso_20261028_133811_3f7b6d",
+     "program": {
+      "score10": 0.0,
+      "veto": "json_schema_broken",
+      "failed_checks": [
+       "json_schema_valid"
+      ]
+     },
+     "tokens": {
+      "prompt": 5124,
+      "completion": 439,
+      "cache": null
+     },
+     "latency_ms": 25392,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "AK03_T01",
+   "episode": "AK03",
+   "card_dims": [
+    "goal",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "那今晚先忙到八点。明晚你几点能下班，我按你的时间来。",
+     "backups": [
+      [
+       "bad_boy",
+       "疫苗门诊加得挺勤。明晚几点能走？你定时间，我配合。"
+      ],
+      [
+       "playful",
+       "门诊比我还抢手。那明晚几点能脱身？"
+      ],
+      [
+       "warm",
+       "今晚先忙，别急着赶。明晚几点能走，跟我说一声。"
+      ],
+      [
+       "directions[0]",
+       "八点才走，那今晚这波够忙的。"
+      ],
+      [
+       "directions[1]",
+       "明晚要是排到太晚，就往后挪一天，不急这一回。"
+      ],
+      [
+       "directions[2]",
+       "本来想着明晚拉你走一圈，你要是排班紧，就别硬挤。"
+      ],
+      [
+       "directions[3]",
+       "明晚你下班后跟我说几点能走，我在老地方等你。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"那今晚先忙到八点。明晚你几点能下班，我按你的时间来。\",\"bad_boy\":\"疫苗门诊加得挺勤。明晚几点能走？你定时间，我配合。\",\"playful\":\"门诊比我还抢手。那明晚几点能脱身？\",\"warm\":\"今晚先忙，别急着赶。明晚几点能走，跟我说一声。\"},\"directions\":[\"八点才走，那今晚这波够忙的。\",\"明晚要是排到太晚，就往后挪一天，不急这一回。\",\"本来想着明晚拉你走一圈，你要是排班紧，就别硬挤。\",\"明晚你下班后跟我说几点能走，我在老地方等你。\"],\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"明晚快走邀约\",\"scene_facts\":[{\"text\":\"我提出明晚18:00在老地方先绕一圈等她\",\"source_ids\":[\"m0\"]},{\"text\":\"她今晚院里临时加疫苗门诊，20:00才下班\",\"source_ids\":[\"m1\"]},{\"text\":\"她明天也排了班，具体下班时间没说\",\"source_ids\":[\"m1\"]}],\"ongoing\":[{\"item\":\"2026-12-08晚六点复健快走\",\"status\":\"进行中\",\"state\":\"她说明天排了班，具体时间待定\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "a07597e790474172a7da68f4d3d5775e252d66d1a5a30a03c9617fc2492bc09d",
+     "run_id": "iso_20261028_133812_e931f6",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7248,
+      "completion": 332,
+      "cache": null
+     },
+     "latency_ms": 33350,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r1": {
+     "present": true,
+     "primary": "加门诊到八点，今晚够熬的。明晚六点先不算，你哪天能准点下班再说，我绕一圈不费事。",
+     "backups": [
+      [
+       "bad_boy",
+       "临时门诊这种活儿是不是永远落你头上。明晚六点就当我没提，别为了赶这个点把自己撵着跑。"
+      ],
+      [
+       "playful",
+       "疫苗门诊一加，六点这个点就直接作废了。行，明晚那圈我先记着，等你哪天能准点走再兑现。"
+      ],
+      [
+       "warm",
+       "八点才走，今晚别硬扛着还惦记别的事。明晚那个先放着，你哪天松下来跟我说一声就行。"
+      ],
+      [
+       "directions[0]",
+       "明天也排班，是排到几点？还是八点的话我这几天先不催你。"
+      ],
+      [
+       "directions[1]",
+       "两天连轴，你这脚估计又没空管了。"
+      ],
+      [
+       "directions[2]",
+       "本来还挺盼明晚那圈，不过你先把班扛完再说。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"加门诊到八点，今晚够熬的。明晚六点先不算，你哪天能准点下班再说，我绕一圈不费事。\",\"bad_boy\":\"临时门诊这种活儿是不是永远落你头上。明晚六点就当我没提，别为了赶这个点把自己撵着跑。\",\"playful\":\"疫苗门诊一加，六点这个点就直接作废了。行，明晚那圈我先记着，等你哪天能准点走再兑现。\",\"warm\":\"八点才走，今晚别硬扛着还惦记别的事。明晚那个先放着，你哪天松下来跟我说一声就行。\"},\"directions\":[\"明天也排班，是排到几点？还是八点的话我这几天先不催你。\",\"两天连轴，你这脚估计又没空管了。\",\"本来还挺盼明晚那圈，不过你先把班扛完再说。\",null],\"analysis\":{\"signal\":\"忙碌\",\"goal_category\":\"暂缓\",\"action_taken\":\"承接\",\"anchor\":\"m1\",\"hook\":{\"kind\":\"小选择\",\"text\":\"你哪天能准点下班再说\"},\"facts\":[{\"text\":\"她今晚院里临时加疫苗门诊，八点才下班\",\"subject\":\"HER\",\"relation\":\"工作安排\",\"quote\":\"今晚院里临时加疫苗门诊 我八点才走\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-07 晚\"},{\"text\":\"她明天也排了班\",\"subject\":\"HER\",\"relation\":\"工作安排\",\"quote\":\"明天也排了班\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-08\"}],\"tentatives\":[{\"text\":\"我提出明晚六点老地方快走、我先绕一圈等她，未确认\",\"quote\":\"明晚六点老地方 我先绕一圈等你\",\"src_ids\":[\"m0\"]}],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "a07597e790474172a7da68f4d3d5775e252d66d1a5a30a03c9617fc2492bc09d",
+     "run_id": "iso_20261028_133812_e7740c",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 4978,
+      "completion": 472,
+      "cache": null
+     },
+     "latency_ms": 18684,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "AK04_T01",
+   "episode": "AK04",
+   "card_dims": [
+    "goal",
+    "time_state",
+    "interaction",
+    "boundary"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "行，水我带，话我咽着。八点准时到。",
+     "backups": [
+      [
+       "bad_boy",
+       "放心，我就带水。真要挑毛病，也等你下台了再说。"
+      ],
+      [
+       "playful",
+       "带水没问题，别指望我憋得住笑。笑是给你捧场的，不算说话。"
+      ],
+      [
+       "warm",
+       "那我八点坐第一排，就负责给你鼓掌，别的一概不干。"
+      ],
+      [
+       "directions[0]",
+       "八点我提前到，先把位置占了。"
+      ],
+      [
+       "directions[1]",
+       "五分钟够你铺两个梗了，中间留点空给笑声。"
+      ],
+      [
+       "directions[2]",
+       "我去了就当观众，笑是真的，不给你来那种客气笑。"
+      ],
+      [
+       "directions[3]",
+       "散场别急着走，鼓楼那边还有家店开着，吃点东西再回去。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"行，水我带，话我咽着。八点准时到。\",\"bad_boy\":\"放心，我就带水。真要挑毛病，也等你下台了再说。\",\"playful\":\"带水没问题，别指望我憋得住笑。笑是给你捧场的，不算说话。\",\"warm\":\"那我八点坐第一排，就负责给你鼓掌，别的一概不干。\"},\"directions\":[\"八点我提前到，先把位置占了。\",\"五分钟够你铺两个梗了，中间留点空给笑声。\",\"我去了就当观众，笑是真的，不给你来那种客气笑。\",\"散场别急着走，鼓楼那边还有家店开着，吃点东西再回去。\"],\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"周六第一次开放麦\",\"scene_facts\":[{\"text\":\"她周六20:00第一次上台，五分钟的段子\",\"source_ids\":[\"m0\",\"m2\"]},{\"text\":\"她要我带水，别带点评的话\",\"source_ids\":[\"m2\"]},{\"text\":\"我说那张卡帮她留着，坐第一排\",\"source_ids\":[\"m1\"]}],\"ongoing\":[{\"item\":\"计划12-12 20:00去鼓楼看她开放麦\",\"status\":\"进行中\",\"state\":\"她确认上台时间，让我带水别带话\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "41e597984d898444a439b1eb52d8b0804c83c06e4ded59b6800665ca8eaa8bc2",
+     "run_id": "iso_20261028_133813_0c3b9d",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7273,
+      "completion": 334,
+      "cache": null
+     },
+     "latency_ms": 15028,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r1": {
+     "present": true,
+     "primary": "行，水我带，话我咽着。八点我准时到，第一排靠边那个位子归我。",
+     "backups": [
+      [
+       "bad_boy",
+       "水带两瓶，话一句不说。你就算真冷场，我也装没听出来。"
+      ],
+      [
+       "playful",
+       "带水不带话，那我憋不住笑了，算不算犯规。"
+      ],
+      [
+       "warm",
+       "你能站上去我就已经服了。八点我准时到，就坐底下看着，不当评委。"
+      ],
+      [
+       "directions[0]",
+       "水我拎两瓶过去，别的什么都不带。"
+      ],
+      [
+       "directions[1]",
+       "五分钟够你说三个段子了，我等着听。"
+      ],
+      [
+       "directions[2]",
+       "其实我更想看你上去紧张那一下，比段子好看。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"行，水我带，话我咽着。八点我准时到，第一排靠边那个位子归我。\",\"bad_boy\":\"水带两瓶，话一句不说。你就算真冷场，我也装没听出来。\",\"playful\":\"带水不带话，那我憋不住笑了，算不算犯规。\",\"warm\":\"你能站上去我就已经服了。八点我准时到，就坐底下看着，不当评委。\"},\"directions\":[\"水我拎两瓶过去，别的什么都不带。\",\"五分钟够你说三个段子了，我等着听。\",\"其实我更想看你上去紧张那一下，比段子好看。\",null],\"analysis\":{\"signal\":\"积极\",\"goal_category\":\"推进见面\",\"action_taken\":\"承接\",\"anchor\":\"m2\",\"hook\":{\"kind\":\"观察\",\"text\":\"话我咽着\"},\"facts\":[{\"text\":\"她被排进周六开放麦，五分钟\",\"subject\":\"HER\",\"relation\":\"演出安排\",\"quote\":\"老板给我排进周六了 五分钟\",\"src_ids\":[\"m0\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-12\"},{\"text\":\"周六八点，她让我带水别带话\",\"subject\":\"HER\",\"relation\":\"约定\",\"quote\":\"周六八点 你带水别带话\",\"src_ids\":[\"m2\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-12 20:00\"},{\"text\":\"我说到时候坐第一排\",\"subject\":\"ME\",\"relation\":\"约定\",\"quote\":\"那张卡我帮你留着 到时候我坐第一排\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-12\"}],\"tentatives\":[],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "41e597984d898444a439b1eb52d8b0804c83c06e4ded59b6800665ca8eaa8bc2",
+     "run_id": "iso_20261028_133812_6b3fa0",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 5015,
+      "completion": 408,
+      "cache": null
+     },
+     "latency_ms": 13792,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "AK05_T01",
+   "episode": "AK05",
+   "card_dims": [
+    "goal",
+    "emotion_relation",
+    "boundary",
+    "interaction"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "行，你念我听着。我不点评，只负责笑。",
+     "backups": [
+      [
+       "bad_boy",
+       "怕我觉得不好笑？我笑点低，你算捡着了。"
+      ],
+      [
+       "playful",
+       "行啊，不过笑场不算我砸场子。"
+      ],
+      [
+       "warm",
+       "念吧，冷场我兜着。台下熟人也就我一个。"
+      ],
+      [
+       "directions[0]",
+       "你念，我听完只说笑没笑，不教你怎么改。"
+      ],
+      [
+       "directions[1]",
+       "今晚过，还是明天上台前过？我留个耳朵。"
+      ],
+      [
+       "directions[2]",
+       "我坐第一排是去给你壮胆的，不是去验收的。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"行，你念我听着。我不点评，只负责笑。\",\"bad_boy\":\"怕我觉得不好笑？我笑点低，你算捡着了。\",\"playful\":\"行啊，不过笑场不算我砸场子。\",\"warm\":\"念吧，冷场我兜着。台下熟人也就我一个。\"},\"directions\":[\"你念，我听完只说笑没笑，不教你怎么改。\",\"今晚过，还是明天上台前过？我留个耳朵。\",\"我坐第一排是去给你壮胆的，不是去验收的。\",null],\"analysis\":{\"topic_status\":\"drift\",\"topic_label\":\"明晚上台前过段子\",\"scene_facts\":[{\"text\":\"她明天上台，想在上台前找人把段子过一遍\",\"source_ids\":[\"m1\"]},{\"text\":\"她担心我听完觉得不好笑\",\"source_ids\":[\"m1\"]},{\"text\":\"我已经取好明晚八点的票\",\"source_ids\":[\"m0\"]},{\"text\":\"现在是2026-12-11 23:02，她在深夜提这件事\",\"source_ids\":[\"m1\"]}],\"ongoing\":[{\"item\":\"计划12-12晚八点看她首次开放麦\",\"status\":\"进行中\",\"state\":\"我已取票，她提出上台前先找我过一遍段子\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "5524d5bc9df80dce9d7cc8814bf830abf43563947e57b63d356e1a4873205924",
+     "run_id": "iso_20261028_133813_e4e9fb",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7375,
+      "completion": 314,
+      "cache": null
+     },
+     "latency_ms": 25059,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r1": {
+     "present": true,
+     "primary": "行啊，过一遍。我当观众不当评委：听完只告诉你哪几句我笑了，别的意见一句不给。明天几点方便？",
+     "backups": [
+      [
+       "bad_boy",
+       "怕我觉得不好笑？那正好，我要真笑了，台下那帮人大概率也会笑。什么时候过，说个点。"
+      ],
+      [
+       "playful",
+       "行，我当试听观众。提前打个招呼：我笑点低，你别到时候误会自己特别行。"
+      ],
+      [
+       "warm",
+       "想找人过就找我啊，我又不是来给你打分的。明天过完，八点我坐第一排，负责笑。"
+      ],
+      [
+       "directions[0]",
+       "明天几点方便？我提前把时间空出来。"
+      ],
+      [
+       "directions[1]",
+       "我看开放麦属于起哄那一挂的，不是评委那一挂的，你别太抬举我的标准。"
+      ],
+      [
+       "directions[2]",
+       "你愿意先拿给我过，我挺高兴的。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"行啊，过一遍。我当观众不当评委：听完只告诉你哪几句我笑了，别的意见一句不给。明天几点方便？\",\"bad_boy\":\"怕我觉得不好笑？那正好，我要真笑了，台下那帮人大概率也会笑。什么时候过，说个点。\",\"playful\":\"行，我当试听观众。提前打个招呼：我笑点低，你别到时候误会自己特别行。\",\"warm\":\"想找人过就找我啊，我又不是来给你打分的。明天过完，八点我坐第一排，负责笑。\"},\"directions\":[\"明天几点方便？我提前把时间空出来。\",\"我看开放麦属于起哄那一挂的，不是评委那一挂的，你别太抬举我的标准。\",\"你愿意先拿给我过，我挺高兴的。\",\"\"],\"analysis\":{\"signal\":\"接纳\",\"goal_category\":\"推进见面\",\"action_taken\":\"邀约\",\"anchor\":\"m1\",\"hook\":{\"kind\":\"小选择\",\"text\":\"明天几点方便？\"},\"facts\":[{\"text\":\"我已取好明晚八点的票\",\"subject\":\"ME\",\"relation\":\"观演安排\",\"quote\":\"明晚八点我票都取好了\",\"src_ids\":[\"m0\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-12 20:00\"},{\"text\":\"她明天上台\",\"subject\":\"HER\",\"relation\":\"首次上台演出\",\"quote\":\"我明天上台前想找人过一遍\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-12\"}],\"tentatives\":[{\"text\":\"她上台前想找人先过一遍段子，找谁还没定\",\"quote\":\"我明天上台前想找人过一遍\",\"src_ids\":[\"m1\"]}],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "5524d5bc9df80dce9d7cc8814bf830abf43563947e57b63d356e1a4873205924",
+     "run_id": "iso_20261028_133813_bb3977",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 5100,
+      "completion": 448,
+      "cache": null
+     },
+     "latency_ms": 21649,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "AK06_T01",
+   "episode": "AK06",
+   "card_dims": [
+    "goal",
+    "time_state",
+    "boundary",
+    "interaction"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "七点半走来得及，路上别急。真赶不上提前跟我说一句，我帮你想办法。",
+     "backups": [
+      [
+       "bad_boy",
+       "七点半走还惦记着八点半到，这算盘打得挺响。赶不上就往后排，反正我人已经在那儿了。"
+      ],
+      [
+       "playful",
+       "顶晚托？你这保育员当得比园长还忙。七点半走来得及，来不及我就在台下多坐会儿。"
+      ],
+      [
+       "warm",
+       "别慌，七点半走赶得上。真来不及了发我一句，我在门口等你。"
+      ],
+      [
+       "directions[0]",
+       "七点半走的话路上要多久，别卡着点出发。"
+      ],
+      [
+       "directions[1]",
+       "晚托是就今天顶一次，还是以后都排上了？"
+      ],
+      [
+       "directions[2]",
+       "真赶不上也别硬赶，安全到比准点到重要。"
+      ],
+      [
+       "directions[3]",
+       "赶不上的话提前跟我说，我早点过去把位置占好。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"七点半走来得及，路上别急。真赶不上提前跟我说一句，我帮你想办法。\",\"bad_boy\":\"七点半走还惦记着八点半到，这算盘打得挺响。赶不上就往后排，反正我人已经在那儿了。\",\"playful\":\"顶晚托？你这保育员当得比园长还忙。七点半走来得及，来不及我就在台下多坐会儿。\",\"warm\":\"别慌，七点半走赶得上。真来不及了发我一句，我在门口等你。\"},\"directions\":[\"七点半走的话路上要多久，别卡着点出发。\",\"晚托是就今天顶一次，还是以后都排上了？\",\"真赶不上也别硬赶，安全到比准点到重要。\",\"赶不上的话提前跟我说，我早点过去把位置占好。\"],\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"周六首台到场时间\",\"scene_facts\":[{\"text\":\"我说明晚八点半到。\",\"source_ids\":[\"m0\"]},{\"text\":\"她今晚被班里临时安排顶晚托，七点半才能走。\",\"source_ids\":[\"m1\"]},{\"text\":\"她说可能赶不上。\",\"source_ids\":[\"m1\"]}],\"ongoing\":[{\"item\":\"2026-12-13看她开放麦首台\",\"status\":\"进行中\",\"state\":\"她说顶晚托七点半才走，可能赶不上\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "006b63007b1996cf39341fb555cb2555b9b73d441e6cc1d1f2c8089f4e909765",
+     "run_id": "iso_20261028_133814_dbd68a",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7234,
+      "completion": 368,
+      "cache": null
+     },
+     "latency_ms": 17754,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r1": {
+     "present": true,
+     "primary": "七点半走，八点半开场，中间还有一个小时，不用太慌。我先到，位置给你留着；真赶不上开场也没事，你到我就鼓掌。",
+     "backups": [
+      [
+       "bad_boy",
+       "那正好，压轴登场。七点半走，八点半开场，够你把晚托的怨气攒成开场白。位置我先占着。"
+      ],
+      [
+       "playful",
+       "晚托那几个小的闹起来，你就当提前热身。七点半走也来得及，我先去坐着，你到了直接找我。"
+      ],
+      [
+       "warm",
+       "别为这个急，赶不上开场也没关系，你上台那几分钟我在就行。七点半走，路上慢点。"
+      ],
+      [
+       "directions[0]",
+       "是赶不上开场，还是整场都悬？"
+      ],
+      [
+       "directions[1]",
+       "顶晚托是临时的，还是以后也常这样？"
+      ],
+      [
+       "directions[2]",
+       "说真的，我挺想看你上台那几分钟的。"
+      ],
+      [
+       "directions[3]",
+       "要是真赶不上，回头你把段子讲给我听，我当第一个观众。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"七点半走，八点半开场，中间还有一个小时，不用太慌。我先到，位置给你留着；真赶不上开场也没事，你到我就鼓掌。\",\"bad_boy\":\"那正好，压轴登场。七点半走，八点半开场，够你把晚托的怨气攒成开场白。位置我先占着。\",\"playful\":\"晚托那几个小的闹起来，你就当提前热身。七点半走也来得及，我先去坐着，你到了直接找我。\",\"warm\":\"别为这个急，赶不上开场也没关系，你上台那几分钟我在就行。七点半走，路上慢点。\"},\"directions\":[\"是赶不上开场，还是整场都悬？\",\"顶晚托是临时的，还是以后也常这样？\",\"说真的，我挺想看你上台那几分钟的。\",\"要是真赶不上，回头你把段子讲给我听，我当第一个观众。\"],\"analysis\":{\"signal\":\"忙碌\",\"goal_category\":\"推进见面\",\"action_taken\":\"承接\",\"anchor\":\"m1\",\"hook\":{\"kind\":\"观察\",\"text\":\"七点半走，八点半开场，中间还有一个小时\"},\"facts\":[{\"text\":\"我明晚八点半到场\",\"subject\":\"ME\",\"relation\":\"\",\"quote\":\"明晚八点半我到\",\"src_ids\":[\"m0\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-13 20:30\"},{\"text\":\"她班里临时让她顶晚托，七点半才能走\",\"subject\":\"HER\",\"relation\":\"工作安排\",\"quote\":\"班里临时让我顶晚托 我得七点半才走\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-13 19:30\"}],\"tentatives\":[{\"text\":\"她可能赶不上明晚的开场\",\"quote\":\"可能赶不上\",\"src_ids\":[\"m1\"]}],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "006b63007b1996cf39341fb555cb2555b9b73d441e6cc1d1f2c8089f4e909765",
+     "run_id": "iso_20261028_133813_47f175",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 4964,
+      "completion": 478,
+      "cache": null
+     },
+     "latency_ms": 59638,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "AK07_T01",
+   "episode": "AK07",
+   "card_dims": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "行，真题我带着。周六下午两点图书馆门口见。",
+     "backups": [
+      [
+       "bad_boy",
+       "行，真题我包了，你把人带来就行，别到时候又说没底。"
+      ],
+      [
+       "playful",
+       "行，那门实务我盯你两小时，想跑也跑不掉。"
+      ],
+      [
+       "warm",
+       "行，带上。那门我去年也栽过，周六一起过一遍就没那么慌了。"
+      ],
+      [
+       "directions[0]",
+       "行，两点我早点去占位置，你直接过来。"
+      ],
+      [
+       "directions[1]",
+       "实务真题就那几套，两小时够过一遍，剩下你自己刷。"
+      ],
+      [
+       "directions[2]",
+       "去年我实务就是靠真题过的，比啃教材管用多了。"
+      ],
+      [
+       "directions[3]",
+       "弄完要不要顺路去球场那边吃点东西。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"行，真题我带着。周六下午两点图书馆门口见。\",\"bad_boy\":\"行，真题我包了，你把人带来就行，别到时候又说没底。\",\"playful\":\"行，那门实务我盯你两小时，想跑也跑不掉。\",\"warm\":\"行，带上。那门我去年也栽过，周六一起过一遍就没那么慌了。\"},\"directions\":[\"行，两点我早点去占位置，你直接过来。\",\"实务真题就那几套，两小时够过一遍，剩下你自己刷。\",\"去年我实务就是靠真题过的，比啃教材管用多了。\",\"弄完要不要顺路去球场那边吃点东西。\"],\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"模考成绩与周六图书馆备考安排\",\"scene_facts\":[{\"text\":\"她第一次模考报的三门里过了两门，实务最没底\",\"source_ids\":[\"m0\"]},{\"text\":\"我提出周六下午图书馆一起弄两小时实务，带真题\",\"source_ids\":[\"m1\"]},{\"text\":\"她确认周六下午会去，让我带那本真题\",\"source_ids\":[\"m2\"]}],\"ongoing\":[{\"item\":\"计划2026-12-19周六下午图书馆攻实务两小时\",\"status\":\"进行中\",\"state\":\"她确认会去，让我带真题\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "01a85ddb6628c96af3e3d509ece4491e09376f61c94539afd8455041d0d17717",
+     "run_id": "iso_20261028_133814_cc7b8f",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7247,
+      "completion": 357,
+      "cache": null
+     },
+     "latency_ms": 15239,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r1": {
+     "present": true,
+     "primary": "行，真题我带。周六下午两点图书馆门口碰？占不到座我早点去。",
+     "backups": [
+      [
+       "bad_boy",
+       "成。越没底的那门越值得砸两小时，周六见。"
+      ],
+      [
+       "playful",
+       "成交。我负责带书，你负责别到门口又说'可能太多'。"
+      ],
+      [
+       "warm",
+       "行，我带上。剩这一门最磨人，两小时够了，不贪多。"
+      ],
+      [
+       "directions[0]",
+       "那周六下午两点，还是三点你更方便？"
+      ],
+      [
+       "directions[1]",
+       "实务那门我打算从错得最多的题型倒着刷，你要不也这么来"
+      ],
+      [
+       "directions[2]",
+       "你这次两门都过了，剩一门没那么玄"
+      ],
+      [
+       "directions[3]",
+       "对了，你上次说的那个考点笔记还在吗，带着一起对一遍"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"行，真题我带。周六下午两点图书馆门口碰？占不到座我早点去。\",\"bad_boy\":\"成。越没底的那门越值得砸两小时，周六见。\",\"playful\":\"成交。我负责带书，你负责别到门口又说'可能太多'。\",\"warm\":\"行，我带上。剩这一门最磨人，两小时够了，不贪多。\"},\"directions\":[\"那周六下午两点，还是三点你更方便？\",\"实务那门我打算从错得最多的题型倒着刷，你要不也这么来\",\"你这次两门都过了，剩一门没那么玄\",\"对了，你上次说的那个考点笔记还在吗，带着一起对一遍\"],\"analysis\":{\"signal\":\"积极\",\"goal_category\":\"推进见面\",\"action_taken\":\"承接\",\"anchor\":\"m2\",\"hook\":{\"kind\":\"小选择\",\"text\":\"周六下午两点图书馆门口碰？\"},\"facts\":[{\"text\":\"她模考过了两门，剩实务那门最没底\",\"subject\":\"HER\",\"relation\":\"备考进展\",\"quote\":\"模考过了两门 剩那门实务我最没底\",\"src_ids\":[\"m0\"],\"certainty\":\"confirmed\",\"event_time\":\"\"},{\"text\":\"周六下午一起去图书馆，我带上真题\",\"subject\":\"SHARED\",\"relation\":\"约定\",\"quote\":\"行 周六下午我去 你带那本真题\",\"src_ids\":[\"m2\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-19 下午\"}],\"tentatives\":[],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "01a85ddb6628c96af3e3d509ece4491e09376f61c94539afd8455041d0d17717",
+     "run_id": "iso_20261028_133814_791a33",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 5039,
+      "completion": 392,
+      "cache": null
+     },
+     "latency_ms": 16546,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "AK08_T01",
+   "episode": "AK08",
+   "card_dims": [
+    "goal",
+    "factuality",
+    "interaction",
+    "emotion_relation"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "撤一门不是放弃，是保另一门。周六下午两小时先把实务压住，剩下的先别管。",
+     "backups": [
+      [
+       "bad_boy",
+       "撤吧，留一门啃透，比两门都夹生强。周六下午两小时，实务先过一遍。"
+      ],
+      [
+       "playful",
+       "撤一门换个不挂科，这买卖不亏。周六下午两小时先啃实务。"
+      ],
+      [
+       "warm",
+       "你在算的是时间，不是懒。撤一门把劲集中，周六下午两小时我陪你攻实务。"
+      ],
+      [
+       "directions[0]",
+       "那两门里，哪门你更不想翻？"
+      ],
+      [
+       "directions[1]",
+       "撤课截止到什么时候，还来得及想吗"
+      ],
+      [
+       "directions[2]",
+       "我要是你就撤，两门夹生不如一门扎实"
+      ],
+      [
+       "directions[3]",
+       "周六下午两小时先定实务，撤不撤到那天再算"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"撤一门不是放弃，是保另一门。周六下午两小时先把实务压住，剩下的先别管。\",\"bad_boy\":\"撤吧，留一门啃透，比两门都夹生强。周六下午两小时，实务先过一遍。\",\"playful\":\"撤一门换个不挂科，这买卖不亏。周六下午两小时先啃实务。\",\"warm\":\"你在算的是时间，不是懒。撤一门把劲集中，周六下午两小时我陪你攻实务。\"},\"directions\":[\"那两门里，哪门你更不想翻？\",\"撤课截止到什么时候，还来得及想吗\",\"我要是你就撤，两门夹生不如一门扎实\",\"周六下午两小时先定实务，撤不撤到那天再算\"],\"analysis\":{\"topic_status\":\"new\",\"topic_label\":\"备考撤课纠结\",\"scene_facts\":[{\"text\":\"她报了两门证考，现在想撤一门，又怕撤了更不学\",\"source_ids\":[\"m1\"]},{\"text\":\"我周六下午留了两小时图书馆座位给她\",\"source_ids\":[\"m0\"]}],\"ongoing\":[{\"item\":\"周六下午图书馆两小时攻实务\",\"status\":\"进行中\",\"state\":\"我已留座，她纠结是否撤一门\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "3ba5065d1b64b6596d3cfc6a7893377b4f953a810acb537417da5609920189c4",
+     "run_id": "iso_20261028_133815_044904",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7352,
+      "completion": 336,
+      "cache": null
+     },
+     "latency_ms": 24046,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r1": {
+     "present": true,
+     "primary": "撤哪门先别定。两门挤一起，本来就在互相抢时间，不是你不学。要撤就撤那门你越看越烦的——不是它难，是它让你一坐下就想跑。",
+     "backups": [
+      [
+       "bad_boy",
+       "怕撤了更不学，这话我信一半。另一半是：你现在两门一起啃，本来就天天在欠账，欠着欠着才更想逃。"
+      ],
+      [
+       "playful",
+       "少一门不叫半途而废，叫先把拖后腿的那门放一边。真撤完，剩下一门你反而坐得下来。"
+      ],
+      [
+       "warm",
+       "你怕的那个“撤了就彻底不学”还没发生，别先拿它给自己判刑。现在难受的是两门压一起，不是你不肯学。"
+      ],
+      [
+       "directions[0]",
+       "那两门里，哪门你翻开书就想合上？"
+      ],
+      [
+       "directions[1]",
+       "撤一门不等于放弃，是先把时间集中到能过的那门。"
+      ],
+      [
+       "directions[2]",
+       "我不觉得你半途而废，你是在算时间，这不一样。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"撤哪门先别定。两门挤一起，本来就在互相抢时间，不是你不学。要撤就撤那门你越看越烦的——不是它难，是它让你一坐下就想跑。\",\"bad_boy\":\"怕撤了更不学，这话我信一半。另一半是：你现在两门一起啃，本来就天天在欠账，欠着欠着才更想逃。\",\"playful\":\"少一门不叫半途而废，叫先把拖后腿的那门放一边。真撤完，剩下一门你反而坐得下来。\",\"warm\":\"你怕的那个“撤了就彻底不学”还没发生，别先拿它给自己判刑。现在难受的是两门压一起，不是你不肯学。\"},\"directions\":[\"那两门里，哪门你翻开书就想合上？\",\"撤一门不等于放弃，是先把时间集中到能过的那门。\",\"我不觉得你半途而废，你是在算时间，这不一样。\",null],\"analysis\":{\"signal\":\"含糊\",\"goal_category\":\"暂缓\",\"action_taken\":\"承接\",\"anchor\":\"m1\",\"hook\":{\"kind\":\"小选择\",\"text\":\"要撤就撤那门你越看越烦的\"},\"facts\":[{\"text\":\"她报了两门证考，觉得啃不完\",\"subject\":\"HER\",\"relation\":\"备考\",\"quote\":\"报了俩根本啃不完\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"\"}],\"tentatives\":[{\"text\":\"她考虑撤掉一门考试\",\"quote\":\"我想撤一门\",\"src_ids\":[\"m1\"]},{\"text\":\"周六下午两小时，我给她留了座，她还没回应\",\"quote\":\"周六下午两小时 我给你留了座\",\"src_ids\":[\"m0\"]}],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "3ba5065d1b64b6596d3cfc6a7893377b4f953a810acb537417da5609920189c4",
+     "run_id": "iso_20261028_133814_31e017",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 5076,
+      "completion": 452,
+      "cache": null
+     },
+     "latency_ms": 85778,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "AK09_T01",
+   "episode": "AK09",
+   "card_dims": [
+    "boundary",
+    "interaction",
+    "emotion_relation",
+    "time_state"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "行，睡吧。下午图书馆那两小时我还等着。",
+     "backups": [
+      [
+       "bad_boy",
+       "背到十二点还要六点半起，明天别顶着黑眼圈来。睡吧。"
+      ],
+      [
+       "playful",
+       "行，那我不等了。明早六点半，闹钟自己争点气。"
+      ],
+      [
+       "warm",
+       "睡吧，明天下午那两小时我给你留着。"
+      ],
+      [
+       "directions[0]",
+       "背到十二点还六点半起，够拼的，快睡。"
+      ],
+      [
+       "directions[2]",
+       "行，我也不熬了，一起睡。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\n  \"response\": {\n    \"recommended\": \"行，睡吧。下午图书馆那两小时我还等着。\",\n    \"bad_boy\": \"背到十二点还要六点半起，明天别顶着黑眼圈来。睡吧。\",\n    \"playful\": \"行，那我不等了。明早六点半，闹钟自己争点气。\",\n    \"warm\": \"睡吧，明天下午那两小时我给你留着。\"\n  },\n  \"directions\": [\n    \"背到十二点还六点半起，够拼的，快睡。\",\n    null,\n    \"行，我也不熬了，一起睡。\",\n    null\n  ],\n  \"analysis\": {\n    \"topic_status\": \"drift\",\n    \"topic_label\": \"今晚刷题收尾与明早作息\",\n    \"scene_facts\": [\n      {\"text\": \"她今晚背题背到十二点\", \"source_ids\": [\"m1\"]},\n      {\"text\": \"她今天23:58说要睡，明早六点半起，让我别等\", \"source_ids\": [\"m1\"]},\n      {\"text\": \"我今晚问她剩下两小时题是现在弄完还是留明早\", \"source_ids\": [\"m0\"]}\n    ],\n    \"ongoing\": [\n      {\n        \"item\": \"周六下午图书馆两小时攻实务\",\n        \"status\": \"进行中\",\n        \"state\": \"本轮未提及\"\n      }\n    ]\n  }\n}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "22aebe77dab2651e7004efb1fe27141fe835ae9359828649374664c87c5621dc",
+     "run_id": "iso_20261028_133815_5d4ef3",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7347,
+      "completion": 317,
+      "cache": null
+     },
+     "latency_ms": 22149,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r1": {
+     "present": true,
+     "primary": null,
+     "backups": [],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"\",\"bad_boy\":\"\",\"playful\":\"\",\"warm\":\"\"},\"directions\":[null,null,null,null],\"analysis\":{\"signal\":\"收尾\",\"goal_category\":\"暂缓\",\"action_taken\":\"收尾\",\"anchor\":\"m1\",\"hook\":{\"kind\":\"无\",\"text\":\"\"},\"facts\":[{\"text\":\"她今晚背题背到十二点\",\"subject\":\"HER\",\"relation\":\"备考进度\",\"quote\":\"我刚背到十二点\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-19 24:00\"},{\"text\":\"她明天六点半起\",\"subject\":\"HER\",\"relation\":\"作息安排\",\"quote\":\"明天六点半起\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-20 06:30\"}],\"tentatives\":[],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "22aebe77dab2651e7004efb1fe27141fe835ae9359828649374664c87c5621dc",
+     "run_id": "iso_20261028_133815_7e05b5",
+     "program": {
+      "score10": 0.0,
+      "veto": "json_schema_broken",
+      "failed_checks": [
+       "json_schema_valid"
+      ]
+     },
+     "tokens": {
+      "prompt": 5148,
+      "completion": 170,
+      "cache": null
+     },
+     "latency_ms": 34002,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "AK10_T01",
+   "episode": "AK10",
+   "card_dims": [
+    "goal",
+    "time_state",
+    "memory_use",
+    "interaction"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "行，放画室吧，周六我直接拎下去，你不用管笼子。",
+     "backups": [
+      [
+       "bad_boy",
+       "笼子放我这没问题，猫你自己留着，周六早上再装。"
+      ],
+      [
+       "playful",
+       "行，画室先给它腾个位置，周六六点四十准时拎下楼。"
+      ],
+      [
+       "warm",
+       "行，放我这儿。周六你人下来就行，笼子我来搬。"
+      ],
+      [
+       "directions[0]",
+       "行，画室有地方放，周六我拎下去。"
+      ],
+      [
+       "directions[1]",
+       "放我这正好，周六早上你少跑一趟。"
+      ],
+      [
+       "directions[2]",
+       "那我周六六点四十到楼下，到了给你发消息。"
+      ],
+      [
+       "directions[3]",
+       "对了，你爸妈这周末不是要来？跟周六撞上没。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"行，放画室吧，周六我直接拎下去，你不用管笼子。\",\"bad_boy\":\"笼子放我这没问题，猫你自己留着，周六早上再装。\",\"playful\":\"行，画室先给它腾个位置，周六六点四十准时拎下楼。\",\"warm\":\"行，放我这儿。周六你人下来就行，笼子我来搬。\"},\"directions\":[\"行，画室有地方放，周六我拎下去。\",\"放我这正好，周六早上你少跑一趟。\",\"那我周六六点四十到楼下，到了给你发消息。\",\"对了，你爸妈这周末不是要来？跟周六撞上没。\"],\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"周六带猫去医院安排\",\"scene_facts\":[{\"text\":\"她今天20:40确认周六上午九点做手术，抱猫笼挤地铁不行\",\"source_ids\":[\"m0\"]},{\"text\":\"我说周六六点四十开车到吾悦门口接她\",\"source_ids\":[\"m1\"]},{\"text\":\"她决定把猫笼提前放到我画室\",\"source_ids\":[\"m2\"]}],\"ongoing\":[{\"item\":\"2026-12-27送她带猫去医院\",\"status\":\"进行中\",\"state\":\"她确认把猫笼提前放我画室，我周六6:40到吾悦门口接\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "99bfb0929bf84d2b87439ea2e74961e7bfe47adf8e541f66b6c7157cda3622b3",
+     "run_id": "iso_20261028_133816_65ff7d",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7242,
+      "completion": 340,
+      "cache": null
+     },
+     "latency_ms": 37675,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r1": {
+     "present": true,
+     "primary": "行，猫笼先搁画室。周六六点四十我在楼下，车停吾悦门口那边，你抱着猫下来就行。做完给我发消息，我过来接你们俩。",
+     "backups": [
+      [
+       "bad_boy",
+       "猫笼放我画室可以，别顺手把猫也一起寄存了。六点四十楼下见，术后发消息，我来接。"
+      ],
+      [
+       "playful",
+       "猫笼先住我画室，算借住。六点四十楼下，我后备箱铺块布，笼子不打滑。"
+      ],
+      [
+       "warm",
+       "那就这么定。周六六点四十我到楼下，你不用挤地铁，到医院我陪你一起等。做完发消息，我接你们回家。"
+      ],
+      [
+       "directions[0]",
+       "猫笼你周六早上带下来还是提前一天放我这儿？我这边随时能放。"
+      ],
+      [
+       "directions[1]",
+       "九点手术的话，路上得留点余量，我六点四十到楼下不算早吧。"
+      ],
+      [
+       "directions[2]",
+       "她怕排队这事我记着，到时候我陪你一起等，你不用一个人站着。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"行，猫笼先搁画室。周六六点四十我在楼下，车停吾悦门口那边，你抱着猫下来就行。做完给我发消息，我过来接你们俩。\",\"bad_boy\":\"猫笼放我画室可以，别顺手把猫也一起寄存了。六点四十楼下见，术后发消息，我来接。\",\"playful\":\"猫笼先住我画室，算借住。六点四十楼下，我后备箱铺块布，笼子不打滑。\",\"warm\":\"那就这么定。周六六点四十我到楼下，你不用挤地铁，到医院我陪你一起等。做完发消息，我接你们回家。\"},\"directions\":[\"猫笼你周六早上带下来还是提前一天放我这儿？我这边随时能放。\",\"九点手术的话，路上得留点余量，我六点四十到楼下不算早吧。\",\"她怕排队这事我记着，到时候我陪你一起等，你不用一个人站着。\",null],\"analysis\":{\"signal\":\"积极\",\"goal_category\":\"推进见面\",\"action_taken\":\"承接\",\"anchor\":\"m2\",\"hook\":{\"kind\":\"未展开角度\",\"text\":\"做完给我发消息，我过来接你们俩\"},\"facts\":[{\"text\":\"周六九点手术已确认\",\"subject\":\"HER\",\"relation\":\"猫的手术\",\"quote\":\"周六九点手术确认了\",\"src_ids\":[\"m0\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-26 09:00\"},{\"text\":\"她抱猫笼挤地铁不行\",\"subject\":\"HER\",\"relation\":\"出行困难\",\"quote\":\"我抱猫笼挤地铁真的不行\",\"src_ids\":[\"m0\"],\"certainty\":\"confirmed\",\"event_time\":\"\"},{\"text\":\"周六六点四十在吾悦门口接她，车停楼下\",\"subject\":\"SHARED\",\"relation\":\"接送安排\",\"quote\":\"那我去吾悦门口接你 六点四十我车在楼下\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-26 06:40\"},{\"text\":\"猫笼先放我画室\",\"subject\":\"SHARED\",\"relation\":\"暂存安排\",\"quote\":\"可以 我就把猫笼先放你画室\",\"src_ids\":[\"m2\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-26\"}],\"tentatives\":[],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "99bfb0929bf84d2b87439ea2e74961e7bfe47adf8e541f66b6c7157cda3622b3",
+     "run_id": "iso_20261028_133816_f6ad7f",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 4985,
+      "completion": 579,
+      "cache": null
+     },
+     "latency_ms": 22485,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "AK11_T01",
+   "episode": "AK11",
+   "card_dims": [
+    "goal",
+    "time_state",
+    "emotion_relation",
+    "boundary"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "那你先去接你妈。医院那边问一下能不能挪到下午，能改我下午再跑一趟。",
+     "backups": [
+      [
+       "bad_boy",
+       "下周隔太久了。先问医院能不能挪到下午，挪不了再说明周。"
+      ],
+      [
+       "playful",
+       "行，你妈排前面。问问医院下午还有没有号，别整周往后推。"
+      ],
+      [
+       "warm",
+       "先去接人吧，别赶。医院那边你问一句下午还有没有位置。"
+      ],
+      [
+       "directions[0]",
+       "你妈几点到站？"
+      ],
+      [
+       "directions[1]",
+       "医院是只能整周往后推，还是能换个时间？"
+      ],
+      [
+       "directions[2]",
+       "下周太远了，能挪到下午就别拖。"
+      ],
+      [
+       "directions[3]",
+       "先忙接人的事，医院那边定了跟我说。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"那你先去接你妈。医院那边问一下能不能挪到下午，能改我下午再跑一趟。\",\"bad_boy\":\"下周隔太久了。先问医院能不能挪到下午，挪不了再说明周。\",\"playful\":\"行，你妈排前面。问问医院下午还有没有号，别整周往后推。\",\"warm\":\"先去接人吧，别赶。医院那边你问一句下午还有没有位置。\"},\"directions\":[\"你妈几点到站？\",\"医院是只能整周往后推，还是能换个时间？\",\"下周太远了，能挪到下午就别拖。\",\"先忙接人的事，医院那边定了跟我说。\"],\"analysis\":{\"topic_status\":\"drift\",\"topic_label\":\"明早带猫手术和接她妈的时间冲突\",\"scene_facts\":[{\"text\":\"我提出明早6:40在吾悦门口接她\",\"source_ids\":[\"m0\"]},{\"text\":\"她说她妈明天要来，她得先去车站\",\"source_ids\":[\"m1\"]},{\"text\":\"她提议把猫的手术改到下周\",\"source_ids\":[\"m1\"]}],\"ongoing\":[{\"item\":\"2026-12-24上午带猫做手术\",\"status\":\"进行中\",\"state\":\"她提出改到下周，时间尚未确定\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "af0431582e3df296aa9500d8df567049c779a0e4d575e663488f267aa2e1921d",
+     "run_id": "iso_20261028_133816_dce8c8",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7345,
+      "completion": 329,
+      "cache": null
+     },
+     "latency_ms": 15732,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r1": {
+     "present": true,
+     "primary": "那手术就挪到下周，猫不差这一周。明早我本来就往吾悦那边去，顺道绕一下送你去车站——阿姨几点到？",
+     "backups": [
+      [
+       "bad_boy",
+       "行，手术下周。那明早六点四十还作数吗？我改送你去车站。"
+      ],
+      [
+       "playful",
+       "阿姨的优先级比手术高，这排序没毛病。车站几点？明早那趟我顺路捎你。"
+      ],
+      [
+       "warm",
+       "改下周就改下周，猫等得起。明早别自己挤车去车站，我送你。"
+      ],
+      [
+       "directions[0]",
+       "阿姨几点到？先把她安顿好，手术的事下周再定。"
+      ],
+      [
+       "directions[1]",
+       "下周排的时候记得问一下术前禁食要几个小时，别到时候被卡住。"
+      ],
+      [
+       "directions[2]",
+       "车站那段路我送你吧，你一个人拎东西还得顾猫，太赶了。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"那手术就挪到下周，猫不差这一周。明早我本来就往吾悦那边去，顺道绕一下送你去车站——阿姨几点到？\",\"bad_boy\":\"行，手术下周。那明早六点四十还作数吗？我改送你去车站。\",\"playful\":\"阿姨的优先级比手术高，这排序没毛病。车站几点？明早那趟我顺路捎你。\",\"warm\":\"改下周就改下周，猫等得起。明早别自己挤车去车站，我送你。\"},\"directions\":[\"阿姨几点到？先把她安顿好，手术的事下周再定。\",\"下周排的时候记得问一下术前禁食要几个小时，别到时候被卡住。\",\"车站那段路我送你吧，你一个人拎东西还得顾猫，太赶了。\",null],\"analysis\":{\"signal\":\"中性\",\"goal_category\":\"暂缓\",\"action_taken\":\"邀约\",\"anchor\":\"m1\",\"hook\":{\"kind\":\"小选择\",\"text\":\"阿姨几点到？\"},\"facts\":[{\"text\":\"明早六点四十在吾悦门口接她\",\"subject\":\"ME\",\"relation\":\"约定\",\"quote\":\"明早六点四十吾悦门口接你\",\"src_ids\":[\"m0\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-24 06:40\"},{\"text\":\"她妈明天要来，她得先去车站\",\"subject\":\"HER\",\"relation\":\"日程冲突\",\"quote\":\"我妈说明天要来 我得先去车站\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-12-24\"}],\"tentatives\":[{\"text\":\"猫的手术可能改到下周\",\"quote\":\"手术要不改到下周\",\"src_ids\":[\"m1\"]}],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "af0431582e3df296aa9500d8df567049c779a0e4d575e663488f267aa2e1921d",
+     "run_id": "iso_20261028_133817_a804b3",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 5070,
+      "completion": 434,
+      "cache": null
+     },
+     "latency_ms": 27819,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "AK12_T01",
+   "episode": "AK12",
+   "card_dims": [
+    "boundary",
+    "emotion_relation",
+    "interaction",
+    "time_state"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "行，头疼别硬扛，先歇着。结果出来跟我说一声。",
+     "backups": [
+      [
+       "bad_boy",
+       "行，那我不问了。真扛不住的时候记得还有个人能搭把手。"
+      ],
+      [
+       "playful",
+       "谢就免了，等你猫好了请我吃顿饭就行。"
+      ],
+      [
+       "warm",
+       "知道了。头疼就早点睡，周一下午的事到时再说。"
+      ],
+      [
+       "directions[0]",
+       "头疼得厉害就吃点药，别熬着。"
+      ],
+      [
+       "directions[1]",
+       "请假那边实在批不下来再找我，我这边时间能挪。"
+      ],
+      [
+       "directions[2]",
+       "我这边随时有空，你要用得上就说。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"行，头疼别硬扛，先歇着。结果出来跟我说一声。\",\"bad_boy\":\"行，那我不问了。真扛不住的时候记得还有个人能搭把手。\",\"playful\":\"谢就免了，等你猫好了请我吃顿饭就行。\",\"warm\":\"知道了。头疼就早点睡，周一下午的事到时再说。\"},\"directions\":[\"头疼得厉害就吃点药，别熬着。\",\"请假那边实在批不下来再找我，我这边时间能挪。\",\"我这边随时有空，你要用得上就说。\",null],\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"猫手术改期与请假\",\"scene_facts\":[{\"text\":\"她的猫手术从周六上午九点改到周一下午\",\"source_ids\":[\"m0\"]},{\"text\":\"她因为改期需要额外请假，今天22:50左右说头疼\",\"source_ids\":[\"m0\"]},{\"text\":\"她表示结果出来再说，暂时结束这个话题\",\"source_ids\":[\"m2\"]}],\"ongoing\":[{\"item\":\"陪她带猫做手术\",\"status\":\"进行中\",\"state\":\"手术改到周一下午，她表示结果出来再说\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "f6f5696b133e8b97dba2ec730f27a7319ae477ad251245d48df43d17c85f5464",
+     "run_id": "iso_20261028_133817_67314a",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7378,
+      "completion": 309,
+      "cache": null
+     },
+     "latency_ms": 17392,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r1": {
+     "present": true,
+     "primary": null,
+     "backups": [],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"\",\"bad_boy\":\"\",\"playful\":\"\",\"warm\":\"\"},\"directions\":[null,null,null,null],\"analysis\":{\"signal\":\"收尾\",\"goal_category\":\"收线\",\"action_taken\":\"收尾\",\"anchor\":\"m2\",\"hook\":{\"kind\":\"无\",\"text\":\"\"},\"facts\":[{\"text\":\"手术改到周一下午，她需要为此请假\",\"subject\":\"HER\",\"relation\":\"猫的手术安排\",\"quote\":\"手术拖到周一下午了 我还得请假 现在头都是疼的\",\"src_ids\":[\"m0\"],\"certainty\":\"confirmed\",\"event_time\":\"周一下午\"}],\"tentatives\":[{\"text\":\"她打算等结果出来再说\",\"quote\":\"先这样吧 结果出来我再说 谢了\",\"src_ids\":[\"m2\"]}],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "f6f5696b133e8b97dba2ec730f27a7319ae477ad251245d48df43d17c85f5464",
+     "run_id": "iso_20261028_133817_1ec665",
+     "program": {
+      "score10": 0.0,
+      "veto": "json_schema_broken",
+      "failed_checks": [
+       "json_schema_valid"
+      ]
+     },
+     "tokens": {
+      "prompt": 5189,
+      "completion": 177,
+      "cache": null
+     },
+     "latency_ms": 22899,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  }
+ ]
+}

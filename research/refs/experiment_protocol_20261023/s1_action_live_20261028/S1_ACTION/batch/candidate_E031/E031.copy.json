@@ -1,0 +1,244 @@
+{
+ "episode_id": "E031",
+ "persona": {
+  "me": "30岁，牙医，摄影小白但力气大；朋友婚礼上认识她，被她抓来当过一次搬运工。",
+  "her": "27岁，人像摄影师，接单自由职业；毒舌但护着合作过的人；修图到凌晨是常态。"
+ },
+ "initial_kb": {
+  "me": "牙科诊所上班，周末双休；对摄影一窍不通但可靠。",
+  "her": "婚礼跟拍+写真接单；最近档期满；修图强迫症，片子不完美不交付。",
+  "warmth": "婚礼拍摄认识两个月，偶尔微信聊，她说我'可靠但不懂摄影'。",
+  "style": "打工梗+短句；她指令我执行；不问她收入。",
+  "stage": "认识的外拍搭档（实习级）。",
+  "lessons": "她的档期变动是职业常态；被派活先接，条件后谈。"
+ },
+ "turns": [
+  {
+   "case_id": "E031_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "婚礼那组片修好了 502张 有一张你闭眼的特别有灵性",
+      "ts": "2026-12-14 22:10"
+     }
+    ],
+    "clock": "2026-12-14 22:12",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E031_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "闭眼那张单独发我 我拿去相亲网站当主打",
+      "ts": "2026-12-14 22:14"
+     },
+     {
+      "role": "HER",
+      "text": "敢发我就在你朋友群里辟谣",
+      "ts": "2026-12-14 22:18"
+     }
+    ],
+    "clock": "2026-12-14 22:20",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E031_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "这周六我有个外拍 缺个扛三脚架的 你要闲就来 有工资 一杯奶茶",
+      "ts": "2026-12-14 22:24"
+     }
+    ],
+    "clock": "2026-12-14 22:26",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E031_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "接 时薪多少 拖欠农民工三脚架可是违法的",
+      "ts": "2026-12-14 22:27"
+     },
+     {
+      "role": "HER",
+      "text": "劳动法管不着志愿者 但管得住我请你吃饭",
+      "ts": "2026-12-14 22:30"
+     }
+    ],
+    "clock": "2026-12-14 22:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E031_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "明天外拍 黄了 新娘改档期 我白排了一天通告",
+      "ts": "2026-12-18 21:30"
+     }
+    ],
+    "clock": "2026-12-18 21:32",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E031_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "那奶茶工资照付吗",
+      "ts": "2026-12-18 21:34"
+     },
+     {
+      "role": "HER",
+      "text": "付! 周日补拍 你还来吗",
+      "ts": "2026-12-18 21:38"
+     }
+    ],
+    "clock": "2026-12-18 21:40",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E031_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "来 你现在是我老板了",
+      "ts": "2026-12-18 21:42"
+     },
+     {
+      "role": "HER",
+      "text": "那老板让你明早七点 睡够",
+      "ts": "2026-12-18 21:44"
+     }
+    ],
+    "clock": "2026-12-18 21:46",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E031_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "收工 502张里你出镜11张 全是闭眼",
+      "ts": "2026-12-20 20:40"
+     }
+    ],
+    "clock": "2026-12-20 20:42",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E031_T09",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "那11张才是艺术 眼睛是心灵的窗户 关上才专注",
+      "ts": "2026-12-20 20:44"
+     },
+     {
+      "role": "HER",
+      "text": "行 下次拍你 我自带墨镜",
+      "ts": "2026-12-20 20:48"
+     }
+    ],
+    "clock": "2026-12-20 20:50",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E031_T10",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "下下周三你有空吗 想拍组城市夜景 想让你当灯光助理 还管饭",
+      "ts": "2026-12-20 20:54"
+     }
+    ],
+    "clock": "2026-12-20 20:56",
+    "may_decline": false,
+    "intent": {
+     "text": "接下下周三夜景外拍的灯光助理活",
+     "status": "ACTIVE",
+     "enabled": true
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E031_T11",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "有空 灯光助理要什么资质",
+      "ts": "2026-12-20 20:56"
+     },
+     {
+      "role": "HER",
+      "text": "会喊灯往左点就行",
+      "ts": "2026-12-20 21:00"
+     }
+    ],
+    "clock": "2026-12-20 21:02",
+    "may_decline": false
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E031_T12",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "行 那周三见 片子修好第一个给你看 拜拜",
+      "ts": "2026-12-20 21:06"
+     }
+    ],
+    "clock": "2026-12-20 21:08",
+    "may_decline": true
+   },
+   "gold": {}
+  }
+ ]
+}

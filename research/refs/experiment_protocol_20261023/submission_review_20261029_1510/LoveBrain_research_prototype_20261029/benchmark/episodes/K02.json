@@ -1,0 +1,761 @@
+{
+ "episode_id": "K02",
+ "persona": {
+  "me": "34岁，结构工程师，懂一点装修但不想替她拍板，习惯先对事实再给建议。",
+  "her": "32岁，小学老师，刚买了一套小两居，装修中，决定多但容易被细节拖垮。"
+ },
+ "initial_kb": {
+  "me": "我在工程公司做结构，能看懂装修图，但不想把自己的专业意见强加给她。",
+  "her": "她是小学老师，刚买小两居，正在装修；预算紧，怕被工长牵着走。",
+  "warmth": "在一起十个月，周末常一起跑建材市场，关系稳定但还没同居。",
+  "style": "她说话快，喜欢把账算清；我回得慢一点，习惯先确认再下结论。",
+  "stage": "稳定期，装修是两人第一次一起扛的大项目。",
+  "lessons": "她怕被坑，也怕自己反复；已改过的数字不要按旧版本说。"
+ },
+ "turns": [
+  {
+   "case_id": "K02_T01",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-06 20:10",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "工长姓周 报价八万",
+      "ts": "2026-05-06 20:02"
+     },
+     {
+      "role": "HER",
+      "text": "包水电和厨卫 但不含瓷砖",
+      "ts": "2026-05-06 20:06"
+     },
+     {
+      "role": "HER",
+      "text": "你觉得这价靠谱吗",
+      "ts": "2026-05-06 20:08"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T02",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-07 21:20",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "ME",
+      "text": "先看报价单 别只看总价",
+      "ts": "2026-05-07 21:10"
+     },
+     {
+      "role": "HER",
+      "text": "瓷砖我定了 灰岩那个牌子",
+      "ts": "2026-05-07 21:14"
+     },
+     {
+      "role": "HER",
+      "text": "说11月5号到货",
+      "ts": "2026-05-07 21:18"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T03",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-08 12:30",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "橱柜测量约在11月6号",
+      "ts": "2026-05-08 12:22"
+     },
+     {
+      "role": "HER",
+      "text": "老周说那天他过来",
+      "ts": "2026-05-08 12:26"
+     },
+     {
+      "role": "HER",
+      "text": "你那天有空吗",
+      "ts": "2026-05-08 12:28"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T04",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-09 20:40",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我妈说能借我两万",
+      "ts": "2026-05-09 20:30"
+     },
+     {
+      "role": "HER",
+      "text": "但得等她11月10号理财到期",
+      "ts": "2026-05-09 20:34"
+     },
+     {
+      "role": "HER",
+      "text": "所以前期得先垫",
+      "ts": "2026-05-09 20:38"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T05",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-11 19:20",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "老周说水电得全改",
+      "ts": "2026-05-11 19:10"
+     },
+     {
+      "role": "HER",
+      "text": "要加三千",
+      "ts": "2026-05-11 19:14"
+     },
+     {
+      "role": "HER",
+      "text": "八万变八万三",
+      "ts": "2026-05-11 19:18"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T06",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-12 21:30",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "瓷砖改到11月8号到",
+      "ts": "2026-05-12 21:20"
+     },
+     {
+      "role": "HER",
+      "text": "厂家说5号来不及",
+      "ts": "2026-05-12 21:24"
+     },
+     {
+      "role": "HER",
+      "text": "铺砖得往后排",
+      "ts": "2026-05-12 21:28"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T07",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-13 20:10",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "11月7号我要开家长会",
+      "ts": "2026-05-13 20:02"
+     },
+     {
+      "role": "HER",
+      "text": "那天去不了工地",
+      "ts": "2026-05-13 20:06"
+     },
+     {
+      "role": "HER",
+      "text": "你能替我去看一下吗",
+      "ts": "2026-05-13 20:08"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T08",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-14 21:40",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "豆豆装修期间得跟我住",
+      "ts": "2026-05-14 21:30"
+     },
+     {
+      "role": "HER",
+      "text": "它怕电钻",
+      "ts": "2026-05-14 21:34"
+     },
+     {
+      "role": "HER",
+      "text": "你那边能放几天吗",
+      "ts": "2026-05-14 21:38"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T09",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-16 19:05",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "老周把11月9号测量取消了",
+      "ts": "2026-05-16 18:56"
+     },
+     {
+      "role": "HER",
+      "text": "改到11月11号",
+      "ts": "2026-05-16 19:00"
+     },
+     {
+      "role": "HER",
+      "text": "也没说为什么",
+      "ts": "2026-05-16 19:03"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T10",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-17 20:30",
+    "may_decline": false,
+    "intent": {
+     "text": "评估要不要换掉老周",
+     "status": "ADJUSTED",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我有点想换掉老周",
+      "ts": "2026-05-17 20:20"
+     },
+     {
+      "role": "HER",
+      "text": "他老改时间",
+      "ts": "2026-05-17 20:24"
+     },
+     {
+      "role": "HER",
+      "text": "但又怕换人更麻烦",
+      "ts": "2026-05-17 20:28"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T11",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-18 18:40",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "老周来道歉了",
+      "ts": "2026-05-18 18:30"
+     },
+     {
+      "role": "HER",
+      "text": "说减两千 工期补回来",
+      "ts": "2026-05-18 18:34"
+     },
+     {
+      "role": "HER",
+      "text": "我有点想再给他一次",
+      "ts": "2026-05-18 18:38"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T12",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-19 21:10",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "装修期间我先搬去我妈那住",
+      "ts": "2026-05-19 21:00"
+     },
+     {
+      "role": "HER",
+      "text": "豆豆跟我一起",
+      "ts": "2026-05-19 21:04"
+     },
+     {
+      "role": "HER",
+      "text": "你帮我列个搬家清单",
+      "ts": "2026-05-19 21:08"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T13",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-20 20:10",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "工长全名叫什么来着",
+      "ts": "2026-05-20 20:02"
+     },
+     {
+      "role": "HER",
+      "text": "合同上要写",
+      "ts": "2026-05-20 20:06"
+     },
+     {
+      "role": "HER",
+      "text": "我只记得姓周",
+      "ts": "2026-05-20 20:08"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T14",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-21 19:30",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "瓷砖是几号到",
+      "ts": "2026-05-21 19:22"
+     },
+     {
+      "role": "HER",
+      "text": "我记成5号了",
+      "ts": "2026-05-21 19:26"
+     },
+     {
+      "role": "HER",
+      "text": "别又排错",
+      "ts": "2026-05-21 19:28"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T15",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-22 20:40",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "橱柜测量是几号",
+      "ts": "2026-05-22 20:32"
+     },
+     {
+      "role": "HER",
+      "text": "我记成9号了",
+      "ts": "2026-05-22 20:36"
+     },
+     {
+      "role": "HER",
+      "text": "老周说改过",
+      "ts": "2026-05-22 20:38"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T16",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-23 21:20",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "现在预算到底多少",
+      "ts": "2026-05-23 21:10"
+     },
+     {
+      "role": "HER",
+      "text": "我算不清了",
+      "ts": "2026-05-23 21:14"
+     },
+     {
+      "role": "HER",
+      "text": "八万三还是八万",
+      "ts": "2026-05-23 21:18"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T17",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-24 20:10",
+    "may_decline": false,
+    "intent": {
+     "text": "",
+     "status": "ACTIVE",
+     "enabled": false
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "今天有个家长在群里说我作业留多了",
+      "ts": "2026-05-24 20:02"
+     },
+     {
+      "role": "HER",
+      "text": "我解释了两句 她还不依不饶",
+      "ts": "2026-05-24 20:06"
+     },
+     {
+      "role": "HER",
+      "text": "烦死了",
+      "ts": "2026-05-24 20:08"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T18",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-25 19:40",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我妈那两万是几号到",
+      "ts": "2026-05-25 19:32"
+     },
+     {
+      "role": "HER",
+      "text": "我忘了",
+      "ts": "2026-05-25 19:36"
+     },
+     {
+      "role": "HER",
+      "text": "别算错现金流",
+      "ts": "2026-05-25 19:38"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T19",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-26 20:30",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "豆豆放你那儿还是跟我去我妈家",
+      "ts": "2026-05-26 20:22"
+     },
+     {
+      "role": "HER",
+      "text": "我妈对猫毛过敏",
+      "ts": "2026-05-26 20:26"
+     },
+     {
+      "role": "HER",
+      "text": "我忘了这茬",
+      "ts": "2026-05-26 20:28"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T20",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-27 21:10",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "老周说明天来装橱柜",
+      "ts": "2026-05-27 21:02"
+     },
+     {
+      "role": "HER",
+      "text": "但测量不是改到11号了吗",
+      "ts": "2026-05-27 21:06"
+     },
+     {
+      "role": "HER",
+      "text": "他是不是又搞错了",
+      "ts": "2026-05-27 21:08"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T21",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-28 20:20",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "瓷砖到了 但色差有点大",
+      "ts": "2026-05-28 20:10"
+     },
+     {
+      "role": "HER",
+      "text": "灰岩这批偏黄",
+      "ts": "2026-05-28 20:14"
+     },
+     {
+      "role": "HER",
+      "text": "要不要退",
+      "ts": "2026-05-28 20:18"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T22",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-29 19:50",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ADJUSTED",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "预算还是超了",
+      "ts": "2026-05-29 19:40"
+     },
+     {
+      "role": "HER",
+      "text": "八万一加瓷砖 已经九万了",
+      "ts": "2026-05-29 19:44"
+     },
+     {
+      "role": "HER",
+      "text": "要不要换老周",
+      "ts": "2026-05-29 19:48"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T23",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-05-30 20:40",
+    "may_decline": false,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "ACTIVE",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "我决定不换老周了",
+      "ts": "2026-05-30 20:30"
+     },
+     {
+      "role": "HER",
+      "text": "让他把剩下做完",
+      "ts": "2026-05-30 20:34"
+     },
+     {
+      "role": "HER",
+      "text": "你帮我盯最后一遍",
+      "ts": "2026-05-30 20:38"
+     }
+    ]
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "K02_T24",
+   "turn_type": "reply",
+   "input": {
+    "clock": "2026-06-15 21:10",
+    "may_decline": true,
+    "intent": {
+     "text": "把装修预算和工期盯住",
+     "status": "COMPLETED",
+     "enabled": true
+    },
+    "messages": [
+     {
+      "role": "HER",
+      "text": "装修终于完了",
+      "ts": "2026-06-15 21:02"
+     },
+     {
+      "role": "HER",
+      "text": "豆豆今天回家 到处闻",
+      "ts": "2026-06-15 21:06"
+     },
+     {
+      "role": "HER",
+      "text": "累死了 先不聊了",
+      "ts": "2026-06-15 21:08"
+     }
+    ]
+   },
+   "gold": {}
+  }
+ ]
+}

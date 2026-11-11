@@ -1,0 +1,27 @@
+{
+  "kind": "controlled integration prototype probe, fake gateway, zero real generation",
+  "idea_to_msg": [
+    {
+      "role": "ME",
+      "text": "PRIVATE_IDEA_SENTINEL_不想让对方知道的备注",
+      "ts": "2026-11-01 10:00"
+    },
+    {
+      "role": "HER",
+      "text": "在吗",
+      "ts": "2026-11-01 10:01"
+    }
+  ],
+  "private_idea_committed_as_me": true,
+  "private_idea_present_as_chat_user": true,
+  "output_consumer_wrong_type": [
+    {
+      "raw": "[]",
+      "error": "AttributeError: 'list' object has no attribute 'get'"
+    },
+    {
+      "raw": "{\"response\": [\"x\"], \"directions\": [], \"analysis\": {}}",
+      "error": "AttributeError: 'list' object has no attribute 'values'"
+    }
+  ]
+}

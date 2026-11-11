@@ -1,0 +1,3188 @@
+[
+  {
+    "arm": "parent",
+    "episode": "E007",
+    "case_id": "E007_T01",
+    "run_id": "iso_20261025_093842_48b2df",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E007\\out\\turn_01_E007_T01\\reply_raw.txt",
+    "raw_sha256": "38f03374734956d0be668255b77ceb3f78be1c02fb1b74b861d17b98b1b8237e",
+    "calls_sha256": "9708e59944cc037a11a83f6456ef393fb4be75f76f8bcf6e4f6a5fe1c35aade9",
+    "case_input_sha256": "03501305e62a946b25a9ab1c3fc00d5969c3cbf17586f5b73f07487140609138",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7172,
+      "completion": 179,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 19203,
+    "gateway_latency_ms": 19153,
+    "response_id": "chatcmpl-6e0b783791ad475092603c8b",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 589,
+    "primary": "都想到离家出走了，这班是加得有多狠",
+    "primary_chars": 17,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "都想到离家出走了，这班是加得有多狠"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "走啊，加班又不会给你发锦旗"
+      },
+      {
+        "slot": "response.playful",
+        "text": "带我一个，我给你当同伙"
+      },
+      {
+        "slot": "response.warm",
+        "text": "听着就够累的，今晚能早点收工吗"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "今天加到几点，这会儿还在公司？"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "你们最近是赶什么大活儿，天天这么耗"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "连着加最磨人，不是累，是整个人都麻了"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E007",
+    "case_id": "E007_T02",
+    "run_id": "iso_20261025_093842_48b2df",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E007\\out\\turn_02_E007_T02\\reply_raw.txt",
+    "raw_sha256": "59c09a0615b3e248ff76c139057ad1c25041a463d40f8994071343a6025ae949",
+    "calls_sha256": "de9901c09300521710a35f0156c1d84d469d6f4dbdac73b30ec5dfbbaa78727b",
+    "case_input_sha256": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7361,
+      "completion": 288,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 44333,
+    "gateway_latency_ms": 44286,
+    "response_id": "chatcmpl-26d5bf4ec8214a9db7593983",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 883,
+    "primary": "行，那我按你的口味筛几场后摇的，挑好了发你选。",
+    "primary_chars": 23,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，那我按你的口味筛几场后摇的，挑好了发你选。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "要求挺明确。吵的我也受不了，筛场的事交给我。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "只想看livehouse，不想听吵的，条件还挺多。我照这个去找。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "好，那就找安静点的。加班都加成这样了，出来别再受罪。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "什么样的算吵，你给我划条线"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "你最近看的一场是什么，值不值得去"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "我也受不了太吵的，听完比加班还累"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "这周我先筛两场发你，时间你定"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E007",
+    "case_id": "E007_T03",
+    "run_id": "iso_20261025_093842_48b2df",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E007\\out\\turn_03_E007_T03\\reply_raw.txt",
+    "raw_sha256": "fbd8da9eedd59db52aca34e6d2f1bbcf8890c58c3e9978f7fea413a12094f346",
+    "calls_sha256": "e929698b9309568d2408a334895b663db9b27d07aa392d68924cf5f857453005",
+    "case_input_sha256": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7443,
+      "completion": 304,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 22604,
+    "gateway_latency_ms": 22569,
+    "response_id": "chatcmpl-d8f627428cd44cb79b7fd5d6",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 1008,
+    "primary": "对，就是那种，基本没人声，一层一层铺上来，听完人会静下来。周末要真有合适的场，我叫你",
+    "primary_chars": 42,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "对，就是那种，基本没人声，一层一层铺上来，听完人会静下来。周末要真有合适的场，我叫你"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "对，就是那种不吵的。你这话问得，像是已经在挑日子了"
+      },
+      {
+        "slot": "response.playful",
+        "text": "对，最多就是把你听到走神那种吵，不会把耳朵震坏"
+      },
+      {
+        "slot": "response.warm",
+        "text": "对，就是那支。你最近加班成那样，听这个比硬睡一觉管用"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "对，没什么人声，现场也不吵"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "后摇现场有意思的地方是大家都在听，没人喊"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "你既然只挑不吵的，那我顺着这个找"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "周末要是有合适的场，我提前跟你说"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E007",
+    "case_id": "E007_T04",
+    "run_id": "iso_20261025_093842_48b2df",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E007\\out\\turn_04_E007_T04\\reply_raw.txt",
+    "raw_sha256": "80938649ac19566d8082d0a660fbcc2c259d6fcdd34ab288cfa7a2ea811d11de",
+    "calls_sha256": "8dfb502cfccbfbdfc38dc085a9ecebc2c26a69808a62623fed803deb9a20062f",
+    "case_input_sha256": "51c6aa90730126a89e0b420bebd85a9a9231a4c50cf962cffa57be6bbc33722c",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7348,
+      "completion": 259,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 16394,
+    "gateway_latency_ms": 16356,
+    "response_id": "chatcmpl-4435c7f0a369414f920bf59a",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 904,
+    "primary": "行，你看着来，定了跟我说一声。",
+    "primary_chars": 15,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，你看着来，定了跟我说一声。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "行，那我先不订票，等你发话。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "行，给你留着位置，状态好了就来。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "好，不着急，你哪天舒服点咱就去。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "行，你定，定好了告诉我。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "那支乐队挺安静的，正适合你这种刚加完班的。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "不催你，就是想跟你一起去听场安静的。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E007",
+    "case_id": "E007_T05",
+    "run_id": "iso_20261025_093842_48b2df",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E007\\out\\turn_05_E007_T05\\reply_raw.txt",
+    "raw_sha256": "8bbdc810974c59ea88ec03cf3a342b9ce8fdc8c5201086575572cf70997b8e0c",
+    "calls_sha256": "22acb878ea0ec852d1f35f34612c09bbbcca8e5e8b87307a4f8a227ca02c7070",
+    "case_input_sha256": "d142f73192a019803b0c39d6e7e3024e3275ab0a91d4b06dea3c6ce591b8e329",
+    "snapshot_bound": true,
+    "score10": 0.0,
+    "veto": "illegal_source_id:t4_1",
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7422,
+      "completion": 281,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 25947,
+    "gateway_latency_ms": 25898,
+    "response_id": "chatcmpl-238b9bca86e24f83b75e85bb",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 959,
+    "primary": "没定，估计也是看当天状态。你要有想去的可以说，没有我就随便安排了。",
+    "primary_chars": 33,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "没定，估计也是看当天状态。你要有想去的可以说，没有我就随便安排了。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "怎么，先查我档期啊。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "“看状态”这话还带传染的。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "没定，时间空着呢。你想出门随时说。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "没定，大概在家待着，补个觉。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "你呢，除了livehouse周末还有别的打算吗？"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "我周末一般不爱排太满，留点空比较舒服。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "周六还早，你先把手头的事忙完再说。"
+      }
+    ],
+    "invalid_fact_source_ids": [
+      "t4_1"
+    ],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E007",
+    "case_id": "E007_T06",
+    "run_id": "iso_20261025_093842_48b2df",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E007\\out\\turn_06_E007_T06\\reply_raw.txt",
+    "raw_sha256": "4f1ef093846de262df7effd14fee9db6c25bf8948ef9f881c2638b3524e17628",
+    "calls_sha256": "6865948aa777db79773beaaf9e35b025df6b204f9189ec84cb68e5f547b7aa90",
+    "case_input_sha256": "adf80385380136670b151707f38d5a5dadd9007d5ef0aed627cd7ceebaa10f6d",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7364,
+      "completion": 361,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 27491,
+    "gateway_latency_ms": 27456,
+    "response_id": "chatcmpl-51c22e706a1548ac914f3307",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 890,
+    "primary": "行，票你搞定。周六前后我来捋，回头给你两个选项挑。",
+    "primary_chars": 25,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，票你搞定。周六前后我来捋，回头给你两个选项挑。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "票归你，想法归我，分工清楚。周六别迟到就行。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "好，那这事就成了——你负责买票，我负责想。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "那就周六。这几天你加班别熬太狠，到时候别听着听着睡着了。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "行，票你买，周六几点开场发我一下，我按时间安排。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "演出前先找个安静点的馆子吃口饭？后摇配不上太吵的地方。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "那就周六，我这几天还挺盼着的。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E007",
+    "case_id": "E007_T07",
+    "run_id": "iso_20261025_093842_48b2df",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E007\\out\\turn_07_E007_T07\\reply_raw.txt",
+    "raw_sha256": "63a0284ded11a7dc717361bb2003f44d4ad03e1dd916e409f55a34f511f70cef",
+    "calls_sha256": "d4d5a2658dc2f52bd34e7318dc6f8f916a37b4b0e5a4f7954636910c4d5dd363",
+    "case_input_sha256": "e0198492845b2c5f49e54676c361e932a19bbcd3792f6849a5e1de9b41a22b13",
+    "snapshot_bound": true,
+    "score10": 8.33,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7415,
+      "completion": 272,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 15009,
+    "gateway_latency_ms": 14957,
+    "response_id": "chatcmpl-e256f963d1fd4f8982cef53b",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 990,
+    "primary": "成，周六见。",
+    "primary_chars": 6,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "成，周六见。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "说定了，那我周六就在门口站好，看你从哪头过来。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "成交。到时候我负责在门口当个显眼的人。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "行，就这么定。这几天先别熬太狠，周六见。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "行，那我周六提前到，门口等你。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "这几天你要是加班到很晚，周六就当天再说，不用特意赶。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "说定了，听着挺踏实。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E007",
+    "case_id": "E007_T08",
+    "run_id": "iso_20261025_093842_48b2df",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E007\\out\\turn_08_E007_T08\\reply_raw.txt",
+    "raw_sha256": "a0b70d9a01f94e1b4e6da81205e58e12b619deba4f4f6eaa953b1d2d91a4dbdb",
+    "calls_sha256": "815bfbf156c24017fa3b9fd12ade3b9c3009fd181c5283c69a483609b3e2fd96",
+    "case_input_sha256": "cf5016b8f5e0e3c2f9606fe62b9673230a339dd32ca5997e314422f1b83b3cc0",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7343,
+      "completion": 298,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 60895,
+    "gateway_latency_ms": 60851,
+    "response_id": "chatcmpl-2f971a2afef0427084f45bcb",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 853,
+    "primary": "后摇又不是金属，吵不到头疼那个程度。真怕就揣一副，塞兜里不占地方。",
+    "primary_chars": 33,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "后摇又不是金属，吵不到头疼那个程度。真怕就揣一副，塞兜里不占地方。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "你同事大概没进过后摇现场。真头疼多半是站久了，跟音量没关系。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "带呗，顺便还能挡掉同事的唠叨。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "想带就带，不过我猜你到时候根本想不起来这回事。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "后摇现场最多低频重一点，头疼真不至于。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "那天阵容里有两支偏躁的，但也不是金属那种。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "我一般不带，后摇想听清每个层次。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "周六我提前到，真纠结的话我多带一副，你不用特意买。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E008",
+    "case_id": "E008_T01",
+    "run_id": "iso_20261025_093842_c8d7b9",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E008\\out\\turn_01_E008_T01\\reply_raw.txt",
+    "raw_sha256": "917ac9be14491295a3086e14f137cd88ea9a77a04fe3aaa96d07ceedc3a34ca8",
+    "calls_sha256": "2f8331530342a5a05cfe99e59259711e358ec3787ea1a27c2cd3650564ca779d",
+    "case_input_sha256": "70a199a37badc63e9f702d9ed975d701b9cec09257c1e8e3d092508cc85e2763",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7200,
+      "completion": 333,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 37925,
+    "gateway_latency_ms": 37825,
+    "response_id": "chatcmpl-d66425e3a6164878b4239ffa",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 621,
+    "primary": "订饭其实是最实在的帮忙，答辩那几天人根本顾不上吃。",
+    "primary_chars": 25,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "订饭其实是最实在的帮忙，答辩那几天人根本顾不上吃。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "这还叫帮不上？后勤都归你管了。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "后勤部长上岗了，比学术指导管用。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "有你盯着她吃口饭，她心里也踏实点。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "答辩前那阵最磨人，估计她连饭都想不起来吃。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "答辩这事，家里人能做的也就这些了，剩下的得她自己扛。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "你这姐姐当得够细的。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "等她答辩完，你也能松口气了。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E008",
+    "case_id": "E008_T02",
+    "run_id": "iso_20261025_093842_c8d7b9",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E008\\out\\turn_02_E008_T02\\reply_raw.txt",
+    "raw_sha256": "a6538de2ba49f6abda2e86602b1240ee2cb89b83c5d3bb5c6f9281d1b0158fd1",
+    "calls_sha256": "b4c68994ffe6f98b69d2eb4b12717d04d6fbc2c0b11d07d3ea1569f7e8199311",
+    "case_input_sha256": "e3428916ae6d98b7208d9f140aa6a1c575b335a352858707b3e039a8da16370e",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7383,
+      "completion": 293,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 23243,
+    "gateway_latency_ms": 23192,
+    "response_id": "chatcmpl-d4829ae3c255450ba9edce33",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 890,
+    "primary": "订个饭也算惯着？我听着就是姐妹之间很正常的事。",
+    "primary_chars": 23,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "订个饭也算惯着？我听着就是姐妹之间很正常的事。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "小林这句我不接。就订个饭，扯不到惯不惯。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "小林要是有个妹妹，估计订饭比你还勤。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "帮不上别的，还能把饭安排好，这已经挺用心了。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "答辩那几天你能陪着订饭，她心里肯定有底。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "你妹答辩具体哪天？"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "我不觉得这算惯，别把别人的话往自己身上套。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "答辩完请她吃顿好的，你俩一起。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E008",
+    "case_id": "E008_T03",
+    "run_id": "iso_20261025_093842_c8d7b9",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E008\\out\\turn_03_E008_T03\\reply_raw.txt",
+    "raw_sha256": "7bf8437d344a6e8f2366919b62694a5639f2ea84e47ad8cf8b70272853f28f13",
+    "calls_sha256": "929e1c799a2f117f7a57cd932070b33cdc8d1fd42f7d0ff051e9aa3169c8c7ad",
+    "case_input_sha256": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7354,
+      "completion": 309,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 23221,
+    "gateway_latency_ms": 23169,
+    "response_id": "chatcmpl-b42209732fb24c2298f7fe4b",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 864,
+    "primary": "不是读书会，这话我没说过，你记混了。",
+    "primary_chars": 18,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "不是读书会，这话我没说过，你记混了。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "读书会？这话可不是我说的，别把别人的话算到我头上。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "读书会？我什么时候这么文艺了，你是不是把谁的话记到我头上了。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "真不是读书会，那句不是我说的。你要真想知道，我慢慢跟你讲。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "那你再想想，这句到底是谁跟你说的。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "不过你这么一记，我倒好奇在你印象里我是什么样的人了。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "不是读书会。别人说的归别人，我不想替别人认这个。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E008",
+    "case_id": "E008_T04",
+    "run_id": "iso_20261025_093842_c8d7b9",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E008\\out\\turn_04_E008_T04\\reply_raw.txt",
+    "raw_sha256": "5f9e0d183b28421926f752b93513020be06b26f9401f7e577c6ba4f7b32c33f4",
+    "calls_sha256": "5a96558b92adf5f9b33856739f10d513bd4b3f7676c97a166f5366fa66e6327c",
+    "case_input_sha256": "890bdf0dd980340ca10489189c707914a4c7e4eb8fa064a2243274e5576a5fba",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7401,
+      "completion": 246,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 64456,
+    "gateway_latency_ms": 64411,
+    "response_id": "chatcmpl-d486f63380ac4f65a59e74be",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 913,
+    "primary": "那这人情我记小林账上，回头请他吃饭。",
+    "primary_chars": 18,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "那这人情我记小林账上，回头请他吃饭。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "夸我的话你记得倒快，我说过的反倒记岔了。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "稳重这词从小林嘴里出来，怎么听着像在损我。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "那我得对得起这句，下回见面表现好点。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "小林最近还跟你聊什么了"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "他平时不怎么说这种话吧"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "被人背后夸一句，还挺受用"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "改天约上他一起吃饭，当面谢他"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E008",
+    "case_id": "E008_T05",
+    "run_id": "iso_20261025_093842_c8d7b9",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E008\\out\\turn_05_E008_T05\\reply_raw.txt",
+    "raw_sha256": "833242fe818c95a9e9610980b4ae7c430ef9e68e64da1e0bf217d56d460ce249",
+    "calls_sha256": "bfa1b5b80c94b9f5f98addb7f8a028f9ac79591932c35e48a932c2b3704c1bd5",
+    "case_input_sha256": "6526fcc72a2a52e8904999801ea8f7a7f590892a745d2e963bbcccc0d6cb83bb",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7349,
+      "completion": 257,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 39901,
+    "gateway_latency_ms": 39846,
+    "response_id": "chatcmpl-b8b9105edce74c96b9fd03a9",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 860,
+    "primary": "行，那你先陪你妹。等你那边定下来，再挑个时间。",
+    "primary_chars": 23,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，那你先陪你妹。等你那边定下来，再挑个时间。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "行，那就先欠我一杯。等你忙完，自己挑个时间。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "行，先紧着你妹，咖啡跑不了。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "没事，陪妹妹要紧。忙完了跟我说一声，我这边好安排。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "行，那你先忙你妹那边的事。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "是答辩那阵子吧？先紧着她来。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "没事，这种事本来就得往后排。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "等你忙完说一声，我再定时间。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E008",
+    "case_id": "E008_T06",
+    "run_id": "iso_20261025_093842_c8d7b9",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E008\\out\\turn_06_E008_T06\\reply_raw.txt",
+    "raw_sha256": "81a5ba2e638f4644d0939370b259eb99483e2ce56d3ea535b7fdd5753671348a",
+    "calls_sha256": "fd1c8f4bd928ccdd512c82ec1108dbb3e8280861c9d9ad68ad24f20e10ccb45d",
+    "case_input_sha256": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7368,
+      "completion": 254,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 40052,
+    "gateway_latency_ms": 40008,
+    "response_id": "chatcmpl-0ccd581372a846428a7c10bd",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 882,
+    "primary": "行，那就下周三，就你一个，我记上了。",
+    "primary_chars": 18,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，那就下周三，就你一个，我记上了。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "说一遍就够了，两遍我反倒要多想。下周三见。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "连说两遍，是怕我顺口把你妹也叫上？下周三，你一个人来。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "好，下周三见你。几点下班，我按你的时间来。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "下周三你几点能到，我按你的时间来"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "你妹答辩是哪天，忙完了你也好松口气"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "行，就你，那这顿我来定地方"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "下周三见。这两天先好好过"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E008",
+    "case_id": "E008_T07",
+    "run_id": "iso_20261025_093842_c8d7b9",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E008\\out\\turn_07_E008_T07\\reply_raw.txt",
+    "raw_sha256": "57d13537071af756667b4c7a4609c9520b2dbf704643bf05d56869b38664de2c",
+    "calls_sha256": "0825e9aa2192fa5c7f60ba5fd717332d7802ddd042f26ebc303dcf919f37bc94",
+    "case_input_sha256": "eca92d288fe336bacc75d5e117426840b5965425d57391d448463285c734e4f9",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7431,
+      "completion": 300,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 46295,
+    "gateway_latency_ms": 46257,
+    "response_id": "chatcmpl-07ffe719c95f43a784e0d292",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 963,
+    "primary": "喝个咖啡而已，谈不上破费。你下班过来就行。",
+    "primary_chars": 21,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "喝个咖啡而已，谈不上破费。你下班过来就行。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "一杯咖啡就破费了？你这标准也太低了。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "放心，破费不到哪去，我还没打算请你吃席。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "别替我算这个，约你出来是我乐意的。你人来就行。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "就一杯咖啡，真不算什么，你别有负担。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "你妹答辩哪天？忙完你也该松口气了。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "我请你是因为我想请，不是硬撑。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "那周三就这么定，地方我来挑。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E008",
+    "case_id": "E008_T08",
+    "run_id": "iso_20261025_093842_c8d7b9",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E008\\out\\turn_08_E008_T08\\reply_raw.txt",
+    "raw_sha256": "2019ccae79f1a8ea2605b8aec16cafb1e9d44a3bd5578cefa6914a686cec2d63",
+    "calls_sha256": "dd1c2f4c8445b28ed5293ba59aff8c7616fb397a948d666634d64d718e51d3d3",
+    "case_input_sha256": "29be125f4f3277fdd43a5e5569888214201adb72ed41381a08c5fd3489a89c5d",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7362,
+      "completion": 296,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 21565,
+    "gateway_latency_ms": 21506,
+    "response_id": "chatcmpl-bfe0e5d2c8564c50a16e0e4f",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 878,
+    "primary": "监考这事躲不掉，你先忙。等你哪天空了定个时间，跟我说一声就行。",
+    "primary_chars": 31,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "监考这事躲不掉，你先忙。等你哪天空了定个时间，跟我说一声就行。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "别急着把我往外推。我这边不急，时间你自己定，定好了告诉我。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "你这周比我值夜班还满。定了哪天跟我说，我尽量排开。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "没事，监考本来也推不掉。你先忙完歇两天，等能定下来再跟我说。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "监考是临时通知的？这么突然"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "那你这周是不是基本没自己的时间了"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "我不赶时间，本来也不是非得这周的事，你定了再说"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E009",
+    "case_id": "E009_T01",
+    "run_id": "iso_20261025_093843_80b105",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E009\\out\\turn_01_E009_T01\\reply_raw.txt",
+    "raw_sha256": "3e0dc917416ff7407ec30bf5c2bb1df405c4cda53f489fb3730114841151412d",
+    "calls_sha256": "5f34f2d9576deb6d58b44cde2834b2aaffdb481142b2077f165beae2adcf380b",
+    "case_input_sha256": "d5f388f7ff7436d4eb7e74f9945f416e03749439e4f47d181fce3ca3aa611e97",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7190,
+      "completion": 340,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 29277,
+    "gateway_latency_ms": 29134,
+    "response_id": "chatcmpl-3adf83efa8d84b7c81485693",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 619,
+    "primary": "有空。你说哪天，2026-11-14或2026-11-15都行，我过去看。",
+    "primary_chars": 37,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "有空。你说哪天，2026-11-14或2026-11-15都行，我过去看。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "有空。不过“没空就算了”这句以后省了，我又不是被你逼着修的。哪天方便？"
+      },
+      {
+        "slot": "response.playful",
+        "text": "蓝屏就是电脑在喊救命。周末我有空，你先别自己瞎点，越点越乱。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "有空，别觉得麻烦我。周末定个时间，我过去给你弄好。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "蓝屏有报错代码吗，拍给我看看。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "先别急着重装，有可能是驱动的问题，到时候我先查一遍。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "周末我这边都能安排，你挑个方便的时间就行。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "要不2026-11-14下午，你在家我就过去。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E009",
+    "case_id": "E009_T02",
+    "run_id": "iso_20261025_093843_80b105",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E009\\out\\turn_02_E009_T02\\reply_raw.txt",
+    "raw_sha256": "cc7480085dc286d636fa38b942d388724afb89fcb9e68d7f1550fedb19b79159",
+    "calls_sha256": "f6484b8705717a574913287b6e91bfc07e573bf314faf51f5e207db9e5bccfe3",
+    "case_input_sha256": "a7995561f6a7df382606696afba3256be328deca8bbade304a24ee97581b034c",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7366,
+      "completion": 275,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 25732,
+    "gateway_latency_ms": 25677,
+    "response_id": "chatcmpl-74ed61d919154baa86b83978",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 885,
+    "primary": "行，周六上午等你信儿。",
+    "primary_chars": 11,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，周六上午等你信儿。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "行，那周六上午等你消息，别再改口就行。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "行，周六下午我先空着，你不来我就睡过去。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "行，周六上午说一声，我这边好安排。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "行，周六上午等你信儿。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "带过来吧，我这工具齐一点，省得跑两趟。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "反正就重装个系统，折腾不了多久。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "周六上午记得说，别到时候忘了。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E009",
+    "case_id": "E009_T03",
+    "run_id": "iso_20261025_093843_80b105",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E009\\out\\turn_03_E009_T03\\reply_raw.txt",
+    "raw_sha256": "0a5585e476d86f7ad5d8e48f42b4e0e053a349c94bc112bb2a0a7674e04d00b7",
+    "calls_sha256": "a300de36f8d31afb89c326342fe2b20d7c9fd76130091acdabee34f8f7413365",
+    "case_input_sha256": "407166b9ff4124e6b567e3069dbdc31178c59b1d4ad55ce849f6561ff66579ce",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7343,
+      "completion": 287,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 26546,
+    "gateway_latency_ms": 26495,
+    "response_id": "chatcmpl-202e4f4cb9f44718a220262f",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 863,
+    "primary": "行，那你先忙加班，电脑的事等你有空了再定。",
+    "primary_chars": 21,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，那你先忙加班，电脑的事等你有空了再定。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "收到，那周六的时间我就不留了，等你哪天真闲下来再喊我。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "行，那我周六自己安排了，你的电脑往后排队。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "行，加班别太熬，回头你有空说一声就行。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "加班这么突然，是月底结账那阵吧？"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "那周六我就自己安排了，正好歇一天。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "反正不急，电脑先凑合用几天也没事。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "等你这波忙完了跟我说，时间你定。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E009",
+    "case_id": "E009_T04",
+    "run_id": "iso_20261025_093843_80b105",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E009\\out\\turn_04_E009_T04\\reply_raw.txt",
+    "raw_sha256": "3ab860344e11c853f283620c042012354a510c295e2c92304dc4ef9f418a8451",
+    "calls_sha256": "271dd762bac830cf9fd63cf52aa750a6c2b64d50a0b553759846cdd9640fbf15",
+    "case_input_sha256": "50aaeca320c1036821dd8789661348f0591f0b8046e544310dd5cd1950d4348e",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7352,
+      "completion": 321,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 61490,
+    "gateway_latency_ms": 61449,
+    "response_id": "chatcmpl-72a5676f509b495eb4289794",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 904,
+    "primary": "行，周日下午我记下了。几点方便？我过去还是你把电脑带过来。",
+    "primary_chars": 29,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，周日下午我记下了。几点方便？我过去还是你把电脑带过来。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "记下了，周日。这回再冒出个加班，我可就不改时间了。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "周日下午，收到。这次别到跟前又临时加班啊，我这边也等着呢。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "行，周日下午我给你留着。电脑带过来就行，不用操心别的。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "周日下午几点，你定个时间"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "你这电脑之前重装过没，装完还得备份一下你那些资料"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "说实话，这次能定下来我挺高兴的"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "那就定周日下午，到时候提前跟我说一声"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E009",
+    "case_id": "E009_T05",
+    "run_id": "iso_20261025_093843_80b105",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E009\\out\\turn_05_E009_T05\\reply_raw.txt",
+    "raw_sha256": "902f105dcdebb8072cf76b6268706e828c49f40898656ba12de927fbe4b4762e",
+    "calls_sha256": "be560630baf77b9dc3a7fd32ef614e30ba9e9fc90a5ac031570a0926d106a2e4",
+    "case_input_sha256": "36677b11038256c7bc057ac986d70751e8546a2d4365cc0ff2a110a6fd8f709e",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7433,
+      "completion": 277,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 29934,
+    "gateway_latency_ms": 29897,
+    "response_id": "chatcmpl-828539cb16c84a5f920a28d8",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 984,
+    "primary": "行，那就空手来，就带个装系统的U盘。",
+    "primary_chars": 18,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，那就空手来，就带个装系统的U盘。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "这就开始交代上了？行，听你的。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "空手可以，饭得管。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "知道你是怕我瞎折腾，行，不搞那些。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "行，空手，就带个U盘。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "那我不讲究了，你也别跟我客气。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "本来也不擅长挑东西，省事了。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "周日下午几点过去合适？"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E009",
+    "case_id": "E009_T06",
+    "run_id": "iso_20261025_093843_80b105",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E009\\out\\turn_06_E009_T06\\reply_raw.txt",
+    "raw_sha256": "19c3eed8138bccf331a68c5441c7235172e8f9289cf03110805cf69a5b4f6972",
+    "calls_sha256": "29780283662bc6eca58482d928bf2656b4c91559a0766379c37f677c9b25de4e",
+    "case_input_sha256": "c8e3c6ec96ee02b70e98f9f6040472bff488c24e421d92cc7268fba04e41cf4d",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7305,
+      "completion": 380,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 45357,
+    "gateway_latency_ms": 45300,
+    "response_id": "chatcmpl-3bc8174d8e8b42c39f1d406b",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 821,
+    "primary": "装好就行，灰太多，顺手清一下。后面用着不顺手跟我说。",
+    "primary_chars": 26,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "装好就行，灰太多，顺手清一下。后面用着不顺手跟我说。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "清灰是顺手的事，不用谢。倒是你，早坏了就早点说，别一直拖着。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "拆开的时候那灰真不少，我还以为你这机器里藏了件毛衣。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "不麻烦，能用就好。这事办完，你这周也踏实了。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "装完就好，开机要是卡或者蓝屏再来，别自己瞎点。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "这机器几年了？灰这么多，风扇估计也快不行了。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "重装完不顺手清灰，等于白装，本来就该做的。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "行，周日剩下的时间自己歇着吧。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E009",
+    "case_id": "E009_T07",
+    "run_id": "iso_20261025_093843_80b105",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E009\\out\\turn_07_E009_T07\\reply_raw.txt",
+    "raw_sha256": "e1786c41ca4d9857ce34c0aadb333217e94dc1d8485ec8682c6a93fa3d11c874",
+    "calls_sha256": "8429d9abec73e0f7704bc89f79cd9186940c32c224bd3665e90cd5f746d1e0e5",
+    "case_input_sha256": "cc509547a3ff8e96745b2b5756b02fb944130e7ae11b1183c8d845c026e07af9",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7342,
+      "completion": 239,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 37945,
+    "gateway_latency_ms": 37907,
+    "response_id": "chatcmpl-c906a02198b74417a5abca25",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 854,
+    "primary": "脸皮厚点好，省得跟我客气来客气去。",
+    "primary_chars": 17,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "脸皮厚点好，省得跟我客气来客气去。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "行，记着吧，反正你也就嘴上厚脸皮，真有事八成又自己憋着。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "那我可等着看你厚脸皮的样子了。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "记下就好，真出问题了别自己瞎折腾，喊我。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "记下就行，别真到那会儿又不好意思开口。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "电脑能顺利用上就好，剩下的你自己也搞得定。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "我这人不怕被麻烦，就怕你憋着不说。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "parent",
+    "episode": "E009",
+    "case_id": "E009_T08",
+    "run_id": "iso_20261025_093843_80b105",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\parent_E009\\out\\turn_08_E009_T08\\reply_raw.txt",
+    "raw_sha256": "48a66810b7073f0b28880c7fee67ff4a192ef529dd790801d069b5d3c5c586b3",
+    "calls_sha256": "70ed07337a5e514f546552ad2c9d5029f0e672eb4986a6f75fb015245e581285",
+    "case_input_sha256": "8f796a237165c7ecde89a308c0a35d53e1cad7674f5541364d896c546281aa00",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": false,
+    "tokens": {
+      "prompt": 7308,
+      "completion": 317,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 39021,
+    "gateway_latency_ms": 38973,
+    "response_id": "chatcmpl-3682056c360e4db981c0f070",
+    "images": [],
+    "system_utf16": 8295,
+    "user_utf16": 824,
+    "primary": "行，让你妹直接把什么毛病说出来，我看看是软件问题还是硬件问题。",
+    "primary_chars": 31,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，让你妹直接把什么毛病说出来，我看看是软件问题还是硬件问题。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "你妹还知道派个中间人来问。行，把问题说清楚，别我到了才发现是鼠标没插好。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "你妹不好意思，你倒是挺好意思的。啥毛病，说说。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "没事，不用跟我客气。让你妹把电脑的情况跟我说说，我提前心里有个数。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "她电脑是什么情况，开不了机还是卡？"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "是你妹自己的电脑，还是借你的那台？"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "帮妹妹修可以，但别每次都让你在中间传话。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "要不周末一起弄，你妹也过来，顺便吃个饭。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E007",
+    "case_id": "E007_T01",
+    "run_id": "iso_20261025_093842_b58b79",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E007\\out\\turn_01_E007_T01\\reply_raw.txt",
+    "raw_sha256": "78c08583b032dc3f5c4e0c07091ff724cac56983e2208ad40a14b68e29009f7b",
+    "calls_sha256": "f91ec0f51969143c1e1636e52fcc590950a05cf263b24d92dd56bb93260b0004",
+    "case_input_sha256": "03501305e62a946b25a9ab1c3fc00d5969c3cbf17586f5b73f07487140609138",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 2820,
+      "completion": 196,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 23795,
+    "gateway_latency_ms": 23767,
+    "response_id": "chatcmpl-c4add3f8566a4f4ba048fbb4",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1353,
+    "primary": "这班加得，人都快长蘑菇了。真要出走，打算往哪跑？",
+    "primary_chars": 24,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "这班加得，人都快长蘑菇了。真要出走，打算往哪跑？"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "出走可以，别走太远，出了南京我可找不着你。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "离家出走记得捎上我，拎包和找吃的我全包。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "听着就累。加班这事儿你说了不算，但别一个人扛，想吐槽随时找我。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "先出走到一个没电脑的地方，南京哪儿能躲你说了算，我帮你查。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "这个点还在公司，还是刚到家？"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "听着就累，别硬撑。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "你最近有想看的演出吗，我看看有没有能去的。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E007",
+    "case_id": "E007_T02",
+    "run_id": "iso_20261025_093842_b58b79",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E007\\out\\turn_02_E007_T02\\reply_raw.txt",
+    "raw_sha256": "a04d532178a0f80ebe3e7e596f8112b8971777315b111919d730f52f93c92c93",
+    "calls_sha256": "cc4d433e038ade57c82fd6c1f159f5a77c33baeff3b7c8fabe8784fba59ce01f",
+    "case_input_sha256": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3025,
+      "completion": 276,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 91219,
+    "gateway_latency_ms": 91189,
+    "response_id": "chatcmpl-94888243b1224431b2ae73b9",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1675,
+    "primary": "那就往不吵的挑。后摇那种能坐着听的，我去翻翻周末有没有合适的场子，挑好了发你，你先别操心这事。",
+    "primary_chars": 47,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "那就往不吵的挑。后摇那种能坐着听的，我去翻翻周末有没有合适的场子，挑好了发你，你先别操心这事。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "不吵的我也听得下去，放心，不会把你扔进金属现场。周末哪天你松一点，我照着那天去找。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "收到，音量调到“还能聊天”那一档。你负责挑歌，我负责找场子。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "加班加成这样，是该出去听点能喘口气的东西。周末我带你找个不吵的场子，琐事我来弄。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "周末哪天你更松一点？我先照着那天去翻场子"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "你最近常听哪几支？我按你的口味找，免得一进去就轰耳朵"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "说真的，听你说想离家出走，我挺想带你出去换换气的"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "实在懒得动，先出来吃个饭也行，livehouse 慢慢找"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E007",
+    "case_id": "E007_T03",
+    "run_id": "iso_20261025_093842_b58b79",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E007\\out\\turn_03_E007_T03\\reply_raw.txt",
+    "raw_sha256": "b4cdffa0967e889e5c6fc3d547d3eeb901900b2e4716b1e5e6e36c59bcb1fdac",
+    "calls_sha256": "13e5bef9b1db48a42ce3772f3875aaa635b409e3cc9d1d9a1b33d81d5f6e86ae",
+    "case_input_sha256": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3050,
+      "completion": 275,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 19402,
+    "gateway_latency_ms": 19377,
+    "response_id": "chatcmpl-8fb07705d83d411eae86b88c",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1694,
+    "primary": "对，就是那种——不吵，鼓和吉他一层层往上铺，中间还能听见彼此说话。周末我看看有哪些场子合适，你有空就一起，没空也不勉强。",
+    "primary_chars": 60,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "对，就是那种——不吵，鼓和吉他一层层往上铺，中间还能听见彼此说话。周末我看看有哪些场子合适，你有空就一起，没空也不勉强。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "对，就那种。正好适合加班加到没脾气的人。不过先说好，去了别在底下睡着，那就白去了。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "对，吵的部分全省了，只剩好听。你这是在给自己找理由点头吧？"
+      },
+      {
+        "slot": "response.warm",
+        "text": "对，不吵。你最近累成这样，听点慢的正合适。周末哪天松快点，场子我来找。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "我这两天翻一下周末的场次，挑两三个安静点的发你，你看着挑。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "你平时听的现场，是小场地多还是大场馆多？"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "想跟你一起去听一次，这话我记挺久了。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "不说这个了，你今天几点才下的班？"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E007",
+    "case_id": "E007_T04",
+    "run_id": "iso_20261025_093842_b58b79",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E007\\out\\turn_04_E007_T04\\reply_raw.txt",
+    "raw_sha256": "4d417fad1360c77396893818efcab96ede2b2e7a559204bd1c775e2090aab748",
+    "calls_sha256": "e321af94af83b5b9cac2adf72713a56ca5ef62d2d9619e44f170be4f9919c63a",
+    "case_input_sha256": "51c6aa90730126a89e0b420bebd85a9a9231a4c50cf962cffa57be6bbc33722c",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 2968,
+      "completion": 182,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 46846,
+    "gateway_latency_ms": 46825,
+    "response_id": "chatcmpl-9c8396130cae4c36ad6bf8b6",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1700,
+    "primary": "行，你慢慢定。真要来我这边把票弄好，状态不对也不用勉强。",
+    "primary_chars": 28,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，你慢慢定。真要来我这边把票弄好，状态不对也不用勉强。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "行，那我周六先给你留着位子，你想起来再喊我。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "准了，慢慢掂量。反正周六最大的意义就是把你从工位上拽出来。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "好，不催你。这周先把自己歇过来，想去跟我说一声就行。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "周六前你说一声就好，我来安排。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "要不我把场次信息发你看看，你再定？"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "其实就是想让你歇一天，别的没多想。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E007",
+    "case_id": "E007_T05",
+    "run_id": "iso_20261025_093842_b58b79",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E007\\out\\turn_05_E007_T05\\reply_raw.txt",
+    "raw_sha256": "69e306b3c2da538f492463326e8bd619dcdf860909ceb73557efc400f2b77d25",
+    "calls_sha256": "53613b77f597fea28dd0cfe0b5ba3be7ddcd2aca30dcde72f9856f122462eccc",
+    "case_input_sha256": "d142f73192a019803b0c39d6e7e3024e3275ab0a91d4b06dea3c6ce591b8e329",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 2995,
+      "completion": 250,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 71039,
+    "gateway_latency_ms": 71006,
+    "response_id": "chatcmpl-bf30b0c979ce445386e6beb6",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1727,
+    "primary": "还没定，估计就是补觉加随便走走。你问这个，是有想去的地方吗？",
+    "primary_chars": 30,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "还没定，估计就是补觉加随便走走。你问这个，是有想去的地方吗？"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "计划就两件：睡觉，还有一件等你回我的。剩下的都随便。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "安排挺满的：睡到自然醒，然后认真研究中午吃什么，下午接着研究晚上吃什么。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "周末我空着，没排什么事，就想真正歇两天。你要是有想去的地方，跟我说一声，我看看能不能一起。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "那你呢，你周末想干点什么？不想出门也行，就在家躺着也算计划。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "我想找个下午去咖啡馆坐坐，什么都不干，最近脑子太满了。你要不要也来放空一下？"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "其实我更想听你说说，你周末想怎么过。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E007",
+    "case_id": "E007_T06",
+    "run_id": "iso_20261025_093842_b58b79",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E007\\out\\turn_06_E007_T06\\reply_raw.txt",
+    "raw_sha256": "1e7dc7457d9f4bc19f873bb648e68df3c6cd8ef870e3da13d7ef6056fb0d6748",
+    "calls_sha256": "bd2f6f3db1c80a6219ef3a1fd8efc5975115b47cf398d67dbd4d673c9623ef86",
+    "case_input_sha256": "adf80385380136670b151707f38d5a5dadd9007d5ef0aed627cd7ceebaa10f6d",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3154,
+      "completion": 348,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 38895,
+    "gateway_latency_ms": 38868,
+    "response_id": "chatcmpl-1abeb2ed9fa444e694f627fa",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1931,
+    "primary": "行，那周六见。想法我先给一个：提前一小时到，在附近随便吃点，别掐着点进场。后摇那种一开场就安静下来，迟到挤进去挺破坏气氛。票我自己也买一张，座位各买各的，到了碰头。",
+    "primary_chars": 82,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，那周六见。想法我先给一个：提前一小时到，在附近随便吃点，别掐着点进场。后摇那种一开场就安静下来，迟到挤进去挺破坏气氛。票我自己也买一张，座位各买各的，到了碰头。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "票你买你的，想法我留我的，不过我这个想法有个前提：那天我在场。提前一小时到，先吃点东西，剩下的到时候看。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "想法一号：先吃饭。想法二号：别迟到，后摇一开场就安静，推门进去全场回头看你。想法三号：散场别急着跑，我请你喝一杯收尾。票各买各的，人到齐就行。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "好，你定了我挺高兴的。周六我这边不安排别的了，你那天要是加班到最后一刻也没事，我提前过去等你。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "那场几点开场？我看看我几点从公司出发合适。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "散场要是太晚，我提前看看附近有没有还能坐一会儿的地方。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "说实话，你说“要去”的时候我心情挺好的。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E007",
+    "case_id": "E007_T07",
+    "run_id": "iso_20261025_093842_b58b79",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E007\\out\\turn_07_E007_T07\\reply_raw.txt",
+    "raw_sha256": "10e677f97a4143a1f71d15fa85d381430338111b921015a927df9ccc910ab07c",
+    "calls_sha256": "8c8095cca70e2b665f829515abc15905b997153d338b38f52d06a5cd27513284",
+    "case_input_sha256": "e0198492845b2c5f49e54676c361e932a19bbcd3792f6849a5e1de9b41a22b13",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3072,
+      "completion": 133,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 17131,
+    "gateway_latency_ms": 17111,
+    "response_id": "chatcmpl-1fbf2a7046394e0e918b38b6",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1938,
+    "primary": "说定了，周六见。",
+    "primary_chars": 8,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "说定了，周六见。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "说定了。那天你管状态，我管想法。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "说定了。我提前到门口站着，跟接人似的。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "好，说定了。周六见你，我挺期待的。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "想法我留着，到那天讲给你听。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "这几天还得加班吗？别到时候听一半睡着。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "行，那就等周六了。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E007",
+    "case_id": "E007_T08",
+    "run_id": "iso_20261025_093842_b58b79",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E007\\out\\turn_08_E007_T08\\reply_raw.txt",
+    "raw_sha256": "307838c8f3485d9e76073b9bf9cc1cd5dc53507160472975d1c706bdd5f07130",
+    "calls_sha256": "be8014c9e4d8147d2168170b84f0d16c35a650566cc03bc595323606c1c8429a",
+    "case_input_sha256": "cf5016b8f5e0e3c2f9606fe62b9673230a339dd32ca5997e314422f1b83b3cc0",
+    "snapshot_bound": true,
+    "score10": 0.0,
+    "veto": "json_schema_broken",
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3112,
+      "completion": 311,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 16399,
+    "gateway_latency_ms": 16371,
+    "response_id": "chatcmpl-28a7fc991aa243e583a118cc",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1973,
+    "primary": "带一副吧，塞兜里又不占地方。后摇大多前面安静得很，真到后面一层层堆上来的时候，你就把它戴上，一点不耽误听。",
+    "primary_chars": 53,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "带一副吧，塞兜里又不占地方。后摇大多前面安静得很，真到后面一层层堆上来的时候，你就把它戴上，一点不耽误听。"
+      },
+      {
+        "slot": "response.bad_bo​y",
+        "text": "你同事又不去，听他的干嘛。不过耳塞还是带一副吧，万一真炸起来，我可不想到时候看你捂着耳朵瞪我。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "带，顺便给我也备一副，万一现场我比台上还吵呢。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "带一副吧，图个安心，真用不上最好。周六我提前到，门口等你。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "要不我提前看看这场有没有人说过现场音量怎么样，再决定带不带"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "后摇就是这样，前面安静得能听见咳嗽，后面突然一片压过来，耳塞留着备用正好"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "吵不吵我无所谓，主要你别硬撑，真受不了就出来透口气，我也跟着出来"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "周六之前你要是还有哪天加班到很晚，跟我说一声，我可以顺路给你送点吃的"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E008",
+    "case_id": "E008_T01",
+    "run_id": "iso_20261025_093842_a1b9da",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E008\\out\\turn_01_E008_T01\\reply_raw.txt",
+    "raw_sha256": "ab6dec6761fb4ec5fae5b7e36ab9e78e548649e1ab163f90854f26271c0ebbff",
+    "calls_sha256": "24f55e62301c6f33be0de1b440f2c9c078911f1b0094474b00e1bd96af9394fd",
+    "case_input_sha256": "70a199a37badc63e9f702d9ed975d701b9cec09257c1e8e3d092508cc85e2763",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 2848,
+      "completion": 278,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 16111,
+    "gateway_latency_ms": 16056,
+    "response_id": "chatcmpl-84fe26966d144fd6bd5185f7",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1392,
+    "primary": "能陪她订饭就已经很实在了，答辩那几天最怕吃不好睡不好，有你盯着这点，她心里就稳了。",
+    "primary_chars": 41,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "能陪她订饭就已经很实在了，答辩那几天最怕吃不好睡不好，有你盯着这点，她心里就稳了。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "帮不上啥？那天能吃上一口热的，比你在旁边念十遍加油都管用。后勤这块，你比谁都靠得住。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "行，后勤部长。订饭的时候顺手给自己也订一份，别光顾着妹妹，自己饿着。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "妹妹的事你这么上心，我看着都挺踏实的。真有需要我搭把手的地方，跟我说一声。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "她答辩是哪天？到时候要是不方便，我可以帮你看看附近有没有合适的店。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "这种事你一向想得比谁都细，她大概也习惯了有你张罗。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "你能陪着她，她心里肯定更有底。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "那你自己这几天忙不忙？别光顾着给她张罗。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E008",
+    "case_id": "E008_T02",
+    "run_id": "iso_20261025_093842_a1b9da",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E008\\out\\turn_02_E008_T02\\reply_raw.txt",
+    "raw_sha256": "b3d4c3ffe0e679d68a0a129b985c8e910b889905930908eb772cd9a06c68ddde",
+    "calls_sha256": "86198a461d02ee5096a783d7eb9d5d79b51898f318db303f9e39a59e05c1f1f5",
+    "case_input_sha256": "e3428916ae6d98b7208d9f140aa6a1c575b335a352858707b3e039a8da16370e",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 2919,
+      "completion": 236,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 20278,
+    "gateway_latency_ms": 20240,
+    "response_id": "chatcmpl-ed746e17f0754200b527d823",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1562,
+    "primary": "惯自己妹妹这事，我觉得不用谁来打分。你陪她订饭，这就挺够意思了。",
+    "primary_chars": 32,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "惯自己妹妹这事，我觉得不用谁来打分。你陪她订饭，这就挺够意思了。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "小林这话我不站他这边。你们姐妹怎么相处，他评一句就够了，不用你改。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "这题我判你无罪。换我要是有个妹妹答辩，估计比你还上心。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "别因为一句话就回头怀疑自己。你惦记她答辩、想着陪她订饭，这些我都看在眼里。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "答辩是哪天？真赶上我休息，订饭这事我陪你一起弄。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "你俩差几岁？听你提她的口气，像从小就你带着她。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "我不是要评你，就是觉得你对人挺认真的。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "不说小林了，这个点你吃饭没？"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E008",
+    "case_id": "E008_T03",
+    "run_id": "iso_20261025_093842_a1b9da",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E008\\out\\turn_03_E008_T03\\reply_raw.txt",
+    "raw_sha256": "33744e6e9bb590a6923db5bb591ed6add42fc43ffe7b3ff28e008ffc97ac8d07",
+    "calls_sha256": "4262409fc7c7c9d10e55abc334b3e8e952dff653df7a2633aab85ce44e0c78ec",
+    "case_input_sha256": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 2934,
+      "completion": 268,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 22381,
+    "gateway_latency_ms": 22353,
+    "response_id": "chatcmpl-81e5e80dc1844bcdbc6d843f",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1570,
+    "primary": "不是读书会，我跟小林不是那么认识的，这回你真记岔了。怎么突然想起问这个？",
+    "primary_chars": 36,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "不是读书会，我跟小林不是那么认识的，这回你真记岔了。怎么突然想起问这个？"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "读书会？这帽子扣得挺文雅，可惜扣错人了，我可不是在那种场合认识小林的。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "读书会这说法听着挺有文化，可惜不是我。你猜猜我跟小林是怎么认识的？猜对了算你厉害。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "不是读书会，这个得跟你说清楚。不过你能记着我讲过的话，我还挺高兴的。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "你是怎么记成读书会的？谁跟你说的，我还挺好奇。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "你猜猜我跟小林是怎么认识的，猜对了我请你吃饭。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "不过你这么上心记我说过的话，我挺受用的。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "对了，昨天你问小林说你太惯你妹，我倒觉得你这样挺好，别改。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E008",
+    "case_id": "E008_T04",
+    "run_id": "iso_20261025_093842_a1b9da",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E008\\out\\turn_04_E008_T04\\reply_raw.txt",
+    "raw_sha256": "4f238da825b61b7d186c73aa6979824d04133c977c3e1f82d2549d902d37003a",
+    "calls_sha256": "c842b137479c32148802c6dbd597d564a5ec3c7776dc2eb308ef660ed0357062",
+    "case_input_sha256": "890bdf0dd980340ca10489189c707914a4c7e4eb8fa064a2243274e5576a5fba",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3007,
+      "completion": 191,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 32341,
+    "gateway_latency_ms": 32310,
+    "response_id": "chatcmpl-dd0f2eac444f434e9ad8d909",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1743,
+    "primary": "那我就收下这夸奖了，不过这话是小林说的，你自己觉得呢",
+    "primary_chars": 26,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "那我就收下这夸奖了，不过这话是小林说的，你自己觉得呢"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "小林夸我稳重，你转达的时候，是自己也这么想吗"
+      },
+      {
+        "slot": "response.playful",
+        "text": "记岔了也没关系，反正最后落点是个稳重的我，这波不亏"
+      },
+      {
+        "slot": "response.warm",
+        "text": "不管是谁说的，被你这么一转达，听着还挺舒服，谢了"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "你妹答辩的日子定了吗？定了跟我说一声"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "小林平时也这么夸人，还是只在你面前夸"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "中午吃了没，别光顾着聊我"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "那天你要是陪妹妹订饭，我这边好安排时间"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E008",
+    "case_id": "E008_T05",
+    "run_id": "iso_20261025_093842_a1b9da",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E008\\out\\turn_05_E008_T05\\reply_raw.txt",
+    "raw_sha256": "adaec00f9c93f57510b3827a35b06194ee09de1370ad1c7157a4650dbc5132c5",
+    "calls_sha256": "b31e7184db72231e8e99983b4c7817cf69ee5bf07968fe8d45ae0d895f9fd9da",
+    "case_input_sha256": "6526fcc72a2a52e8904999801ea8f7a7f590892a745d2e963bbcccc0d6cb83bb",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3010,
+      "completion": 197,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 22687,
+    "gateway_latency_ms": 22646,
+    "response_id": "chatcmpl-1279390790224a30ab4a23ec",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1739,
+    "primary": "行 妹妹答辩这事比咖啡要紧 你先陪她 等你那边松下来咱再定时间",
+    "primary_chars": 31,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行 妹妹答辩这事比咖啡要紧 你先陪她 等你那边松下来咱再定时间"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "看来这杯咖啡得排队 等你妹答辩完再叫号 我记着了"
+      },
+      {
+        "slot": "response.playful",
+        "text": "那这杯咖啡先记账上 答辩结束我再找你要 不许多赖"
+      },
+      {
+        "slot": "response.warm",
+        "text": "好 你先顾妹妹那边 别把自己累着 忙完了跟我说一声 我等着"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "答辩是哪天 要是需要帮着订饭 你跟我说"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "她答辩完你俩打算怎么庆祝"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "其实我还挺期待这杯咖啡的 不过不急 先紧着妹妹的事"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "那这周末我先自己安排 你忙完记得喊我"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E008",
+    "case_id": "E008_T06",
+    "run_id": "iso_20261025_093842_a1b9da",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E008\\out\\turn_06_E008_T06\\reply_raw.txt",
+    "raw_sha256": "bf8b378e9c85a82e96fc22799ec0d7a6401277125a85e7244791b462fcdb9d3e",
+    "calls_sha256": "ffc34a325be2cd9a91d455b712ae77879c9ccb2b26c13c84934d610867bbb375",
+    "case_input_sha256": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3093,
+      "completion": 261,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 37975,
+    "gateway_latency_ms": 37939,
+    "response_id": "chatcmpl-a5899deb15934a1ba696b155",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1924,
+    "primary": "看到了，就你，不带你妹——这句说了两遍，我记住了。下周三见，你下班早，几点方便？",
+    "primary_chars": 40,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "看到了，就你，不带你妹——这句说了两遍，我记住了。下周三见，你下班早，几点方便？"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "两遍都强调“就我”，行，那我也只带我自己去。下周三，你定时间。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "“就我，不带我妹”收到，重点划了两遍。那我也一个人去，正好凑成两个人。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "好，那就下周三，就你。我这边没别的安排，你下班早的话几点方便，我按你的时间来。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "下周三你几点下班？我提前把时间留出来。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "周末先陪你妹，下周三就你自己出来，这样挺好。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "说真的，本来想见的就是你，你妹来不来都不影响。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "下周三要不要顺便找个吃饭的地方？你有想吃的可以提。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E008",
+    "case_id": "E008_T07",
+    "run_id": "iso_20261025_093842_a1b9da",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E008\\out\\turn_07_E008_T07\\reply_raw.txt",
+    "raw_sha256": "139610e00fd23a331a80cde7b89fc897cae320ed0c2b2fb53bc758fc04bb8406",
+    "calls_sha256": "6ee303b778a121668d36c84f46a63035a54a02be8cdfe9b6027d439e7bec2479",
+    "case_input_sha256": "eca92d288fe336bacc75d5e117426840b5965425d57391d448463285c734e4f9",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3111,
+      "completion": 219,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 17545,
+    "gateway_latency_ms": 17518,
+    "response_id": "chatcmpl-aceeca82bbc94c1ebf0b5591",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1936,
+    "primary": "一杯咖啡算什么破费，我又不是要摆一桌。就下周三，你下班那会儿，我请。",
+    "primary_chars": 34,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "一杯咖啡算什么破费，我又不是要摆一桌。就下周三，你下班那会儿，我请。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "“破费”这词听着像我在投资什么，其实就一杯咖啡。你要是真过意不去，下次你请。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "一杯咖啡而已，小林真要来，我也只给他点杯白水。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "别为这个有负担，我就是想见你，咖啡钱真不算什么。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "下周三你几点下班？我提前看看那家店要不要订位"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "小林来不来都行，反正这杯是我请你的"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "我请的是想见你这件事，不是那杯咖啡"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "咖啡店你有想去的吗？没有的话我来找"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E008",
+    "case_id": "E008_T08",
+    "run_id": "iso_20261025_093842_a1b9da",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E008\\out\\turn_08_E008_T08\\reply_raw.txt",
+    "raw_sha256": "b8af58466e4145e2b82e8bae6de605f4c899456699481259046569be0fe9581d",
+    "calls_sha256": "db196395a53e6a891860277eff6687de9bdfc37ca0dcc26625daaad3ee8ecb38",
+    "case_input_sha256": "29be125f4f3277fdd43a5e5569888214201adb72ed41381a08c5fd3489a89c5d",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3147,
+      "completion": 221,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 37784,
+    "gateway_latency_ms": 37757,
+    "response_id": "chatcmpl-5fc89333fa89475fba8772bb",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 2006,
+    "primary": "监考啊，那周三就算了。咖啡又不会跑，等你这阵忙完，有空了跟我说一声。",
+    "primary_chars": 34,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "监考啊，那周三就算了。咖啡又不会跑，等你这阵忙完，有空了跟我说一声。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "约别人也行？行，那我先记着这句。不过这杯我还是想留给你，你先好好监考。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "监考老师辛苦。别人先放一放，这杯我给你留着，哪天方便你说了算。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "知道了，监考要紧，不用觉得抱歉。等你忙完再说，我这边不急。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "监考是哪天？要是一整天，结束那会儿估计累得不想说话。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "监考站一天挺熬人的，记得中间找空坐会儿。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "这杯咖啡我留着，你什么时候方便都行。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E009",
+    "case_id": "E009_T01",
+    "run_id": "iso_20261025_093843_40b463",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E009\\out\\turn_01_E009_T01\\reply_raw.txt",
+    "raw_sha256": "54c1b9e0f1d9c1eb594a71ed6fcbcc9fcbc57d3573873d79b6000adcad460819",
+    "calls_sha256": "ab290149c122d4694a2017d9403508e2dd26e7327b952cfa0592b8a1fc092021",
+    "case_input_sha256": "d5f388f7ff7436d4eb7e74f9945f416e03749439e4f47d181fce3ca3aa611e97",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 2835,
+      "completion": 225,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 35851,
+    "gateway_latency_ms": 35806,
+    "response_id": "chatcmpl-e9747cabc5774a2f9c0a3ccc",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1380,
+    "primary": "行，这周末我过去看。你周六还是周日在家？说一声，我就不改了。",
+    "primary_chars": 30,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，这周末我过去看。你周六还是周日在家？说一声，我就不改了。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "别急着说“没空就算了”。这次不拖了，周六下午我过去，你先别自己乱装系统。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "又蓝屏？它比我还想你。这周末我过去，你哪天在家说一声就行。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "不用怕麻烦我。这周末我过去看，你哪天方便说一句，剩下的我来弄。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "周六下午怎么样？定下来我就按这个来"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "蓝屏的时候有没有报错代码？拍给我看看，我先心里有数"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "上次一直改时间，这回定死，不让你白等"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "修完顺便吃个饭，地方你挑"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E009",
+    "case_id": "E009_T02",
+    "run_id": "iso_20261025_093843_40b463",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E009\\out\\turn_02_E009_T02\\reply_raw.txt",
+    "raw_sha256": "c84df940e481cac0f9e19f303b9df7717aaa9a3281918c3b97f2a5a0c8d75510",
+    "calls_sha256": "0de85236c378618e7e862a20db6e6289b11fb7dad6684ca18f612f4ec405b3d8",
+    "case_input_sha256": "a7995561f6a7df382606696afba3256be328deca8bbade304a24ee97581b034c",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 2898,
+      "completion": 183,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 22833,
+    "gateway_latency_ms": 22793,
+    "response_id": "chatcmpl-9faa0e0558f9447fbf03e56b",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1541,
+    "primary": "行，那周六上午等你说一声，下午我留着。",
+    "primary_chars": 19,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，那周六上午等你说一声，下午我留着。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "成，周六上午等你的消息。别到时候又说没事了，我还挺想看看它蓝屏成什么样。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "好，周六上午听你安排。要是它争气自己好了，那我就当白捡半天假。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "行，周六上午你定了告诉我一声就好，下午我先留出来。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "周六上午你要是有准信了跟我说一句就行，不用太早"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "电脑要是撑不到周六就先别折腾它，能开就用着"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E009",
+    "case_id": "E009_T03",
+    "run_id": "iso_20261025_093843_40b463",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E009\\out\\turn_03_E009_T03\\reply_raw.txt",
+    "raw_sha256": "d6ae082f89ee0f3b8225c60dff141cf13a9bfe12fe825d08af03a1f4df229475",
+    "calls_sha256": "5143f4af50906878764a433269832d5eaa204d685578953bb409441f4d2d73c3",
+    "case_input_sha256": "407166b9ff4124e6b567e3069dbdc31178c59b1d4ad55ce849f6561ff66579ce",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 2923,
+      "completion": 245,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 79168,
+    "gateway_latency_ms": 79141,
+    "response_id": "chatcmpl-6a8f1c5cc1a3405eb65b3dfa",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1561,
+    "primary": "行，那这事先放着，周六我不给你留了。你先忙加班，等哪天空下来再说。",
+    "primary_chars": 33,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，那这事先放着，周六我不给你留了。你先忙加班，等哪天空下来再说。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "行，周六我就不空着了。电脑先让它蓝屏着，等你哪天想起来再说。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "收到，周六我另作安排了。电脑皮实，扛得住，它比我能等。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "行，先忙工作，这事不急。你忙完这阵跟我说一声就行。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "周六的加班是临时通知的吗，忙完这阵大概能松一点不"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "电脑要是一直蓝屏，先把重要文件备份一下，别到时候一起丢了"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "这本来就是我答应你的事，你什么时候方便什么时候弄，不用觉得欠我什么"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "那先不聊电脑了，你这加班忙的是什么活"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E009",
+    "case_id": "E009_T04",
+    "run_id": "iso_20261025_093843_40b463",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E009\\out\\turn_04_E009_T04\\reply_raw.txt",
+    "raw_sha256": "490ae34d0b909025c119ae9aee09d046f13737aa7e754c1aa0b739e1fda2618c",
+    "calls_sha256": "d06dfb614d0ca191ca6d8855bdd675a5658f2085c0e251fb09f63534910def46",
+    "case_input_sha256": "50aaeca320c1036821dd8789661348f0591f0b8046e544310dd5cd1950d4348e",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 2977,
+      "completion": 260,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 16737,
+    "gateway_latency_ms": 16716,
+    "response_id": "chatcmpl-205eb7a4730749f9892f1209",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1712,
+    "primary": "记下了，周日下午。带过来还是我过去，你定一个，我提前把盘和系统备好。",
+    "primary_chars": 34,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "记下了，周日下午。带过来还是我过去，你定一个，我提前把盘和系统备好。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "记下了，周日下午。这都第三个版本了，这次可别再被加班带跑。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "记下了。这事来来回回改了三回，我都想给它刻个碑了。周日下午，稳。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "记下了，周日下午，我先把时间留出来给你。这次不用你再惦记着提醒我。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "周日下午行，那你带过来还是我过去？我提前把镜像下好，省得当天干等。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "你电脑什么型号、原来装的什么系统？说一声我先把该备的都备好。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "这次我记牢了，周日下午归你，别的先不排。"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "弄完差不多一小时，剩下半天要不要一起吃个饭？"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E009",
+    "case_id": "E009_T05",
+    "run_id": "iso_20261025_093843_40b463",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E009\\out\\turn_05_E009_T05\\reply_raw.txt",
+    "raw_sha256": "29133220de850135f8e68630e14dc7ec36ff48bc11ac130b0e72b3e83d6399a2",
+    "calls_sha256": "615f857f4935b115573b89c963918df98844e014483a8f524aa76ace4b560d57",
+    "case_input_sha256": "36677b11038256c7bc057ac986d70751e8546a2d4365cc0ff2a110a6fd8f709e",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3012,
+      "completion": 190,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 20683,
+    "gateway_latency_ms": 20651,
+    "response_id": "chatcmpl-867db9d089cf473ab0b8f50e",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1743,
+    "primary": "行，那我就不讲究了。周日下午我过去，带个人带个U盘就够了。",
+    "primary_chars": 29,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行，那我就不讲究了。周日下午我过去，带个人带个U盘就够了。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "同事都这么说了，那我这回真空手去，你可别后悔。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "空手去是不是不太像话？那我拎把螺丝刀，也算带了东西。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "别张罗，我过去把电脑弄好就走，你不用准备什么。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "周日下午你几点在家？我按你的时间过去。"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "先把蓝屏那个报错拍给我看看，省得我白跑一趟。"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "电脑里要紧的东西先备份一下，重装完就没了。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E009",
+    "case_id": "E009_T06",
+    "run_id": "iso_20261025_093843_40b463",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E009\\out\\turn_06_E009_T06\\reply_raw.txt",
+    "raw_sha256": "8bcde9e7bb6e0ab2b1d2c8fc8039efb4c36abf97f4c957ef2a1e91abe07ac9ea",
+    "calls_sha256": "20a97aeec3373927ff3be0b36987861cd7fba22bb9862a2a5f8cd77f65d75391",
+    "case_input_sha256": "c8e3c6ec96ee02b70e98f9f6040472bff488c24e421d92cc7268fba04e41cf4d",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3033,
+      "completion": 138,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 24967,
+    "gateway_latency_ms": 24930,
+    "response_id": "chatcmpl-8b69ec85a712462b89dce3bb",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1795,
+    "primary": "装好就行，灰是顺手的事，不用一直谢。用着有问题再喊我。",
+    "primary_chars": 27,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "装好就行，灰是顺手的事，不用一直谢。用着有问题再喊我。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "成了就行。谢一遍就够了，再多说我可要收工钱了。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "灰清了，风扇终于能喘口气，估计它自己都轻快了。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "能正常用我就踏实了，折腾这么久总算弄好。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "这两天用着顺手不，有小毛病随时说"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E009",
+    "case_id": "E009_T07",
+    "run_id": "iso_20261025_093843_40b463",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E009\\out\\turn_07_E009_T07\\reply_raw.txt",
+    "raw_sha256": "08b9dab14d231400ddd105c72b05aa69a3ccbed038ed5db4c2e031998879d80c",
+    "calls_sha256": "47e99934c1c00ebdea892c4c252a3557215a80b289c6f2ceba0553853f5a6ab7",
+    "case_input_sha256": "cc509547a3ff8e96745b2b5756b02fb944130e7ae11b1183c8d845c026e07af9",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3082,
+      "completion": 128,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 27993,
+    "gateway_latency_ms": 27956,
+    "response_id": "chatcmpl-e327b77454ad4c4fb0a7d7ec",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1941,
+    "primary": "厚脸皮就对了，我这人不怕被麻烦，就怕你憋着不说。",
+    "primary_chars": 24,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "厚脸皮就对了，我这人不怕被麻烦，就怕你憋着不说。"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "记可以，别再让我空等一个周末就行。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "会计记的账，我放心。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "不麻烦，真的，那天弄完我心情还挺好。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "风扇声音小点没，用着还顺吗？"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "桌面别塞太满，下次再卡我可不背锅。"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  },
+  {
+    "arm": "candidate",
+    "episode": "E009",
+    "case_id": "E009_T08",
+    "run_id": "iso_20261025_093843_40b463",
+    "raw_path": "D:\\lovebrain-arena\\logs\\v5_ctx_live_20261025\\candidate_E009\\out\\turn_08_E009_T08\\reply_raw.txt",
+    "raw_sha256": "dbadee2ae657ee0489c7468f19020ba685f2bc35183b0bf4413281d29c5fa26c",
+    "calls_sha256": "e4b4204af16d27e1782f18dbde429abdfcba5af9e49fd9ac93bd5dccfb323496",
+    "case_input_sha256": "8f796a237165c7ecde89a308c0a35d53e1cad7674f5541364d896c546281aa00",
+    "snapshot_bound": true,
+    "score10": 10.0,
+    "veto": null,
+    "parse_ok": true,
+    "analysis_empty": true,
+    "tokens": {
+      "prompt": 3121,
+      "completion": 280,
+      "cache_hit": null,
+      "cache_miss": null,
+      "source": "api_usage",
+      "n_calls": 1,
+      "has_unknown_usage": false
+    },
+    "latency_ms": 65945,
+    "gateway_latency_ms": 65901,
+    "response_id": "chatcmpl-795f14017d7a4e8196fb23ce",
+    "images": [],
+    "system_utf16": 1989,
+    "user_utf16": 1976,
+    "primary": "行啊，让你妹别不好意思，修个电脑又不是什么大事。她电脑现在啥情况，蓝屏还是开不了机？",
+    "primary_chars": 42,
+    "all_texts": [
+      {
+        "slot": "response.recommended",
+        "text": "行啊，让你妹别不好意思，修个电脑又不是什么大事。她电脑现在啥情况，蓝屏还是开不了机？"
+      },
+      {
+        "slot": "response.bad_boy",
+        "text": "不是说了有问题随时喊我吗，怎么还绕到你妹那去了。什么毛病，说清楚点，我看看能不能弄。"
+      },
+      {
+        "slot": "response.playful",
+        "text": "你这条线还挺忙，修完你的又轮到你妹的了。行，排上队，先说什么症状。"
+      },
+      {
+        "slot": "response.warm",
+        "text": "没事，你妹的事也是事，别让她觉得欠什么。啥毛病、什么时候方便，你说个时间我安排一下。"
+      },
+      {
+        "slot": "directions[0]",
+        "text": "她要是说不清症状，就让她妹直接跟我讲，省得来回传话"
+      },
+      {
+        "slot": "directions[1]",
+        "text": "要是重装那类活儿，提前问一句她电脑里有没有要留的东西"
+      },
+      {
+        "slot": "directions[2]",
+        "text": "周六下午我一般能腾出来，你妹那边看哪天合适"
+      },
+      {
+        "slot": "directions[3]",
+        "text": "你要是不方便跑一趟，把电脑放你这我过去拿也行"
+      }
+    ],
+    "invalid_fact_source_ids": [],
+    "literal_null_slots": []
+  }
+]

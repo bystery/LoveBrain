@@ -1,0 +1,15 @@
+{
+  "ack_id": "GIA-20261110-AUDITOR-C3",
+  "role": "independent_auditor",
+  "auditor": "C3",
+  "date": "2026-11-10",
+  "stories": ["E359", "E360", "E361", "E362", "E363", "E364", "E365", "E366", "E367", "E368"],
+  "topics": {"T05": 1, "T06": 6, "T07": 3},
+  "declarations": {
+    "no_author_session_read": true,
+    "no_annotator_session_read": true,
+    "no_run_results_read": true
+  },
+  "exclusions_acknowledged": ["logs/", "candidates/", "b_line/", "other_audit_reports", "C1_DEEP_AUDIT.json", "C1_NAME_UNIQ.json"],
+  "model_calls": 0
+}

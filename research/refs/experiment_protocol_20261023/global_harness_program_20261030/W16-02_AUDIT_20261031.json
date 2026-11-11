@@ -1,0 +1,70 @@
+{
+ "kind": "w1602_audit",
+ "date": "2026-10-31",
+ "audited": 83,
+ "clean": 78,
+ "gaps": [
+  {
+   "id": "W03-06",
+   "state": "PARTIAL",
+   "impl": true,
+   "val": false,
+   "concl": true,
+   "rec": true,
+   "gaps": [
+    "validation: 无验证产出痕迹"
+   ],
+   "missing_files": []
+  },
+  {
+   "id": "W04-05",
+   "state": "BLOCKED_ON_USER",
+   "impl": false,
+   "val": false,
+   "concl": true,
+   "rec": false,
+   "gaps": [
+    "implementation: 无存在的证据文件",
+    "validation: 无验证产出痕迹",
+    "recovery: 无恢复/完结入口"
+   ],
+   "missing_files": []
+  },
+  {
+   "id": "W06-04",
+   "state": "PARTIAL",
+   "impl": true,
+   "val": false,
+   "concl": true,
+   "rec": true,
+   "gaps": [
+    "validation: 无验证产出痕迹"
+   ],
+   "missing_files": []
+  },
+  {
+   "id": "W11-03",
+   "state": "PARTIAL",
+   "impl": true,
+   "val": false,
+   "concl": true,
+   "rec": true,
+   "gaps": [
+    "validation: 无验证产出痕迹"
+   ],
+   "missing_files": []
+  },
+  {
+   "id": "W11-06",
+   "state": "PARTIAL",
+   "impl": true,
+   "val": false,
+   "concl": true,
+   "rec": true,
+   "gaps": [
+    "validation: 无验证产出痕迹"
+   ],
+   "missing_files": []
+  }
+ ]
+}

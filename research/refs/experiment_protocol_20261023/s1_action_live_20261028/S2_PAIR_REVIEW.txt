@@ -1,0 +1,392 @@
+==============================================================================
+STORY AK01｜AK01
+------------------------------------------------------------------------------
+AK01_T01 clock=2026-12-03 21:12 may_decline=False intent={"text": "把周五晚的复健快走落成具体时间地点", "status": "ACTIVE", "enabled": true}
+   m0 ME｜你脚还肿不 我这周三晚点有空 想试试慢的
+   m1 HER｜消差不多了 医生说可以快走 先别跑
+   m2 ME｜那就快走 绕小区外圈两圈 不追速度
+   m3 HER｜周五晚上我下班早 六点行不 我从医院那边过来
+   [卡] current_action: 她给了具体日子（周五六点）还说要从医院那边过来——把时间和集合点当场定死，别再'到时候再说'
+   [卡] acceptable: ["确认周五六点+定集合点", "确认+问她要不要先慢走一圈再决定距离", "确认+提自己带水或计时"]
+   [卡] dims: ["goal", "time_state", "initiative", "interaction"]
+   [卡] private_guidance: 她在主动把自己的行程交出来；这一步的要害是确定性，不是热情。
+   [卡] protected: ["周五晚上我下班早"]
+   [卡] forbidden: ["不要把距离或配速说成已经定好", "不要提'跑步'当作已经安排（医生只允许快走）"]
+   [卡] unknowns: ["集合点定在哪一侧", "她六点下班后多久能到"]
+   [卡·事实] AK01_A01 subj=她 rel=约束 val=医生说只能快走还不能跑 status=asserted src=message:AK01_T01
+   [卡·事实] AK01_A02 subj=她 rel=时间 val=周五晚六点下班早，可从医院那边过来 status=asserted src=message:AK01_T01
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7313/351 latency_ms=23589
+      [首选] 六点行。你从医院过来，顺路在哪碰头方便，你定个地方，我提前到。
+      [备选 bad_boy] 六点。脚是你自己的，走着疼了当场收工，别硬撑两圈。
+      [备选 playful] 六点行，一个从小区出发，一个从医院出发，中间接头，地点你定。
+      [备选 warm] 六点行。你下班直接过来，不用赶，我提前到等你。
+      [备选 directions[0]] 消肿就好，那周五先按快走的来，别急。
+      [备选 directions[1]] 两圈走不下来就一圈，慢慢加，不着急。
+      [备选 directions[2]] 我这体能也就快走的份，跑是真跑不动。
+      [备选 directions[3]] 碰头地点你定一个，我提前十分钟到。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5067/568 latency_ms=16618
+      [首选] 六点行，小区门口碰头？你从医院过来顺路。先走外圈两圈，不追速度，脚一有感觉就喊停。
+      [备选 bad_boy] 六点定了。说好不追速度，你要是一上来就冲，我就在旁边拦着。
+      [备选 playful] 六点没问题。你从医院过来要是堵在路上，我就先替你把外圈走一遍，等你到了再走第二圈。
+      [备选 warm] 六点可以，小区门口等你。脚刚消肿，走慢点不丢人，我陪你走完两圈。
+      [备选 directions[0]] 那周五六点小区门口见，我到得早就在门口等
+      [备选 directions[1]] 外圈两圈大概二十来分钟，走完你要是还撑得住，就再慢走一小段
+      [备选 directions[2]] 你从医院过来那段路不近，路上别赶，晚几分钟我等着
+      [备选 directions[3]] 要是明晚临时有事，提前说一声，改周六早上也行
+==============================================================================
+STORY AK02｜AK02
+------------------------------------------------------------------------------
+AK02_T01 clock=2026-12-05 13:06 may_decline=False intent={"text": "把周六早上的复健快走落成具体时间地点", "status": "ACTIVE", "enabled": true}
+   m0 ME｜周六早上七点 河边走一圈 不上强度
+   m1 HER｜周六我本来想补觉…而且脚还是不太敢用力
+   note: 她夜班后睡眠是刚需；之前也提过一次'先别跑'
+   [卡] current_action: 她的犹豫是两层（要补觉+不敢用力）——承认这两层并把目标改成更轻或改期，不是继续说服
+   [卡] acceptable: ["改到午后或周一再约", "改成更短的平地散步并说随时停", "让她先休息，本周取消并留明确下一步"]
+   [卡] dims: ["goal", "emotion_relation", "boundary", "interaction"]
+   [卡] private_guidance: 含糊不是拒绝，但把'补觉+不敢用力'推平为'那就周六七点别迟到'是越权。
+   [卡] protected: ["脚还是不太敢用力"]
+   [卡] forbidden: ["不要把她说的'想补觉'当成客套继续推进", "不要说'运动对谁都好'这类替她下结论的话"]
+   [卡] unknowns: ["她到底想改期还是想减量", "她想睡到几点"]
+   [卡·事实] AK02_A01 subj=她 rel=顾虑 val=周六想补觉且脚还不敢用力 status=asserted src=message:AK02_T01
+   [卡·事实] AK02_A02 subj=她 rel=约束 val=医生说只能快走不能跑 status=asserted src=initial_kb:her
+   [卡·事实] AK02_A03 subj=她 rel=既往 val=此前已说过先别跑 status=asserted src=initial_kb:lessons
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7399/317 latency_ms=26574
+      [首选] 行，七点取消。那改下午四点，走二十分钟，脚不舒服就折回来，你看行不行。
+      [备选 bad_boy] 补觉是正事。等你脚敢用力了再喊我，别硬撑。
+      [备选 playful] 七点取消，改成睡到自然醒。这计划先记你账上。
+      [备选 warm] 那就先补觉，脚别硬撑。等你能用力了，我陪你走一小段。
+      [备选 directions[0]] 脚现在走平地还疼吗，还是只是不敢使劲
+      [备选 directions[1]] 下坡崴的那次是不是挺重，肿三天才消
+      [备选 directions[2]] 说实话我也没长性，所以慢走比跑靠谱
+      [备选 directions[3]] 那就先不定，你哪天真觉得能用力了再说
+   ── action_policy_r1 ── score10=0.0 veto=json_schema_broken failed=['json_schema_valid'] delivery=ok tokens p/c=5124/439 latency_ms=25392
+      [首选] 那周六早上七点这条我收回，补觉要紧，你下夜班睡不够比走两圈严重多了。脚不敢用力就先别走，等踩实了再说。
+      [备选 bad_boy] 行，七点是我起猛了，撤。你睡你的，脚什么时候敢全掌落地，你说了算。
+      [备选 playful] 七点确实有点狠，我一激动把闹钟定到你头上了。你补觉，脚养着，我不催。
+      [备选 warm] 补觉优先，脚别硬撑，肿过的地方用力早了容易反复。周六早上不占你了，等你脚好了想走再叫我。
+      [备选 directions[0]] 那脚现在走路还疼吗，还是只是不敢使劲
+      [备选 directions[1]] 不上强度也能改成你楼下慢走十分钟，脚说了算
+      [备选 directions[2]] 其实我更想跟你一块儿走，走多久无所谓
+      [备选 directions[3]] 你夜班是几点下班，我按你睡醒的点来
+==============================================================================
+STORY AK03｜AK03
+------------------------------------------------------------------------------
+AK03_T01 clock=2026-12-07 19:22 may_decline=False intent={"text": "明晚六点复健快走", "status": "ACTIVE", "enabled": true}
+   m0 ME｜明晚六点老地方 我先绕一圈等你
+   m1 HER｜今晚院里临时加疫苗门诊 我八点才走 明天也排了班
+   [卡] current_action: 她连今晚都被占用——目标当轮让位：不追问改哪天、不施压，先让她顾上班里的事，留一个不逼人的开口
+   [卡] acceptable: ["让她先忙+说我这周都空随时讲", "只回一句轻的关心", "取消并明确不用她回复"]
+   [卡] dims: ["goal", "emotion_relation", "boundary", "interaction"]
+   [卡] private_guidance: 她的忙碌是排班不是态度；此时最忌讳追问'那到底哪天有空'。
+   [卡] protected: ["今晚院里临时加疫苗门诊"]
+   [卡] forbidden: ["不要说她总是忙（把一次排班推成人品结论）", "不要把'等你有空'写成需要她给承诺"]
+   [卡] unknowns: ["她这周还有没有空档"]
+   [卡·事实] AK03_A01 subj=她 rel=状态 val=今晚临时加疫苗门诊八点才走，明天也排班 status=asserted src=message:AK03_T01
+   [卡·事实] AK03_A02 subj=双方 rel=原定计划 val=明晚六点老地方复健快走 status=asserted src=message:AK03_T01
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7248/332 latency_ms=33350
+      [首选] 那今晚先忙到八点。明晚你几点能下班，我按你的时间来。
+      [备选 bad_boy] 疫苗门诊加得挺勤。明晚几点能走？你定时间，我配合。
+      [备选 playful] 门诊比我还抢手。那明晚几点能脱身？
+      [备选 warm] 今晚先忙，别急着赶。明晚几点能走，跟我说一声。
+      [备选 directions[0]] 八点才走，那今晚这波够忙的。
+      [备选 directions[1]] 明晚要是排到太晚，就往后挪一天，不急这一回。
+      [备选 directions[2]] 本来想着明晚拉你走一圈，你要是排班紧，就别硬挤。
+      [备选 directions[3]] 明晚你下班后跟我说几点能走，我在老地方等你。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4978/472 latency_ms=18684
+      [首选] 加门诊到八点，今晚够熬的。明晚六点先不算，你哪天能准点下班再说，我绕一圈不费事。
+      [备选 bad_boy] 临时门诊这种活儿是不是永远落你头上。明晚六点就当我没提，别为了赶这个点把自己撵着跑。
+      [备选 playful] 疫苗门诊一加，六点这个点就直接作废了。行，明晚那圈我先记着，等你哪天能准点走再兑现。
+      [备选 warm] 八点才走，今晚别硬扛着还惦记别的事。明晚那个先放着，你哪天松下来跟我说一声就行。
+      [备选 directions[0]] 明天也排班，是排到几点？还是八点的话我这几天先不催你。
+      [备选 directions[1]] 两天连轴，你这脚估计又没空管了。
+      [备选 directions[2]] 本来还挺盼明晚那圈，不过你先把班扛完再说。
+==============================================================================
+STORY AK04｜AK04
+------------------------------------------------------------------------------
+AK04_T01 clock=2026-12-09 22:34 may_decline=False intent={"text": "周六八点去鼓楼看她第一次开放麦", "status": "ACTIVE", "enabled": true}
+   m0 HER｜老板给我排进周六了 五分钟 我有点飘
+   m1 ME｜该飘 那张卡我帮你留着 到时候我坐第一排
+   m2 HER｜你能来我就不飘了 周六八点 你带水别带话
+   [卡] current_action: 约定已经成形（周六八点）——按她的条件接住：带水别带话，别临时加建议或拉别人
+   [卡] acceptable: ["确认周六八点+只带水", "确认+说坐第一排不互动", "确认+问她要不要留票给同事"]
+   [卡] dims: ["goal", "time_state", "interaction", "boundary"]
+   [卡] private_guidance: '带水别带话'是她把需求说清楚了；照着做就是接住，讲道理是越界。
+   [卡] protected: ["你带水别带话"]
+   [卡] forbidden: ["不要临场提出帮她改段子", "不要把'坐第一排'升级成要上台互动"]
+   [卡] unknowns: ["是否要提前到场", "她同事去不去"]
+   [卡·事实] AK04_A01 subj=她 rel=事件 val=周六被排进开放麦，五分钟首台 status=asserted src=message:AK04_T01
+   [卡·事实] AK04_A02 subj=她 rel=条件 val=要我带水别带话 status=asserted src=message:AK04_T01
+   [卡·事实] AK04_A03 subj=双方 rel=约定 val=周六八点鼓楼 status=confirmed src=message:AK04_T01
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7273/334 latency_ms=15028
+      [首选] 行，水我带，话我咽着。八点准时到。
+      [备选 bad_boy] 放心，我就带水。真要挑毛病，也等你下台了再说。
+      [备选 playful] 带水没问题，别指望我憋得住笑。笑是给你捧场的，不算说话。
+      [备选 warm] 那我八点坐第一排，就负责给你鼓掌，别的一概不干。
+      [备选 directions[0]] 八点我提前到，先把位置占了。
+      [备选 directions[1]] 五分钟够你铺两个梗了，中间留点空给笑声。
+      [备选 directions[2]] 我去了就当观众，笑是真的，不给你来那种客气笑。
+      [备选 directions[3]] 散场别急着走，鼓楼那边还有家店开着，吃点东西再回去。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5015/408 latency_ms=13792
+      [首选] 行，水我带，话我咽着。八点我准时到，第一排靠边那个位子归我。
+      [备选 bad_boy] 水带两瓶，话一句不说。你就算真冷场，我也装没听出来。
+      [备选 playful] 带水不带话，那我憋不住笑了，算不算犯规。
+      [备选 warm] 你能站上去我就已经服了。八点我准时到，就坐底下看着，不当评委。
+      [备选 directions[0]] 水我拎两瓶过去，别的什么都不带。
+      [备选 directions[1]] 五分钟够你说三个段子了，我等着听。
+      [备选 directions[2]] 其实我更想看你上去紧张那一下，比段子好看。
+==============================================================================
+STORY AK05｜AK05
+------------------------------------------------------------------------------
+AK05_T01 clock=2026-12-11 23:02 may_decline=False intent={"text": "周六八点到场看她首台并坐第一排", "status": "ACTIVE", "enabled": true}
+   m0 ME｜明晚八点我票都取好了
+   m1 HER｜我明天上台前想找人过一遍 但又怕你听完觉得不好笑
+   note: 她怕冷场，也怕被熟人评判
+   [卡] current_action: 她把需求（想对词）和顾虑（怕我觉得不好笑）同时摆出来——先答她想不想我听，再讲自己立场，不空夸也不催
+   [卡] acceptable: ["答应听并声明不点评", "问她想要哪种反馈再决定", "答应+说听完只回一句有没有笑点"]
+   [卡] dims: ["goal", "emotion_relation", "boundary", "interaction"]
+   [卡] private_guidance: 含糊处在于她要的是安全感的确认；把'那我不听'或'肯定好笑'任一极端甩回去都算失职。
+   [卡] protected: ["又怕你听完觉得不好笑"]
+   [卡] forbidden: ["不要保证'一定好笑'", "不要主动要求逐段点评"]
+   [卡] unknowns: ["她想要的是彩排还是打气"]
+   [卡·事实] AK05_A01 subj=她 rel=意愿 val=上台前想找人对一遍 status=asserted src=message:AK05_T01
+   [卡·事实] AK05_A02 subj=她 rel=顾虑 val=怕我听完觉得不好笑 status=asserted src=message:AK05_T01
+   [卡·事实] AK05_A03 subj=双方 rel=既定 val=周六八点我已取票 status=confirmed src=message:AK05_T01
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7375/314 latency_ms=25059
+      [首选] 行，你念我听着。我不点评，只负责笑。
+      [备选 bad_boy] 怕我觉得不好笑？我笑点低，你算捡着了。
+      [备选 playful] 行啊，不过笑场不算我砸场子。
+      [备选 warm] 念吧，冷场我兜着。台下熟人也就我一个。
+      [备选 directions[0]] 你念，我听完只说笑没笑，不教你怎么改。
+      [备选 directions[1]] 今晚过，还是明天上台前过？我留个耳朵。
+      [备选 directions[2]] 我坐第一排是去给你壮胆的，不是去验收的。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5100/448 latency_ms=21649
+      [首选] 行啊，过一遍。我当观众不当评委：听完只告诉你哪几句我笑了，别的意见一句不给。明天几点方便？
+      [备选 bad_boy] 怕我觉得不好笑？那正好，我要真笑了，台下那帮人大概率也会笑。什么时候过，说个点。
+      [备选 playful] 行，我当试听观众。提前打个招呼：我笑点低，你别到时候误会自己特别行。
+      [备选 warm] 想找人过就找我啊，我又不是来给你打分的。明天过完，八点我坐第一排，负责笑。
+      [备选 directions[0]] 明天几点方便？我提前把时间空出来。
+      [备选 directions[1]] 我看开放麦属于起哄那一挂的，不是评委那一挂的，你别太抬举我的标准。
+      [备选 directions[2]] 你愿意先拿给我过，我挺高兴的。
+==============================================================================
+STORY AK06｜AK06
+------------------------------------------------------------------------------
+AK06_T01 clock=2026-12-12 18:12 may_decline=True intent={"text": "周六晚到场看她首台", "status": "ACTIVE", "enabled": true}
+   m0 ME｜明晚八点半我到 你几点到
+   m1 HER｜班里临时让我顶晚托 我得七点半才走 可能赶不上
+   [卡] current_action: 她在算时间会不会错过开场——给可执行的方案（我去占座、她到场直接上台前热身），不让她在愧疚里做选择
+   [卡] acceptable: ["说我去占座她按自己时间到", "问要不要我帮她跟老板打招呼晚一分钟", "只确认不用她管我"]
+   [卡] dims: ["goal", "time_state", "boundary", "interaction"]
+   [卡] private_guidance: may_decline=true：她已经给出信息不需我做决定，只回一句'不用管我'也合法；但她没说取消，别擅自改成'那算了'。
+   [卡] protected: ["班里临时让我顶晚托"]
+   [卡] forbidden: ["不要说她肯定迟到", "不要把演出取消当成默认方案"]
+   [卡] unknowns: ["她能否赶上自己的场次"]
+   [卡·事实] AK06_A01 subj=她 rel=约束 val=顶晚托七点半才能走，可能赶不上开场 status=asserted src=message:AK06_T01
+   [卡·事实] AK06_A02 subj=双方 rel=既定 val=明晚八点半演出 status=confirmed src=message:AK06_T01
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7234/368 latency_ms=17754
+      [首选] 七点半走来得及，路上别急。真赶不上提前跟我说一句，我帮你想办法。
+      [备选 bad_boy] 七点半走还惦记着八点半到，这算盘打得挺响。赶不上就往后排，反正我人已经在那儿了。
+      [备选 playful] 顶晚托？你这保育员当得比园长还忙。七点半走来得及，来不及我就在台下多坐会儿。
+      [备选 warm] 别慌，七点半走赶得上。真来不及了发我一句，我在门口等你。
+      [备选 directions[0]] 七点半走的话路上要多久，别卡着点出发。
+      [备选 directions[1]] 晚托是就今天顶一次，还是以后都排上了？
+      [备选 directions[2]] 真赶不上也别硬赶，安全到比准点到重要。
+      [备选 directions[3]] 赶不上的话提前跟我说，我早点过去把位置占好。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4964/478 latency_ms=59638
+      [首选] 七点半走，八点半开场，中间还有一个小时，不用太慌。我先到，位置给你留着；真赶不上开场也没事，你到我就鼓掌。
+      [备选 bad_boy] 那正好，压轴登场。七点半走，八点半开场，够你把晚托的怨气攒成开场白。位置我先占着。
+      [备选 playful] 晚托那几个小的闹起来，你就当提前热身。七点半走也来得及，我先去坐着，你到了直接找我。
+      [备选 warm] 别为这个急，赶不上开场也没关系，你上台那几分钟我在就行。七点半走，路上慢点。
+      [备选 directions[0]] 是赶不上开场，还是整场都悬？
+      [备选 directions[1]] 顶晚托是临时的，还是以后也常这样？
+      [备选 directions[2]] 说真的，我挺想看你上台那几分钟的。
+      [备选 directions[3]] 要是真赶不上，回头你把段子讲给我听，我当第一个观众。
+==============================================================================
+STORY AK07｜AK07
+------------------------------------------------------------------------------
+AK07_T01 clock=2026-12-14 21:46 may_decline=False intent={"text": "周六下午图书馆一起攻实务那门两小时", "status": "ACTIVE", "enabled": true}
+   m0 HER｜模考过了两门 剩那门实务我最没底
+   m1 ME｜那门我去年也是靠刷真题 周六图书馆一起弄两小时
+   m2 HER｜行 周六下午我去 你带那本真题
+   [卡] current_action: 她答应并指定我带真题——把下午的具体时点、楼层座位和带什么讲清楚
+   [卡] acceptable: ["定下午两点+说带哪本", "定时间+问她要不要先看错题", "确认+说两小时后散"]
+   [卡] dims: ["goal", "time_state", "memory_use", "interaction"]
+   [卡] private_guidance: '你带那本真题'是任务指派，必须回应在不在手上；把约定停在'周六见'就漏了。
+   [卡] protected: ["你带那本真题"]
+   [卡] forbidden: ["不要承诺真题一定能押中题", "不要把她'过两门'说成一定拿证"]
+   [卡] unknowns: ["真题册在不在家", "图书馆周六是否开放"]
+   [卡·事实] AK07_A01 subj=她 rel=状态 val=模考三门过两门，实务最没底 status=asserted src=message:AK07_T01
+   [卡·事实] AK07_A02 subj=她 rel=请求 val=要我带那本真题 status=asserted src=message:AK07_T01
+   [卡·事实] AK07_A03 subj=我 rel=依据 val=去年过实务靠刷真题 status=asserted src=initial_kb:me
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7247/357 latency_ms=15239
+      [首选] 行，真题我带着。周六下午两点图书馆门口见。
+      [备选 bad_boy] 行，真题我包了，你把人带来就行，别到时候又说没底。
+      [备选 playful] 行，那门实务我盯你两小时，想跑也跑不掉。
+      [备选 warm] 行，带上。那门我去年也栽过，周六一起过一遍就没那么慌了。
+      [备选 directions[0]] 行，两点我早点去占位置，你直接过来。
+      [备选 directions[1]] 实务真题就那几套，两小时够过一遍，剩下你自己刷。
+      [备选 directions[2]] 去年我实务就是靠真题过的，比啃教材管用多了。
+      [备选 directions[3]] 弄完要不要顺路去球场那边吃点东西。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5039/392 latency_ms=16546
+      [首选] 行，真题我带。周六下午两点图书馆门口碰？占不到座我早点去。
+      [备选 bad_boy] 成。越没底的那门越值得砸两小时，周六见。
+      [备选 playful] 成交。我负责带书，你负责别到门口又说'可能太多'。
+      [备选 warm] 行，我带上。剩这一门最磨人，两小时够了，不贪多。
+      [备选 directions[0]] 那周六下午两点，还是三点你更方便？
+      [备选 directions[1]] 实务那门我打算从错得最多的题型倒着刷，你要不也这么来
+      [备选 directions[2]] 你这次两门都过了，剩一门没那么玄
+      [备选 directions[3]] 对了，你上次说的那个考点笔记还在吗，带着一起对一遍
+==============================================================================
+STORY AK08｜AK08
+------------------------------------------------------------------------------
+AK08_T01 clock=2026-12-16 22:30 may_decline=False intent={"text": "周六下午图书馆两小时攻实务", "status": "ACTIVE", "enabled": true}
+   m0 ME｜周六下午两小时 我给你留了座
+   m1 HER｜我想撤一门 报了俩根本啃不完 又怕撤了更不学
+   note: 她容易自责，之前说过怕半途而废
+   [卡] current_action: 她在认真算负荷并征求判断——给出我的实际看法+她需要权衡的具体变量，同时保留目标不空转；不能只说'你觉得呢'回抛
+   [卡] acceptable: ["给出自己怎么看（撤/不撤的理由）+问每周可投入几小时", "建议先按一门排两周再看", "承认两门确实超量并改小目标"]
+   [卡] dims: ["goal", "factuality", "interaction", "emotion_relation"]
+   [卡] private_guidance: '含糊'不等于不表态：她有真实问题要答案。回避给判断、把选择全推回给她，是没接住。
+   [卡] protected: ["报了俩根本啃不完"]
+   [卡] forbidden: ["不要说'你开心就好'这类不担责的话", "不要替她断言'撤了肯定考不过'"]
+   [卡] unknowns: ["她每周实际能挤出几小时", "报名费是否可退"]
+   [卡·事实] AK08_A01 subj=她 rel=倾向 val=想撤一门但怕更不学 status=asserted src=message:AK08_T01
+   [卡·事实] AK08_A02 subj=她 rel=既往 val=容易自责、怕半途而废 status=asserted src=initial_kb:lessons
+   [卡·事实] AK08_A03 subj=双方 rel=原定 val=周六下午两小时 status=asserted src=message:AK08_T01
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7352/336 latency_ms=24046
+      [首选] 撤一门不是放弃，是保另一门。周六下午两小时先把实务压住，剩下的先别管。
+      [备选 bad_boy] 撤吧，留一门啃透，比两门都夹生强。周六下午两小时，实务先过一遍。
+      [备选 playful] 撤一门换个不挂科，这买卖不亏。周六下午两小时先啃实务。
+      [备选 warm] 你在算的是时间，不是懒。撤一门把劲集中，周六下午两小时我陪你攻实务。
+      [备选 directions[0]] 那两门里，哪门你更不想翻？
+      [备选 directions[1]] 撤课截止到什么时候，还来得及想吗
+      [备选 directions[2]] 我要是你就撤，两门夹生不如一门扎实
+      [备选 directions[3]] 周六下午两小时先定实务，撤不撤到那天再算
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5076/452 latency_ms=85778
+      [首选] 撤哪门先别定。两门挤一起，本来就在互相抢时间，不是你不学。要撤就撤那门你越看越烦的——不是它难，是它让你一坐下就想跑。
+      [备选 bad_boy] 怕撤了更不学，这话我信一半。另一半是：你现在两门一起啃，本来就天天在欠账，欠着欠着才更想逃。
+      [备选 playful] 少一门不叫半途而废，叫先把拖后腿的那门放一边。真撤完，剩下一门你反而坐得下来。
+      [备选 warm] 你怕的那个“撤了就彻底不学”还没发生，别先拿它给自己判刑。现在难受的是两门压一起，不是你不肯学。
+      [备选 directions[0]] 那两门里，哪门你翻开书就想合上？
+      [备选 directions[1]] 撤一门不等于放弃，是先把时间集中到能过的那门。
+      [备选 directions[2]] 我不觉得你半途而废，你是在算时间，这不一样。
+==============================================================================
+STORY AK09｜AK09
+------------------------------------------------------------------------------
+AK09_T01 clock=2026-12-19 23:58 may_decline=True intent={"text": "周六下午图书馆两小时攻实务", "status": "ACTIVE", "enabled": true}
+   m0 ME｜还有两小时题 你要现在弄完还是留着明早
+   m1 HER｜我刚背到十二点 明天六点半起 先睡了 你别等
+   note: 她说明天六点半起
+   [卡] current_action: 她明确收尾（'先睡了 你别等'）——合法不回；若回就一句不要求应答的短收尾，别把两小时安排继续摊给她
+   [卡] acceptable: ["不回（她已收尾，合法）", "一句'睡吧 明早的题我留着'不再问", "只把材料放好不说时间"]
+   [卡] dims: ["boundary", "interaction", "emotion_relation", "time_state"]
+   [卡] private_guidance: 此处不回不是冷淡，是尊重她已给出的收尾；但要避免把'不回'写成对所有疲惫场景的默认。
+   [卡] protected: ["先睡了 你别等"]
+   [卡] forbidden: ["不要追问'那明天几点开始'", "不要把她早睡说成不自律"]
+   [卡] unknowns: ["她要不要我把题留着"]
+   [卡·事实] AK09_A01 subj=她 rel=状态 val=背到十二点、明早六点半起 status=asserted src=message:AK09_T01
+   [卡·事实] AK09_A02 subj=她 rel=收尾 val=先睡了，别等 status=asserted src=message:AK09_T01
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7347/317 latency_ms=22149
+      [首选] 行，睡吧。下午图书馆那两小时我还等着。
+      [备选 bad_boy] 背到十二点还要六点半起，明天别顶着黑眼圈来。睡吧。
+      [备选 playful] 行，那我不等了。明早六点半，闹钟自己争点气。
+      [备选 warm] 睡吧，明天下午那两小时我给你留着。
+      [备选 directions[0]] 背到十二点还六点半起，够拼的，快睡。
+      [备选 directions[2]] 行，我也不熬了，一起睡。
+   ── action_policy_r1 ── score10=0.0 veto=json_schema_broken failed=['json_schema_valid'] delivery=ok tokens p/c=5148/170 latency_ms=34002
+      [首选] (无)
+==============================================================================
+STORY AK10｜AK10
+------------------------------------------------------------------------------
+AK10_T01 clock=2026-12-21 20:40 may_decline=False intent={"text": "周六送她带猫去医院并接她回家", "status": "ACTIVE", "enabled": true}
+   m0 HER｜周六九点手术确认了 我抱猫笼挤地铁真的不行
+   m1 ME｜那我去吾悦门口接你 六点四十我车在楼下
+   m2 HER｜可以 我就把猫笼先放你画室
+   [卡] current_action: 链条已成形（笼先放画室→我接→九点手术）——把周六早上谁几点拿笼、停车点讲清楚
+   [卡] acceptable: ["确认+约定拿笼时间", "确认+说提前十分钟到", "确认+问她要不要留她备用钥匙"]
+   [卡] dims: ["goal", "time_state", "memory_use", "interaction"]
+   [卡] private_guidance: 她给了具体的分工；漏掉'笼什么时候过去'就是承诺执行不完整。
+   [卡] protected: ["我就把猫笼先放你画室"]
+   [卡] forbidden: ["不要说'猫没事放心吧'这类替医生做的保证", "不要把接人时间说成已经确定（六点四十是我提议）"]
+   [卡] unknowns: ["术后要不要直接回家还是去她租处", "医院停车点"]
+   [卡·事实] AK10_A01 subj=她 rel=既定 val=手术周六九点已确认 status=confirmed src=message:AK10_T01
+   [卡·事实] AK10_A02 subj=她 rel=限制 val=抱猫笼无法挤地铁 status=asserted src=message:AK10_T01
+   [卡·事实] AK10_A03 subj=双方 rel=安排 val=猫笼先放我画室 status=confirmed src=message:AK10_T01
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7242/340 latency_ms=37675
+      [首选] 行，放画室吧，周六我直接拎下去，你不用管笼子。
+      [备选 bad_boy] 笼子放我这没问题，猫你自己留着，周六早上再装。
+      [备选 playful] 行，画室先给它腾个位置，周六六点四十准时拎下楼。
+      [备选 warm] 行，放我这儿。周六你人下来就行，笼子我来搬。
+      [备选 directions[0]] 行，画室有地方放，周六我拎下去。
+      [备选 directions[1]] 放我这正好，周六早上你少跑一趟。
+      [备选 directions[2]] 那我周六六点四十到楼下，到了给你发消息。
+      [备选 directions[3]] 对了，你爸妈这周末不是要来？跟周六撞上没。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=4985/579 latency_ms=22485
+      [首选] 行，猫笼先搁画室。周六六点四十我在楼下，车停吾悦门口那边，你抱着猫下来就行。做完给我发消息，我过来接你们俩。
+      [备选 bad_boy] 猫笼放我画室可以，别顺手把猫也一起寄存了。六点四十楼下见，术后发消息，我来接。
+      [备选 playful] 猫笼先住我画室，算借住。六点四十楼下，我后备箱铺块布，笼子不打滑。
+      [备选 warm] 那就这么定。周六六点四十我到楼下，你不用挤地铁，到医院我陪你一起等。做完发消息，我接你们回家。
+      [备选 directions[0]] 猫笼你周六早上带下来还是提前一天放我这儿？我这边随时能放。
+      [备选 directions[1]] 九点手术的话，路上得留点余量，我六点四十到楼下不算早吧。
+      [备选 directions[2]] 她怕排队这事我记着，到时候我陪你一起等，你不用一个人站着。
+==============================================================================
+STORY AK11｜AK11
+------------------------------------------------------------------------------
+AK11_T01 clock=2026-12-23 21:14 may_decline=False intent={"text": "周六上午陪她带猫做手术", "status": "ACTIVE", "enabled": true}
+   m0 ME｜明早六点四十吾悦门口接你
+   m1 HER｜我妈说明天要来 我得先去车站 手术要不改到下周
+   note: 她妈周末来是提前说过的事
+   [卡] current_action: 她提出改期但没确定——先把改期的可执行项接住（问医院能否改、我下周同步空），不让她在两件重要的事之间选一个
+   [卡] acceptable: ["答应改期+提醒尽快打医院电话", "问她要不要我先接她去车站再回来处理猫", "确认下周某天并说明我那天也行"]
+   [卡] dims: ["goal", "time_state", "emotion_relation", "boundary"]
+   [卡] private_guidance: '要不改到下周'是征求不是通知；直接改时间或坚持原计划，两种都算没问。
+   [卡] protected: ["手术要不改到下周"]
+   [卡] forbidden: ["不要说'你妈重要还是猫重要'这类逼她表态的话", "不要声称医院一定能改到下周"]
+   [卡] unknowns: ["下周医院是否约得上", "她妈待几天"]
+   [卡·事实] AK11_A01 subj=第三人 rel=事件 val=她妈明天要来，她得先去车站 status=asserted src=message:AK11_T01
+   [卡·事实] AK11_A02 subj=双方 rel=原定 val=明早六点四十吾悦接她做手术 status=asserted src=message:AK11_T01
+   [卡·事实] AK11_A03 subj=第三人 rel=既往 val=她父母周末从老家来是常事 status=asserted src=initial_kb:lessons
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7345/329 latency_ms=15732
+      [首选] 那你先去接你妈。医院那边问一下能不能挪到下午，能改我下午再跑一趟。
+      [备选 bad_boy] 下周隔太久了。先问医院能不能挪到下午，挪不了再说明周。
+      [备选 playful] 行，你妈排前面。问问医院下午还有没有号，别整周往后推。
+      [备选 warm] 先去接人吧，别赶。医院那边你问一句下午还有没有位置。
+      [备选 directions[0]] 你妈几点到站？
+      [备选 directions[1]] 医院是只能整周往后推，还是能换个时间？
+      [备选 directions[2]] 下周太远了，能挪到下午就别拖。
+      [备选 directions[3]] 先忙接人的事，医院那边定了跟我说。
+   ── action_policy_r1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=5070/434 latency_ms=27819
+      [首选] 那手术就挪到下周，猫不差这一周。明早我本来就往吾悦那边去，顺道绕一下送你去车站——阿姨几点到？
+      [备选 bad_boy] 行，手术下周。那明早六点四十还作数吗？我改送你去车站。
+      [备选 playful] 阿姨的优先级比手术高，这排序没毛病。车站几点？明早那趟我顺路捎你。
+      [备选 warm] 改下周就改下周，猫等得起。明早别自己挤车去车站，我送你。
+      [备选 directions[0]] 阿姨几点到？先把她安顿好，手术的事下周再定。
+      [备选 directions[1]] 下周排的时候记得问一下术前禁食要几个小时，别到时候被卡住。
+      [备选 directions[2]] 车站那段路我送你吧，你一个人拎东西还得顾猫，太赶了。
+==============================================================================
+STORY AK12｜AK12
+------------------------------------------------------------------------------
+AK12_T01 clock=2026-12-28 22:50 may_decline=True intent={"text": "陪她带猫完成手术并接她回家", "status": "ACTIVE", "enabled": true}
+   m0 HER｜手术拖到周一下午了 我还得请假 现在头都是疼的
+   m1 ME｜请假要写什么理由不 需要我帮你顶半天
+   m2 HER｜先这样吧 结果出来我再说 谢了
+   note: 她已经明确说结果出来再说
+   [卡] current_action: 她明确收尾并设了下次通知点（结果出来再说）——合法不回或一句不再要求应答的收尾；不要继续追问手术细节或再提帮请假
+   [卡] acceptable: ["不回（她已收尾，合法）", "一句'好 我周一下午空着'不再问", "只说一句不用她回"]
+   [卡] dims: ["boundary", "emotion_relation", "interaction", "time_state"]
+   [卡] private_guidance: '谢了'加'先这样吧'是收尾信号；此时追问细节就是把互动继续占住。不回在此合法，但不能推论成'她烦我'。
+   [卡] protected: ["结果出来我再说"]
+   [卡] forbidden: ["不要说她不想聊了", "不要重复追问请假或手术细节"]
+   [卡] unknowns: ["周一下午是否还需要接送"]
+   [卡·事实] AK12_A01 subj=她 rel=状态 val=手术改到周一下午、要请假、头疼 status=asserted src=message:AK12_T01
+   [卡·事实] AK12_A02 subj=她 rel=边界 val=结果出来再说，先这样 status=asserted src=message:AK12_T01
+   [卡·事实] AK12_A03 subj=我 rel=提议 val=提出帮她顶半天假 status=asserted src=message:AK12_T01
+   ── reference_product_v1 ── score10=10.0 veto=None failed=[] delivery=ok tokens p/c=7378/309 latency_ms=17392
+      [首选] 行，头疼别硬扛，先歇着。结果出来跟我说一声。
+      [备选 bad_boy] 行，那我不问了。真扛不住的时候记得还有个人能搭把手。
+      [备选 playful] 谢就免了，等你猫好了请我吃顿饭就行。
+      [备选 warm] 知道了。头疼就早点睡，周一下午的事到时再说。
+      [备选 directions[0]] 头疼得厉害就吃点药，别熬着。
+      [备选 directions[1]] 请假那边实在批不下来再找我，我这边时间能挪。
+      [备选 directions[2]] 我这边随时有空，你要用得上就说。
+   ── action_policy_r1 ── score10=0.0 veto=json_schema_broken failed=['json_schema_valid'] delivery=ok tokens p/c=5189/177 latency_ms=22899
+      [首选] (无)

@@ -1,0 +1,2003 @@
+{
+  "package": {
+    "payload": 4170,
+    "hash_errors": []
+  },
+  "historical_real66": {
+    "n_files": 432,
+    "changed": []
+  },
+  "source_mapping": {
+    "canonical_id_map": {
+      "m0": "HER"
+    },
+    "lookup": {
+      "m0": {
+        "speaker": "ME",
+        "text": "我坐E708",
+        "ts": "2026-10-29 21:30"
+      },
+      "m1": {
+        "speaker": "HER",
+        "text": "我现在坐D3145",
+        "ts": "2026-10-29 21:30"
+      }
+    },
+    "store": [
+      {
+        "clock": "2026-10-29 21:30",
+        "text": "我坐E708",
+        "src": [
+          {
+            "speaker": "ME",
+            "text": "我坐E708",
+            "ts": "2026-10-29 21:30",
+            "key": "SRC_t01:m0"
+          }
+        ],
+        "entities": [
+          "e708"
+        ],
+        "status": "event",
+        "anchor_ts": "2026-10-29 21:30",
+        "correction": false,
+        "superseded": false,
+        "superseded_by": null
+      }
+    ],
+    "gate": {
+      "accepted": [
+        {
+          "text": "我坐E708",
+          "status": "event",
+          "src": [
+            "SRC_t01:m0"
+          ]
+        }
+      ],
+      "rejected": [
+        {
+          "text": "她现在坐D3145",
+          "reason": "gate_reject:entity_not_in_evidence:d3145",
+          "source_ids": [
+            "m0"
+          ]
+        }
+      ],
+      "corrections": [],
+      "policy": "alnum-token evidence support; invalid source_ids reject; superseded excluded from injection"
+    },
+    "score10": 10.0,
+    "veto": null
+  },
+  "supersession_orders": {
+    "negative_last": {
+      "store": [
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "她买的是G7812",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "我买的是G7812",
+              "ts": "2026-10-29 21:30",
+              "key": "COR_t01:m0"
+            }
+          ],
+          "entities": [
+            "g7812"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": false,
+          "superseded": true,
+          "superseded_by": "COR_t02:m0"
+        },
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "她改签成D3145",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "不是G7812了 我改签成D3145 你帮我看这趟",
+              "ts": "2026-10-29 21:30",
+              "key": "COR_t02:m0"
+            }
+          ],
+          "entities": [
+            "d3145"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": true,
+          "superseded": true,
+          "superseded_by": "COR_t02:m0"
+        },
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "她让我帮看D3145",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "不是G7812了 我改签成D3145 你帮我看这趟",
+              "ts": "2026-10-29 21:30",
+              "key": "COR_t02:m0"
+            }
+          ],
+          "entities": [
+            "d3145"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": true,
+          "superseded": true,
+          "superseded_by": "COR_t02:m0"
+        },
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "她不坐G7812了",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "不是G7812了 我改签成D3145 你帮我看这趟",
+              "ts": "2026-10-29 21:30",
+              "key": "COR_t02:m0"
+            }
+          ],
+          "entities": [
+            "g7812"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": true,
+          "superseded": false,
+          "superseded_by": null
+        }
+      ],
+      "active": [
+        "她不坐G7812了"
+      ],
+      "next_injected": {
+        "scene_chain_fact_ids": [],
+        "superseded_dropped": [
+          1
+        ],
+        "ongoing_all": [],
+        "topic": "行程",
+        "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+      },
+      "next_request_user": "# 【懂得】关系画像\n\n# 【此刻】场景上下文（仅供参考，以本次对话为准）\n距上次对话：不到1小时前\n当前话题：行程\n\n\n\n# 【当前场景】（本轮属性，不改变长期阶段档案）\n场景：日常分享\n\n# 本次对话记录\n（按时间顺序。speaker 定义：PARTNER=对方，USER=用户本人。每条消息的 id 为来源ID，模型在 scene_facts 的 source_ids 中使用。）\n\n<chat>\n{\"id\":\"m0\",\"speaker\":\"PARTNER\",\"text\":\"我改签了 现在坐哪趟来着\",\"ts\":\"2026-10-29 21:30\"}\n</chat>\n\n\n【当前时间】2026-10-29 21:30\n最近一条消息时间：2026-10-29 21:30\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段。时间只认系统给定的当前时间与消息时间戳，不凭对话内容或主观感觉推测。"
+    },
+    "positive_last": {
+      "store": [
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "她买的是G7812",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "我买的是G7812",
+              "ts": "2026-10-29 21:30",
+              "key": "COR_t01:m0"
+            }
+          ],
+          "entities": [
+            "g7812"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": false,
+          "superseded": true,
+          "superseded_by": "COR_t02:m0"
+        },
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "她不坐G7812了",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "不是G7812了 我改签成D3145 你帮我看这趟",
+              "ts": "2026-10-29 21:30",
+              "key": "COR_t02:m0"
+            }
+          ],
+          "entities": [
+            "g7812"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": true,
+          "superseded": true,
+          "superseded_by": "COR_t02:m0"
+        },
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "她改签成D3145",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "不是G7812了 我改签成D3145 你帮我看这趟",
+              "ts": "2026-10-29 21:30",
+              "key": "COR_t02:m0"
+            }
+          ],
+          "entities": [
+            "d3145"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": true,
+          "superseded": true,
+          "superseded_by": "COR_t02:m0"
+        },
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "她让我帮看D3145",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "不是G7812了 我改签成D3145 你帮我看这趟",
+              "ts": "2026-10-29 21:30",
+              "key": "COR_t02:m0"
+            }
+          ],
+          "entities": [
+            "d3145"
+          ],
+          "status": "event",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": true,
+          "superseded": false,
+          "superseded_by": null
+        }
+      ],
+      "active": [
+        "她让我帮看D3145"
+      ],
+      "next_injected": {
+        "scene_chain_fact_ids": [],
+        "superseded_dropped": [
+          2
+        ],
+        "ongoing_all": [],
+        "topic": "行程",
+        "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+      },
+      "next_request_user": "# 【懂得】关系画像\n\n# 【此刻】场景上下文（仅供参考，以本次对话为准）\n距上次对话：不到1小时前\n当前话题：行程\n\n\n\n# 【当前场景】（本轮属性，不改变长期阶段档案）\n场景：日常分享\n\n# 本次对话记录\n（按时间顺序。speaker 定义：PARTNER=对方，USER=用户本人。每条消息的 id 为来源ID，模型在 scene_facts 的 source_ids 中使用。）\n\n<chat>\n{\"id\":\"m0\",\"speaker\":\"PARTNER\",\"text\":\"我改签了 现在坐哪趟来着\",\"ts\":\"2026-10-29 21:30\"}\n</chat>\n\n\n【当前时间】2026-10-29 21:30\n最近一条消息时间：2026-10-29 21:30\n所有回复必须基于上述当前时间进行时段判断，禁止臆测。回复需自然贴合当前时段。时间只认系统给定的当前时间与消息时间戳，不凭对话内容或主观感觉推测。"
+    }
+  },
+  "supersession_unrelated": [
+    {
+      "clock": "2026-10-29 21:30",
+      "text": "她去年坐过D3145",
+      "src": [
+        {
+          "speaker": "HER",
+          "text": "我去年坐过D3145",
+          "ts": "2026-10-29 21:30",
+          "key": "HIST_t01:m0"
+        }
+      ],
+      "entities": [
+        "d3145"
+      ],
+      "status": "event",
+      "anchor_ts": "2026-10-29 21:30",
+      "correction": false,
+      "superseded": true,
+      "superseded_by": "HIST_t02:m0"
+    },
+    {
+      "clock": "2026-10-29 21:30",
+      "text": "她这次改签成D3145",
+      "src": [
+        {
+          "speaker": "HER",
+          "text": "这次不是G7812了 我改签成D3145",
+          "ts": "2026-10-29 21:30",
+          "key": "HIST_t02:m0"
+        }
+      ],
+      "entities": [
+        "d3145"
+      ],
+      "status": "event",
+      "anchor_ts": "2026-10-29 21:30",
+      "correction": true,
+      "superseded": false,
+      "superseded_by": null
+    }
+  ],
+  "statuses": {
+    "offer_only": {
+      "store": [
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "我们已约定一起看纪录片",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "纪录片找到了 你要看吗",
+              "ts": "2026-10-29 21:30",
+              "key": "STAT_t01:m0"
+            }
+          ],
+          "entities": [],
+          "status": "offer",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": false,
+          "superseded": false,
+          "superseded_by": null
+        }
+      ],
+      "rendered": "- [2026-10-29 21:30] 我们已约定一起看纪录片｜src=STAT_t01:m0｜⚠提议未确认，不当已约定"
+    },
+    "confirmed": {
+      "store": [
+        {
+          "clock": "2026-10-29 21:31",
+          "text": "我们已约定今晚一起看",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "今晚一起看吗",
+              "ts": "2026-10-29 21:30",
+              "key": "STAT_t01:m0"
+            },
+            {
+              "speaker": "ME",
+              "text": "好 就今晚一起看",
+              "ts": "2026-10-29 21:31",
+              "key": "STAT_t01:m1"
+            }
+          ],
+          "entities": [],
+          "status": "offer",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": false,
+          "superseded": false,
+          "superseded_by": null
+        }
+      ],
+      "rendered": "- [2026-10-29 21:31] 我们已约定今晚一起看｜src=STAT_t01:m0,STAT_t01:m1｜⚠提议未确认，不当已约定｜相对时间以出处消息日 2026-10-29 为锚"
+    },
+    "already_happened": {
+      "store": [
+        {
+          "clock": "2026-10-29 21:30",
+          "text": "我们昨晚已经一起看完那部片",
+          "src": [
+            {
+              "speaker": "HER",
+              "text": "我们昨晚一起看完那部片了",
+              "ts": "2026-10-29 21:30",
+              "key": "STAT_t01:m0"
+            }
+          ],
+          "entities": [],
+          "status": "offer",
+          "anchor_ts": "2026-10-29 21:30",
+          "correction": false,
+          "superseded": false,
+          "superseded_by": null
+        }
+      ],
+      "rendered": "- [2026-10-29 21:30] 我们昨晚已经一起看完那部片｜src=STAT_t01:m0｜⚠提议未确认，不当已约定｜相对时间以出处消息日 2026-10-29 为锚"
+    }
+  },
+  "time_gate": {
+    "store": [
+      {
+        "clock": "2026-10-29 20:35",
+        "text": "她20:29到合肥",
+        "src": [
+          {
+            "speaker": "HER",
+            "text": "正点 到合肥了",
+            "ts": "2026-10-29 20:35",
+            "key": "TIME_t01:m0"
+          }
+        ],
+        "entities": [
+          "20",
+          "29"
+        ],
+        "status": "event",
+        "anchor_ts": "2026-10-29 20:35",
+        "correction": false,
+        "superseded": false,
+        "superseded_by": null
+      }
+    ],
+    "gate": {
+      "accepted": [
+        {
+          "text": "她20:29到合肥",
+          "status": "event",
+          "src": [
+            "TIME_t01:m0"
+          ]
+        }
+      ],
+      "rejected": [],
+      "corrections": [],
+      "policy": "alnum-token evidence support; invalid source_ids reject; superseded excluded from injection"
+    }
+  },
+  "number_normalization": {
+    "store": [],
+    "gate": {
+      "accepted": [],
+      "rejected": [
+        {
+          "text": "她带了2盒",
+          "reason": "gate_reject:entity_not_in_evidence:2",
+          "source_ids": [
+            "m0"
+          ]
+        }
+      ],
+      "corrections": [],
+      "policy": "alnum-token evidence support; invalid source_ids reject; superseded excluded from injection"
+    }
+  },
+  "scenes": {
+    "specified_bad_news": {
+      "messages": [
+        {
+          "role": "HER",
+          "text": "唉 我领导说项目黄了",
+          "ts": "2026-10-29 21:30"
+        },
+        {
+          "role": "HER",
+          "text": "可能要调岗",
+          "ts": "2026-10-29 21:30"
+        },
+        {
+          "role": "HER",
+          "text": "烦死了",
+          "ts": "2026-10-29 21:30"
+        }
+      ],
+      "got": "认真沟通"
+    },
+    "specified_closing": {
+      "messages": [
+        {
+          "role": "HER",
+          "text": "先不聊了",
+          "ts": "2026-10-29 21:30"
+        },
+        {
+          "role": "HER",
+          "text": "我去赶班车 明天说",
+          "ts": "2026-10-29 21:30"
+        }
+      ],
+      "got": "收尾"
+    },
+    "external_again": {
+      "messages": [
+        {
+          "role": "HER",
+          "text": "领导又来催项目了 真烦",
+          "ts": "2026-10-29 21:30"
+        }
+      ],
+      "got": "争执"
+    },
+    "polite_closing_question": {
+      "messages": [
+        {
+          "role": "HER",
+          "text": "我先睡了 明天聊好吗？",
+          "ts": "2026-10-29 21:30"
+        }
+      ],
+      "got": "日常分享"
+    },
+    "resumed_after_goodnight": {
+      "messages": [
+        {
+          "role": "HER",
+          "text": "晚安",
+          "ts": "2026-10-29 21:30"
+        },
+        {
+          "role": "ME",
+          "text": "对了 周末去哪",
+          "ts": "2026-10-29 21:30"
+        },
+        {
+          "role": "HER",
+          "text": "去良渚",
+          "ts": "2026-10-29 21:30"
+        }
+      ],
+      "got": "收尾"
+    },
+    "new_info_after_closure": {
+      "messages": [
+        {
+          "role": "HER",
+          "text": "先不聊了",
+          "ts": "2026-10-29 21:30"
+        },
+        {
+          "role": "HER",
+          "text": "等等 刚才出结果了 我升职了",
+          "ts": "2026-10-29 21:30"
+        }
+      ],
+      "got": "收尾"
+    }
+  },
+  "historical_writeback_replay": {
+    "n_turns": 66,
+    "accepted": 135,
+    "rejected": 14,
+    "rejected_rows": [
+      {
+        "key": "A1|NCB|r1|NCB_t01",
+        "accepted": [
+          {
+            "text": "她这周五先回湖州，再从湖州上车坐G7812来合肥参加室友婚礼",
+            "status": "event",
+            "src": [
+              "NCB_t01:m0",
+              "NCB_t01:m2"
+            ]
+          }
+        ],
+        "rejected": [
+          {
+            "text": "她让我帮忙查G7812最近是否正点",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "10-31她来合肥参加室友婚礼",
+            "status": "进行中"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [],
+          "superseded_dropped": [],
+          "ongoing_all": [],
+          "topic": "",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      },
+      {
+        "key": "A1|NCB|r2|NCB_t01",
+        "accepted": [
+          {
+            "text": "她周五先从杭州回湖州，再从湖州上车 G7812 来合肥参加室友婚礼",
+            "status": "event",
+            "src": [
+              "NCB_t01:m0",
+              "NCB_t01:m2"
+            ]
+          }
+        ],
+        "rejected": [
+          {
+            "text": "她让我帮她查 G7812 最近是否正点",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "计划10-30她来合肥参加室友婚礼",
+            "status": "进行中"
+          },
+          {
+            "item": "帮她查G7812正点情况",
+            "status": "新出现"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [],
+          "superseded_dropped": [],
+          "ongoing_all": [],
+          "topic": "",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      },
+      {
+        "key": "A2|NCB|r1|NCB_t01",
+        "accepted": [],
+        "rejected": [
+          {
+            "text": "她这周五（10-30）从湖州上车坐 G7812 到合肥，参加周六的室友婚礼",
+            "reason": "gate_reject:entity_not_in_evidence:30",
+            "source_ids": [
+              "m2"
+            ]
+          },
+          {
+            "text": "她请我帮她看 G7812 最近正不正点",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "10-30至11-01合肥婚礼行程",
+            "status": "进行中"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [],
+          "superseded_dropped": [],
+          "ongoing_all": [],
+          "topic": "",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      },
+      {
+        "key": "A2|NCB|r1|NCB_t03",
+        "accepted": [
+          {
+            "text": "她带了两盒定胜糕，其中一盒给我",
+            "status": "event",
+            "src": [
+              "NCB_t03:m1"
+            ]
+          },
+          {
+            "text": "她问我明天怎么把定胜糕给我",
+            "status": "event",
+            "src": [
+              "NCB_t03:m2"
+            ]
+          }
+        ],
+        "rejected": [
+          {
+            "text": "她今天18:52坐G7812正点到合肥",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "10-30至11-01合肥婚礼行程",
+            "status": "进行中"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [],
+          "superseded_dropped": [],
+          "ongoing_all": [
+            "10-30至11-01合肥婚礼行程"
+          ],
+          "topic": "合肥行程车次",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      },
+      {
+        "key": "A2|NCB|r1|NCB_t05",
+        "accepted": [
+          {
+            "text": "她今天22:25回到酒店，婚礼已经忙完",
+            "status": "event",
+            "src": [
+              "NCB_t05:m0"
+            ]
+          },
+          {
+            "text": "她说先聊到这，明天返程再说",
+            "status": "event",
+            "src": [
+              "NCB_t05:m1"
+            ]
+          }
+        ],
+        "rejected": [
+          {
+            "text": "她计划2026-11-01返程",
+            "reason": "gate_reject:entity_not_in_evidence:01,11",
+            "source_ids": [
+              "m1"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "10-30至11-01合肥婚礼行程",
+            "status": "进行中"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [],
+          "superseded_dropped": [],
+          "ongoing_all": [
+            "10-30至11-01合肥婚礼行程"
+          ],
+          "topic": "定胜糕交接",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      },
+      {
+        "key": "A2|NCB|r2|NCB_t01",
+        "accepted": [
+          {
+            "text": "她10-29晚说周五从湖州上车，车次是G7812",
+            "status": "event",
+            "src": [
+              "NCB_t01:m2"
+            ]
+          }
+        ],
+        "rejected": [
+          {
+            "text": "她10-29 20:35让我帮她查G7812最近正不正点",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "10-31 合肥室友婚礼",
+            "status": "进行中"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [],
+          "superseded_dropped": [],
+          "ongoing_all": [],
+          "topic": "",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      },
+      {
+        "key": "A2|NCB|r2|NCB_t03",
+        "accepted": [
+          {
+            "text": "她带了两盒定胜糕，其中一盒要给我",
+            "status": "event",
+            "src": [
+              "NCB_t03:m1"
+            ]
+          },
+          {
+            "text": "她问我明天怎么把定胜糕给我",
+            "status": "event",
+            "src": [
+              "NCB_t03:m2"
+            ]
+          }
+        ],
+        "rejected": [
+          {
+            "text": "她今天18:52乘D3145正点到合肥",
+            "reason": "gate_reject:entity_not_in_evidence:d3145",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "10-31 合肥室友婚礼",
+            "status": "进行中"
+          },
+          {
+            "item": "10-30 她乘 D3145 到合肥",
+            "status": "已完成"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [],
+          "superseded_dropped": [],
+          "ongoing_all": [
+            "10-31 合肥室友婚礼",
+            "10-30 她乘 D3145 到合肥"
+          ],
+          "topic": "周五车次改签与正点查询",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      },
+      {
+        "key": "A3|NCA|r1|NCA_t01",
+        "accepted": [
+          {
+            "text": "她拍了照片，说回头挑几张发我",
+            "status": "intent",
+            "src": [
+              "NCA_t01:m1"
+            ]
+          }
+        ],
+        "rejected": [
+          {
+            "text": "她上周末（10-25、10-26）去了良渚，说人少景好",
+            "reason": "gate_reject:entity_not_in_evidence:25,26",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "她10-27发良渚照片给我",
+            "status": "新出现"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [],
+          "superseded_dropped": [],
+          "ongoing_all": [],
+          "topic": "",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      },
+      {
+        "key": "A3|NCA|r2|NCA_t02",
+        "accepted": [
+          {
+            "text": "她说这个纪录片b站就能看",
+            "status": "event",
+            "src": [
+              "NCA_t02:m2"
+            ]
+          },
+          {
+            "text": "我12:31让她哪天发良渚的照片给我看",
+            "status": "event",
+            "src": [
+              "NCA_t02:m0"
+            ]
+          }
+        ],
+        "rejected": [
+          {
+            "text": "她12:40说纪录片找到了，问我要不要一起看",
+            "reason": "gate_reject:entity_not_in_evidence:40",
+            "source_ids": [
+              "m1"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "2026-10-27 她发良渚照片",
+            "status": "新出现"
+          },
+          {
+            "item": "2026-10-27 一起看纪录片",
+            "status": "新出现"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [
+            0
+          ],
+          "superseded_dropped": [],
+          "ongoing_all": [
+            "2026-10-27 她发良渚照片"
+          ],
+          "topic": "良渚周末出行",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      },
+      {
+        "key": "A3|NCB|r1|NCB_t01",
+        "accepted": [
+          {
+            "text": "她周五从湖州上车，车次G7812，来合肥参加周六的婚礼",
+            "status": "event",
+            "src": [
+              "NCB_t01:m2"
+            ]
+          }
+        ],
+        "rejected": [
+          {
+            "text": "她让我帮她看看G7812最近正不正点",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "她10-30来合肥参加婚礼",
+            "status": "进行中"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [],
+          "superseded_dropped": [],
+          "ongoing_all": [],
+          "topic": "",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      },
+      {
+        "key": "A3|NCB|r1|NCB_t02",
+        "accepted": [
+          {
+            "text": "她今天21:30说她现在坐的是D3145，让我帮看这趟",
+            "status": "event",
+            "src": [
+              "NCB_t02:m2"
+            ]
+          }
+        ],
+        "rejected": [
+          {
+            "text": "她今天21:25说她改签了车次，不是G7812",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m1"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "她10-30来合肥参加婚礼",
+            "status": "进行中"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [],
+          "superseded_dropped": [],
+          "ongoing_all": [
+            "她10-30来合肥参加婚礼"
+          ],
+          "topic": "周五来合肥参加婚礼的车次",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      },
+      {
+        "key": "A3|NCB|r1|NCB_t03",
+        "accepted": [
+          {
+            "text": "她带了定胜糕两盒，说一盒给我",
+            "status": "event",
+            "src": [
+              "NCB_t03:m1"
+            ]
+          },
+          {
+            "text": "她问我明天怎么把定胜糕给我",
+            "status": "event",
+            "src": [
+              "NCB_t03:m2"
+            ]
+          },
+          {
+            "text": "她明天周六参加婚礼",
+            "status": "event",
+            "src": [
+              "NCB_t03:m1"
+            ]
+          }
+        ],
+        "rejected": [
+          {
+            "text": "她今天18:52说G7812正点到合肥了",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m0"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "她10-30来合肥参加婚礼",
+            "status": "进行中"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [
+            0
+          ],
+          "superseded_dropped": [],
+          "ongoing_all": [
+            "她10-30来合肥参加婚礼"
+          ],
+          "topic": "周五来合肥的车次",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      },
+      {
+        "key": "A3|NCB|r2|NCB_t01",
+        "accepted": [
+          {
+            "text": "她周五先回湖州，从湖州上 G7812 来合肥参加周六室友婚礼",
+            "status": "event",
+            "src": [
+              "NCB_t01:m0",
+              "NCB_t01:m2"
+            ]
+          }
+        ],
+        "rejected": [
+          {
+            "text": "她让我帮她查 G7812 最近正不正点",
+            "reason": "gate_reject:entity_not_in_evidence:g7812",
+            "source_ids": [
+              "m3"
+            ]
+          }
+        ],
+        "corrections": [],
+        "ongoing": [
+          {
+            "item": "计划10-30她来合肥参加室友婚礼",
+            "status": "新出现"
+          }
+        ],
+        "scene_chain": {
+          "scene_chain_fact_ids": [],
+          "superseded_dropped": [],
+          "ongoing_all": [],
+          "topic": "",
+          "ongoing_injection_mode": "full（与父版本一致，不经过检索）"
+        }
+      }
+    ]
+  },
+  "freeze_count": 18,
+  "unfrozen_actual_dependency_accepted": true,
+  "independent52": {
+    "run": {
+      "exit": "0",
+      "stdout_tail": "n\": 0,\n   \"schema_broken\": 0,\n   \"unknown_field\": 0,\n   \"unauthorized_no_reply\": 0,\n   \"action_violation\": 0,\n   \"scorer_crash\": 0,\n   \"legal_no_reply\": 0,\n   \"reply\": 18,\n   \"other_veto\": 8\n  }\n }\n}\n",
+      "stderr_tail": ""
+    },
+    "summary": {
+      "batch_id": "l3b_52_independent_wave15_clean",
+      "cap": 52,
+      "slots_registered": 52,
+      "terminal_slots": 52,
+      "real_started": 52,
+      "real_completed": 52,
+      "real_failed": 0,
+      "pairing_verified": 52,
+      "verified_complete": true,
+      "failed_slots": [],
+      "occupied_slots": [],
+      "per_arm": {
+        "A3": {
+          "n": 26,
+          "success": 26,
+          "failed": 0,
+          "rec_sendable": 18,
+          "any_available": 18,
+          "deliveries": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "blank": 0,
+          "parse_fail_not_json": 0,
+          "schema_broken": 0,
+          "unknown_field": 0,
+          "unauthorized_no_reply": 0,
+          "action_violation": 0,
+          "scorer_crash": 0,
+          "legal_no_reply": 0,
+          "reply": 18,
+          "other_veto": 8
+        },
+        "F": {
+          "n": 26,
+          "success": 26,
+          "failed": 0,
+          "rec_sendable": 18,
+          "any_available": 18,
+          "deliveries": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "blank": 0,
+          "parse_fail_not_json": 0,
+          "schema_broken": 0,
+          "unknown_field": 0,
+          "unauthorized_no_reply": 0,
+          "action_violation": 0,
+          "scorer_crash": 0,
+          "legal_no_reply": 0,
+          "reply": 18,
+          "other_veto": 8
+        }
+      },
+      "rotation_log": [
+        "A3|NCA_CORR_INTENT_v1|r1|t1",
+        "F|NCA_CORR_INTENT_v1|r1|t1",
+        "F|NCA_CORR_INTENT_v1|r2|t1",
+        "A3|NCA_CORR_INTENT_v1|r2|t1",
+        "A3|NCA_CORR_INTENT_v1|r1|t2",
+        "F|NCA_CORR_INTENT_v1|r1|t2",
+        "F|NCA_CORR_INTENT_v1|r2|t2",
+        "A3|NCA_CORR_INTENT_v1|r2|t2",
+        "A3|NCA_CORR_INTENT_v1|r1|t3",
+        "F|NCA_CORR_INTENT_v1|r1|t3",
+        "F|NCA_CORR_INTENT_v1|r2|t3",
+        "A3|NCA_CORR_INTENT_v1|r2|t3",
+        "A3|NCA_CORR_INTENT_v1|r1|t4",
+        "F|NCA_CORR_INTENT_v1|r1|t4",
+        "F|NCA_CORR_INTENT_v1|r2|t4",
+        "A3|NCA_CORR_INTENT_v1|r2|t4",
+        "A3|NCA_CORR_INTENT_v1|r1|t5",
+        "F|NCA_CORR_INTENT_v1|r1|t5",
+        "F|NCA_CORR_INTENT_v1|r2|t5",
+        "A3|NCA_CORR_INTENT_v1|r2|t5",
+        "A3|NCA_CORR_INTENT_v1|r1|t6",
+        "F|NCA_CORR_INTENT_v1|r1|t6",
+        "F|NCA_CORR_INTENT_v1|r2|t6",
+        "A3|NCA_CORR_INTENT_v1|r2|t6",
+        "A3|NCB_ENTITY_DENSE_v1|r1|t1",
+        "F|NCB_ENTITY_DENSE_v1|r1|t1",
+        "F|NCB_ENTITY_DENSE_v1|r2|t1",
+        "A3|NCB_ENTITY_DENSE_v1|r2|t1",
+        "A3|NCB_ENTITY_DENSE_v1|r1|t2",
+        "F|NCB_ENTITY_DENSE_v1|r1|t2",
+        "F|NCB_ENTITY_DENSE_v1|r2|t2",
+        "A3|NCB_ENTITY_DENSE_v1|r2|t2",
+        "A3|NCB_ENTITY_DENSE_v1|r1|t3",
+        "F|NCB_ENTITY_DENSE_v1|r1|t3",
+        "F|NCB_ENTITY_DENSE_v1|r2|t3",
+        "A3|NCB_ENTITY_DENSE_v1|r2|t3",
+        "A3|NCB_ENTITY_DENSE_v1|r1|t4",
+        "F|NCB_ENTITY_DENSE_v1|r1|t4",
+        "F|NCB_ENTITY_DENSE_v1|r2|t4",
+        "A3|NCB_ENTITY_DENSE_v1|r2|t4",
+        "A3|NCB_ENTITY_DENSE_v1|r1|t5",
+        "F|NCB_ENTITY_DENSE_v1|r1|t5",
+        "F|NCB_ENTITY_DENSE_v1|r2|t5",
+        "A3|NCB_ENTITY_DENSE_v1|r2|t5",
+        "A3|DEV_MEETING_FACTS_v1|r1|t1",
+        "F|DEV_MEETING_FACTS_v1|r1|t1",
+        "F|DEV_TWO_BOXES_v1|r1|t1",
+        "A3|DEV_TWO_BOXES_v1|r1|t1",
+        "A3|DEV_NEW_STATION_v1|r1|t1",
+        "F|DEV_NEW_STATION_v1|r1|t1",
+        "F|DEV_ROOMMATE_ADVICE_v1|r1|t1",
+        "A3|DEV_ROOMMATE_ADVICE_v1|r1|t1"
+      ],
+      "events_tail": [
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:31",
+          "detail": "F|NCB_ENTITY_DENSE_v1|r2|t5"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:31",
+          "detail": "F|NCB_ENTITY_DENSE_v1|r2|t5 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:31",
+          "detail": "A3|NCB_ENTITY_DENSE_v1|r2|t5"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:31",
+          "detail": "A3|NCB_ENTITY_DENSE_v1|r2|t5 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:31",
+          "detail": "A3|DEV_MEETING_FACTS_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:32",
+          "detail": "A3|DEV_MEETING_FACTS_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:32",
+          "detail": "F|DEV_MEETING_FACTS_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:32",
+          "detail": "F|DEV_MEETING_FACTS_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:32",
+          "detail": "F|DEV_TWO_BOXES_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:32",
+          "detail": "F|DEV_TWO_BOXES_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:32",
+          "detail": "A3|DEV_TWO_BOXES_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:32",
+          "detail": "A3|DEV_TWO_BOXES_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:32",
+          "detail": "A3|DEV_NEW_STATION_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:32",
+          "detail": "A3|DEV_NEW_STATION_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:33",
+          "detail": "F|DEV_NEW_STATION_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:33",
+          "detail": "F|DEV_NEW_STATION_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:33",
+          "detail": "F|DEV_ROOMMATE_ADVICE_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:33",
+          "detail": "F|DEV_ROOMMATE_ADVICE_v1|r1|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:33",
+          "detail": "A3|DEV_ROOMMATE_ADVICE_v1|r1|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:33",
+          "detail": "A3|DEV_ROOMMATE_ADVICE_v1|r1|t1 -> success (attempt=[1])"
+        }
+      ]
+    },
+    "unique_run_ids": 46,
+    "dev_slots": [
+      {
+        "slot_no": 45,
+        "arm": "A3",
+        "episode": "DEV_MEETING_FACTS_v1",
+        "run_id": "l3b_52_independent_wave15_clean_A3_DEV_r1_t1"
+      },
+      {
+        "slot_no": 46,
+        "arm": "F",
+        "episode": "DEV_MEETING_FACTS_v1",
+        "run_id": "l3b_52_independent_wave15_clean_F_DEV_r1_t1"
+      },
+      {
+        "slot_no": 47,
+        "arm": "F",
+        "episode": "DEV_TWO_BOXES_v1",
+        "run_id": "l3b_52_independent_wave15_clean_F_DEV_r1_t1"
+      },
+      {
+        "slot_no": 48,
+        "arm": "A3",
+        "episode": "DEV_TWO_BOXES_v1",
+        "run_id": "l3b_52_independent_wave15_clean_A3_DEV_r1_t1"
+      },
+      {
+        "slot_no": 49,
+        "arm": "A3",
+        "episode": "DEV_NEW_STATION_v1",
+        "run_id": "l3b_52_independent_wave15_clean_A3_DEV_r1_t1"
+      },
+      {
+        "slot_no": 50,
+        "arm": "F",
+        "episode": "DEV_NEW_STATION_v1",
+        "run_id": "l3b_52_independent_wave15_clean_F_DEV_r1_t1"
+      },
+      {
+        "slot_no": 51,
+        "arm": "F",
+        "episode": "DEV_ROOMMATE_ADVICE_v1",
+        "run_id": "l3b_52_independent_wave15_clean_F_DEV_r1_t1"
+      },
+      {
+        "slot_no": 52,
+        "arm": "A3",
+        "episode": "DEV_ROOMMATE_ADVICE_v1",
+        "run_id": "l3b_52_independent_wave15_clean_A3_DEV_r1_t1"
+      }
+    ],
+    "config_dep_note_count": 0
+  },
+  "independent_failure": {
+    "first": {
+      "exit": "SLOT_FAILED_STOP_BATCH: 槽 13（A3|NCA_CORR_INTENT_v1|r1|t4）TimeoutError: reviewer inside-gateway fault。fail-fast：整批终止，不作废失败槽继续、不自动重跑。",
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    "restart": {
+      "exit": "BATCH_ABORTED_TERMINAL: 失败/未决槽存在，整批不可继续（fail-fast；不跳过、不猜测、不自动重发） failed=['A3|NCA_CORR_INTENT_v1|r1|t4'] occupied=[]",
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    "resolve": {
+      "exit": "RECOVERY_DISABLED: 作废失败槽继续的路径已禁用（v10 复核 §5：失败即终止整批；失败批次不可恢复，如需继续请显式新建批次）",
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    "adapter_calls": 13,
+    "summary": {
+      "batch_id": "l3b_52_independent_wave15_fail13",
+      "cap": 52,
+      "slots_registered": 13,
+      "terminal_slots": 13,
+      "real_started": 13,
+      "real_completed": 12,
+      "real_failed": 1,
+      "pairing_verified": 12,
+      "verified_complete": false,
+      "failed_slots": [
+        "A3|NCA_CORR_INTENT_v1|r1|t4"
+      ],
+      "occupied_slots": [],
+      "per_arm": {
+        "A3": {
+          "n": 7,
+          "success": 6,
+          "failed": 1,
+          "rec_sendable": 4,
+          "any_available": 4,
+          "deliveries": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "blank": 0,
+          "parse_fail_not_json": 0,
+          "schema_broken": 0,
+          "unknown_field": 0,
+          "unauthorized_no_reply": 0,
+          "action_violation": 0,
+          "scorer_crash": 0,
+          "legal_no_reply": 0,
+          "reply": 4,
+          "other_veto": 2
+        },
+        "F": {
+          "n": 6,
+          "success": 6,
+          "failed": 0,
+          "rec_sendable": 4,
+          "any_available": 4,
+          "deliveries": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "blank": 0,
+          "parse_fail_not_json": 0,
+          "schema_broken": 0,
+          "unknown_field": 0,
+          "unauthorized_no_reply": 0,
+          "action_violation": 0,
+          "scorer_crash": 0,
+          "legal_no_reply": 0,
+          "reply": 4,
+          "other_veto": 2
+        }
+      },
+      "rotation_log": [
+        "A3|NCA_CORR_INTENT_v1|r1|t1",
+        "F|NCA_CORR_INTENT_v1|r1|t1",
+        "F|NCA_CORR_INTENT_v1|r2|t1",
+        "A3|NCA_CORR_INTENT_v1|r2|t1",
+        "A3|NCA_CORR_INTENT_v1|r1|t2",
+        "F|NCA_CORR_INTENT_v1|r1|t2",
+        "F|NCA_CORR_INTENT_v1|r2|t2",
+        "A3|NCA_CORR_INTENT_v1|r2|t2",
+        "A3|NCA_CORR_INTENT_v1|r1|t3",
+        "F|NCA_CORR_INTENT_v1|r1|t3",
+        "F|NCA_CORR_INTENT_v1|r2|t3",
+        "A3|NCA_CORR_INTENT_v1|r2|t3",
+        "A3|NCA_CORR_INTENT_v1|r1|t4"
+      ],
+      "events_tail": [
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:34",
+          "detail": "A3|NCA_CORR_INTENT_v1|r2|t1"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:34",
+          "detail": "A3|NCA_CORR_INTENT_v1|r2|t1 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:34",
+          "detail": "A3|NCA_CORR_INTENT_v1|r1|t2"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:34",
+          "detail": "A3|NCA_CORR_INTENT_v1|r1|t2 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:34",
+          "detail": "F|NCA_CORR_INTENT_v1|r1|t2"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:34",
+          "detail": "F|NCA_CORR_INTENT_v1|r1|t2 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:34",
+          "detail": "F|NCA_CORR_INTENT_v1|r2|t2"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:34",
+          "detail": "F|NCA_CORR_INTENT_v1|r2|t2 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:34",
+          "detail": "A3|NCA_CORR_INTENT_v1|r2|t2"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:35",
+          "detail": "A3|NCA_CORR_INTENT_v1|r2|t2 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:35",
+          "detail": "A3|NCA_CORR_INTENT_v1|r1|t3"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:35",
+          "detail": "A3|NCA_CORR_INTENT_v1|r1|t3 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:35",
+          "detail": "F|NCA_CORR_INTENT_v1|r1|t3"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:35",
+          "detail": "F|NCA_CORR_INTENT_v1|r1|t3 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:35",
+          "detail": "F|NCA_CORR_INTENT_v1|r2|t3"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:35",
+          "detail": "F|NCA_CORR_INTENT_v1|r2|t3 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:35",
+          "detail": "A3|NCA_CORR_INTENT_v1|r2|t3"
+        },
+        {
+          "kind": "slot_terminal",
+          "ts": "2026-10-21 12:50:35",
+          "detail": "A3|NCA_CORR_INTENT_v1|r2|t3 -> success (attempt=[1])"
+        },
+        {
+          "kind": "slot_occupied",
+          "ts": "2026-10-21 12:50:35",
+          "detail": "A3|NCA_CORR_INTENT_v1|r1|t4"
+        },
+        {
+          "kind": "slot_failed_stop_batch",
+          "ts": "2026-10-21 12:50:35",
+          "detail": "A3|NCA_CORR_INTENT_v1|r1|t4 -> gateway_or_transport_failure: TimeoutError: reviewer inside-gateway fault"
+        }
+      ]
+    }
+  },
+  "actual53_guard": "CAP_EXCEEDED: 真实调用计数 52 / 槽登记 0 达硬上限 52，第 67 次真实请求发出前拒绝",
+  "tests": [
+    {
+      "name": "test_phase3_facts.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "ASS 2e 点名旧编号被标记 superseded \nPASS 2f superseded 不入注入 \nPASS 3 邀请写成约定 → offer 未确认 \nPASS 3b 注入标注提议未确认 \nPASS 4 未来标记 → intent \nPASS 5 相对时间注入附锚点 \nPASS 7 合并引用实体放行 \nPASS 8 memory off 零写回 \nPASS 9a _retrieve 与 phase1 同源文件无副本 \nPASS 9b 同库同分同序 \n---\n全部 PASS（14 项）\n\n"
+    },
+    {
+      "name": "test_scene_assembly.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "got=认真沟通   expect=认真沟通\n---\n场景标签全表: {'NCA_t01': '日常分享', 'NCA_t02': '日常分享', 'NCA_t03': '认真沟通', 'NCA_t04': '日常分享', 'NCA_t05': '日常分享', 'NCA_t06': '收尾', 'NCB_t01': '日常分享', 'NCB_t02': '日常分享', 'NCB_t03': '日常分享', 'NCB_t04': '认真沟通', 'NCB_t05': '收尾'}\n全部 PASS\n\n"
+    },
+    {
+      "name": "test_parent_child_executor.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "零退出 \nPASS 2/started=13 后停 \nPASS 2/重入阻断 \nPASS 2/恢复禁用 \nPASS 2/无隐藏补跑 \nPASS 3/occupied 阻断 \nPASS 4/干净批基线 \nPASS 4/t1 残留 checkpoint 拒绝 \nPASS 4/超前 checkpoint 拒绝 \nPASS 5/第 53 次请求前拒绝 \nPASS 6/两臂前七类零 \nPASS 6/两臂分类镜像 \nPASS 7/adapter 漂移拒绝 \n---\n全部 PASS（52 槽等价守卫矩阵）\n\n"
+    },
+    {
+      "name": "test_three_arm_executor.py",
+      "exit_code": 0,
+      "sealed_skip": true,
+      "tail": "PASS 0/66 槽 v3 配置已封存（FROZEN_MISMATCH 拒绝运行；装配层 v12 §6B 升级生效）。全矩阵回归转移至 52 槽等价矩阵。\nSKIPPED (SEALED): 原 1-7 项针对旧装配层的矩阵不再可运行，等价守卫矩阵见 test_parent_child_executor.py\n\n"
+    },
+    {
+      "name": "test_nca_ncb_episodes.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "PASS：NCA/NCB schema/时间线 + 边界无gold泄漏 + 完整mock回放(11轮) + 观测点记账(调岗并存/D3145纠正) + 表达候选委托一致 + 事件账落盘\n\n"
+    },
+    {
+      "name": "test_retr_idf.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "PASS：冻结案例回放(t5过敏取回/t6误取消除) + 锁定用例8组 + 故障族H组(配对背景/相关短问权衡/标点分段/单字归因/背景不串门) + 父版本写回/快照逐字节一致 + 追踪三态完整无gold泄漏 + memory-off一致\n\n"
+    },
+    {
+      "name": "test_expr_candidate.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "PASS：表达策略注入(主变量隔离+反误杀口径) + 检索/写回/快照与父版本逐字节一致 + 四族审计命中(含F4)/无误报/坏JSON留痕 + 检测器同源(含标签) + memory-off委托一致 + 注入幂等(run_episode双运行各恰1份/父臂零污染/全局无永久副作用)\n\n"
+    },
+    {
+      "name": "test_memory_off.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "MEMORY OFF TEST PASS：memory_on 六渠道全可见；memory_off 全关闭、persona 保留；initial_kb/交流间隔读侧已接通。\n\n"
+    },
+    {
+      "name": "test_no_reply_protocol.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "NO_REPLY PROTOCOL PASS：三候选 × {action,decline,normal} × {allow,required} 一致；越权/矛盾/非法动作全拦截；全部不回无法刷满分。\n\nNO_REPLY PROTOCOL PASS\n"
+    },
+    {
+      "name": "test_output_structure.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "PASS：嵌套反例格式失败+写回拦截+第二轮可审计（基线/β）+时钟前进+扩展契约正例+未声明拒绝\n\n"
+    },
+    {
+      "name": "test_input_boundary.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "BOUNDARY TEST PASS：meta/gaps/gold/嵌套元数据 零泄漏；深拷贝生效；persona/消息 ts/may_decline 均到达模型请求；媒体单向登记 fail-fast；容器错型（messages 字符串/字符串列表/intent 列表/clock 对象/may_decline 字符串）入口拒绝；legacy 字符串 intent 保留不误杀。\n\n"
+    },
+    {
+      "name": "test_scoring_authority.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "SCORING AUTHORITY PASS：追加/删除/改角色/伪造 id_map 四类篡改均以原题快照评分（伪造 m3 稳定 veto=illegal_source_id:m3），真实来源对照组不误杀。\n\n"
+    },
+    {
+      "name": "test_trace_robustness.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "PASS：追踪三反例不崩溃+留痕、两轮继续+时钟前进、词面重合保真+通道不可辨识\n\n"
+    },
+    {
+      "name": "test_failure_persistence.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "FAILURE PERSISTENCE TEST PASS：受控超时下网关事件日志/calls/error.json 全部落盘；usage 未知容错；judge 重试全尝试留证。\n\n"
+    },
+    {
+      "name": "test_posttest_event_pairs.py",
+      "exit_code": 0,
+      "sealed_skip": false,
+      "tail": "ected \n[fork] rejected \n[fork] rejected \n[fork] rejected \n[fork] rejected \n[fork] posttest_identity_verified \n[fork] rejected \nPASS：后测事件配对真实拒绝条件——空日志/孤立started/错误case/restore-only/failed对(保留)/audit_errors/多余组/跨case 全拒绝并落 rejection.json，合法两节点四事件正例通过\n\n"
+    }
+  ],
+  "materials": {
+    "regenerated_identical": true,
+    "generator_output": "绑定断言 PASS：共 27 个 (臂,重复) 槽题面与真实请求逐条一致\n产出 → C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave15_v13_review_20261021\\package\\refs\\REAL66_ANON_GROUPS_V2_20261021.md",
+    "binding_rows": [
+      {
+        "group": "G1",
+        "case_id": "NCA_t01",
+        "arm": "A1",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G1",
+        "case_id": "NCA_t01",
+        "arm": "A2",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G1",
+        "case_id": "NCA_t01",
+        "arm": "A3",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G2",
+        "case_id": "NCA_t03",
+        "arm": "A2",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G2",
+        "case_id": "NCA_t03",
+        "arm": "A3",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G2",
+        "case_id": "NCA_t03",
+        "arm": "A1",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G3",
+        "case_id": "NCA_t04",
+        "arm": "A3",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G3",
+        "case_id": "NCA_t04",
+        "arm": "A1",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G3",
+        "case_id": "NCA_t04",
+        "arm": "A2",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G4",
+        "case_id": "NCA_t05",
+        "arm": "A1",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G4",
+        "case_id": "NCA_t05",
+        "arm": "A2",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G4",
+        "case_id": "NCA_t05",
+        "arm": "A3",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G4",
+        "case_id": "NCA_t05",
+        "arm": "A1",
+        "rep": "r2",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G4",
+        "case_id": "NCA_t05",
+        "arm": "A2",
+        "rep": "r2",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G4",
+        "case_id": "NCA_t05",
+        "arm": "A3",
+        "rep": "r2",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G5",
+        "case_id": "NCA_t06",
+        "arm": "A2",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G5",
+        "case_id": "NCA_t06",
+        "arm": "A3",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G5",
+        "case_id": "NCA_t06",
+        "arm": "A1",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G6",
+        "case_id": "NCB_t01",
+        "arm": "A3",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G6",
+        "case_id": "NCB_t01",
+        "arm": "A2",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G6",
+        "case_id": "NCB_t01",
+        "arm": "A1",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G7",
+        "case_id": "NCB_t03",
+        "arm": "A1",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G7",
+        "case_id": "NCB_t03",
+        "arm": "A3",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G7",
+        "case_id": "NCB_t03",
+        "arm": "A2",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G8",
+        "case_id": "NCB_t04",
+        "arm": "A2",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G8",
+        "case_id": "NCB_t04",
+        "arm": "A1",
+        "rep": "r1",
+        "intent_parser_result": null
+      },
+      {
+        "group": "G8",
+        "case_id": "NCB_t04",
+        "arm": "A3",
+        "rep": "r1",
+        "intent_parser_result": null
+      }
+    ],
+    "reply_binding_errors": [],
+    "changed_episode_speaker_accepted": true,
+    "changed_episode_intent_accepted": true
+  },
+  "shared_asset_differences": [],
+  "checkpoint_guards": {
+    "missing": {
+      "result": "CHECKPOINT_MISMATCH: A3|NCA_CORR_INTENT_v1|r1|t2 缺 checkpoint.json（前驱未完成，生成前拒绝）",
+      "actual_counts": [
+        0,
+        0,
+        0
+      ],
+      "slots": 0
+    },
+    "behind": {
+      "result": "CHECKPOINT_MISMATCH: A3|NCA_CORR_INTENT_v1|r1|t2 checkpoint.turns_done=0 ≠ 前一轮 1（缺失/过旧/超前，生成前拒绝——不得顺带重跑历史轮）",
+      "actual_counts": [
+        0,
+        0,
+        0
+      ],
+      "slots": 0
+    },
+    "ahead": {
+      "result": "CHECKPOINT_MISMATCH: A3|NCA_CORR_INTENT_v1|r1|t2 checkpoint.turns_done=5 ≠ 前一轮 1（缺失/过旧/超前，生成前拒绝——不得顺带重跑历史轮）",
+      "actual_counts": [
+        0,
+        0,
+        0
+      ],
+      "slots": 0
+    }
+  },
+  "independent_closure_matrix": {
+    "path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave15_v13_review_20261021\\closure_g2lzy26k\\results.json",
+    "passed": 5,
+    "total": 20,
+    "failed_tests": [
+      "IDEA不能冒充m0真实来源",
+      "IDEA不占编号且HER正常入库",
+      "同轮纠正不作废新值/negative_last",
+      "不同事件历史不因共享编号作废",
+      "真实更正不随摘要拒绝而丢失",
+      "ongoing不绕过邀请未确认约束",
+      "状态区分/confirmed",
+      "状态区分/happened",
+      "日期组件不能拼出无出处钟点",
+      "等价两盒到2盒不丢正确事实",
+      "场景/领导又来催不是与ME争执",
+      "场景/礼貌问句可以收尾",
+      "场景/晚安后重开话题",
+      "场景/收尾后HER自己补新事",
+      "实际检索依赖纳入冻结和快照"
+    ]
+  },
+  "prompt_has_exact_development_failure_example": {
+    "path": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\wave15_v13_review_20261021\\package\\candidates\\phase3_facts\\assets\\system_prompt\\facts_evidence.md",
+    "contains_actual_old_id": true,
+    "contains_actual_arrival_text": true
+  },
+  "source_locations": {
+    "candidates/phase3_facts/mechanism/mechanism.py": {
+      "_src_lookup": 79,
+      "_gate_fact": 92,
+      "_derive_status": 117,
+      "_is_correction": 135,
+      "_append_fact": 141,
+      "_load_facts": 146,
+      "_load_ongoing": 150,
+      "_save_ongoing": 154,
+      "_write_trace": 158,
+      "_hours_between": 162,
+      "_build_with_assets": 173,
+      "_render_scene_chain": 184,
+      "init": 212,
+      "set_memory_access": 216,
+      "run_turn": 220,
+      "snapshot": 423,
+      "restore": 441
+    },
+    "arena/lb_assembly.py": {
+      "kotlin_len": 17,
+      "read_asset": 22,
+      "last_h1_blocks": 36,
+      "purify_lessons": 44,
+      "extract_stage_section": 51,
+      "scene_chain_transform": 66,
+      "infer_scene": 134,
+      "build_system_prompt": 185,
+      "build_knowledge_block": 199,
+      "build_scene_block": 265,
+      "build_intent_block": 272,
+      "build_advisor_note_block": 291,
+      "render_chat": 307,
+      "build_persona_block": 338,
+      "build_timestamp_block": 349,
+      "by_blocks": 370,
+      "build_reply_prompts": 419
+    },
+    "tools/gen_anon_groups.py": {
+      "R": 32,
+      "_turn": 55,
+      "_parse_calls_chat": 62,
+      "_assert_binding": 83,
+      "_msg_lines": 104,
+      "_prior_history": 108,
+      "main": 116
+    },
+    "tools/l3b_three_arm_executor.py": {
+      "_sha": 122,
+      "_now": 126,
+      "check_frozen": 130,
+      "batch_dir": 143,
+      "load_slots": 149,
+      "save_slots": 157,
+      "_log": 162,
+      "_consumed": 166,
+      "_slot_key": 170,
+      "_find_slot": 174,
+      "freeze_deps": 181,
+      "_effective_config": 196,
+      "init_config": 219,
+      "_gateway_event_counts": 256,
+      "_ep_case_id": 282,
+      "_verify_slot_attempts": 289,
+      "_verify_turn_evidence": 358,
+      "slot_out_dir": 393,
+      "expr_block_counts": 399,
+      "_fail_slot": 408,
+      "run_slot": 431,
+      "blocking_slots": 538,
+      "selftest_guards": 544,
+      "_classify_reply": 589,
+      "summarize": 623,
+      "main": 686
+    },
+    "tools/l3b_parent_child_executor.py": {}
+  },
+  "payload_after_checks_changed": [],
+  "report_missing_links": []
+}

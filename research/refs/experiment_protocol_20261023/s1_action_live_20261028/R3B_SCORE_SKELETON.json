@@ -1,0 +1,1203 @@
+{
+ "kind": "pair_review_skeleton_v1",
+ "cards_file": "benchmark/stories_v2/stageD/GRADING_CARDS_R3_DECLINE.json",
+ "exam_dir": "logs/p08_r3b_live_20261028/_reports",
+ "arms": {
+  "parent": "reference_product_v1",
+  "candidate": "action_policy_r3"
+ },
+ "scale": "0-3（0反向/严重错 1关键不足 2合理完成 3本情境实质增益）；NA不适用 NR未测 uncertain审过不确定",
+ "positions": [
+  {
+   "case_id": "D03_T01",
+   "episode": "D03",
+   "card_dims": [
+    "goal",
+    "factuality",
+    "boundary"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "膝盖只是响不疼的话，这周先别加量，压回六公里。房子签一年，两百比三百便宜，还省得半年后再谈一次。",
+     "backups": [
+      [
+       "bad_boy",
+       "八公里是你自己加上去的，膝盖响了就先退回来。房子签一年，半年涨三百，就是让你多掏钱换个短租。"
+      ],
+      [
+       "playful",
+       "膝盖响是在提醒你，别一下冲半马。房子我选一年，半年那个贵一百，还得多跟房东扯一次。"
+      ],
+      [
+       "warm",
+       "膝盖别硬撑，响就先减点量。房子我觉得签一年，两百稳当，你也不用半年后再为这事跟房东扯一遍。"
+      ],
+      [
+       "directions[0]",
+       "膝盖是响还是疼？疼的话明天先别跑。"
+      ],
+      [
+       "directions[1]",
+       "房东说的涨两百，是月租涨还是整年总价涨，问清楚再签。"
+      ],
+      [
+       "directions[2]",
+       "我倾向签一年，价格低，还省心。"
+      ],
+      [
+       "directions[3]",
+       "周末你要是去谈合同，我陪你去，谈完顺便吃个饭。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"膝盖只是响不疼的话，这周先别加量，压回六公里。房子签一年，两百比三百便宜，还省得半年后再谈一次。\",\"bad_boy\":\"八公里是你自己加上去的，膝盖响了就先退回来。房子签一年，半年涨三百，就是让你多掏钱换个短租。\",\"playful\":\"膝盖响是在提醒你，别一下冲半马。房子我选一年，半年那个贵一百，还得多跟房东扯一次。\",\"warm\":\"膝盖别硬撑，响就先减点量。房子我觉得签一年，两百稳当，你也不用半年后再为这事跟房东扯一遍。\"},\"directions\":[\"膝盖是响还是疼？疼的话明天先别跑。\",\"房东说的涨两百，是月租涨还是整年总价涨，问清楚再签。\",\"我倾向签一年，价格低，还省心。\",\"周末你要是去谈合同，我陪你去，谈完顺便吃个饭。\"],\"analysis\":{\"topic_status\":\"new\",\"topic_label\":\"膝盖不适与续租方案选择\",\"scene_facts\":[{\"text\":\"她今天试跑八公里，膝盖又响\",\"source_ids\":[\"m0\"]},{\"text\":\"房东今天发消息：续租一年涨两百、半年涨三百\",\"source_ids\":[\"m1\"]},{\"text\":\"她还没决定签哪个，来问我\",\"source_ids\":[\"m1\"]}],\"ongoing\":[{\"item\":\"她续租合同谈判\",\"status\":\"进行中\",\"state\":\"房东今天给出两个方案，她还没决定\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "0f92f801096702d43290f40ca44036a6832745193ed27db916d144303c3b6ee1",
+     "run_id": "iso_20261028_193213_5cee79",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7313,
+      "completion": 420,
+      "cache": null
+     },
+     "latency_ms": 20039,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r3": {
+     "present": true,
+     "primary": "八公里就响，是量上得太急了，这两天先别再往上加，跑前热身做足。\n租的事：签一年每月多两百，签半年每月多三百。打算住满一年就签一年，一年下来差一千二；半年后能不能谈回两百不好说。半年内可能搬，才签半年，多花点换条退路。你更想稳还是想留退路？",
+     "backups": [
+      [
+       "bad_boy",
+       "膝盖响是身体在提意见，八公里先别加，热身别省。租房别被“半年”那两个字唬住：半年每月多三百，好处就一个，能走；一年每月多两百，按月少一百。真想在这儿待着就签一年，心里已经在盘算搬家就签半年。你是哪种？"
+      ],
+      [
+       "playful",
+       "膝盖先记一笔：八公里就响，加量这事儿它不批。租的账其实简单，一年两百按月少一百，住满一年省一千二；半年三百是花钱买“随时能跑”。想扎根签一年，想留后路签半年，你要哪种自由？"
+      ],
+      [
+       "warm",
+       "膝盖先顾着，八公里就响别再加了，热身做够。租房我帮你捋清楚了：打算住满一年就签一年涨两百，比半年那个一年少掏一千二；半年内可能搬，就签半年，贵点但能走。拿不定就周末把合同带过来，我陪你一条条算。"
+      ],
+      [
+       "directions[0]",
+       "八公里跑完响了几次？是一直响，还是上下楼才响"
+      ],
+      [
+       "directions[1]",
+       "合同月底就到期，时间不算宽裕，这两天定下来比较稳"
+      ],
+      [
+       "directions[2]",
+       "膝盖这事儿我比租金上心，别硬撑"
+      ],
+      [
+       "directions[3]",
+       "周末想跑的话我陪你跑个慢的，五公里封顶"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"八公里就响，是量上得太急了，这两天先别再往上加，跑前热身做足。\\n租的事：签一年每月多两百，签半年每月多三百。打算住满一年就签一年，一年下来差一千二；半年后能不能谈回两百不好说。半年内可能搬，才签半年，多花点换条退路。你更想稳还是想留退路？\",\"bad_boy\":\"膝盖响是身体在提意见，八公里先别加，热身别省。租房别被“半年”那两个字唬住：半年每月多三百，好处就一个，能走；一年每月多两百，按月少一百。真想在这儿待着就签一年，心里已经在盘算搬家就签半年。你是哪种？\",\"playful\":\"膝盖先记一笔：八公里就响，加量这事儿它不批。租的账其实简单，一年两百按月少一百，住满一年省一千二；半年三百是花钱买“随时能跑”。想扎根签一年，想留后路签半年，你要哪种自由？\",\"warm\":\"膝盖先顾着，八公里就响别再加了，热身做够。租房我帮你捋清楚了：打算住满一年就签一年涨两百，比半年那个一年少掏一千二；半年内可能搬，就签半年，贵点但能走。拿不定就周末把合同带过来，我陪你一条条算。\"},\"directions\":[\"八公里跑完响了几次？是一直响，还是上下楼才响\",\"合同月底就到期，时间不算宽裕，这两天定下来比较稳\",\"膝盖这事儿我比租金上心，别硬撑\",\"周末想跑的话我陪你跑个慢的，五公里封顶\"],\"analysis\":{\"signal\":\"接纳\",\"goal_category\":\"拉近\",\"action_taken\":\"展开\",\"anchor\":\"m1\",\"hook\":{\"kind\":\"小选择\",\"text\":\"你更想稳还是想留退路？\"},\"facts\":[{\"text\":\"她今天试跑了八公里，膝盖又有点响\",\"subject\":\"HER\",\"relation\":\"身体状态\",\"quote\":\"今天试了八公里 膝盖又有点响\",\"src_ids\":[\"m0\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-03-05\"},{\"text\":\"房东提的条件是续租一年每月涨两百、签半年每月涨三百\",\"subject\":\"HER\",\"relation\":\"租房\",\"quote\":\"房东刚发消息 续租一年涨两百 半年涨三百\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-03-05\"}],\"tentatives\":[],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "0f92f801096702d43290f40ca44036a6832745193ed27db916d144303c3b6ee1",
+     "run_id": "iso_20261028_193212_5e5fb0",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 6448,
+      "completion": 700,
+      "cache": null
+     },
+     "latency_ms": 40283,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "D03_T02",
+   "episode": "D03",
+   "card_dims": [
+    "boundary",
+    "emotion_relation",
+    "initiative"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "行，那我不掺和。谈完跟我说个结果就行。",
+     "backups": [
+      [
+       "bad_boy",
+       "不是自己能谈，是不想欠我人情。行，我不管，真拿不定主意了再喊我。"
+      ],
+      [
+       "playful",
+       "行。谈崩了别硬撑，回来骂房东，我听着。"
+      ],
+      [
+       "warm",
+       "行，你自己谈。涨多少、签多久这两条别松口，让他写清楚。"
+      ],
+      [
+       "directions[0]",
+       "行，那我不去了，谈完说一声结果。"
+      ],
+      [
+       "directions[1]",
+       "那膝盖呢，八公里跑完还响不响。"
+      ],
+      [
+       "directions[2]",
+       "不是觉得你谈不了，是不想这些事全堆你一个人身上。"
+      ],
+      [
+       "directions[3]",
+       "那这周末还跑吗？"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"行，那我不掺和。谈完跟我说个结果就行。\",\"bad_boy\":\"不是自己能谈，是不想欠我人情。行，我不管，真拿不定主意了再喊我。\",\"playful\":\"行。谈崩了别硬撑，回来骂房东，我听着。\",\"warm\":\"行，你自己谈。涨多少、签多久这两条别松口，让他写清楚。\"},\"directions\":[\"行，那我不去了，谈完说一声结果。\",\"那膝盖呢，八公里跑完还响不响。\",\"不是觉得你谈不了，是不想这些事全堆你一个人身上。\",\"那这周末还跑吗？\"],\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"租房续租与我去不去\",\"scene_facts\":[{\"text\":\"我提出今晚过去一起看租房合同条款\",\"source_ids\":[\"m0\"]},{\"text\":\"她拒绝我今晚过去，说租房自己去谈\",\"source_ids\":[\"m1\"]}],\"ongoing\":[{\"item\":\"陪她理清续租合同\",\"status\":\"已取消\",\"state\":\"她表示自己去谈，不用我过去\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "e85fe061365f22e4860d39c9f1a752533388490c929eb01b75fcbc3dd348c4cc",
+     "run_id": "iso_20261028_193213_5cee79",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7431,
+      "completion": 294,
+      "cache": null
+     },
+     "latency_ms": 42550,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r3": {
+     "present": true,
+     "primary": "行，那我不掺和。你谈完要是有拿不准的条款，拍给我看一眼就行。",
+     "backups": [
+      [
+       "bad_boy",
+       "行，那我不掺和。这种事你比我在行，谈赢了别憋着不说。"
+      ],
+      [
+       "playful",
+       "行吧谈判专家，那我撤。谈完记得报个战绩。"
+      ],
+      [
+       "warm",
+       "好，那你自己去谈，我不插手。膝盖这两天别再硬加量，谈完早点歇。"
+      ],
+      [
+       "directions[2]",
+       "你自己的事你向来办得明白，我就不凑这个热闹了。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\n  \"response\": {\n    \"recommended\": \"行，那我不掺和。你谈完要是有拿不准的条款，拍给我看一眼就行。\",\n    \"bad_boy\": \"行，那我不掺和。这种事你比我在行，谈赢了别憋着不说。\",\n    \"playful\": \"行吧谈判专家，那我撤。谈完记得报个战绩。\",\n    \"warm\": \"好，那你自己去谈，我不插手。膝盖这两天别再硬加量，谈完早点歇。\"\n  },\n  \"directions\": [\n    null,\n    null,\n    \"你自己的事你向来办得明白，我就不凑这个热闹了。\",\n    null\n  ],\n  \"analysis\": {\n    \"signal\": \"拒绝\",\n    \"goal_category\": \"暂缓\",\n    \"action_taken\": \"收尾\",\n    \"anchor\": \"m1\",\n    \"hook\": {\n      \"kind\": \"无\",\n      \"text\": \"\"\n    },\n    \"facts\": [\n      {\n        \"text\": \"她表示租房的事自己一个人去谈\",\n        \"subject\": \"HER\",\n        \"relation\": \"住处/续租\",\n        \"quote\": \"租房我自己去谈\",\n        \"src_ids\": [\"m1\"],\n        \"certainty\": \"confirmed\",\n        \"event_time\": \"\"\n      }\n    ],\n    \"tentatives\": [],\n    \"updates\": []\n  }\n}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "e85fe061365f22e4860d39c9f1a752533388490c929eb01b75fcbc3dd348c4cc",
+     "run_id": "iso_20261028_193212_5e5fb0",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 6357,
+      "completion": 307,
+      "cache": null
+     },
+     "latency_ms": 57289,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "D03_T03",
+   "episode": "D03",
+   "card_dims": [
+    "goal",
+    "emotion_relation",
+    "memory_use",
+    "time_state"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "行啊，半小时把两百块磨成一百。去洗吧，明天再说。",
+     "backups": [
+      [
+       "bad_boy",
+       "房东这是碰上对手了。去洗澡，别在浴室里复盘战绩。"
+      ],
+      [
+       "playful",
+       "磨了半小时就赢了，这战斗力下次拉练能用上。去吧。"
+      ],
+      [
+       "warm",
+       "谈下来就好。洗个澡放松下，今天够累了。"
+      ],
+      [
+       "directions[0]",
+       "一年一百，比半年三百划算多了，签的时候把涨幅那条看仔细。"
+      ],
+      [
+       "directions[1]",
+       "半小时磨出一百块，你这嘴比我会修车。"
+      ],
+      [
+       "directions[2]",
+       "谈成了我就放心了，本来还想着周末陪你跑一趟。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\n  \"response\": {\n    \"recommended\": \"行啊，半小时把两百块磨成一百。去洗吧，明天再说。\",\n    \"bad_boy\": \"房东这是碰上对手了。去洗澡，别在浴室里复盘战绩。\",\n    \"playful\": \"磨了半小时就赢了，这战斗力下次拉练能用上。去吧。\",\n    \"warm\": \"谈下来就好。洗个澡放松下，今天够累了。\"\n  },\n  \"directions\": [\n    \"一年一百，比半年三百划算多了，签的时候把涨幅那条看仔细。\",\n    \"半小时磨出一百块，你这嘴比我会修车。\",\n    \"谈成了我就放心了，本来还想着周末陪你跑一趟。\",\n    null\n  ],\n  \"analysis\": {\n    \"topic_status\": \"same\",\n    \"topic_label\": \"续租谈判结果\",\n    \"scene_facts\": [\n      {\"text\": \"她今天跟房东谈成续租一年只涨一百\", \"source_ids\": [\"m0\"]},\n      {\"text\": \"她磨了半小时，房东最后让步\", \"source_ids\": [\"m1\"]},\n      {\"text\": \"她今晚21:05说要去洗澡，明天再聊\", \"source_ids\": [\"m2\"]}\n    ],\n    \"ongoing\": [\n      {\n        \"item\": \"她续租谈判\",\n        \"status\": \"已完成\",\n        \"state\": \"她今天自己谈成，房东同意一年只涨一百\"\n      }\n    ]\n  }\n}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "5f47ae093ad78d7d263ac6c80b9caeecf9a64be9a7634bdcafd6dcb9d6ce283a",
+     "run_id": "iso_20261028_193213_5cee79",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7499,
+      "completion": 355,
+      "cache": null
+     },
+     "latency_ms": 15049,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r3": {
+     "present": true,
+     "primary": "一年只涨一百，这半小时磨得值。去洗吧，明天再讲。",
+     "backups": [
+      [
+       "bad_boy",
+       "把房东磨到没辙，这才像你。洗澡去吧，明天接着听你说。"
+      ],
+      [
+       "playful",
+       "半小时把房东磨到没辙，这战绩值得记一笔。去洗吧，明天再听你细讲。"
+      ],
+      [
+       "warm",
+       "谈成了就好，这半小时没白耗。快去洗，明天再说。"
+      ],
+      [
+       "directions[0]",
+       "一年涨一百，这个结果比我预想的好。"
+      ],
+      [
+       "directions[1]",
+       "明天讲的时候，我听听你怎么把他说服的。"
+      ],
+      [
+       "directions[2]",
+       "这事你自己扛下来了，挺厉害的。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\n  \"response\": {\n    \"recommended\": \"一年只涨一百，这半小时磨得值。去洗吧，明天再讲。\",\n    \"bad_boy\": \"把房东磨到没辙，这才像你。洗澡去吧，明天接着听你说。\",\n    \"playful\": \"半小时把房东磨到没辙，这战绩值得记一笔。去洗吧，明天再听你细讲。\",\n    \"warm\": \"谈成了就好，这半小时没白耗。快去洗，明天再说。\"\n  },\n  \"directions\": [\n    \"一年涨一百，这个结果比我预想的好。\",\n    \"明天讲的时候，我听听你怎么把他说服的。\",\n    \"这事你自己扛下来了，挺厉害的。\",\n    null\n  ],\n  \"analysis\": {\n    \"signal\": \"收尾\",\n    \"goal_category\": \"收线\",\n    \"action_taken\": \"收尾\",\n    \"anchor\": \"m0\",\n    \"hook\": {\"kind\": \"无\", \"text\": \"\"},\n    \"facts\": [\n      {\"text\": \"她谈成了：房东同意续租一年每月只涨一百\", \"subject\": \"HER\", \"relation\": \"租房续租\", \"quote\": \"谈成了 房东同意一年只涨一百\", \"src_ids\": [\"m0\"], \"certainty\": \"confirmed\", \"event_time\": \"2026-03-07\"},\n      {\"text\": \"她跟房东磨了半小时，房东最后让步\", \"subject\": \"HER\", \"relation\": \"租房续租谈判\", \"quote\": \"我磨了半小时 他最后没辙了 哈哈\", \"src_ids\": [\"m1\"], \"certainty\": \"confirmed\", \"event_time\": \"2026-03-07\"}\n    ],\n    \"tentatives\": [\n      {\"text\": \"她说明天再讲，先去洗澡\", \"quote\": \"不说了 明天再讲 我先去洗澡\", \"src_ids\": [\"m2\"]}\n    ],\n    \"updates\": [\n      {\"fact_id\": \"f_0009\", \"action\": \"correct\", \"new_text\": \"谈定续租一年每月只涨一百（原房东提出一年涨两百、半年涨三百）\", \"quote\": \"谈成了 房东同意一年只涨一百\", \"src_ids\": [\"m0\"]}\n    ]\n  }\n}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "5f47ae093ad78d7d263ac6c80b9caeecf9a64be9a7634bdcafd6dcb9d6ce283a",
+     "run_id": "iso_20261028_193212_5e5fb0",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 6667,
+      "completion": 503,
+      "cache": null
+     },
+     "latency_ms": 48061,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "D03_T04",
+   "episode": "D03",
+   "card_dims": [
+    "boundary",
+    "time_state",
+    "initiative"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "行，那就踏实了。早点睡，六点起可不是闹着玩的。",
+     "backups": [
+      [
+       "bad_boy",
+       "半小时磨下来，一年只涨一百，这波你赢。去睡吧，不占你时间了。"
+      ],
+      [
+       "playful",
+       "六点开门，那我明早跑完你才刚醒吧。睡吧。"
+      ],
+      [
+       "warm",
+       "签完就安心了。早点睡，明天顺顺当当的。"
+      ],
+      [
+       "directions[0]",
+       "合同签了，心里那块石头能放下了。"
+      ],
+      [
+       "directions[1]",
+       "一年只涨一百，那半小时没白磨。"
+      ],
+      [
+       "directions[2]",
+       "行，不聊了，早点睡。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"行，那就踏实了。早点睡，六点起可不是闹着玩的。\",\"bad_boy\":\"半小时磨下来，一年只涨一百，这波你赢。去睡吧，不占你时间了。\",\"playful\":\"六点开门，那我明早跑完你才刚醒吧。睡吧。\",\"warm\":\"签完就安心了。早点睡，明天顺顺当当的。\"},\"directions\":[\"合同签了，心里那块石头能放下了。\",\"一年只涨一百，那半小时没白磨。\",\"行，不聊了，早点睡。\",null],\"analysis\":{\"topic_status\":\"same\",\"topic_label\":\"续租合同签完\",\"scene_facts\":[{\"text\":\"她今天签了续租合同，租期一年，押金跟原来一样\",\"source_ids\":[\"m0\"]},{\"text\":\"她明天早上六点要去店里开门，手机要交前台，说先不聊了\",\"source_ids\":[\"m2\"]}],\"ongoing\":[{\"item\":\"3月续租合同\",\"status\":\"已完成\",\"state\":\"她今天签完，一年期，押金不变\"}]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "3bde9d799fe6d7535a6d505c6b64cdeebaedef7a5b36024f14f3f1b36c65d6bb",
+     "run_id": "iso_20261028_193213_5cee79",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7488,
+      "completion": 278,
+      "cache": null
+     },
+     "latency_ms": 81292,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r3": {
+     "present": true,
+     "primary": "签下来就好，押金还是老数、一年也定住了，这趟没白磨。六点开门，早点睡吧。",
+     "backups": [
+      [
+       "bad_boy",
+       "押金没动、一年定住，这局你赢了。六点要开门的人，现在该睡了。"
+      ],
+      [
+       "playful",
+       "一年到手押金还保住，这波不亏。六点的班不等人，去吧。"
+      ],
+      [
+       "warm",
+       "合同签了，押金还是老数，这几天你扛下来的都值了。明天六点开门，早点睡，别硬撑。"
+      ],
+      [
+       "directions[0]",
+       "押金这块能守住，比涨租那点还难得。"
+      ],
+      [
+       "directions[1]",
+       "签完了，心里那块石头总算落地了。"
+      ],
+      [
+       "directions[2]",
+       "这事落地了，我也松口气。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"签下来就好，押金还是老数、一年也定住了，这趟没白磨。六点开门，早点睡吧。\",\"bad_boy\":\"押金没动、一年定住，这局你赢了。六点要开门的人，现在该睡了。\",\"playful\":\"一年到手押金还保住，这波不亏。六点的班不等人，去吧。\",\"warm\":\"合同签了，押金还是老数，这几天你扛下来的都值了。明天六点开门，早点睡，别硬撑。\"},\"directions\":[\"押金这块能守住，比涨租那点还难得。\",\"签完了，心里那块石头总算落地了。\",\"这事落地了，我也松口气。\",null],\"analysis\":{\"signal\":\"收尾\",\"goal_category\":\"收线\",\"action_taken\":\"收尾\",\"anchor\":\"m0\",\"hook\":{\"kind\":\"无\",\"text\":\"\"},\"facts\":[{\"text\":\"她续租合同签了，一年，押金还是原来的数\",\"subject\":\"HER\",\"relation\":\"租房\",\"quote\":\"合同签了 一年 押金还是老数\",\"src_ids\":[\"m0\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-03-08\"},{\"text\":\"她明天六点要去店里开门，手机要交前台，让别等她\",\"subject\":\"HER\",\"relation\":\"工作安排\",\"quote\":\"我明天六点要去店里开门 手机得交前台 不聊了 别等我\",\"src_ids\":[\"m2\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-03-09 06:00\"}],\"tentatives\":[],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "3bde9d799fe6d7535a6d505c6b64cdeebaedef7a5b36024f14f3f1b36c65d6bb",
+     "run_id": "iso_20261028_193212_5e5fb0",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 6628,
+      "completion": 389,
+      "cache": null
+     },
+     "latency_ms": 35892,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "D03_T05",
+   "episode": "D03",
+   "card_dims": [
+    "emotion_relation",
+    "boundary",
+    "factuality"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "他自己改的还当众训你，这气受得冤。先睡吧，明天再说。",
+     "backups": [
+      [
+       "bad_boy",
+       "背锅还得当场憋着，够窝火的。睡吧，明天要还想骂，我听着。"
+      ],
+      [
+       "playful",
+       "店长这操作挺溜，改完还能倒打一耙。睡吧，明天开门别带着这股气。"
+      ],
+      [
+       "warm",
+       "被当众说那一下肯定不好受。先睡，明天想吐槽随时找我。"
+      ],
+      [
+       "directions[0]",
+       "明明他改的还训你，这委屈只能自己憋着"
+      ],
+      [
+       "directions[1]",
+       "这种事最气人的是当着人，连解释都像顶嘴"
+      ],
+      [
+       "directions[2]",
+       "你自己心里清楚不是你的错就行"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\n  \"response\": {\n    \"recommended\": \"他自己改的还当众训你，这气受得冤。先睡吧，明天再说。\",\n    \"bad_boy\": \"背锅还得当场憋着，够窝火的。睡吧，明天要还想骂，我听着。\",\n    \"playful\": \"店长这操作挺溜，改完还能倒打一耙。睡吧，明天开门别带着这股气。\",\n    \"warm\": \"被当众说那一下肯定不好受。先睡，明天想吐槽随时找我。\"\n  },\n  \"directions\": [\n    \"明明他改的还训你，这委屈只能自己憋着\",\n    \"这种事最气人的是当着人，连解释都像顶嘴\",\n    \"你自己心里清楚不是你的错就行\",\n    null\n  ],\n  \"analysis\": {\n    \"topic_status\": \"new\",\n    \"topic_label\": \"被店长当众训斥\",\n    \"scene_facts\": [\n      {\"text\": \"她今天被店长当着人训，说她排班排错\", \"source_ids\": [\"m0\"]},\n      {\"text\": \"她说排班是店长自己改的\", \"source_ids\": [\"m1\"]},\n      {\"text\": \"她今天21:50说要先睡了\", \"source_ids\": [\"m2\"]}\n    ],\n    \"ongoing\": [\n      {\"item\": \"续租合同\", \"status\": \"已完成\", \"state\": \"本轮未提及\"}\n    ]\n  }\n}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "60be946c3ceaffc69f9b8ba894f53db7cc04d0b383887fdb48f99ac0fb43c660",
+     "run_id": "iso_20261028_193213_5cee79",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7495,
+      "completion": 331,
+      "cache": null
+     },
+     "latency_ms": 56451,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r3": {
+     "present": true,
+     "primary": "当着人训你，这口气换谁都咽不下，何况还是他自己改的，锅倒扣你头上。睡吧，别带着这事熬。",
+     "backups": [
+      [
+       "bad_boy",
+       "他改的还赖你，这店长也就这点本事。睡吧，这事心里谁对谁错，你自己最清楚。"
+      ],
+      [
+       "playful",
+       "当着人训人，他这管理水平也就到这儿了。先去睡，别把这口气带进梦里。"
+      ],
+      [
+       "warm",
+       "当着那么多人训你，太不给人留面子了，本来又不是你的错。别自己往心里压，睡吧。"
+      ],
+      [
+       "directions[2]",
+       "当着人训你，本来就不是你的错，别自己往心里压。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"当着人训你，这口气换谁都咽不下，何况还是他自己改的，锅倒扣你头上。睡吧，别带着这事熬。\",\"bad_boy\":\"他改的还赖你，这店长也就这点本事。睡吧，这事心里谁对谁错，你自己最清楚。\",\"playful\":\"当着人训人，他这管理水平也就到这儿了。先去睡，别把这口气带进梦里。\",\"warm\":\"当着那么多人训你，太不给人留面子了，本来又不是你的错。别自己往心里压，睡吧。\"},\"directions\":[null,null,\"当着人训你，本来就不是你的错，别自己往心里压。\",null],\"analysis\":{\"signal\":\"收尾\",\"goal_category\":\"暂缓\",\"action_taken\":\"收尾\",\"anchor\":\"m0\",\"hook\":{\"kind\":\"无\",\"text\":\"\"},\"facts\":[{\"text\":\"她今天被店长当着人训了一顿，说她排班排错了\",\"subject\":\"HER\",\"relation\":\"工作\",\"quote\":\"今天被店长当着人训了一顿 说我排班排错了\",\"src_ids\":[\"m0\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-03-09\"},{\"text\":\"她说排班是店长自己改的\",\"subject\":\"HER\",\"relation\":\"工作\",\"quote\":\"明明是他自己改的 我真是服了\",\"src_ids\":[\"m1\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-03-09\"},{\"text\":\"她说先睡了，不聊了\",\"subject\":\"HER\",\"relation\":\"作息\",\"quote\":\"不说了 先睡了\",\"src_ids\":[\"m2\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-03-09 21:49\"}],\"tentatives\":[],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "60be946c3ceaffc69f9b8ba894f53db7cc04d0b383887fdb48f99ac0fb43c660",
+     "run_id": "iso_20261028_193212_5e5fb0",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 6652,
+      "completion": 419,
+      "cache": null
+     },
+     "latency_ms": 45520,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  },
+  {
+   "case_id": "D03_T06",
+   "episode": "D03",
+   "card_dims": [
+    "boundary",
+    "time_state",
+    "initiative"
+   ],
+   "arms": {
+    "reference_product_v1": {
+     "present": true,
+     "primary": "积液这事不给你讲情面，先别跑是对的。名额等结果出来再说，先睡。",
+     "backups": [
+      [
+       "bad_boy",
+       "名额能留，膝盖不能换。这会儿先睡，别惦记了。"
+      ],
+      [
+       "playful",
+       "积液了还惦记名额，你这跑瘾比我想的大。睡吧。"
+      ],
+      [
+       "warm",
+       "知道了。先睡吧，结果出来跟我说一声。"
+      ],
+      [
+       "directions[1]",
+       "积液消下去不难，难的是刚好点就忍不住加量。"
+      ],
+      [
+       "directions[2]",
+       "我膝盖也是这么落下的，一开始都没当回事。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\n  \"response\": {\n    \"recommended\": \"积液这事不给你讲情面，先别跑是对的。名额等结果出来再说，先睡。\",\n    \"bad_boy\": \"名额能留，膝盖不能换。这会儿先睡，别惦记了。\",\n    \"playful\": \"积液了还惦记名额，你这跑瘾比我想的大。睡吧。\",\n    \"warm\": \"知道了。先睡吧，结果出来跟我说一声。\"\n  },\n  \"directions\": [\n    null,\n    \"积液消下去不难，难的是刚好点就忍不住加量。\",\n    \"我膝盖也是这么落下的，一开始都没当回事。\",\n    null\n  ],\n  \"analysis\": {\n    \"topic_status\": \"new\",\n    \"topic_label\": \"看膝盖查出积液\",\n    \"scene_facts\": [\n      {\"text\": \"她今天去看了膝盖，医生说有积液，让先别跑\", \"source_ids\": [\"m0\"]},\n      {\"text\": \"她想留着城市半马的名额，说结果出来再跟我说\", \"source_ids\": [\"m1\"]},\n      {\"text\": \"她说困了，先结束这次聊天\", \"source_ids\": [\"m2\"]}\n    ],\n    \"ongoing\": [\n      {\n        \"item\": \"城市半马报名与膝盖伤势\",\n        \"status\": \"新出现\",\n        \"state\": \"她今天看膝盖查出积液，医生让先别跑，名额仍想保留，等结果\"\n      }\n    ]\n  }\n}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "2db3807e83d6c79882cd584648f5e3133e1b044a420e773c6a1962ab3c418edf",
+     "run_id": "iso_20261028_193213_5cee79",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 7429,
+      "completion": 357,
+      "cache": null
+     },
+     "latency_ms": 79847,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    },
+    "action_policy_r3": {
+     "present": true,
+     "primary": "膝盖的事我记下了，积液先养着，别硬跑。半马名额留着，结果出来你说，我听着。困了就去睡。",
+     "backups": [
+      [
+       "bad_boy",
+       "先停跑是对的，名额留着不亏，膝盖只有一个。去睡吧，别熬。"
+      ],
+      [
+       "playful",
+       "那就先让膝盖歇着，名额替你占着位置。困了就睡，别撑着。"
+      ],
+      [
+       "warm",
+       "看到积液两个字，心里有点沉。别急着跑，膝盖比名额要紧。结果出来再讲，你先睡。"
+      ],
+      [
+       "directions[2]",
+       "膝盖的事你愿意跟我说，我挺在意的。先睡吧，别的明天再说。"
+      ]
+     ],
+     "slot_parse": "ok",
+     "raw_text": "{\"response\":{\"recommended\":\"膝盖的事我记下了，积液先养着，别硬跑。半马名额留着，结果出来你说，我听着。困了就去睡。\",\"bad_boy\":\"先停跑是对的，名额留着不亏，膝盖只有一个。去睡吧，别熬。\",\"playful\":\"那就先让膝盖歇着，名额替你占着位置。困了就睡，别撑着。\",\"warm\":\"看到积液两个字，心里有点沉。别急着跑，膝盖比名额要紧。结果出来再讲，你先睡。\"},\"directions\":[null,null,\"膝盖的事你愿意跟我说，我挺在意的。先睡吧，别的明天再说。\",null],\"analysis\":{\"signal\":\"收尾\",\"goal_category\":\"暂缓\",\"action_taken\":\"收尾\",\"anchor\":\"m0\",\"hook\":{\"kind\":\"无\",\"text\":\"\"},\"facts\":[{\"text\":\"她今天去看了膝盖，医生说有点积液，让先别跑\",\"subject\":\"HER\",\"relation\":\"身体状况\",\"quote\":\"今天去看了膝盖 医生说有点积液 让先别跑\",\"src_ids\":[\"m0\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-03-10\"},{\"text\":\"她说困了，先这样\",\"subject\":\"HER\",\"relation\":\"当下状态\",\"quote\":\"困了 先这样\",\"src_ids\":[\"m2\"],\"certainty\":\"confirmed\",\"event_time\":\"2026-03-10\"}],\"tentatives\":[{\"text\":\"半马名额她想留着，结果出来再说\",\"quote\":\"半马名额还想留着 结果出来我再跟你说\",\"src_ids\":[\"m1\"]}],\"updates\":[]}}",
+     "raw_reply_sha256": null,
+     "case_input_sha256": "2db3807e83d6c79882cd584648f5e3133e1b044a420e773c6a1962ab3c418edf",
+     "run_id": "iso_20261028_193212_5e5fb0",
+     "program": {
+      "score10": 10.0,
+      "veto": null,
+      "failed_checks": []
+     },
+     "tokens": {
+      "prompt": 6835,
+      "completion": 395,
+      "cache": null
+     },
+     "latency_ms": 37673,
+     "scores": {
+      "goal": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "factuality": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "attribution": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "time_state": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "boundary": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "memory_use": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "interaction": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "initiative": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      },
+      "emotion_relation": {
+       "score": "",
+       "evidence": "",
+       "note": ""
+      }
+     },
+     "severe_error": "",
+     "worker_notes": ""
+    }
+   }
+  }
+ ]
+}

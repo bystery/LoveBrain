@@ -1,0 +1,1031 @@
+{
+ "controls_version": "controls_v1_20261109",
+ "guards_version": "semantic_guards_v1",
+ "stats": {
+  "statement_affirm": {
+   "n": 15,
+   "ok": 15
+  },
+  "negation": {
+   "n": 15,
+   "ok": 15
+  },
+  "question": {
+   "n": 15,
+   "ok": 15
+  },
+  "conditional": {
+   "n": 15,
+   "ok": 15
+  },
+  "quote": {
+   "n": 15,
+   "ok": 15
+  },
+  "past_mention": {
+   "n": 15,
+   "ok": 15
+  },
+  "required_hit": {
+   "n": 5,
+   "ok": 5
+  },
+  "required_miss": {
+   "n": 5,
+   "ok": 5
+  },
+  "rhetorical": {
+   "n": 5,
+   "ok": 5
+  }
+ },
+ "n_total": 105,
+ "accuracy": 1.0,
+ "details": [
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "statement_affirm",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "negation",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "question",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "conditional",
+   "expect": "guard",
+   "verdict_kinds": [
+    "hypothetical_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "quote",
+   "expect": "guard",
+   "verdict_kinds": [
+    "quoted_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "past_mention",
+   "expect": "guard",
+   "verdict_kinds": [
+    "past_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "required_hit",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "required_miss",
+   "expect": "none",
+   "verdict_kinds": [
+    "none"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "required_hit",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "required_miss",
+   "expect": "none",
+   "verdict_kinds": [
+    "none"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "required_hit",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "required_miss",
+   "expect": "none",
+   "verdict_kinds": [
+    "none"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "required_hit",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "required_miss",
+   "expect": "none",
+   "verdict_kinds": [
+    "none"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "required_hit",
+   "expect": "affirm",
+   "verdict_kinds": [
+    "affirm"
+   ],
+   "ok": [
+    "affirm"
+   ],
+   "note": null
+  },
+  {
+   "type": "required_miss",
+   "expect": "none",
+   "verdict_kinds": [
+    "none"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "rhetorical",
+   "expect": "guard",
+   "verdict_kinds": [
+    "negated_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "rhetorical",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "rhetorical",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "rhetorical",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  },
+  {
+   "type": "rhetorical",
+   "expect": "guard",
+   "verdict_kinds": [
+    "question_mention"
+   ],
+   "ok": true,
+   "note": null
+  }
+ ]
+}

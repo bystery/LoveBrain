@@ -1,0 +1,29 @@
+{
+  "status": "PARTIAL_SIGNOFF_LIVE_HOLD_A_B_C",
+  "existing_checks_passed": 77,
+  "existing_checks_failed": 0,
+  "source_stable": true,
+  "real_model_calls": 0,
+  "files": [
+    {
+      "name": "REVIEW.md",
+      "sha256": "4aba889980c0776b8718ac5a02963a4357754055ecdec23f3d607d0573e4293b",
+      "bytes": 9711
+    },
+    {
+      "name": "CHECKS.json",
+      "sha256": "0ffd40b6ead016d777562dc06135cc3e82bedbf48771c7908dd7ebc1b790ebdc",
+      "bytes": 25709
+    },
+    {
+      "name": "verify.py",
+      "sha256": "78f699e77d169a319cbd6dbc73cfc70c54b8b48b177f06443026785c21289d56",
+      "bytes": 9159
+    }
+  ],
+  "open_groups": [
+    "same-path interleaved execution and frozen-plan validation",
+    "annotation context and primary-slot provenance",
+    "Unicode-unit final-context budget"
+  ]
+}

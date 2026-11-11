@@ -1,0 +1,24 @@
+{
+  "kind": "paired_followup_not_mixed_with_gemini",
+  "rater_preference": "qwen3.8-flash after representative-input screen; full paired schema/controls still require check",
+  "max_per_model_concurrency": 3,
+  "primary_pairs": 96,
+  "generation_slots_retained": 192,
+  "controls": 12,
+  "swapped_pair_ids": [
+    "FP030",
+    "FP072",
+    "FP047",
+    "FP012",
+    "FP001",
+    "FP044",
+    "FP024",
+    "FP022",
+    "FP076",
+    "FP002",
+    "FP069",
+    "FP014"
+  ],
+  "planned_requests": 120,
+  "policy": "New paired study, no regeneration of harness outputs, no failed old judge attempt retried. Keep raw/consume/task/semantic measures distinct. No universal model mixing in one mean."
+}

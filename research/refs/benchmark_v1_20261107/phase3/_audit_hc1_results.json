@@ -1,0 +1,1006 @@
+{
+  "per_story": {
+    "E401": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "凌霜晚",
+        "me": "湛砚洲",
+        "turn_count": 12,
+        "clock_range": "2026-11-09 19:36 -> 2026-11-15 21:37",
+        "may_decline_turns": [
+          5,
+          8,
+          12
+        ],
+        "intent_turns": [
+          4,
+          11
+        ],
+        "note_turns": [
+          3,
+          9
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "阳台多肉养护",
+        "topic": "T01",
+        "short_refs": 4,
+        "long_refs": 3
+      }
+    },
+    "E402": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "蔚芦月",
+        "me": "阚浔野",
+        "turn_count": 12,
+        "clock_range": "2026-11-14 08:37 -> 2026-11-22 11:07",
+        "may_decline_turns": [
+          6,
+          12
+        ],
+        "intent_turns": [
+          5,
+          10
+        ],
+        "note_turns": [
+          3,
+          9
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "菜场周末买菜",
+        "topic": "T01",
+        "short_refs": 5,
+        "long_refs": 3
+      }
+    },
+    "E403": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "满苓溪",
+        "me": "经洄浦",
+        "turn_count": 12,
+        "clock_range": "2026-11-16 19:27 -> 2026-11-22 19:48",
+        "may_decline_turns": [
+          5,
+          10
+        ],
+        "intent_turns": [
+          6,
+          11
+        ],
+        "note_turns": [
+          4,
+          9
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "小区流浪猫投喂",
+        "topic": "T01",
+        "short_refs": 6,
+        "long_refs": 4
+      }
+    },
+    "E404": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "弓莼岸",
+        "me": "逄连浦",
+        "turn_count": 12,
+        "clock_range": "2026-11-09 12:38 -> 2026-11-15 20:38",
+        "may_decline_turns": [
+          4,
+          12
+        ],
+        "intent_turns": [
+          5,
+          10
+        ],
+        "note_turns": [
+          3,
+          9
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "快递柜取件退换货",
+        "topic": "T01",
+        "short_refs": 7,
+        "long_refs": 1
+      }
+    },
+    "E405": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "蒯庭芳",
+        "me": "相临川",
+        "turn_count": 12,
+        "clock_range": "2026-11-09 20:38 -> 2026-11-17 20:08",
+        "may_decline_turns": [
+          5,
+          10,
+          12
+        ],
+        "intent_turns": [
+          6,
+          12
+        ],
+        "note_turns": [
+          3,
+          9
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "夜跑受伤休养",
+        "topic": "T01",
+        "short_refs": 4,
+        "long_refs": 4
+      }
+    },
+    "E406": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "查知雪",
+        "me": "逯云开",
+        "turn_count": 12,
+        "clock_range": "2026-11-09 18:28 -> 2026-11-11 22:38",
+        "may_decline_turns": [
+          5,
+          12
+        ],
+        "intent_turns": [
+          8,
+          11
+        ],
+        "note_turns": [
+          3,
+          11
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "雨天下班共伞",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 6,
+        "long_refs": 2
+      }
+    },
+    "E407": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "桓映蓉",
+        "me": "况云舟",
+        "turn_count": 12,
+        "clock_range": "2026-11-09 23:12 -> 2026-11-14 00:18",
+        "may_decline_turns": [
+          5,
+          12
+        ],
+        "intent_turns": [
+          8,
+          11
+        ],
+        "note_turns": [
+          3
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "深夜线上听歌",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 9,
+        "long_refs": 0
+      }
+    },
+    "E408": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "麴若云",
+        "me": "堵其琛",
+        "turn_count": 12,
+        "clock_range": "2026-11-09 19:08 -> 2026-11-13 22:08",
+        "may_decline_turns": [
+          5,
+          12
+        ],
+        "intent_turns": [
+          8,
+          11
+        ],
+        "note_turns": [
+          3
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "合租厨房做饭",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 10,
+        "long_refs": 0
+      }
+    },
+    "E409": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "冉清欢",
+        "me": "宰冬岭",
+        "turn_count": 12,
+        "clock_range": "2026-11-11 19:38 -> 2026-11-13 22:08",
+        "may_decline_turns": [
+          5,
+          12
+        ],
+        "intent_turns": [
+          8,
+          11
+        ],
+        "note_turns": [
+          3
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "健身房力量训练",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 10,
+        "long_refs": 0
+      }
+    },
+    "E410": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "灌慕晴",
+        "me": "厍前子",
+        "turn_count": 12,
+        "clock_range": "2026-11-09 21:38 -> 2026-11-10 23:23",
+        "may_decline_turns": [
+          5,
+          12
+        ],
+        "intent_turns": [
+          8,
+          11
+        ],
+        "note_turns": [
+          3
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "深夜加班送宵夜",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 11,
+        "long_refs": 0
+      }
+    },
+    "E411": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺短距(d=1): 有0个",
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "郁念慈",
+        "me": "越千山",
+        "turn_count": 12,
+        "clock_range": "2026-11-07 14:15 -> 2026-11-14 21:48",
+        "may_decline_turns": [
+          3,
+          12
+        ],
+        "intent_turns": [
+          4,
+          10,
+          11
+        ],
+        "note_turns": [
+          2,
+          7
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "社区烘焙兴趣班",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 0,
+        "long_refs": 0
+      }
+    },
+    "E412": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺短距(d=1): 有0个",
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "桂微澜",
+        "me": "虞叙之",
+        "turn_count": 12,
+        "clock_range": "2026-11-07 09:38 -> 2026-11-14 20:08",
+        "may_decline_turns": [
+          3,
+          12
+        ],
+        "intent_turns": [
+          4,
+          9,
+          10
+        ],
+        "note_turns": [
+          7
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "城南植物市集与阳台多肉",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 0,
+        "long_refs": 0
+      }
+    },
+    "E413": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺短距(d=1): 有0个",
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "屠静秋",
+        "me": "麋叙白",
+        "turn_count": 12,
+        "clock_range": "2026-11-07 19:38 -> 2026-11-14 22:38",
+        "may_decline_turns": [
+          3,
+          12
+        ],
+        "intent_turns": [
+          4,
+          9,
+          10
+        ],
+        "note_turns": [
+          2
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "沿江夜跑与跑后便利店",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 0,
+        "long_refs": 0
+      }
+    },
+    "E414": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺短距(d=1): 有0个",
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "桑语冰",
+        "me": "濮台生",
+        "turn_count": 12,
+        "clock_range": "2026-11-07 14:28 -> 2026-11-14 21:08",
+        "may_decline_turns": [
+          3,
+          12
+        ],
+        "intent_turns": [
+          4,
+          7,
+          10
+        ],
+        "note_turns": [
+          6
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "文庙旧书摊与旧式茶馆",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 0,
+        "long_refs": 0
+      }
+    },
+    "E415": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺短距(d=1): 有0个",
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "蔺以宁",
+        "me": "燕在野",
+        "turn_count": 12,
+        "clock_range": "2026-11-07 08:22 -> 2026-11-08 18:38",
+        "may_decline_turns": [
+          3,
+          12
+        ],
+        "intent_turns": [
+          9,
+          11
+        ],
+        "note_turns": [
+          5
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "高铁出差邻座与出站口",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 0,
+        "long_refs": 0
+      }
+    },
+    "E416": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺短距(d=1): 有0个",
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "储晚舟",
+        "me": "舒子川",
+        "turn_count": 12,
+        "clock_range": "2026-11-07 15:08 -> 2026-11-14 21:38",
+        "may_decline_turns": [
+          3,
+          12
+        ],
+        "intent_turns": [
+          4,
+          9,
+          10
+        ],
+        "note_turns": [
+          2
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "河边外拍取景与小馆子",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 0,
+        "long_refs": 0
+      }
+    },
+    "E417": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺短距(d=1): 有0个",
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "元如素",
+        "me": "车山关",
+        "turn_count": 12,
+        "clock_range": "2026-11-07 14:38 -> 2026-11-14 21:38",
+        "may_decline_turns": [
+          3,
+          12
+        ],
+        "intent_turns": [
+          4,
+          9,
+          10
+        ],
+        "note_turns": [
+          2
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "咖啡馆拼桌加班与面馆",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 0,
+        "long_refs": 0
+      }
+    },
+    "E418": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺短距(d=1): 有0个",
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "丰南乔",
+        "me": "邵山月",
+        "turn_count": 12,
+        "clock_range": "2026-11-07 07:38 -> 2026-11-14 12:08",
+        "may_decline_turns": [
+          3,
+          12
+        ],
+        "intent_turns": [
+          4,
+          9,
+          10
+        ],
+        "note_turns": [
+          2
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "早市买菜与早点铺",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 0,
+        "long_refs": 0
+      }
+    },
+    "E419": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺短距(d=1): 有0个",
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "鲍听竹",
+        "me": "甘岸闻",
+        "turn_count": 12,
+        "clock_range": "2026-11-07 14:08 -> 2026-11-14 21:08",
+        "may_decline_turns": [
+          3,
+          12
+        ],
+        "intent_turns": [
+          4,
+          9,
+          10
+        ],
+        "note_turns": [
+          2
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "社区琴房合奏与面包店",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 0,
+        "long_refs": 0
+      }
+    },
+    "E420": {
+      "pass": false,
+      "fails": [
+        "跨轮回指缺短距(d=1): 有0个",
+        "跨轮回指缺长距(d>=4): 有0个"
+      ],
+      "checks": {
+        "her": "戎望舒",
+        "me": "祖知行",
+        "turn_count": 12,
+        "clock_range": "2026-11-07 10:08 -> 2026-11-14 16:38",
+        "may_decline_turns": [
+          3,
+          12
+        ],
+        "intent_turns": [
+          4,
+          9,
+          10
+        ],
+        "note_turns": [
+          2
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "裁缝铺量体裁衣与茶馆",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 0,
+        "long_refs": 0
+      }
+    },
+    "E421": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "巫月明",
+        "me": "乌思齐",
+        "turn_count": 12,
+        "clock_range": "2026-11-14 13:30 -> 2026-11-14 22:13",
+        "may_decline_turns": [
+          4,
+          10
+        ],
+        "intent_turns": [
+          6,
+          9
+        ],
+        "note_turns": [
+          3,
+          8
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "二手黑胶唱片店淘碟",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 4,
+        "long_refs": 2
+      }
+    },
+    "E422": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "焦星河",
+        "me": "巴见山",
+        "turn_count": 12,
+        "clock_range": "2026-11-15 14:15 -> 2026-11-15 22:19",
+        "may_decline_turns": [
+          4,
+          10
+        ],
+        "intent_turns": [
+          6,
+          9
+        ],
+        "note_turns": [
+          3,
+          8
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "攀岩馆搭档较劲",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 4,
+        "long_refs": 2
+      }
+    },
+    "E423": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "牧清浅",
+        "me": "山望岳",
+        "turn_count": 12,
+        "clock_range": "2026-11-17 18:50 -> 2026-11-17 23:39",
+        "may_decline_turns": [
+          4,
+          10
+        ],
+        "intent_turns": [
+          6,
+          9
+        ],
+        "note_turns": [
+          3,
+          8
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "社区夜校书法课同桌",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 4,
+        "long_refs": 2
+      }
+    },
+    "E424": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "谷疏影",
+        "me": "夔听涛",
+        "turn_count": 12,
+        "clock_range": "2026-11-18 22:12 -> 2026-11-19 02:32",
+        "may_decline_turns": [
+          4,
+          10
+        ],
+        "intent_turns": [
+          6,
+          9
+        ],
+        "note_turns": [
+          3,
+          8
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "24h便利店夜班守店",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 4,
+        "long_refs": 2
+      }
+    },
+    "E425": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "鄂暗香",
+        "me": "索观澜",
+        "turn_count": 12,
+        "clock_range": "2026-11-19 22:12 -> 2026-11-20 02:32",
+        "may_decline_turns": [
+          4,
+          10
+        ],
+        "intent_turns": [
+          6,
+          9
+        ],
+        "note_turns": [
+          3,
+          8
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "合租屋阳台深夜晾衣",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 4,
+        "long_refs": 2
+      }
+    },
+    "E426": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "咸初雪",
+        "me": "籍临风",
+        "turn_count": 12,
+        "clock_range": "2026-11-21 19:15 -> 2026-11-22 00:52",
+        "may_decline_turns": [
+          4,
+          10
+        ],
+        "intent_turns": [
+          6,
+          9
+        ],
+        "note_turns": [
+          3,
+          8
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "天文台公众开放夜观星",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 4,
+        "long_refs": 2
+      }
+    },
+    "E427": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "赖未央",
+        "me": "卓对雨",
+        "turn_count": 12,
+        "clock_range": "2026-11-22 13:45 -> 2026-11-22 18:17",
+        "may_decline_turns": [
+          4,
+          10
+        ],
+        "intent_turns": [
+          6,
+          9
+        ],
+        "note_turns": [
+          3,
+          8
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "公司团建密室逃脱分组",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 4,
+        "long_refs": 2
+      }
+    },
+    "E428": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "蒙长安",
+        "me": "池迎霜",
+        "turn_count": 12,
+        "clock_range": "2026-11-23 20:15 -> 2026-11-24 01:17",
+        "may_decline_turns": [
+          4,
+          10
+        ],
+        "intent_turns": [
+          6,
+          9
+        ],
+        "note_turns": [
+          3,
+          8
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "长途夜班卧铺大巴邻座",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 4,
+        "long_refs": 2
+      }
+    },
+    "E429": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "乔思远",
+        "me": "阴送秋",
+        "turn_count": 12,
+        "clock_range": "2026-11-24 07:15 -> 2026-11-24 11:17",
+        "may_decline_turns": [
+          4,
+          10
+        ],
+        "intent_turns": [
+          6,
+          9
+        ],
+        "note_turns": [
+          3,
+          8
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "社区早市菜市场拼单",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 4,
+        "long_refs": 2
+      }
+    },
+    "E430": {
+      "pass": true,
+      "fails": [],
+      "checks": {
+        "her": "胥怀瑾",
+        "me": "苍接冬",
+        "turn_count": 12,
+        "clock_range": "2026-11-28 13:45 -> 2026-11-28 18:17",
+        "may_decline_turns": [
+          4,
+          10
+        ],
+        "intent_turns": [
+          6,
+          9
+        ],
+        "note_turns": [
+          3,
+          8
+        ],
+        "forbidden_kw": [],
+        "quote_fails": 0,
+        "req_order_fails": 0,
+        "runner_match": true,
+        "audit_sections": 8,
+        "domain": "周末citywalk胶片约拍",
+        "topic": "T02",
+        "t02_gate": "present",
+        "short_refs": 4,
+        "long_refs": 2
+      }
+    }
+  },
+  "cross_story": {
+    "dup_domains": {},
+    "name_conflicts": [],
+    "her_dup": {},
+    "me_dup": {}
+  },
+  "summary": {
+    "total": 30,
+    "pass": 16,
+    "fail": 14
+  }
+}

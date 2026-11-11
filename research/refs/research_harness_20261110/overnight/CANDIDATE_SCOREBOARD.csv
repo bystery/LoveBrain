@@ -1,0 +1,29 @@
+candidate_id,hypothesis_id,mechanism_class,smoke_severe_w5,smoke_severe_all,tokens_per_pos,e2e_p50_ms,escalation_rate,status,verdict,next_action
+DIRECT(baseline),-,single_call,5/14,_,1420,36500(跨批),0,baseline,参考基线,-
+COT(baseline),-,single_call+think,5/14,_,1430,26233(跨批),0,baseline,参考基线,-
+CURRENT(冠军),-,full_harness,4/14,_,4246,136603(跨批),0,baseline,参考基线(不默认继承),-
+rh_b04_anchored_layout,RH-B-04,assembly_layout,4/14,4/24,1345,20213,0,live_smoke_done,EXPAND,60位扩展
+rh_b06_tiny_cascade,RH-B-06,conditional_compute,2/14(盲答假象),2/24(盲答假象),1302,26622,0.458,live_smoke_done,REWORK(盲答Bug),由b06b重验
+rh_b09_extractive_slim,RH-B-09,context_selection,4/14,4/24,1289,16693,0,live_smoke_done,EXPAND(氛围损失待人读),60位扩展
+rh_b06b_tiny_cascade_v2,RH-B-06,conditional_compute,4/14,4/24,1631,23461,0.458,live_smoke_done,撞墙(ELIMINATE该路线),强制外部研究后从头重设计;盲答Bug已修但门失效
+rh_b11a_stable_prefix,RH-B-11,cache_layout,_,质量等价(同内容),1345,17982(12位p50),0,live_done(12位),UNCERTAIN(偏淘汰),降级为装配卫生规范
+rh_b11b_variable_first,RH-B-11,cache_layout(对照),_,质量等价,1345,_,0,live_done(12位),对照臂,完成使命
+# 2026-11-11 深夜更正: severe 通道 10/10 误报(cancel-affirm 守卫打正确确认),上表 severe 列修复前一律作废;质量证据以 FAILURE_ANALYSIS.md 五维评级为准(b04 4.68 / b09 4.33 / b06 2.29)
+# 新假设 RH-B-12..17 已入注册表(20 篇新论文,3 精读);离线重放: 依赖差集门升级率 8% vs 现行 45.8%
+# ⚠️ 看门狗追溯(2026-11-11): tools/literature_watchdog_check.py 判定 10/10 LOOP 违规(0 合规, 连续违规=10)
+# 后果: b04/b09/b15/b15b/b17 判决降级 PROVISIONAL(须在合规 LOOP 复验); b12/b06b 判决 INVALIDATED; pipe_v1 质量未判定(B5 quota 失败)
+# 看门狗文件: refs/research_harness_20261110/phase1/LITERATURE_WATCHDOG.md
+# 机读判定: refs/research_harness_20261110/overnight/WATCHDOG_VERDICT.json
+rh_b04_anchored_layout,RH-B-04,assembly_layout,4/14,3/24(v2),1345,20213,0,live_smoke_done,PROVISIONAL(watchdog:LOOP-1/3/5违规),须合规LOOP复验
+rh_b09_extractive_slim,RH-B-09,context_selection,4/14,3/24(v2),1289,16693,0,live_smoke_done,PROVISIONAL(watchdog:LOOP-1/3/5违规),须合规LOOP复验
+rh_b15_multicast_validator,RH-B-15,multicast_verify,_,3/24(v2),1800,38100,0,live_smoke_done,PROVISIONAL(watchdog:LOOP-4/6违规),须合规LOOP复验
+rh_b15b_selector,RH-B-15,selector,_,3/24(v2),_,_,_,live_smoke_done,PROVISIONAL(watchdog:LOOP-4/6违规),须合规LOOP复验
+rh_b12_invalidation_track,RH-B-12,invalidation_track,_,3/24(v2),_,_,0,live_smoke_done,INVALIDATED(watchdog:LOOP-7违规),须合规LOOP复验
+rh_b17_memorycard,RH-B-17,state_card,_,2/24(v2),_,16300,0,live_smoke_done,PROVISIONAL(watchdog:LOOP-8灰色降级),须合规LOOP复验
+rh_pipe_v1,PIPE-V1,memory_pipeline,_,3/24(v2),1232,14500,0,live_smoke_done,PROVISIONAL+质量未判定(watchdog:LOOP-9灰色+B5失败),须合规LOOP复验+B5重跑
+rh_b18_refine_select,RH-B-18,self_refine+modex,_,3/24(v2),2659,_,0,live_smoke_done,REWORK(五维4.40 vs DIRECT 4.69 = -6.2%),Self-Refine单轮不够+ModeX bigram失效;撞墙→LOOP-11从头重设计
+rh_b19_strategy_driven,RH-B-19,strategy_driven,_,3/24(v2),3074,49000,0,live_smoke_done,REWORK(五维4.35=-7.2%,策略对但长度失控),撞墙→LOOP-12从头重设计
+rh_b20_fewshot,RH-B-20,fewshot_injection,_,3/24(v2),1401,16000,0,live_smoke_done,KEEP(五维4.62=-1.4%追平DIRECT,成本相同速度更快,长度控制),首次不退化候选;下一步组合b15池天花板
+rh_b21_fewshot_multicast,RH-B-21,fewshot+multicast,_,_,1936,44000,0,live_smoke_done,REWORK(五维4.66=-0.7% vs DIRECT,b20+0.8%;池天花板未实现;示例杀死多样性),撞墙→LOOP-14从头重设计
+rh_b22_persona_internalize,RH-B-22,persona_frame_shift,_,_,_,_,_,designing,文献驱动(Deep Persona/EchoChat/MemRole),单次调用+角色内化帧移+state字段
+rh_converge,RH-CONVERGE,assembly_port(6模块移植+3复用+b20),_,0/24,1090,41892,0,live_smoke_done,KEEP(五维4.67=-0.3% vs DIRECT但token省23%+Q2首次突破4.0),效率型候选;下一步:动态示例检索/角色内化帧移/量表校准

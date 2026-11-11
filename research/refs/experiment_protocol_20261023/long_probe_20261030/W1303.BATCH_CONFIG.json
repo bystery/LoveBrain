@@ -1,0 +1,35 @@
+{
+ "batch_id": "BATCH-W13-03-NEWDOM-20261102",
+ "arm_map": {
+  "parent": "action_policy_r9_slim",
+  "candidate": "window_expand_b"
+ },
+ "episode_order": [
+  {
+   "episode": "E131",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E122",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E140",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E117",
+   "arm_order": "candidate_first"
+  },
+  {
+   "episode": "E166",
+   "arm_order": "parent_first"
+  },
+  {
+   "episode": "E125",
+   "arm_order": "candidate_first"
+  }
+ ],
+ "cards_path": "benchmark/stories_v2/wave3/GRADING_CARDS_W13_03.json",
+ "recall_capable": false
+}

@@ -1,0 +1,335 @@
+{
+ "kind": "pair_scorecard_v1",
+ "label": "S2 真实对照（worker 亲读逐位）",
+ "batch_id": "AUTH-P08-S2-20261028-01",
+ "arms": {
+  "parent": "reference_product_v1",
+  "candidate": "action_policy_r1"
+ },
+ "role_identity": {
+  "parent": {
+   "harness": "reference_product_v1",
+   "harness_identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "authorization_id": "AUTH-P08-S2-20261028-01",
+   "batch_id": "AUTH-P08-S2-20261028-01"
+  },
+  "candidate": {
+   "harness": "action_policy_r1",
+   "harness_identity_sha256": "6e450c8f607b9c255171ec9c40c1c4f731461d0ae8b16b045ac7549665b2a46b",
+   "authorization_id": "AUTH-P08-S2-20261028-01",
+   "batch_id": "AUTH-P08-S2-20261028-01"
+  }
+ },
+ "cards_file": "benchmark/stories_v2/anchors_20261028/GRADING_CARDS_AK01_AK12.json",
+ "exam_dir": "logs/p08_s2_live_20261028/_reports",
+ "judge": "worker 亲读全部首选与非空备选后手填（tools/build_pair_review_dump.py 摊开原文）",
+ "scale": "0-3（0反向/严重错 1关键不足 2合理完成 3本情境实质增益）；NA不适用 NR未测 uncertain审过不确定",
+ "answer_binding": {
+  "status": "VERIFIED_ALL",
+  "binding_file": "refs/experiment_protocol_20261023/s1_action_live_20261028/S2_SCORE_BINDING.json",
+  "digest_sha256": "320bfc41846af50033ba200fe3b482ae184bd2ed5220cd7ddba3196738c21e99",
+  "scores_declared_digest": "320bfc41846af50033ba200fe3b482ae184bd2ed5220cd7ddba3196738c21e99",
+  "verified_positions": 12,
+  "rejected_positions": 0,
+  "rejected_detail": {},
+  "binding_positions_not_in_skeleton": 0,
+  "checked_fields": [
+   "run_id",
+   "case_input_sha256",
+   "raw_reply_sha256",
+   "primary_sha256",
+   "raw_file_sha256（磁盘上的 reply_raw.txt）"
+  ]
+ },
+ "coverage": {
+  "positions_in_answers": 12,
+  "positions_judged": 10,
+  "unjudged_positions": [
+   "AK09_T01",
+   "AK12_T01"
+  ],
+  "missing_from_answers": [],
+  "unrated_due_to_binding": [],
+  "dims_scored_off_card": [],
+  "cells_per_arm": 40
+ },
+ "transport_layer_from_ledger": {
+  "authorization_id": "AUTH-P08-S2-20261028-01",
+  "events": {
+   "authorization_scope": 1,
+   "attempt_started": 24,
+   "attempt_completed": 24
+  }
+ },
+ "five_layer_delivery": {
+  "reference_product_v1": {
+   "T_transport_failed_events": 0,
+   "P_protocol_positions": 12,
+   "P_protocol_failures": 0,
+   "P_veto_kinds": {},
+   "C_usable_primary": 12,
+   "C_no_primary": 0,
+   "C_legal_no_reply": 0,
+   "C_empty_without_action": 0,
+   "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+   "C_nonempty_backup_slots": 80,
+   "S_semantic_positions_judged": 10,
+   "W_user_willing": "unknown（AI 不代投）"
+  },
+  "action_policy_r1": {
+   "T_transport_failed_events": 0,
+   "P_protocol_positions": 12,
+   "P_protocol_failures": 3,
+   "P_veto_kinds": {
+    "json_schema_broken": 3
+   },
+   "C_usable_primary": 10,
+   "C_no_primary": 2,
+   "C_legal_no_reply": 0,
+   "C_empty_without_action": 0,
+   "C_note": "C_usable_primary 不含合法静默：候选显式 action=no_reply 的轮次'本轮不发消息'就是交付结果，不计为失败；两者已分列",
+   "C_nonempty_backup_slots": 64,
+   "S_semantic_positions_judged": 10,
+   "W_user_willing": "unknown（AI 不代投）"
+  }
+ },
+ "legal_no_reply_review": {},
+ "over_decline_review": {},
+ "card_tension_note": "",
+ "backup_risks": [],
+ "paired_position_verdicts": {
+  "wins_candidate": 9,
+  "wins_parent": 0,
+  "ties": 1,
+  "n": 10
+ },
+ "per_dimension_mean": {
+  "parent": {
+   "boundary": 2.333,
+   "emotion_relation": 2.0,
+   "factuality": 3.0,
+   "goal": 2.6,
+   "initiative": 2.0,
+   "interaction": 2.111,
+   "memory_use": 2.0,
+   "time_state": 2.167
+  },
+  "candidate": {
+   "boundary": 2.833,
+   "emotion_relation": 3.0,
+   "factuality": 3.0,
+   "goal": 2.7,
+   "initiative": 3.0,
+   "interaction": 2.889,
+   "memory_use": 3.0,
+   "time_state": 3.0
+  }
+ },
+ "per_dimension_cells": {
+  "parent": {
+   "boundary": 6,
+   "emotion_relation": 5,
+   "factuality": 1,
+   "goal": 10,
+   "initiative": 1,
+   "interaction": 9,
+   "memory_use": 2,
+   "time_state": 6
+  },
+  "candidate": {
+   "boundary": 6,
+   "emotion_relation": 5,
+   "factuality": 1,
+   "goal": 10,
+   "initiative": 1,
+   "interaction": 9,
+   "memory_use": 2,
+   "time_state": 6
+  }
+ },
+ "per_story_mean": {
+  "AK01": {
+   "action_policy_r1": 2.75,
+   "reference_product_v1": 2.0
+  },
+  "AK02": {
+   "action_policy_r1": 2.75,
+   "reference_product_v1": 2.25
+  },
+  "AK03": {
+   "action_policy_r1": 2.75,
+   "reference_product_v1": 2.0
+  },
+  "AK04": {
+   "action_policy_r1": 3.0,
+   "reference_product_v1": 2.25
+  },
+  "AK05": {
+   "action_policy_r1": 3.0,
+   "reference_product_v1": 2.5
+  },
+  "AK06": {
+   "action_policy_r1": 3.0,
+   "reference_product_v1": 2.0
+  },
+  "AK07": {
+   "action_policy_r1": 3.0,
+   "reference_product_v1": 2.5
+  },
+  "AK08": {
+   "action_policy_r1": 2.75,
+   "reference_product_v1": 2.75
+  },
+  "AK10": {
+   "action_policy_r1": 3.0,
+   "reference_product_v1": 2.25
+  },
+  "AK11": {
+   "action_policy_r1": 2.75,
+   "reference_product_v1": 2.25
+  }
+ },
+ "severe_errors": [
+  {
+   "case_id": "AK07_T01",
+   "arm": "candidate",
+   "layer": "语义/内容",
+   "where": "directions[3]",
+   "text": "对了，你上次说的那个考点笔记还在吗，带着一起对一遍",
+   "why": "题面 3 条消息、persona、initial_kb 六字段与 notes 均无'考点笔记'，属凭空共享记忆（污染探针未覆盖：锚点卡 factuality 非适用维度）",
+   "disposition": "记候选内容缺陷，不计入卡维度胜负（卡的适用维度里没有 factuality），但列入修复与新材料复验的观察项"
+  }
+ ],
+ "protocol_failure_notes": {
+  "AK02_T01": {
+   "arm": "candidate",
+   "veto": "json_schema_broken",
+   "raw_evidence": "json.JSONDecoder().raw_decode 于 char330 结束，第一段仅含 ['response','directions']，其后为 ',\"analysis\":{...}' → Extra data",
+   "root_cause": "故障族 F3：模型在 directions 之后提前闭合顶层 }，再补写 analysis；四风格正文与四条 directions 全部完好，仅 analysis 未落地（记忆写回丢失）",
+   "note": "该位点语义判词照常给分（内容可审），损失记协议层与记忆写回层：本轮 facts/tentatives 不会入库。父本同位无此问题。"
+  },
+  "AK09_T01": {
+   "arm": "candidate",
+   "veto": "json_schema_broken",
+   "raw_evidence": "response 四键全空串 + directions=[null,null,null,null] + analysis.signal='收尾'（无 action/decline_reason 顶层键）",
+   "root_cause": "故障族 F4（合同错位）：候选机制 FIX-1 明写'不回动作正文必须为空'，而它沿用的 legacy 输出合同与 format.md 都只教'四风格正文+四方向'，没有教评分器（lb_scorer v0.7/v0.8）已经支持的 action=no_reply/decline_reason 表达法；模型按机制把正文清空，评分器按合同判格式崩。本轮 may_decline=True，不回在评审卡里就是合法选项之一",
+   "note": "没有可发正文→九维无语义可审，位点留在 unjudged；父本同位给出短收尾并得分。这是候选的交付失败（该轮用户实际什么都收不到），不用'它语义选对了'补分。"
+  },
+  "AK12_T01": {
+   "arm": "candidate",
+   "veto": "json_schema_broken",
+   "raw_evidence": "同 AK09：response 四键全空 + directions=[null×4] + analysis.signal='收尾'",
+   "root_cause": "故障族 F4 同因（may_decline=True 的收尾轮）",
+   "note": "同上：不进 SCORES，损失记交付层。"
+  }
+ },
+ "resources": {
+  "reference_product_v1": {
+   "prompt_tokens": 87753,
+   "completion_tokens": 4004,
+   "total_tokens": 91757,
+   "tokens_per_position": 7646.4,
+   "latency_p50_ms": 23589,
+   "latency_p95_ms": 33350,
+   "latency_max_ms": 37675,
+   "cache_usage_unknown_positions": 12,
+   "money": null,
+   "money_reason": "无可核单价，金额恒 null"
+  },
+  "action_policy_r1": {
+   "prompt_tokens": 60755,
+   "completion_tokens": 5017,
+   "total_tokens": 65772,
+   "tokens_per_position": 5481.0,
+   "latency_p50_ms": 22899,
+   "latency_p95_ms": 59638,
+   "latency_max_ms": 85778,
+   "cache_usage_unknown_positions": 12,
+   "money": null,
+   "money_reason": "无可核单价，金额恒 null"
+  }
+ },
+ "cross_arm_delta_candidate_vs_parent": {
+  "total_tokens_change": -28.32,
+  "prompt_change_pct": -30.77,
+  "completion_change_pct": 25.3,
+  "p50_change_pct": -2.93,
+  "p95_change_pct": 78.82
+ },
+ "positions": [
+  {
+   "case_id": "AK01_T01",
+   "parent_total": 8,
+   "candidate_total": 11,
+   "winner": "candidate",
+   "note": "卡要求：当场把时间与集合点定死，别再'到时候再说'。P 首选定了六点但把集合点推回给她（'你定个地方'），只加'我提前到'→goal/time_state 2；C 首选直接给'小区门口碰头？'并复述'外圈两圈不追速度/脚一有感觉就喊停'（承 m2+m1 医生约束），directions[3] 还主动预留改期口子（'要是明晚临时有事…改周六早上也行'）→goal/time_state/initiative 3。双方都未犯禁区（没说配速已定、没提跑步）；C 的'两圈大概二十来分钟'是自我估计非她方事实，低风险。"
+  },
+  {
+   "case_id": "AK02_T01",
+   "parent_total": 9,
+   "candidate_total": 11,
+   "winner": "candidate",
+   "note": "卡要求承认两层并把目标改轻/改期，不是继续说服。P 首选撤七点、改下午四点走二十分钟+随时折回，目标仍在推进（goal 3），但没点名'补觉'这一层，且当日仍要求她给答复（boundary 2、emotion 2）。C 首选'七点这条我收回，补觉要紧，你下夜班睡不够比走两圈严重多了；脚不敢用力就先别走'——两层都被逐字接住，且用 note 授权事实（夜班后睡眠是刚需）不越权推进（boundary 3、emotion 3）；goal 只降到 2：本周不再落时点，后续步骤放在 directions（'楼下慢走十分钟/我按你睡醒的点来'）。注：C 该位点原始协议判 json_schema_broken（正文+方向都齐全，见 PROTOCOL_FAILURE_NOTES）。"
+  },
+  {
+   "case_id": "AK03_T01",
+   "parent_total": 8,
+   "candidate_total": 11,
+   "winner": "candidate",
+   "note": "卡私指：她的忙碌是排班不是态度，最忌追问'那到底哪天有空'。P 首选'明晚你几点能下班，我按你的时间来'仍把下一轮的时点摊回给她→boundary 2、goal 2（本轮目标未明确让位）。C 首选'明晚六点先不算，你哪天能准点下班再说，我绕一圈不费事'——先作废自己的提议、不设答复义务→boundary 3；'今晚够熬的'承认负荷→emotion 3。风险记录：C directions[0]'明天也排班，是排到几点？'带一点追问味，但未要求她给出哪天有空，未犯禁区（未推论'她总是忙'）。双方都用本轮消息内事实，无编造。"
+  },
+  {
+   "case_id": "AK04_T01",
+   "parent_total": 9,
+   "candidate_total": 12,
+   "winner": "candidate",
+   "note": "卡禁：不要临场提出帮她改段子。P 首选干净（水带、话咽、八点准时到）；但 P directions[1]'五分钟够你铺两个梗了，中间留点空给笑声'已是现场指导→该位 boundary 2。C 首选多加'第一排靠边那个位子归我'把位置落到实处（time_state 3），备选全是捧场无指导（'你就算真冷场，我也装没听出来'）→boundary 3；C directions[1]'够你说三个段子了，我等着听'是期待不是教学。两者都未把'坐第一排'升级成上台互动，未拉别人。"
+  },
+  {
+   "case_id": "AK05_T01",
+   "parent_total": 10,
+   "candidate_total": 12,
+   "winner": "candidate",
+   "note": "卡要求先答她想不想我听、再讲自己立场，不空夸也不催；禁'保证一定好笑'与主动要求逐段点评。两臂都认领对词并声明只当观众（goal 3、boundary 3，无一处空头保证）。差别在顾虑那一层：P 首选'我不点评，只负责笑'只表态未接'怕你觉得不好笑'这句在意（emotion 2）；C 首选'我当观众不当评委：听完只告诉你哪几句我笑了，别的意见一句不给。明天几点方便？'把她的顾虑转成可验证规则并顺手落时点（emotion 3、interaction 3）。P 在本位只给 3 条 directions（合同允许 null/不凑满），不构成协议问题。"
+  },
+  {
+   "case_id": "AK06_T01",
+   "parent_total": 8,
+   "candidate_total": 12,
+   "winner": "candidate",
+   "note": "卡要求给可执行方案（我去占座、她按自己时间到），不让她在两件重要的事之间选。P 首选'七点半走来得及…真赶不上提前跟我说一句，我帮你想办法'——办法是空位（'帮你想办法'未落地），占座只在 directions[3]→goal/time_state 2。C 首选当场算给她看'七点半走，八点半开场，中间还有一个小时'+‘我先到，位置给你留着’+‘你到我就鼓掌’——时间余量、座位、迟到不追责一次给全→四维 3。双方都未犯禁区（没断言她肯定迟到、没把取消当默认）。C 该位真实等待 59.6s 记入资源附表。"
+  },
+  {
+   "case_id": "AK07_T01",
+   "parent_total": 10,
+   "candidate_total": 12,
+   "winner": "candidate",
+   "note": "卡要求回应真题在不在手上并把细节讲清；unknowns 含'图书馆周六是否开放'。两臂首选都'真题我带下午两点图书馆门口'→goal/time_state 3。C 另写'占不到座我早点去'正面处理开放/座位这个未知数→memory_use 3。严重错误记录（备选层，不在首选）：C directions[3]'你上次说的那个考点笔记还在吗'——AK07 画像、initial_kb 与本轮 3 条消息里都没有任何'考点笔记'（全锚点目录 grep 无'笔记'），属凭空共享记忆，是本次候选最实质的一处内容缺陷（幻觉回扣）。双方都未犯禁区（未承诺押题、未把'过两门'说成拿证）。"
+  },
+  {
+   "case_id": "AK08_T01",
+   "parent_total": 11,
+   "candidate_total": 11,
+   "winner": "tie",
+   "note": "卡私指：回避给判断、把选择全推回给她就是没接住。两臂都给了判断且都未犯禁区（没说'你开心就好'、没断言撤了考不过）。factuality：双方都只用题面事实（'报了俩啃不完''周六下午两小时'），C 的'撤那门你越看越烦的——不是它难，是它让你一坐下就想跑'是给判据不是替她下结论→3。差别：P 首选把'周六下午两小时先把实务压住'留在句里（goal 3），C 首选只做判断不带本轮目标（goal 2，周六两小时未在该臂任何文本外丢失但不在首选）；emotion_relation：C 用 initial_kb.lessons'她容易自责'回'别先拿它给自己判刑''我不觉得你半途而废'（'半途而废'在 her 画像里）→3，P 走道理路线未抬她→2。C 该位只交 3 条 directions，合同允许。"
+  },
+  {
+   "case_id": "AK10_T01",
+   "parent_total": 9,
+   "candidate_total": 12,
+   "winner": "candidate",
+   "note": "卡要求把'谁几点拿笼/停车点'讲清。P 首选只解决笼子归属（'周六我直接拎下去'），无时点无停车→time_state 2、memory_use 2。C 首选把链条走完：'猫笼先搁画室—周六六点四十我在楼下—车停吾悦门口—你抱着猫下来就行—做完给我发消息，我过来接你们俩'，逐字承 m1/m2 与她的'挤地铁不行'→三维 3。正向能力单列加分：C directions[2]'她怕排队这事我记着，到时候我陪你一起等'——'怕去医院排队'来自长期库 warmth 字段且不在本轮窗口内，是真实长期召回（不是原句复读）；P directions[3]'你爸妈这周末不是要来？'同样命中 lessons'爸妈周末会从老家来'，两臂在此都属合法召回，未记污染。禁区复核：'六点四十'两臂都写成自己的承诺而非既定事实→未越权。C 该位只交 3 条 directions。"
+  },
+  {
+   "case_id": "AK11_T01",
+   "parent_total": 9,
+   "candidate_total": 11,
+   "winner": "candidate",
+   "note": "卡要求接住改期的可执行项、不让她在两件重要的事之间选一个；禁'你妈重要还是猫重要'、禁声称医院一定能改。P 首选'先去接你妈。医院那边问一下能不能挪到下午，能改我下午再跑一趟'——把改期写成询问句，未替医院作保→boundary 3；但它把她提的'下周'换成'同日下午'，车站时间那一层未接→goal/time_state 2，也未给情绪托底→emotion 2。C 首选接受她的下周并把冲突拆掉（'明早我本来就往吾悦那边去，顺道绕一下送你去车站——阿姨几点到？'）→goal/time_state/emotion 3；但它把'手术就挪到下周'写成定案，而'下周医院约不约得上'是本卡登记的未知数→boundary 2；C playful'阿姨的优先级比手术高，这排序没毛病'已接近禁区里那种排序表态（未逼她表态，但把优先级讲成结论），记风险不记严重错。"
+  }
+ ],
+ "arm_identity_sha256": {
+  "reference_product_v1": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+  "action_policy_r1": "6e450c8f607b9c255171ec9c40c1c4f731461d0ae8b16b045ac7549665b2a46b"
+ }
+}

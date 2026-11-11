@@ -1,0 +1,104 @@
+{
+ "kind": "experiment_authorization",
+ "authorization_id": "AUTH-P07-V2-20261028-01",
+ "created": "2026-10-28T00:52:00+08:00",
+ "authorized": true,
+ "status": "ACTIVE",
+ "registered_by": "main-20261028-002629",
+ "authority_source": "用户持续实验授权（2026-10-25 原话登记于 AGENTS.md §0）+ MAX-288 V3 MASTER_EXECUTION_V3_288H.md §4.3 预算规则 + FIRST_8H_WORK_ORDER.md §D；worker 按持续授权登记有限新 scope，不复活旧单",
+ "cycle_budget": {
+  "management_cap": 16384,
+  "cumulative_physical_starts_before_this_batch": 1665,
+  "counting_rule": "物理网关开始数逐事件计数（含恢复批漏计 9 更正）；来源=logs/auth_budget/*.jsonl 全账本实测（tools 侧一次性统计，2026-10-28 00:51）",
+  "new_extra_cap_added_by_V3": 0
+ },
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 96
+ },
+ "scope": {
+  "experiment": "P07_closed_loop_v2",
+  "allowed_models": [
+   "dsf",
+   "hy3",
+   "qwen3.8-flash"
+  ],
+  "forbidden_models": [
+   "gemini-3.8-flash",
+   "hy4-preview"
+  ],
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "design": "2场景(I2,I4)×2反馈条件(positive,hesitant)×3决策×2臂(reference_product_v1,v6_integrated)=24 harness + ≤24 对方模拟；8 模拟器负对照(2人物×4探针)；≤12 轨迹成对评审（评审为后续子批，同单分 purpose 记账）",
+  "plan_total": 68,
+  "hard_cap": 96,
+  "purpose_ceilings": {
+   "candidate_generation": 24,
+   "partner_simulation": 24,
+   "simulator_negative_control": 8,
+   "trajectory_review": 12,
+   "buffer": 28
+  },
+  "models": {
+   "harness": "dsf",
+   "partner_sim": "qwen3.8-flash",
+   "review": "qwen3.8-flash"
+  },
+  "single_dispatch_per_attempt": true,
+  "no_implicit_retry": true,
+  "no_makeup": "失败消耗不退款、不换 ID 补跑；空返=一次失败，同模型连续两次失败暂停该角色派发",
+  "alias_concurrency_cap": 3,
+  "halt_condition": "负对照 ≥2 旗标（任何话都接受/无回复也确认安排）→ 停发正式轨迹并原样记录",
+  "exit_criteria": "有效意图原文进双方实际请求；实际已发 ME 进下一轮 harness 历史；无回复不变成伪发言；模拟失败不造 HER；合法动作判定与公共协议一致；两臂真实分叉；负对照不无条件接受",
+  "old_scopes_not_reused": "AUTH-P07-PILOT-20261027-01/02（8+24 次，原型证据保留）；AUTH-P06-RECOVERY-20261027-01（已对账收口）"
+ },
+ "repeats_plan": {
+  "kind": "pre_registered_repeat_wave_r2",
+  "registered_at": "2026-10-28T05:57+08:00",
+  "registered_by": "watchdog30-20261028-055659 (watchdog takeover round)",
+  "reason": "r1 因 qwen 间歇性环境故障产生 6 条 incomplete，同场景同反馈双臂完整对=0，成对评审≤12 无合格输入；r2 为补齐配对侧的预登记重复，独立计费，不是对失败 attempt 的换 ID 补跑（r1 incomplete 轨迹原样保留）",
+  "repeat_units": [
+   {
+    "trajectory_id": "I4__fbpositive__v6_integrated__r2",
+    "pairs_with": "I4__fbpositive__reference_product_v1__r1 (complete)",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I4__fbhesitant__reference_product_v1__r2",
+    "pairs_with": "I4__fbhesitant__v6_integrated__r1 (complete)",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I2__fbhesitant__reference_product_v1__r2",
+    "pairs_with": "I2__fbhesitant__v6_integrated__r1 (complete)",
+    "est_calls": 6
+   }
+  ],
+  "est_calls_total": 18,
+  "budget_check": "50 used + 18 = 68 ≤ cap 96（与原计划 68 一致）",
+  "halt_rules_unchanged": "两连续 sim 环境失败自动暂停；负对照不复跑"
+ },
+ "repeats_plan_r3": {
+  "kind": "pre_registered_repeat_wave_r3",
+  "registered_at": "2026-10-28T06:59+08:00",
+  "registered_by": "watchdog30-20261028-065658 (watchdog takeover round)",
+  "reason": "I4pos_v6 与 I4hes_ref 的 r1/r2 均因 qwen 间歇性 sim 环境失败 incomplete；探针 2257ms OK 后补第三轮配对侧；r1/r2 incomplete 原样保留，非换 ID 补跑，预登记重复独立计费",
+  "repeat_units": [
+   {
+    "trajectory_id": "I4__fbpositive__v6_integrated__r3",
+    "pairs_with": "I4__fbpositive__reference_product_v1__r1 (complete)",
+    "est_calls": 6
+   },
+   {
+    "trajectory_id": "I4__fbhesitant__reference_product_v1__r3",
+    "pairs_with": "I4__fbhesitant__v6_integrated__r1 (complete)",
+    "est_calls": 6
+   }
+  ],
+  "est_calls_total": 12,
+  "budget_check": "账本 started=69 + 12 = 81 ≤ cap 96；评审 7/12 已用，若两对齐备再评 4 笔=85 仍 ≤96",
+  "halt_rule_this_wave": "两段各自独立进程；两段均 sim 环境失败则本波后暂停 qwen sim 派发（探针门控恢复），不再预登记 r4",
+  "execution": "run_p07_pilot.py --repeat 3 --skip-trajectories <r1,r2> --no-neg-controls，两段串行（沿 r2 惯例）"
+ }
+}

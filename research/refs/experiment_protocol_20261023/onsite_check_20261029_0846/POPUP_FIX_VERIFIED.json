@@ -1,0 +1,25 @@
+{
+  "changes": [
+    {
+      "file": "host_loop.py",
+      "only_change_is_creationflags": true,
+      "hidden_launch_sites": 1
+    },
+    {
+      "file": "campaign_tick.py",
+      "only_change_is_creationflags": true,
+      "hidden_launch_sites": 1
+    },
+    {
+      "file": "queue_runner.py",
+      "only_change_is_creationflags": true,
+      "hidden_launch_sites": 4
+    }
+  ],
+  "host_pid": 18748,
+  "ticks_after_restart": 4,
+  "errors": 0,
+  "business_queue_was_not_edited": true,
+  "old_host_graceful_stop": true,
+  "window_observation": "18s before: new D:\\anaconda\\python.exe window; 18s after: no new Python titled window; old existing cmd window remains"
+}

@@ -1,0 +1,3861 @@
+{
+ "manifest_version": "DATASET_V1_FROZEN_v1",
+ "frozen_at": "2026-11-10",
+ "freeze_scope": "Phase 3 Step 3 — Benchmark V1 full freeze (DEV 80 + SELECTION 40 + HOLDOUT 120 = 240)",
+ "split_counts": {
+  "DEV": 80,
+  "SELECTION": 40,
+  "HOLDOUT": 120
+ },
+ "total_episodes": 240,
+ "missing_episodes": [],
+ "layer_3_dataset_hash": "ed63b6b91d8b3bda2a28afde35900ae1cb114bfe6c304fd0449fbef1a7ef79c3",
+ "component_hashes": {
+  "allocation_csv": "f6cf83b0192ad89b359ab011abd0b5676eba38d2ea0d4e44aee563305d30df33",
+  "arm_registry_frozen": "24983fe3b86202f00509b1a21ea4e7c6ffa33e2bfe86dccd99a27b4b78b4bc8b",
+  "universal_scorer": "4b2af53905ab82eb6767f6699d7984256b7913820ff52686677836ae8a6c8223"
+ },
+ "episodes": {
+  "E021": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\stage2\\E021",
+   "file_hashes": {
+    "episode.json": "b4cb29e2c4e0e38b894616b77e999bd0a48c233dc8ea20e70f2c8a07c4b58f8a",
+    "reference.json": "5eb640c584ca80aec13c68dbcaca6cdfab319ca24c5afe9804b1ac7e1328db79",
+    "timeline.json": "2cac9d5efec941cd1cc53007963040ed6505a46920a092e74f11e731f854d2b1",
+    "audit.md": "3047b399ec49c9014f54029a7758b2fd45307575be8afa6acaae4b3f064484a4"
+   },
+   "composite_hash": "b6ecc1d353eb6d935f919153f214d494c2ffe11cdba44e1b4f6f32db3c6362df"
+  },
+  "E024": {
+   "split": "DEV",
+   "topic": "T04",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\stage2\\E024",
+   "file_hashes": {
+    "episode.json": "85106ce060d5887ea3b4137d2abd15a4b0c6b7c7bc0d1b9d216707d319e844e3",
+    "reference.json": "d36fbfc009d3cbf8070bc156610b7f3e1bec46f1ef5f1f46033d09c25843daa3",
+    "timeline.json": "3be2bb4ba2127aee877f8c975110ecb5b47ea7424d286e01e227043aefe10418",
+    "audit.md": "5293d5176d0249f2cc0936cab759fe4edc580259718531c03d241311e1ef7c9f"
+   },
+   "composite_hash": "b7ea5cba1f6490dadf729dfa372001bd567d724c658c45c5bd0fecd2d7727717"
+  },
+  "E026": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\stage2\\E026",
+   "file_hashes": {
+    "episode.json": "2983ea05dff2e76b09e1b555bc8962e0ade96c06dd6b40c8da53074480aac653",
+    "reference.json": "3533c15d3a3c92cc85346f850bcfff2d236908d85335eeeac76bfc739017cd45",
+    "timeline.json": "004611b5f0301eaf7c9a24060d479bb4c59ba125f7034e5c2364cf63edb7c0c2",
+    "audit.md": "1e5a4fd25e8a856448886b1317dbc1ae0d717565ed6f2fe52868c4c231fd3886"
+   },
+   "composite_hash": "e5be5ecb7d41856f70de4b62a3fe19c1fe047e6e607e85604d78e0646b1e42e6"
+  },
+  "E027": {
+   "split": "DEV",
+   "topic": "T04",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\stage2\\E027",
+   "file_hashes": {
+    "episode.json": "e56080f384f6305441234de1b2be53abae5c6ae73888fb03cbeb6b85805b8d19",
+    "reference.json": "3090aaa072b83b5190148b0b3f8f54d25fd180a493d31e4caffb2609abc7f3bb",
+    "timeline.json": "46abc7bbedb5bd1c1c3537e5ea5df0a6210aefde5ced4c468dd6658a9ae034fe",
+    "audit.md": "66cab5b6d771cd071812600e0183f1533a4494013438a03c71b8d864ae7abbd1"
+   },
+   "composite_hash": "7ea86f55248962a7a68535b968fa031e728eac6d5477c0c00a35a607d9aa412e"
+  },
+  "E031": {
+   "split": "DEV",
+   "topic": "T04",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\stage2\\E031",
+   "file_hashes": {
+    "episode.json": "44b5d37e837b394b8ecc9eb440dcf52b3d280b94a5bc4cd6fbd1ef20667682ac",
+    "reference.json": "7e5fbe21d5c3916772de33e004b0c73b79bd1851bd602b66f2624ef0ce6ab5c0",
+    "timeline.json": "09375b62773db22f27946c1fede6beaf8b495fbcdf46bb06b445c476f7650f73",
+    "audit.md": "e6aa4006beb9e21c5e29e87db900f36b3f44df47a20e985113f280d86c422d46"
+   },
+   "composite_hash": "d7e8bc968359b5abfe97bc444bd030a49b43ffbe04e69948356ea9c81a331e31"
+  },
+  "E032": {
+   "split": "DEV",
+   "topic": "T04",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\stage2\\E032",
+   "file_hashes": {
+    "episode.json": "10df1516b48ab5d58189b6cdf8d31d446a8a00da19992a943e9f70247b411ef4",
+    "reference.json": "2cd7ae94c5844c04a6d82b305310b1c0f65736017549740f8e92a997b6d422bb",
+    "timeline.json": "bf6686323858b2283b93555bce3a4b375036732ab17a863518ebf4094b5f57b3",
+    "audit.md": "2c2efd27232c3bed5ea5a0039478ffd7bca53b244e2136d06b9b470d9536ca9f"
+   },
+   "composite_hash": "8b7e38e8d24aeda96f62e56e19747b26772dec92d7e82ec5a8d345f490910ab6"
+  },
+  "E033": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\stage2\\E033",
+   "file_hashes": {
+    "episode.json": "19cda899c8a1c9ec2d26e57a243bad67a04a4d35977bb6328baa7bb0824a613b",
+    "reference.json": "a31dd2f72b0081a5fb56b57c108da285fa099ddcf010a1d176e0f39f15030d74",
+    "timeline.json": "85d50e301cbd2e3513274ae2b672fa24fb50411ca521d1b29b690c3b30baf4dc",
+    "audit.md": "6e0650d2dff9f9c8d534890f83546c7fe9ec2c37c85506b795479305401d0dc1"
+   },
+   "composite_hash": "207a707b7d427513eee0142552cc9fa9ffb41995f4b425705722af9d71aa1e3e"
+  },
+  "E034": {
+   "split": "DEV",
+   "topic": "T08",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\stage2\\E034",
+   "file_hashes": {
+    "episode.json": "5eff8448c4932cca3f5ce65101f294119df5eea19fb54a556c7dcee6b9eaccd0",
+    "reference.json": "9958e00915dc6b2297f577346f93547c825c8891823b1ed62f5b7a593878ad37",
+    "timeline.json": "3c434ac1b38a44f72199a5bfed8ee461c8acebc67b9246c54ddb82db6734ae5b",
+    "audit.md": "e5dd0da80fc6adeb4b33dcff8a95f1269afbf8ee583617b23bd61836f72bfe7b"
+   },
+   "composite_hash": "9436ed5a9ec6582b30fe91533b3baa370de8f7caacf621270d23a5e35fb9af72"
+  },
+  "E037": {
+   "split": "DEV",
+   "topic": "T05",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 8,
+   "story_dir": "benchmark\\stories_v2\\stage3\\E037",
+   "file_hashes": {
+    "episode.json": "f33caa5b41b33b786c1e9d4836e3e9e1ea613c7f3fcbd4d6d262bd718a32636a",
+    "reference.json": "04f231c71bd094e6fb61f588d641af49b32c5b37168106b45dfed146ab7a2d67",
+    "timeline.json": "17dacb5db0b696d7411d801f12b402a26f5f671d2becdcc292fdbc41a2f13c93",
+    "audit.md": "f5a01d731b0cc18cf1b3f00145c85eeac70c9494c73889b505ade1d51fd441f8"
+   },
+   "composite_hash": "7eaf14720cab53e9bc88500c7de8ca4765f114b7556b87f765580c938b1a962b"
+  },
+  "E039": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 8,
+   "story_dir": "benchmark\\stories_v2\\stage3\\E039",
+   "file_hashes": {
+    "episode.json": "d6faeabbf960b2068808cc67268ffdeb1cb7c6d5e9cfbf1d477a0f5bd589a462",
+    "reference.json": "9ba71ad85a9f8fe0d74bc52af17de4f88d59b82f775c51fd5a4a086bceb8332c",
+    "timeline.json": "b324f0ef0bc6d6840ce7c6d04ed3d62a76ee8d65c304f86d78d3ba2d61db05da",
+    "audit.md": "3c30740bc91852d09e3970e5f5ce30dbed85a49556a1dc91fbbf5b1a092f2f8e"
+   },
+   "composite_hash": "f3a5e58cc880412fc4d45b11ea077e9dce7509302f5a8935d81eacd49def5f4c"
+  },
+  "E041": {
+   "split": "DEV",
+   "topic": "T05",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 8,
+   "story_dir": "benchmark\\stories_v2\\stage3\\E041",
+   "file_hashes": {
+    "episode.json": "b869427bf4958802afa1306e003173917a601723aa1cebca9d49d21f57401d09",
+    "reference.json": "f6ba58f123a993ea4ccf7c268610ce606777b2eaea8ad270ab47e82fccef855a",
+    "timeline.json": "3c4351a49dacede3bea4e26186fffc28c9e430c2cb23ab37add9264e5985b83f",
+    "audit.md": "71b0c5c97da719cff8f9d7024d54d7f4e0a5f9e1b06e30cb335caa87328d8f5c"
+   },
+   "composite_hash": "3eaf9250ed37486901a845ae0a587a525ed10a85ac67afe0169780db25adc205"
+  },
+  "E061": {
+   "split": "DEV",
+   "topic": "T07",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "benchmark\\stories_v2\\stage4\\E061",
+   "file_hashes": {
+    "episode.json": "55367a3e12380838905f0c8c62ea8db144516802437ff21afea5c93cca8ff43f",
+    "reference.json": "15183f3f3045954a22239d4941f40efb7414012ddad04f64b432183c4a075974",
+    "timeline.json": "0b918f9dc976432a9c37e91038b7b3af8caf41beb4c8da72df6ceab752f733a4",
+    "audit.md": "0a7a247c512c8acb9ab856dc435901230c4131e1bdd2a65758ce41c9a4e12564"
+   },
+   "composite_hash": "edafaf91a9e29e0344829434231da72dcc3e834fef6faf8b994c53b89a40b57d"
+  },
+  "E063": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "benchmark\\stories_v2\\stage4\\E063",
+   "file_hashes": {
+    "episode.json": "a778d01204cb3714ff13c336dba3768394f6297ca98bee282717106e3adcdefa",
+    "reference.json": "b270541f391a247ca3779576874bb41353f20be6335905903e1144ef120f7657",
+    "timeline.json": "6d3076f47966a119b653deb5bb14a5c9c74b6eca02cef4c690cbf5e377104ed4",
+    "audit.md": "0294a3f75b17e7056ac0e2c2a8c538659beff4c154eba3cd9304af918ab85e82"
+   },
+   "composite_hash": "90e5d2cd0d1207b07a2bf4e85a89556218597f03ed22a8ca803194611d66b72e"
+  },
+  "E064": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "benchmark\\stories_v2\\stage4\\E064",
+   "file_hashes": {
+    "episode.json": "78bd053be3b6f4711f49859df135dc339ba03bce8194bfc7288ecf8023c25c4c",
+    "reference.json": "cc23d2a57ad9a3e35ec9129800b0c43568dee3aaac5cff80c23ef4d4c11d7831",
+    "timeline.json": "b6919f3d0f1f9c18ea376a1d3a1b0951bb586bef3a6726479d22b49a05cc146d",
+    "audit.md": "7473beacf351feaf274a096b797a0fed60eeba4cb06382b972e8c5c576499a70"
+   },
+   "composite_hash": "cfee3149c346b27a935d8b05bc1e94f7971b0e360cecd099bf8fe454abb5486d"
+  },
+  "E066": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "benchmark\\stories_v2\\stage4\\E066",
+   "file_hashes": {
+    "episode.json": "e0d9192e1e816adb200691139cf0c72de4d915de0397231973cecba19a64d98c",
+    "reference.json": "91bcd27aa3941ad9fd79eae2cd4191458ecd339b6de5386a6809b8c90bbed1e8",
+    "timeline.json": "982287468e99fb8e0e91975506dddd316cb1898ea44ea82a7f6daeb01ebc0f83",
+    "audit.md": "b73e2b2a3d7463683359b370b85a4a1134e89a43e4ae19a57545f3a79240ae08"
+   },
+   "composite_hash": "e05a4c8811d770e555e2c22097ea787166a551a89fc86094013cfac9ac82b537"
+  },
+  "E067": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "benchmark\\stories_v2\\stage4\\E067",
+   "file_hashes": {
+    "episode.json": "e2a71454e1003b3aca2133c172e052fade31c4d34a6226247559047e74582356",
+    "reference.json": "900d337139e36050968af78d01d1c41bb7590ed7ac78edcd0fe87bb82908b4a4",
+    "timeline.json": "1cd745aa57af5ac0b368b8b8008d8f3ae770b81f31cd22c399c77aaf168effb7",
+    "audit.md": "b2b405b2d8a2c0fa53e17b70b44c5db8776876b564db86d9db46ec4b27639aaf"
+   },
+   "composite_hash": "69dfa9f6050733bd0f0551f6e695d4f56a53115b704c5e39513f68c2b115bd31"
+  },
+  "E068": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "benchmark\\stories_v2\\stage4\\E068",
+   "file_hashes": {
+    "episode.json": "f67821277e51ccb4cc9ad7e6d01dd55c76fbde747a833867a0d3ae20369c9b18",
+    "reference.json": "46605b02dc0c1d77ef4066ff366183736675a4f077ce31fa69db8e9f9a74ec74",
+    "timeline.json": "7fed557cc265f6c9a327058b6ba2fd368697be352f0721eb05495c71a3ef0c9c",
+    "audit.md": "04cf04c8f73bb81db4649065846af68b8cc2621afcb9e7d979cd29e2d7d63ca4"
+   },
+   "composite_hash": "4e7ab136016b212f0f94afba7222b3077f98c79adfb8fb3678a34e554b6181bb"
+  },
+  "E117": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "LIN-E117",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E117",
+   "file_hashes": {
+    "episode.json": "584a030b8001e62f02f33d19c39a198edf79ac1a8fbeb3e92cf56c1c89ce6a2f",
+    "reference.json": "e518d0b1e5b0a330a38ae745aae07dde5b1129fcfd37f536e6cdfb57c2f58ebd",
+    "timeline.json": "7c3f8bc69babbb6b1d9105c3ce04e665fe17d5a9ec2c4292378fcbf2b085feaa",
+    "audit.md": "393a812e39a514c04adf2f847a5330724658dccb5aea145699345e0fc6a943b6"
+   },
+   "composite_hash": "57e9f2474781ffc0aa0de9e8bc95604c1e9022cea0944dd9c2b2eb8821cf4bc3"
+  },
+  "E122": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E122",
+   "file_hashes": {
+    "episode.json": "3ccbb795aa993f3937e30b220c66e8dee1455b5ed793c8b2ad47f7309290a396",
+    "reference.json": "a14dd0e98ff237809a5ab84a816eaa5cf6069a0ff018e91c81b7269736c29d28",
+    "timeline.json": "98acd98774b1f204d5b0821635d4ba6e193efa614cf0ee45d8035e6578a94321",
+    "audit.md": "aa072bb417024000522b1abb32e93efc05087a5f869f5e2c9b351e3685b811a6"
+   },
+   "composite_hash": "8ea6d97803d1541d306c3da10f122a4db5ea48f0ae46d04d59fbfbeac8338a71"
+  },
+  "E131": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E131",
+   "file_hashes": {
+    "episode.json": "b6ea87852beabea2e5807e9231d290c16a35b44cc5ffde067357c5710a761b7c",
+    "reference.json": "9f54d9198148c58dd561f0f3667ac26db0a38815525a822cc643779306891c29",
+    "timeline.json": "71e1f65eba915eb902ad8e2ea4c4e2f68e50594ac114bee96aa58502af6c55b3",
+    "audit.md": "92ff717baa72798331709111cae31083fdef8979aed4843ff2e6a2175bf88f33"
+   },
+   "composite_hash": "7c4c728c2e6d0a397b05ebe8087f3f2456218eafba71a9e7536108778bf05b89"
+  },
+  "E140": {
+   "split": "DEV",
+   "topic": "T04",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E140",
+   "file_hashes": {
+    "episode.json": "c7cdc9300475b8db2fc1bba41f29e4e35b804e8f6849436b38a6c01edcfdd632",
+    "reference.json": "8a76e5888e9f9eac0e7706a2fc0c8c3b55ba9345b11167c4c5f810608b6dcafe",
+    "timeline.json": "73fa531622b380ee348c19dcd31fde1aa53c443f96c7ec7b1fdde3b9545c619f",
+    "audit.md": "4ad5d0e1bb8c675a4795c87822150708caa877770f8cd43b25a5e464605e444d"
+   },
+   "composite_hash": "7ce017aa0a6e8f1ab34f7320af86582fcab332eb9cd694c8d763832293b6bd7c"
+  },
+  "E157": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E157",
+   "file_hashes": {
+    "episode.json": "a9fd69c26e432b8cd5ed10d504ac6c720354530b79bd3b64f216d683c7e9f75d",
+    "reference.json": "4e46bafefabc18a648d79c9cbcf6051aaf8fb31d75dc3395ffa900cd2a6ea05f",
+    "timeline.json": "fefa027b52091d6b4dbc925f2589ab8b12b203f44f7bf77f636336e3d0b1a06f",
+    "audit.md": "60504af93c305e2c6c4f1d2600b42f3513e14cd4743432990cdcb2a3a1348079"
+   },
+   "composite_hash": "a1697ceb87699edc30168d7d24bcb5f2abd4ff683521587caa468a436b2d43f8"
+  },
+  "E164": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E164",
+   "file_hashes": {
+    "episode.json": "8c0790aa4c47dec1eec9aeb4db6538ae7e2dc5b0f935b0a8e009effa0e66ae04",
+    "reference.json": "b5678ae703e20a3c186d8ad358780f7fca83675ceae244cb4ac9ecf8b780faf4",
+    "timeline.json": "c1aacc85472b8d12c3b3c0f9ab9a712956a707e2bcf4a3564c40432caf294e20",
+    "audit.md": "dcef02078684b92e453f880994140a32121e343b65368352b4e916d3f399800a"
+   },
+   "composite_hash": "8841767bd56aed6f180cb7c6563ef34bd58ae3d77c8e7ac87e785c8b230d64e9"
+  },
+  "E166": {
+   "split": "DEV",
+   "topic": "T08",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E166",
+   "file_hashes": {
+    "episode.json": "e2d06190eab1d6acfe3094bf295b8417f24c28c515a130f652274feefa367cb5",
+    "reference.json": "0e242cf1b34e5fa70871427bcc6a6615787e9d5c13e2a72c96780e49cc642344",
+    "timeline.json": "4d0ce17d1b0610b4e64625c9d99826a32c1ffbc28d52bc2f14a68efb629412a6",
+    "audit.md": "c037a38432eaeed630b49014cc711f7b5b0029f81ae27b7c1d09797540a6ec22"
+   },
+   "composite_hash": "e20e45f6d286b9b6907b350bec0a7489905556f7e7544252d824f05ed7a0cffa"
+  },
+  "E170": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E170",
+   "file_hashes": {
+    "episode.json": "bd450826c399d964ee70506cee1e4b9c998f4af7be1839215312a4ebdd86576f",
+    "reference.json": "47c55020bfd54967f9bd03051ffeaba2e54b2bf90d773a05bd6da92bab590669",
+    "timeline.json": "c825a2f8bbd753b037afa981e3afd7b56b0b60efc920348702e2c145a0c30261",
+    "audit.md": "668fdd65a04bdebe484565252ab950deae160a6d002282edee3c3ffaaad14f83"
+   },
+   "composite_hash": "5794b42a82c9707a1b5d3954d590380ec3a50251639750d40a965845991d3c53"
+  },
+  "E183": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E183",
+   "file_hashes": {
+    "episode.json": "c7ab9b13a13c1a428e081a5ad3b70e2778a7ac9a71647daa80822a20154dd8e5",
+    "reference.json": "564ea898973c08d7b7acec6aca61fa877374829fbecc7b5b50c26612d421b6a2",
+    "timeline.json": "3a914ccff21308d43b7846ee4fe8b9af74f15ab01e19dbd88a47e6773faba416",
+    "audit.md": "9683ea16fb1abd3b50f24e720327671850e4034cd950e3186ee6c03581114981"
+   },
+   "composite_hash": "35ec4fde6ee73bb29c34937c52b4cba3e3cf9efe1b02d85e3523e4085c55d43f"
+  },
+  "E189": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E189",
+   "file_hashes": {
+    "episode.json": "354433c19386850eba785ef53420411bbf0f109602726bf092735208f57cd449",
+    "reference.json": "1e51325d28b9e761e34929361ef7588457402f1f3e19df14acfbd6e970a0ccc2",
+    "timeline.json": "0bec8f654bd6b8bab2710301295ba0618ac5f0859a7f176f7a3257c919df4411",
+    "audit.md": "818a7e83685daf38d4f84df97add4388f19c0ddc1a6bb13664ac11eb24dbd975"
+   },
+   "composite_hash": "49391a131fbdca45fce33365acb5c375fa9b45074867b8bfa9587745dbe02306"
+  },
+  "E190": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E190",
+   "file_hashes": {
+    "episode.json": "da6b71cbc68983a61f2bd12deb5e972caf7b7b4af6a0a9d6fa9ccfdfa3516368",
+    "reference.json": "b1855c4d1d48313fc50f7baf0d5ff7a6f360ff26e6bdaca780d4e766a103992c",
+    "timeline.json": "6b7d62ff6476f4c495c332d6d6304a0810516748f05ee5e958db34bb5de343f1",
+    "audit.md": "822f7d634b07831ff08455e2db5ecbbf12780b46933a14dd374cc073b09409ed"
+   },
+   "composite_hash": "c9c27806da69cd7db4a6775a2d984f2b7bf2c386529bf13a9b159b576b130982"
+  },
+  "E191": {
+   "split": "DEV",
+   "topic": "T08",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E191",
+   "file_hashes": {
+    "episode.json": "8374277583cf8c36d0af452d1ca22dca5cd99dd5972fef97d1892a03ce3251e1",
+    "reference.json": "1b29d741a97bcba73d18b04db8dcd6905788228b9bfbd393b14f9823f6c3571c",
+    "timeline.json": "18d7c30130f873006ba543eab6ec7838223b5329d5603dfd8b1ef58177f8f182",
+    "audit.md": "32014009827a3ba56e8916c6fc905ad0bc74673fb613987a5b93d7661dcb76ca"
+   },
+   "composite_hash": "6adfe557634eebf6304ae838d280f2b8f49ead25f898dcd3752d16bbcd2b2b56"
+  },
+  "E195": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E195",
+   "file_hashes": {
+    "episode.json": "23ba0d70bb2133673e4a8da232e7c55e1478f57d724c851c594574a85b9d778c",
+    "reference.json": "53f770f02adf3799d9fe94fe0f6cf593b24a39608318c1b81b64782d9af417d1",
+    "timeline.json": "09712dd065d580599c66b575aa8aae062a80dd74d1403b967db14a1a17e5541a",
+    "audit.md": "1e447f1c5552420cc2fb3a08152109681f10c8d866797d3d3883c80a8219d52b"
+   },
+   "composite_hash": "60d918049acefc6006b87e2b18aadb8e240dc51858326e9544e445cf03052c17"
+  },
+  "E199": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E199",
+   "file_hashes": {
+    "episode.json": "426fa799f1cf2c4633361dd904210c904a751327121b91eecd4a2d2515361cf4",
+    "reference.json": "37a6468e6fb98b8fa7269b9b2d007664d45425f04a080b236871262967b4603d",
+    "timeline.json": "4a175b9ad3dfc5e0474e2c28892326c3e58e7278a113da3694483419f443c38b",
+    "audit.md": "86fe7d569ee0b37012aa3ab431e0107b6238ea9fc36e6646d87473aca8a43447"
+   },
+   "composite_hash": "ca14dee846f4059d51a70568adb4526225fb4e912c073731d6208f94def10771"
+  },
+  "E207": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E207",
+   "file_hashes": {
+    "episode.json": "562a3db49f34b2fd2f7e39b944438b9d2d496647aa6ff2c574759f2a76459387",
+    "reference.json": "7b12ff5580bdeee776dad8c0c7905c949fa44d242e234368e28abe018558d850",
+    "timeline.json": "e1389b9ad52686c8b8185e15dc6977bdea745cb53f4c9b6ee9100d889f988cc6",
+    "audit.md": "af87d6752fa161822efbc6a432baade8208094721562bf0e4cd8b1277570c2a4"
+   },
+   "composite_hash": "94b41c183fa06e842e70631844b3315f09f7581093ade6127b27bb5d003f84db"
+  },
+  "E208": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E208",
+   "file_hashes": {
+    "episode.json": "0668caa2a9c0081f40ebeaaaa477ea397533fb22613f4e0b13e8b52432654c71",
+    "reference.json": "edbcf16c9a9d8f1a697d498d3bfc7cdd55088600122eab11849124a09c2bd8c7",
+    "timeline.json": "3dcf908f7a9a5f785a8e4879a6ae75d25e50050fd14d955b8b964d7b52bae4aa",
+    "audit.md": "7c6694e9dea178a11851ae70e9d4a3653bb7159acfa8f48e86130fc814c618e9"
+   },
+   "composite_hash": "90256ea69b3ff68db8755f526e4b404e4c5164ee1914bfa24a39963257f2c68c"
+  },
+  "E212": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave3\\E212",
+   "file_hashes": {
+    "episode.json": "7ce5db60d911b885e57308f5f0787eb4377f1f72bb80271716739e4305daafc7",
+    "reference.json": "ec2432355b36953440c4154eea63c281c96cca701b93ec5ee3cb3da0c2a59d26",
+    "timeline.json": "2b86ccc1516b2ca4d7fcc0af1a78d5d76486767032d48e88a67e5eca81c752c7",
+    "audit.md": "582fe96a6d1eb4a22d5d54a28c6996f3e20b0a721fb00bac63c3c8b3d7b34814"
+   },
+   "composite_hash": "59b9fd55dc1f5ebfe0225ac910aebeca740def66fc25817107d4573fcfb31358"
+  },
+  "LRE121": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "LIN-E121",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 40,
+   "story_dir": "benchmark\\stories_v2\\wave3_ext\\LRE121",
+   "file_hashes": {
+    "episode.json": "4c8e3ed7ae5661bac2bdef42c67b595aab44e4a85665375ebf4211c2de180274",
+    "reference.json": "09cf5bcc8722088b9ff9f52fb42db5ff33b66b78935baf65fa129d85b3a69c11",
+    "timeline.json": "4535f42b69001f896cbaf831158ae6f6687777b78990a994d8a7091889139c22",
+    "audit.md": "08ee321dcf35ea61e918114c3a235a89fbf6cfd4a7396039c3a4a8658f193355"
+   },
+   "composite_hash": "12de78dcec34a0d39238238b12c23ae59e4f33ef784d4398f1d61b901eee9a74"
+  },
+  "LRE125": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "LIN-E125",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 40,
+   "story_dir": "benchmark\\stories_v2\\wave3_ext\\LRE125",
+   "file_hashes": {
+    "episode.json": "5869e4b5bed9eac5793beb2b7dbd5b4d8c8cbce20024fe152c81696b51726a12",
+    "reference.json": "d0a82c459fadc4b64d42b8e0bbdc09a8c37da5fe0436c12149b3c431a95e0e8f",
+    "timeline.json": "8471b3991ccd13c7e35865fa1f3f7efae80f47b44a3d23c4b96c2bf20b21027a",
+    "audit.md": "5c88c4934d8709ec6274043608da2281970c502fc91ebd2aa90f99ec880fecae"
+   },
+   "composite_hash": "2c7a3c7ef937ed902d5a2b7b715d37542b292c5f4e1e5fe9510918b99700acd0"
+  },
+  "LRE127": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "LIN-E127",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 32,
+   "story_dir": "benchmark\\stories_v2\\wave3_ext\\LRE127",
+   "file_hashes": {
+    "episode.json": "c0ef5713b86d755d1925e0fc5961bd8e8fbee75dcb051cbbc13db3614ebfeb00",
+    "reference.json": "9c6eb59e8bec7565c71011861ff387de74110fa8bdee58bced00b5f7dae2eb20",
+    "timeline.json": "ba58938a97e77e2c9edd3a703330c88aa95930fdfdc5e4407a8b86c2af59bb6c",
+    "audit.md": "d2f633c288ca7b4e0c6a866c888798694752946b0600a1fe46f6d362109ed330"
+   },
+   "composite_hash": "385ee06f72aaa2cae418931759e68914c712e1b89cdf1a56bb1b81d50cc54473"
+  },
+  "LRE138": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "LIN-E138",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 40,
+   "story_dir": "benchmark\\stories_v2\\wave3_ext\\LRE138",
+   "file_hashes": {
+    "episode.json": "251e3e4c5c7a96be878eba44e778be629dbed368fa233f797a40bbbfa3ed5838",
+    "reference.json": "99cc569db8c6039799dfbe4e76ee3a2b9b49c7de1d19705a2c417ceba5e7412e",
+    "timeline.json": "1995d67e60bc6600b53a913fa832f9703a4d28b708f952333f15ab00b3d705a9",
+    "audit.md": "b7b41501e78dbcb92f1ec31786d60771444300e0a08ea0cf1acf17162f35df1d"
+   },
+   "composite_hash": "6b57dc23055dc1c85a208bd49f9590a389d0dd183ebda7ef55f2aa3806089d19"
+  },
+  "LRE141": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "LIN-E141",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 40,
+   "story_dir": "benchmark\\stories_v2\\wave3_ext\\LRE141",
+   "file_hashes": {
+    "episode.json": "1e015e3e2997b1f4b64d8e152b263b99f09f828cf50eb99c67d56298333f3601",
+    "reference.json": "b183096a3d3583803d2c26a5c1d91e93204bc410dc616ab13a29abb5e95b6305",
+    "timeline.json": "16fdb3914401c0317062073edda86368d49adf2977c8b8e1df7ad6131a01693d",
+    "audit.md": "b48fbfddd4dcf80f692342ddce18331b4fb18f93a1f31804461766e71e332e03"
+   },
+   "composite_hash": "e33fda7ceeedee9b4309ce8e952179c91500eb48b053c0a36e8dc9b48afdca74"
+  },
+  "LRE145": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "LIN-E145",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 32,
+   "story_dir": "benchmark\\stories_v2\\wave3_ext\\LRE145",
+   "file_hashes": {
+    "episode.json": "5bffc9b0ab5220d4486cac44bcf9b10c9b35911a47be20c33478c01e02e082e9",
+    "reference.json": "3d8feb62608112df1b5bea6496abbbd65209c5690e1801c6a10823c042da485e",
+    "timeline.json": "defc8451c935274263fcfebac2b0aefe0ceb48e368fbe56d22a4c2fd8f79b067",
+    "audit.md": "1910c840c7ac101e186b7252b61bd04e77155d4ed70370d9b13ee050fe5d07c2"
+   },
+   "composite_hash": "291d9ea531a939e84d5ff3c455ce65f1a779957671b0d47a2461e4d7b6fb8d62"
+  },
+  "LRE146": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "LIN-E146",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 40,
+   "story_dir": "benchmark\\stories_v2\\wave3_ext\\LRE146",
+   "file_hashes": {
+    "episode.json": "6d8712474881c3d96a943c3e2c0e50a71c81b2573d1e4fabd86bc878582a38e8",
+    "reference.json": "fc2b3049bb44c2d5c681d9ac9b43cc5f4dd99d666673dfe372407348484cd955",
+    "timeline.json": "146d1a4bd9ba4006e8883fe9c39699177a596664c94bf9c3c34731beaadfc22b",
+    "audit.md": "76e295ba1b00c34f3dc145d62cb57913fa9ffa05e246b39ad1de504c2e13bddb"
+   },
+   "composite_hash": "a153efe2204666bc05728f825ed9dcb8bfbaf47e4066ebe123f5dadc2e354ae0"
+  },
+  "LRE147": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "LIN-E147",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 32,
+   "story_dir": "benchmark\\stories_v2\\wave3_ext\\LRE147",
+   "file_hashes": {
+    "episode.json": "34b26cad6be71af5e349e469e76a9c4d17f6f1fadec98cb0bb47caaeb7cc3614",
+    "reference.json": "6308492b0ca2f065ac96e0fab7429390cec30c7cc18cd866ed06f5dab65bea7a",
+    "timeline.json": "496016b405918ae9fb4b18a6abfe37fc1758c437cf8492b513f77e16e4bf3ecb",
+    "audit.md": "480f0b0ddd2dc1cc8c832a25f7d1004dba57fc1dc0788e6474f01f43a748cad2"
+   },
+   "composite_hash": "57ebfcd0bcbbd8a564a4d9897ee05a3335b74d74051a8fb210650b429c297e75"
+  },
+  "E301": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "LG-E301",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E301",
+   "file_hashes": {
+    "episode.json": "3468f4899af2d8d0a1e593a424984bf36ae396abae9b26d4cc169438a27d48d3",
+    "reference.json": "817642072b7fadd1233d961b276c4b6e47ff254bf260217296f0e5b6adeb24f3",
+    "timeline.json": "45df2d458725e27769fa59eddde05bd46eb5ae09f2b847e18d035a5a594fd64a",
+    "audit.md": "719e4a73716a1385c1602141cb67a473f7ead9d76532058982ac2351c4cd85da"
+   },
+   "composite_hash": "062ca1ea63261a553983d5358769fcca3fba94c95aa516495d6c95005c032924"
+  },
+  "E302": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "LG-E302",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E302",
+   "file_hashes": {
+    "episode.json": "0f55d929615bc2ceb4185d2b8a0d87d3ef6e440436662a6d0e72897f283860ce",
+    "reference.json": "4aed7bf6e7200fb9079556d7553008875bb1e5c4023e758ff7966696286e02fb",
+    "timeline.json": "c50eabfbf8e686760751c737078dd5315747a07184a148225218a4ab9192f1ba",
+    "audit.md": "6afa708dcbce6338cf9dcee96a9683b806a4d7bbc2b9991b6674b110196c9222"
+   },
+   "composite_hash": "566757c678cf466feccfe78ec9d170e2aa5e9029a8f33e38ea5834b7adba32f9"
+  },
+  "E303": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "LG-E303",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E303",
+   "file_hashes": {
+    "episode.json": "9d61fbfc5bcb40a0ffeca0a9a7f91b49f066e6b7ab71748e427ca7d896d68c21",
+    "reference.json": "4d3635591f0219042940e7cb31317de59cf36e11c1f1dff23e2ff5889591955c",
+    "timeline.json": "84d1080e2e4cea6e6332939be8e6ccb134c7070e395a829f3b33509e9331cc19",
+    "audit.md": "a016797a9b6e123d79d51c9fd693533c9df3bd46b33b77178d67c6e903bf56ed"
+   },
+   "composite_hash": "50b397441d073cff75cadcf162388405792a0b0501152d501eb7b557dfe2d9b6"
+  },
+  "E304": {
+   "split": "DEV",
+   "topic": "T01",
+   "lineage_group_id": "LG-E304",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E304",
+   "file_hashes": {
+    "episode.json": "52640a3fba61838043bdd47342bb5c7ce21981bcc46a71c437ffdb4770540622",
+    "reference.json": "9da860e18c582c91fb0deea8d943e6477eff23eb4e8056db6464b417f0d84801",
+    "timeline.json": "5cecca5c9d0920837916ddcaada37ecf280101eab0553ebf168b26ccfe461178",
+    "audit.md": "628f567235a6a02f7598e4580465607364e5a1222db11818cc0b321dea6820dd"
+   },
+   "composite_hash": "3d85e2ddfde53cb75093402dd1e2435b279592dcf940ea44a647f866032830bf"
+  },
+  "E305": {
+   "split": "DEV",
+   "topic": "T02",
+   "lineage_group_id": "LG-E305",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E305",
+   "file_hashes": {
+    "episode.json": "1e5c046061ac71dd81c5d7ebb5ff02068d5ce0247b971d58d35574eba27fba29",
+    "reference.json": "844bf1137ae0a57cbe9ac7cd418b256c3fc500a54428dd0d6307de8f396225aa",
+    "timeline.json": "2cb09bbc2429ca9eb8d8a516b154867df41d782ae00570bc4d8671e4a07bfb13",
+    "audit.md": "561c938c17cc2dcc24e8a873ec53d9a88aaef439fb6530ff6a333bd07724e96a"
+   },
+   "composite_hash": "775722704d445bd5c89da2cad9b8ddd22ae897eb1fb09cef78aeada3101192fc"
+  },
+  "E306": {
+   "split": "DEV",
+   "topic": "T02",
+   "lineage_group_id": "LG-E306",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E306",
+   "file_hashes": {
+    "episode.json": "540f1833cbc6f1e7723fd5218b36eeb5a2bb388f49cc19ec5ce37bd9bd5a7fc8",
+    "reference.json": "f884f209a64b3f3a16064b28d08df8a0e09e6bfe922aead2f80b142706fe0bd6",
+    "timeline.json": "7f4bc4b0bf0431a956e7055923aca4ffaf30e3fa1fa87ffcc904d2fefe2edbc3",
+    "audit.md": "3088de2b0a79efbf4997fa17e7081155ad18350ed04532b37eb25498d9ccf2ef"
+   },
+   "composite_hash": "8fe531ab06794033918a6bfacd8959ba4cf99221773eeabfc6ce7bc49fb10a7e"
+  },
+  "E307": {
+   "split": "DEV",
+   "topic": "T02",
+   "lineage_group_id": "LG-E307",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E307",
+   "file_hashes": {
+    "episode.json": "839740e8da1083abd04372a081b822075dd49a7de3d70a14b843dd4c6998f456",
+    "reference.json": "0607f5e88e4484664019f43c7106ded4b881d4249bf448455c1b386be37381fd",
+    "timeline.json": "9188d3196c63046fcc8087ffa3af145a283b840a50dcbd540418cb70cc71d680",
+    "audit.md": "5355a10784d1c75fcb72721ad6c8387263411c2dc708f9cd7370409aad0384d6"
+   },
+   "composite_hash": "8138ce7929ed9a8df91eee4fd9ddb70439ddaa37143e31c892ccf92bbdf5104d"
+  },
+  "E308": {
+   "split": "DEV",
+   "topic": "T02",
+   "lineage_group_id": "LG-E308",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E308",
+   "file_hashes": {
+    "episode.json": "1854892d3d711839ed6dab451cd5492a5e64cedf31a7fb7d5404b33dda21f05d",
+    "reference.json": "19b8fae68458d3cfe9f01c4d7214f6ae49c42e4b2327f4eaa121bbdb137b3345",
+    "timeline.json": "433c4e1bc0d0bd680c433534d241670368c4dc3956c5ead41eed39281f6db4ae",
+    "audit.md": "ec2331eb4208549cc0b0bf7aef9569b88858ce5d95f226cbea0af05b5b88cd80"
+   },
+   "composite_hash": "ebed91304f765cb56754db97d865dd5a7e102006f10cbb4f19deca1b1c047237"
+  },
+  "E309": {
+   "split": "DEV",
+   "topic": "T03",
+   "lineage_group_id": "LG-E309",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E309",
+   "file_hashes": {
+    "episode.json": "db2ca655f4140d87923f33a210b6897294cc5d84ef99c2a1474e190a1b3292ef",
+    "reference.json": "a477e3b44cfd56b88dd375b1399591c4b69f45998132ba9680807674a5446111",
+    "timeline.json": "65b54889cc26c9e7324d637c327d76fe282a494c04e383c9ab1d4ef580179357",
+    "audit.md": "b9a094993c6a3e30fac9674bcd051f9544040b73c8440d0370ddf87b56771db6"
+   },
+   "composite_hash": "70b43bb460aba2778c70cc828c7eeb081c10258d1010620278e4bf1a5428e4d3"
+  },
+  "E310": {
+   "split": "DEV",
+   "topic": "T03",
+   "lineage_group_id": "LG-E310",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E310",
+   "file_hashes": {
+    "episode.json": "27b3600fc0fea8ffa76bad19f524f894c9bede05e0da7d6733808a8d775d246e",
+    "reference.json": "f7fab55194f48747d57a89080d9da9cbb98a9fc3c86535590506c707121420f4",
+    "timeline.json": "95b022e55fcf514f3a1841c3630b6f2295a560e390e60c76e3bd12555bc137af",
+    "audit.md": "7d5c5224dd405eaa034b0a7b216e48fa95abe8bd7367a189ef7de6acfef30ff8"
+   },
+   "composite_hash": "e41ca49e7a86ab027aff420f48dfe02f57dc26218c1ee6b0758e2cc423c3bfe9"
+  },
+  "E311": {
+   "split": "DEV",
+   "topic": "T03",
+   "lineage_group_id": "LG-E311",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E311",
+   "file_hashes": {
+    "episode.json": "59f03a10359f6d8efe9f0c4f4c6cbfa061cf6f666f303542b932ce73e1080b35",
+    "reference.json": "ef9d55389a8de1ef6c59a60a80a39874088efde977f012a25c64ef38015c9d4d",
+    "timeline.json": "5ddb95b800395ab2639d190c0407b613410f8487c8f8020b70e59a1a575bc45f",
+    "audit.md": "2deffa5507514622628392582093a0cf1af83b9977b7d790d472e26f7675bad5"
+   },
+   "composite_hash": "bc24aea3c6ada540b1ea8ff564bb2a9d242bf29c37bd24fe519df268b359e1dd"
+  },
+  "E312": {
+   "split": "DEV",
+   "topic": "T03",
+   "lineage_group_id": "LG-E312",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E312",
+   "file_hashes": {
+    "episode.json": "66d4a9ee919072e98f153fd93448c4d45c4ffde6e5c2d684071b582af41eb6ee",
+    "reference.json": "2e3b23f1ee287865495eaefcf3274dadc54496222fa10077c5e7fcf0aac6d47b",
+    "timeline.json": "1541ac4677e227fe8366c15271e7d95cc9bfe7364b27e42ca6335ada0ee9f1f1",
+    "audit.md": "06277d91e6bc313e8210d3acebcd8c09dc42c67e2e3682c0d6e68fae3f570e48"
+   },
+   "composite_hash": "da163f0bfd2bb83c6765f521679699263aae9eb7d6b1981a92b24e4d8517c1ad"
+  },
+  "E313": {
+   "split": "DEV",
+   "topic": "T04",
+   "lineage_group_id": "LG-E313",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E313",
+   "file_hashes": {
+    "episode.json": "c11d2902e368c363adf9e4c24a4e116cd7a0f70a6dd6e6f0ac5f3af9253557e9",
+    "reference.json": "32296dad71eaacc532a789587ad46afed8df002ff3552c020c55ad66cfbd901b",
+    "timeline.json": "7f9e451bfd1f81f62a55c69a9d97bd4e144698e354a158996d8bd2ff05ddfeb8",
+    "audit.md": "b38ddc305b78ba5503f028462b9781a9b3ea746e519c8fefcbee975be7f7615c"
+   },
+   "composite_hash": "3d112bd013b69da580b98f2dd228e7e16c197ddf02d5ed59615805dd67d3007c"
+  },
+  "E314": {
+   "split": "DEV",
+   "topic": "T04",
+   "lineage_group_id": "LG-E314",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E314",
+   "file_hashes": {
+    "episode.json": "cc1396d120360c1365207620a2f32ec39f10df7fe02c627e4fc322deaac6122d",
+    "reference.json": "882393cb3b6a6b66082be1a6b9e9244d0668a3db36d50d2a6db4145578f86989",
+    "timeline.json": "059ae863583eecffe65edc81ca21a5365265f2dd1e8597d2094569a2b44e7b56",
+    "audit.md": "9fc67bb7b574b810e8d51fa0a6b2f457642963333db9dec61525c84577c8f165"
+   },
+   "composite_hash": "5e419b01cbd92ddd9de1c14befb458ef72b8d6a104c61be642ce01d95ec39a5c"
+  },
+  "E315": {
+   "split": "DEV",
+   "topic": "T04",
+   "lineage_group_id": "LG-E315",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E315",
+   "file_hashes": {
+    "episode.json": "aeb698d39900974c2a67cce08257e443c688578ea5806a8fcddf4eca9abcf61f",
+    "reference.json": "b882c3e39eae5ac82a3a71241936014fd3adce8ec09144f11ab9c1f3262542e4",
+    "timeline.json": "0bf5142e69dcace99cfb84c6ec7844a5b9f896f410794ebf2fa2072f98ae66ad",
+    "audit.md": "aa96388acdea79f58254a57f3739667eb5d48c7bdaf7c58da7eec694dfd2e554"
+   },
+   "composite_hash": "3df5a859c529a4315fc035f360e1b440bf8e7bf9e9e4da3e75b6d0bde3d2b0c9"
+  },
+  "E316": {
+   "split": "DEV",
+   "topic": "T04",
+   "lineage_group_id": "LG-E316",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E316",
+   "file_hashes": {
+    "episode.json": "2da8715552b264a8286cddf0f84ea5e48174dad406eb56de338c1cd2e2615ff4",
+    "reference.json": "b9c38faaf181190758c90076ad5b3d781ffd59290a8f596dc6ee15ddd4127f13",
+    "timeline.json": "198e6075ad1f617339489733f7ce06cef5ed754ccd3226cf572f89b78445005f",
+    "audit.md": "b36713b09ccb50db98becfab09cf50bbd37e3c583caefe3cf2b6f9efffa36ffd"
+   },
+   "composite_hash": "8fd31b022fbc0d317283f7c7397fd0151ebefe51cf8d9d4e5e427b924819eebd"
+  },
+  "E317": {
+   "split": "DEV",
+   "topic": "T05",
+   "lineage_group_id": "LG-E317",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E317",
+   "file_hashes": {
+    "episode.json": "33d6c5b3b427d036e08c8d4cb48216478b04ed49b41b8381a56571b6908f7209",
+    "reference.json": "b6eae82e4a812e7e8599602306ed27c8a0e1fbaf3da57436a4077a6e1354ec54",
+    "timeline.json": "960ecef3fd10fc26421815f020afaaa7d5b42801ebd4cc5cf0cfc81a43c878df",
+    "audit.md": "3375ffdbe196d26d7f5200b3d701435e3b629d21b5b5b2869d9833e9ee31a4dd"
+   },
+   "composite_hash": "a3de39c4600e34ddec65ac41806ed515a06747c9dbbd3cecc84cf240f5b06520"
+  },
+  "E318": {
+   "split": "DEV",
+   "topic": "T05",
+   "lineage_group_id": "LG-E318",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E318",
+   "file_hashes": {
+    "episode.json": "8389bb9e81283e58380585d11f3bc3302191e66bbec039d633fc4a97c211302e",
+    "reference.json": "7a827a02bfb4f1b1cf878e3b55c42bf6f9980d90b864de337b23f74c37a4387a",
+    "timeline.json": "5ce4afdffe9d49b7edf1fc29bc57af1725cedf45cc60fcbf0bf84d5aef661faa",
+    "audit.md": "772f4addfe3f5e9bbee8796d142446c57298c32ee780dbbb5719aa6c5e334434"
+   },
+   "composite_hash": "f2ccd77a38c80ea59ec9f1ca6cdbeb7e5821a6b0703aaec33ec9b86effc3b1c0"
+  },
+  "E319": {
+   "split": "DEV",
+   "topic": "T05",
+   "lineage_group_id": "LG-E319",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E319",
+   "file_hashes": {
+    "episode.json": "88cff78b0b53d4610646fdc20a9693c089eddf64d9d8807cf4a961a29a9f90f3",
+    "reference.json": "5e77b4ada378cec1e437f952b126066cbe60824bc19a7603261da0b476ac46e2",
+    "timeline.json": "c7bc2e705befab97a361f787b8677679606a3468a7004013f87a468d26222eab",
+    "audit.md": "7afcabb9b8003786af689c7ba678dc7e3928263fcac5390fef2bf6bd3636c000"
+   },
+   "composite_hash": "becc29a645f60201ddeddade617ee1b23a627784481b7264838da2bf47c2d4ca"
+  },
+  "E320": {
+   "split": "DEV",
+   "topic": "T05",
+   "lineage_group_id": "LG-E320",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E320",
+   "file_hashes": {
+    "episode.json": "d00e5480d95635c323f640b727e7fb400ec7363e511ebde220148ff720550df1",
+    "reference.json": "0e2caeb491a562bbdd0dcbe88b7e8c029fbc094dbc111b648478d6736893474a",
+    "timeline.json": "7ce2b2ab4766c460ff4831427b538d998cff9dadccf4775dc08d9da9d08a7c97",
+    "audit.md": "1d79571f655b3e71f3d03a5f5b2e710e192bbbecf2de335a8a646f053aa12464"
+   },
+   "composite_hash": "dcfae797e371374e5a195645255b27fb596df637a2a94b8e1ded0ad7b695669c"
+  },
+  "E321": {
+   "split": "DEV",
+   "topic": "T06",
+   "lineage_group_id": "LG-E321",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E321",
+   "file_hashes": {
+    "episode.json": "1759497c11b3ef93eff889eac88109fc9d0f525f408e7bdba0485280d723468a",
+    "reference.json": "5de3405c209577de0900a5909b3adc3030d25adce8429c7ccee94e2a983b993c",
+    "timeline.json": "8c466148d925cb26c4094d70023d41e5afdbd1ec14546ee758198236282623fc",
+    "audit.md": "d17f93ee76d08854ee16931c7608e9fe74a3e8c57272937f2cf48626cd5d42d9"
+   },
+   "composite_hash": "749d0fcb298d40f9e55c62beaa625cca3910b5eeb82af33d12a97d3c98f56f4f"
+  },
+  "E322": {
+   "split": "DEV",
+   "topic": "T06",
+   "lineage_group_id": "LG-E322",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E322",
+   "file_hashes": {
+    "episode.json": "fc918dccf927b00508afddf530cf4fa1d9c69c3703dd11dbfad6bf876251e1d8",
+    "reference.json": "c62f536287342e0bc4e21a4ce875a88ff19f1b37bfd54a302cf3b67a333c85b4",
+    "timeline.json": "ab89ce6c6e64531fd81a2f05035c0952a3b04bcd32f6ced3d35c66ec53608017",
+    "audit.md": "1816c354352f916c88be5be5765a2c954836d4768bf097e7abd9f6d76e855f6a"
+   },
+   "composite_hash": "62291edd39e65d56a7ad5fe32713df155edc06a268a348cf0de6ba6eb34b8d4e"
+  },
+  "E323": {
+   "split": "DEV",
+   "topic": "T06",
+   "lineage_group_id": "LG-E323",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E323",
+   "file_hashes": {
+    "episode.json": "92c0a0ea2c43337fb84e0b9f4111e08b0eae3fb725e308d9c4f2bb14bd727f40",
+    "reference.json": "3c5f3144aef4080360b617b138bb0080a2ef800751a2de21738353394a328db5",
+    "timeline.json": "ef5f37520f0195a3af17a303267438d068c4c97c05c951eb3cb4e831ddf7ae12",
+    "audit.md": "4f7e195b24698995b9284f9a76792a39918922a0535c8730c88cddc261742bd4"
+   },
+   "composite_hash": "8b428a81b7e37ed80a1ab8efada16c85165c79f3a0a4391d898f466e0912e11b"
+  },
+  "E324": {
+   "split": "DEV",
+   "topic": "T06",
+   "lineage_group_id": "LG-E324",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E324",
+   "file_hashes": {
+    "episode.json": "f599cb81aed64a15d76d0998b0c8a6bbf3bf158d70eab91bc2c090e466436c4d",
+    "reference.json": "c397016610772da2e52c076817605f73221d2c449e5e2c3ee5435f085cbdeffe",
+    "timeline.json": "db33cf3ef870e77a9841bc68dc3a4bf165869761480cb71bb027da81c6160f4d",
+    "audit.md": "7f94986cf119309a660c86953e04691f80e43774458f3d775d5d97642438d2d0"
+   },
+   "composite_hash": "7605d1c4e8c9fbde8d7cc93de9a5bd9e81ab27b09266c98b7d3b4c13b9adbedb"
+  },
+  "E325": {
+   "split": "DEV",
+   "topic": "T07",
+   "lineage_group_id": "LG-E325",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E325",
+   "file_hashes": {
+    "episode.json": "47c89289a0fd735584cbe332e10eb9c63f873e3c6449877e71ba9a430c4b6ee4",
+    "reference.json": "fd3f65249d2a7a62b408050e20ae3cdaceba08c13b87e22b3c4331f6a0bad65b",
+    "timeline.json": "32ec52e0e141b84ca2637dea3a93ed809ae88e698555c0181c894bbe7ff4eb75",
+    "audit.md": "94f0e9339436fc620aaea1d90db0da2572a93285b8a14f127f716f1fca821c63"
+   },
+   "composite_hash": "70804d431c06b702addf0f51de8d99b90574d3c735252f2d1abe25d22e34ca38"
+  },
+  "E326": {
+   "split": "DEV",
+   "topic": "T07",
+   "lineage_group_id": "LG-E326",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E326",
+   "file_hashes": {
+    "episode.json": "c9732c1d7716dea2d9ed273e66b306aabfad884b5335aa7329bc588b4af73c8a",
+    "reference.json": "fcde6600467757e57d61b52e15492bcd614cc423c92028da11c7fa745f8aaa6c",
+    "timeline.json": "ce6c3460e65ca293d0f9f47ada86ab4de103eabbff988ffbacc30258fe66f20f",
+    "audit.md": "51aa02236ac5d81fc532f22d27a04d2c21d7cc9945d6b61fe0c5fcff3565a9b8"
+   },
+   "composite_hash": "b24ef11a4a043684fe29719b27d51fe181e80a9e90775dc5e4f9dcba77ac9e31"
+  },
+  "E327": {
+   "split": "DEV",
+   "topic": "T07",
+   "lineage_group_id": "LG-E327",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E327",
+   "file_hashes": {
+    "episode.json": "ea025ea3eaad3b3be72af96af870fe0207cb4870520cb7b2bed751d3ca7342a3",
+    "reference.json": "171eaa9b9c9d1c5aaee1270930791c54313e63b39199f6013651b2ad409c5b23",
+    "timeline.json": "ee97717a55ec8e91291213d812817ed4ac4bd36f99efa684ea3c024f56510609",
+    "audit.md": "83ae15c9821de352f66d3f6ed0a2671adf5382b73abab9d504aca774f8194a6d"
+   },
+   "composite_hash": "044990db180669ae5eebd95650c454de09b7ab816ed8f14603e450e776ded224"
+  },
+  "E328": {
+   "split": "DEV",
+   "topic": "T07",
+   "lineage_group_id": "LG-E328",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E328",
+   "file_hashes": {
+    "episode.json": "6c352b1521ac6839f5f954db13ac00a67c4da6051f57f157627128c03bc9f3ed",
+    "reference.json": "4deef57e5fdba664667c040452880d3caff8b468871c451e6efd0b9bc1b2af03",
+    "timeline.json": "fde398a1974368a4f6169cc6dbee5ff1b688d0c38bd7edc1a593820cd3b3b3d7",
+    "audit.md": "1e2319bc91c3db401396dc0f8c8f2ce9a8dc8519e23ea4380adcc22035d2a6cd"
+   },
+   "composite_hash": "ec31928003f5d02de0ff8c6920e2e92cd595c99c4fe4d1e0999962edc6f841a2"
+  },
+  "E329": {
+   "split": "DEV",
+   "topic": "T08",
+   "lineage_group_id": "LG-E329",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E329",
+   "file_hashes": {
+    "episode.json": "425affaa700aeea74d7d1579c444ecb0e87c427b7a52a47be2191c3218a29071",
+    "reference.json": "2beece4e6372d4f392fad20d8e669de7ad874849447e5e9c27fb43ed7e87605c",
+    "timeline.json": "ad415b232b0d956372b9ae1d9743fefbbfc4395aa0020dcff25a41d782be6a5b",
+    "audit.md": "05641cafb5d081c77e71fc52ebb2a6d3d5cf4e7aab291fc2a11eddff3c6034cf"
+   },
+   "composite_hash": "5078424864a92460cdb0f6ae106faa4eee741f1892ca0632438d12609fdc6565"
+  },
+  "E330": {
+   "split": "DEV",
+   "topic": "T08",
+   "lineage_group_id": "LG-E330",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E330",
+   "file_hashes": {
+    "episode.json": "9f9070e5406bd0c22f32bc0986f055695ec312a74b981856901faec36b6da420",
+    "reference.json": "defc27f43259b14452d2943add1ab539a9711886af1f7f650dc2186855c65809",
+    "timeline.json": "66109b9b57f4e9313a889a0d4c5d38e940556be58aab0d485f604f2d8c42a7e9",
+    "audit.md": "68a62523fdda4710cb92770136394a88853e884ae654f07022e4fc6fa6ac5547"
+   },
+   "composite_hash": "4c9eea00bfc8dab420f0752332116f28cac685f9a5da42fcd82dc6c207f6e451"
+  },
+  "E331": {
+   "split": "DEV",
+   "topic": "T08",
+   "lineage_group_id": "LG-E331",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E331",
+   "file_hashes": {
+    "episode.json": "1484ef41740457b09bee41c799fe90c710f4f8288e5ea60fcae0b5a19ab8116a",
+    "reference.json": "fe93aa7a7fd3bd989412188b6493b05efaaa99e552631dfbf110afbd5960ef1e",
+    "timeline.json": "8aa2cfdf3e5bdcf0106807d7602fadb7d616b4d8241990849131188514963015",
+    "audit.md": "29f0e2a0468473fdf15abf698175ad7d2029dbfa794f93911e431e2be99cf9e8"
+   },
+   "composite_hash": "ba7f199a93907b7d58f4f7cfa98cd178d952098dca62a346f3057c5524130b9b"
+  },
+  "E332": {
+   "split": "DEV",
+   "topic": "T08",
+   "lineage_group_id": "LG-E332",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E332",
+   "file_hashes": {
+    "episode.json": "f5e64dd07301b54c6682cf680e4cec40d5d7a68ddc0f8285b824a7d9612b0c83",
+    "reference.json": "d9fee945fb71b57b93de1f576587568842005ee4e9ef5de359551f7d877d902a",
+    "timeline.json": "0215840bdef1343ce020a82bb7933e26c46c7a11f936bd0d997b61cfc20e2826",
+    "audit.md": "f39a860422ae18f27117e7a6d7ca8f747cd53266378949910ce72ac86307b702"
+   },
+   "composite_hash": "524de1a164388e326b1257446cfc292f8f06d79c98634de95a19ccd10c0bfb20"
+  },
+  "E333": {
+   "split": "DEV",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G1",
+   "twin_group": "T10-G1",
+   "twin_role": "original",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E333",
+   "file_hashes": {
+    "episode.json": "c85710107db96787c43a837cd5cba003023d33788022997a46fc0fb839c5a5d5",
+    "reference.json": "1bb9c9bc0eff69d662373ca39a89671d963b04cfb744ef903d27b7c9481661aa",
+    "timeline.json": "3fc0133bdf10b467e80261b3fdc6f5259f26f2decaa721bfa4a1373e48e7e23a",
+    "audit.md": "a2cfdac5434851f1e3119a2fdef09deec462f331571f9c89f79d4efb6ee45142"
+   },
+   "composite_hash": "01417cd5d20c0a91d2a77d2094737f7efa629fc29d015b7c890fac6d44f625ba"
+  },
+  "E334": {
+   "split": "DEV",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G1",
+   "twin_group": "T10-G1",
+   "twin_role": "counterfactual",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E334",
+   "file_hashes": {
+    "episode.json": "9bbc9a1c21f2de5e1c1293c3c09680320621691ffd7343f8dd75e81618bd1439",
+    "reference.json": "7195c97030f6357b3c39192bae7b9991553ce30d8134b1f7ce9156697651fb91",
+    "timeline.json": "0b0e290554958dd7f6a2dedb3c1359cb8a80fd587f799e628f2d7c4491101fa2",
+    "audit.md": "1ec37663a2e3a4c999215c6af7a71eac8f70b5f9333e642d2f93aff028875a69"
+   },
+   "composite_hash": "dbcd2d64be80208cb59c88ed0e9663ad7b82224228a62a0845c06b7d55104c44"
+  },
+  "E335": {
+   "split": "DEV",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G2",
+   "twin_group": "T10-G2",
+   "twin_role": "original",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E335",
+   "file_hashes": {
+    "episode.json": "20b5e41fa2cc47dc84b65e90451aed2b3d83f4ff3357a65992a64d94aba062b2",
+    "reference.json": "44e76652a5a7fc80ba1bddded6fa2d7b3e8e2e8f30643390ceda50da65dc07b8",
+    "timeline.json": "800974199fbc17a11ae636c410f79083258acc20701135e2ed75d89021e31457",
+    "audit.md": "2d0a3193c0e10e35858c9b96d5232afb1fcfa6bb92f4c8c77aa326a0cddbee21"
+   },
+   "composite_hash": "0e6c2ce3f482b859e279543ccda44b82826dbbed4b7df09812176d4820d9544e"
+  },
+  "E336": {
+   "split": "DEV",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G2",
+   "twin_group": "T10-G2",
+   "twin_role": "counterfactual",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E336",
+   "file_hashes": {
+    "episode.json": "7ea24cfdf5f9d263411b4f76f74c37343784becc01f4188ed2a73f0a88751b5b",
+    "reference.json": "65d43b180d9fc06b65020d27891b394cd8f37d453e5eb998f8debab9000bbd99",
+    "timeline.json": "537f5eed455494141782f1314591976ab647eb1f9b3529b21ff6dd15e0e70146",
+    "audit.md": "0a98789518a168660d311bc828e5e5935f57e1b2382f9405c03d2c19f8ff5f75"
+   },
+   "composite_hash": "d14ef3ea7030f71af42f82a90019f33f1c287eccc95f4e432869e961c83c42d8"
+  },
+  "E337": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "LG-E337",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E337",
+   "file_hashes": {
+    "episode.json": "74a053bc5763b14a13d837822bba14878a19e4a6600e9e9c5e8f089b4b9d1db3",
+    "reference.json": "5617ed8dc28e1bc2445ccd49ee7cdcb86f6d110a9695e8cc23b4f9eff7f6f128",
+    "timeline.json": "4d1ed3cd1f9497bd4319c8f90d3f449cff65de85d225e31e62b5115929bda99d",
+    "audit.md": "81f10d83e7712b13519fd8b92bfce7992073e805439cfcd7a0e13f6f6e638cc2"
+   },
+   "composite_hash": "71508ee7398dc1d2bb97e52ee3690aebfb0a6e04397a4567227f91c448dd4b3a"
+  },
+  "E338": {
+   "split": "DEV",
+   "topic": "T09",
+   "lineage_group_id": "LG-E338",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 32,
+   "story_dir": "benchmark\\stories_v2\\wave4_dev\\E338",
+   "file_hashes": {
+    "episode.json": "1c6878befb3f85612c9a1a838a474d7a2be02b60eb4dd1b7833d66a9fa2db856",
+    "reference.json": "e4785cfc40bdf2019411944d52844ae5859447ee4ac9ca525f16f64fe5f13575",
+    "timeline.json": "dd8fd4b2497bb21ad8c3074f6c16724ebbcb3e2bde223278c43acf60f50c3be5",
+    "audit.md": "e21b0ec7b875518ca0a7166032ab7744b59c398e935cd6620618815ce5e36dd5"
+   },
+   "composite_hash": "b08cf88cd59901ef582c1a53ebf1c9e4a86a299ba196d143a3d60f1c3ea4ed99"
+  },
+  "E339": {
+   "split": "SELECTION",
+   "topic": "T01",
+   "lineage_group_id": "LG-E339",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E339",
+   "file_hashes": {
+    "episode.json": "7e952e5f2c3f9f274b733ec4bf10fc6d2814f26b1e0aa5e744dcdbcf3d1128ed",
+    "reference.json": "f7c222b106be2beb1ac150f4eb829fb0ac3057f922e7c6da7aaba3218ee832d6",
+    "timeline.json": "bfc297c6201af6d6dd3b76511b0a2361f23419e3088a00c9ee0fa7bad1e84e29",
+    "audit.md": "c8a77b12e6f2ff8dca58217a69bd8ae89c22a2bf9a0eeee8b30f99bd09eed3af"
+   },
+   "composite_hash": "6f3d7b1a668e4681400ad50b67d26e894e9c400717005718c9d6eed5ac5f7292"
+  },
+  "E340": {
+   "split": "SELECTION",
+   "topic": "T02",
+   "lineage_group_id": "LG-E340",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E340",
+   "file_hashes": {
+    "episode.json": "f0f50d09a8d5c259d84265938a664e8fb8251f10c1de1c481c267344cf9bc613",
+    "reference.json": "92b69f7d3b78bbdae4d6ec47e546c873f463a53182a6973b5b448541e6103714",
+    "timeline.json": "6c1fc2aa6b368774ecf4cd2f2c4a83c79cbca4e2a48f689026175b5ae2f3e127",
+    "audit.md": "2ec1081385777ea89078b7e33d7a9d9b2e162cb2a9416cb99b3fa7603a8b32ae"
+   },
+   "composite_hash": "b6a9047bf78338966b9561ece832f11476d015575775a79492733faf6e2b3a18"
+  },
+  "E341": {
+   "split": "SELECTION",
+   "topic": "T02",
+   "lineage_group_id": "LG-E341",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E341",
+   "file_hashes": {
+    "episode.json": "76a8b513b04d175725feb32a305562cc15231769c8f77a87108f4356766c4b90",
+    "reference.json": "a84c354100d3414c4b7818980826628d4c944260b6b123220899e69d7bf3dcca",
+    "timeline.json": "5cdf1142d34f98d567cc0620637fd66edbd0d462a34a035420fdee3370405763",
+    "audit.md": "e27f63cc0d2cd2fc30ad213a4c6001910ff5f2fbe126993ff89f6d125b6b2918"
+   },
+   "composite_hash": "83d57e2bd7176b3cab4a1f2060a1f15d4653bcc7daf01f43be129fc4fd4360b4"
+  },
+  "E342": {
+   "split": "SELECTION",
+   "topic": "T02",
+   "lineage_group_id": "LG-E342",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E342",
+   "file_hashes": {
+    "episode.json": "0b0f23df2ebf5acc7f1d5d230df7a96e1fc41918bae694a9796277cba54e81e1",
+    "reference.json": "d4fe4f06258be8f0c62f57debb991b19e64b18d74a1567f1325ad4788c2bee7f",
+    "timeline.json": "c42d75e5bf8c9cb9fb5bb924251d81516d14de0334757f409b06e55f31551a4f",
+    "audit.md": "bc58b6cfc396ce54c5d18c2669981412e7b74406880a2692a2d2fd600d4442e2"
+   },
+   "composite_hash": "16b48c4d6db01178c6efd2cb19bddaff4352ee9fe1bb29f625da205421c6ea92"
+  },
+  "E343": {
+   "split": "SELECTION",
+   "topic": "T02",
+   "lineage_group_id": "LG-E343",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E343",
+   "file_hashes": {
+    "episode.json": "dff7180331cf265ec2cf50e3b7d94c2ab65b773f116ad4ca579d9630a7a82d22",
+    "reference.json": "ad0078f3e49761749fad9521194d971644061337211a4dcd36cc3a6215e50d9f",
+    "timeline.json": "7a403d71295a8f0c5f190bdd756ff05a1b38c79140ba7c82d97ec08077da8abe",
+    "audit.md": "f3aec61610708efbafcf32717b64cae388818930a3423640159a184ddb6bc4a8"
+   },
+   "composite_hash": "bf8ba8a4f9579037e377484fc4c7e5aa954da243cae93fceb9f9d175dbd54f2f"
+  },
+  "E344": {
+   "split": "SELECTION",
+   "topic": "T02",
+   "lineage_group_id": "LG-E344",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E344",
+   "file_hashes": {
+    "episode.json": "7ccf22758a2d7a2de9548402932b8f28530fd8134d21fe3dc50c450ca0d728c5",
+    "reference.json": "fd406b2723ebec331a364bbb02878b062460a3f2f9dede117d5e429d77c722b9",
+    "timeline.json": "e5be2007f69627c83a4374d815f0abe11346ed2dbe5a54b9b618c02c53b0551a",
+    "audit.md": "ce2262e8eeb9f8f9ce2f865a79e3dec1ac8ba098cbd803bc4f954904ba9c9fed"
+   },
+   "composite_hash": "86e059291eaa29dc5ff2258b70509a420489051b085c3fe337b811acb8916ce1"
+  },
+  "E345": {
+   "split": "SELECTION",
+   "topic": "T02",
+   "lineage_group_id": "LG-E345",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E345",
+   "file_hashes": {
+    "episode.json": "cb4805fbe4b8761571f4d157b56ba98567d114365ccad9fe4e70410223973e7f",
+    "reference.json": "52c517dbab6b934c3b1c9b0f14b95e575e80532511167bc4d9e3e24aff5bf728",
+    "timeline.json": "b29c85ec64d229ad6a7d04162fc8ae62540765d9e6923d300165d3e83ec3c85e",
+    "audit.md": "b9002d12f6367068806029432801d612d3f5df1c6bbb02dea85fbd061286d816"
+   },
+   "composite_hash": "e0364aab9ee9a831ccfd0490b1c9680cf7c575fbcc9547ac47694b465f0b847f"
+  },
+  "E346": {
+   "split": "SELECTION",
+   "topic": "T02",
+   "lineage_group_id": "LG-E346",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E346",
+   "file_hashes": {
+    "episode.json": "0802a9a386b7598520a30a40567b78d61955c928edd71a71c1ac1a559d46450b",
+    "reference.json": "3121d5018703b49695e99076a0a6010c99ca77f2793c669c0cbedb8395f66a4b",
+    "timeline.json": "5135b384a5a3b4db176777d338af3b8693086df129eee5c0df4fafe65b5b6955",
+    "audit.md": "238987a94c669cab455b8e2f279dfb2eb4f97685098453dd818384b3b8b5ffdc"
+   },
+   "composite_hash": "75fbcc725c1810bfa6324da57d81086a6f2311d9085119bd9fd164c5311a40c8"
+  },
+  "E347": {
+   "split": "SELECTION",
+   "topic": "T03",
+   "lineage_group_id": "LG-E347",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E347",
+   "file_hashes": {
+    "episode.json": "a9d3ba92eedb66b2139ccdd691785bebbb7e7016bee0dea86c05ab8be856db1e",
+    "reference.json": "ce366b338025aa16fa2a6be2f992f5266a444f66ed03b2ef917d0ed31b1f4655",
+    "timeline.json": "c65811f7f3b1030c8917649173ba4a4293a0fa90f2ca1355c3bedd7e760026ea",
+    "audit.md": "2c033a11a3418f9053128dda05ff1ac5de83c719f88aff18634c47cb9445db83"
+   },
+   "composite_hash": "ad3315bf3c6a170cbc97e96d8431463141ef1536b5f09b312098ef14e3387abe"
+  },
+  "E348": {
+   "split": "SELECTION",
+   "topic": "T03",
+   "lineage_group_id": "LG-E348",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E348",
+   "file_hashes": {
+    "episode.json": "063d72163b53377eed4ab31e57840f25dc5ce761ece8c2cd582a777a87cb504d",
+    "reference.json": "2bae20d303a5e5dcd76f94e1a32f7f85b477acbf588e0fb7356b8601992890a4",
+    "timeline.json": "897ba79a5e384910c0961a6022531e026298d4e6117ea76efcf5807bbf198fb8",
+    "audit.md": "fb19dfa517f5ee74c3b477d37f538e9f410e1af0e1d78acf6100a59815be93dc"
+   },
+   "composite_hash": "e08f28615f8582b5e489b3b43b2aa850b8f742073d05f714d960a9d78b211a22"
+  },
+  "E349": {
+   "split": "SELECTION",
+   "topic": "T03",
+   "lineage_group_id": "LG-E349",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E349",
+   "file_hashes": {
+    "episode.json": "0a980acf453e5be72132dc42a65a561cb4d24891a5832f92f44d85e7225e3796",
+    "reference.json": "47ee7e36e9e74affef5345d45f356d9cf0f80ebafd60b171bd31797ef09b6ce1",
+    "timeline.json": "94675efa404feffdf5f8c1e7aaa11405d87cb3ff7e113d30a82913ff6cf41e69",
+    "audit.md": "c1e1299fee26e7c70c24071113eeacb491bd699ad6c0727b7efe22660580d6f0"
+   },
+   "composite_hash": "f76e2a9200a0aaf51503988e1e462f4ea40da38c37a526049248eead565ef4fa"
+  },
+  "E350": {
+   "split": "SELECTION",
+   "topic": "T03",
+   "lineage_group_id": "LG-E350",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E350",
+   "file_hashes": {
+    "episode.json": "b78340e18328754bb8185ee67294fe3bdef560f2cb12edc22670fc02f5162681",
+    "reference.json": "18443c20b3e0fa1e6870dacfc79a2de7d7e1c2670771212e5b4a0fa0db400fb7",
+    "timeline.json": "3a93825fbdfdb97739ec549314482737139c10a700cff5a81db02c0e4d7c5922",
+    "audit.md": "8d40bc5171ae680996d7bedf33ff239528a8c07e975fca4f68c0622f4fd738dc"
+   },
+   "composite_hash": "bc9f55f196d00614a3bb8c4286c060671d9f04068c2f267c861bdcd87f1ec1ee"
+  },
+  "E351": {
+   "split": "SELECTION",
+   "topic": "T04",
+   "lineage_group_id": "LG-E351",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E351",
+   "file_hashes": {
+    "episode.json": "8fed4fe5d1f10ea1e90d1336a3efb54a9b9bef4c689e4065657130fc61d9d753",
+    "reference.json": "be044c01e1c7c7c4fc75a2ba0190f24eaa68e436611d2504bb6ff6a891e91f79",
+    "timeline.json": "b6f9eb097d5e8f758e928a90dba781f3b256a2b5edf0611de7c90a3baf469cbb",
+    "audit.md": "f2801afeab08124c815ee067fec0d23be5342b90e624e44bfbe4771ab5e77635"
+   },
+   "composite_hash": "c2e344ec89bf4fca2f21fc67f44234071535b15c800038464ac7652cc5293540"
+  },
+  "E352": {
+   "split": "SELECTION",
+   "topic": "T04",
+   "lineage_group_id": "LG-E352",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E352",
+   "file_hashes": {
+    "episode.json": "bf8c0772563445c1fb5926bf05802f491b74a30c4bff29ba40c9ee889631d117",
+    "reference.json": "af9e4f91cf1241cfd4f242fec29229ebc7f55313b23569481b329138d88289a9",
+    "timeline.json": "89e9d2a69e49a0f42574c0ae7d55786ad7c6d650c030cb469c6665451bca3457",
+    "audit.md": "0e348125a4d23059fdb7724baa3cad68bb7d59730d239ffde8cebe5686f6ae46"
+   },
+   "composite_hash": "ac1cbea55b758935e7e1fc6112bffea39382d883b66447dd75ca69932d9f97c3"
+  },
+  "E353": {
+   "split": "SELECTION",
+   "topic": "T04",
+   "lineage_group_id": "LG-E353",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E353",
+   "file_hashes": {
+    "episode.json": "8252d06ccfb804c84d81af633931073afae7baae402f4880c0be10f46425d822",
+    "reference.json": "653c21af0cc5da790a05f4c49640c66a419ff2adcf5358825163b4b23d305fbb",
+    "timeline.json": "b55966ed8fd2d01e364c2afa4e28c5174aa98b6b36b4fdd19205b620603e9eab",
+    "audit.md": "37d7d7f5f85534578aafc2f34ea7f7a7519bfc9fe070c78d3941c8eb75dda7d1"
+   },
+   "composite_hash": "6813c2631b84cc7c23db83c8bacee5f01fb03e212f20b23c537e3623cc732534"
+  },
+  "E354": {
+   "split": "SELECTION",
+   "topic": "T05",
+   "lineage_group_id": "LG-E354",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E354",
+   "file_hashes": {
+    "episode.json": "ac0353d71e08c74d6c5f6c8f762f937e9ed904f50aaebfcb8127e7fd000db1d8",
+    "reference.json": "44d5eb5c4d58176398b17f2a66a513c0472fcf2deb71c5f79ce0ef0286e7962a",
+    "timeline.json": "db85edffcc774983775f76d238ef18bc388575b13780f11e8e0c6eb734699208",
+    "audit.md": "7ed0d4c567628b173bdabe6dc4a3f4ab195f97a19b610dd269b40c634c980c61"
+   },
+   "composite_hash": "01799604167598e3b6d647272b9b7dea282a495b343aa081c70f29126b3b3bc1"
+  },
+  "E355": {
+   "split": "SELECTION",
+   "topic": "T05",
+   "lineage_group_id": "LG-E355",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E355",
+   "file_hashes": {
+    "episode.json": "a05d770db48bf42092a00d99d8dd54bd14ff903cc80a2cf254440a55a68d55ac",
+    "reference.json": "e23d8244a60074f4ef056edb49d34b0b62d1b9a0c7a351c9ca62e7e04836a28a",
+    "timeline.json": "26225dc3f0974a5cbcafd80c5ea56685aa998762d35a7281501f9179781710dd",
+    "audit.md": "abfb3c8066e19f4bbcc44f47afa628bf36e8f31bc66b539508b991efce0f6892"
+   },
+   "composite_hash": "4a7d7a57e317562bf68ed35c7b5959d5047f882a9eaa46fa580d7e9b55f04070"
+  },
+  "E356": {
+   "split": "SELECTION",
+   "topic": "T05",
+   "lineage_group_id": "LG-E356",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E356",
+   "file_hashes": {
+    "episode.json": "8665bc39528bb337806b3ba8213a88133c2db20b1362b963c4ca4c0fd44473e6",
+    "reference.json": "1d42960e72c49d777b5bb7b635d9653401fab24834b7b814111bf84a77c43c0d",
+    "timeline.json": "1fe0ffc9a0a8e789e61f5d4395be9e90894ae73a7ac48d91f1a360eb9d7e26fa",
+    "audit.md": "fefe46c6bdb895b643daf7cbc78120374480e9eb79778ac7192e2f2b1840730b"
+   },
+   "composite_hash": "22b10e1ff8e1f69fa84ac209fe8c45e98a59f8ad340f33a28b9688d99a86b577"
+  },
+  "E357": {
+   "split": "SELECTION",
+   "topic": "T05",
+   "lineage_group_id": "LG-E357",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E357",
+   "file_hashes": {
+    "episode.json": "0877abe5a0197934768ac9158122915eb1fbc16ad2b84d72f29e03c1f5c1c3f7",
+    "reference.json": "58590e6a488fe03973af90a4b7a875e4e9bf783597c60674bc905364b122d247",
+    "timeline.json": "448731e66fea9526cbcb1e30fc61856de8e5e3d93236c2aac9ed5dac73aa8e07",
+    "audit.md": "0f33be229143875dec6336ecc305c84fb4aa74871ce3d34432dc4c57d356afc4"
+   },
+   "composite_hash": "2ac8a9706acbc326a3abc025ccb510f6f02027f411fcf5045dd5e9c42b83e954"
+  },
+  "E358": {
+   "split": "SELECTION",
+   "topic": "T05",
+   "lineage_group_id": "LG-E358",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E358",
+   "file_hashes": {
+    "episode.json": "e9fef782f9846432394a71f84cc1a5561a911925a66a0f8effbf4d42cf8f0657",
+    "reference.json": "7fac558996168cce5eed5e9288097320ad172535afb23b0e4293f4054089225c",
+    "timeline.json": "c1ff044e198386d92be0347cf6d4fc9b42e8be2946ad98c791e66897ca504c30",
+    "audit.md": "bec531866d0e29e57cc6b9cbe1b86c17baf7119af391b6d6e34676a8cd609976"
+   },
+   "composite_hash": "5b85876e6db0392e9647587c2bc1c3526e5b138433b5fd092778645f841f938c"
+  },
+  "E359": {
+   "split": "SELECTION",
+   "topic": "T05",
+   "lineage_group_id": "LG-E359",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E359",
+   "file_hashes": {
+    "episode.json": "84a2a669700f3c977eadccbf3e1fa2be35f218928cc69b6212daca42da6a9bdb",
+    "reference.json": "37268379c55db14081dcd6d0c6e1b397e7b42037de95912ad07ce20c976838aa",
+    "timeline.json": "ba87d5e36e931de39085bd5a2621e7743f4273fdcb60e89150df282b6b28883c",
+    "audit.md": "7b4613b4fe53677321a9df04bbbec98c91caf9e49b1678efbe55128858cbd1ab"
+   },
+   "composite_hash": "eff4bb549cf822fd428c16ebff90fd1c6afe8691122f6582d1026000581a2908"
+  },
+  "E360": {
+   "split": "SELECTION",
+   "topic": "T06",
+   "lineage_group_id": "LG-E360",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E360",
+   "file_hashes": {
+    "episode.json": "2824c4710d27d4f8635c32359d4f2b381fc417b1d110a10b4c040a7d926c0a63",
+    "reference.json": "5e8005d396f651116017fb42ca18095a54cbd8d2e20a985e52e7a8287548175c",
+    "timeline.json": "5591d103b07dbd0af2a1ff49750f2d18b948e07d215caaef4c2279cc020e6985",
+    "audit.md": "8e284b52b626676cb77865771d4a1625b45e60812227b8a21a9ed21ab5bf956a"
+   },
+   "composite_hash": "7a07afbb92da3414187328dc6f2f637647281c0e4a410352a09fd84691455baf"
+  },
+  "E361": {
+   "split": "SELECTION",
+   "topic": "T06",
+   "lineage_group_id": "LG-E361",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E361",
+   "file_hashes": {
+    "episode.json": "6232ca70938e1573cc0098eea6ca96d301e0903e935e91ebc92ec4cc901ccb2b",
+    "reference.json": "d95d435bc6a73eb2fd06e584b2ad9756491303aabbed0ed5babd6f26a35bef6b",
+    "timeline.json": "f234201107fa516458727b26729b5f79c6a81b875ea9b7c266a330e8e58cc4bf",
+    "audit.md": "8a5db97c8b9e11326a45f3ba3734c00156ffea00c238bef2224654bde62b34f8"
+   },
+   "composite_hash": "32e9b59193f8247255a5dd2646554666e22e20b47db87ccc9070c9a0d6622b85"
+  },
+  "E362": {
+   "split": "SELECTION",
+   "topic": "T06",
+   "lineage_group_id": "LG-E362",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E362",
+   "file_hashes": {
+    "episode.json": "bdef59138938ac7aa732c849671c3be3eafad7a23d1404cbd7c72d28dd7ade02",
+    "reference.json": "5e45cce5ef6e9372466bc2ba407683227d2a3723d2ad0687a96594a37247ad0f",
+    "timeline.json": "d393f9e9f74b12f3102c0bf58397af2160103704d9d5df091478fa865a521964",
+    "audit.md": "3ad62b60e262770aa7c902b9bf396596bfa7914871e9a5c703a7d5430c76f913"
+   },
+   "composite_hash": "f9c371e192d698bd15878efcb54d9f4704d1dce1f5a53661edb74542c43e8d08"
+  },
+  "E363": {
+   "split": "SELECTION",
+   "topic": "T06",
+   "lineage_group_id": "LG-E363",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E363",
+   "file_hashes": {
+    "episode.json": "1641c6d42140ffe04d590d981e28fa5bec2794e5a8e8363d02d903fd96241d2e",
+    "reference.json": "7c50c10ab90d16aaacee49b5f26ad1e9d8764fd10ac48977caa8ecc30d5a41fb",
+    "timeline.json": "036dde6ace7f0052e830549324a0230f4875f4d99d1445fedb99c9af8b7094db",
+    "audit.md": "96d0afb71fb0fe6f6c5ba2328ea7dcf0d1f38405397b753f306be0014ad7834e"
+   },
+   "composite_hash": "731311fd0ed9b579eee6ba2525aa13d3573aa3d13e5fb61a5ee8d9e78750548b"
+  },
+  "E364": {
+   "split": "SELECTION",
+   "topic": "T06",
+   "lineage_group_id": "LG-E364",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E364",
+   "file_hashes": {
+    "episode.json": "7f23503d5616aa5b6d8e1092f9f8a2d459dd0cb39820466ddf52cfeb0fb4463e",
+    "reference.json": "dd59e0b9001888520ee3cb5ce2aa32c4f6b8f4a8e20d7e5b302ce760bb9846bb",
+    "timeline.json": "4fe3d4aaf3e6bdbcb2b35aac481f9bfb358dd978340a71497deeb2067b09ae67",
+    "audit.md": "aa1420ac9b5c556860f0d1131034bc119220ce1b4413397d2774144bf95bdd89"
+   },
+   "composite_hash": "09108fe1ab144e8ed6a697583d446567f92684127d4cd3ec01a77267fe1bccae"
+  },
+  "E365": {
+   "split": "SELECTION",
+   "topic": "T06",
+   "lineage_group_id": "LG-E365",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E365",
+   "file_hashes": {
+    "episode.json": "0905d3b22b68c4f5331e039c86c9139398cd410481f95957428349ed79821ed9",
+    "reference.json": "9b28cdcad8fcf2be6251243893ffa0a1e0c7f4421068dd0daa3cbe1c2c79759e",
+    "timeline.json": "1ae1ef98f3cc1bc73eb05fc1b7308853d6b86d9fa13652449ed2c39ec2057d36",
+    "audit.md": "a5340c6b67feeb4fedcf4a8e2875f93a2e51ddb57a4a21675152559a8375a75a"
+   },
+   "composite_hash": "6589c5a0dd7af1de424993ac660a4906302b7f3e7d6fd62032ee43606f85dddf"
+  },
+  "E366": {
+   "split": "SELECTION",
+   "topic": "T07",
+   "lineage_group_id": "LG-E366",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E366",
+   "file_hashes": {
+    "episode.json": "35abad1a4eb55a0a0771200451a4da6aaabad8877be8dfd4aa32694513cb5171",
+    "reference.json": "0d1277795a0785677fc26ae0858572058c294c532023f02e95d3e395311e0aef",
+    "timeline.json": "e8907808fd9c9a3a575f434c00be02cbb76cd9bce349bb6849fabd6b45be10d4",
+    "audit.md": "3add4ff53a6014041f30cd52888e689c3470f565df033171982253e55bb0a711"
+   },
+   "composite_hash": "8ceadc6f3f5d2367d5935e1db9b8a49eb97c25e926012ad07de81d554bf1e98f"
+  },
+  "E367": {
+   "split": "SELECTION",
+   "topic": "T07",
+   "lineage_group_id": "LG-E367",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E367",
+   "file_hashes": {
+    "episode.json": "e90596f71e99dbb51fa55368421940fc4a894fd4357b7b5a12c672d422d94bc1",
+    "reference.json": "be6dcbeebc97622d30d66039b207186c852d548138748192ef965875ca3b2b61",
+    "timeline.json": "7865ceff9fc6b7fc839301c6e8fe83c4c3084c1980b33e870fae6e45e808db8b",
+    "audit.md": "fcff765ae26460fe2fc4bfc16b9c19174fd0606e68779e67f3501aedfdd8a7b4"
+   },
+   "composite_hash": "ad6f4801c9c2b00f719389c23427d766f8902c31105d2ec2c31994a193e54166"
+  },
+  "E368": {
+   "split": "SELECTION",
+   "topic": "T07",
+   "lineage_group_id": "LG-E368",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E368",
+   "file_hashes": {
+    "episode.json": "e95e3eef43bb6bce53961c85287eebb84aa0bc4972bce97814f4e24820b19ffa",
+    "reference.json": "da4ee2dec7da9da661fb17e32b8770a09fd7a165dd818bdc238f2218e894992d",
+    "timeline.json": "e1f2f9adceeaf8ede95266933d4d7f9b481520cb6a24192c02efa8f3080e5451",
+    "audit.md": "8f0d9faf263dd13cdf684d73af8b5a47a6d9ff11b4b40e40b05f69200b45b32c"
+   },
+   "composite_hash": "5fec8b09166cccc2ac6bc8131f5debffa32b2b3fe6e9c664b9619ab72d1ce2b5"
+  },
+  "E369": {
+   "split": "SELECTION",
+   "topic": "T07",
+   "lineage_group_id": "LG-E369",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E369",
+   "file_hashes": {
+    "episode.json": "664ea0410d55b49a5d3033fba4ddeb0c2ad9bb1e270c3c5c7f71984392cc8683",
+    "reference.json": "acbddd09ae818626964b27f5faa87973499bc5b9f737e56469fc3375f4d0f147",
+    "timeline.json": "eb0daf0d1f7c493de215ac956b523307f0f8f7763664dc12a8bc639e647b295f",
+    "audit.md": "94c79b84b74c28763de3066be8ed5633a5e75953954f6599632cc2b1a3d4a8cd"
+   },
+   "composite_hash": "9e9fdc47a1d9caca38374b5ae8644c76657d91bfa771e67d78bab99c44afc189"
+  },
+  "E370": {
+   "split": "SELECTION",
+   "topic": "T07",
+   "lineage_group_id": "LG-E370",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E370",
+   "file_hashes": {
+    "episode.json": "c5285bfe0866c4802c1b0b63095054827fa6adc1e0987167b01982695c05b29e",
+    "reference.json": "69e543aa52d94f52a2f79f6d270e0a0fc9dac76077d8092142bedaedbe2b70da",
+    "timeline.json": "1ebec0cb60c19de5ba17e90cf20e7317679714736d02084ae2779afb7eea984c",
+    "audit.md": "9fffe0f626f784f93f438592885898c458b62fb2b212a29cee5dbaeda0cd0d5d"
+   },
+   "composite_hash": "41001d843db9b61f5ba9da6a4412af2de53127bc4cd4c1be78e20ddb000edd93"
+  },
+  "E371": {
+   "split": "SELECTION",
+   "topic": "T08",
+   "lineage_group_id": "LG-E371",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E371",
+   "file_hashes": {
+    "episode.json": "c1b8c3269e96a85f4673478bd62a7c56c21e0828e10db305d9c12d5342532d06",
+    "reference.json": "ce29655a067fcb5966767c26b9ff7a56705cfe3afb6d2186c7c9ef58bb0dbf7d",
+    "timeline.json": "dc1fd39c7827f2c2906db6c4fb17e4a4e70a7ee6725fb47bb8a8091addd70e6e",
+    "audit.md": "6b590f474254e3d90c65f8aba38b27beaa5ba418cf6fb817278a8ea73ff5924c"
+   },
+   "composite_hash": "918c6e3c2402df9f157f8e1ba32cdab65b3017707b5fcfca04939f374c4857b8"
+  },
+  "E372": {
+   "split": "SELECTION",
+   "topic": "T08",
+   "lineage_group_id": "LG-E372",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E372",
+   "file_hashes": {
+    "episode.json": "6cd7941abb2dc0e0c83fe852b1abd93a0afbabe5b15e2174543ebb4cdda61211",
+    "reference.json": "9a5f9217f3a7055fac0992a0f12a63f0596a6f4708b46973a36570190f9cbb8a",
+    "timeline.json": "cb3c400616957262748f9da0977975dafeed8b51ad2f59e40efbe5fa44ae3436",
+    "audit.md": "0d943e054c24db0fd341b938a7f97c5af89ddbbf5c9d9b7c71579a601808dabb"
+   },
+   "composite_hash": "1a73f3c1bdc5f67e0c47b6ae33f9d71d6229e367ea56d85f3b35d1777baa6a14"
+  },
+  "E373": {
+   "split": "SELECTION",
+   "topic": "T08",
+   "lineage_group_id": "LG-E373",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E373",
+   "file_hashes": {
+    "episode.json": "b29e245554069802e0329852b3cad216916ffc4624472c81fe2a46275a1514cd",
+    "reference.json": "11a032c35fa0852044e71c2a1a0acd53cf89cce1ae9a5ee0a7a6515d442651c0",
+    "timeline.json": "db8b850de905323c5eaab1878aab4ccb63cca643c444d597ffe46bb960b3c6c5",
+    "audit.md": "e6308bd91ef8cac55d0f7a5b26e8ea67789489fedfd2ef3988ef56645b9dacd5"
+   },
+   "composite_hash": "afe20e8e5fc7aea26fd26e528a4cada6432ee406b0a61077b8b1cd8136b5a37f"
+  },
+  "E374": {
+   "split": "SELECTION",
+   "topic": "T09",
+   "lineage_group_id": "LG-E374",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E374",
+   "file_hashes": {
+    "episode.json": "30acee93a9f7a332a551e211a86028ce00c847eb26dcfae81cefa2560b8780f4",
+    "reference.json": "92a9d0c72f4e3f6c17b3368d24713de1df3fb7b714ae76ca006b15c9022241a4",
+    "timeline.json": "8241f779b7d918af5a6ad43bce0f8843284827b83ee2305507f108375df7379a",
+    "audit.md": "35b7d5a46b5b0b6ae08c89ad7f7080e6921e0522dc4f33fb3b8a104c861ac815"
+   },
+   "composite_hash": "5ce75808ccbb6b8bb4fd675a0af3af794c5e733fab3bc3b50d4241a8d2c333e7"
+  },
+  "E375": {
+   "split": "SELECTION",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G3",
+   "twin_group": "T10-G3",
+   "twin_role": "original",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E375",
+   "file_hashes": {
+    "episode.json": "46ddd11dac38cd3c65ae52476d681683618effe51bd3bb20b67c7076e571810c",
+    "reference.json": "7f1ce87a3eb8b886cfc19e60784c3127000f77cfe030d0041b824b544609e5e0",
+    "timeline.json": "7fc6b49d9ea6c8e2266f46247c1fb83c3b7ccc2990a6d28462bf4c243ce43a2b",
+    "audit.md": "81c773e3874e014130a78d38f70df72ecbc33bc7754acf19d8df8abc76eac4d5"
+   },
+   "composite_hash": "e85a59c99c171c8da7c7ec0d40d138f2f33bb3746ee328c5311475f00be71748"
+  },
+  "E376": {
+   "split": "SELECTION",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G3",
+   "twin_group": "T10-G3",
+   "twin_role": "counterfactual",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E376",
+   "file_hashes": {
+    "episode.json": "1f426f648d6c0d46513f635d6978f3ee3d4a8520c126a3b63208f91938dcaf4b",
+    "reference.json": "27a7cb0d3a1c07fac878826e2548b7e12b641de5dbdf9decfc74be2d0a56f02e",
+    "timeline.json": "acdb4a3be5b551b3162f92b13e4e46547ccffe8d3ea13dbabaeb30027554db0b",
+    "audit.md": "0f8e0b1d9189eb4d45dfb05b4ac2a11af5cc0baf2b29e67809780c15ca2649cf"
+   },
+   "composite_hash": "1b60debb375854bd4e8464d187c512aa9d6d83d6dc6ee0a9a534351600e736d1"
+  },
+  "E377": {
+   "split": "SELECTION",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G4",
+   "twin_group": "T10-G4",
+   "twin_role": "original",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E377",
+   "file_hashes": {
+    "episode.json": "3c1eb2d405e63a27595c6a20286b0ed9d9e2fe8038692c191dc40cb2cff5be16",
+    "reference.json": "20748aae7282f77cecd2ac17317ad2d55e4f8c43da0e0c310d2623cdd4e0cbbd",
+    "timeline.json": "1ec1887842d161ced91b6e643ed7c84281c3db0e4fd3dc63d693a4bf6b956268",
+    "audit.md": "22d9a6a996cbcc634db502f79f93525ec5f4d9b0131c337eb582469cce325fd1"
+   },
+   "composite_hash": "faae6bc979f1f3c331360570e3c8d307f277ccedb2172a88ce22db374b4836a3"
+  },
+  "E378": {
+   "split": "SELECTION",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G4",
+   "twin_group": "T10-G4",
+   "twin_role": "counterfactual",
+   "turns": 12,
+   "story_dir": "benchmark\\stories_v2\\wave5_selection\\E378",
+   "file_hashes": {
+    "episode.json": "3db3047f39fc72676207e4339656e32fda0727858744d3e9a0facaf02080336d",
+    "reference.json": "625f9794e83df35b6ce39438554b1bf3576667c7cc0c4a883306b0a89635c20e",
+    "timeline.json": "e5d3ddfa788c75d06e82ec955ab0566fe82d4be3f4e0a7295140453470ff0059",
+    "audit.md": "71115db642547316a8f673cd18886273a2f06f035bc96b8a2ecd5ef75a6f8538"
+   },
+   "composite_hash": "d1918633f8c4ffd7532bf993536dcd8f4cc5af62396de92c343bd7bf36a080aa"
+  },
+  "E401": {
+   "split": "HOLDOUT",
+   "topic": "T01",
+   "lineage_group_id": "LG-E401",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E401",
+   "file_hashes": {
+    "episode.json": "a43716fe57968a973992e6b88bc69a9b1debabe31541f80d3ca90def190bea34",
+    "reference.json": "23a0f8e3e3a6541f79368f473b4e0c0acd259249d21145aeeb212b7e64a54746",
+    "timeline.json": "e9f9d8ecf13641e2cfc98d282a77937779e847318c1cd3cb34661da846b05973",
+    "audit.md": "2f4074180f6564aa6448f253d6ca12f3c3efef31944d534991a97895aed650b8"
+   },
+   "composite_hash": "354db048bada8b70cbe4fb4f255fc5f4408b320cc42969c685f11f0ca48ecdeb"
+  },
+  "E402": {
+   "split": "HOLDOUT",
+   "topic": "T01",
+   "lineage_group_id": "LG-E402",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E402",
+   "file_hashes": {
+    "episode.json": "833ac4a5ccf2bbb61eee1c78af67c504b6674a78bedfcf223b8f5e55b0848601",
+    "reference.json": "37b1ac8526068b5795fcfde62c03cb4e7618679c8f9f8263b4f59c94f5965e4c",
+    "timeline.json": "08ba85f2fd6f26bd25df0278ff78e469d3a95a4b75e2fc2956e36e2f4a95b667",
+    "audit.md": "7405b1d1bbba286c0cda9ee45af87a77c0ea9fb8df641bfffb6df31237b8c797"
+   },
+   "composite_hash": "8c0f6f577d6c723b9c3b5c7ffa6bba3fc67815274f197dcd97e64a29943a3e67"
+  },
+  "E403": {
+   "split": "HOLDOUT",
+   "topic": "T01",
+   "lineage_group_id": "LG-E403",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E403",
+   "file_hashes": {
+    "episode.json": "807b131e35ad6994c11c8cf52c7f6292c8334c3e19a77afea8f1bad779236221",
+    "reference.json": "818a530f484795bf9dc00fdc144e95bd0c43dbebe4903f64463460cdd95b579f",
+    "timeline.json": "b91d84b9e5971e45e323d2857ebe841019d4aeddc9e5ab5684a88393a51eb726",
+    "audit.md": "f4cb66a39df1b24bfb60eb664d627ecbedd21f42cc908aad6b189fbdc4eb0dbf"
+   },
+   "composite_hash": "67947aeb93cd168cc8bcb31be16e58d46627d5e84469eaab2a933ad1617f47f5"
+  },
+  "E404": {
+   "split": "HOLDOUT",
+   "topic": "T01",
+   "lineage_group_id": "LG-E404",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E404",
+   "file_hashes": {
+    "episode.json": "f2b1411d107728fea272c9f8f978e9262ffc6614e3e40d8062afb92ae8f75804",
+    "reference.json": "b639f02c7525cdd91429fa920de80940cb26c359ae5dae07765721240927f7ea",
+    "timeline.json": "1acc8236923b82522d2f86b3fff6b8d9292fecd6fece8d474a9439fe7ea24d62",
+    "audit.md": "f9128915e54dc41cf9d7e564bc7c5078919322acebd99d034374de87f91f3d0b"
+   },
+   "composite_hash": "49a219eee03d6f1d6cdd0c8929f0aead52b87e1f650708039aaab25c6a93c835"
+  },
+  "E405": {
+   "split": "HOLDOUT",
+   "topic": "T01",
+   "lineage_group_id": "LG-E405",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E405",
+   "file_hashes": {
+    "episode.json": "51ef2284f545bc49db17bc6e981fd038d5df2abad35f93c2925b864e45d5c0bf",
+    "reference.json": "b58b24d89a7a371705dc4363cfebba7ae4cb54035923d0bf411353dfd5a7b496",
+    "timeline.json": "1b4837e98ea0e202ba717c2b719fa24ff830de0e0400025caff35af6846d0f88",
+    "audit.md": "e6847eefd30391736c60903b1fdb18feb4990a067d4e0637cbd4378fd8d2d3d1"
+   },
+   "composite_hash": "55cd61f496ecc52f5e435af657565541e161e6731b8f45bb7a7031aacc6802aa"
+  },
+  "E406": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E406",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E406",
+   "file_hashes": {
+    "episode.json": "7854cece3c9eeb0d26b1e54ed49f5e7c72a3854937adb753f4e4afbd4c5ffc16",
+    "reference.json": "f2d151337020cebf8d3175f8e23648c7ed2417973691a2ec52fc4e1e13809c4b",
+    "timeline.json": "e9f555ab792322e51742a0727ec55260a35d226460a9054b8e07a1ba99a5ce9f",
+    "audit.md": "e1d248e129aa9eee2809134e740720d5dc225c9ccc3b1a1241486e7600d17341"
+   },
+   "composite_hash": "97fd3d31af0d78e08635cc276fd2c92a1eb5b1905a72f76c5b3f436e7536dd84"
+  },
+  "E407": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E407",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E407",
+   "file_hashes": {
+    "episode.json": "41515fc5a16a455d416fe004e4b33043dcf961fbb65b4a973e4fd488cd4bbae8",
+    "reference.json": "ebd8df55ce5626d7bd2ab63cebf0ebd8a63b298196654f0536e956f44b4a2b85",
+    "timeline.json": "eb2162baecff475d0cf6c65d54d981dbf888ecef1e4755609e7d600160ba32a4",
+    "audit.md": "564d8a2cd6d397b7da92b5ccd7bf5d28343015baf635257ea362386aa1a13f56"
+   },
+   "composite_hash": "ce2aebb6ed54b3895aa7892e8610deffbd9487873a671d79c59b76e58ac49c62"
+  },
+  "E408": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E408",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E408",
+   "file_hashes": {
+    "episode.json": "598329fc6e3fc769022407bdf3f66e0fd51fbc7860909b34268d96c79b6431b1",
+    "reference.json": "3896368e5c36ff2f7a06a6cb050be01cc7fb27ed712d8a12f18d3b56c2703bee",
+    "timeline.json": "f203c84de43fe23fdfd2a0124db7da89b4fbce1aa566c3d2dc49fa9ea7923929",
+    "audit.md": "27c893f7ac76815113554303cbdd2ede20625503043c00f3ad478110b2113429"
+   },
+   "composite_hash": "2f9315cdc105130644169bf1e445417dc40ada28bf3fa555822cb4af666772c2"
+  },
+  "E409": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E409",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E409",
+   "file_hashes": {
+    "episode.json": "7e476d79b0e78d4fbeeb0a1f9e208a8f900861534ee7c04da669f6d59c705373",
+    "reference.json": "7d71e9f35cc937299a21b153f8d6ea31f713076b9914c0b4c4d7ef6911f0b68e",
+    "timeline.json": "92cdd8f815923b96f76248bb4133b48e13f937444a479e05f4015720b2b83518",
+    "audit.md": "4dd17df3476e0664a30fcfa34fba487624820bcdf936c70acc4014ab0a776243"
+   },
+   "composite_hash": "a59c71cbf14686fac002762dccbf9beb7b3d02d28393d06bce272e9ed90b9cae"
+  },
+  "E410": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E410",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E410",
+   "file_hashes": {
+    "episode.json": "fdd37c4efc0aad9c89371eed78686ae5a7c1dbc137ff113727b4f2b048548f07",
+    "reference.json": "29dd4722ca1d45e1e0d2eb8e881d73380a49c17a4211d9fe49d8cd13d059585b",
+    "timeline.json": "e9ac7ce0ec8b932cd94411ba7af6e9fde1a3d88bab72a3ea3c13ca3f7e18ddbb",
+    "audit.md": "57ba7a8c39751a0b30b6f78170ac4b3a227e76bcca79353037a709e56400decc"
+   },
+   "composite_hash": "5cd53c3f9a31db7c8113bcd7dc7861874028aa30b9914ee5e58378438a5fbda1"
+  },
+  "E411": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E411",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E411",
+   "file_hashes": {
+    "episode.json": "09ffc4fd60601856d683f65a76808ccea887bbdfdd75059894592071b28d1e87",
+    "reference.json": "efc56c2ef045b64d0e59b7d1883b6d73b008220d683b1242ad981531d6f6029d",
+    "timeline.json": "4b5cb8c8cbd3dc45a39dcc3e013720ce1c1bc9a8266e8483001102accb075a48",
+    "audit.md": "11c5eead31c863e01b30fe90e8e771bfe7672fd7c4d3f761f1516ce86269da9c"
+   },
+   "composite_hash": "7af3e9897b05e427ed6368029fb28d6d224756866e0f6cb0e0f4ba841e29c976"
+  },
+  "E412": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E412",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E412",
+   "file_hashes": {
+    "episode.json": "bb6a99d8773c1769ff9b4fa595a34d42e784a3fa0f3b0235a73d06fd616caeee",
+    "reference.json": "3aa5cde81545ce30fb126aeba62808c513aa3527028b582e876bd355835de67f",
+    "timeline.json": "9a989240ebe00f23b3427211cc232c070f2d3850ffdda7f738f874ed71005ecf",
+    "audit.md": "c313d03204a81252111d5718ee38b20c1166b0129368f7f70cb8c674d69e1350"
+   },
+   "composite_hash": "23ff8615d69d1a71f9faa7c5488c180441745247e5130b407b1c921558e556f4"
+  },
+  "E413": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E413",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E413",
+   "file_hashes": {
+    "episode.json": "1f9ea445c128bcdf54d864c5d71e2153552e03ac84166f471198ac5eadf167a7",
+    "reference.json": "25d96507a5a6645e363541fd1d5a830fef124d663798176764f3ab8c444139af",
+    "timeline.json": "6727e2bc1d7246969857fb43907309b51448a0b148a19ba9b6f568fa184a8db8",
+    "audit.md": "db729ab715559d52bad8920b45410209289cc66e6021592e8a77774a1206a9ab"
+   },
+   "composite_hash": "2d2e35f0d432ce1ee66233d235f91768e84e116e0b74a43ed1be8750ece4b419"
+  },
+  "E414": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E414",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E414",
+   "file_hashes": {
+    "episode.json": "7f589efd5848475625fa0b0b633170a8542ea4b0d10ca76bc63f073b4590b112",
+    "reference.json": "edfb827c50d7de1ae8d05277107913f3734dee81b69d0fe20afc5c0e5ea97b2c",
+    "timeline.json": "5cfb8f781ec972e54872348612358f61999fb477992f5a4efb2398eb062eaae3",
+    "audit.md": "4657cddadf36fbfe995d5642e8513aab0edea6fe0ee2172e8f3a9d622c911c26"
+   },
+   "composite_hash": "cb249debc332589ebcb1f5d5fa696c099f3cda83aa6864a516461f873adc6cff"
+  },
+  "E415": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E415",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E415",
+   "file_hashes": {
+    "episode.json": "56b51709d975acb62966f651971d673e228396ee9e58306ca959dfbec248ee89",
+    "reference.json": "6f08f97e6edb9bf91229dc5431dd17296603255e051b483ab7277fd44261ae37",
+    "timeline.json": "aa269dcc35e0078e92cf5da038fb8748c200d606c62387a0ae66137e93c0c5b0",
+    "audit.md": "5fc0ab139d6017d995a8637806cb5a95b2a80d280ce027b1d6bf2d1216e72a1f"
+   },
+   "composite_hash": "6d9481ed36a33844990558cab145287487690e6abd29ae9c31760c512ce7fda5"
+  },
+  "E416": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E416",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E416",
+   "file_hashes": {
+    "episode.json": "4da8c6adc3e67d85cc0d0ba47f53a024c9e82b4830ef93f5684ca5c4b7406fb7",
+    "reference.json": "1d9fbd7bca6023864980bf1394136950d6ab30439d9ea50686fa5f2b92fa7734",
+    "timeline.json": "d9c1dc1bdf0829dddf39fda2c2e75db8159d02580760de14b226e37652e98530",
+    "audit.md": "361fb8f85c9adb62e219bf6fab095dba85a2de45c0c509d51b934e27fd8c7c69"
+   },
+   "composite_hash": "58965cc8f8c5ac63bf606ebb8f481dea4fabd4f64480efb77e187f14020b4810"
+  },
+  "E417": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E417",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E417",
+   "file_hashes": {
+    "episode.json": "66676a822fc8d19900d3f8e9108eb8521344d60a6677ac6260379063842ce870",
+    "reference.json": "ee7860722140e6e57dd2a188c7f583ffc0311c260e69694bd7d31b78692e2040",
+    "timeline.json": "1445c48186b1cf0beeac71d430ce063f98a55cc58e43ee9470fab6451046bf9e",
+    "audit.md": "44056701b70cfdc9df009712683bb139b9e952a4b3bce6d63e49b1233e535c1d"
+   },
+   "composite_hash": "1aaa4398608508d69303ae05dc0514fb1a424fc87ef55f0ff89851eab6b7547a"
+  },
+  "E418": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E418",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E418",
+   "file_hashes": {
+    "episode.json": "9cde79cc98839e306b41f4be7ac534e66c85320e0865accdb183f11f4bcb80ed",
+    "reference.json": "86619dd3c9ac514bcc52da5f61c287d52d46f22e05c81630dfd54be1df7cc28d",
+    "timeline.json": "1039b5b9793a0322a5b7012cd6aa9cc396e2b8a4a6192a78d84d49b96086f5a2",
+    "audit.md": "dfa86bb0350c8db7ab5470843f1755d667051833965ea73c5ab457d51a64623d"
+   },
+   "composite_hash": "86984de0d259aa5f31a72c5c0ef34d668fe51419eb8c301a90a38c297280573e"
+  },
+  "E419": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E419",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E419",
+   "file_hashes": {
+    "episode.json": "e8815c9f37133e148284f4234b5d8a952c43e91cd7b9ad5c5b2cbd823eae4c94",
+    "reference.json": "b42d21311456fe95b93e24d42d571a24a00be1627452203f6fd1ff8794d86e63",
+    "timeline.json": "24d409a6175209606ea3dab0d4eeac05f1fd80772cd0ef70dfbc23dafe744232",
+    "audit.md": "25d2d2ee85dd1a2ff8618b77651d3bf0c71a902a148c653db9824e126d880e5b"
+   },
+   "composite_hash": "414f19c4af16e121df49cdef554f34c870807f77ac771fa465ee733a32c3992c"
+  },
+  "E420": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E420",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E420",
+   "file_hashes": {
+    "episode.json": "112abb1e98242a02952445e30750422b625393b9b1475cf2df51b700a59eff33",
+    "reference.json": "7deec2c8c30ccd3feb3a50664c5f563e29afeb1f65e6f7d574bdf5f97767d7d1",
+    "timeline.json": "8d4165669a8722bbe68410ed462ac1e1b8b7fb1bf70ffacb56d07cc125b95dcb",
+    "audit.md": "ddc2376236dd22dc4fbb03e4a37ff21746d25c1c21323dfc12feca1c7675d4c0"
+   },
+   "composite_hash": "4af31ea276acbb5d55768c71f90759cab8e2961f5c626fdfd30489692dcf01cc"
+  },
+  "E421": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E421",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E421",
+   "file_hashes": {
+    "episode.json": "930f71fb29abaf158a1fbeb3babcc6ce51e9670b91a5e6f56fb020bbf4be40cf",
+    "reference.json": "4f9f55fb39cf284239e8692dbe6781ca2b54aa1de7723f4a67bbcc017118a4de",
+    "timeline.json": "f867ee21c5d59bd3e6fa13e0f7ff14aa8380b52a47df39a56cc28b96c26d16f4",
+    "audit.md": "0ac6bed294ef585b45c03dc5e374498c22a210d2a24610c719187109b79cd777"
+   },
+   "composite_hash": "1f695d4574da9a5a600301a999d6e215da8ff1bec563b4a98477b0fe10c64d09"
+  },
+  "E422": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E422",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E422",
+   "file_hashes": {
+    "episode.json": "63c84a7b2388e69648a52273e5296f994d0b9769df8f9f389121f870607d831e",
+    "reference.json": "e1f2d402b7fa6cd24c5dfbf5bda74ad9245c22970178c287247667fb9a3624e9",
+    "timeline.json": "7a48f54274ab6e42987661fd4a7061e1f48a2a665366559d1befd30335954988",
+    "audit.md": "e7b29554af474c2397a49e553575ca39f8a702f36a4e94f2d44d52ec68c1e07e"
+   },
+   "composite_hash": "528129a28b1e8004f607286f3fddf7db8d5f433d7013a815b604a73a6aada71f"
+  },
+  "E423": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E423",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E423",
+   "file_hashes": {
+    "episode.json": "22479b24805c82a6ae74379666bf2db210a24c34c8dbf859dc593e52a35b0a12",
+    "reference.json": "e15a247b633c9e99a9a338a9d73a9fc847cbcee22de4f2c1388a3329ed75d598",
+    "timeline.json": "01f6db789487516fb0cb8752e8c7f4277a192199674977985d0f59a9c250af16",
+    "audit.md": "6cbdb789f558c14c8f00e31e59b383a06020ac09dc2094c659137fc7eb40d19d"
+   },
+   "composite_hash": "aa77e3ad83f7207e8a4ab54feb2c0864f59e4258cd8bb72308193161bb0942f9"
+  },
+  "E424": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E424",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E424",
+   "file_hashes": {
+    "episode.json": "05b9058e68bf58edd36ba6d8dca2ed7ba04a20bf73a7e13322b31ef1f340e141",
+    "reference.json": "7d668df8f2968d39531a0d7d6d95ba24f003ae8ce371b2dc43b6eb9b2aee48e7",
+    "timeline.json": "811df64af53e5ddbcfdb6cc694a47f1312691ea4e60265528cde8180984232fd",
+    "audit.md": "c47a760c8da3f150f5386874a98b30d3f09d977aa1257e8e92cfb501c5d7f511"
+   },
+   "composite_hash": "d2ae8b423e687f2aa6a85e1a702f1664917e26e78f3361eae5a770c853f75bdb"
+  },
+  "E425": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E425",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E425",
+   "file_hashes": {
+    "episode.json": "22a6dff7fd0635fbcf3c1c87bd9748bb91beeae2c1490f5cfb3388460ba03cd5",
+    "reference.json": "5001a6b624c3a4f6fd9d09be42eaca5158df9c5f866cab0b7e0f00c01f9fd7d5",
+    "timeline.json": "2497fb9c1daf38836b9e2793501d85324cc6be980fd669a5540656c4ede27473",
+    "audit.md": "70f0b870119c4cb853985ec79ae8b09d68fdd5009b53f2c6172192ea3e3087b5"
+   },
+   "composite_hash": "2edd62d1df408f0aaad7f0072128340f023f30fb10b30771f733d3b2e4b7588a"
+  },
+  "E426": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E426",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E426",
+   "file_hashes": {
+    "episode.json": "ca6b7534e22c31ae5cecb06dd097106726de1f1ec16621d0a436e24a72d824ff",
+    "reference.json": "e7baf0f85dfa68bdd05fdc8c85675818e73018725c9e3d7353cf892183bc873b",
+    "timeline.json": "5441c5912be3b93ce3dd1dba9f7e95d3b618d295ecffba990a1c2a0d1e9a2ab3",
+    "audit.md": "d4398ff14c6c831ebed1e787875369c3cdc533f129bcb3c8ced34c6ed8447783"
+   },
+   "composite_hash": "cb58545d2f77f69ed4f6c3df9a2e1f93134a6f0226566f5f0800f69c603e3e0b"
+  },
+  "E427": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E427",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E427",
+   "file_hashes": {
+    "episode.json": "ce8089ef995b2adb58718e7463d74d7f75c381baa0fdb5d108f26327be542fca",
+    "reference.json": "cf8eb387bdcf50fd2e216966a24f962fc60e29f0edb5dfc843f310ebb330e869",
+    "timeline.json": "1f8e7657f2e430f2cdcc1eefea1765cbd55f245e6a8727a3cf1541a6084d9a16",
+    "audit.md": "ff730a9ffde69ddb9d587eb507c4f7b93025e024f65457c920cbf283711f767d"
+   },
+   "composite_hash": "48bbea3388ef2fa4fb19de93769a2ab7610b0ac9b5437096a03c635912db9bd7"
+  },
+  "E428": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E428",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E428",
+   "file_hashes": {
+    "episode.json": "2651add871a0a92b8c5510c965680dd3ecb154d766e4eaa0681ed265c1e23e45",
+    "reference.json": "ec5671fb37db522b38c2ecb23434e51df0d859689927e7c40e4a80c5b0e9d413",
+    "timeline.json": "ac29c2eb8e04f4764943e8b58daddec909dcdea7a7855f9ebd9323d8b070e8c8",
+    "audit.md": "647831e2ea1218220ad620e5195d437ee0df73257c8595999c8b5ecde46e4734"
+   },
+   "composite_hash": "bb0160231744823fae181a7363eecf1732edf46b82f0f55217f2a53d77160510"
+  },
+  "E429": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E429",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E429",
+   "file_hashes": {
+    "episode.json": "a9dde66b379eff3245e2983abae6eb44e001ca30d013c66487d9833a6da59749",
+    "reference.json": "1aeb184249be912e08e7843bd5386018de9c82cfd57b41230d3aa4f5b557b76c",
+    "timeline.json": "07b02a37b569c7db635ce0ec1dc96af4db1c241eb7ebd2912537405d8b0a4cc7",
+    "audit.md": "73b35eeb9d63e6d91acc8bc6bdcf941ee932d42c7888c9279112a6f898707808"
+   },
+   "composite_hash": "c3973c6fef537d9e093309543830dbf9ddd627afa4406fc4a42e57e9bd7073d6"
+  },
+  "E430": {
+   "split": "HOLDOUT",
+   "topic": "T02",
+   "lineage_group_id": "LG-E430",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E430",
+   "file_hashes": {
+    "episode.json": "9f32b5f911d66dbd9683e34a7469ea8b20a9b978b45c972393654916df3125c4",
+    "reference.json": "7470e1ca33268392a38dcad0fa5b3b632ca036774186357394fe50dee10891b6",
+    "timeline.json": "af03fbf33a40bcff0054c7daaf99311e9426ddd21a8c5f8d5bc0ec020298a894",
+    "audit.md": "3ba95410e2113302d84a34f31a03f84631707c64699258fb2139c0df920f012b"
+   },
+   "composite_hash": "3aafb84fa360e6ece8d53557fc84f9ecf04263969509fd90e4c3c8ceae2df0f5"
+  },
+  "E431": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E431",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E431",
+   "file_hashes": {
+    "episode.json": "560ca6bfd462f2174da8db0d7b9d5d35a4eb22f658a3ba9f2a396a98357efefe",
+    "reference.json": "164e216e3a0c91c75432bd18996b62803e41de6f9cda48fdb31840b348aefac4",
+    "timeline.json": "b0ba3f80cae95356028c49cdc2bd9040162dab522b9ed3156a08101d7635c92d",
+    "audit.md": "9d05daf28994bd6a367e459bc2acafb1cdf9a2794969a5a800ca26b157814b1b"
+   },
+   "composite_hash": "fae8de4ac2b9609ca24cec134768176c5961d79b10e7799e0487c67dac198287"
+  },
+  "E432": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E432",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E432",
+   "file_hashes": {
+    "episode.json": "c3c8e28aeed6efcaf0853b5fd3d221b5da582a3b1c3336fd0197b34ce7013917",
+    "reference.json": "3f6943eec5f673bd591589fe9975241661ae013492a2b1eb87c0f3aa026a6347",
+    "timeline.json": "d8b56fcde7e25382b5246f8f9ff584cacf6df259121a8f5056286a1866daec45",
+    "audit.md": "224e80494b6a6d459787d9f30e41d8b1fe40eb7d1a50ed5d8d12def7df2d84b3"
+   },
+   "composite_hash": "32c6579db7e47d323755315775372849121a03fa8aad00fde4ef7285381d7a39"
+  },
+  "E433": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E433",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E433",
+   "file_hashes": {
+    "episode.json": "7204c955f0aff7f72650a040d724aeed475a4755d688a16c33be30dedb6239cb",
+    "reference.json": "800ecfe893c8b79aca35d532cfa310820a0ebe3dbe031c8069daa65aaa2929ba",
+    "timeline.json": "bc03ffc0d39b29a246e9b3e5233bfb88cc5daa1b37991d57b84487ba6a9e8e9b",
+    "audit.md": "1654f471948bf864565cf5696ec528698a6ca6aa92759f519f88e36b85b9f52b"
+   },
+   "composite_hash": "108668d2fa515d1109ee67e5a1d0fc4aef3d6b02d454f7bc17a0126d8cb6b4d3"
+  },
+  "E434": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E434",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E434",
+   "file_hashes": {
+    "episode.json": "2112c940a62beecdef116eea65fd8a3c9af18dadddac02a3a1c10d1f0b4f6f6f",
+    "reference.json": "9117a3dd471f57a01dd1dfc9cb756db03c1894915a09dab6d2c5e08b7bb81f45",
+    "timeline.json": "17aaf2d84c30d0f116ac41c91e39f7216e7609815944aa1a11d46f81a3af0c16",
+    "audit.md": "41921281c8f5ed71b3f04fffdaec54c458e07c5880607f384339c9b0c8395f61"
+   },
+   "composite_hash": "f9a3e725e3a6634abe635d618d4d898fefd6a79240a3a2953038c301fa5fb03c"
+  },
+  "E435": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E435",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E435",
+   "file_hashes": {
+    "episode.json": "d5b7dd0f9fe690b5426597f52e6465dbcd0d77478299abc0b2b88b2660305ed2",
+    "reference.json": "a8bd63f6607555f3abd39a92b27d9d3315fcfd5ca66719531eb1e1b7d33230dd",
+    "timeline.json": "76d1b610cf3b9a8cb440e568915f85d5d9aa4f0288b43957bfcfddd65bbf52b2",
+    "audit.md": "add2862f9da800f5dc2b3be0d385688487990b0da6c766fbfb3fff4848535fbc"
+   },
+   "composite_hash": "7c3a203bd658ce810b1920bd7e07cc377b1deaf09c3f380cf4724be85e5a8831"
+  },
+  "E436": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E436",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E436",
+   "file_hashes": {
+    "episode.json": "e291c7d0b541086f15bd870d30a615dec28c25b08a4fb07b124f182daa7b0490",
+    "reference.json": "b7afcded77aa93916e3b632afa22c7fc7899842adc90a99b8945e0a740049b1d",
+    "timeline.json": "d960844b74130bfc6b3a114f4e5eab213529b621a98a94cdf6ad580fc63b4934",
+    "audit.md": "5ce7c38eb874486a1b7132b37914f5465f1233e8b291b54948b47e62155f21ab"
+   },
+   "composite_hash": "3c41438a516cf7756dec8cee8b4d5742f5750fa435843ade08b77d61ead9d2d9"
+  },
+  "E437": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E437",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E437",
+   "file_hashes": {
+    "episode.json": "1e51bdb6a0b6c6e9b957ea6b79b2089265368ed1f4fd88d57246c605839bc8f8",
+    "reference.json": "6a5dfce02cdeeb41c7aec06133e2307dbb310f7559750eb0a70bd624b420ced1",
+    "timeline.json": "665fc70338718e747fac5d19f8727a5bde3c9a63c3f2a3b0e9c0100d5d2c84fa",
+    "audit.md": "be52defec670316860079c9ff0fda5983b0cf03d6ea9498c8b5b37d039549603"
+   },
+   "composite_hash": "44852234a55c05cc7e89b4058c9b322f2c26d386a5a5dac3120b74e02902e048"
+  },
+  "E438": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E438",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E438",
+   "file_hashes": {
+    "episode.json": "6204586bbb6967ee5bd6f108afe3d18f6da960c51f051273f0d8bea7906cab75",
+    "reference.json": "5225e2c380488841a8477cd467f24576e9ba726a4071516a7cbbcdf1faa8b003",
+    "timeline.json": "27118c0c027f2ea2ffd1447d7506a742810a17f22011ffcb155b556f2e7de06e",
+    "audit.md": "13009f6efcda586c0ed5d507d02015fbc81e3f19ed8d503449993c01caf15bcd"
+   },
+   "composite_hash": "b909be64c26f82dbe74709d78053de47d8ab40bdb8632f13739e59c746febda1"
+  },
+  "E439": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E439",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E439",
+   "file_hashes": {
+    "episode.json": "95946867f835392dbb84e1f6c817445cb04b25471371408d7a33542c0c6486b2",
+    "reference.json": "c8e4b0686fd99703e275e4474718efe52e587f4f94bd66a6c63dc18baedca97b",
+    "timeline.json": "5b08e8c86d948b8913568ab7c407f09563710121b2df5627ab8a8cca7fa96fa9",
+    "audit.md": "2eeb1014442f3113a5557f5dc81a6c9ac4dba17402b968851ad5fc93f3087802"
+   },
+   "composite_hash": "d3c34ef839a463a8676f67f4fa064822b2b53c7362dbb5450d95ab9b419a1bdf"
+  },
+  "E440": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E440",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E440",
+   "file_hashes": {
+    "episode.json": "8391270fbcf12386b3fcf88b224087723ccb4b34147007cf97a95c4955217f72",
+    "reference.json": "e889b13c1a1020732f51bffb39e0fdbd02d8cf492130bee6002e85bb742f1b3b",
+    "timeline.json": "72f1eed1743503a5a13cb44f8ef18e11f8be1f2c0aa65ddbbdfb9091fba94b4a",
+    "audit.md": "75f2018fd5eb9aa698fa056a1e8de48282e8de6d434dfaddf19442b506684ead"
+   },
+   "composite_hash": "390debc43ebfc000a7599dddce410b9a3ed7d777fb0fffca7a3eab7aa0b3bb72"
+  },
+  "E441": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E441",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E441",
+   "file_hashes": {
+    "episode.json": "d847589db7576d81fbd1c3dcaa7093269387161e5f84abb55b17cec921884d61",
+    "reference.json": "f76ebebb40d117402caf995d0a7e9f038ccb7714fabfdb5544756bb1e386f5b9",
+    "timeline.json": "1aecf3de3e46746db67a2927f93136c64e1c46b97187f2f967fdfe229b643b4b",
+    "audit.md": "eb1bccf22ef320d3bcda9ee3ab044929b17e770e780b3acbbedbf6f84dfb3d69"
+   },
+   "composite_hash": "2486d71835f522d96c3cc439b694e8ae76b141111e29a741846a70c141e794f6"
+  },
+  "E442": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E442",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E442",
+   "file_hashes": {
+    "episode.json": "6fa0c9686e5f22094673836bdb1629f6e74b93733f210f3cb712e2b072a3ed06",
+    "reference.json": "5cdb60eb967f8362c6af8287d5912c450de76fc85beb10f5729721baa84ec84a",
+    "timeline.json": "644852ba21268983e1a1e4cd29de77caad094ab97bd557ad2b458517972546b1",
+    "audit.md": "cfb1baacf0efd1158f266e90a49d86825cdfd93781287ce04c26255292edb885"
+   },
+   "composite_hash": "61a776d1b6f476a2795f20244f0d8277f0cc06b2ffa6b5a9615864c2dee33865"
+  },
+  "E443": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E443",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E443",
+   "file_hashes": {
+    "episode.json": "0edab56ebcf24562845312bcf271a2854434b7bc280c8cf53ab0fac53e16398b",
+    "reference.json": "17690146b72c9ffff58dcb82c867ab3dff20277e61644404afe75fe8f8244d67",
+    "timeline.json": "80f4aa557b5de05892d1945803b21933f2b9761fdddbab28d68fd3e35ad00d31",
+    "audit.md": "b3e1c31c543b91476d574eca3626b6e0e08a7bce01b85e58e07ccd94f45e22ca"
+   },
+   "composite_hash": "0a95f0cda90e628d48aac10a594c16b892ae322580ea554efd4d3224d2b66a24"
+  },
+  "E444": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E444",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E444",
+   "file_hashes": {
+    "episode.json": "f8965f3272d9cd0771d8efbf5ec6cfeff2729da68a4d54c1ecfefc4bab557598",
+    "reference.json": "8e68cfe3344cae6dead42c2b14f1d1875663b5d777d946fa9d6c1708b45d72fb",
+    "timeline.json": "bb8cef60bb1da80f572d7d3d3e79260c56b170bc94d26945ba5d57d1ac02423f",
+    "audit.md": "b48b6c2963fca8b4bb02b65741a001c47a77bbe0947bbc3dba4880498522d618"
+   },
+   "composite_hash": "9c69874614abffea172757395107c5b245c553eb388298a28f25260db942b977"
+  },
+  "E445": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E445",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E445",
+   "file_hashes": {
+    "episode.json": "4627c7eafcca6e16c1b631a0f3512576ee530a57a2af80049083ad3e93d1bd46",
+    "reference.json": "5071c659f344c7797a0b6c3813f92ab821fc5aa49c67645219b74d4eb76febfb",
+    "timeline.json": "60b826bf4a1c41312cb1bf6448714260cccd190d4a7493cd75ad4007a3823e99",
+    "audit.md": "06374487df9f626894a9b2367c2b3e451003547004b64107e8d1951e02b0dcf3"
+   },
+   "composite_hash": "4993d201cae4de9719c681a14c0e7454761d9655ca80bafc5f92cb848ab677d8"
+  },
+  "E446": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E446",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E446",
+   "file_hashes": {
+    "episode.json": "ec4e13a2d0323607f9b8ce7b68cf7ad694c7fd67135f1aaae0701ee398724f60",
+    "reference.json": "b494a666131a1eac729ef2f6ebfa7cdacffe784251c2c0c31c0f337844523194",
+    "timeline.json": "a8357be00e01ca723fc646927fa54d7fbc4b6ff3ed53cd06df65432b14e058c9",
+    "audit.md": "bd8afd65b84602aab174d93477c89671b44c1a56e6e7270c36d08de995fb6225"
+   },
+   "composite_hash": "6076fcd93fa98da8b5bcc2c3e94baec9b1550f6a7e8a6740b2987e003f99fe4c"
+  },
+  "E447": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E447",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E447",
+   "file_hashes": {
+    "episode.json": "c29fc81a39c5bd9219c75bebaa1ed5e79de6aef86f440a8aca3eda586945ad22",
+    "reference.json": "e0529676bf00bc975f1e5e01ca50e2364753824fa4ed8956ad7af8a66047f05b",
+    "timeline.json": "1aae9b46d79a858914bc22431a02b115508e7ef63ac00bb9f97b605354b3bc7f",
+    "audit.md": "0f15f12978fc23be9cd0b3bfa933c9df95e2b9a0545516e01c9f68e92b1b5b44"
+   },
+   "composite_hash": "16225cb69eb96d9135d58539ff815fa47f340294b9fe7973450658ccbea50e56"
+  },
+  "E448": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E448",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E448",
+   "file_hashes": {
+    "episode.json": "010a60c55c76c164aec95e443375b078bc37694035e651ab9e922da2ae88d448",
+    "reference.json": "ae859b077eaf06ceb3fa876bf277e5a86c8710398da7ee1d53de743c2888f3fe",
+    "timeline.json": "7cd260c7891fb6b2d1db8dd72ccb8367de4ae2926d67f1748efeed3dccb9a7cc",
+    "audit.md": "dfeddf593fabac8fc386a5ffab0a0487755aa256b17c676d0fa68f7530037d50"
+   },
+   "composite_hash": "1fe93d3ff7c39f3da818d7cc4a5d9107739c7a731e31dca7fd90d605abc2d1a2"
+  },
+  "E449": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E449",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E449",
+   "file_hashes": {
+    "episode.json": "d43a292c398635b1e96aad49864fca9b0d7046e28167fa7e76879d647fd2089a",
+    "reference.json": "c057023c7ca451c94f80be722bb80c544a0058b10f5bd3fbe2e41cce4ee3ce2b",
+    "timeline.json": "c57ca99bc5de81ef66275943e5958e99c37e8fdb4c4baf6eb645e539977d399e",
+    "audit.md": "864e220f1821cebee1464e01cd91c924f45aae41337b9d6274cc4bc2cf432024"
+   },
+   "composite_hash": "5b0f57b2dbc540e9e2ca87523040b2bf8df1f07588f3b729b17e561f98dec98a"
+  },
+  "E450": {
+   "split": "HOLDOUT",
+   "topic": "T03",
+   "lineage_group_id": "LG-E450",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E450",
+   "file_hashes": {
+    "episode.json": "3b1feeff0fb242c051413a1b817129196f4bc980e7aa1c5c391ee4f05341e413",
+    "reference.json": "fe8da7c304f1a38aecd7dccca950a83960c46eb292c1298ecb75b0a8a68d9674",
+    "timeline.json": "7067e6fd8f48cccbe8400b4619ad39f17542d5b73ec294a98a06c55a201c0570",
+    "audit.md": "42b263324a154de71d17b95d2459327655524f563152eea95b57a9e021580330"
+   },
+   "composite_hash": "5b6c3921d8d619c9d9a22a5587ea533ac0a6349ebf120bb0821fcb0abd06bf15"
+  },
+  "E451": {
+   "split": "HOLDOUT",
+   "topic": "T04",
+   "lineage_group_id": "LG-E451",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E451",
+   "file_hashes": {
+    "episode.json": "b1e6d6c536dd2bccbd8053e74339e1d503bbe46c8c696f57ccc1a923a406dd21",
+    "reference.json": "db060f2094271e077fee689ec0e99e86968230fd56b3739cd4759371576bf494",
+    "timeline.json": "3b33db68e700edf4af754af9a458e20b5d3192081b9b41a00ffeb4ebd6459d28",
+    "audit.md": "2109ad11cf8263126979258a361e5f3ddef92e44ce4d3a88a4bd30f8ee374113"
+   },
+   "composite_hash": "9dd4666e6859e7bc8ce30369781ebb4f9d76ac7a8ee10f0d528cba4cc4f3917e"
+  },
+  "E452": {
+   "split": "HOLDOUT",
+   "topic": "T04",
+   "lineage_group_id": "LG-E452",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E452",
+   "file_hashes": {
+    "episode.json": "0946cb414175169c131510187beab79dad64f1825add1a28363fc9a3c563491e",
+    "reference.json": "44a74720bbdbf72717d570c1fa9480edc66adedd1eda9e5134ffe5aa71e606e9",
+    "timeline.json": "7295d7a277e7280f742ddff37af3eea9c314a40b7a371c2072cf63faa10e4226",
+    "audit.md": "add37eed9e43a539dc99e435e32d9c8adad3625c3ae4c3422a57dfb27e26f777"
+   },
+   "composite_hash": "932994fb7a9008c60786d6e5542ff76ae2cc54c51f4d845aee1f0d7ef7b658a8"
+  },
+  "E453": {
+   "split": "HOLDOUT",
+   "topic": "T04",
+   "lineage_group_id": "LG-E453",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E453",
+   "file_hashes": {
+    "episode.json": "389d2a40e7d37a0e98f38f581ecd3f3001028414491a422f795e7dcb84511afb",
+    "reference.json": "8b62f18ff28cf38ffd0eea53241121a1f69659b7d355320511b2d72836aee0c9",
+    "timeline.json": "626d1a1f3b47eb5defdabd44c020d9078a0020701a4c958e7cb066a3bf5c5e40",
+    "audit.md": "aee0a1a02355bd73ed4fe4baa038e235838ea533d7de403f550f137295d4f5bc"
+   },
+   "composite_hash": "41f0c76ae7930530f758c24c9c29984afc2066d808540c8b49d14efdad2acb14"
+  },
+  "E454": {
+   "split": "HOLDOUT",
+   "topic": "T04",
+   "lineage_group_id": "LG-E454",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E454",
+   "file_hashes": {
+    "episode.json": "8edd78f7479763d7b964508026a7334712ddd38f35bea2999425ab25271a3a0f",
+    "reference.json": "181d2400af740cb0c7982c291fdef2bb6c75202231afff9a07c6cf6dd9c6a0d2",
+    "timeline.json": "577c6ad6a2f28aef5d808dc5b64808aac1bc85e9f57939ef02e887e1f64db34d",
+    "audit.md": "86eebea17c759fbf123a5a1f56029350edb5ed53c686386980b7fa68080a8d95"
+   },
+   "composite_hash": "e104fe18b79bcd30d6faa1b7aab9e01de9b25badf25980a8a9db851e18ed87ff"
+  },
+  "E455": {
+   "split": "HOLDOUT",
+   "topic": "T04",
+   "lineage_group_id": "LG-E455",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E455",
+   "file_hashes": {
+    "episode.json": "a5ac332d9f91b9dd60e9a05d851e45db652fddf7cd19cd58b8770d7704cc22ea",
+    "reference.json": "389cec4dc40371ff91f876997a2bc11f082c7e6b2694930e0c215fde39c49495",
+    "timeline.json": "d510bbc2d892fa769a75fe539f22c8124949f258956f5553b48953af0e4158fb",
+    "audit.md": "805635eb7a7d2f350372a9041109fbe374a8ba1aef21d29b515b0f68ddee56ea"
+   },
+   "composite_hash": "dd19713c7cacf7e95db749164efee52d8be7ae91ba2894a5d06ff9de408534ec"
+  },
+  "E456": {
+   "split": "HOLDOUT",
+   "topic": "T04",
+   "lineage_group_id": "LG-E456",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E456",
+   "file_hashes": {
+    "episode.json": "c02d74898190025a88577b2e4b14e10a9cb424daddc7d81eebaac634ddb33f83",
+    "reference.json": "582120777ddcdd3dd49590c39c4d85546a892a0bba3910d57707a277dd858b48",
+    "timeline.json": "55c00fabf4ca846dd519fdf95faae29bbcb91b3b7cfc1250c0183ed179eace44",
+    "audit.md": "830863a78039911cf26ee5593c6b1ff169d346b165ce0a9a0c18048696aa1c24"
+   },
+   "composite_hash": "79df72c3bafdaa8fd37e466e8c4de17d7d62221d9821c9346ac9614c85d13d7a"
+  },
+  "E457": {
+   "split": "HOLDOUT",
+   "topic": "T04",
+   "lineage_group_id": "LG-E457",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E457",
+   "file_hashes": {
+    "episode.json": "557c579b0806500cd27ada5ac6a83df86e71c39eca5535b41d3de08317b5b9a9",
+    "reference.json": "eb96617f5ac0fbbeaaaec95beb0082c1098d8ca5506d493091f9aabce190b8f7",
+    "timeline.json": "0b6ecebe7d2aa80f4c278112dcf281fdb93bb88a75ac9b68bd0d094bc84a9732",
+    "audit.md": "ba62e6fcdebbe73274d6b5317a87159f3ee07df3120f581bea5c844ee019b728"
+   },
+   "composite_hash": "818da94613ed35b1be899614848cde74095be6cac20c70cc5b0b1565e6a2fcf5"
+  },
+  "E458": {
+   "split": "HOLDOUT",
+   "topic": "T04",
+   "lineage_group_id": "LG-E458",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E458",
+   "file_hashes": {
+    "episode.json": "a2180bd3a69835684bed3f71a65a464da0f6209a86e8d807f25e01782e2880dd",
+    "reference.json": "419eaaa067ba0868d5499b4e2ecacd872581cbe475997d2902bdb0b656fa3c80",
+    "timeline.json": "4fca85967f51bc3888506d60abe495f1ecf9dfb10ca89c436e7750d6377cfe5b",
+    "audit.md": "710fdbd6db51e1461bad226013deb949bbde03da8d456cfcdbeaa2f2b03ef83a"
+   },
+   "composite_hash": "357bf947d39c5381e9214574d8bc9de66f5ae4631e48d3a22ff732ae90251d99"
+  },
+  "E459": {
+   "split": "HOLDOUT",
+   "topic": "T04",
+   "lineage_group_id": "LG-E459",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E459",
+   "file_hashes": {
+    "episode.json": "c1f1d0909a85d3c0f8f3a92d2943ff9d0b00505e8eef688ea88dd9db31cd218f",
+    "reference.json": "681d74a84c536ff6dc64803119c925858d194f5143bb77c461b7aa39f7605af8",
+    "timeline.json": "31d41949ac1d6ddf527e5d2acb8369b46119c2f493fd2d236ecd0ac3a758d037",
+    "audit.md": "c936a04d0928fd9765519929e755fac989c14e4aeaf2b7f589bf22856bf8c5dd"
+   },
+   "composite_hash": "ed638c65f640473e963d039bd2e028a4c59defeae97f2785210da971d1afb601"
+  },
+  "E460": {
+   "split": "HOLDOUT",
+   "topic": "T04",
+   "lineage_group_id": "LG-E460",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E460",
+   "file_hashes": {
+    "episode.json": "45058a164d81deb7e4a43999f57b1fba339f3389f5004c96ea084c34df2a9579",
+    "reference.json": "0f2d46e901337f110e0f84f143f91a896fe8f88f3892c62f24cfd166a3778f1a",
+    "timeline.json": "c22e7711920ff2088e39faf8f2a01d19406095f233cc9decf4755ccdafe2c9c3",
+    "audit.md": "8398c0e1e440a3ffbb0013460b52817c9e38e9a8cba2e61d9b5b6fafb08b632d"
+   },
+   "composite_hash": "ac86c75d70af3365f26d62b621a9fdee804ae432d684b07a6b56e41c30cc7a24"
+  },
+  "E461": {
+   "split": "HOLDOUT",
+   "topic": "T04",
+   "lineage_group_id": "LG-E461",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E461",
+   "file_hashes": {
+    "episode.json": "de03776134c9f45c14741613d92f9d9d6ce0798741ac3c60485629d7771a456b",
+    "reference.json": "5d2efd3db99fb2e8c9abbaadc24c3a73ae418c8670774d8bc54fcf64187ff7e0",
+    "timeline.json": "700200bb11a3cb29243a38ff9448d093e2954936806fc6a524686d96f169f6bd",
+    "audit.md": "f50fe218bd48595143a50d2214a80fc5864557828222fcb5766f5bad488b5909"
+   },
+   "composite_hash": "fd47c3c1b86c45548863e672e9774f2e49d8602df7d3b19cca19f8ac6dd71834"
+  },
+  "E462": {
+   "split": "HOLDOUT",
+   "topic": "T04",
+   "lineage_group_id": "LG-E462",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E462",
+   "file_hashes": {
+    "episode.json": "fc244a2d4ab8957ce235bfa9d33bb1fd98e2b3e453a8c02f1df50cd3747ae7b9",
+    "reference.json": "9f4dfbe0da79c1a8521f00231f9c6b9615a910194a42b08c953281c94fc17256",
+    "timeline.json": "772f6a46c4acfc2612bc114c21ad393ae4d7a818733553be9c55956f584136b6",
+    "audit.md": "4758aad4907850b0ce864689ff3845c6824d3d4762e89ba94742b21b079845fb"
+   },
+   "composite_hash": "ec675291846dde457b37eac13eed3ccbe7e46ff961de10ac1998df1f95422c73"
+  },
+  "E463": {
+   "split": "HOLDOUT",
+   "topic": "T05",
+   "lineage_group_id": "LG-E463",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E463",
+   "file_hashes": {
+    "episode.json": "df913cb5f3b1af21159c01f9ae52df47b8e756b5188e7d52d33776602331d310",
+    "reference.json": "6b1339c9d28e1514c4419b59346d270368e1cc6da87dd6aa41d3221045fcf111",
+    "timeline.json": "69ce2776486afe0aa42c581a9d141a45c23081661b5fd59c5994eea42f4c78f7",
+    "audit.md": "1802cebb0f319d319b43de166bc760a848401a720ee76a9629e32df61a0a9c6f"
+   },
+   "composite_hash": "69f4c2f613c8570ad875bb0e7071179a17d612aaf8c8c1ba64c8b152033b2213"
+  },
+  "E464": {
+   "split": "HOLDOUT",
+   "topic": "T05",
+   "lineage_group_id": "LG-E464",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E464",
+   "file_hashes": {
+    "episode.json": "8bfbb0f3d9118d1adc145e780d52c070f6de2b6bb1cb17ca4b7b423606609b4c",
+    "reference.json": "e3464f8f036cf0a5af477f21f9c0ca59948c5a6fd56d20866f52be63101fac41",
+    "timeline.json": "589cb8ddadf377222f4bb56c51b4b1fba8df314553ecbc824ee594fc82481079",
+    "audit.md": "54667948a49604ca98ee28e8bc2b33b4f5c1873c42f1264499f060da6d68ddf7"
+   },
+   "composite_hash": "8dd483dd4b953d054fe4a81bf72819f5009b7a4dd4a316ee7fc5d31c081c927a"
+  },
+  "E465": {
+   "split": "HOLDOUT",
+   "topic": "T05",
+   "lineage_group_id": "LG-E465",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E465",
+   "file_hashes": {
+    "episode.json": "e88e39487a3f76baa8a53db204a0d49fa8f2939765c6daa86662355359a9bced",
+    "reference.json": "1930036e805dc10a58ff36cac636bc659415443b628479b17787c5b50aa936d6",
+    "timeline.json": "4aefad93e1327389e7f04f773737783f88b7471182ff28beb12259c9ee7a0377",
+    "audit.md": "28e159050d7800ae8b6b8712b14a14c1ec5d7817e54b970d798821a47738eabd"
+   },
+   "composite_hash": "269cb5bb7e559ad90c4c13eafbcf61c8ae3bc63da7d653f6118c29cfe13cb449"
+  },
+  "E466": {
+   "split": "HOLDOUT",
+   "topic": "T05",
+   "lineage_group_id": "LG-E466",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E466",
+   "file_hashes": {
+    "episode.json": "21a87edf950d227b201f80de9f3e8560a6fd18abf37bcbbdb9f7cff6434bcf3e",
+    "reference.json": "d8ee5031192b4c8d411723b22e8a98f95f815b09568bfd8265063c4f7b1ea154",
+    "timeline.json": "0aee336bd458a8c4abcfe54d8d0c59ac07ff80de7a42b6f953bee4dc85a451b2",
+    "audit.md": "2860a51275ce3d34f8b1b942d8e02d1a8f2898330b47c429d77910bb2398580d"
+   },
+   "composite_hash": "af9bb80ed97fdbdc00c09c53e6f0df190bef249ee0c2066b2bf24dd68e15beea"
+  },
+  "E467": {
+   "split": "HOLDOUT",
+   "topic": "T05",
+   "lineage_group_id": "LG-E467",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E467",
+   "file_hashes": {
+    "episode.json": "af89be04d94c90282c7f6d6e4d5a610b1eeb7bf5d54aea25be12c1b0203813f9",
+    "reference.json": "cedb52f96d05dfed6864ad349db73000b93518960f685bfc89cce9e58e2d05b3",
+    "timeline.json": "c53ae8dc7f47757b16652916027b0b21a0d7f598a50ba21f1813f75159de97e8",
+    "audit.md": "9a33d68e00c3a5e83b66c463f9f18592d67d77f9281a9076f586a7e050f7131c"
+   },
+   "composite_hash": "1b5de282e388b8f849d710d434146f34beed2d34bfd259868d1d1c05d94337be"
+  },
+  "E468": {
+   "split": "HOLDOUT",
+   "topic": "T05",
+   "lineage_group_id": "LG-E468",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E468",
+   "file_hashes": {
+    "episode.json": "7dd1bd17535778b2ecb764e6beaf13383e6e112c03419fbe45ce33324ac1cb9a",
+    "reference.json": "92b7b74c56cd781c001c0fa8af49dbd007cc7cb56510efe9c0c5177614ae25ae",
+    "timeline.json": "e0afb28e3ab04f690303608f171fe0340d047001565c3d46d577103c7baca40f",
+    "audit.md": "203b0fa9c6d8ad558d3d0dfe00a965114b62077e9dc89c68901b6dc68c1f4fea"
+   },
+   "composite_hash": "448002fd281b98239856c4081220c1dabf4a22604344fc170b9d1c4bb4643c72"
+  },
+  "E469": {
+   "split": "HOLDOUT",
+   "topic": "T05",
+   "lineage_group_id": "LG-E469",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E469",
+   "file_hashes": {
+    "episode.json": "7b4387ecb2e8a5fbad4a57f8321f750f81702f6e230007594ae0f26437824e23",
+    "reference.json": "d1ce505e71da8488115e0f58abb75a91b7e2e0072fdd874b93f2d97e73a45794",
+    "timeline.json": "20bed082ed56e36ce264d1f679995a37cc9aeb1292b0cee3c0ef3b7778160a91",
+    "audit.md": "b0a4c154feaf51312b89fb2279fed362fc6ca01a2b1d1bb209022b2842105ade"
+   },
+   "composite_hash": "a14dfcfd03d3b68769e764e187bd58c61a5295670b61641cbb8d127266553977"
+  },
+  "E470": {
+   "split": "HOLDOUT",
+   "topic": "T05",
+   "lineage_group_id": "LG-E470",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E470",
+   "file_hashes": {
+    "episode.json": "50e270788f5f9e8cf214cce111c761c3c6091d9db05c0084648a8d6a73340e9a",
+    "reference.json": "78d1bcde4f420ebbc15cd27f526d0decd2d0dfde45dc5889c4822a54ebb046ab",
+    "timeline.json": "0bb9f4c289999f22e1d5a9b82f7e8cfbee785bf7ee44925fd90e033b7ffca826",
+    "audit.md": "f583654ff5798c8b3f54903591ec8d07757b42724233b56e4db32d822639f7fb"
+   },
+   "composite_hash": "cf0bb49d8a25b04ee08bd51eb5b8357930328f85ea132bfbde3145862ac16823"
+  },
+  "E471": {
+   "split": "HOLDOUT",
+   "topic": "T05",
+   "lineage_group_id": "LG-E471",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E471",
+   "file_hashes": {
+    "episode.json": "64454be29c5e9fe49e835e049e5c08c088350138fdfb2fc958b24add24c2c7d8",
+    "reference.json": "7c7ef26fce9bd14c28a8ed5c816328542e47322e35b8feaab39d8da06eba9dbf",
+    "timeline.json": "a60de40dd6c6e061b0dd5cf5a3105e2d47a4d090e73d598a4e61d92ce1b4360d",
+    "audit.md": "8b70cb93f717b44cb714151ac8b6923c6ccb84c1a7f50e1623a261d1b7229cbe"
+   },
+   "composite_hash": "6e106fbf0c7ae0c568dec9e32fa829a50fefc0a7cef34506b05a7e56a317ebaf"
+  },
+  "E472": {
+   "split": "HOLDOUT",
+   "topic": "T05",
+   "lineage_group_id": "LG-E472",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E472",
+   "file_hashes": {
+    "episode.json": "6c80f76ce2b571ad7a7996166b8b94d991bddbdc7ddca9fcd22cff9cf8daa0a0",
+    "reference.json": "9a285f88e8b860dc6345648841dfb39d3cf86445e783c7c17c1f463b2d6d2f33",
+    "timeline.json": "8116a17631722df350d704ea7f3f897f086471bd313021d56c6d01fd29667cac",
+    "audit.md": "53595757a59ba9ff88bae8474fa1814b392b03eeba3a4be21979ddb237bf8a6c"
+   },
+   "composite_hash": "b9ea49fd55fa782fef8974ec705b88c958bcd99271f0e18d069bdff3cd2dfeab"
+  },
+  "E473": {
+   "split": "HOLDOUT",
+   "topic": "T05",
+   "lineage_group_id": "LG-E473",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E473",
+   "file_hashes": {
+    "episode.json": "243412305f3e17c2327d546e3608df62f43e37f4d6d6863a9f2464a95e011430",
+    "reference.json": "9ab3568dfb7a519c45de0f61860be89b0a90783e4a106043d2c71c805ef5ee4f",
+    "timeline.json": "3bb8120e119c550869badf1af7f842250f024c136e46a50387bf077e62305a01",
+    "audit.md": "e15466a030412a7c5450360f458910237adc7faa30cfe9df201399dad5a1746c"
+   },
+   "composite_hash": "c84676a9ef35e1da58b256591b72dbbbb68eb303c2eaae1e83543aa7a2fb81f3"
+  },
+  "E474": {
+   "split": "HOLDOUT",
+   "topic": "T05",
+   "lineage_group_id": "LG-E474",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E474",
+   "file_hashes": {
+    "episode.json": "beb44e58439f6d33cf5fd4132edabca43fd918d88f1ac666346b8c7030c0127b",
+    "reference.json": "90e8d2ac3ae44197635f2e6799c702388a0192de7fd88019e0ed98c2284d144c",
+    "timeline.json": "27f32a47cf6efa90adceacb8f83138f97083403fcb2c84c66f471cad966b6aa5",
+    "audit.md": "2ce7dfe2ef85ffac600a1a5d2430e1c9d2a7fab44d723c208ca2647f153bfa41"
+   },
+   "composite_hash": "5bb3f31822bc070d73584f15d66884a7d6be43ee66a785fb01b98af0805c54b2"
+  },
+  "E475": {
+   "split": "HOLDOUT",
+   "topic": "T06",
+   "lineage_group_id": "LG-E475",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E475",
+   "file_hashes": {
+    "episode.json": "55020071596e3ad689582acaee84c29f53014462a8ded3022903d725356a00fd",
+    "reference.json": "f23a4e92aef99054c89096976ca8a25945b2bf8af0077ab5ea66a28946e15fe2",
+    "timeline.json": "e71ecb66ed1ae471e492136ed63280abbd65c8ad1f7f39fab9fc2b854dadb43e",
+    "audit.md": "183e725797915dcf83c1a5e26e1d1216e7596655724ad9351f2e3b43f35db4ce"
+   },
+   "composite_hash": "c795459363f79937f1ec1cfb0f328063929f41cc313bb4228b0bc8caf804c7fe"
+  },
+  "E476": {
+   "split": "HOLDOUT",
+   "topic": "T06",
+   "lineage_group_id": "LG-E476",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E476",
+   "file_hashes": {
+    "episode.json": "1f9e8af32949dbd30e5b845dc49b6a42eb0d7a52993619d4c346b7a1661bb548",
+    "reference.json": "7fe513f3941cd11034fb8cf463179d9fdaee934b8386f26b7cbfb9061b1d3616",
+    "timeline.json": "31a669f3c3399933def0830b2dc12fe03d24ecaf3b91477f56a8860af427936a",
+    "audit.md": "66ae414baf4497777548ef9ec07ed03820dc98392944f44cfa74c11184d910eb"
+   },
+   "composite_hash": "bfa9ad90d2991916632f229008ba10143f2c801b473ecca126bceb02cd1a1c87"
+  },
+  "E477": {
+   "split": "HOLDOUT",
+   "topic": "T06",
+   "lineage_group_id": "LG-E477",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E477",
+   "file_hashes": {
+    "episode.json": "7779afccea698484e98ace848397a333c55950513c1fb668cb9fc568f2bd602f",
+    "reference.json": "633e8f7cc1e485841b8ed94e1af51e9cea2561f3e1231535f52269554156f45b",
+    "timeline.json": "dae14a11cffea52c463fbda475602b728236667e8c0a8a27b421e7b4cbcf6b4f",
+    "audit.md": "8629c536f6ec70db1cf89374238202640241c039eaa3488dad76e2c96466e5ae"
+   },
+   "composite_hash": "f99b72dbfb124d2f2bf12c65c88da20cdfb137dda5c00647e78914d7d38cc8e6"
+  },
+  "E478": {
+   "split": "HOLDOUT",
+   "topic": "T06",
+   "lineage_group_id": "LG-E478",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E478",
+   "file_hashes": {
+    "episode.json": "6c32c67a6310ae9ee3243a16ee7371883d671cf09e0bc1809215bf7f3f897e5c",
+    "reference.json": "6e6ab21a684a8533fbd7f1ca1bb7b0b5c39180f480d4f83741bb47522e528454",
+    "timeline.json": "41d8555fd1e5d834b7c1ddc960ec5b02f1f95395f9d7d8158e19e4758d2ad863",
+    "audit.md": "42fc1d4aac371581b7cbdffa94f3b71ddc31ebd6c9be4e7b1029a9a86b86ff6c"
+   },
+   "composite_hash": "45fa7328ae64525884ed906f9f2cd1ce6b69d7bacdce1c38228ab42c0a7b021a"
+  },
+  "E479": {
+   "split": "HOLDOUT",
+   "topic": "T06",
+   "lineage_group_id": "LG-E479",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E479",
+   "file_hashes": {
+    "episode.json": "e68e0d6efe6d0231d511ee0e44a05512fa4ce502e6a5793ba08df00835dd043c",
+    "reference.json": "a2f5b36cf104c94d1ad024a2f85f03305c51c9c6b86873b112e4babf7b4a4e59",
+    "timeline.json": "e4676b0d1f310c1e1ec7aea7970d9d3943d5a89726a52afb3d7fc60a9b7e7c9b",
+    "audit.md": "95b227dc2c6561c51072d2c9ede76d1e2f5eceb111ea43409f943f6fe5f0a481"
+   },
+   "composite_hash": "c4f9905b63804f2a4a7c152143a1f579dcc269c6161ba10add1e75670faa8ca0"
+  },
+  "E480": {
+   "split": "HOLDOUT",
+   "topic": "T06",
+   "lineage_group_id": "LG-E480",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E480",
+   "file_hashes": {
+    "episode.json": "45535872cec913aed08093e06aafd4468d0cb7e8987acfd336313fe981db6766",
+    "reference.json": "9c80b4beb7373b9d99518db451b1a9ad852c5e2eadc37988dc55358cb67789ce",
+    "timeline.json": "a4825b0dcbb76fa57ec8c666b6f9b4d2a7235efcd1d7a3393163f544f5f0e0e9",
+    "audit.md": "eebb89dd835bb7c8b3348be708b5bc2c670b8db6720f73185ad3bc40c5df191c"
+   },
+   "composite_hash": "3bb7a70aa188dfc484579e40421796bf7f614036a7500c817a30615ed05dbe0f"
+  },
+  "E481": {
+   "split": "HOLDOUT",
+   "topic": "T06",
+   "lineage_group_id": "LG-E481",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E481",
+   "file_hashes": {
+    "episode.json": "cbd56e0533c16320935506c5b08ed2a51b2e7e56dadcb2f1a6b46fa1b19293d2",
+    "reference.json": "b3b390bdd13a29785d5de6419643e4e6eb46677c8078aef8ffe1d39c7a2605e2",
+    "timeline.json": "e2a63b42b6a80060d0c0620cf653017b2e40ae00729fe98a492c1c209ad16ee1",
+    "audit.md": "d94a8ea2dc4935e76ae12a1033bf54655affcd222ab6566a56c15f70efa72caa"
+   },
+   "composite_hash": "4850a73bb1c13d529d3f2237d98736b1570b22207305ebd2de8a00028c6e2926"
+  },
+  "E482": {
+   "split": "HOLDOUT",
+   "topic": "T06",
+   "lineage_group_id": "LG-E482",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E482",
+   "file_hashes": {
+    "episode.json": "727ad2b602cee27d48a17e579b4c0fbcc5e1e24ee19ea4a2c13505f805986939",
+    "reference.json": "737f90ac37ffc373457ed041d089eb84d7606420f58c8089b7aae085ee3d481c",
+    "timeline.json": "69d48a760133d59fd54de7c14d8b99c728d2bca1db3c7bd9ce7670a55230ae96",
+    "audit.md": "4bb49c9d8898e9eb7d294c5b6892a3df958a111c95d63dce16386b9120c8d7d9"
+   },
+   "composite_hash": "e585174850c2f0e9a6efd4f8384ec0947e20e01792f0a1ed066f87ded94192b8"
+  },
+  "E483": {
+   "split": "HOLDOUT",
+   "topic": "T06",
+   "lineage_group_id": "LG-E483",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E483",
+   "file_hashes": {
+    "episode.json": "20b238b12a6faf19f45c661d8f45a7bf64e0b07c3f3b3c6a371baace614a1434",
+    "reference.json": "2b594228b4f675581e85fe8b2b4173f94f3da857630874242e074f525f35fc8f",
+    "timeline.json": "18dfef594ef43dc53e9d1897b919670eaa8e525386103edbb846262de75914b0",
+    "audit.md": "f1d1dd66db3747a7ff827621cf9e8568811f2ba9d0f17650aa04fbf5de27a47b"
+   },
+   "composite_hash": "8d5b7ac6387cc7dc1a84dae76c6ea49032ddec2805a8e492105591af6fc96829"
+  },
+  "E484": {
+   "split": "HOLDOUT",
+   "topic": "T06",
+   "lineage_group_id": "LG-E484",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E484",
+   "file_hashes": {
+    "episode.json": "b06bad939e7c5fdffd4269bbf4a5adf1461f0e318bfce3e56424afb5a634f58b",
+    "reference.json": "2d808a8ff2fdd01f97c58c77369eb2dab9bb1874ad557d5437a69294a2137326",
+    "timeline.json": "4b2fa5f46557d6aa97a3a91a92d8f5f55483e15721bd290787fccef77414a81d",
+    "audit.md": "c4e857da8c71993e352615925502650f8dd1dc355cfd27053b9d47d32459088b"
+   },
+   "composite_hash": "28870e1c04395a20a97fbdfa2598f9647227a096a8a96980ebbeab7893e38bb2"
+  },
+  "E485": {
+   "split": "HOLDOUT",
+   "topic": "T06",
+   "lineage_group_id": "LG-E485",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E485",
+   "file_hashes": {
+    "episode.json": "f09038ebac1ad09575aaad8b88ae1d697fffb4b224c27142d7b4b872d0e79a6d",
+    "reference.json": "566968cad3e8c2ec69d1baa05ff18bf49382ed633c8870bf3041da2a47048740",
+    "timeline.json": "825278a0f0828b9244a8bfd8b44a20f2a39c2e7b52314d76cb1e50c371c2579f",
+    "audit.md": "dc335efb90dd837283e5e44cb7210b649f8c42c534e6e572a1a35e1d090196ba"
+   },
+   "composite_hash": "b8ba6e4f8a4fbc09e1890b3529a6fe3a77780bcdb551c1949d9a12b1691608a3"
+  },
+  "E486": {
+   "split": "HOLDOUT",
+   "topic": "T06",
+   "lineage_group_id": "LG-E486",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E486",
+   "file_hashes": {
+    "episode.json": "a2f27698361f5aa76bc5c127e650bdeeac9ed146df140ada37aec68e91a9a92f",
+    "reference.json": "bc5863e743ce32a7565aa7375795365aca9b6644e5d4c49df40d72a83b434169",
+    "timeline.json": "1430812128197ee139aa1f4816c1164bfbb247422acb1d9b004da8233a9896eb",
+    "audit.md": "1769ba2e6a456ab6ff6b4b1ae44cb75cca304ac9e09c1ea7e529472a52568e51"
+   },
+   "composite_hash": "c0cbbc30d420c0cef75a44424e884a35c795b8cb7708406478b583f5eefa74a6"
+  },
+  "E487": {
+   "split": "HOLDOUT",
+   "topic": "T07",
+   "lineage_group_id": "LG-E487",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E487",
+   "file_hashes": {
+    "episode.json": "8f18d84e6ff1bd12f6cc0a0183e12446c3209781c394bced8f46d43c53f599f5",
+    "reference.json": "4de444873862d06023d3337860fe228566e6b1c57fc4dc754f5764e49ef65bd3",
+    "timeline.json": "1a36bbfbaf365421ca1a71be452ebfeb5a9ffebafe617212860657c5b660bfb7",
+    "audit.md": "05411c35076813072301b5648f53178287f3f42c5d740b05f2fdcb71b8118104"
+   },
+   "composite_hash": "da1a92141defe86d4ececabfe2ed55a5a6921a30469becf44cb1319cb8d31e8b"
+  },
+  "E488": {
+   "split": "HOLDOUT",
+   "topic": "T07",
+   "lineage_group_id": "LG-E488",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E488",
+   "file_hashes": {
+    "episode.json": "4f0fc783605a51ca9903999a939bea2926627cc76dac665cceec2e83937041f7",
+    "reference.json": "d6643014408e039a219817d189b2c13995d1540000a5ac160c5923c5576b4d78",
+    "timeline.json": "cd23952387d6e6c24797cb213b626ac3e3278419ed06725c1308123d2ead56fa",
+    "audit.md": "c758d7d903bbfd53cf9ea6e038928a52bebd832efa43f61a0406b1f1b3d21c72"
+   },
+   "composite_hash": "0af7c52fe87ca5b7ee10281b3c9f7432ab1a08121f7c4747106d00f2f29ede6e"
+  },
+  "E489": {
+   "split": "HOLDOUT",
+   "topic": "T07",
+   "lineage_group_id": "LG-E489",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E489",
+   "file_hashes": {
+    "episode.json": "44c072baca1703ac71c2635ffaa2da078c546f8906101c21711bc7d16b95147d",
+    "reference.json": "e876082a141b73b0b4257448e70d7f329edb459a7c47580543b938a759738de8",
+    "timeline.json": "87856b3264b4bc22b088155e403af1ad5aa80b556d9ec3d0388bfda7f5ad450c",
+    "audit.md": "a28250b7cb53a74068424bd05f21a2ba4211fda0c318c75685406ff377b419f8"
+   },
+   "composite_hash": "9741b64e49482ce9c59a1aa87332ef2bb7c3665823221000b609f25dd5e032fb"
+  },
+  "E490": {
+   "split": "HOLDOUT",
+   "topic": "T07",
+   "lineage_group_id": "LG-E490",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E490",
+   "file_hashes": {
+    "episode.json": "75816b00bf2e558a7214d5d3fd15e3bcc7a25a1ad1e0012a581113775ff386c6",
+    "reference.json": "9e2eaeb9fb3dcd54389e8d1f51156d9d2913bd736283d143c5b0910744353f3e",
+    "timeline.json": "9a41272880c26f73f953350a61eb8cf24b1dcc8c9997edaba5dade6bc44d0c97",
+    "audit.md": "a965efcfe584e25fd48796daf88c175c75429f9b715fd3abff48fd2ec7905309"
+   },
+   "composite_hash": "42ce92859c58fa51e748b00bf01cf7b392d7954f5a9bca8c74ca3521caa44518"
+  },
+  "E491": {
+   "split": "HOLDOUT",
+   "topic": "T07",
+   "lineage_group_id": "LG-E491",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E491",
+   "file_hashes": {
+    "episode.json": "41461dd5bc320ea0e4a57418a47f68592932859889f37cad2aec91f3008e842a",
+    "reference.json": "0e7db80b4fb9927e47a49c83c7e6bcdd1cf5b9628f070c46eb6de56f332d8e0b",
+    "timeline.json": "f95fc4f42cbaa3e22622dc38cad7e38501adea24fbaeb501e54b7b979590f8eb",
+    "audit.md": "704de851177395d9ca2c2e839060a355ea4df9d81ec80259b5e1b4814ee632e5"
+   },
+   "composite_hash": "88c6cff90148bbf434054bb9156e4e28b88d13a4356393b5537fd1ffa1c46526"
+  },
+  "E492": {
+   "split": "HOLDOUT",
+   "topic": "T07",
+   "lineage_group_id": "LG-E492",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E492",
+   "file_hashes": {
+    "episode.json": "d4934b2090d8b4562d54cbe29aae2d9c9e07bef2f76c0a45bbc3e75a97ae3d81",
+    "reference.json": "5f909b8428ceb68e13c933d7f9d61627a06534c01cdac1040c0ea195afe2a3ab",
+    "timeline.json": "d2b611665b0f349cc62e83e5bbcd1e6d48699b0b566303afed00acfa709c707d",
+    "audit.md": "36c71bbdb39c46b046325a14302c20ac37d0f29311b9e1dd35e051007094285a"
+   },
+   "composite_hash": "a0ca4efcf277379e52c5f441952309ad6f0690a306044928327469d3f3a0df44"
+  },
+  "E493": {
+   "split": "HOLDOUT",
+   "topic": "T07",
+   "lineage_group_id": "LG-E493",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E493",
+   "file_hashes": {
+    "episode.json": "b2f498e890d81f1baef89e67b0d6953047b0c1ac0504f0f9fe1024de4528195f",
+    "reference.json": "2b187a6f926c482ad5809b67609608c729019b4558b37640ef0949f06d0671f8",
+    "timeline.json": "245553f97791c6534ca2f8e31d42a7ec59eab580e18de43559279ce8db0f3f49",
+    "audit.md": "d39930a39ccd844faf03c91d9cd45129669d3dddbc6cbfd6f6d33e85215b6a8a"
+   },
+   "composite_hash": "aed4bbe47112e7077e300cbd7fc7105355ad840d4aae25a07bad168588acffcf"
+  },
+  "E494": {
+   "split": "HOLDOUT",
+   "topic": "T07",
+   "lineage_group_id": "LG-E494",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E494",
+   "file_hashes": {
+    "episode.json": "40024d63e6a883cef43edac81e076b0efac0c5229d67d0a7a0eff19564dcfdf9",
+    "reference.json": "12ed6e364de8432f983bb5c3931f03e0a7ccc0234d32287a1451312c33c0f9b1",
+    "timeline.json": "ae02213aff1116f0c87576c4d7ac18cb102b58ea7a10b3666bf4ff05ee38b606",
+    "audit.md": "3a61f26b239bcfd8422a4f095ccbd37a527adf0046e65a859d08fe0b4c1e6a1c"
+   },
+   "composite_hash": "c99cbc49fc13d6f0b95141a7729ca5fae6300e1f67dbfedb87abb7b623533e18"
+  },
+  "E495": {
+   "split": "HOLDOUT",
+   "topic": "T07",
+   "lineage_group_id": "LG-E495",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E495",
+   "file_hashes": {
+    "episode.json": "c83e32c7c9a6c7c1095939cae7bef379aa0a968f34777febb6b2f3aad8996349",
+    "reference.json": "304baf6d5dba7907deb3e16ddce165e3a6bba2d634ad484fd5f8c13b418cee52",
+    "timeline.json": "351b09eaf8cc7a30b6d19f924554b852a8a6cf510f9e591de7010f1ea051373c",
+    "audit.md": "0608f8b9031b358e7d0259fa68dcf7378652eb38d9d25b1011ab9275acd2a428"
+   },
+   "composite_hash": "3b11d4f8f90a627bc06a87b5e787856b9b2da3dc660a27cc29fabdd8a70a119f"
+  },
+  "E496": {
+   "split": "HOLDOUT",
+   "topic": "T07",
+   "lineage_group_id": "LG-E496",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E496",
+   "file_hashes": {
+    "episode.json": "fb7f410a2b6b26097bce84b36966826f69c657dd8602bd6a519bbb08c08dccfc",
+    "reference.json": "cc776326d85e38f689cea6f7a8a92dee19d7a45c9312afcf53da143832473ef4",
+    "timeline.json": "28099777382408db1e352472d470a9aa8fed1136a9778bdaebca856d02aa0728",
+    "audit.md": "691a9f86b008e1c95c602af025c339b947dfcff3fd64461c864d7d2a0870bc7c"
+   },
+   "composite_hash": "7773442e32131f41c129c5a3676d73ff3840e6030b8200e7580f066a60f81ca7"
+  },
+  "E497": {
+   "split": "HOLDOUT",
+   "topic": "T08",
+   "lineage_group_id": "LG-E497",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E497",
+   "file_hashes": {
+    "episode.json": "bd622a944d93e03eeb7d19bf911453ec1fa6e7c81192e94eec3f6118d282f99b",
+    "reference.json": "74ff27bfddcc75ceb69a2370dba48c63cdbebae42ff19e322f675066504cce43",
+    "timeline.json": "7fac21d5b2024644f612f7869910a3b158c311c5df63e7a73766c05bd8b48d01",
+    "audit.md": "ef719e4d8a9f1bcb30a88f3b54e36d975cfd4c16d7acac7e88ca6f67323da157"
+   },
+   "composite_hash": "7fcbb1157ccdeeba435a6c058d1990b16fc24d1d83a47743409bbbea5feea486"
+  },
+  "E498": {
+   "split": "HOLDOUT",
+   "topic": "T08",
+   "lineage_group_id": "LG-E498",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E498",
+   "file_hashes": {
+    "episode.json": "6ac3adfbc0d0689b5ec8cc0eb7d646d9f1e9cb6c352fb54f4b679467ed9e1d72",
+    "reference.json": "9f5c6d4f35362050771bc78f5a5e6baeb3562ebc9a490cc091130f5d825895fc",
+    "timeline.json": "2090f6d0faad13696582ad2dbce221be8f630c338a7bd1b61ec39b6def259bea",
+    "audit.md": "92a3818b3fb993c59377789cd75e1e4055f658c57b280592c869b675c586c995"
+   },
+   "composite_hash": "9bde095a3671ccb7232f6c25949c53c2ba48187bf9de78ac1df82d7217cbb0d2"
+  },
+  "E499": {
+   "split": "HOLDOUT",
+   "topic": "T08",
+   "lineage_group_id": "LG-E499",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E499",
+   "file_hashes": {
+    "episode.json": "80b220d65b1d3d51df8eaed6f3785ebf314c6c122fe779ecddcf2e196cde0748",
+    "reference.json": "4af31fa3ba96750b938442467cca860004ba756eba49c8580df1b7d97c0b25be",
+    "timeline.json": "0748cf106c748dab9d5e7941da496ac87d512ed9a83d70623cd5acdfce246a66",
+    "audit.md": "2257eb6ed51bc0c18827d3c6fa84453b24247672e09b34d126696c875c26cad0"
+   },
+   "composite_hash": "02e61f49f2c8d1c9fe823e7f477ddf0ff93e1006e633c0f19bc43ab77e2ab243"
+  },
+  "E500": {
+   "split": "HOLDOUT",
+   "topic": "T08",
+   "lineage_group_id": "LG-E500",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E500",
+   "file_hashes": {
+    "episode.json": "de28723568013d1e746c5df136dad6e56bd47df3a52eb9baf1e43297029cd814",
+    "reference.json": "14a4ab266de7e967a9edca04d106b831b1edb0b0c21e4b39cacda832f078cedb",
+    "timeline.json": "1e0351bb660ac739c7828e8ac46e84c754fb3b103f95060b4636898925ea4513",
+    "audit.md": "2ec5a4840cf735b2cf3daba9ceaba7d62c6c58b8763794ec04694c55b2c45af7"
+   },
+   "composite_hash": "7c6ae927778918195cc510c5545251203e866192f904201b0e0f1d120656b7eb"
+  },
+  "E501": {
+   "split": "HOLDOUT",
+   "topic": "T08",
+   "lineage_group_id": "LG-E501",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E501",
+   "file_hashes": {
+    "episode.json": "b553a47275c271fbee53551a805f3499d24e5bc906e5e05b88ccd343303f46e2",
+    "reference.json": "548ac886e2956ccbd615c7deb40945c8c44dae19f5fb5ac73e8763892f1d1eac",
+    "timeline.json": "c0d8bb7df77a5e801691c1da03f7df3c7a3991bae17cbb8349b3be77fe33d4c5",
+    "audit.md": "34b5f9f1d40cb9d5db1ddcaa400b34cd6c9bc4b2f5f35d7264a75c35a6a13648"
+   },
+   "composite_hash": "755a42f5b0fc8d2e0c3973d04144be39faf57bb924c514831b5931c5ad306e5e"
+  },
+  "E502": {
+   "split": "HOLDOUT",
+   "topic": "T08",
+   "lineage_group_id": "LG-E502",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E502",
+   "file_hashes": {
+    "episode.json": "1234424fae3a2bf367cb08b19da6da2bc6ac1f06b2487d705c3d4aa6be1224e7",
+    "reference.json": "207788f0a1ff1396c5a266e00311c855f9229c718fb23fa29a7c9cf1a6557467",
+    "timeline.json": "87eb502857813ab6ed65fd82048ffccfe8a034b3de4e8ad984699844f6840516",
+    "audit.md": "72c06d173a1969db6416b5c14761d385bd8dc3649db6c1bda34d67c34a5bd5a6"
+   },
+   "composite_hash": "0e74a92593c4c079cbe61d6988d20e7b1c3d31204353c584fcf2ac7b057c5789"
+  },
+  "E503": {
+   "split": "HOLDOUT",
+   "topic": "T08",
+   "lineage_group_id": "LG-E503",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E503",
+   "file_hashes": {
+    "episode.json": "545db0b36e651a4aa70cc0307be611d6f3c0bad3ca67229a4b5d9e2648ed97ff",
+    "reference.json": "c49c4eb59f514da25b8a462032f18617df46bd513c4e0b9b85ff8afa7faa728a",
+    "timeline.json": "ea01e25526e92714cfaa57ade4f633e39889660180fb5bd1189a3f27520f2b5e",
+    "audit.md": "9fdd26caa91c07ebf72be6410a4772e50ce000a89d5553b7c30a5677b20f65f9"
+   },
+   "composite_hash": "2445ac43d51a5a36eb159d4b8cfcb5a1f400dc654b45b7625eb83c1403df3b91"
+  },
+  "E504": {
+   "split": "HOLDOUT",
+   "topic": "T08",
+   "lineage_group_id": "LG-E504",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E504",
+   "file_hashes": {
+    "episode.json": "91eb0f72327feff64fa2f8a6de89cfcdb826d739f4bffec3765c826877cd3074",
+    "reference.json": "2e938621a37fcaad4d3f25bc0693b3d3137b44d81947d8d1953bc769e9e110d7",
+    "timeline.json": "fb9651e506e924826cdad86b8e1ee9a9deff045211052b2bb53992bac15170d7",
+    "audit.md": "afcd091fdada36ea613f3e89133ecc743db245d883f286df60bfd7416df64b86"
+   },
+   "composite_hash": "0355424f2293e26574e8987b4257a3c0e5791c5cff0f655679625b4c8ef787b5"
+  },
+  "E505": {
+   "split": "HOLDOUT",
+   "topic": "T09",
+   "lineage_group_id": "LG-E505",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E505",
+   "file_hashes": {
+    "episode.json": "f886c3510363ce9e038ac5b50b017a6eeeddb2bad112f513d58ce659b43f84b7",
+    "reference.json": "9c38b6acf0c0b203a7f098c576bb3fb3206c54f3b93b9e6aa42530488cfb330b",
+    "timeline.json": "1c9e92bb3880212db783e9b71a06aa4ed3d8a8436fed52b8800776bfdef3f7e7",
+    "audit.md": "77521671ec36f86ba650dab0796d3a1b9b743c8b2dc37442439aa9448c638f15"
+   },
+   "composite_hash": "0993bd09dc0dfefecf10b124a47eaab26814f2d86a170e0567c14ce39beadaaf"
+  },
+  "E506": {
+   "split": "HOLDOUT",
+   "topic": "T09",
+   "lineage_group_id": "LG-E506",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E506",
+   "file_hashes": {
+    "episode.json": "7b8fb6ceabbea4e0a98d72f210d4013adacd853b1dc52de889edd978c783b355",
+    "reference.json": "eec63e4f408edd92d2ea26da3afcda0e00b086d24de1c7616480c3ec0d1d0a68",
+    "timeline.json": "ed27e5013f224ab2eaa079283380dc9cd64f91904d6393ecee4ff3c090b30314",
+    "audit.md": "599ca027a0dc2db7e6f7d8fe73c19e2cc18f7aa00b563282396852c47abb2276"
+   },
+   "composite_hash": "1e574270ceec123b13aca7b2236765b1ebc50520e4b36604bfb134e2e8127e83"
+  },
+  "E507": {
+   "split": "HOLDOUT",
+   "topic": "T09",
+   "lineage_group_id": "LG-E507",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E507",
+   "file_hashes": {
+    "episode.json": "763ba84657fb74d639baba9a9267cc6437370dc2558a68f780b610afc5218a77",
+    "reference.json": "a94f726ce09c4c4d4525503a92c719251475f413f81401e2cb61e332680e288c",
+    "timeline.json": "cd62fbd69e54926ae7175276a275924ea893b2d366de0071af43caab7b8b8a39",
+    "audit.md": "05e3048f203f0d8c16d6b4e5d1c1b8d188e3d86f28ec678d4e4d20d51f0bcb4b"
+   },
+   "composite_hash": "e256573dee4fcf56d548b88d8e760db6547dc4c72329cde5e0172e75656fe990"
+  },
+  "E508": {
+   "split": "HOLDOUT",
+   "topic": "T09",
+   "lineage_group_id": "LG-E508",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E508",
+   "file_hashes": {
+    "episode.json": "68ff85e4b49f7a912f81dece6d7a159ada87a3ae55df050f2d72e534ab0cabf9",
+    "reference.json": "bf130720537cabcdd5086a6966439b5505d0447db40c318a527a812bf000f7fd",
+    "timeline.json": "d40a2cf0ea01b5fb252d4202ffb9d11937e6a53732d2b019d84088578a9f3455",
+    "audit.md": "b029fd73c01ef2a77c038229228e7a4e4d38acddec556165dba903c54b4cb5aa"
+   },
+   "composite_hash": "2a3d9db67ed9b2b8dddb75395cdcd98a9cd826b688a3bb322451ecdaad787445"
+  },
+  "E509": {
+   "split": "HOLDOUT",
+   "topic": "T09",
+   "lineage_group_id": "LG-E509",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 24,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E509",
+   "file_hashes": {
+    "episode.json": "018cac9c12b4548b640d1be9fedd4be9b53e32f82833e733ed5db78b73e9debf",
+    "reference.json": "898f75ea3d5b626e00217aa13b32e1eb4f5d009644c979ea4db9732dbb30b8a1",
+    "timeline.json": "679f22779bc90c5f875b6639da63afbce35993fa4472714ebdb405b5c67662b3",
+    "audit.md": "fea031258c9ca2f49ef6c14b8d975e9f3db73634f88baa2bfdd3a71ba7b24be6"
+   },
+   "composite_hash": "40e0f69dbafb625124d7a1d66778221e3bbd7b522efd04bbf607581dccaca086"
+  },
+  "E510": {
+   "split": "HOLDOUT",
+   "topic": "T09",
+   "lineage_group_id": "LG-E510",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 32,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E510",
+   "file_hashes": {
+    "episode.json": "e1cf992ae8720550fd0952725de7ca64809f2c73a43b1f94da571e55b5f68e25",
+    "reference.json": "9f2903ecab39ecf5e25f77b3980fa0a327b12fee77ac2c9ad7f2c5fa0ca11f3d",
+    "timeline.json": "69191049015cb78fbe726699678a251608633bd516f0611935995d41d30d149f",
+    "audit.md": "4710d5d622086017f09410959e40202a0cc8c2a8b1a09ae31eb5db973f9c5128"
+   },
+   "composite_hash": "c1825e68d8cb7111cbf5a9bbfc8e4aac7197b04ba66532f84b82cf8bcc227b77"
+  },
+  "E511": {
+   "split": "HOLDOUT",
+   "topic": "T09",
+   "lineage_group_id": "LG-E511",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 32,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E511",
+   "file_hashes": {
+    "episode.json": "71b9741d2697e7f8390707d18e895d93a179eb3fdb9fef271d09ad7ffdb2552b",
+    "reference.json": "e4cea09b6dd34ae02624517424f291162dfb854776606a7dc46e83c9bd35e99f",
+    "timeline.json": "6c3c6e5cda78b7246328f5c06c87cb9066468c4a77bd8a8578789eb9a949e645",
+    "audit.md": "524f6fc5502fa17aea03d53b336bcd3dd60f88f5a12e93e246d2ae9127769158"
+   },
+   "composite_hash": "069ac6618cc247a6af2dcacc1659f678f8aea8a99a96abe919218bbe9f1cca6c"
+  },
+  "E512": {
+   "split": "HOLDOUT",
+   "topic": "T09",
+   "lineage_group_id": "LG-E512",
+   "twin_group": "",
+   "twin_role": "",
+   "turns": 32,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E512",
+   "file_hashes": {
+    "episode.json": "c5f023f3ab74e5d85d3ca9a26767b14af8a58bc2466c4b9c645629f3ca3f498d",
+    "reference.json": "9da6822ff01a6d285ccd5f9655079cf1402c07fbb44789568e78387738429fe4",
+    "timeline.json": "1e37d5250b3c8d9817bd6e3e192a9cfa1b204a78c451ffaaa26c476364c0b852",
+    "audit.md": "10600cb2ca338c0964ee38e3d58eef34e3e21ccf33521eb9267910f4976934bc"
+   },
+   "composite_hash": "5b30d9643a337eb6acd585c532af99a2cb7a1002f653cf8903114a354f006e7a"
+  },
+  "E513": {
+   "split": "HOLDOUT",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G5",
+   "twin_group": "T10-G5",
+   "twin_role": "original",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E513",
+   "file_hashes": {
+    "episode.json": "b934bcdddfab4daa9e4a7b0970d83c9c7f2657a49801015d2cd7f32b12eb0c1b",
+    "reference.json": "f6d2474e0c5cd55941262718f044306dd75bf473d60ab075e8b5becf5eca28ad",
+    "timeline.json": "dcc1fc52c0a742e3d05920ba92376f46c8892e72477b6b064b523aec57b156d7",
+    "audit.md": "a49cdee0733cad39d9c3c2ec49386bc9c756aa5ff9a30293dec02eba7946c4b9"
+   },
+   "composite_hash": "deadbc677006d3561e8f87b7fbfd39628cd4e41bb5716e2de01ffa12950004c3"
+  },
+  "E514": {
+   "split": "HOLDOUT",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G5",
+   "twin_group": "T10-G5",
+   "twin_role": "counterfactual",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E514",
+   "file_hashes": {
+    "episode.json": "e604584214721e65be21f2baf1a20c1f12ef34f03f3ebfce093f3685167fcf38",
+    "reference.json": "d41ec246319838b1fb58c160cc73ad2bfc15c7dfaabe9333c58340a86fc220e5",
+    "timeline.json": "6dbecc6d030dcf7ecba632e146bd6daf299352b13093a5a10314f79c8d618c22",
+    "audit.md": "c80bf7f2dcac95ca498978b0e59ac975b8f5d43fcedf767d50bcb7d875fe60b2"
+   },
+   "composite_hash": "8025c678765a95e3603c0ec5a79904b3c23078097566daf229d753ebb8cf4a16"
+  },
+  "E515": {
+   "split": "HOLDOUT",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G6",
+   "twin_group": "T10-G6",
+   "twin_role": "original",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E515",
+   "file_hashes": {
+    "episode.json": "94164fb76e6ddd77b27700626894be929cd43c192ef076904a40ebb005ba731b",
+    "reference.json": "0f8029efb23f5f4952d93d7287fc13ee0e27b30128abc83ae390d418dff5b5ae",
+    "timeline.json": "11b5ae019bbec3ac6acd61c4189f1c2cff33b0e357fa7091870a0c03fde965c3",
+    "audit.md": "bf29a6a9e18bf9468bc213b3fecbcb81a414a32d7194fde8812292992ff54356"
+   },
+   "composite_hash": "f4c18bc170fc2c2e260ea1738815ef6ca4dbad4929e346ccdcac954d2653dac1"
+  },
+  "E516": {
+   "split": "HOLDOUT",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G6",
+   "twin_group": "T10-G6",
+   "twin_role": "counterfactual",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E516",
+   "file_hashes": {
+    "episode.json": "5d2eb2b09a5fc000f3c900b0c480f98dfcc056900e9d598ce7bf9360ea3a2818",
+    "reference.json": "19d7a80743bfcf3e49cfd93554bf6d349fe969a1714642e851ab2a21ab4681f8",
+    "timeline.json": "2cfcc9d74ad928326fc7f68a6e5e2c306b813ffd5d18d364f6532a3656ad091b",
+    "audit.md": "e9943315a54921f34ce79029f5938d19f1d00c0c4155f06a1272f96ce577f876"
+   },
+   "composite_hash": "f6bb2d415556e9b7078bde933c35a0b2bd184688ba1719f7f22df7a906b07661"
+  },
+  "E517": {
+   "split": "HOLDOUT",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G7",
+   "twin_group": "T10-G7",
+   "twin_role": "original",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E517",
+   "file_hashes": {
+    "episode.json": "87052a6293dfd1540467928d6ba4b685b381d82834b76395870fab74cc76116f",
+    "reference.json": "0e8eb64e999180612372d4e1d548db6ce594dcb59c6aee30a375a60d6987ce1e",
+    "timeline.json": "7d2551939727384ef3f4b7bc6358ad49fc587e9348f4e35fa78257200c46b620",
+    "audit.md": "60521ee3e44d8e3a9863428dcbce7c2d4b3836d7e6fc1eadb240bdb5cad74d61"
+   },
+   "composite_hash": "81285a48aeafa7bb48a8c3a9ba39af10edf490ccd5a24819d19b86ba7c3c55c3"
+  },
+  "E518": {
+   "split": "HOLDOUT",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G7",
+   "twin_group": "T10-G7",
+   "twin_role": "counterfactual",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E518",
+   "file_hashes": {
+    "episode.json": "38f91d1f1561d32201aed3d52c0fcb4a329f8d1b124874f761dcd93e2b98acee",
+    "reference.json": "e8b1265b838676aff92e1625a662b10a30f5e88420ddeb7b47df16391ebed02a",
+    "timeline.json": "75f1654c7101b54771348480a6051adbbce60f641879eb97dfc833610242e929",
+    "audit.md": "952e757aefe55e330aedbed27509c0c7464dc07bd1ae4c07d31c5f64ea2cd21b"
+   },
+   "composite_hash": "bd5aafbfe43484f10200789f8085c9a445b0dc30ae899a47fc1599bb53ad76b8"
+  },
+  "E519": {
+   "split": "HOLDOUT",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G8",
+   "twin_group": "T10-G8",
+   "twin_role": "original",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E519",
+   "file_hashes": {
+    "episode.json": "37f4e47063cc35eb9c66787ac671fbfa09b8dcc32e6e53aa5c7d0f2c812cf40e",
+    "reference.json": "6082021f9722a84a71f2bbca57cf842c613381a9765565e442af88994b208b77",
+    "timeline.json": "ecbe589e1afb9af4aa6c3a96c1e12c4004eb1868d7cb161743f101be5d3e4e11",
+    "audit.md": "140346a86d2e309fc42befd0c922f97f181a1d09ef4c794d288dcca8383aa73b"
+   },
+   "composite_hash": "f93936e441df735506fd02f208ac2649a07a2c35cfd66a0c378494e0834d3a34"
+  },
+  "E520": {
+   "split": "HOLDOUT",
+   "topic": "T10",
+   "lineage_group_id": "LG-T10-G8",
+   "twin_group": "T10-G8",
+   "twin_role": "counterfactual",
+   "turns": 12,
+   "story_dir": "D:/lovebrain-arena_holdout_vault/wave6_holdout\\E520",
+   "file_hashes": {
+    "episode.json": "e00e100c4293f92aa934080bc138091ab3222db862810d5643ff3954a5392801",
+    "reference.json": "7dabf95b8a5b8edc944883a134912c0318b334616ff538d077c6a35092912bc0",
+    "timeline.json": "3c2a3dc7bf1eeab2a3422ea53fd473c6bbca0d57dfca4556985f0cc85f3fe940",
+    "audit.md": "a220953acaff7feb1ff360b488fbd97d5ce9d6044ee9ee328d170d169bc92556"
+   },
+   "composite_hash": "90dbc0f35cc9f5b654342f62561d175cca14cf70f4ffc62f3a62a84ce2af35d1"
+  }
+ },
+ "note": "HOLDOUT hashes computed from vault (D:/lovebrain-arena_holdout_vault/); only hash values enter repo, content stays in vault."
+}

@@ -1,0 +1,13 @@
+{
+ "authorization_id": "AUTH-REHEARSAL-20261028162112",
+ "authorized": true,
+ "status": "ACTIVE",
+ "scope": "零网络交错演练（urlopen 被本进程替身接管，无真实调用）",
+ "note": "演练授权：不产生真实 API 调用；账本为演练占额证据",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 24
+ }
+}

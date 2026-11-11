@@ -1,0 +1,53 @@
+{
+ "kind": "pilot2_merged_summary",
+ "parts": {
+  "runs/pilot2_wave4_live_b": 456,
+  "runs/pilot2_wave4_live_c": 520,
+  "runs/pilot2_oldT09_live": 128
+ },
+ "total_rows": 1104,
+ "total_records": 80,
+ "total_api_attempts_all_parts": 1163,
+ "cap": 1500,
+ "cap_remaining": 337,
+ "records_status": {
+  "ok": 80,
+  "error": 0,
+  "error_detail": []
+ },
+ "per_arm": {
+  "CURRENT": {
+   "rows": 552,
+   "parse_ok": 552,
+   "contract_ok": 550,
+   "error_types": {
+    "veto:illegal_source_id:1,1": 2
+   },
+   "latency_ms_p50": 68409.0,
+   "latency_ms_p95": 131106.0,
+   "tokens_prompt_total": 1426349,
+   "tokens_completion_total": 823006,
+   "diag_required_hits": 0,
+   "diag_required_total": 46,
+   "diag_required_hit_rate": 0.0,
+   "veto": 2
+  },
+  "DIRECT": {
+   "rows": 552,
+   "parse_ok": 551,
+   "contract_ok": 551,
+   "error_types": {
+    "parse": 1
+   },
+   "latency_ms_p50": 12167.0,
+   "latency_ms_p95": 33947.0,
+   "tokens_prompt_total": 613845,
+   "tokens_completion_total": 190446,
+   "diag_required_hits": 0,
+   "diag_required_total": 46,
+   "diag_required_hit_rate": 0.0,
+   "veto": 544
+  }
+ },
+ "arm_pair_note": "DIRECT vs CURRENT 并排对照见 per_arm；差异归因与判别力结论由 Worker 另行分析"
+}

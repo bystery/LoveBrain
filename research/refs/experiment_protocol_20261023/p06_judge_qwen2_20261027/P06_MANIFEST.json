@@ -1,0 +1,86 @@
+{
+ "kind": "p06_judge_manifest_v1",
+ "frozen_at": "2026-10-27",
+ "authorization_id": "AUTH-P06-JUDGE-QWEN-20261027-02",
+ "decision_rules": {
+  "path": "refs/experiment_protocol_20261023/p06_judge_20261027/P06_DECISION_RULES.md",
+  "sha256": "a3a31142b5a7d9b9c5738c3a0c30be35a25cf448e69ec82f4b4cfda53a6d8faa"
+ },
+ "batches": [
+  {
+   "tag": "A",
+   "stem": "P06_A_BASE_VS_V5",
+   "live_dir": "logs/p06_A_live_20261027",
+   "done_path": "logs/p06_A_live_20261027.DONE.json",
+   "done_sha256": "8be9d0f5cd61e42a5eb8982d73f9d59672ca1dd01fa35e16c2c597c96dde1b15",
+   "plan_path": "refs/experiment_protocol_20261023/p06_20261027/P06_A_BASE_VS_V5.INTERLEAVE_PLAN.json",
+   "plan_sha256": "8b10493a3ebb07e5c415edde3512d1f53addb1e3680c3ea82d1be52161b72fb2",
+   "arm_mapping": {
+    "parent": "reference_product_v1",
+    "candidate": "v5_purpose_aligned"
+   },
+   "arm_identity_sha256": {
+    "parent": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+    "candidate": "7c6b51cec9780049d11cb0aabdfe9c42f65ff1a33d2afe22f5a926034e6eb7ac"
+   },
+   "started": 64,
+   "completed": 64,
+   "failed": 0,
+   "real_model_calls": 64
+  },
+  {
+   "tag": "B",
+   "stem": "P06_B_BASE_VS_V6G",
+   "live_dir": "logs/p06_B_live_20261027",
+   "done_path": "logs/p06_B_live_20261027.DONE.json",
+   "done_sha256": "7ecc20de2b9df46920e1a1ae0a21497796fe504d8dc3fa6562dde34912a29ce2",
+   "plan_path": "refs/experiment_protocol_20261023/p06_20261027/P06_B_BASE_VS_V6G.INTERLEAVE_PLAN.json",
+   "plan_sha256": "183bc2699275956567d717dfbd2c33e01ce17ff75cecf809ae9ece2d04e8dde6",
+   "arm_mapping": {
+    "parent": "reference_product_v1",
+    "candidate": "v6_goal_context"
+   },
+   "arm_identity_sha256": {
+    "parent": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+    "candidate": "4e9d454aabd50a18f77fcd350ffe0ca8fd8a6271c8db99bc3249ed2fb7f157f6"
+   },
+   "started": 64,
+   "completed": 64,
+   "failed": 0,
+   "real_model_calls": 64
+  },
+  {
+   "tag": "C",
+   "stem": "P06_C_BASE_VS_V6I",
+   "live_dir": "logs/p06_C_live_20261027",
+   "done_path": "logs/p06_C_live_20261027.DONE.json",
+   "done_sha256": "b0b71a14a33e0004b2ba870986a792dc9e9bf6c24a8edfcdbbab0d7f482202f1",
+   "plan_path": "refs/experiment_protocol_20261023/p06_20261027/P06_C_BASE_VS_V6I.INTERLEAVE_PLAN.json",
+   "plan_sha256": "11d7d1646c8409b8fc5ce02ffa0a2ff40d5b7e330b1303aa0899de63a0d22008",
+   "arm_mapping": {
+    "parent": "reference_product_v1",
+    "candidate": "v6_integrated"
+   },
+   "arm_identity_sha256": {
+    "parent": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+    "candidate": "ac2672ffac3ba82d799a49b753840573cb1933eb71d8110792e5e0f3448c127b"
+   },
+   "started": 64,
+   "completed": 64,
+   "failed": 0,
+   "real_model_calls": 64
+  }
+ ],
+ "node_counts": {
+  "primary": 191,
+  "repeat": 24,
+  "control": 36,
+  "total": 251,
+  "nonempty_backups": 1417
+ },
+ "repeat_policy": "one turn per story per arm per batch: E006_T05, E007_T03, E008_T03, E012_T07",
+ "judge_input_rule": "recognized slots only (response.recommended primary; bad_boy/playful/warm/directions[0..3] backups); unrecognized keys are protocol anomalies, not judged and not silently dropped",
+ "blindness": "node IDs are hash-order sequential and do not encode batch/arm/kind; payload contains no arm, cost, future plot or expectation",
+ "unjudgeable_count": 1,
+ "anomaly_count": 10
+}

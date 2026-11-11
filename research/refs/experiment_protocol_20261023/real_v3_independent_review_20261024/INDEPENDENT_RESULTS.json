@@ -1,0 +1,110 @@
+{
+  "review_kind": "independent offline reconstruction; no generation, no new authorization",
+  "batch": "D:\\lovebrain-arena\\logs\\v3_deletion_live_20261024",
+  "plan_sha256": "2fd10e3f8b33b9d94ee0d26776a7a25bf6252f720da1418bee81e7ff86ade6b9",
+  "budget_ledger_sha256": "9e7687f1375423ccc2f632412993a18fc7482a26639e8f150d705213fb467546",
+  "checks": {
+    "frozen_files_match_current": true,
+    "48_rows": true,
+    "six_independent_run_ids": true,
+    "48_started_48_completed_0_failed": true,
+    "attempt_one_to_one": true,
+    "actual_start_order_matches_frozen_plan": true,
+    "budget_control_attempt_ids_equal": true,
+    "budget_started_equals_cap": true,
+    "48_unique_response_ids": true,
+    "runtime_episodes_and_all_case_hashes_bound": true,
+    "both_arms_full_E004_preference_received": true,
+    "all_temperatures_adapter_model_alias_correct": true,
+    "all_call_raw_text_equals_saved_reply": true,
+    "all_48_strict_json_parsed": true,
+    "all_48_api_usage_known": true,
+    "all_48_no_actual_images": true,
+    "one_system_per_arm": true
+  },
+  "frozen_mismatches": [],
+  "frozen_file_count": 39,
+  "metrics": {
+    "parent": {
+      "n": 24,
+      "prompt_tokens": 175872,
+      "completion_tokens": 6913,
+      "total_tokens": 182785,
+      "program_mean10": 10.0,
+      "veto_count": 0,
+      "latency_ms": {
+        "p50": 23706,
+        "p95": 70811,
+        "max": 80578,
+        "sum": 774629
+      },
+      "primary_mean_chars": 22.333333333333332,
+      "nonempty_text_slots": 187,
+      "nonempty_backup_slots": 163,
+      "system_utf16": [
+        8295
+      ]
+    },
+    "candidate": {
+      "n": 24,
+      "prompt_tokens": 63430,
+      "completion_tokens": 8237,
+      "total_tokens": 71667,
+      "program_mean10": 9.583333333333334,
+      "veto_count": 1,
+      "latency_ms": {
+        "p50": 23367,
+        "p95": 47330,
+        "max": 63059,
+        "sum": 690327
+      },
+      "primary_mean_chars": 36.791666666666664,
+      "nonempty_text_slots": 180,
+      "nonempty_backup_slots": 156,
+      "system_utf16": [
+        2598
+      ]
+    }
+  },
+  "candidate_vs_parent_percent": {
+    "prompt_tokens": -63.934,
+    "completion_tokens": 19.1523,
+    "total_tokens": -60.7916,
+    "primary_mean_chars": 64.7388,
+    "latency_p50_percent": -1.43,
+    "latency_p95_percent": -33.1601,
+    "latency_sum_percent": -10.8829
+  },
+  "wall_elapsed_seconds_from_event_timestamps": 1468,
+  "budget_kinds": {
+    "authorization_scope": 1,
+    "attempt_started": 48,
+    "attempt_completed": 48
+  },
+  "budget_closed_event_present": false,
+  "money": null,
+  "model_alias": "dsf",
+  "underlying_provider_model_verified": false,
+  "quality_not_inferred_from_program_score": true,
+  "flagged_sources": [
+    {
+      "arm": "candidate",
+      "case_id": "E006_T02",
+      "veto": "illegal_source_id:t1_0",
+      "ids": [
+        "t1_0"
+      ]
+    }
+  ],
+  "literal_null_outputs": [
+    {
+      "arm": "candidate",
+      "case_id": "E004_T07",
+      "slots": [
+        "directions[3]"
+      ]
+    }
+  ],
+  "stories_independent_sample_unit": 3,
+  "one_generation_per_arm_per_position": true
+}

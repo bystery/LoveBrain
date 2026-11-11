@@ -1,0 +1,36 @@
+{
+ "batch_id": "BATCH-S2-ANCHORS-20261028",
+ "mode": "capture",
+ "arm_mapping": {
+  "parent": "reference_product_v1",
+  "candidate": "action_policy_r1"
+ },
+ "attempts": 24,
+ "started": 24,
+ "completed": 24,
+ "failed": 0,
+ "execution_order_verified": true,
+ "dispatch_bijection": true,
+ "state_isolated": true,
+ "residents": 24,
+ "real_model_calls": 0,
+ "recall_metrics_applicable": false,
+ "cross_arm_user_len_diff_max": 2316,
+ "turns_parent": 0,
+ "turns_candidate": 0,
+ "parent_cost": {
+  "prompt": 0,
+  "completion": 0,
+  "latency_p50_ms": null,
+  "latency_p95_ms": null,
+  "latency_max_ms": 0
+ },
+ "candidate_cost": {
+  "prompt": 0,
+  "completion": 0,
+  "latency_p50_ms": null,
+  "latency_p95_ms": null,
+  "latency_max_ms": 0
+ },
+ "all_semantic_unrated_without_annotations": true
+}

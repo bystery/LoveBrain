@@ -1,0 +1,907 @@
+{
+  "kind": "custody_split_manifest",
+  "version": "phase2-v2 (DATASET_V1_FINAL_ALLOCATION.csv v2 2026-11-08)",
+  "generated": "2026-11-08 15:38:34",
+  "generated_by": "python -I 实算（gen_manifest.py 一次性脚本；分派表逐行 + exposure.json 元数据两字段 + STORY_CUSTODY_LEDGER 只读 + custody_split_guard 同进程现跑）",
+  "inputs": {
+    "allocation_csv": "D:/lovebrain-arena/refs/benchmark_v1_20261107/phase2/DATASET_V1_FINAL_ALLOCATION.csv",
+    "allocation_sha256": "75a4e07cf345e984fc0efe456e9f9b071c1816f13ce49c58889e0f9144127eca",
+    "stories_root": "D:/lovebrain-arena/benchmark/stories_v2",
+    "ledger": "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/STORY_CUSTODY_LEDGER.json"
+  },
+  "per_split": {
+    "DEV": {
+      "count": 81,
+      "episode_ids": [
+        "E021",
+        "E024",
+        "E026",
+        "E027",
+        "E031",
+        "E032",
+        "E033",
+        "E034",
+        "E037",
+        "E039",
+        "E041",
+        "E042",
+        "E061",
+        "E063",
+        "E064",
+        "E065",
+        "E066",
+        "E067",
+        "E068",
+        "E117",
+        "E122",
+        "E125",
+        "E131",
+        "E140",
+        "E157",
+        "E164",
+        "E166",
+        "E170",
+        "E183",
+        "E189",
+        "E190",
+        "E191",
+        "E195",
+        "E199",
+        "E207",
+        "E208",
+        "E212",
+        "E301",
+        "E302",
+        "E303",
+        "E304",
+        "E305",
+        "E306",
+        "E307",
+        "E308",
+        "E309",
+        "E310",
+        "E311",
+        "E312",
+        "E313",
+        "E314",
+        "E315",
+        "E316",
+        "E317",
+        "E318",
+        "E319",
+        "E320",
+        "E321",
+        "E322",
+        "E323",
+        "E324",
+        "E325",
+        "E326",
+        "E327",
+        "E328",
+        "E329",
+        "E330",
+        "E331",
+        "E332",
+        "E333",
+        "E334",
+        "E337",
+        "E338",
+        "LRE121",
+        "LRE125",
+        "LRE127",
+        "LRE138",
+        "LRE141",
+        "LRE145",
+        "LRE146",
+        "LRE147"
+      ]
+    },
+    "SELECTION": {
+      "count": 2,
+      "episode_ids": [
+        "E335",
+        "E336"
+      ]
+    },
+    "HOLDOUT": {
+      "count": 0,
+      "episode_ids": [],
+      "note": "0 篇已定稿：HOLDOUT 120 席全部仍在 PENDING（见 PENDING.segments）"
+    },
+    "PENDING": {
+      "count": 157,
+      "episode_id_ranges": [
+        "E339-E375 (n=37)",
+        "E401-E520 (n=120)"
+      ],
+      "segments": {
+        "final_DEV": {
+          "count": 3,
+          "episode_ids": [
+            "E339",
+            "E340",
+            "E341"
+          ]
+        },
+        "final_SELECTION": {
+          "count": 34,
+          "episode_id_ranges": [
+            "E342-E375 (n=34)"
+          ]
+        },
+        "final_HOLDOUT": {
+          "count": 120,
+          "episode_id_ranges": [
+            "E401-E520 (n=120)"
+          ]
+        }
+      },
+      "note": "PENDING 行不参与 guard G1–G3；定稿时按 allocation_note 终分派标记落区"
+    }
+  },
+  "totals": {
+    "rows": 240,
+    "finalized": 83,
+    "pending": 157,
+    "old_finalized": 45,
+    "new_wave4_finalized": 38
+  },
+  "lineage_groups": {
+    "count": 68,
+    "groups": [
+      {
+        "group_id": "LG-E301",
+        "members": [
+          "E301"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E302",
+        "members": [
+          "E302"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E303",
+        "members": [
+          "E303"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E304",
+        "members": [
+          "E304"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E305",
+        "members": [
+          "E305"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E306",
+        "members": [
+          "E306"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E307",
+        "members": [
+          "E307"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E308",
+        "members": [
+          "E308"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E309",
+        "members": [
+          "E309"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E310",
+        "members": [
+          "E310"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E311",
+        "members": [
+          "E311"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E312",
+        "members": [
+          "E312"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E313",
+        "members": [
+          "E313"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E314",
+        "members": [
+          "E314"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E315",
+        "members": [
+          "E315"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E316",
+        "members": [
+          "E316"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E317",
+        "members": [
+          "E317"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E318",
+        "members": [
+          "E318"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E319",
+        "members": [
+          "E319"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E320",
+        "members": [
+          "E320"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E321",
+        "members": [
+          "E321"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E322",
+        "members": [
+          "E322"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E323",
+        "members": [
+          "E323"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E324",
+        "members": [
+          "E324"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E325",
+        "members": [
+          "E325"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E326",
+        "members": [
+          "E326"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E327",
+        "members": [
+          "E327"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E328",
+        "members": [
+          "E328"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E329",
+        "members": [
+          "E329"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E330",
+        "members": [
+          "E330"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E331",
+        "members": [
+          "E331"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E332",
+        "members": [
+          "E332"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E337",
+        "members": [
+          "E337"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-E338",
+        "members": [
+          "E338"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LG-T10-G1",
+        "members": [
+          "E333",
+          "E334"
+        ],
+        "split": "DEV",
+        "twin": "T10-G1"
+      },
+      {
+        "group_id": "LG-T10-G2",
+        "members": [
+          "E335",
+          "E336"
+        ],
+        "split": "SELECTION",
+        "twin": "T10-G2"
+      },
+      {
+        "group_id": "LG-T10-G3",
+        "members": [
+          "E339",
+          "E340"
+        ],
+        "split": "PENDING",
+        "twin": "T10-G3"
+      },
+      {
+        "group_id": "LG-T10-G4",
+        "members": [
+          "E342",
+          "E343"
+        ],
+        "split": "PENDING",
+        "twin": "T10-G4"
+      },
+      {
+        "group_id": "LG-T10-G5",
+        "members": [
+          "E513",
+          "E514"
+        ],
+        "split": "PENDING",
+        "twin": "T10-G5"
+      },
+      {
+        "group_id": "LG-T10-G6",
+        "members": [
+          "E515",
+          "E516"
+        ],
+        "split": "PENDING",
+        "twin": "T10-G6"
+      },
+      {
+        "group_id": "LG-T10-G7",
+        "members": [
+          "E517",
+          "E518"
+        ],
+        "split": "PENDING",
+        "twin": "T10-G7"
+      },
+      {
+        "group_id": "LG-T10-G8",
+        "members": [
+          "E519",
+          "E520"
+        ],
+        "split": "PENDING",
+        "twin": "T10-G8"
+      },
+      {
+        "group_id": "LIN-E048",
+        "members": [
+          "E048",
+          "LRE048"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E048",
+          "LRE048"
+        ]
+      },
+      {
+        "group_id": "LIN-E060",
+        "members": [
+          "E060",
+          "LRE060"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E060",
+          "LRE060"
+        ]
+      },
+      {
+        "group_id": "LIN-E072",
+        "members": [
+          "E072",
+          "E152"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E072",
+          "E152"
+        ]
+      },
+      {
+        "group_id": "LIN-E077",
+        "members": [
+          "E077",
+          "E149"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E077",
+          "E149"
+        ]
+      },
+      {
+        "group_id": "LIN-E084",
+        "members": [
+          "E084",
+          "E153"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E084",
+          "E153"
+        ]
+      },
+      {
+        "group_id": "LIN-E086",
+        "members": [
+          "E086",
+          "E151"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E086",
+          "E151"
+        ]
+      },
+      {
+        "group_id": "LIN-E087",
+        "members": [
+          "E087",
+          "E156"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E087",
+          "E156"
+        ]
+      },
+      {
+        "group_id": "LIN-E090",
+        "members": [
+          "E090",
+          "E155"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E090",
+          "E155"
+        ]
+      },
+      {
+        "group_id": "LIN-E094",
+        "members": [
+          "E094",
+          "E154"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E094",
+          "E154"
+        ]
+      },
+      {
+        "group_id": "LIN-E105",
+        "members": [
+          "E105",
+          "E150"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E105",
+          "E150"
+        ]
+      },
+      {
+        "group_id": "LIN-E117",
+        "members": [
+          "E117",
+          "LRE117"
+        ],
+        "split": "DEV",
+        "twin": null,
+        "unassigned_members": [
+          "LRE117"
+        ]
+      },
+      {
+        "group_id": "LIN-E119",
+        "members": [
+          "E119",
+          "LRE119"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E119",
+          "LRE119"
+        ]
+      },
+      {
+        "group_id": "LIN-E121",
+        "members": [
+          "E121",
+          "LRE121"
+        ],
+        "split": "DEV",
+        "twin": null,
+        "unassigned_members": [
+          "E121"
+        ]
+      },
+      {
+        "group_id": "LIN-E123",
+        "members": [
+          "E123",
+          "LRE123"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E123",
+          "LRE123"
+        ]
+      },
+      {
+        "group_id": "LIN-E125",
+        "members": [
+          "E125",
+          "LRE125"
+        ],
+        "split": "DEV",
+        "twin": null
+      },
+      {
+        "group_id": "LIN-E126",
+        "members": [
+          "E126",
+          "LRE126"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E126",
+          "LRE126"
+        ]
+      },
+      {
+        "group_id": "LIN-E127",
+        "members": [
+          "E127",
+          "LRE127"
+        ],
+        "split": "DEV",
+        "twin": null,
+        "unassigned_members": [
+          "E127"
+        ]
+      },
+      {
+        "group_id": "LIN-E128",
+        "members": [
+          "E128",
+          "LRE128"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E128",
+          "LRE128"
+        ]
+      },
+      {
+        "group_id": "LIN-E138",
+        "members": [
+          "E138",
+          "LRE138"
+        ],
+        "split": "DEV",
+        "twin": null,
+        "unassigned_members": [
+          "E138"
+        ]
+      },
+      {
+        "group_id": "LIN-E139",
+        "members": [
+          "E139",
+          "LRE139"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E139",
+          "LRE139"
+        ]
+      },
+      {
+        "group_id": "LIN-E141",
+        "members": [
+          "E141",
+          "LRE141"
+        ],
+        "split": "DEV",
+        "twin": null,
+        "unassigned_members": [
+          "E141"
+        ]
+      },
+      {
+        "group_id": "LIN-E142",
+        "members": [
+          "E142",
+          "LRE142"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E142",
+          "LRE142"
+        ]
+      },
+      {
+        "group_id": "LIN-E145",
+        "members": [
+          "E145",
+          "LRE145"
+        ],
+        "split": "DEV",
+        "twin": null,
+        "unassigned_members": [
+          "E145"
+        ]
+      },
+      {
+        "group_id": "LIN-E146",
+        "members": [
+          "E146",
+          "LRE146"
+        ],
+        "split": "DEV",
+        "twin": null,
+        "unassigned_members": [
+          "E146"
+        ]
+      },
+      {
+        "group_id": "LIN-E147",
+        "members": [
+          "E147",
+          "LRE147"
+        ],
+        "split": "DEV",
+        "twin": null,
+        "unassigned_members": [
+          "E147"
+        ]
+      },
+      {
+        "group_id": "LIN-E148",
+        "members": [
+          "E148",
+          "LRE148"
+        ],
+        "split": "UNASSIGNED",
+        "twin": null,
+        "unassigned_members": [
+          "E148",
+          "LRE148"
+        ]
+      }
+    ],
+    "note": "guard merged_groups：分派表 lineage_group_id 声明组 ∪ manifest source 派生组（与 lineage_check 同一 union 派生，importlib 同源）；UNASSIGNED=未入选本分配表（含 B 线关联组与已消费组，按规则整体退出）"
+  },
+  "twin_groups": {
+    "T10-G1": [
+      "E333",
+      "E334"
+    ],
+    "T10-G2": [
+      "E335",
+      "E336"
+    ],
+    "T10-G3": [
+      "E339",
+      "E340"
+    ],
+    "T10-G4": [
+      "E342",
+      "E343"
+    ],
+    "T10-G5": [
+      "E513",
+      "E514"
+    ],
+    "T10-G6": [
+      "E515",
+      "E516"
+    ],
+    "T10-G7": [
+      "E517",
+      "E518"
+    ],
+    "T10-G8": [
+      "E519",
+      "E520"
+    ]
+  },
+  "custody": {
+    "ledger_path": "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/STORY_CUSTODY_LEDGER.json",
+    "ledger_kind": "story_custody_ledger",
+    "ledger_created": "2026-10-31",
+    "ledger_read_only": true,
+    "stories_registered": 210,
+    "lifecycle_counts": {
+      "EXPOSED": 49,
+      "SEALED": 161
+    },
+    "wave4_seed_status": {
+      "seeded": false,
+      "wave4_stories_in_ledger": 0,
+      "wave4_rows_in_allocation": 195,
+      "action_required": "seed 待执行：python tools/story_custody.py seed（wave4 manifest 已在清单路径 benchmark/stories_v2/wave4_dev/W4_MANIFEST_12T.json / W4_MANIFEST_24T.json / W4_MANIFEST_32T.json）"
+    },
+    "experiments_used_check": {
+      "scope": "已定稿 83 篇（DEV81+SELECTION2）exposure.json 逐一读取（lineage_check.read_exposure，仅 experiments_used/dev_exposed 两字段）",
+      "finalized_with_exposure_json": 83,
+      "finalized_missing_exposure_json": [],
+      "experiments_used_nonempty_by_split": {},
+      "dev_exposed_true_by_split": {
+        "DEV": 19
+      },
+      "holdout_rows_finalized": 0,
+      "note": "HOLDOUT 未定稿 → G3/C3 组级消费检查本轮空转（0 篇核查对象）；全库 275 个 exposure.json 中 experiments_used 非空 0 篇，dev_exposed=true 52 篇（已消费旧题，DEV 准入允许）"
+    }
+  },
+  "cross_ref_custody_split_guard": {
+    "tool": "tools/benchmark_v1/custody_split_guard.py",
+    "invocation": "python -I tools/benchmark_v1/custody_split_guard.py --allocation refs/benchmark_v1_20261107/phase2/DATASET_V1_FINAL_ALLOCATION.csv --stories-root benchmark/stories_v2 --expected-pending 157 --json",
+    "generated_at": "2026-11-08 15:38:34",
+    "violations": 0,
+    "warnings": 38,
+    "warning_kinds": "全部 38 条 = wave4 新题 E301–E338 未登记 custody 账本（新题待 seed，非违例）",
+    "summary": {
+      "rows": 240,
+      "assigned": 83,
+      "pending": 157,
+      "groups": 68,
+      "twin_groups": 8,
+      "unregistered_dev_selection": 38,
+      "violations": 0,
+      "warnings": 38
+    },
+    "expected_pending_match": true
+  },
+  "companion_report": "refs/benchmark_v1_20261107/phase2/LINEAGE_ISOLATION_REPORT.md"
+}

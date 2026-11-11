@@ -1,0 +1,67 @@
+{
+ "kind": "prompt_identity_v1",
+ "pairs": [
+  {
+   "a": "logs/p08_d1_live_20261028/candidate_D01",
+   "b": "logs/p08_r3a_live_20261028/parent_D01",
+   "positions": 3,
+   "only_a": [
+    "D01_T04",
+    "D01_T05",
+    "D01_T06",
+    "D01_T07",
+    "D01_T08"
+   ],
+   "only_b": [],
+   "rows": [
+    {
+     "case_id": "D01_T01",
+     "user_identical": true,
+     "system_identical": true,
+     "case_input_identical": true,
+     "chars": [
+      3303,
+      3303
+     ]
+    },
+    {
+     "case_id": "D01_T02",
+     "user_identical": false,
+     "system_identical": true,
+     "case_input_identical": true,
+     "chars": [
+      3617,
+      3692
+     ]
+    },
+    {
+     "case_id": "D01_T03",
+     "user_identical": false,
+     "system_identical": true,
+     "case_input_identical": true,
+     "chars": [
+      4245,
+      4240
+     ]
+    }
+   ]
+  },
+  {
+   "a": "logs/p08_s2r_live_20261028/candidate_AK09",
+   "b": "logs/p08_r3a_live_20261028/parent_AK09",
+   "positions": 0,
+   "only_a": [
+    "AK09_T01"
+   ],
+   "only_b": [],
+   "rows": []
+  }
+ ],
+ "all_identical": false,
+ "interpretation": {
+  "T01_byte_identical": true,
+  "why_later_turns_differ": "首轮（T01）两批出站 user 提示逐字节相同——证明装配是确定性的、条件没漂。T02/T03 的差异只在\"记忆行\"：上一轮模型抽样不同 → 写回的暂定/事实条数不同 → 本轮记忆投影不同。D01_T02 的实际差异只有 1 行：【暂定事项】多一条 f_0010（周六摊位待定），其余逐字一致。因此跨批引用 D1 旧答卷只作描述性对照，不进入 R3A 的配对统计（R3A 自带 r2 父臂）。",
+  "checked_system_prompt": "system 提示三格全部逐字节相同（候选侧资产未漂）",
+  "checked_case_input": "case_input_sha256 三格全部相同（题面/卡侧未漂）"
+ }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "CHALLENGE_03_GOVERNANCE_SELF_HEALING",
+  "name": "Guanjia / AIOps 三层能力自愈与宿主环境自动化对接",
+  "source_document": "D:\\桌面\\管家参考信息\\新建 文本文档.txt",
+  "target_project": "D:\\guanjia",
+  "ground_truth_requirements": [
+    {
+      "req_id": "REQ-01",
+      "topic": "宿主环境自动识别与绑定",
+      "intent": "将 config.json 中的 generic 自动探测并修正为当前真实宿主 antigravity，消除宿主未接入警告",
+      "keywords": ["host", "antigravity", "generic", "config.json"],
+      "target_scope": "guanjia/config.json / HostAdapter"
+    },
+    {
+      "req_id": "REQ-02",
+      "topic": "自动推进能力判定漏洞修复 (cap() 映射)",
+      "intent": "修复 guanjia.mjs 第 4856 行的判断缺陷，将 historically_observed 正确映射为有效可用，消灭虚假 ❌ 未接入",
+      "keywords": ["historically_observed", "cap()", "continuous_ai_call", "漏洞", "4856"],
+      "target_scope": "guanjia/bin/guanjia.mjs (L4856)"
+    },
+    {
+      "req_id": "REQ-03",
+      "topic": "项目根目录 Bootloader 安全注入",
+      "intent": "在 AGENTS.md 顶部注入 [GUANJIA-BOOT] 引导头，且保证目标项目已有规则 100% 不被覆盖破坏",
+      "keywords": ["[GUANJIA-BOOT]", "AGENTS.md", "引导", "防覆盖"],
+      "target_scope": "Repo Pointer Injector"
+    },
+    {
+      "req_id": "REQ-04",
+      "topic": "机器证据驱动的三层能力全部亮绿",
+      "intent": "通过标准 EVR-SESSION-xxxx 凭证签名使 session.start.detect 跃迁为 passed，面板展示三项全绿",
+      "keywords": ["核心可用 ✅", "宿主已接入 ✅", "自动推进 ✅", "三层能力"],
+      "target_scope": "CapabilityRegistry / EvidenceVerifier"
+    },
+    {
+      "req_id": "REQ-05",
+      "topic": "自然语言入口彻底脱困 (消灭未定义报错)",
+      "intent": "重构 guanjia-entry.mjs，干掉死板关键词正则，支持用户随意输入大白话自动进入需求解析流程",
+      "keywords": ["未定义", "guanjia-entry.mjs", "正则", "自然语言", "大白话"],
+      "target_scope": "guanjia/bin/guanjia-entry.mjs"
+    }
+  ]
+}

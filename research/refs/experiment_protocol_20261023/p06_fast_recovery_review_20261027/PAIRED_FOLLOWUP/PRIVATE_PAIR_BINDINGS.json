@@ -1,0 +1,2594 @@
+[
+  {
+    "pair_id": "FP001",
+    "left": {
+      "batch": "C",
+      "case_id": "E006_T01",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142332_25f5c9",
+      "input_sha256": "86690898ea0eb695a672cb9764c1a1bf8d3308908ef43954a19b209c8837aa98",
+      "raw_sha256": "c0bf3f6c26380ab08e90bf8d053d8c99728171db29063d627b5c73f10cd6b2b6",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E006\\out\\turn_01_E006_T01",
+      "legacy_semantic_node": "P06N0103"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E006_T01",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_00d32f",
+      "input_sha256": "86690898ea0eb695a672cb9764c1a1bf8d3308908ef43954a19b209c8837aa98",
+      "raw_sha256": "12ad9073587c0f9aa02d23d342a19a8c126d8b64790f3396b44de5ec791a13b1",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E006\\out\\turn_01_E006_T01",
+      "legacy_semantic_node": "P06N0025"
+    }
+  },
+  {
+    "pair_id": "FP002",
+    "left": {
+      "batch": "A",
+      "case_id": "E006_T01",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130656_50f039",
+      "input_sha256": "86690898ea0eb695a672cb9764c1a1bf8d3308908ef43954a19b209c8837aa98",
+      "raw_sha256": "2e04e59c13ebd731090b66d24b8422fa093f4605257d71ecb61b6caf06e2cf67",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E006\\out\\turn_01_E006_T01",
+      "legacy_semantic_node": "P06N0245"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E006_T01",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_580f13",
+      "input_sha256": "86690898ea0eb695a672cb9764c1a1bf8d3308908ef43954a19b209c8837aa98",
+      "raw_sha256": "f25e47f1438f5fe9907a132f22b31d1c827f79cebad72e60b907fca97066285f",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E006\\out\\turn_01_E006_T01",
+      "legacy_semantic_node": "P06N0201"
+    }
+  },
+  {
+    "pair_id": "FP003",
+    "left": {
+      "batch": "B",
+      "case_id": "E006_T01",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_1e05aa",
+      "input_sha256": "86690898ea0eb695a672cb9764c1a1bf8d3308908ef43954a19b209c8837aa98",
+      "raw_sha256": "aaa0fd67b4b8c6634fa41ac6c242b150435f1688c9297fd4ba93ecb08cd525e5",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E006\\out\\turn_01_E006_T01",
+      "legacy_semantic_node": "P06N0161"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E006_T01",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134240_60104f",
+      "input_sha256": "86690898ea0eb695a672cb9764c1a1bf8d3308908ef43954a19b209c8837aa98",
+      "raw_sha256": "1cd130043cbbecd38238617b7c0891e5437817382a5d09363502c0f92d35f835",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E006\\out\\turn_01_E006_T01",
+      "legacy_semantic_node": "P06N0169"
+    }
+  },
+  {
+    "pair_id": "FP004",
+    "left": {
+      "batch": "B",
+      "case_id": "E006_T02",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134240_60104f",
+      "input_sha256": "a674f10639d859b5daa3b6c5d124e99c2e0c53d014dc73dbc4ce6ccd5fe45dc2",
+      "raw_sha256": "9141f9d482906fbd638c7d704cbdcb627e61e839f7f7f03e9573750769552b0f",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E006\\out\\turn_02_E006_T02",
+      "legacy_semantic_node": "P06N0206"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E006_T02",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_1e05aa",
+      "input_sha256": "a674f10639d859b5daa3b6c5d124e99c2e0c53d014dc73dbc4ce6ccd5fe45dc2",
+      "raw_sha256": "339312b8daa45b87a7a6996d2face4bcb55cc477de0ed1f945be577dd0f1acd9",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E006\\out\\turn_02_E006_T02",
+      "legacy_semantic_node": "P06N0166"
+    }
+  },
+  {
+    "pair_id": "FP005",
+    "left": {
+      "batch": "A",
+      "case_id": "E006_T02",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_580f13",
+      "input_sha256": "a674f10639d859b5daa3b6c5d124e99c2e0c53d014dc73dbc4ce6ccd5fe45dc2",
+      "raw_sha256": "8b2092e0a8326a418b487c2ef8fd98a682c22a16292559ee58c019b7cb6cc710",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E006\\out\\turn_02_E006_T02",
+      "legacy_semantic_node": "P06N0244"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E006_T02",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130656_50f039",
+      "input_sha256": "a674f10639d859b5daa3b6c5d124e99c2e0c53d014dc73dbc4ce6ccd5fe45dc2",
+      "raw_sha256": "918872d866ce7555affb7fd5bc91ca672b3585742b94c3d6943ae7f0e8542c1f",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E006\\out\\turn_02_E006_T02",
+      "legacy_semantic_node": "P06N0074"
+    }
+  },
+  {
+    "pair_id": "FP006",
+    "left": {
+      "batch": "C",
+      "case_id": "E006_T02",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_00d32f",
+      "input_sha256": "a674f10639d859b5daa3b6c5d124e99c2e0c53d014dc73dbc4ce6ccd5fe45dc2",
+      "raw_sha256": "a181cd0b75bbd470e1928156bb6169c7ea61c9cbe02be43ba3286c4466208e8d",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E006\\out\\turn_02_E006_T02",
+      "legacy_semantic_node": "P06N0140"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E006_T02",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142332_25f5c9",
+      "input_sha256": "a674f10639d859b5daa3b6c5d124e99c2e0c53d014dc73dbc4ce6ccd5fe45dc2",
+      "raw_sha256": "4f2c21b636855670f22ebfb9ea2d8f89d7dc9e42c63b1941225fc3c7e6dd1c2c",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E006\\out\\turn_02_E006_T02",
+      "legacy_semantic_node": "P06N0218"
+    }
+  },
+  {
+    "pair_id": "FP007",
+    "left": {
+      "batch": "A",
+      "case_id": "E006_T03",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130656_50f039",
+      "input_sha256": "b6bd4a60ecfa910728148c8e943ec536abcecaf30b52f648fd1a24ebbf7252fa",
+      "raw_sha256": "35e8805da3fbb398a51ebabf3f8344b8f9f71273195b741f28fe21c7a0a34a53",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E006\\out\\turn_03_E006_T03",
+      "legacy_semantic_node": "P06N0114"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E006_T03",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_580f13",
+      "input_sha256": "b6bd4a60ecfa910728148c8e943ec536abcecaf30b52f648fd1a24ebbf7252fa",
+      "raw_sha256": "40b6f5a7bac991c9663c67bbf719770ffe760dcce86fbd57d9b623792a62dd08",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E006\\out\\turn_03_E006_T03",
+      "legacy_semantic_node": "P06N0207"
+    }
+  },
+  {
+    "pair_id": "FP008",
+    "left": {
+      "batch": "C",
+      "case_id": "E006_T03",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142332_25f5c9",
+      "input_sha256": "b6bd4a60ecfa910728148c8e943ec536abcecaf30b52f648fd1a24ebbf7252fa",
+      "raw_sha256": "138bc1a1a8e6210f91db0e643385a9f27dab96ede7099344c3956c254a326fbd",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E006\\out\\turn_03_E006_T03",
+      "legacy_semantic_node": "P06N0221"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E006_T03",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_00d32f",
+      "input_sha256": "b6bd4a60ecfa910728148c8e943ec536abcecaf30b52f648fd1a24ebbf7252fa",
+      "raw_sha256": "05530616fcab14a5b863bc29f8f46d91f7415919ce5c6ba0aae60862d7f5890c",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E006\\out\\turn_03_E006_T03",
+      "legacy_semantic_node": "P06N0154"
+    }
+  },
+  {
+    "pair_id": "FP009",
+    "left": {
+      "batch": "B",
+      "case_id": "E006_T03",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_1e05aa",
+      "input_sha256": "b6bd4a60ecfa910728148c8e943ec536abcecaf30b52f648fd1a24ebbf7252fa",
+      "raw_sha256": "931aef6f9369f1267244dec9ce6ca3db4b43e1160b03eb7231cf77f864024782",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E006\\out\\turn_03_E006_T03",
+      "legacy_semantic_node": "P06N0104"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E006_T03",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134240_60104f",
+      "input_sha256": "b6bd4a60ecfa910728148c8e943ec536abcecaf30b52f648fd1a24ebbf7252fa",
+      "raw_sha256": "f71d9f6beb66529f32371795ef44415a3ba93a5f48d3310edfc7bbdb06c39fbd",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E006\\out\\turn_03_E006_T03",
+      "legacy_semantic_node": "P06N0048"
+    }
+  },
+  {
+    "pair_id": "FP010",
+    "left": {
+      "batch": "C",
+      "case_id": "E006_T04",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_00d32f",
+      "input_sha256": "344d28fa07fb20ef4c61d1613767ab1ad6c6e747b6b0a9f16926b3dbca2aeeb7",
+      "raw_sha256": "2e816c8cd36b28822fdffa91d3203507fc7b40c5d3e20633eaa75e6461339eac",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E006\\out\\turn_04_E006_T04",
+      "legacy_semantic_node": "P06N0088"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E006_T04",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142332_25f5c9",
+      "input_sha256": "344d28fa07fb20ef4c61d1613767ab1ad6c6e747b6b0a9f16926b3dbca2aeeb7",
+      "raw_sha256": "7c3c2041e797767d63c9b1cbd80e18db1ca27ef27bc3cca69706b8e0995b85b4",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E006\\out\\turn_04_E006_T04",
+      "legacy_semantic_node": "P06N0156"
+    }
+  },
+  {
+    "pair_id": "FP011",
+    "left": {
+      "batch": "B",
+      "case_id": "E006_T04",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134240_60104f",
+      "input_sha256": "344d28fa07fb20ef4c61d1613767ab1ad6c6e747b6b0a9f16926b3dbca2aeeb7",
+      "raw_sha256": "e45e3154155f147d67a160321217e5b1cfe603a102230bb00a32510c58d0c83a",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E006\\out\\turn_04_E006_T04",
+      "legacy_semantic_node": "P06N0056"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E006_T04",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_1e05aa",
+      "input_sha256": "344d28fa07fb20ef4c61d1613767ab1ad6c6e747b6b0a9f16926b3dbca2aeeb7",
+      "raw_sha256": "7ffd18d5b6359bed6c6fbaf2e1e64a51c3e6f567fcd0a2e12e3e49074d08c5cb",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E006\\out\\turn_04_E006_T04",
+      "legacy_semantic_node": "P06N0177"
+    }
+  },
+  {
+    "pair_id": "FP012",
+    "left": {
+      "batch": "A",
+      "case_id": "E006_T04",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_580f13",
+      "input_sha256": "344d28fa07fb20ef4c61d1613767ab1ad6c6e747b6b0a9f16926b3dbca2aeeb7",
+      "raw_sha256": "5ab0b70ce00ff6763da046b877bc4b13f4307f9b2b363922a76cdeb81d87132d",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E006\\out\\turn_04_E006_T04",
+      "legacy_semantic_node": "P06N0061"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E006_T04",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130656_50f039",
+      "input_sha256": "344d28fa07fb20ef4c61d1613767ab1ad6c6e747b6b0a9f16926b3dbca2aeeb7",
+      "raw_sha256": "ef280073e709b2611c76fb3664f6362b83201138a4b9d39460f35c4d24ccad46",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E006\\out\\turn_04_E006_T04",
+      "legacy_semantic_node": "P06N0187"
+    }
+  },
+  {
+    "pair_id": "FP013",
+    "left": {
+      "batch": "A",
+      "case_id": "E006_T05",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130656_50f039",
+      "input_sha256": "522fb98a4e13350cbd2e2f59214e0f6a4d20e655612ca1a40df2d0e66b981097",
+      "raw_sha256": "a0caf6c046250eb48ca7f2aecf39250f55a4dbb98c585fddea7ea038cbccdc0f",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E006\\out\\turn_05_E006_T05",
+      "legacy_semantic_node": "P06N0199"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E006_T05",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_580f13",
+      "input_sha256": "522fb98a4e13350cbd2e2f59214e0f6a4d20e655612ca1a40df2d0e66b981097",
+      "raw_sha256": "48abf0f5a7f82cd17ed8e4272774d70e6492c7502827b11d71eb6eab2068dfc9",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E006\\out\\turn_05_E006_T05",
+      "legacy_semantic_node": "P06N0068"
+    }
+  },
+  {
+    "pair_id": "FP014",
+    "left": {
+      "batch": "C",
+      "case_id": "E006_T05",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142332_25f5c9",
+      "input_sha256": "522fb98a4e13350cbd2e2f59214e0f6a4d20e655612ca1a40df2d0e66b981097",
+      "raw_sha256": "0e900153d491fb5bd57083bda90cccb9fdf72d6d07fdcb2b3cc8340c746e288d",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E006\\out\\turn_05_E006_T05",
+      "legacy_semantic_node": "P06N0150"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E006_T05",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_00d32f",
+      "input_sha256": "522fb98a4e13350cbd2e2f59214e0f6a4d20e655612ca1a40df2d0e66b981097",
+      "raw_sha256": "0f536f4775d5e2957a8cd58ba9a46318ce2d665d2cb27fafd27d65e9b134c68e",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E006\\out\\turn_05_E006_T05",
+      "legacy_semantic_node": "P06N0019"
+    }
+  },
+  {
+    "pair_id": "FP015",
+    "left": {
+      "batch": "B",
+      "case_id": "E006_T05",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_1e05aa",
+      "input_sha256": "522fb98a4e13350cbd2e2f59214e0f6a4d20e655612ca1a40df2d0e66b981097",
+      "raw_sha256": "dcc9c7523adbb2e6e61a9f8152bddb91d2643ba4e4d51ff01bb0d433d1ff8a1d",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E006\\out\\turn_05_E006_T05",
+      "legacy_semantic_node": "P06N0178"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E006_T05",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134240_60104f",
+      "input_sha256": "522fb98a4e13350cbd2e2f59214e0f6a4d20e655612ca1a40df2d0e66b981097",
+      "raw_sha256": "fdcf8294ddea96ffb27ba619dbeb97414fd9e519132c9250c67c24a690435d1b",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E006\\out\\turn_05_E006_T05",
+      "legacy_semantic_node": "P06N0116"
+    }
+  },
+  {
+    "pair_id": "FP016",
+    "left": {
+      "batch": "B",
+      "case_id": "E006_T06",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134240_60104f",
+      "input_sha256": "2dc4bf804a21735677fcd9486c6b6f6ae737b523f35c5a9532e0272610f23a10",
+      "raw_sha256": "141c8fa9d7a3eb5a81b1b990d46cdae24198c35a541fb97d43f1b02d62282016",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E006\\out\\turn_06_E006_T06",
+      "legacy_semantic_node": "P06N0038"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E006_T06",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_1e05aa",
+      "input_sha256": "2dc4bf804a21735677fcd9486c6b6f6ae737b523f35c5a9532e0272610f23a10",
+      "raw_sha256": "512651614efef8d0f2e6f89eedcb04852a75f7f04fd762b6855f85f847c82b4f",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E006\\out\\turn_06_E006_T06",
+      "legacy_semantic_node": "P06N0195"
+    }
+  },
+  {
+    "pair_id": "FP017",
+    "left": {
+      "batch": "A",
+      "case_id": "E006_T06",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_580f13",
+      "input_sha256": "2dc4bf804a21735677fcd9486c6b6f6ae737b523f35c5a9532e0272610f23a10",
+      "raw_sha256": "2c3395968b141a808354e423b9fa7921960837a470b7a977af68fbd67f8daf64",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E006\\out\\turn_06_E006_T06",
+      "legacy_semantic_node": "P06N0119"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E006_T06",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130656_50f039",
+      "input_sha256": "2dc4bf804a21735677fcd9486c6b6f6ae737b523f35c5a9532e0272610f23a10",
+      "raw_sha256": "ffd7a7a362163525db0dc8d5b8e48f7a5fcc4c29e60265b7ab678e6bf7430b3a",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E006\\out\\turn_06_E006_T06",
+      "legacy_semantic_node": "P06N0192"
+    }
+  },
+  {
+    "pair_id": "FP018",
+    "left": {
+      "batch": "C",
+      "case_id": "E006_T06",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_00d32f",
+      "input_sha256": "2dc4bf804a21735677fcd9486c6b6f6ae737b523f35c5a9532e0272610f23a10",
+      "raw_sha256": "7805ee616ba8204f8b985ca883a3c6f689fb18245d355eebc4456ef011cfae82",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E006\\out\\turn_06_E006_T06",
+      "legacy_semantic_node": "P06N0210"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E006_T06",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142332_25f5c9",
+      "input_sha256": "2dc4bf804a21735677fcd9486c6b6f6ae737b523f35c5a9532e0272610f23a10",
+      "raw_sha256": "4d6727a763e978753c00b6c70072ea411deaa2abeaa7004cbe24dbced8d7d37c",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E006\\out\\turn_06_E006_T06",
+      "legacy_semantic_node": "P06N0117"
+    }
+  },
+  {
+    "pair_id": "FP019",
+    "left": {
+      "batch": "C",
+      "case_id": "E006_T07",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142332_25f5c9",
+      "input_sha256": "b3095d8b311b2ac181d48ef2320ca88f428bc674b21408fa636470cc7ed7a3d6",
+      "raw_sha256": "dd41da6924b525582400e6e2075e1d8f80dab3402644ec7291cdb0eac94a0154",
+      "veto": "illegal_source_id:t6_1",
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E006\\out\\turn_07_E006_T07",
+      "legacy_semantic_node": "P06N0231"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E006_T07",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_00d32f",
+      "input_sha256": "b3095d8b311b2ac181d48ef2320ca88f428bc674b21408fa636470cc7ed7a3d6",
+      "raw_sha256": "f89bbc378bc74f45c82d1b0b8ffcf8b8afc3e8480232de47e0e220057af26895",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E006\\out\\turn_07_E006_T07",
+      "legacy_semantic_node": "P06N0015"
+    }
+  },
+  {
+    "pair_id": "FP020",
+    "left": {
+      "batch": "A",
+      "case_id": "E006_T07",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130656_50f039",
+      "input_sha256": "b3095d8b311b2ac181d48ef2320ca88f428bc674b21408fa636470cc7ed7a3d6",
+      "raw_sha256": "f87090ce97c79225a106c0d9c225647d958efb7aefe3874b0e388dcd64f74d8a",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E006\\out\\turn_07_E006_T07",
+      "legacy_semantic_node": "P06N0080"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E006_T07",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_580f13",
+      "input_sha256": "b3095d8b311b2ac181d48ef2320ca88f428bc674b21408fa636470cc7ed7a3d6",
+      "raw_sha256": "93d217e8f63608330a44c2388c9d676e15450953ef275ca5e1fd46827887d6a4",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E006\\out\\turn_07_E006_T07",
+      "legacy_semantic_node": "P06N0239"
+    }
+  },
+  {
+    "pair_id": "FP021",
+    "left": {
+      "batch": "B",
+      "case_id": "E006_T07",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_1e05aa",
+      "input_sha256": "b3095d8b311b2ac181d48ef2320ca88f428bc674b21408fa636470cc7ed7a3d6",
+      "raw_sha256": "55cc427f44d69b9a5bb4fb8f8c6881910be4b4b51c09a11129c0127147030b33",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E006\\out\\turn_07_E006_T07",
+      "legacy_semantic_node": "P06N0164"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E006_T07",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134240_60104f",
+      "input_sha256": "b3095d8b311b2ac181d48ef2320ca88f428bc674b21408fa636470cc7ed7a3d6",
+      "raw_sha256": "17e017aab1fea339fc78b7f0b9ad5102cdb33ad070fd4207ed5df35ad1d6ea50",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E006\\out\\turn_07_E006_T07",
+      "legacy_semantic_node": "P06N0124"
+    }
+  },
+  {
+    "pair_id": "FP022",
+    "left": {
+      "batch": "C",
+      "case_id": "E006_T08",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_00d32f",
+      "input_sha256": "5688db37b4e25b0d6f250782d1a423ca25a486dd204b8f768214311c74a60edb",
+      "raw_sha256": "cec4b8950c82678a45da02b56271d81c15948578e8182212877a0e134ad54c24",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E006\\out\\turn_08_E006_T08",
+      "legacy_semantic_node": "P06N0146"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E006_T08",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142332_25f5c9",
+      "input_sha256": "5688db37b4e25b0d6f250782d1a423ca25a486dd204b8f768214311c74a60edb",
+      "raw_sha256": "79d837ed2f0bd56f1ef8386d0adb53da0c8a36912ff6f875160c15b59078fd09",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E006\\out\\turn_08_E006_T08",
+      "legacy_semantic_node": "P06N0046"
+    }
+  },
+  {
+    "pair_id": "FP023",
+    "left": {
+      "batch": "A",
+      "case_id": "E006_T08",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_580f13",
+      "input_sha256": "5688db37b4e25b0d6f250782d1a423ca25a486dd204b8f768214311c74a60edb",
+      "raw_sha256": "5e72e2ae546a4fc02e822ad3c1316e1ee8fefbe7fc292dd0bc6d5b346e86f497",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E006\\out\\turn_08_E006_T08",
+      "legacy_semantic_node": "P06N0095"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E006_T08",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130656_50f039",
+      "input_sha256": "5688db37b4e25b0d6f250782d1a423ca25a486dd204b8f768214311c74a60edb",
+      "raw_sha256": "fde7025c551837487616f41038e8257b170386c029860345c1deb33cba871035",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E006\\out\\turn_08_E006_T08",
+      "legacy_semantic_node": "P06N0005"
+    }
+  },
+  {
+    "pair_id": "FP024",
+    "left": {
+      "batch": "B",
+      "case_id": "E006_T08",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134240_60104f",
+      "input_sha256": "5688db37b4e25b0d6f250782d1a423ca25a486dd204b8f768214311c74a60edb",
+      "raw_sha256": "b40b3c75eeb4400eba7894fc98f030210fb3a4914d3bce249fc36511b36aaf24",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E006\\out\\turn_08_E006_T08",
+      "legacy_semantic_node": "P06N0003"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E006_T08",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_1e05aa",
+      "input_sha256": "5688db37b4e25b0d6f250782d1a423ca25a486dd204b8f768214311c74a60edb",
+      "raw_sha256": "4afb5b99de6bf6e624c17ba0d3da61cc581a6595be8b7a1468273ef7b5d996e3",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E006\\out\\turn_08_E006_T08",
+      "legacy_semantic_node": "P06N0027"
+    }
+  },
+  {
+    "pair_id": "FP025",
+    "left": {
+      "batch": "A",
+      "case_id": "E007_T01",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_6485b8",
+      "input_sha256": "03501305e62a946b25a9ab1c3fc00d5969c3cbf17586f5b73f07487140609138",
+      "raw_sha256": "9128930a84e646a6013a4bca276c271a28062baedbc4c54b4d283c2e7f45afeb",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E007\\out\\turn_01_E007_T01",
+      "legacy_semantic_node": "P06N0129"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E007_T01",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_33250b",
+      "input_sha256": "03501305e62a946b25a9ab1c3fc00d5969c3cbf17586f5b73f07487140609138",
+      "raw_sha256": "ee2f4d8375f3470283f5d633ec70feaeb42804f9d0e7e176d730d8c32ade0c02",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E007\\out\\turn_01_E007_T01",
+      "legacy_semantic_node": "P06N0180"
+    }
+  },
+  {
+    "pair_id": "FP026",
+    "left": {
+      "batch": "B",
+      "case_id": "E007_T01",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_e93737",
+      "input_sha256": "03501305e62a946b25a9ab1c3fc00d5969c3cbf17586f5b73f07487140609138",
+      "raw_sha256": "ae025b97c6d507ce6f60b1293f770c6f2979d05341086f6930344c8cf55576a4",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E007\\out\\turn_01_E007_T01",
+      "legacy_semantic_node": "P06N0087"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E007_T01",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134242_cfcb77",
+      "input_sha256": "03501305e62a946b25a9ab1c3fc00d5969c3cbf17586f5b73f07487140609138",
+      "raw_sha256": "000cf51f63bdd125f27484e498f134af3408f6b16fff7251ae786e33a1d70f41",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E007\\out\\turn_01_E007_T01",
+      "legacy_semantic_node": "P06N0050"
+    }
+  },
+  {
+    "pair_id": "FP027",
+    "left": {
+      "batch": "C",
+      "case_id": "E007_T01",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142334_a118e9",
+      "input_sha256": "03501305e62a946b25a9ab1c3fc00d5969c3cbf17586f5b73f07487140609138",
+      "raw_sha256": "6dd17ff0513d223727261e320d02a5c01bb11427048b775d1ef397301b998b35",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E007\\out\\turn_01_E007_T01",
+      "legacy_semantic_node": "P06N0227"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E007_T01",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_40c743",
+      "input_sha256": "03501305e62a946b25a9ab1c3fc00d5969c3cbf17586f5b73f07487140609138",
+      "raw_sha256": "f411726b23ba15967015e90bd535703da13cf3ef803b28d52c8bd1054b9a41ca",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E007\\out\\turn_01_E007_T01",
+      "legacy_semantic_node": "P06N0232"
+    }
+  },
+  {
+    "pair_id": "FP028",
+    "left": {
+      "batch": "A",
+      "case_id": "E007_T02",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_33250b",
+      "input_sha256": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+      "raw_sha256": "db495f6156e20b79919f497690b3949fd11cedf7c840828d6b678556915f5a90",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E007\\out\\turn_02_E007_T02",
+      "legacy_semantic_node": "P06N0106"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E007_T02",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_6485b8",
+      "input_sha256": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+      "raw_sha256": "3a646126048095106e2b6f853eb0254c02b5307c4d754efa3c29787bfcb074e0",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E007\\out\\turn_02_E007_T02",
+      "legacy_semantic_node": "P06N0159"
+    }
+  },
+  {
+    "pair_id": "FP029",
+    "left": {
+      "batch": "C",
+      "case_id": "E007_T02",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_40c743",
+      "input_sha256": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+      "raw_sha256": "c8cff1a9dd9e3ac0cc3f91a0a14a7d447cdca4c96b9a0b61f4a997dedf759433",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E007\\out\\turn_02_E007_T02",
+      "legacy_semantic_node": "P06N0233"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E007_T02",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142334_a118e9",
+      "input_sha256": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+      "raw_sha256": "8c2e204cd81c2e7310337e2c45cfe14bf8f2915c9fbe91eb7874aeded809a66e",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E007\\out\\turn_02_E007_T02",
+      "legacy_semantic_node": "P06N0102"
+    }
+  },
+  {
+    "pair_id": "FP030",
+    "left": {
+      "batch": "B",
+      "case_id": "E007_T02",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134242_cfcb77",
+      "input_sha256": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+      "raw_sha256": "c372e8e6f7d04ac259ecaa3c28461dd61d2bccc0e7ead89c76e122d5f0faee28",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E007\\out\\turn_02_E007_T02",
+      "legacy_semantic_node": "P06N0089"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E007_T02",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_e93737",
+      "input_sha256": "5fdb40bf099e3d633ce08d33d42ebc75cc86caa5b3d005ceec30925bcb6cbf87",
+      "raw_sha256": "8cb019be4ad8ef13d677f61933b233e15ad17f4f318fbe038d2fed6da5329cf5",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E007\\out\\turn_02_E007_T02",
+      "legacy_semantic_node": "P06N0122"
+    }
+  },
+  {
+    "pair_id": "FP031",
+    "left": {
+      "batch": "B",
+      "case_id": "E007_T03",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_e93737",
+      "input_sha256": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+      "raw_sha256": "50888952c510fef581f1373d99231a190ce5068fdc207bc8836eb3519fa75a89",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E007\\out\\turn_03_E007_T03",
+      "legacy_semantic_node": "P06N0163"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E007_T03",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134242_cfcb77",
+      "input_sha256": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+      "raw_sha256": "6890c9db60ee6dba3bcbfc9e3aaa80baa604f4919a3d1b1fa0c4b676ad6bcd3e",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E007\\out\\turn_03_E007_T03",
+      "legacy_semantic_node": "P06N0071"
+    }
+  },
+  {
+    "pair_id": "FP032",
+    "left": {
+      "batch": "C",
+      "case_id": "E007_T03",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142334_a118e9",
+      "input_sha256": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+      "raw_sha256": "e1a7883dc8c74b3e6dff841fea5386730d8830f618f5509647707b384a92eb01",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E007\\out\\turn_03_E007_T03",
+      "legacy_semantic_node": "P06N0249"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E007_T03",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_40c743",
+      "input_sha256": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+      "raw_sha256": "27c07bbe58db1bedc21863d303a925f90804ae1553d58a027159721a333f19e7",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E007\\out\\turn_03_E007_T03",
+      "legacy_semantic_node": "P06N0139"
+    }
+  },
+  {
+    "pair_id": "FP033",
+    "left": {
+      "batch": "A",
+      "case_id": "E007_T03",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_6485b8",
+      "input_sha256": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+      "raw_sha256": "e4d5538ffc647b4d0e12a37ed59f8444f74c28466a78ae6838abd806fc16d33c",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E007\\out\\turn_03_E007_T03",
+      "legacy_semantic_node": "P06N0078"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E007_T03",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_33250b",
+      "input_sha256": "bd0060b99ce277696d5a503acb16d9370365befc4bfbb155eedd7983aac4da18",
+      "raw_sha256": "7f6c22b83a584cf2894d47b5ccc55e9e6c61e72c6c8728b9b18944360e002246",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E007\\out\\turn_03_E007_T03",
+      "legacy_semantic_node": "P06N0224"
+    }
+  },
+  {
+    "pair_id": "FP034",
+    "left": {
+      "batch": "B",
+      "case_id": "E007_T04",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134242_cfcb77",
+      "input_sha256": "51c6aa90730126a89e0b420bebd85a9a9231a4c50cf962cffa57be6bbc33722c",
+      "raw_sha256": "3f8099214e6a31fc1942965a4afbb3cf680b6180d3c1b8674e594670fd80a1a2",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E007\\out\\turn_04_E007_T04",
+      "legacy_semantic_node": "P06N0133"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E007_T04",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_e93737",
+      "input_sha256": "51c6aa90730126a89e0b420bebd85a9a9231a4c50cf962cffa57be6bbc33722c",
+      "raw_sha256": "4a70c11ff11405750900ed38de2628c8e73b4575ac2af5eb6a5026c4cc398e85",
+      "veto": "json_schema_broken",
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E007\\out\\turn_04_E007_T04",
+      "legacy_semantic_node": null
+    }
+  },
+  {
+    "pair_id": "FP035",
+    "left": {
+      "batch": "C",
+      "case_id": "E007_T04",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_40c743",
+      "input_sha256": "51c6aa90730126a89e0b420bebd85a9a9231a4c50cf962cffa57be6bbc33722c",
+      "raw_sha256": "79eb3c53f7e52791d8c3a528b026ab7d7c19b3016634507478305be335129771",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E007\\out\\turn_04_E007_T04",
+      "legacy_semantic_node": "P06N0226"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E007_T04",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142334_a118e9",
+      "input_sha256": "51c6aa90730126a89e0b420bebd85a9a9231a4c50cf962cffa57be6bbc33722c",
+      "raw_sha256": "68e13e99f2d16866454e40929a82a0abb0ef6648b52dd4147ba5fbcea1f6a1b5",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E007\\out\\turn_04_E007_T04",
+      "legacy_semantic_node": "P06N0144"
+    }
+  },
+  {
+    "pair_id": "FP036",
+    "left": {
+      "batch": "A",
+      "case_id": "E007_T04",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_33250b",
+      "input_sha256": "51c6aa90730126a89e0b420bebd85a9a9231a4c50cf962cffa57be6bbc33722c",
+      "raw_sha256": "d44ad51e80e4beef921988704f8e4d0d02dfc87a7a28a59e1532b083ecb9df52",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E007\\out\\turn_04_E007_T04",
+      "legacy_semantic_node": "P06N0001"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E007_T04",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_6485b8",
+      "input_sha256": "51c6aa90730126a89e0b420bebd85a9a9231a4c50cf962cffa57be6bbc33722c",
+      "raw_sha256": "d477424634beec5fa28f157d21e00e9c229403d6cf321b228ab78128662f0646",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E007\\out\\turn_04_E007_T04",
+      "legacy_semantic_node": "P06N0018"
+    }
+  },
+  {
+    "pair_id": "FP037",
+    "left": {
+      "batch": "B",
+      "case_id": "E007_T05",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_e93737",
+      "input_sha256": "d142f73192a019803b0c39d6e7e3024e3275ab0a91d4b06dea3c6ce591b8e329",
+      "raw_sha256": "21c88243c751822324e59fd33a4bed95d853f14c4dc8df65fea3d6b99115ce7b",
+      "veto": "json_schema_broken",
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E007\\out\\turn_05_E007_T05",
+      "legacy_semantic_node": "P06N0137"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E007_T05",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134242_cfcb77",
+      "input_sha256": "d142f73192a019803b0c39d6e7e3024e3275ab0a91d4b06dea3c6ce591b8e329",
+      "raw_sha256": "c2aebb601faeaac5a7273f11dce9810c93274696ff357214215856b57b83f9f9",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E007\\out\\turn_05_E007_T05",
+      "legacy_semantic_node": "P06N0026"
+    }
+  },
+  {
+    "pair_id": "FP038",
+    "left": {
+      "batch": "A",
+      "case_id": "E007_T05",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_6485b8",
+      "input_sha256": "d142f73192a019803b0c39d6e7e3024e3275ab0a91d4b06dea3c6ce591b8e329",
+      "raw_sha256": "acc757a331eb65d1e1130e8fd5f20161fabbb51e5c0eaecd38db8e6954049304",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E007\\out\\turn_05_E007_T05",
+      "legacy_semantic_node": "P06N0069"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E007_T05",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_33250b",
+      "input_sha256": "d142f73192a019803b0c39d6e7e3024e3275ab0a91d4b06dea3c6ce591b8e329",
+      "raw_sha256": "f5180bb82aeb354a69a55a0f566d93fa24a43974c75e59d7a805b1198a375af8",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E007\\out\\turn_05_E007_T05",
+      "legacy_semantic_node": "P06N0197"
+    }
+  },
+  {
+    "pair_id": "FP039",
+    "left": {
+      "batch": "C",
+      "case_id": "E007_T05",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142334_a118e9",
+      "input_sha256": "d142f73192a019803b0c39d6e7e3024e3275ab0a91d4b06dea3c6ce591b8e329",
+      "raw_sha256": "4a1af873095e0ff9ffbda25d8678f2f2e02e6b8d25ae23b5ad5c036e98f06f3e",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E007\\out\\turn_05_E007_T05",
+      "legacy_semantic_node": "P06N0248"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E007_T05",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_40c743",
+      "input_sha256": "d142f73192a019803b0c39d6e7e3024e3275ab0a91d4b06dea3c6ce591b8e329",
+      "raw_sha256": "2075c7d7b5629a073aeffcd35a67059566d1d4f746338d6108e45b98c86b7243",
+      "veto": "json_schema_broken",
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E007\\out\\turn_05_E007_T05",
+      "legacy_semantic_node": "P06N0141"
+    }
+  },
+  {
+    "pair_id": "FP040",
+    "left": {
+      "batch": "C",
+      "case_id": "E007_T06",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_40c743",
+      "input_sha256": "adf80385380136670b151707f38d5a5dadd9007d5ef0aed627cd7ceebaa10f6d",
+      "raw_sha256": "be8bbcd1b72b4f5dfe195fbf085fc662d476b81e65d0b91ee747970bb7ba3f93",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E007\\out\\turn_06_E007_T06",
+      "legacy_semantic_node": "P06N0179"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E007_T06",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142334_a118e9",
+      "input_sha256": "adf80385380136670b151707f38d5a5dadd9007d5ef0aed627cd7ceebaa10f6d",
+      "raw_sha256": "f1cb1a519657de37449edf6e6fc4e1efb06c9dcd4bd87f3c563d01d6f9087469",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E007\\out\\turn_06_E007_T06",
+      "legacy_semantic_node": "P06N0064"
+    }
+  },
+  {
+    "pair_id": "FP041",
+    "left": {
+      "batch": "B",
+      "case_id": "E007_T06",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134242_cfcb77",
+      "input_sha256": "adf80385380136670b151707f38d5a5dadd9007d5ef0aed627cd7ceebaa10f6d",
+      "raw_sha256": "613437236d8c13b3cec6378aeec81831d5a99a707e408f59fb35c64008051c42",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E007\\out\\turn_06_E007_T06",
+      "legacy_semantic_node": "P06N0121"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E007_T06",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_e93737",
+      "input_sha256": "adf80385380136670b151707f38d5a5dadd9007d5ef0aed627cd7ceebaa10f6d",
+      "raw_sha256": "c79ac31055c408eccddff712297256a2d4613ead5550317687ef8a4cc3896ba2",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E007\\out\\turn_06_E007_T06",
+      "legacy_semantic_node": "P06N0216"
+    }
+  },
+  {
+    "pair_id": "FP042",
+    "left": {
+      "batch": "A",
+      "case_id": "E007_T06",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_33250b",
+      "input_sha256": "adf80385380136670b151707f38d5a5dadd9007d5ef0aed627cd7ceebaa10f6d",
+      "raw_sha256": "174e052a743a163105cb5d909a2391d972bc5fe4869a6523ac9cbb4674889b92",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E007\\out\\turn_06_E007_T06",
+      "legacy_semantic_node": "P06N0138"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E007_T06",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_6485b8",
+      "input_sha256": "adf80385380136670b151707f38d5a5dadd9007d5ef0aed627cd7ceebaa10f6d",
+      "raw_sha256": "0a5fdf6bd2198e31a61d2da4226081f960b5495b391e3aa995d9bc4f014e35b2",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E007\\out\\turn_06_E007_T06",
+      "legacy_semantic_node": "P06N0063"
+    }
+  },
+  {
+    "pair_id": "FP043",
+    "left": {
+      "batch": "A",
+      "case_id": "E007_T07",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_6485b8",
+      "input_sha256": "e0198492845b2c5f49e54676c361e932a19bbcd3792f6849a5e1de9b41a22b13",
+      "raw_sha256": "60170af58ed04a28a788caba8f98a60d1e76652f09a0039e20f96cf22c779aed",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E007\\out\\turn_07_E007_T07",
+      "legacy_semantic_node": "P06N0190"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E007_T07",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_33250b",
+      "input_sha256": "e0198492845b2c5f49e54676c361e932a19bbcd3792f6849a5e1de9b41a22b13",
+      "raw_sha256": "26cc2973fe968e7a690907ab2306827c5950e05a8966e64eb47539f377c6cabd",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E007\\out\\turn_07_E007_T07",
+      "legacy_semantic_node": "P06N0134"
+    }
+  },
+  {
+    "pair_id": "FP044",
+    "left": {
+      "batch": "B",
+      "case_id": "E007_T07",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_e93737",
+      "input_sha256": "e0198492845b2c5f49e54676c361e932a19bbcd3792f6849a5e1de9b41a22b13",
+      "raw_sha256": "fe5e9ec196cebda094ffce7bedbf95419370d41bdb68fad3799523cd0a918a96",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E007\\out\\turn_07_E007_T07",
+      "legacy_semantic_node": "P06N0240"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E007_T07",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134242_cfcb77",
+      "input_sha256": "e0198492845b2c5f49e54676c361e932a19bbcd3792f6849a5e1de9b41a22b13",
+      "raw_sha256": "a1867c97df51d08507e13de7e32dde0957747aa4d459d01e848da1b19ac072d1",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E007\\out\\turn_07_E007_T07",
+      "legacy_semantic_node": "P06N0081"
+    }
+  },
+  {
+    "pair_id": "FP045",
+    "left": {
+      "batch": "C",
+      "case_id": "E007_T07",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142334_a118e9",
+      "input_sha256": "e0198492845b2c5f49e54676c361e932a19bbcd3792f6849a5e1de9b41a22b13",
+      "raw_sha256": "d8c03c37165ed6aacab5bc8e65f06d99c9235603229af0e0b58f2c9f1d30f3af",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E007\\out\\turn_07_E007_T07",
+      "legacy_semantic_node": "P06N0090"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E007_T07",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_40c743",
+      "input_sha256": "e0198492845b2c5f49e54676c361e932a19bbcd3792f6849a5e1de9b41a22b13",
+      "raw_sha256": "7dfee9f12b0270f0ebfd9e0c259133d8adadb5f2344b08ca49d8a5ef31618ce2",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E007\\out\\turn_07_E007_T07",
+      "legacy_semantic_node": "P06N0222"
+    }
+  },
+  {
+    "pair_id": "FP046",
+    "left": {
+      "batch": "C",
+      "case_id": "E007_T08",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142333_40c743",
+      "input_sha256": "cf5016b8f5e0e3c2f9606fe62b9673230a339dd32ca5997e314422f1b83b3cc0",
+      "raw_sha256": "67643ffe5004631b8bff68ceed44ef6ea7dc866d8c2a8afd30f4843e3cb564b7",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E007\\out\\turn_08_E007_T08",
+      "legacy_semantic_node": "P06N0093"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E007_T08",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142334_a118e9",
+      "input_sha256": "cf5016b8f5e0e3c2f9606fe62b9673230a339dd32ca5997e314422f1b83b3cc0",
+      "raw_sha256": "0c711be7030e0cc9eba647b82a19640c52245e5735343e1160a0cb5598056188",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E007\\out\\turn_08_E007_T08",
+      "legacy_semantic_node": "P06N0008"
+    }
+  },
+  {
+    "pair_id": "FP047",
+    "left": {
+      "batch": "A",
+      "case_id": "E007_T08",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130656_33250b",
+      "input_sha256": "cf5016b8f5e0e3c2f9606fe62b9673230a339dd32ca5997e314422f1b83b3cc0",
+      "raw_sha256": "5329088f47b639f4e710cd723707af294e62645b2553f783387ed26cdf85f33c",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E007\\out\\turn_08_E007_T08",
+      "legacy_semantic_node": "P06N0153"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E007_T08",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_6485b8",
+      "input_sha256": "cf5016b8f5e0e3c2f9606fe62b9673230a339dd32ca5997e314422f1b83b3cc0",
+      "raw_sha256": "972a900afe8372b711582bcced8d1e8541c76efc1fd16319d0a1cd4bde4d2357",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E007\\out\\turn_08_E007_T08",
+      "legacy_semantic_node": "P06N0077"
+    }
+  },
+  {
+    "pair_id": "FP048",
+    "left": {
+      "batch": "B",
+      "case_id": "E007_T08",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134242_cfcb77",
+      "input_sha256": "cf5016b8f5e0e3c2f9606fe62b9673230a339dd32ca5997e314422f1b83b3cc0",
+      "raw_sha256": "f6a14318441660e06ba23307d511b2ca5c4daa3346f53be43b7d474c241bc7f9",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E007\\out\\turn_08_E007_T08",
+      "legacy_semantic_node": "P06N0024"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E007_T08",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134241_e93737",
+      "input_sha256": "cf5016b8f5e0e3c2f9606fe62b9673230a339dd32ca5997e314422f1b83b3cc0",
+      "raw_sha256": "878ca04f333fff49bc01d7ac47e01fb27320cd9f62d4fbb39c78b78c8550776c",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E007\\out\\turn_08_E007_T08",
+      "legacy_semantic_node": "P06N0009"
+    }
+  },
+  {
+    "pair_id": "FP049",
+    "left": {
+      "batch": "B",
+      "case_id": "E008_T01",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134242_e4047f",
+      "input_sha256": "70a199a37badc63e9f702d9ed975d701b9cec09257c1e8e3d092508cc85e2763",
+      "raw_sha256": "87e0d504756b147f1398981c62e039925feb4767a024a984f593cfae5a0b0ab5",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E008\\out\\turn_01_E008_T01",
+      "legacy_semantic_node": "P06N0108"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E008_T01",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_cb6d9a",
+      "input_sha256": "70a199a37badc63e9f702d9ed975d701b9cec09257c1e8e3d092508cc85e2763",
+      "raw_sha256": "d5ca7cbfdb3d69796143ed210a288ed9712353d7f8660d290f2e881533a36dca",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E008\\out\\turn_01_E008_T01",
+      "legacy_semantic_node": "P06N0016"
+    }
+  },
+  {
+    "pair_id": "FP050",
+    "left": {
+      "batch": "A",
+      "case_id": "E008_T01",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_2ec222",
+      "input_sha256": "70a199a37badc63e9f702d9ed975d701b9cec09257c1e8e3d092508cc85e2763",
+      "raw_sha256": "6841deb9bea38a236284d005357c715e0d9f032238393053e4c1712ea88c9b20",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E008\\out\\turn_01_E008_T01",
+      "legacy_semantic_node": "P06N0203"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E008_T01",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_76cd93",
+      "input_sha256": "70a199a37badc63e9f702d9ed975d701b9cec09257c1e8e3d092508cc85e2763",
+      "raw_sha256": "3f34e0508819f34ec40ae6da0e84e79638f74df68593299bc7978421ce5c9c31",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E008\\out\\turn_01_E008_T01",
+      "legacy_semantic_node": "P06N0127"
+    }
+  },
+  {
+    "pair_id": "FP051",
+    "left": {
+      "batch": "C",
+      "case_id": "E008_T01",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_afc589",
+      "input_sha256": "70a199a37badc63e9f702d9ed975d701b9cec09257c1e8e3d092508cc85e2763",
+      "raw_sha256": "010814f295f8d0818f7b416d735f9dad7a8f9bb2d3fa23c6e75560ea2d37129c",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E008\\out\\turn_01_E008_T01",
+      "legacy_semantic_node": "P06N0131"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E008_T01",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142334_02a24a",
+      "input_sha256": "70a199a37badc63e9f702d9ed975d701b9cec09257c1e8e3d092508cc85e2763",
+      "raw_sha256": "73a9b9b1eea6487cb4a5dc0b628837ef3b7177c9485f3a3cbce8b1b514bdaec2",
+      "veto": "json_schema_broken",
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E008\\out\\turn_01_E008_T01",
+      "legacy_semantic_node": "P06N0155"
+    }
+  },
+  {
+    "pair_id": "FP052",
+    "left": {
+      "batch": "C",
+      "case_id": "E008_T02",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142334_02a24a",
+      "input_sha256": "e3428916ae6d98b7208d9f140aa6a1c575b335a352858707b3e039a8da16370e",
+      "raw_sha256": "19ad4e82b5289fe15ea0db0487a2eba4eacce7e95d59d647b95a918dc1b05f81",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E008\\out\\turn_02_E008_T02",
+      "legacy_semantic_node": "P06N0247"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E008_T02",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_afc589",
+      "input_sha256": "e3428916ae6d98b7208d9f140aa6a1c575b335a352858707b3e039a8da16370e",
+      "raw_sha256": "fa6519b927d540862a98166bea27633f91f18ddadffa58f357ecedefed1c6796",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E008\\out\\turn_02_E008_T02",
+      "legacy_semantic_node": "P06N0142"
+    }
+  },
+  {
+    "pair_id": "FP053",
+    "left": {
+      "batch": "B",
+      "case_id": "E008_T02",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_cb6d9a",
+      "input_sha256": "e3428916ae6d98b7208d9f140aa6a1c575b335a352858707b3e039a8da16370e",
+      "raw_sha256": "331e9739710c2bfc806531254c1b11af541e827799ed0e29e92c30fcdb9ab359",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E008\\out\\turn_02_E008_T02",
+      "legacy_semantic_node": "P06N0100"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E008_T02",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134242_e4047f",
+      "input_sha256": "e3428916ae6d98b7208d9f140aa6a1c575b335a352858707b3e039a8da16370e",
+      "raw_sha256": "fe913a151d7e464a0b21ed689bca317bb8facc4310948cfeef7b736bd13697ca",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E008\\out\\turn_02_E008_T02",
+      "legacy_semantic_node": "P06N0076"
+    }
+  },
+  {
+    "pair_id": "FP054",
+    "left": {
+      "batch": "A",
+      "case_id": "E008_T02",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_76cd93",
+      "input_sha256": "e3428916ae6d98b7208d9f140aa6a1c575b335a352858707b3e039a8da16370e",
+      "raw_sha256": "93f5322a9bcd1dbfc3a64b32c3ae3fe2bed753ebf62fdb467a666a20d21f8344",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E008\\out\\turn_02_E008_T02",
+      "legacy_semantic_node": "P06N0039"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E008_T02",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_2ec222",
+      "input_sha256": "e3428916ae6d98b7208d9f140aa6a1c575b335a352858707b3e039a8da16370e",
+      "raw_sha256": "71117ee9e027ef52bb3caf08b05f33d4a018b2a992c8c8eb3da46d3d33357ebe",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E008\\out\\turn_02_E008_T02",
+      "legacy_semantic_node": "P06N0043"
+    }
+  },
+  {
+    "pair_id": "FP055",
+    "left": {
+      "batch": "B",
+      "case_id": "E008_T03",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134242_e4047f",
+      "input_sha256": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+      "raw_sha256": "464a8603993f71fb05bc169d87d8ccc6eb80f3e814f6f3c26e46f1cb746e538f",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E008\\out\\turn_03_E008_T03",
+      "legacy_semantic_node": "P06N0217"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E008_T03",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_cb6d9a",
+      "input_sha256": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+      "raw_sha256": "818e8da01b64356c25f33975ab57037c7838d48e4ea7b2ef6a3771d5556da3c4",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E008\\out\\turn_03_E008_T03",
+      "legacy_semantic_node": "P06N0204"
+    }
+  },
+  {
+    "pair_id": "FP056",
+    "left": {
+      "batch": "C",
+      "case_id": "E008_T03",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_afc589",
+      "input_sha256": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+      "raw_sha256": "402cae03cbb8208ce59cdeb5a70b8766f800ee9948e2658ff059dcb71925066e",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E008\\out\\turn_03_E008_T03",
+      "legacy_semantic_node": "P06N0075"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E008_T03",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142334_02a24a",
+      "input_sha256": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+      "raw_sha256": "36976078f8445aa28da27432aec0f7b7c31fdf6eef09e51c4cb68d5b29c96f27",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E008\\out\\turn_03_E008_T03",
+      "legacy_semantic_node": "P06N0165"
+    }
+  },
+  {
+    "pair_id": "FP057",
+    "left": {
+      "batch": "A",
+      "case_id": "E008_T03",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_2ec222",
+      "input_sha256": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+      "raw_sha256": "9b8632a5fa1b25440ff75a33ff410bffb2ebfb78e67b6298a370e680da34c4eb",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E008\\out\\turn_03_E008_T03",
+      "legacy_semantic_node": "P06N0183"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E008_T03",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_76cd93",
+      "input_sha256": "bfad8f82d6bac04b0c41bb710182df08e7fe50483be9674e199074df3cec3307",
+      "raw_sha256": "40c63dd71d5e687ce70dd3c7bd289c68d7ba851f65808b7132f33287f36d666c",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E008\\out\\turn_03_E008_T03",
+      "legacy_semantic_node": "P06N0181"
+    }
+  },
+  {
+    "pair_id": "FP058",
+    "left": {
+      "batch": "B",
+      "case_id": "E008_T04",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_cb6d9a",
+      "input_sha256": "890bdf0dd980340ca10489189c707914a4c7e4eb8fa064a2243274e5576a5fba",
+      "raw_sha256": "e68e410c5873da50431f1a700eb9ebf25580011db4c3209eb26400911c45e50a",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E008\\out\\turn_04_E008_T04",
+      "legacy_semantic_node": "P06N0228"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E008_T04",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134242_e4047f",
+      "input_sha256": "890bdf0dd980340ca10489189c707914a4c7e4eb8fa064a2243274e5576a5fba",
+      "raw_sha256": "1895f0348ded40fb11f4f81031af4e8cae07be2b9d4d3b90e51ddbf1607077c4",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E008\\out\\turn_04_E008_T04",
+      "legacy_semantic_node": "P06N0182"
+    }
+  },
+  {
+    "pair_id": "FP059",
+    "left": {
+      "batch": "A",
+      "case_id": "E008_T04",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_76cd93",
+      "input_sha256": "890bdf0dd980340ca10489189c707914a4c7e4eb8fa064a2243274e5576a5fba",
+      "raw_sha256": "0bacc98f7d61d755f0b0dcf07d5b1bd089b0ba5a3c32e4f0925a32023a103e35",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E008\\out\\turn_04_E008_T04",
+      "legacy_semantic_node": "P06N0143"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E008_T04",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_2ec222",
+      "input_sha256": "890bdf0dd980340ca10489189c707914a4c7e4eb8fa064a2243274e5576a5fba",
+      "raw_sha256": "c6560ea3cea59db6bf65a772465c0f53920e0a17c07dbe299b9f5f46bc70cd9e",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E008\\out\\turn_04_E008_T04",
+      "legacy_semantic_node": "P06N0152"
+    }
+  },
+  {
+    "pair_id": "FP060",
+    "left": {
+      "batch": "C",
+      "case_id": "E008_T04",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142334_02a24a",
+      "input_sha256": "890bdf0dd980340ca10489189c707914a4c7e4eb8fa064a2243274e5576a5fba",
+      "raw_sha256": "b45d202a1a7dd4cec8c0e3e0fc9672fc973d6c4415b474e3952ceea217cfa61c",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E008\\out\\turn_04_E008_T04",
+      "legacy_semantic_node": "P06N0112"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E008_T04",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_afc589",
+      "input_sha256": "890bdf0dd980340ca10489189c707914a4c7e4eb8fa064a2243274e5576a5fba",
+      "raw_sha256": "27fb5df7eebdc1da36bd5ce1a68e03e9744f1ed6840f9151c9914e0531b636b3",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E008\\out\\turn_04_E008_T04",
+      "legacy_semantic_node": "P06N0028"
+    }
+  },
+  {
+    "pair_id": "FP061",
+    "left": {
+      "batch": "B",
+      "case_id": "E008_T05",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134242_e4047f",
+      "input_sha256": "6526fcc72a2a52e8904999801ea8f7a7f590892a745d2e963bbcccc0d6cb83bb",
+      "raw_sha256": "095dbd1086de2fffee242d560f2e2480843023172b8f8f8aa0d48661073188fc",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E008\\out\\turn_05_E008_T05",
+      "legacy_semantic_node": "P06N0058"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E008_T05",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_cb6d9a",
+      "input_sha256": "6526fcc72a2a52e8904999801ea8f7a7f590892a745d2e963bbcccc0d6cb83bb",
+      "raw_sha256": "a8854fa6cf7e2b002549775249ad7b2bca31e4b14d575dccb6a29bf3a6309f0b",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E008\\out\\turn_05_E008_T05",
+      "legacy_semantic_node": "P06N0170"
+    }
+  },
+  {
+    "pair_id": "FP062",
+    "left": {
+      "batch": "C",
+      "case_id": "E008_T05",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_afc589",
+      "input_sha256": "6526fcc72a2a52e8904999801ea8f7a7f590892a745d2e963bbcccc0d6cb83bb",
+      "raw_sha256": "684683550f0dfeccb1e0f50dd0783290a87481fa61185c1f6714f3664088a284",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E008\\out\\turn_05_E008_T05",
+      "legacy_semantic_node": "P06N0193"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E008_T05",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142334_02a24a",
+      "input_sha256": "6526fcc72a2a52e8904999801ea8f7a7f590892a745d2e963bbcccc0d6cb83bb",
+      "raw_sha256": "b9f3d5190ca3ba7a5759fb0a643e38a4ffcb9372e8ad03486899624eba52d6de",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E008\\out\\turn_05_E008_T05",
+      "legacy_semantic_node": "P06N0200"
+    }
+  },
+  {
+    "pair_id": "FP063",
+    "left": {
+      "batch": "A",
+      "case_id": "E008_T05",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_2ec222",
+      "input_sha256": "6526fcc72a2a52e8904999801ea8f7a7f590892a745d2e963bbcccc0d6cb83bb",
+      "raw_sha256": "aedbb31358286c6a520caed9de66d21a12025fc0b19b6c994ffd7916606aa9fb",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E008\\out\\turn_05_E008_T05",
+      "legacy_semantic_node": "P06N0051"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E008_T05",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_76cd93",
+      "input_sha256": "6526fcc72a2a52e8904999801ea8f7a7f590892a745d2e963bbcccc0d6cb83bb",
+      "raw_sha256": "0b499ebbd47c4582ed2213e6bc1af2c7ece45c455c2c1cec0d6375fc64cec294",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E008\\out\\turn_05_E008_T05",
+      "legacy_semantic_node": "P06N0062"
+    }
+  },
+  {
+    "pair_id": "FP064",
+    "left": {
+      "batch": "B",
+      "case_id": "E008_T06",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_cb6d9a",
+      "input_sha256": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+      "raw_sha256": "cf693523399b6514854ef03f90c82aab027cc07479cabf09d7ee0f21c7464401",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E008\\out\\turn_06_E008_T06",
+      "legacy_semantic_node": "P06N0072"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E008_T06",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134242_e4047f",
+      "input_sha256": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+      "raw_sha256": "44b1919f1f00d6a7189627259c4a3f11c96db6df8fab591cbb12d20866ce0f31",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E008\\out\\turn_06_E008_T06",
+      "legacy_semantic_node": "P06N0109"
+    }
+  },
+  {
+    "pair_id": "FP065",
+    "left": {
+      "batch": "C",
+      "case_id": "E008_T06",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142334_02a24a",
+      "input_sha256": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+      "raw_sha256": "2c2223991dd8a12b077441677baf02d98e02284c489a65e3fefc4be670d38b5a",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E008\\out\\turn_06_E008_T06",
+      "legacy_semantic_node": "P06N0118"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E008_T06",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_afc589",
+      "input_sha256": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+      "raw_sha256": "eb1caf4b42981b77760671ce424f1141989b50ef51f925a6676582c72bd3c094",
+      "veto": "json_schema_broken",
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E008\\out\\turn_06_E008_T06",
+      "legacy_semantic_node": "P06N0223"
+    }
+  },
+  {
+    "pair_id": "FP066",
+    "left": {
+      "batch": "A",
+      "case_id": "E008_T06",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_76cd93",
+      "input_sha256": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+      "raw_sha256": "953ea6545b762dd03116323b5f6d30a32573475ccb97e53f7dadebb4ffed162e",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E008\\out\\turn_06_E008_T06",
+      "legacy_semantic_node": "P06N0191"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E008_T06",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_2ec222",
+      "input_sha256": "19ac73a1723f4f3da5727849928a677d68c2f3fa6134260606d47b5387bcc5c9",
+      "raw_sha256": "1ddd7e85145e9c9d57ccb41d3c0acc866ae662ceb6b9a945d7ad9e9348c01261",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E008\\out\\turn_06_E008_T06",
+      "legacy_semantic_node": "P06N0149"
+    }
+  },
+  {
+    "pair_id": "FP067",
+    "left": {
+      "batch": "A",
+      "case_id": "E008_T07",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_2ec222",
+      "input_sha256": "eca92d288fe336bacc75d5e117426840b5965425d57391d448463285c734e4f9",
+      "raw_sha256": "f177de1e4246e8996f18ccdd5fd40771b5753ed94a65d59af2b50be86a5c786a",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E008\\out\\turn_07_E008_T07",
+      "legacy_semantic_node": "P06N0035"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E008_T07",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_76cd93",
+      "input_sha256": "eca92d288fe336bacc75d5e117426840b5965425d57391d448463285c734e4f9",
+      "raw_sha256": "638e6d7c63b220a1d46db7296fad93e021a0c5ba2e15bcbc9e2ca0229608c375",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E008\\out\\turn_07_E008_T07",
+      "legacy_semantic_node": "P06N0135"
+    }
+  },
+  {
+    "pair_id": "FP068",
+    "left": {
+      "batch": "B",
+      "case_id": "E008_T07",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134242_e4047f",
+      "input_sha256": "eca92d288fe336bacc75d5e117426840b5965425d57391d448463285c734e4f9",
+      "raw_sha256": "ae93ab3aa179073cd7328f35735f738ba89dea46445238de336db4eab32eae9f",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E008\\out\\turn_07_E008_T07",
+      "legacy_semantic_node": "P06N0147"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E008_T07",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_cb6d9a",
+      "input_sha256": "eca92d288fe336bacc75d5e117426840b5965425d57391d448463285c734e4f9",
+      "raw_sha256": "8abe729f1f097a1b3d617e54567407c7d4b4e7373deb36e88abe3c3ebc371021",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E008\\out\\turn_07_E008_T07",
+      "legacy_semantic_node": "P06N0033"
+    }
+  },
+  {
+    "pair_id": "FP069",
+    "left": {
+      "batch": "C",
+      "case_id": "E008_T07",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_afc589",
+      "input_sha256": "eca92d288fe336bacc75d5e117426840b5965425d57391d448463285c734e4f9",
+      "raw_sha256": "26875ff1b8ec9da6267716b97aecdc57bdac3ad455cc509f6d11a9d0b4c2fa33",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E008\\out\\turn_07_E008_T07",
+      "legacy_semantic_node": "P06N0238"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E008_T07",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142334_02a24a",
+      "input_sha256": "eca92d288fe336bacc75d5e117426840b5965425d57391d448463285c734e4f9",
+      "raw_sha256": "cbed61f4a6fb6840c8311b8cbe1af2f3fe8f0a49854339602d4bef12de4174f6",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E008\\out\\turn_07_E008_T07",
+      "legacy_semantic_node": "P06N0243"
+    }
+  },
+  {
+    "pair_id": "FP070",
+    "left": {
+      "batch": "A",
+      "case_id": "E008_T08",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_76cd93",
+      "input_sha256": "29be125f4f3277fdd43a5e5569888214201adb72ed41381a08c5fd3489a89c5d",
+      "raw_sha256": "4f724e40943e10998081197e7c224ad6c440bf36f87406a202a9d3eba375e7c6",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E008\\out\\turn_08_E008_T08",
+      "legacy_semantic_node": "P06N0054"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E008_T08",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_2ec222",
+      "input_sha256": "29be125f4f3277fdd43a5e5569888214201adb72ed41381a08c5fd3489a89c5d",
+      "raw_sha256": "741e4fc7c8adedc43c24a5d67a15684cbab574c038b6593ef500e7d2174da698",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E008\\out\\turn_08_E008_T08",
+      "legacy_semantic_node": "P06N0099"
+    }
+  },
+  {
+    "pair_id": "FP071",
+    "left": {
+      "batch": "C",
+      "case_id": "E008_T08",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142334_02a24a",
+      "input_sha256": "29be125f4f3277fdd43a5e5569888214201adb72ed41381a08c5fd3489a89c5d",
+      "raw_sha256": "120cc4dfb8488d9f40aed040f058e84ea4c3b7e5d64b7b8c1102c96485f303f1",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E008\\out\\turn_08_E008_T08",
+      "legacy_semantic_node": "P06N0148"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E008_T08",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_afc589",
+      "input_sha256": "29be125f4f3277fdd43a5e5569888214201adb72ed41381a08c5fd3489a89c5d",
+      "raw_sha256": "b6cfe24c38d2cb3f25fee7fbe34ce2f3f2c523e4c1215ee0bbb1e9480b5b3a56",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E008\\out\\turn_08_E008_T08",
+      "legacy_semantic_node": "P06N0213"
+    }
+  },
+  {
+    "pair_id": "FP072",
+    "left": {
+      "batch": "B",
+      "case_id": "E008_T08",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_cb6d9a",
+      "input_sha256": "29be125f4f3277fdd43a5e5569888214201adb72ed41381a08c5fd3489a89c5d",
+      "raw_sha256": "8ee27bacd65640f1e2abbeb269c5f88caf7b7458fdcd73d4057633cf07ada1b8",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E008\\out\\turn_08_E008_T08",
+      "legacy_semantic_node": "P06N0013"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E008_T08",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134242_e4047f",
+      "input_sha256": "29be125f4f3277fdd43a5e5569888214201adb72ed41381a08c5fd3489a89c5d",
+      "raw_sha256": "bdc5533deb87f4d6f5602878da7a6cb8e998ebda0df627add2fc6153e43c5859",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E008\\out\\turn_08_E008_T08",
+      "legacy_semantic_node": "P06N0073"
+    }
+  },
+  {
+    "pair_id": "FP073",
+    "left": {
+      "batch": "B",
+      "case_id": "E012_T01",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134243_3490b4",
+      "input_sha256": "cb888df682b461bcf03b056fb356cadce4def69ea85a5cc7157ff3b75f0f8514",
+      "raw_sha256": "73a9395f7c990bcf84eb7c8c35258b8fca3ab6a263f3cface05e0b3359a1bc84",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E012\\out\\turn_01_E012_T01",
+      "legacy_semantic_node": "P06N0230"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E012_T01",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_208ca7",
+      "input_sha256": "cb888df682b461bcf03b056fb356cadce4def69ea85a5cc7157ff3b75f0f8514",
+      "raw_sha256": "d514c346781f9b13c00b74ae1b813abe866726c5fa328d192f34a26ca35f101e",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E012\\out\\turn_01_E012_T01",
+      "legacy_semantic_node": "P06N0236"
+    }
+  },
+  {
+    "pair_id": "FP074",
+    "left": {
+      "batch": "A",
+      "case_id": "E012_T01",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_d8a546",
+      "input_sha256": "cb888df682b461bcf03b056fb356cadce4def69ea85a5cc7157ff3b75f0f8514",
+      "raw_sha256": "474169db611b5355a25f6ed345b40962fbebe80441d72446463cd15f0549cae8",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E012\\out\\turn_01_E012_T01",
+      "legacy_semantic_node": "P06N0173"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E012_T01",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_501e20",
+      "input_sha256": "cb888df682b461bcf03b056fb356cadce4def69ea85a5cc7157ff3b75f0f8514",
+      "raw_sha256": "40dbf370ff22d5f46a9453b934f7fc9853047dde0a8647b955ddf0152baea719",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E012\\out\\turn_01_E012_T01",
+      "legacy_semantic_node": "P06N0066"
+    }
+  },
+  {
+    "pair_id": "FP075",
+    "left": {
+      "batch": "C",
+      "case_id": "E012_T01",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_6bacf6",
+      "input_sha256": "cb888df682b461bcf03b056fb356cadce4def69ea85a5cc7157ff3b75f0f8514",
+      "raw_sha256": "2dc2aaa02b40a5f9da6ff10abedadfe7f311dab0ecde789f756d00ba2f0a1832",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E012\\out\\turn_01_E012_T01",
+      "legacy_semantic_node": "P06N0215"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E012_T01",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142335_4b84eb",
+      "input_sha256": "cb888df682b461bcf03b056fb356cadce4def69ea85a5cc7157ff3b75f0f8514",
+      "raw_sha256": "5e0ebba601ae5e2889f3c14d2cfbd98328da82611a8918c7868e65ff645cbc89",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E012\\out\\turn_01_E012_T01",
+      "legacy_semantic_node": "P06N0246"
+    }
+  },
+  {
+    "pair_id": "FP076",
+    "left": {
+      "batch": "C",
+      "case_id": "E012_T02",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142335_4b84eb",
+      "input_sha256": "d8d16e722f87074c3cf26377910208d6779a618b31fe3cbbdd08122cb6f4f5b0",
+      "raw_sha256": "19ec50976c22da3c8f5856df4306fbb66079cc1ea1ebb2cfda2f59587c451e32",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E012\\out\\turn_02_E012_T02",
+      "legacy_semantic_node": "P06N0079"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E012_T02",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_6bacf6",
+      "input_sha256": "d8d16e722f87074c3cf26377910208d6779a618b31fe3cbbdd08122cb6f4f5b0",
+      "raw_sha256": "7f75c121e7da0f5a5fd4b8b9c416786cba37a23f644e75588b9c162315442469",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E012\\out\\turn_02_E012_T02",
+      "legacy_semantic_node": "P06N0070"
+    }
+  },
+  {
+    "pair_id": "FP077",
+    "left": {
+      "batch": "A",
+      "case_id": "E012_T02",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_501e20",
+      "input_sha256": "d8d16e722f87074c3cf26377910208d6779a618b31fe3cbbdd08122cb6f4f5b0",
+      "raw_sha256": "7ab75ddab952b77efa10cc09768c1c36527dbb5f5bfeacf746d7410bc82be0ca",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E012\\out\\turn_02_E012_T02",
+      "legacy_semantic_node": "P06N0045"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E012_T02",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_d8a546",
+      "input_sha256": "d8d16e722f87074c3cf26377910208d6779a618b31fe3cbbdd08122cb6f4f5b0",
+      "raw_sha256": "2a2c7091d2f7bad96bb5faf0fff1a3d976d113c4b853a01eb2b5e06c0f1b402b",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E012\\out\\turn_02_E012_T02",
+      "legacy_semantic_node": "P06N0168"
+    }
+  },
+  {
+    "pair_id": "FP078",
+    "left": {
+      "batch": "B",
+      "case_id": "E012_T02",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_208ca7",
+      "input_sha256": "d8d16e722f87074c3cf26377910208d6779a618b31fe3cbbdd08122cb6f4f5b0",
+      "raw_sha256": "e0a3a54a4edd92e3d93a44760bc16e141082518baa4d9d0fdf6e22d6adba57b6",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E012\\out\\turn_02_E012_T02",
+      "legacy_semantic_node": "P06N0219"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E012_T02",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134243_3490b4",
+      "input_sha256": "d8d16e722f87074c3cf26377910208d6779a618b31fe3cbbdd08122cb6f4f5b0",
+      "raw_sha256": "691ed58925c222062038282bcfe5fbe99a507905ca1e40de908c295993f37d6f",
+      "veto": "json_schema_broken",
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E012\\out\\turn_02_E012_T02",
+      "legacy_semantic_node": "P06N0031"
+    }
+  },
+  {
+    "pair_id": "FP079",
+    "left": {
+      "batch": "A",
+      "case_id": "E012_T03",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_d8a546",
+      "input_sha256": "9746b7180547b8bcc43b842a7c44ba9bdbee9f6517caecc6bdc7dee12379e160",
+      "raw_sha256": "2b36d07922c059a00f4bb4023f083b8e5522acaa3ad68f57f15ebeeec6812c3e",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E012\\out\\turn_03_E012_T03",
+      "legacy_semantic_node": "P06N0052"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E012_T03",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_501e20",
+      "input_sha256": "9746b7180547b8bcc43b842a7c44ba9bdbee9f6517caecc6bdc7dee12379e160",
+      "raw_sha256": "e78e9aee624a94a54a6277ff7777040fba41195a9593bcb48b4d2b85a509f5d0",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E012\\out\\turn_03_E012_T03",
+      "legacy_semantic_node": "P06N0044"
+    }
+  },
+  {
+    "pair_id": "FP080",
+    "left": {
+      "batch": "C",
+      "case_id": "E012_T03",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_6bacf6",
+      "input_sha256": "9746b7180547b8bcc43b842a7c44ba9bdbee9f6517caecc6bdc7dee12379e160",
+      "raw_sha256": "6075b657fee95785337852b646aceb575b74a362cdeca7ade52dc6840f42d561",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E012\\out\\turn_03_E012_T03",
+      "legacy_semantic_node": "P06N0132"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E012_T03",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142335_4b84eb",
+      "input_sha256": "9746b7180547b8bcc43b842a7c44ba9bdbee9f6517caecc6bdc7dee12379e160",
+      "raw_sha256": "5f513c331222b6bd5461d6c2f78c4bf0a042b65f8e9eb717903777cd99e19c51",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E012\\out\\turn_03_E012_T03",
+      "legacy_semantic_node": "P06N0049"
+    }
+  },
+  {
+    "pair_id": "FP081",
+    "left": {
+      "batch": "B",
+      "case_id": "E012_T03",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134243_3490b4",
+      "input_sha256": "9746b7180547b8bcc43b842a7c44ba9bdbee9f6517caecc6bdc7dee12379e160",
+      "raw_sha256": "c20861b64fe2168373331030529f9d09623cb25286edffe9536f49ec34c65dd7",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E012\\out\\turn_03_E012_T03",
+      "legacy_semantic_node": "P06N0011"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E012_T03",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_208ca7",
+      "input_sha256": "9746b7180547b8bcc43b842a7c44ba9bdbee9f6517caecc6bdc7dee12379e160",
+      "raw_sha256": "b6b314fc5378bbf6ed7a863fc6f4cd42980c59bd2fb8612616f22407d05c2c90",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E012\\out\\turn_03_E012_T03",
+      "legacy_semantic_node": "P06N0214"
+    }
+  },
+  {
+    "pair_id": "FP082",
+    "left": {
+      "batch": "C",
+      "case_id": "E012_T04",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142335_4b84eb",
+      "input_sha256": "b75aea6cb6e352596ecc3a4160bee1622119c13095b400b802b94deb18b92345",
+      "raw_sha256": "04724c1ace4d9895e7a88af61f79f75e8bbb8899d58c3ebc42d7946c89ef5936",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E012\\out\\turn_04_E012_T04",
+      "legacy_semantic_node": "P06N0060"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E012_T04",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_6bacf6",
+      "input_sha256": "b75aea6cb6e352596ecc3a4160bee1622119c13095b400b802b94deb18b92345",
+      "raw_sha256": "2ec939a07fa6c1cc46a7e6bacb739983b59f5233474a177655e64d1f11ad2a02",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E012\\out\\turn_04_E012_T04",
+      "legacy_semantic_node": "P06N0189"
+    }
+  },
+  {
+    "pair_id": "FP083",
+    "left": {
+      "batch": "A",
+      "case_id": "E012_T04",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_501e20",
+      "input_sha256": "b75aea6cb6e352596ecc3a4160bee1622119c13095b400b802b94deb18b92345",
+      "raw_sha256": "288fcdd953f80f83ca1296ea2fdb570e45a2cc17634181822762ffbbc1fbac1b",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E012\\out\\turn_04_E012_T04",
+      "legacy_semantic_node": "P06N0034"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E012_T04",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_d8a546",
+      "input_sha256": "b75aea6cb6e352596ecc3a4160bee1622119c13095b400b802b94deb18b92345",
+      "raw_sha256": "b9eee5a8b21bfc821a74f448f21d962eb4fbf1af57eab565a6ce98c345bbd396",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E012\\out\\turn_04_E012_T04",
+      "legacy_semantic_node": "P06N0175"
+    }
+  },
+  {
+    "pair_id": "FP084",
+    "left": {
+      "batch": "B",
+      "case_id": "E012_T04",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_208ca7",
+      "input_sha256": "b75aea6cb6e352596ecc3a4160bee1622119c13095b400b802b94deb18b92345",
+      "raw_sha256": "bc02010a916c799324ae684f75ca34ba3a57ecda1feae0e09a6a1772b79ed552",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E012\\out\\turn_04_E012_T04",
+      "legacy_semantic_node": "P06N0174"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E012_T04",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134243_3490b4",
+      "input_sha256": "b75aea6cb6e352596ecc3a4160bee1622119c13095b400b802b94deb18b92345",
+      "raw_sha256": "5afa7d1336af33d4411d31498d316a663b7c17cc32bfac809f796bb0671b99ab",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E012\\out\\turn_04_E012_T04",
+      "legacy_semantic_node": "P06N0242"
+    }
+  },
+  {
+    "pair_id": "FP085",
+    "left": {
+      "batch": "C",
+      "case_id": "E012_T05",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_6bacf6",
+      "input_sha256": "52a7aff0185c7764e2c3bd54ca17be95e1603c0973704664229ff5f0ceade5b9",
+      "raw_sha256": "925a288542fafd36cd3610d1b1cc36f5d8f3c570fd25b8f39844e6de38d2dea7",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E012\\out\\turn_05_E012_T05",
+      "legacy_semantic_node": "P06N0040"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E012_T05",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142335_4b84eb",
+      "input_sha256": "52a7aff0185c7764e2c3bd54ca17be95e1603c0973704664229ff5f0ceade5b9",
+      "raw_sha256": "c9a07a2c012bf1d24694976171ca2be5404e11a3d70671fd61b6bc686141b744",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E012\\out\\turn_05_E012_T05",
+      "legacy_semantic_node": "P06N0220"
+    }
+  },
+  {
+    "pair_id": "FP086",
+    "left": {
+      "batch": "B",
+      "case_id": "E012_T05",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134243_3490b4",
+      "input_sha256": "52a7aff0185c7764e2c3bd54ca17be95e1603c0973704664229ff5f0ceade5b9",
+      "raw_sha256": "0ec06d1a3823ef34e1a890a3ee5c91b4e5b109639e46b566c56a15c92fe885eb",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E012\\out\\turn_05_E012_T05",
+      "legacy_semantic_node": "P06N0208"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E012_T05",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_208ca7",
+      "input_sha256": "52a7aff0185c7764e2c3bd54ca17be95e1603c0973704664229ff5f0ceade5b9",
+      "raw_sha256": "e7fe2be76868fa51b64153dc3c1a37019e7361ccabd6e5f46ad6e02f08e50673",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E012\\out\\turn_05_E012_T05",
+      "legacy_semantic_node": "P06N0205"
+    }
+  },
+  {
+    "pair_id": "FP087",
+    "left": {
+      "batch": "A",
+      "case_id": "E012_T05",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_d8a546",
+      "input_sha256": "52a7aff0185c7764e2c3bd54ca17be95e1603c0973704664229ff5f0ceade5b9",
+      "raw_sha256": "0be4f32f4e265e734bdefbf75e2035b4ea558e093380d4ddde3dd088f4058577",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E012\\out\\turn_05_E012_T05",
+      "legacy_semantic_node": "P06N0125"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E012_T05",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_501e20",
+      "input_sha256": "52a7aff0185c7764e2c3bd54ca17be95e1603c0973704664229ff5f0ceade5b9",
+      "raw_sha256": "dd5e7320153df82b12951e2d6081754e2052bcf898f4dc7e85e2288b6259b0b8",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E012\\out\\turn_05_E012_T05",
+      "legacy_semantic_node": "P06N0065"
+    }
+  },
+  {
+    "pair_id": "FP088",
+    "left": {
+      "batch": "B",
+      "case_id": "E012_T06",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_208ca7",
+      "input_sha256": "8c4704ede57801b7044e39af84ff1cbd8f699a253d5ec370e01c2cfa5d68611b",
+      "raw_sha256": "e350c07a52713422cea3c5965116d2ab544511ef9907af019f1fa42ef2bab833",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E012\\out\\turn_06_E012_T06",
+      "legacy_semantic_node": "P06N0021"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E012_T06",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134243_3490b4",
+      "input_sha256": "8c4704ede57801b7044e39af84ff1cbd8f699a253d5ec370e01c2cfa5d68611b",
+      "raw_sha256": "52e34e145110899664df42f4089fc6a41abe51801abf6aa1ce3dbc80f407164b",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E012\\out\\turn_06_E012_T06",
+      "legacy_semantic_node": "P06N0176"
+    }
+  },
+  {
+    "pair_id": "FP089",
+    "left": {
+      "batch": "C",
+      "case_id": "E012_T06",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142335_4b84eb",
+      "input_sha256": "8c4704ede57801b7044e39af84ff1cbd8f699a253d5ec370e01c2cfa5d68611b",
+      "raw_sha256": "32cc331ef54a0e9182d5e871cdeefee7552e953ae8519d671b854b7744078064",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E012\\out\\turn_06_E012_T06",
+      "legacy_semantic_node": "P06N0041"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E012_T06",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_6bacf6",
+      "input_sha256": "8c4704ede57801b7044e39af84ff1cbd8f699a253d5ec370e01c2cfa5d68611b",
+      "raw_sha256": "c2167171806bac3dab9e3790b34f66f7086ff6f6ca057c4710d4f719ca2c76c6",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E012\\out\\turn_06_E012_T06",
+      "legacy_semantic_node": "P06N0158"
+    }
+  },
+  {
+    "pair_id": "FP090",
+    "left": {
+      "batch": "A",
+      "case_id": "E012_T06",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_501e20",
+      "input_sha256": "8c4704ede57801b7044e39af84ff1cbd8f699a253d5ec370e01c2cfa5d68611b",
+      "raw_sha256": "778828a65d2acd6ae95df98886f66ca98995c4d1d5824990c215ebe94740cb82",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E012\\out\\turn_06_E012_T06",
+      "legacy_semantic_node": "P06N0167"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E012_T06",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_d8a546",
+      "input_sha256": "8c4704ede57801b7044e39af84ff1cbd8f699a253d5ec370e01c2cfa5d68611b",
+      "raw_sha256": "e90391bdb86180ad9db7661cbf3a58e0c3533ae5ea6d6e4d3bdb59263d7d9ba8",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E012\\out\\turn_06_E012_T06",
+      "legacy_semantic_node": "P06N0235"
+    }
+  },
+  {
+    "pair_id": "FP091",
+    "left": {
+      "batch": "B",
+      "case_id": "E012_T07",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134243_3490b4",
+      "input_sha256": "3bd45419d27d9c253228ce37b5e50566288d5899e448ad1b784e4973c1dc7a57",
+      "raw_sha256": "83fc034998dc363ad66c8cdb4193a67990d68b35bfe831a6044bb45f5ca1dc52",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E012\\out\\turn_07_E012_T07",
+      "legacy_semantic_node": "P06N0209"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E012_T07",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_208ca7",
+      "input_sha256": "3bd45419d27d9c253228ce37b5e50566288d5899e448ad1b784e4973c1dc7a57",
+      "raw_sha256": "6c6e5dcdf40735496534a75414abdd535348f2e56550d8a7b3a6085bd4abb9d2",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E012\\out\\turn_07_E012_T07",
+      "legacy_semantic_node": "P06N0162"
+    }
+  },
+  {
+    "pair_id": "FP092",
+    "left": {
+      "batch": "A",
+      "case_id": "E012_T07",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_d8a546",
+      "input_sha256": "3bd45419d27d9c253228ce37b5e50566288d5899e448ad1b784e4973c1dc7a57",
+      "raw_sha256": "0147680d38073c5c65bded5757c72e3503c02056484737454031053c56db6c0c",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E012\\out\\turn_07_E012_T07",
+      "legacy_semantic_node": "P06N0171"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E012_T07",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_501e20",
+      "input_sha256": "3bd45419d27d9c253228ce37b5e50566288d5899e448ad1b784e4973c1dc7a57",
+      "raw_sha256": "6a40ac0001c670d683c4e4fb16083b866d226a8c5f27ca5539c286a9e48abec1",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E012\\out\\turn_07_E012_T07",
+      "legacy_semantic_node": "P06N0251"
+    }
+  },
+  {
+    "pair_id": "FP093",
+    "left": {
+      "batch": "C",
+      "case_id": "E012_T07",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_6bacf6",
+      "input_sha256": "3bd45419d27d9c253228ce37b5e50566288d5899e448ad1b784e4973c1dc7a57",
+      "raw_sha256": "8a756d31bc8c1cf9b7846bf4a43907deef6666698ec445d7701a3602b307423c",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E012\\out\\turn_07_E012_T07",
+      "legacy_semantic_node": "P06N0151"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E012_T07",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142335_4b84eb",
+      "input_sha256": "3bd45419d27d9c253228ce37b5e50566288d5899e448ad1b784e4973c1dc7a57",
+      "raw_sha256": "8f76f72b3cd37857d27385318e1bd0785ef4597c7397de24ca67b222e9ca3332",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E012\\out\\turn_07_E012_T07",
+      "legacy_semantic_node": "P06N0010"
+    }
+  },
+  {
+    "pair_id": "FP094",
+    "left": {
+      "batch": "A",
+      "case_id": "E012_T08",
+      "arm": "candidate",
+      "candidate": "v5_purpose_aligned",
+      "run_id": "iso_20261027_130657_501e20",
+      "input_sha256": "28ef870fd0bffe271f5afc6958c78fe194fce540cd509df96d9615b0963e51dc",
+      "raw_sha256": "de0c0444eba643a895c996a5c4b7abd655c8a28fdd3c0eda3cf27c955ffc4a40",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\candidate_E012\\out\\turn_08_E012_T08",
+      "legacy_semantic_node": "P06N0212"
+    },
+    "right": {
+      "batch": "A",
+      "case_id": "E012_T08",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_130657_d8a546",
+      "input_sha256": "28ef870fd0bffe271f5afc6958c78fe194fce540cd509df96d9615b0963e51dc",
+      "raw_sha256": "086c1dd2368a72e8c65d4bd5dd5ff375aa071d7bcc28586264b0260ee40c3403",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_A_live_20261027\\parent_E012\\out\\turn_08_E012_T08",
+      "legacy_semantic_node": "P06N0198"
+    }
+  },
+  {
+    "pair_id": "FP095",
+    "left": {
+      "batch": "B",
+      "case_id": "E012_T08",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_134243_208ca7",
+      "input_sha256": "28ef870fd0bffe271f5afc6958c78fe194fce540cd509df96d9615b0963e51dc",
+      "raw_sha256": "4fcacfd937eabd93029651ef4270b373af7b076150ce28cf022b6971a5f44ee6",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\parent_E012\\out\\turn_08_E012_T08",
+      "legacy_semantic_node": "P06N0057"
+    },
+    "right": {
+      "batch": "B",
+      "case_id": "E012_T08",
+      "arm": "candidate",
+      "candidate": "v6_goal_context",
+      "run_id": "iso_20261027_134243_3490b4",
+      "input_sha256": "28ef870fd0bffe271f5afc6958c78fe194fce540cd509df96d9615b0963e51dc",
+      "raw_sha256": "f0247c48db2b8475b8a679974308ac9a94a2641ec87606ef7d695d1d99975e78",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_B_live_20261027\\candidate_E012\\out\\turn_08_E012_T08",
+      "legacy_semantic_node": "P06N0110"
+    }
+  },
+  {
+    "pair_id": "FP096",
+    "left": {
+      "batch": "C",
+      "case_id": "E012_T08",
+      "arm": "candidate",
+      "candidate": "v6_integrated",
+      "run_id": "iso_20261027_142335_4b84eb",
+      "input_sha256": "28ef870fd0bffe271f5afc6958c78fe194fce540cd509df96d9615b0963e51dc",
+      "raw_sha256": "445c59d2de26355b7c6f0eb8f6595bcc358fcdcef652db12b0b2945bda25cc5a",
+      "veto": null,
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\candidate_E012\\out\\turn_08_E012_T08",
+      "legacy_semantic_node": "P06N0097"
+    },
+    "right": {
+      "batch": "C",
+      "case_id": "E012_T08",
+      "arm": "parent",
+      "candidate": "reference_product_v1",
+      "run_id": "iso_20261027_142335_6bacf6",
+      "input_sha256": "28ef870fd0bffe271f5afc6958c78fe194fce540cd509df96d9615b0963e51dc",
+      "raw_sha256": "1dfb09366ce0dfc18e370c3ee20f7e11759536d89485a825f4ea2cd33dc4d7ad",
+      "veto": "json_schema_broken",
+      "answer_dir": "D:\\lovebrain-arena\\logs\\p06_C_live_20261027\\parent_E012\\out\\turn_08_E012_T08",
+      "legacy_semantic_node": "P06N0237"
+    }
+  }
+]

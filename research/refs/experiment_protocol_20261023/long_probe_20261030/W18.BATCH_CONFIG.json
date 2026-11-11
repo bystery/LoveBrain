@@ -1,0 +1,12 @@
+{
+ "batch_id": "BATCH-W18-UCSUPP-20261103",
+ "arm_map": {"parent": "window_expand_b_norecap_uc", "candidate": "window_expand_b_norecap_uc_supp"},
+ "episode_order": [
+  {"episode": "LRE117", "arm_order": "parent_first"},
+  {"episode": "LRE121", "arm_order": "candidate_first"},
+  {"episode": "LRE146", "arm_order": "parent_first"},
+  {"episode": "LRE138", "arm_order": "candidate_first"}
+ ],
+ "cards_path": "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W18.json",
+ "recall_capable": false
+}

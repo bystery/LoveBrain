@@ -1,0 +1,193 @@
+{
+ "episode_id": "E007",
+ "persona": {
+  "me": "29岁，男，南京，做产品；对她有好感，想找个由头自然约她出来，但不愿硬凑或逼定",
+  "her": "28岁，女，南京，做编辑；喜欢现场音乐，最近加班多，聊天看心情，不喜欢被催"
+ },
+ "initial_kb": {
+  "her": "喜欢后摇和现场音乐，讨厌太吵的金属"
+ },
+ "turns": [
+  {
+   "case_id": "E007_T01",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "最近班加得我想离家出走",
+      "ts": "2026-11-09 20:12"
+     }
+    ],
+    "clock": "2026-11-09 20:15",
+    "may_decline": false,
+    "note": "先接住她的情绪，别一上来就抛约会"
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E007_T02",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "撑得住吗 要不要周末出来透透气",
+      "ts": "2026-11-09 20:20"
+     },
+     {
+      "role": "HER",
+      "text": "想啊 但我只想看场livehouse 吵的那种我受不了",
+      "ts": "2026-11-09 20:24"
+     }
+    ],
+    "clock": "2026-11-09 20:26",
+    "may_decline": false,
+    "note": "她松口了；顺势推进但要贴着她的口味",
+    "intent": {
+     "enabled": true,
+     "text": "想约她看一场不太吵的 livehouse，主动一点、把话头接下来，但别把话说成已定死",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E007_T03",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "你上次说的那支后摇乐队 是不是就是不太吵那种",
+      "ts": "2026-11-09 20:38"
+     }
+    ],
+    "clock": "2026-11-09 20:40",
+    "may_decline": false,
+    "note": "她在往你提过的事上靠；可回扣但不要假装已经买好票",
+    "intent": {
+     "enabled": true,
+     "text": "想约她看一场不太吵的 livehouse，主动一点、把话头接下来，但别把话说成已定死",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E007_T04",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "对 就他们 周六有场 要不要一起去",
+      "ts": "2026-11-10 12:00"
+     },
+     {
+      "role": "HER",
+      "text": "周六我得看我那天状态 你容我定一下",
+      "ts": "2026-11-10 12:08"
+     }
+    ],
+    "clock": "2026-11-10 12:10",
+    "may_decline": true,
+    "note": "她没拒绝但也没应；先记成暂定别催",
+    "intent": {
+     "enabled": false,
+     "text": "她自己说了再看状态；本轮不再主动往前推，等她回话",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E007_T05",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "其实除了livehouse 你周末还打算干嘛呀",
+      "ts": "2026-11-10 12:18"
+     }
+    ],
+    "clock": "2026-11-10 12:20",
+    "may_decline": false,
+    "note": "她把话题从我之前的目标挪开了；别再往约会上引，别被旧目标绑架",
+    "intent": {
+     "enabled": false,
+     "text": "",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E007_T06",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "周六那场我算了 要去 帮我留个想法就行 票我自己买",
+      "ts": "2026-11-12 21:28"
+     }
+    ],
+    "clock": "2026-11-12 21:30",
+    "may_decline": false,
+    "note": "她重新接上之前那个约；把状态从暂定切成她来推进，正常高兴一下",
+    "intent": {
+     "enabled": true,
+     "text": "她确认周六去 livehouse；配合她买票、把细节确认清楚",
+     "status": "ACTIVE"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E007_T07",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "ME",
+      "text": "好 那我到时提前到 门口等你",
+      "ts": "2026-11-12 21:40"
+     },
+     {
+      "role": "HER",
+      "text": "行 就这么说定了",
+      "ts": "2026-11-12 21:42"
+     }
+    ],
+    "clock": "2026-11-12 21:44",
+    "may_decline": false,
+    "note": "双方已明确说定周六;轻松收尾即可,不用再往前推",
+    "intent": {
+     "enabled": false,
+     "text": "已落定，无需再推进",
+     "status": "CLOSED"
+    }
+   },
+   "gold": {}
+  },
+  {
+   "case_id": "E007_T08",
+   "turn_type": "reply",
+   "input": {
+    "messages": [
+     {
+      "role": "HER",
+      "text": "话说我同事非说我去了会吵得头疼 你觉得我要不要带耳塞",
+      "ts": "2026-11-13 09:00"
+     }
+    ],
+    "clock": "2026-11-13 09:05",
+    "may_decline": false,
+    "note": "第三人(同事)的观点，不是她的、也不是你的；就事论事给想法，别把同事的话安到她头上"
+   },
+   "gold": {}
+  }
+ ]
+}

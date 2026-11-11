@@ -1,0 +1,45 @@
+{
+ "plan_version": "A3-JUDGE-PLAN-V1",
+ "created": "2026-10-26",
+ "authorization_id": "AUTH-A3-JUDGE-20261026-01",
+ "max_attempts": 172,
+ "system_sha256": "779ac344cb07afb0358e587a03c457234598e44d914372ae6d4da27885594e87",
+ "manual_sha256": "f412cff4db54481164fda450e5204ace193b47c2902dd01d60836f98cd81bdf6",
+ "counts": {
+  "primary": 96,
+  "retest_same": 16,
+  "swap": 16,
+  "battery_fact": 22,
+  "battery_protected": 22
+ },
+ "swap_node_ids": [
+  "A001",
+  "A004",
+  "A007",
+  "A008",
+  "A011",
+  "A013",
+  "A015",
+  "A018",
+  "A019",
+  "A021",
+  "A022",
+  "A024",
+  "A027",
+  "A029",
+  "A030",
+  "A031"
+ ],
+ "sessions": [
+  "S1",
+  "S2",
+  "S3",
+  "SR",
+  "SB"
+ ],
+ "submission_order_seed": 20261026,
+ "requests_sha256": "ef26555f453e68baaef93532fae3cdd1613f22a85cfe77e33334ca6d2705e57c",
+ "requests_n": 172,
+ "judge_blind_guarantee": "expected/swap标记/期望claim标注经构造期断言排除在 system+user 之外",
+ "real_model_calls": 0
+}

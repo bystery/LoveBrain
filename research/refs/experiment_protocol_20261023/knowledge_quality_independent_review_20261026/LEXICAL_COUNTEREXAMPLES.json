@@ -1,0 +1,49 @@
+{
+  "message_entries_called_atoms": 45,
+  "excluded_non_message_entries": 38,
+  "probes": [
+    {
+      "kind": "negation",
+      "source": "她明确说周三晚上可以一起吃晚饭",
+      "contradictory_record": "她明确说周三晚上不可以一起吃晚饭",
+      "worker_lexical_hit": {
+        "structured": {
+          "section": "test",
+          "entry": "她明确说周三晚上不可以一起吃晚饭",
+          "ratio": 0.846,
+          "shared": 11
+        }
+      },
+      "semantic_correct": false
+    },
+    {
+      "kind": "time",
+      "source": "她约的是十一月十八日下午三点在南门见",
+      "contradictory_record": "她约的是十一月十九日下午五点在南门见",
+      "worker_lexical_hit": {
+        "structured": {
+          "section": "test",
+          "entry": "她约的是十一月十九日下午五点在南门见",
+          "ratio": 0.625,
+          "shared": 6
+        }
+      },
+      "semantic_correct": false
+    },
+    {
+      "kind": "subject",
+      "source": "她妹妹下周在学校准备研究生答辩",
+      "contradictory_record": "我妹妹下周在学校准备研究生答辩",
+      "worker_lexical_hit": {
+        "structured": {
+          "section": "test",
+          "entry": "我妹妹下周在学校准备研究生答辩",
+          "ratio": 0.923,
+          "shared": 12
+        }
+      },
+      "semantic_correct": false
+    }
+  ],
+  "all_contradictions_pass_lexical_gate": true
+}

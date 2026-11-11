@@ -1,0 +1,80 @@
+{
+ "kind": "marathon_attempt_budget_registry",
+ "created": "2026-10-26",
+ "authority": "WORKER_MARATHON_EXECUTION.md §0：新增最多 1280 attempts 管理上限（非花完目标），与既有 96/204/8/4 各账分开；失败不退款不隐藏",
+ "cap_total": 1280,
+ "stages": [
+  {
+   "stage": "新命题/参考制作",
+   "cap": 48,
+   "used": 0,
+   "note": "A3 32对+电池已离线 authored（0 attempts，build_a3_calibration_packet.py，real_model_calls=0）；能离线完成就不烧"
+  },
+  {
+   "stage": "机制筛选",
+   "cap": 128,
+   "used": 128,
+   "note": "C4 机制筛选已实跑收口：两批 64+64=128（原版 vs goal_action_v1、v5 vs evidence_memory_v1，同一 4 故事×8 位=32 位点四臂各一次），0 失败、执行顺序与派发双射验证通过，账本 AUTH-C4-SCREEN-20261026-01 CLOSED 128/128（不得复活）。撤销侧线先前登记的『v5 为锚、原版臂缺席』偏差——执行书原式无需偏差即可凑满 128。判决：v5 保留并可进 M2 复验；C2 保留开发但须先修无据既成断言与等待尾部；C3 判『本轮未被真正 exercise』须先修 facts 通道；原版保留为基线。证据：evaluation/C4_SCREEN_CLOSURE_V1.json、evaluation/C4_FIRST_ROUND_DISPOSITION_V1.md、evaluation/DELIVERY_AND_COST_COLUMNS_C4_SWEEPS_FINAL.json。已知设计缺陷：goal_block 真生效仅 7/32（21.9%），M2 新故事须铺开三种意图条件。 [质量优先 2026-10-26] 用户裁定质量一级、成本二级、产品接入暂停；本段原有『v5 保留并可进 M2 复验』的许可暂停，M2/产品接入须以一级质量成绩为前提（见 evaluation/QUALITY_FIRST_MAIN_REPORT_V1.md）。"
+  },
+  {
+   "stage": "入围方案复验",
+   "cap": 384,
+   "used": 0,
+   "note": "未启动"
+  },
+  {
+   "stage": "冻结新故事验证",
+   "cap": 256,
+   "used": 0,
+   "note": "B2 已备 S101-S104+L101（主线产出），未派发"
+  },
+  {
+   "stage": "分支互动harness调用",
+   "cap": 96,
+   "used": 0,
+   "note": "B3 未启动"
+  },
+  {
+   "stage": "分支对方模拟",
+   "cap": 96,
+   "used": 0,
+   "note": "B3 未启动"
+  },
+  {
+   "stage": "裁判校准+新故事评审",
+   "cap": 256,
+   "used": 172,
+   "note": "A3 小校准已收口 172/256（AUTH-A3-JUDGE-20261026-01 CLOSED：96主评-4基础设施格+16同序复评+16真换序+44电池；509,901 tokens；分析V1_2）；余84给终验——不足128对全验，下轮须缩小终验范围或并入下一授权周期 [质量优先 2026-10-26] 质量优先补评后：所需 9 维判定 141 次（含锚例 173，按 192 申请）超过本阶段剩余 84；且 A3/EVAL 两本授权均已 CLOSED，需扩阶段帽或缩 scope 并新建授权文书，未批准前不得开跑。"
+  },
+  {
+   "stage": "产品真实集成",
+   "cap": 16,
+   "used": 0,
+   "note": "E 轨代码骨架已就绪（LoveBrain-arena-e 分支）；需固定清单预登记"
+  }
+ ],
+ "ledger_events": [
+  {
+   "ts": "2026-10-26 06:50",
+   "event": "A3_JUDGE_CLOSED",
+   "used": 172,
+   "tokens": 509901,
+   "detail": "168 completed+4 infra-failed(0 net,0 tok)"
+  },
+  {
+   "ts": "2026-10-26 14:14",
+   "event": "C4_SCREEN_CLOSED",
+   "used": 128,
+   "tokens": null,
+   "detail": "128/128 completed 0 failed；token 合计按臂：原版 244247 / v5 103751 / C2 133372 / C3 111239（见 DELIVERY_AND_COST_COLUMNS_C4_SWEEPS_FINAL.json）；金额 null（无单价）"
+  },
+  {
+   "ts": "2026-10-26 22:50",
+   "event": "QUALITY_FIRST_DELIVERY",
+   "used": 0,
+   "tokens": 0,
+   "detail": "质量优先离线补评交付（真实调用 0）：覆盖矩阵 6 批 368 份；知识四段（ref 存储 44/45、仅蒸馏 6/45、T08 在场 11/40、S2 有据 62.5%/弱据 34.4%/无据 3.1%、【进行中事项】注入 0/32 且根因可复现）；其他批 S3 补评；12 维缺测表（S4 与 8 交互维 NR）；冻结提案（卡集 sha bdd258…、计划 sha 7f158c57…/1f0d78c6…）；主报告 V1。裁判授权缺口：阶段余 84 < 所需 173。"
+  }
+ ],
+ "note": "各阶段实际派发另立独立 AuthorizationBudget 账本（logs/auth_budget/*.jsonl），本文件只做 1280 上限的阶段记账与防超发核对；由侧线轨维护，主线恢复后共笔更新。"
+}

@@ -1,0 +1,60 @@
+{
+  "kind": "holdout_partial_exposure_mark",
+  "created": "2026-11-11",
+  "authority": "RESEARCH-P1 宪章 G0.3（refs/research_harness_20261110/phase1/RESEARCH_PRINCIPLES.md）",
+  "run": {
+    "authorization": "AUTH-BM1-PHASE3-HOLDOUT-20261110-01",
+    "run_dir": "D:/lovebrain-arena/runs/holdout_v1/",
+    "mode": "live",
+    "provider": "https://api.llm.ustc.edu.cn/v1",
+    "model": "deepseek-flash-2",
+    "attempt_cap": 7000,
+    "started": "2026-11-10T17:47:00+08:00",
+    "last_write": "2026-11-10T19:09:00+08:00",
+    "stop_state": "停写（驱动会话已退出；经进程核验无存活 runner——两存活 python 进程为 selection_v1 只读监控与 Qoder MCP，均与本次运行无关）",
+    "resumable": "每集目录含 checkpoint.json / checkpoint.bin 断点；run_records.json 为批次登记（70 条），目录证据比登记更前（部分集数为停止时的进行中状态）"
+  },
+  "touched_episodes_union": "E401-E423（23 集）",
+  "per_arm": {
+    "DIRECT": {
+      "touched": "E401-E420（20 集）",
+      "ok_records": 20,
+      "status": "该臂范围内全部完成 12 轮"
+    },
+    "COT": {
+      "touched": "E402-E421（20 集）",
+      "ok_records": 19,
+      "errors": [
+        {
+          "episode": "E405",
+          "error": "TypeError: write() argument must be str, not None",
+          "turns_done_before_error": 9,
+          "note": "该故事自失败轮起缺失，不伪造完整结果"
+        }
+      ]
+    },
+    "LEGACY": {
+      "touched": "E403-E422（20 集）",
+      "ok_records": 15,
+      "note": "E418-E422 目录存在但未完成登记，停止时处于进行中"
+    },
+    "CURRENT": {
+      "touched": "E404-E423（20 集）",
+      "ok_records": 16,
+      "candidate": "window_expand_b_norecap_guard",
+      "note": "E420-E423 目录存在但未完成登记，停止时处于进行中"
+    }
+  },
+  "untouched": "E424-E520（97 集）未触及，保持封存",
+  "policy": [
+    "RESEARCH-P1 第一大阶段不进行新的 HOLDOUT 实验（宪章 C6 第 3 级）；本标记不恢复也不重启该实跑。",
+    "E401-E423 已曝光（4 臂候选输出已产生），不得在任何后续正式比较中当作未消费 HOLDOUT 新题使用；如需正式结论只能基于本批已有输出并如实标注部分完成。",
+    "E424-E520 的 once-only 消费权保留给后续达到评测资格的正式比较阶段，需用户可见的显式协议决定。",
+    "本标记只登记，不修改冻结 manifest、不修改金库内容。"
+  ],
+  "evidence": [
+    "D:/lovebrain-arena/runs/holdout_v1/run_records.json",
+    "D:/lovebrain-arena/runs/holdout_v1/{DIRECT,COT,LEGACY,CURRENT}/ 目录证据（2026-11-11 枚举）",
+    "D:/lovebrain-arena/refs/research_harness_20261110/phase1/PHASE1_ACCEPTANCE.md"
+  ]
+}

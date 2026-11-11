@@ -1,0 +1,279 @@
+{
+ "kind": "offline_inheritance_repair_v1",
+ "date": "2026-10-28",
+ "new_model_calls": 0,
+ "paid_answers_untouched": true,
+ "what_this_is": "独立复核指出的两处'新入口丢旧保障'的离线修复证据：(1) 判词按 case_id 静默套用到被换过的答案；(2) 输出修复器另起实现并丢掉全文保全。",
+ "binding": {
+  "tool": "tools/bind_answers.py",
+  "guard": "tools/aggregate_s1_scorecard.py --binding（缺省拒跑；digest/判词声明/逐位点四字段校验）",
+  "fields_checked": [
+   "run_id",
+   "case_input_sha256",
+   "raw_reply_sha256",
+   "primary_sha256",
+   "raw_file_sha256（磁盘 reply_raw.txt）"
+  ],
+  "batches": [
+   {
+    "batch": "S1",
+    "positions": 48,
+    "cells": 96,
+    "digest_sha256": "4741e9e8ed4cfe7eeb34ff1dd990aceb8b3b99ee836d1042a2161baf96f93cf4",
+    "skeleton_vs_manifest_mismatches": 0,
+    "raw_file_vs_skeleton_differs": 0,
+    "artifact_missing": 0,
+    "binding_status": "VERIFIED_ALL",
+    "verified_positions": 48,
+    "rejected_positions": 0,
+    "wins_before": {
+     "wins_candidate": 32,
+     "wins_parent": 4,
+     "ties": 12,
+     "n": 48
+    },
+    "wins_after": {
+     "wins_candidate": 32,
+     "wins_parent": 4,
+     "ties": 12,
+     "n": 48
+    },
+    "numbers_unchanged": true,
+    "batch_id_before": null,
+    "batch_id_after": "AUTH-P08-S1-20261028-01"
+   },
+   {
+    "batch": "S2",
+    "positions": 12,
+    "cells": 24,
+    "digest_sha256": "320bfc41846af50033ba200fe3b482ae184bd2ed5220cd7ddba3196738c21e99",
+    "skeleton_vs_manifest_mismatches": 0,
+    "raw_file_vs_skeleton_differs": 0,
+    "artifact_missing": 0,
+    "binding_status": "VERIFIED_ALL",
+    "verified_positions": 12,
+    "rejected_positions": 0,
+    "wins_before": {
+     "wins_candidate": 9,
+     "wins_parent": 0,
+     "ties": 1,
+     "n": 10
+    },
+    "wins_after": {
+     "wins_candidate": 9,
+     "wins_parent": 0,
+     "ties": 1,
+     "n": 10
+    },
+    "numbers_unchanged": true,
+    "batch_id_before": null,
+    "batch_id_after": "AUTH-P08-S2-20261028-01"
+   },
+   {
+    "batch": "S2R",
+    "positions": 12,
+    "cells": 24,
+    "digest_sha256": "ddd271834647a518dd3dae83205feb36da101af02c2accbcf6e71226de67facb",
+    "skeleton_vs_manifest_mismatches": 0,
+    "raw_file_vs_skeleton_differs": 0,
+    "artifact_missing": 0,
+    "binding_status": "VERIFIED_ALL",
+    "verified_positions": 12,
+    "rejected_positions": 0,
+    "wins_before": {
+     "wins_candidate": 7,
+     "wins_parent": 0,
+     "ties": 3,
+     "n": 10
+    },
+    "wins_after": {
+     "wins_candidate": 7,
+     "wins_parent": 0,
+     "ties": 3,
+     "n": 10
+    },
+    "numbers_unchanged": true,
+    "batch_id_before": null,
+    "batch_id_after": "AUTH-P08-S2R-20261028-01"
+   },
+   {
+    "batch": "S3",
+    "positions": 12,
+    "cells": 24,
+    "digest_sha256": "f17d21a00c7b104745cec6c37732f847bfd544ff20bc38d922ec1015adc920a7",
+    "skeleton_vs_manifest_mismatches": 0,
+    "raw_file_vs_skeleton_differs": 0,
+    "artifact_missing": 0,
+    "binding_status": "VERIFIED_ALL",
+    "verified_positions": 12,
+    "rejected_positions": 0,
+    "wins_before": {
+     "wins_candidate": 2,
+     "wins_parent": 3,
+     "ties": 5,
+     "n": 10
+    },
+    "wins_after": {
+     "wins_candidate": 2,
+     "wins_parent": 3,
+     "ties": 5,
+     "n": 10
+    },
+    "numbers_unchanged": true,
+    "batch_id_before": null,
+    "batch_id_after": "AUTH-P08-S3-20261028-01"
+   },
+   {
+    "batch": "D1",
+    "positions": 16,
+    "cells": 32,
+    "digest_sha256": "a46c71174c8d34b6380fb19eca80886718ec8f327613fa7471acb5f1d9e41c15",
+    "skeleton_vs_manifest_mismatches": 0,
+    "raw_file_vs_skeleton_differs": 0,
+    "artifact_missing": 0,
+    "binding_status": "VERIFIED_ALL",
+    "verified_positions": 16,
+    "rejected_positions": 0,
+    "wins_before": {
+     "wins_candidate": 5,
+     "wins_parent": 3,
+     "ties": 5,
+     "n": 13
+    },
+    "wins_after": {
+     "wins_candidate": 5,
+     "wins_parent": 3,
+     "ties": 5,
+     "n": 13
+    },
+    "numbers_unchanged": true,
+    "batch_id_before": null,
+    "batch_id_after": "AUTH-P08-D1-20261028-01"
+   },
+   {
+    "batch": "R3A",
+    "positions": 24,
+    "cells": 48,
+    "digest_sha256": "ea0489d10641e44dd50e769015cb517b583de20ddfd441c59ead9690e0a6c202",
+    "skeleton_vs_manifest_mismatches": 0,
+    "raw_file_vs_skeleton_differs": 0,
+    "artifact_missing": 0,
+    "binding_status": "VERIFIED_ALL",
+    "verified_positions": 24,
+    "rejected_positions": 0,
+    "wins_before": {
+     "wins_candidate": 0,
+     "wins_parent": 1,
+     "ties": 20,
+     "n": 21
+    },
+    "wins_after": {
+     "wins_candidate": 0,
+     "wins_parent": 1,
+     "ties": 20,
+     "n": 21
+    },
+    "numbers_unchanged": true,
+    "batch_id_before": null,
+    "batch_id_after": "AUTH-P08-R3A-20261028-01"
+   },
+   {
+    "batch": "R3B",
+    "positions": 6,
+    "cells": 12,
+    "digest_sha256": "69bc724fbbd2fa61c37ef496883360826bd21f88f9d9a1cfe04bc2e7abc0e055",
+    "skeleton_vs_manifest_mismatches": 0,
+    "raw_file_vs_skeleton_differs": 0,
+    "artifact_missing": 0,
+    "binding_status": "VERIFIED_ALL",
+    "verified_positions": 6,
+    "rejected_positions": 0,
+    "wins_before": {
+     "wins_candidate": 1,
+     "wins_parent": 0,
+     "ties": 5,
+     "n": 6
+    },
+    "wins_after": {
+     "wins_candidate": 1,
+     "wins_parent": 0,
+     "ties": 5,
+     "n": 6
+    },
+    "numbers_unchanged": true,
+    "batch_id_before": null,
+    "batch_id_after": "AUTH-P08-R3B-20261028-01"
+   }
+  ],
+  "totals": {
+   "positions": 130,
+   "cells": 260,
+   "verified": 130,
+   "rejected": 0
+  },
+  "only_output_delta": {
+   "field": "over_decline_review",
+   "before": null,
+   "after": {},
+   "reason": "旧产出由 getattr(mod, 'OVER_DECLINE', None) 的版本生成；七个判词模块都没有该常量，现默认 {}。无判词内容差异，胜负/均值/资源逐项相同。",
+   "all_other_compared_fields_identical": true
+  },
+  "header_fix": {
+   "before": "批=None；两臂身份={}；严重错模板硬编码'48 位点全部亲读'",
+   "after": "批=AUTH-P08-*-20261028-01；role→harness+harness_identity_sha256；绑定行 VERIFIED_ALL/digest/校验位点；严重错行按实际判定位点数动态生成",
+   "root_cause": "旧代码拿 harness 名去拼 EXAM_<harness>/EXAM_INDEX.json，实际目录按 role 命名（EXAM_parent/EXAM_candidate）"
+  }
+ },
+ "guard_test": {
+  "file": "refs/experiment_protocol_20261023/deadline_quality_20261028/SCORE_BINDING_GUARD_20261028.json",
+  "pass": true,
+  "tests": {
+   "X1_mutation_rejected": true,
+   "X2_binding_digest_tamper": true,
+   "X3_scores_digest_mismatch": true,
+   "X4_rebind_cannot_launder": true,
+   "X5_unbound_requires_explicit_flag": true,
+   "X6_clean_batch_passes": true,
+   "X9_harness_identity_mismatch": true,
+   "X8_audit_S1_replay_rejected": true,
+   "X7_originals_untouched": true
+  },
+  "audit_replay_case": "E024_T05",
+  "audit_replay_result": "同一位置换答案+散列清零后：该位点被拒评（rc=3），旧分与胜负不再被静默保留"
+ },
+ "output_repair": {
+  "file": "tools/output_repair.py",
+  "inherited_from": "tools/normalize_reply_contract.py（I1 解析兜底 / I2 键别名 / I3 directions 全文保全 / I4 缺槽登记）",
+  "extensions": [
+   "E1 通用键名归一（去零宽/空格后比对）",
+   "E2 提前闭合顶层 } 的重拼（复核指出的可组合新功能）"
+  ],
+  "removed": "旧版把冲突文本截到 80 字、额外方向截到 120 字的做法（与继承来的全文保全矛盾）",
+  "parity_test": "tools/test_output_repair_parity.py（260 份真实 reply_raw.txt）",
+  "parity_summary": {
+   "raw_files": 260,
+   "old_sendable": 246,
+   "new_sendable": 247,
+   "extension_recoveries": 1,
+   "both_fail": 13,
+   "regressions": 0,
+   "invariant_failures": 0,
+   "pass": true
+  },
+  "both_fail_are": "13 份全是候选显式 no_reply/空正文（合法静默或无话可说），不是文本修复失败",
+  "audit_fixture": {
+   "old_full_alias": true,
+   "new_full_alias": true,
+   "old_full_extra_direction": true,
+   "new_full_extra_direction": true
+  }
+ },
+ "unchanged": {
+  "generation_reruns": 0,
+  "raw_answers_modified": false,
+  "scorer_modified": false,
+  "authorization_or_ledger_modified": false,
+  "score_module_changes": "仅在七个 *_WORKER_SCORES.py 顶部插入 BINDING_DIGEST 常量；判词数据未改，原文件已备份",
+  "backups": "C:/Users/abyss/.qoderworkcn/workspace/mvrihhcpofbnfj2y/backup_scores_20261028（判词）与 backup_scorecards_20261028（旧成绩表）"
+ }
+}

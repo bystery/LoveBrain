@@ -1,0 +1,48 @@
+{
+  "pairs": 72,
+  "unchanged_objects": 71,
+  "changed": [
+    {
+      "unit": "F3:N01_T05",
+      "old_parseable": false,
+      "new_parseable": true,
+      "same_object": false,
+      "same_bytes": false,
+      "new_primary": "忙到连坐下的空都没有吧。空就先空着，今晚别硬撑。",
+      "repair_log": {
+        "raw_chars": 526,
+        "changed": true,
+        "rules": [
+          "harness_text_rewritten"
+        ],
+        "raw_parse_ok": true,
+        "output_repair_loss": [
+          {
+            "rule": "E2_failed",
+            "detail": "Expecting ',' delimiter: line 1 column 234 (char 233)"
+          },
+          {
+            "rule": "E3_stray_wrapper_object_removed",
+            "actions": [
+              {
+                "op": "mismatched_closer_normalized",
+                "detail": "directions 数组的 } 归一为 ]",
+                "chars_moved": 1
+              },
+              {
+                "op": "stray_wrapper_removed",
+                "cut_index": 235,
+                "detail": "删掉 analysis 外面多的一对 { }",
+                "chars_moved": 2
+              }
+            ],
+            "detail": "拆开 directions 之后多出来的一层 { }，analysis 回到顶层"
+          }
+        ],
+        "harness_chars": 571
+      }
+    }
+  ],
+  "new_unparseable": 0,
+  "claim": "Offline derived E3 replay on historical model raw; not 72 new live E3 outputs and not new chat quality gains."
+}

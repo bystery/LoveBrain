@@ -1,0 +1,46 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-SUPERSEDE-F2-20261031-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户2026-10-30地狱级常设授权（AUTH-GLOBAL-CONTINUOUS-20261030-01 登记件）；管理帽16384不变",
+ "phase": "W16-05_champion_challenge_tiering",
+ "budget_ledger": "logs/auth_budget/AUTH-SUPERSEDE-F2-20261031-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 96
+ },
+ "scope": {
+  "purpose": "W03-04 长剧全量 F2：2篇×24位×2臂=96次真实生成（冠军挑战：champion E3 vs challenger r5_tier assertion_tiering）；E3 vs B0；评审另册",
+  "route": "one_two_arm_batch_96",
+  "total_attempts": 96,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "automatic_judge": false,
+  "batch_ids": {
+   "F2": "BATCH-SUPERSEDE-F2-E065E066-20261031"
+  },
+  "episodes": [
+   "E065",
+   "E066"
+  ],
+  "cards": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+  "preregistration": "refs/experiment_protocol_20261023/long_probe_20261030/LONGPROBE_F2_PREREGISTRATION.json"
+ },
+ "frozen_bindings": {
+  "F2": {
+   "plan_file": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LONGPROBE_F2.INTERLEAVE_PLAN.json",
+   "plan_sha256": "166c67d30ab44b39b2d2524f1171e894a7a4f54b4fb8b28d46d0f0df62521f8b",
+   "batch_id": "BATCH-SUPERSEDE-F2-E065E066-20261031",
+   "cards_file": "benchmark/stories_v2/stage4/GRADING_CARDS_STAGE4.json",
+   "attempts": 96,
+   "parent": "action_policy_r4_guard_e3",
+   "candidate": "action_policy_r7_supersede",
+   "parent_identity_sha256": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17",
+   "candidate_identity_sha256": "17a26224b27b52deefb497b45e31f5e4eedefb18249f23dd5f3550a274ba1164"
+  }
+ }
+}

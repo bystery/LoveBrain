@@ -1,0 +1,124 @@
+{
+ "kind": "f3_resume_note",
+ "date": "2026-10-29",
+ "why": "logs/f3_newmat_live_restart_20261029/DONE.json 里的 failed_resume:1 是编排器整批预检被拒的历史记录，不代表数据缺失；本文件记录终态。",
+ "sequence": [
+  "编排器对 candidate_K02 续跑按整批 24 预检 → BudgetRefused（1 次 batch_rejected，0 次物理调用）",
+  "改为 --expect-attempts 12 在同一 checkpoint、同一 run 树上手工续跑 T13–T24",
+  "终态 8/8 链齐全，144/144 attempt 用尽，AUTH-F3-RESTART-20261029-01 已关闭"
+ ],
+ "final_checkpoints": [
+  {
+   "chain": "parent_N01",
+   "turns_done": 12,
+   "expected": 12,
+   "turn_dirs": 12,
+   "episode_id": "N01",
+   "candidate": "reference_product_v1",
+   "run_id": "iso_20261029_103412_0c8bba",
+   "fork_run_id": null,
+   "parent_run_id": null,
+   "checkpoint_path": "logs/f3_newmat_live_restart_20261029/parent_N01/checkpoint.json",
+   "resume_source": null
+  },
+  {
+   "chain": "candidate_N01",
+   "turns_done": 12,
+   "expected": 12,
+   "turn_dirs": 12,
+   "episode_id": "N01",
+   "candidate": "action_policy_r4_guard_final",
+   "run_id": "iso_20261029_103412_26fff2",
+   "fork_run_id": null,
+   "parent_run_id": null,
+   "checkpoint_path": "logs/f3_newmat_live_restart_20261029/candidate_N01/checkpoint.json",
+   "resume_source": null
+  },
+  {
+   "chain": "parent_N02",
+   "turns_done": 12,
+   "expected": 12,
+   "turn_dirs": 12,
+   "episode_id": "N02",
+   "candidate": "reference_product_v1",
+   "run_id": "iso_20261029_103956_c28967",
+   "fork_run_id": null,
+   "parent_run_id": null,
+   "checkpoint_path": "logs/f3_newmat_live_restart_20261029/parent_N02/checkpoint.json",
+   "resume_source": null
+  },
+  {
+   "chain": "candidate_N02",
+   "turns_done": 12,
+   "expected": 12,
+   "turn_dirs": 12,
+   "episode_id": "N02",
+   "candidate": "action_policy_r4_guard_final",
+   "run_id": "iso_20261029_104050_df7bb3",
+   "fork_run_id": null,
+   "parent_run_id": null,
+   "checkpoint_path": "logs/f3_newmat_live_restart_20261029/candidate_N02/checkpoint.json",
+   "resume_source": null
+  },
+  {
+   "chain": "parent_K01_resume",
+   "turns_done": 24,
+   "expected": 24,
+   "turn_dirs": 24,
+   "episode_id": "K01",
+   "candidate": "reference_product_v1",
+   "run_id": "iso_20261029_104433_699b54",
+   "fork_run_id": null,
+   "parent_run_id": null,
+   "checkpoint_path": "logs/f3_newmat_live_restart_20261029/parent_K01_resume/checkpoint.json",
+   "resume_source": "logs/f3_newmat_live_restart_20261029/parent_K01/checkpoint.json (T12) 复制后续跑 T13-T24"
+  },
+  {
+   "chain": "candidate_K01_resume",
+   "turns_done": 24,
+   "expected": 24,
+   "turn_dirs": 24,
+   "episode_id": "K01",
+   "candidate": "action_policy_r4_guard_final",
+   "run_id": "iso_20261029_105003_936c0b",
+   "fork_run_id": null,
+   "parent_run_id": null,
+   "checkpoint_path": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/checkpoint.json",
+   "resume_source": "logs/f3_newmat_live_restart_20261029/candidate_K01/checkpoint.json (T12) 复制后续跑 T13-T24"
+  },
+  {
+   "chain": "parent_K02_resume",
+   "turns_done": 24,
+   "expected": 24,
+   "turn_dirs": 24,
+   "episode_id": "K02",
+   "candidate": "reference_product_v1",
+   "run_id": "iso_20261029_105538_179320",
+   "fork_run_id": null,
+   "parent_run_id": null,
+   "checkpoint_path": "logs/f3_newmat_live_restart_20261029/parent_K02_resume/checkpoint.json",
+   "resume_source": "logs/f3_newmat_live_restart_20261029/parent_K02/checkpoint.json (T12) 复制后续跑 T13-T24"
+  },
+  {
+   "chain": "candidate_K02_resume",
+   "turns_done": 24,
+   "expected": 24,
+   "turn_dirs": 24,
+   "episode_id": "K02",
+   "candidate": "action_policy_r4_guard_final",
+   "run_id": "iso_20261029_110130_869174",
+   "fork_run_id": null,
+   "parent_run_id": null,
+   "checkpoint_path": "logs/f3_newmat_live_restart_20261029/candidate_K02_resume/checkpoint.json",
+   "resume_source": "logs/f3_newmat_live_restart_20261029/candidate_K02/checkpoint.json (T12) 复制后续跑 T13-T24"
+  }
+ ],
+ "all_chains_complete": true,
+ "authorization": {
+  "authorization_id": "AUTH-F3-RESTART-20261029-01",
+  "attempt_started": 144,
+  "attempt_completed": 144,
+  "batch_rejected": 1,
+  "status": "closed"
+ }
+}

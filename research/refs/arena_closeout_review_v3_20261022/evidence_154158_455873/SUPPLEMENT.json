@@ -1,0 +1,44 @@
+{
+  "proxy_with_no_budget": {
+    "accepted": true,
+    "fake_dispatches": 1
+  },
+  "freeze_targeted_checks": [
+    {
+      "path": "arena/isolation/trusted_controller.py",
+      "frozen_sha256": "a6406b9a565a5f32e0f09bda30a99e95bcb1301c86fbf674b10b7e51271c3a07",
+      "actual_sha256": "7acfb9f6f5ba5d13da21c2f7817ea2e787da3afa38d91e7943faed50652c84f3",
+      "match": false
+    },
+    {
+      "path": "tools/iso_run.py",
+      "frozen_sha256": "472314cbb992f1f12ff1ed1f41dfc2f3694de4164b24dc4505bc05c462931af6",
+      "actual_sha256": "3e72fc6f2900517aeb9ab1788557142c8d40996011c92613022c8502c748182b",
+      "match": false
+    },
+    {
+      "path": "arena/isolation/authorization_budget.py",
+      "frozen_sha256": null,
+      "actual_sha256": "ce7101bb029c46abbffe78119cdcd66a75a97c5bef29e2acabba81b53fb98435",
+      "match": false
+    },
+    {
+      "path": "tools/import_pilot_questions.py",
+      "frozen_sha256": null,
+      "actual_sha256": "147a4fbccbac941dd8053a43dae43ce5dd47e5c1030876f360d243a7f4915494",
+      "match": false
+    },
+    {
+      "path": "tools/test_authorization_budget.py",
+      "frozen_sha256": null,
+      "actual_sha256": "8aa524c08669a2cf236057d791f1da3061336103f7fa02b15e9f51786c8f28b4",
+      "match": false
+    }
+  ],
+  "automatic_authorization_close_at_episode_return": {
+    "path": "arena/isolation/trusted_controller.py",
+    "line": 713,
+    "scope": "static inspection; no episode/candidate run"
+  },
+  "real_model_calls": 0
+}

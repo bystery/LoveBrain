@@ -1,0 +1,73 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "W17B_E190",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_W17B_E190_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/w17b_guard_live_20261102",
+ "n_queued": 2,
+ "queue": [
+  {
+   "pair_id": "LP:E190:E190_T03",
+   "order": "main",
+   "story": "E190",
+   "cid": "E190_T03",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "RIGHT: 登录截个图发我，我陪你把下拉框那几个逐字过一遍",
+   "dims_flagged": {
+    "parent": {
+     "fact": 3,
+     "time": 3,
+     "attrib": 1,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:E190:E190_T12",
+   "order": "main",
+   "story": "E190",
+   "cid": "E190_T12",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "",
+   "key_quote": "彩排定在考前一晚，具体几点你说了算。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 2,
+     "time": 1,
+     "attrib": 3,
+     "memory": 3
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "severe_accounting": "counted",
+   "priority": 3
+  }
+ ]
+}

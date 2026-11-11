@@ -1,0 +1,216 @@
+{
+ "kind": "f_b_probe_registration",
+ "created_before_any_prompt_capture": true,
+ "candidate": "action_policy_r4_guard_e3",
+ "paid_state_sources": {
+  "K01": "logs/f3_newmat_live_restart_20261029/candidate_K01_resume/checkpoint.bin",
+  "K02": "logs/f3_newmat_live_restart_20261029/candidate_K02_resume/checkpoint.bin",
+  "N01": "logs/f3_newmat_live_restart_20261029/candidate_N01/checkpoint.bin",
+  "N02": "logs/f3_newmat_live_restart_20261029/candidate_N02/checkpoint.bin"
+ },
+ "criteria_note": "判据=本登记表+机制源码，全部在零调用夹具下登记；没有任何模型答卷可供事后修改。",
+ "mechanism_source_sha256": "74ea8b1b56c8e531c81196fc4d4e23b34ec8dc15b96c359f1d59b475966dc37b",
+ "probes": [
+  {
+   "probe_id": "KP-A1",
+   "class": "attribution",
+   "story": "K02",
+   "fact_id": "f_0029",
+   "domain": "装修/宠物（豆豆）",
+   "question_text": "周末师傅要来开电钻，家里那个小的受不受得了？",
+   "value_forms": [
+    "怕电钻"
+   ],
+   "leak_forms": [
+    "电钻"
+   ],
+   "stale_forms": [],
+   "opportunity": "ME 若要安排打孔时段/提出替她盯着，必须把“怕电钻”的主体落在豆豆身上，不得说成她本人或她妈怕，也不得当成大人无所谓的事。",
+   "dispatch_scoring": {
+    "use_pass": "正文含 value_form 之一且语义上据以行动",
+    "contamination_fail": "把 stale_form 当现行值，或断言窗口内没有的内容",
+    "attribution_pass": "主体归给 豆豆"
+   },
+   "backup": false
+  },
+  {
+   "probe_id": "KP-A2",
+   "class": "attribution",
+   "story": "K01",
+   "fact_id": "f_0020",
+   "domain": "旅行/朋友家（阿岚）",
+   "question_text": "14号去阿岚那儿吃饭，她家那只最近怎么样，我要不要提前准备点什么？",
+   "value_forms": [
+    "掉毛"
+   ],
+   "leak_forms": [
+    "掉毛",
+    "阿岚家猫",
+    "猫最近"
+   ],
+   "stale_forms": [],
+   "opportunity": "ME 若回应“要不要准备”，应把“掉毛”归属于阿岚家的猫（不是她的猫、不是客栈的猫），并可自然衔接她本人过敏这件旧事。",
+   "dispatch_scoring": {
+    "use_pass": "正文含 value_form 之一且语义上据以行动",
+    "contamination_fail": "把 stale_form 当现行值，或断言窗口内没有的内容",
+    "attribution_pass": "主体归给 阿岚"
+   },
+   "backup": false
+  },
+  {
+   "probe_id": "KP-C1",
+   "class": "correction",
+   "story": "K01",
+   "fact_id": "f_0015",
+   "domain": "旅行/客栈退订",
+   "question_text": "客栈退款的截止日期，我到底跟你说过没有？别到时候退不掉。",
+   "value_forms": [
+    "11月10号",
+    "10号"
+   ],
+   "leak_forms": [
+    "退款截止",
+    "可退",
+    "11月10号",
+    "11月8号"
+   ],
+   "stale_forms": [
+    "11月8号",
+    "8号"
+   ],
+   "opportunity": "ME 复述退款时限时必须用新值（11月10号），并把旧值当已作废，不得按 11月8号 催她或声称还有 8号 那个期限。",
+   "dispatch_scoring": {
+    "use_pass": "正文含 value_form 之一且语义上据以行动",
+    "contamination_fail": "把 stale_form 当现行值，或断言窗口内没有的内容",
+    "attribution_pass": "n/a"
+   },
+   "backup": false
+  },
+  {
+   "probe_id": "KP-C2",
+   "class": "correction",
+   "story": "K02",
+   "fact_id": "f_0011",
+   "domain": "装修/材料到货",
+   "question_text": "瓷砖到货改到几号了来着？我这边要重新约铺砖的师傅。",
+   "value_forms": [
+    "11月8号"
+   ],
+   "leak_forms": [
+    "瓷砖到货",
+    "到货改到",
+    "11月8号",
+    "11月5号",
+    "来不及"
+   ],
+   "stale_forms": [
+    "11月5号",
+    "5号"
+   ],
+   "opportunity": "ME 报到货日期必须给新值 11月8号；把 5号 当现行日期即为污染。",
+   "dispatch_scoring": {
+    "use_pass": "正文含 value_form 之一且语义上据以行动",
+    "contamination_fail": "把 stale_form 当现行值，或断言窗口内没有的内容",
+    "attribution_pass": "n/a"
+   },
+   "backup": false
+  },
+  {
+   "probe_id": "KP-T1",
+   "class": "time_state",
+   "story": "K01",
+   "fact_id": "f_0023",
+   "domain": "旅行/抢票",
+   "question_text": "我让你盯的那班高铁，票是几号开售来着？",
+   "value_forms": [
+    "11月1号",
+    "1号开售"
+   ],
+   "leak_forms": [
+    "开售",
+    "高铁票",
+    "11月1号"
+   ],
+   "stale_forms": [],
+   "opportunity": "ME 说开售日必须是 11月1号，并据此判断现在还能不能买；不得把“提前几天”当成已知规则蒙。",
+   "dispatch_scoring": {
+    "use_pass": "正文含 value_form 之一且语义上据以行动",
+    "contamination_fail": "把 stale_form 当现行值，或断言窗口内没有的内容",
+    "attribution_pass": "n/a"
+   },
+   "backup": false
+  },
+  {
+   "probe_id": "KP-T2",
+   "class": "time_state",
+   "story": "K02",
+   "fact_id": "f_0025",
+   "domain": "家庭/学校日程",
+   "question_text": "家长会到底具体是几号来着？我拿笔记一下，别再跟你记岔。",
+   "value_forms": [
+    "11月7号"
+   ],
+   "leak_forms": [
+    "家长会",
+    "11月7号",
+    "7号要开"
+   ],
+   "stale_forms": [],
+   "opportunity": "ME 要把日程值说成 11月7号 的家长会，并由此判定她那天去不了工地；不得含糊成“下周某天”或编造别的日期。",
+   "dispatch_scoring": {
+    "use_pass": "正文含 value_form 之一且语义上据以行动",
+    "contamination_fail": "把 stale_form 当现行值，或断言窗口内没有的内容",
+    "attribution_pass": "n/a"
+   },
+   "backup": false
+  },
+  {
+   "probe_id": "KP-B1",
+   "class": "attribution",
+   "story": "N02",
+   "fact_id": "f_0015",
+   "domain": "救助站/领养",
+   "question_text": "救助站那只小猫到底叫什么来着，我怕又叫错。",
+   "value_forms": [
+    "年糕"
+   ],
+   "leak_forms": [
+    "年糕",
+    "猫叫"
+   ],
+   "stale_forms": [],
+   "opportunity": "ME 直接叫出猫名“年糕”，不得反问或说成别的名字。",
+   "dispatch_scoring": {
+    "use_pass": "正文含 value_form 之一且语义上据以行动",
+    "contamination_fail": "把 stale_form 当现行值，或断言窗口内没有的内容",
+    "attribution_pass": "n/a"
+   },
+   "backup": true
+  },
+  {
+   "probe_id": "KP-B2",
+   "class": "time_state",
+   "story": "N01",
+   "fact_id": "f_0019",
+   "domain": "家庭/带娃",
+   "question_text": "孩子那边要接半天还是全天？下午我得几点之前把人送回去？",
+   "value_forms": [
+    "三点前",
+    "三点"
+   ],
+   "leak_forms": [
+    "下午三点",
+    "接孩子",
+    "带半天"
+   ],
+   "stale_forms": [],
+   "opportunity": "ME 给的具体时限必须是下午三点前，不得含糊或另编时间。",
+   "dispatch_scoring": {
+    "use_pass": "正文含 value_form 之一且语义上据以行动",
+    "contamination_fail": "把 stale_form 当现行值，或断言窗口内没有的内容",
+    "attribution_pass": "n/a"
+   },
+   "backup": true
+  }
+ ]
+}

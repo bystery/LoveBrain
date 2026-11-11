@@ -1,0 +1,120 @@
+{
+ "kind": "b3_read_queue_v2",
+ "tag": "FLJUDGE",
+ "review": "D:\\lovebrain-arena\\refs\\experiment_protocol_20261023\\long_probe_20261030\\LP_FLJUDGE_NINEDIM_REVIEW.json",
+ "batch_root": "D:\\lovebrain-arena\\logs/longprobe_fljudge_live_20261101",
+ "n_queued": 3,
+ "queue": [
+  {
+   "pair_id": "LP:LRE060:LRE060_T29",
+   "order": "main",
+   "story": "",
+   "cid": "LRE060_T29",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "RIGHT 把“下午一点到五点电梯全是装修”“你九点半就全上楼了”当作已发生的事实来讲，而这些内容在已知信息里都没有出现，属于编造已发生安排；LEFT 的“车堵在巷口”是在她的假设追问下用“真按……走”带出的反事实推论，并且与“4.2米车没进老巷子”对得上，因此不算编造。",
+   "key_quote": "真正救回来的是你把电梯改到七点到十点、3.8米小车跑两趟",
+   "dims_flagged": {
+    "parent": {
+     "fact": 0,
+     "time": 1,
+     "attrib": 3,
+     "memory": 2
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [
+      "下午一点到五点电梯全是装修",
+      "你九点半就全上楼了",
+      "车堵在巷口",
+      "真按……走",
+      "4.2米车没进老巷子"
+     ],
+     "found_where": {
+      "下午一点到五点电梯全是装修": null,
+      "你九点半就全上楼了": null,
+      "车堵在巷口": null,
+      "真按……走": null,
+      "4.2米车没进老巷子": null
+     },
+     "nowhere": [
+      "下午一点到五点电梯全是装修",
+      "你九点半就全上楼了",
+      "车堵在巷口",
+      "真按……走",
+      "4.2米车没进老巷子"
+     ]
+    },
+    "note_quote_hallucination_risk": true,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 1
+  },
+  {
+   "pair_id": "LP:LRE060:LRE060_T22",
+   "order": "main",
+   "story": "",
+   "cid": "LRE060_T22",
+   "flagged_arms": [
+    "parent"
+   ],
+   "note": "R把她说『估计刚回来或者还在火车上、悬』这种明示未定状态，直接复述成『正好压在你回来的点上』，属于无据确定化；而且没有给出能落地的下一步，比如钥匙怎么交接、要不要找物业问能不能改时段。",
+   "key_quote": "L：21号我守着，九点前到。钥匙你提前给我一把，不方便的话我那天早点过去拿。",
+   "dims_flagged": {
+    "parent": {
+     "fact": 1,
+     "time": 0,
+     "attrib": 2,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  },
+  {
+   "pair_id": "LP:LRE060:LRE060_T27",
+   "order": "main",
+   "story": "",
+   "cid": "LRE060_T27",
+   "flagged_arms": [
+    "candidate"
+   ],
+   "note": "LEFT凭空编造已发生的细节（4.2米车追尾进修理厂、原师傅的兄弟、六点半到九点半、白等五小时），既无依据确定化，又把卡面要求的轻快感慨扭成翻旧账式复盘；RIGHT只顺事实接梗，无虚构。",
+   "key_quote": "L：4.2米那辆压根没到过巷口，追尾进修理厂了……不会让你白等五个小时",
+   "dims_flagged": {
+    "candidate": {
+     "fact": 0,
+     "time": 0,
+     "attrib": 0,
+     "memory": 1
+    }
+   },
+   "material_cell": false,
+   "checks": {
+    "note_quotes": {
+     "fragments": [],
+     "found_where": {},
+     "nowhere": []
+    },
+    "note_quote_hallucination_risk": false,
+    "card_unknowns": [],
+    "unknown_overlap": false
+   },
+   "priority": 3
+  }
+ ]
+}

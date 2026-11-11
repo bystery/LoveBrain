@@ -1,0 +1,104 @@
+[
+  {
+    "test": "previous20",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "PASS 原始错误到站事实继续被拒\nPASS IDEA不能冒充m0真实来源\nPASS IDEA不占编号且HER正常入库\nPASS 同轮纠正不作废新值/negative_last\nPASS 同轮纠正不作废新值/positive_last\nPASS 不同事件历史不因共享编号作废\nPASS 真实更正不随摘要拒绝而丢失\nPASS ongoing不绕过邀请未确认约束\nPASS 状态区分/offered\nPASS 状态区分/confirmed\nPASS 状态区分/happened\nPASS 日期组件不能拼出无出处钟点\nPASS 等价两盒到2盒不丢正确事实\nPASS 场景/原坏消息\nPASS 场景/原跨消息收尾\nPASS 场景/领导又来催不是与ME争执\nPASS 场景/礼貌问句可以收尾\nPASS 场景/晚安后重开话题\nPASS 场景/收尾后HER自己补新事\nPASS 实际检索依赖纳入冻结和快照\n{\"passed\": 20, \"total\": 20, \"artifact_dir\": \"C:\\\\Users\\\\abyss\\\\.codex\\\\.chatgpt-projects\\\\g-p-6abf72e02e2c819194f242ce5551c8b9\\\\wave16_review_20261021\\\\closure_ssi2meu7\"}\n\n"
+  },
+  {
+    "test": "test_phase3_facts.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "PASS 1a 旧车次合法入库 \nPASS 1b 事实带全局来源键 \nPASS 1c 双提示资产在场 \nPASS 2a 更正新值入库 \nPASS 2b G7812 复活事实被拒且不入库 \nPASS 2c 越界 source_id 被拒 \nPASS 2d 更正事实带 correction 标记 \nPASS 3a 本轮无召回（证据不足，链路仍安全） \nPASS 3b 错误复活事实不在库 \nPASS 2e 点名旧编号被标记 superseded \nPASS 2f superseded 不入注入 \nPASS 3 邀请写成约定 → offer 未确认 \nPASS 3b 注入标注提议未确认 \nPASS 4 未来标记 → intent \nPASS 5 相对时间注入附锚点 \nPASS 7 合并引用实体放行 \nPASS 8 memory off 零写回 \nPASS 9a _retrieve 与 phase1 同源文件无副本 \nPASS 9b 同库同分同序 \n---\n全部 PASS（14 项）\n\n"
+  },
+  {
+    "test": "test_scene_assembly.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "方催促非争执·领导又来催           got=认真沟通   expect=认真沟通\nPASS 礼貌问句可收尾                  got=收尾     expect=收尾\nPASS 晚安后ME重开话题                got=日常分享   expect=日常分享\nPASS 收尾后HER补新事重开              got=日常分享   expect=日常分享\nPASS 指向ME的又来仍争执               got=争执     expect=争执\nPASS 实测槽 NCA_t06  got=收尾     expect=收尾\nPASS 实测槽 NCB_t05  got=收尾     expect=收尾\nPASS 实测槽 NCA_t03  got=认真沟通   expect=认真沟通\n---\n场景标签全表: {'NCA_t01': '日常分享', 'NCA_t02': '日常分享', 'NCA_t03': '认真沟通', 'NCA_t04': '日常分享', 'NCA_t05': '日常分享', 'NCA_t06': '收尾', 'NCB_t01': '日常分享', 'NCB_t02': '日常分享', 'NCB_t03': '日常分享', 'NCB_t04': '认真沟通', 'NCB_t05': '收尾'}\n全部 PASS\n\n"
+  },
+  {
+    "test": "test_anon_binding_guards.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "PASS 1/说话人改动被拒\nPASS 2/意图改动被拒\nPASS 3/意图启用但文本不符被拒\nPASS 4/clock 不一致被拒\nPASS 5/回复双侧绑定一致（正例）\nPASS 6/派生账篡改被拒\n---\n全部 PASS（匿名材料绑定守卫）\n\n"
+  },
+  {
+    "test": "test_parent_child_executor.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "PASS 1/干净批退出码 \nPASS 1/真实事件 52/52/0 \nPASS 1/槽账 52 \nPASS 1/配对+verified_complete \nPASS 1/逐槽 success+表达块[1] \nPASS 1/交错轮换首两组 \nPASS 1/开发题 8 槽 \nPASS 1/配置入账 \nPASS 2/chaos 非零退出 \nPASS 2/started=13 后停 \nPASS 2/重入阻断 \nPASS 2/恢复禁用 \nPASS 2/无隐藏补跑 \nPASS 3/occupied 阻断 \nPASS 4/干净批基线 \nPASS 4/t1 残留 checkpoint 拒绝 \nPASS 4/超前 checkpoint 拒绝 \nPASS 5/第 53 次请求前拒绝 \nPASS 6/两臂前七类零 \nPASS 6/两臂分类镜像 \nPASS 7/adapter 漂移拒绝 \n---\n全部 PASS（52 槽等价守卫矩阵）\n\n"
+  },
+  {
+    "test": "test_three_arm_executor.py",
+    "exit": 0,
+    "sealed_skip": true,
+    "tail": "PASS 0/66 槽 v3 配置已封存（FROZEN_MISMATCH 拒绝运行；装配层 v12 §6B 升级生效）。全矩阵回归转移至 52 槽等价矩阵。\nSKIPPED (SEALED): 原 1-7 项针对旧装配层的矩阵不再可运行，等价守卫矩阵见 test_parent_child_executor.py\n\n"
+  },
+  {
+    "test": "test_nca_ncb_episodes.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "PASS：NCA/NCB schema/时间线 + 边界无gold泄漏 + 完整mock回放(11轮) + 观测点记账(调岗并存/D3145纠正) + 表达候选委托一致 + 事件账落盘\n\n"
+  },
+  {
+    "test": "test_retr_idf.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "PASS：冻结案例回放(t5过敏取回/t6误取消除) + 锁定用例8组 + 故障族H组(配对背景/相关短问权衡/标点分段/单字归因/背景不串门) + 父版本写回/快照逐字节一致 + 追踪三态完整无gold泄漏 + memory-off一致\n\n"
+  },
+  {
+    "test": "test_expr_candidate.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "PASS：表达策略注入(主变量隔离+反误杀口径) + 检索/写回/快照与父版本逐字节一致 + 四族审计命中(含F4)/无误报/坏JSON留痕 + 检测器同源(含标签) + memory-off委托一致 + 注入幂等(run_episode双运行各恰1份/父臂零污染/全局无永久副作用)\n\n"
+  },
+  {
+    "test": "test_memory_off.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "MEMORY OFF TEST PASS：memory_on 六渠道全可见；memory_off 全关闭、persona 保留；initial_kb/交流间隔读侧已接通。\n\n"
+  },
+  {
+    "test": "test_no_reply_protocol.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "NO_REPLY PROTOCOL PASS：三候选 × {action,decline,normal} × {allow,required} 一致；越权/矛盾/非法动作全拦截；全部不回无法刷满分。\n\nNO_REPLY PROTOCOL PASS\n"
+  },
+  {
+    "test": "test_output_structure.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "PASS：嵌套反例格式失败+写回拦截+第二轮可审计（基线/β）+时钟前进+扩展契约正例+未声明拒绝\n\n"
+  },
+  {
+    "test": "test_input_boundary.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "BOUNDARY TEST PASS：meta/gaps/gold/嵌套元数据 零泄漏；深拷贝生效；persona/消息 ts/may_decline 均到达模型请求；媒体单向登记 fail-fast；容器错型（messages 字符串/字符串列表/intent 列表/clock 对象/may_decline 字符串）入口拒绝；legacy 字符串 intent 保留不误杀。\n\n"
+  },
+  {
+    "test": "test_scoring_authority.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "SCORING AUTHORITY PASS：追加/删除/改角色/伪造 id_map 四类篡改均以原题快照评分（伪造 m3 稳定 veto=illegal_source_id:m3），真实来源对照组不误杀。\n\n"
+  },
+  {
+    "test": "test_trace_robustness.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "PASS：追踪三反例不崩溃+留痕、两轮继续+时钟前进、词面重合保真+通道不可辨识\n\n"
+  },
+  {
+    "test": "test_failure_persistence.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "FAILURE PERSISTENCE TEST PASS：受控超时下网关事件日志/calls/error.json 全部落盘；usage 未知容错；judge 重试全尝试留证。\n\n"
+  },
+  {
+    "test": "test_posttest_event_pairs.py",
+    "exit": 0,
+    "sealed_skip": false,
+    "tail": "[fork] rejected \n[fork] rejected \n[fork] rejected \n[fork] rejected \n[fork] rejected \n[fork] rejected \n[fork] rejected \n[fork] posttest_identity_verified \n[fork] rejected \nPASS：后测事件配对真实拒绝条件——空日志/孤立started/错误case/restore-only/failed对(保留)/audit_errors/多余组/跨case 全拒绝并落 rejection.json，合法两节点四事件正例通过\n\n"
+  }
+]

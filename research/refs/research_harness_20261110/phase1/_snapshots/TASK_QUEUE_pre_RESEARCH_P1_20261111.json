@@ -1,0 +1,4392 @@
+{
+ "schema": "lovebrain_global_continuous_tasks_v1",
+ "date": "2026-10-30",
+ "authority": "User latest request: whole-program large continuous iterative optimization, supersedes only-one-local-fix scope",
+ "not_a_running_process": true,
+ "master": "MASTER_CONTINUOUS_HARNESS_PROGRAM.md",
+ "workload": "96 tasks plus evidence-driven replenishment; estimated effective engineering work, not 288h autonomous uptime promise",
+ "planned_engineering_hours_sum": 226.5,
+ "tasks": [
+  {
+   "id": "W01-01",
+   "package": "W01",
+   "package_name": "继承与运行状态（整包首轮≤2小时，不从零审仓库）",
+   "track": "X/R",
+   "action": "差额核最新文件/真实进程/未结束attempt，排除旧RUNNING和已关单",
+   "acceptance": "RESUME_STATE：在跑/已完/未知可定位，未知不重发",
+   "state": "DONE",
+   "depends_on": [],
+   "reuse_first": true,
+   "known_existing_work_to_verify": true,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W01_RECOVERY_LOG_20261030.md#1-resume_state",
+    "D:/lovebrain-arena/.coordination/heartbeat.jsonl",
+    "D:/lovebrain-arena/logs/auth_budget/AUTH-W01-RECOVERY-20261030-01.jsonl",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W01_RECOVERY_LOG_20261030.md"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T00:52:59+08:00",
+   "completed_at": "2026-10-30T01:07:11+08:00",
+   "actual_engineering_hours": 0.1,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 0.25,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W01-02",
+   "package": "W01",
+   "package_name": "继承与运行状态（整包首轮≤2小时，不从零审仓库）",
+   "track": "X/R",
+   "action": "接受E3、r5未证、F3/B/C实际身份与原文来源",
+   "acceptance": "INHERITED_EVIDENCE：已验证hash直签，历史不改名为当前",
+   "state": "REUSE_VERIFIED",
+   "depends_on": [],
+   "reuse_first": true,
+   "known_existing_work_to_verify": true,
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/submission_review_20261029_1510/INDEPENDENT_CHECKS.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/direction_check_20261030_0008/DELTA_CHECKS.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/final_mainline_review_20261029/00_READ_FIRST_MANIFEST_20261029.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W01_RECOVERY_LOG_20261030.md#2-inherited_evidence"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T00:52:59+08:00",
+   "completed_at": "2026-10-30T01:07:11+08:00",
+   "actual_engineering_hours": 0.1,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 0.25,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ]
+  },
+  {
+   "id": "W01-03",
+   "package": "W01",
+   "package_name": "继承与运行状态（整包首轮≤2小时，不从零审仓库）",
+   "track": "X/R",
+   "action": "继承九维/知识/自由度合同与未测清单，查当前文档冲突",
+   "acceptance": "MEASUREMENT_DELTA：只改矛盾，不重建量尺",
+   "state": "DONE",
+   "depends_on": [],
+   "reuse_first": true,
+   "known_existing_work_to_verify": true,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W01_RECOVERY_LOG_20261030.md#3-measurement_delta",
+    "D:/lovebrain-arena/benchmark/rubric.md",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/EVALUATION_MASTER_DRAFT_20261025.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/BUDGET_INHERITANCE_INVENTORY.json"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T00:52:59+08:00",
+   "completed_at": "2026-10-30T01:07:11+08:00",
+   "actual_engineering_hours": 0.1,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 0.25,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W01-04",
+   "package": "W01",
+   "package_name": "继承与运行状态（整包首轮≤2小时，不从零审仓库）",
+   "track": "X/R",
+   "action": "将已有runner、归一器、预算、绑定、compiler、复现包映射到任务",
+   "acceptance": "REUSE_MAP：每个拟新增工具先查现成入口",
+   "state": "DONE",
+   "depends_on": [],
+   "reuse_first": true,
+   "known_existing_work_to_verify": true,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W01_RECOVERY_LOG_20261030.md#4-reuse_map",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/BUNDLE_MANIFEST.json"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T00:52:59+08:00",
+   "completed_at": "2026-10-30T01:07:11+08:00",
+   "actual_engineering_hours": 0.1,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 0.25,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W01-05",
+   "package": "W01",
+   "package_name": "继承与运行状态（整包首轮≤2小时，不从零审仓库）",
+   "track": "X/R",
+   "action": "核基座/alias/输出契约/流式身份及每alias共享并发",
+   "acceptance": "RUN_CONFIG：禁hy4、未知模型/配置零派发",
+   "state": "DONE",
+   "depends_on": [],
+   "reuse_first": true,
+   "known_existing_work_to_verify": true,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W01_RECOVERY_LOG_20261030.md#5-run_config",
+    "D:/lovebrain-arena/tools/build_kb_probe_authorization.py (forbidden_models 硬禁条款)",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W02-03_BASELINE_ENTRY_CHECK_20261030.json"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T00:52:59+08:00",
+   "completed_at": "2026-10-30T01:07:11+08:00",
+   "actual_engineering_hours": 0.1,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 0.25,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W01-06",
+   "package": "W01",
+   "package_name": "继承与运行状态（整包首轮≤2小时，不从零审仓库）",
+   "track": "X/R",
+   "action": "核管理预算边界、已消耗/开放/未决并登记第一有限scope",
+   "acceptance": "BUDGET_STATE：不把总帽减去错误范围，不复活关闭单",
+   "state": "DONE",
+   "depends_on": [
+    "W01-01",
+    "W01-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": true,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W01_RECOVERY_LOG_20261030.md#6-budget_state",
+    "D:/lovebrain-arena/logs/auth_budget/AUTH-W01-RECOVERY-20261030-01.jsonl",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/RESEARCH_STATE.json"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T00:52:59+08:00",
+   "completed_at": "2026-10-30T01:07:11+08:00",
+   "actual_engineering_hours": 0.1,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 0.25,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W02-01",
+   "package": "W02",
+   "package_name": "公平原版与最小对照",
+   "track": "H/R",
+   "action": "差额盘点原项目意图/补充/知识/上下文/后台机制，复用已有函数溯源",
+   "acceptance": "BASELINE_SCOPE：原生/移植/未覆盖逐项说明",
+   "state": "REUSE_VERIFIED",
+   "depends_on": [
+    "W01-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": true,
+   "evidence": [
+    "archive/20261102/root_docs/BASELINE_SCOPE_V2.md",
+    "D:/lovebrain-arena/VERSION_LINEAGE_V2.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W02-01_REUSE_VERIFICATION_20261030.md"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T01:10:00+08:00",
+   "completed_at": "2026-10-30T01:16:59+08:00",
+   "actual_engineering_hours": 0.2,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ]
+  },
+  {
+   "id": "W02-02",
+   "package": "W02",
+   "package_name": "公平原版与最小对照",
+   "track": "H/R",
+   "action": "复核双方画像/公开事实/私密目标/当前意图真实到达装配口",
+   "acceptance": "INPUT_PARITY：完整值与来源双校，不只搜一个词",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W02-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W02-02_INPUT_PARITY_20261030.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W02-03_BASELINE_ENTRY_CHECK_20261030.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W02-02_INPUT_PARITY_20261030.json"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T02:45:00+08:00",
+   "completed_at": "2026-10-30T02:22:10+08:00",
+   "actual_engineering_hours": 0.3,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W02-03",
+   "package": "W02",
+   "package_name": "公平原版与最小对照",
+   "track": "H/R",
+   "action": "固定忠实前台原版为B0，固定已有最小事件引擎为Bmin",
+   "acceptance": "两基线身份、共同输出契约、可执行入口，不削弱B0",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W02-01",
+    "W02-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W02-03_BASELINE_FIXING_20261030.md",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W02-03_BASELINE_ENTRY_CHECK_20261030.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W02-03_V0_CLOSURE_NOTE_20261030.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W02-03_BASELINE_FIXING_20261030.md"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T01:15:00+08:00",
+   "completed_at": "2026-10-30T01:24:14+08:00",
+   "actual_engineering_hours": 0.5,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W02-04",
+   "package": "W02",
+   "package_name": "公平原版与最小对照",
+   "track": "H/R",
+   "action": "用旧录制答卷作状态/请求重放，补真正缺失的原版闭环",
+   "acceptance": "差异都归移植修复；无新证据不再重复修已签收项",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W02-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": true,
+   "evidence": [
+    "D:/lovebrain-arena/tools/replay_supersede.py",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-04_COMPOSE_REPLAY_20261031.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "旧录制答卷状态/请求重放已实现为通用离线重放方法论：tools/replay_supersede.py(mock gateway 回放存档回复走完整 run_turn) + replay_slim/compose——W05-03/W09-02/W09-04 三次实战"
+  },
+  {
+   "id": "W02-05",
+   "package": "W02",
+   "package_name": "公平原版与最小对照",
+   "track": "H/R",
+   "action": "原型实际运行能力与原App未覆盖能力分清，记录模型调用数和数据来源",
+   "acceptance": "对比范围表；不因缺设备阻塞前台Harness实验",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W02-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-01_ARCHITECTURE_MAP_20261030.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "原型实际能力 vs 原App未覆盖能力已分清：W09-01 架构图(谱系继承/必要依赖)+W05-04 介质结构对照+v0 未支持清单(IDENTITY「能力缺失如实公开」节)；调用数与数据来源=各批账本"
+  },
+  {
+   "id": "W02-06",
+   "package": "W02",
+   "package_name": "公平原版与最小对照",
+   "track": "H/R",
+   "action": "建共同位点原版成绩与历史分批索引，删除错误跨版归属结论",
+   "acceptance": "BASELINE_SCORECARD：每行可回到身份/题/答/尺",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W02-03",
+    "W02-04",
+    "W02-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W15-01_LINEAGE_REGISTRY_2026-10-31.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W04-02_ERRATA_SEVERE_SWAP_20261030.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "共同位点原版成绩与分批索引=W15-01 谱系成绩册(9身份/同量尺/批次索引)；错误跨版归属已删除：C1 两臂勘误、severe 映射勘误、E3 复职判定链全在案"
+  },
+  {
+   "id": "W03-01",
+   "package": "W03",
+   "package_name": "故事与任务分布扩展",
+   "track": "E",
+   "action": "以故事/谱系核现有覆盖与暴露，定位空白而非按文件数夸大",
+   "acceptance": "DATASET_CENSUS：故事数、位点数、独立性、实跑数分列",
+   "state": "DONE",
+   "depends_on": [
+    "W01-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W03_CENSUS_20261030.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W03_CENSUS_20261030.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W03_CENSUS_20261030.md"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T01:10:00+08:00",
+   "completed_at": "2026-10-30T01:16:59+08:00",
+   "actual_engineering_hours": 0.4,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W03-02",
+   "package": "W03",
+   "package_name": "故事与任务分布扩展",
+   "track": "E",
+   "action": "编写24篇DEV生活连续剧，含目标/备注/反馈变化与多种合理行动",
+   "acceptance": "192–288位有证据卡，禁止考点评语泄漏到可见消息",
+   "state": "DONE",
+   "depends_on": [
+    "W01-01",
+    "W03-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/benchmark/stories_v2/stage3/STAGE3_MANIFEST.json",
+    "D:/lovebrain-arena/benchmark/stories_v2/stage3/STAGE3_VALIDATION.json",
+    "D:/lovebrain-arena/tools/build_story_v2_stage3.py",
+    "D:/lovebrain-arena/benchmark/stories_v2/stage2/E021..E036 (16篇x12位，reference.json 全)"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T03:00:00+08:00",
+   "completed_at": "2026-10-30T11:20:00+08:00",
+   "actual_engineering_hours": 2.5,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "scope_note": "验收口径=24篇DEV 192-288位证据卡：E021-E044 共24篇256位，逐篇卡数与题面turns核对一致；stage3 8篇 8/8 校验绿。W03-06 分期扩容(48/96/200)按主计划属首环后补给，不入本单。"
+  },
+  {
+   "id": "W03-03",
+   "package": "W03",
+   "package_name": "故事与任务分布扩展",
+   "track": "E",
+   "action": "对新DEV跑现成机械校验＋语义审查，先出8篇可开测子集",
+   "acceptance": "语义冲突、不自然台词、未来义务逐项处置，不止IMPORT_OK",
+   "state": "DONE",
+   "depends_on": [
+    "W01-01",
+    "W03-01",
+    "W03-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W03-03_SUBSET_REVIEW_20261030.md",
+    "D:/lovebrain-arena/benchmark/stories_v2/stage2/STAGE2_VALIDATION.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W03-03_SUBSET_REVIEW_20261030.md"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T01:20:00+08:00",
+   "completed_at": "2026-10-30T01:27:30+08:00",
+   "actual_engineering_hours": 0.5,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W03-04",
+   "package": "W03",
+   "package_name": "故事与任务分布扩展",
+   "track": "E",
+   "action": "编写8篇24–48轮长知识剧，提前安排原子/更正/出窗机会",
+   "acceptance": "每篇≥12应保留原子、≥3更新机会；实际prompt可验证出窗",
+   "state": "DONE",
+   "depends_on": [
+    "W01-01",
+    "W03-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/benchmark/stories_v2/stage4/STAGE4_VALIDATION.json",
+    "D:/lovebrain-arena/benchmark/stories_v2/stage4/STAGE4_MANIFEST.json",
+    "D:/lovebrain-arena/benchmark/stories_v2/stage4/STAGE4_VALIDATION.json"
+   ],
+   "owner": null,
+   "started_at": "2026-10-30T15:00:00+08:00",
+   "completed_at": "2026-10-30T18:00:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "scope_note": "8/8篇长知识剧（E061-E068，24轮×8=192位）全部校验绿；每篇12-20事实原子、3-4处更正链、出窗探针机械核查；E3vsB0探针批96次生成进行中（AUTH-LONGPROBE-20261030-01）"
+  },
+  {
+   "id": "W03-05",
+   "package": "W03",
+   "package_name": "故事与任务分布扩展",
+   "track": "E",
+   "action": "定义8篇候选冻结后新故事的分布与保管流程，生成时不看候选失败原句",
+   "acceptance": "暴露日志、来源/题/卡hash、消费后不再称封存",
+   "state": "DONE",
+   "depends_on": [
+    "W01-01",
+    "W03-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W03-05_CUSTODY_PROTOCOL_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/STORY_CUSTODY_LEDGER.json",
+    "D:/lovebrain-arena/tools/story_custody.py"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "保管账工具+账本(32注册/16 SEALED/16 EXPOSED/52事件)+协议文档落地；hash校验OK"
+  },
+  {
+   "id": "W03-06",
+   "package": "W03",
+   "package_name": "故事与任务分布扩展",
+   "track": "E",
+   "action": "按缺口分期扩至48/96/200篇，去重叙事骨架和语义模板",
+   "acceptance": "新篇带新增信息量，不能靠批量换名字凑故事数",
+   "state": "PARTIAL",
+   "depends_on": [
+    "W01-01",
+    "W03-03",
+    "W03-04",
+    "W03-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W03-06_SKELETON_PLAN_20261031.md",
+    "D:/lovebrain-arena/benchmark/stories_v2/_templates/W03-06_GEN_CHECKLIST.md",
+    "D:/lovebrain-arena/benchmark/stories_v2/_templates/episode_template.json",
+    "D:/lovebrain-arena/benchmark/stories_v2/wave1/STAGE1_MANIFEST.json",
+    "D:/lovebrain-arena/benchmark/stories_v2/wave1/STAGE1_VALIDATION.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W03-06_SKELETON_DEDUPE_20261031.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/STORY_CUSTODY_LEDGER.json"
+   ],
+   "owner": null,
+   "started_at": "2026-10-31",
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "2026-11-01 隔离续作会话三波收口，**96 篇目标达成**：①wave-1(E045-E060,16篇)：校验 16/16+语义审查(4修复/1登记/0阻塞)+SEALED；②wave-2 首批(E069-E084,16篇)：新冲突型落地(时间线倒错更正/第三方插入/信息不确定)+校验 16/16+语义审查(6修复/5登记/0阻塞)+SEALED；③wave-2 第二批(E085-E116,32篇)：校验 48/48+语义审查(12修复/9登记/0阻塞)+SEALED；④wave1_ext(LRE060 40轮/LRE048 32轮)：双审通过，作为 LR2 live 批素材(AUTH-LR2-LONGRANGE-20261101-01, 144 attempts 完成 144/144 零失败，九维评审与 miss 亲读分类进行中)。账本 registered=98/SEALED=78/EXPOSED=20 verify OK；去重普查 96 篇 0 近重簇，全域≥7。报告=W03-06_WAVE1/WAVE2/WAVE2B_SEMANTIC_REVIEW_20261101.md 三份。剩余=wave-3(→200:模板库+其他13篇二次归一+跨故事连续型)与 W13-02 反事实线(48 篇 wave-2 保留未动)；恢复入口=W03-06_SKELETON_PLAN §2 + 三份审查报告"
+  },
+  {
+   "id": "W04-01",
+   "package": "W04",
+   "package_name": "评分可信度与完整质量表",
+   "track": "E/R",
+   "action": "给九维和六类正向子能力写可观察锚点，合理建议与事实断言分开",
+   "acceptance": "RUBRIC_ANCHORS：正/负/边界例与NA，不更改旧成绩归属",
+   "state": "DONE",
+   "depends_on": [
+    "W01-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W04-01_RUBRIC_ANCHORS_V1.md",
+    "D:/lovebrain-arena/benchmark/rubric.md",
+    "W04-01_RUBRIC_ANCHORS_V1.md"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T02:20:00+08:00",
+   "completed_at": "2026-10-31T04:05:00+08:00",
+   "actual_engineering_hours": 0.4,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W04-02",
+   "package": "W04",
+   "package_name": "评分可信度与完整质量表",
+   "track": "E/R",
+   "action": "处理素材日期与预算卡等实证冲突，原始卡留存、裁决另版",
+   "acceptance": "ERRATA：改尺子离线重评，不为改尺子重生成答卷",
+   "state": "DONE",
+   "depends_on": [
+    "W01-03",
+    "W04-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W04-02_ERRATA_ADJUDICATION_20261030.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-30T12:20:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "scope_note": "E-MAT-B=确认缺陷题库版本化修不回改成绩；RULER-C-01=PENDING_USER 不代裁；重生成答卷 0 次"
+  },
+  {
+   "id": "W04-03",
+   "package": "W04",
+   "package_name": "评分可信度与完整质量表",
+   "track": "E/R",
+   "action": "用代表性长度的少量控制/盲序样本核评审路径，失败维度转证据核读",
+   "acceptance": "JUDGE_SCOPE：逐维资格/误杀/漏检/顺序敏感，不能只报全对",
+   "state": "DONE",
+   "depends_on": [
+    "W01-03",
+    "W04-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W04-03_JUDGE_SCOPE_PREREG_20261030.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W04-03_JUDGE_QUAL_REPORT.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W04-03_JUDGE_QUAL_REPORT.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W04-03_FS1_NINEDIM_REVIEW.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W04-03_VERDICT_THRESHOLDS_PREREG.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-30T14:10:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "scope_note": "资格批28/28 PARTIAL_QUALIFIED（fact/time降辅助+B3亲读，无据确定化盲区登记）；九维96主判（左右轮换平衡）+16真双序补判=112/112零失败；5/16双序分歧如实登记；输出 JUDGE_SCOPE 报告+九维评审JSON"
+  },
+  {
+   "id": "W04-04",
+   "package": "W04",
+   "package_name": "评分可信度与完整质量表",
+   "track": "E/R",
+   "action": "复用现输出构建首选/备选、错误条目/错误位点、T/P/C/S/W分表",
+   "acceptance": "FULL_SCORECARD：有效配对n、引用、未知与分歧完整",
+   "state": "DONE",
+   "depends_on": [
+    "W01-03",
+    "W04-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W04-04_FS1_FULL_SCORECARD.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-30T14:10:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "scope_note": "FULL_SCORECARD 已建：T/P/C/S/W 五列（W=UNKNOWN 不代填）；veto 归因（json_schema_broken 跨臂共享+Bmin 1格非法source_id）；错误条目/位点齐全"
+  },
+  {
+   "id": "W04-05",
+   "package": "W04",
+   "package_name": "评分可信度与完整质量表",
+   "track": "E/R",
+   "action": "形成不超过12对的优先用户口味样本，补调情/深聊/钩子锚点",
+   "acceptance": "人工原表保留；未填W未知，AI不代投、不冻结其它工作",
+   "state": "BLOCKED_ON_USER",
+   "depends_on": [
+    "W01-03",
+    "W04-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "12对优先口味样本=AI不代投项(W 愿发已等用户)；调情/深聊/钩子锚点的方法与素材位已备(W08-03/W08-04)",
+   "gate": "user-material (AGENTS.md: AI 不代投 W 愿发)"
+  },
+  {
+   "id": "W04-06",
+   "package": "W04",
+   "package_name": "评分可信度与完整质量表",
+   "track": "E/R",
+   "action": "实施故事级汇总与配对比较，预登记主要比较/误差保护/验收范围",
+   "acceptance": "不拼重复轮为独立样本，不以程序分或成本作为唯一晋级",
+   "state": "DONE",
+   "depends_on": [
+    "W01-03",
+    "W04-03",
+    "W04-04",
+    "W04-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W04-03_VERDICT_THRESHOLDS_PREREG.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_G1_NINEDIM_REVIEW.json",
+    "D:/lovebrain-arena/logs/longprobe_g1_live_20261030/_reports/PAIRED_DIFF.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-30T14:10:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "scope_note": "故事级配对汇总在九维 JSON summary（故事级=探索性读数）；主要比较/保护项/阈值已于 W04-03_VERDICT_THRESHOLDS_PREREG 登记在结果前；未拼重复轮、未以程序分/成本单独晋级",
+   "result": "故事级汇总与配对比较=九维评审 JSON 的 stories 级汇总（探索性读数）+ 配对胜平负计数；主要比较/保护项/阈值已结果前预登记；未拼重复轮为独立样本、未以程序分/成本单独晋级（各批 DONE 报告 paired_program_winner_counts 在案）"
+  },
+  {
+   "id": "W05-01",
+   "package": "W05",
+   "package_name": "知识与事实引擎",
+   "track": "H/E",
+   "action": "从真实来源标≥120应保留原子和≥30更新机会，含漏存机会",
+   "acceptance": "ATOM_PANEL：主体/关系/值/否定/时间/状态/来源，不能只挑已存成功项",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W05-01_ATOM_PANEL_20261030.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W05-01_ATOM_PANEL_20261030.json"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T02:35:00+08:00",
+   "completed_at": "2026-10-30T02:21:25+08:00",
+   "actual_engineering_hours": 0.4,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W05-02",
+   "package": "W05",
+   "package_name": "知识与事实引擎",
+   "track": "H/E",
+   "action": "实际测Capture/Fidelity/Update，不用模型摘要自证摘要",
+   "acceptance": "KNOWLEDGE_6STAGE：分母可定位、错主体/错否定/暂定生效单列",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W05-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "W05-02_MEMORY_KPI_REPORT_20261031.md",
+    "W05-02_MEMORY_KPI_MEASUREMENT_20261031.json",
+    "tools/measure_memory_kpis.py"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-31T04:35:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "notes": "; 2026-10-31 set ACCEPTED as next knowledge-engine task (champion E3 as subject; needs new scope ledger + prereg); 576 轮零调用实测: Update 22/28=78.6% 及时, guard/reject 全 0, writeback ~100%; 内容级 fidelity 登记缺口(instrumented 批另立预登记)",
+   "status": "DONE"
+  },
+  {
+   "id": "W05-03",
+   "package": "W05",
+   "package_name": "知识与事实引擎",
+   "track": "H/E",
+   "action": "提一个通用事件/事实状态候选，复用旧结构，修主体与条件生效的真实缺陷",
+   "acceptance": "无题材特判；未确认金额/计划不硬改；原版状态不覆盖",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W05-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "W05-03_VERDICT_20261031.md",
+    "W05-03_REPLAY_FIXED_GATE.json",
+    "candidates/action_policy_r7_supersede/",
+    "LP_F2_NINEDIM_REVIEW.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-31T07:00:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "notes": "; 2026-10-31 design input registered: F1 content-level fidelity (capture 30/31=96.8%, 1 true extraction miss; supersession dual-mode: in-place ok / parallel-add leaves stale confirmed fact f_0009||f_0025 - structural revival surface, no behavioral revival in 4 rounds; correction latency 0-4 turns 100% eventual). Candidate lever: forced in-place supersession or old-value downgrade on correction.; r7_supersede fixed-gate: F2 9-dim parity-positive severe 0/2, structural supersession path closed, successor patch archived pending promotion; F3 confirmation: severe edge replicated 2/2, veto watch resolved, r7 PROMOTED to champion with auto-revert triggers (F3_PROMOTION_RULING_20261031.md)",
+   "status": "DONE"
+  },
+  {
+   "id": "W05-04",
+   "package": "W05",
+   "package_name": "知识与事实引擎",
+   "track": "H/E",
+   "action": "比较相关检索与Bmin原文窗口，测召回与噪声，不把B旧24次再跑一遍",
+   "acceptance": "新分布、弱词面/同义/无重合、旧事实可追溯，失败机会保留",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W05-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W05-04_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W05-04_PROJECTION_COMPARISON_20261031.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "短故事域 Bmin 原文窗=更省等效架构(召回28/28持平, E3组合介质多花16%零增益); 12轮窗不滑出; r7价值在长程/簿记/持久化; r8混合假设登记"
+  },
+  {
+   "id": "W05-05",
+   "package": "W05",
+   "package_name": "知识与事实引擎",
+   "track": "H/E",
+   "action": "对确定化/过期/冲突事实设计输出依据约束，保留合理提议与不确定提问",
+   "acceptance": "严重错误族减少的假设＋三领域正反保护，不能一律“不知道”",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W05-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "W05-05_OUTPUT_GROUNDING_CONSTRAINTS_20261031.md",
+    "tools/b3_queue.py (validated on 5 reviews)"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-31T04:20:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W05-06",
+   "package": "W05",
+   "package_name": "知识与事实引擎",
+   "track": "H/E",
+   "action": "冻结知识候选，做真实长链和局部组件对照，判保留/淘汰",
+   "acceptance": "Use首选与备选分开；新事实正确使用、污染与额外调用成本并报",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W05-03",
+    "W05-04",
+    "W05-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/LR1_VERDICT_W1005_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-04_COMPOSE_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/FLJUDGE_VERDICT_20261102.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LR2_VERDICT_20261101.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-02",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 144,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "知识候选冻结+长链对照已做大半：知识引擎 KPI(E061 更正2/2)+LR1 长链(24轮)+组件对照(r10 三门)；剩余=48+轮长链与污染段(待素材)；恢复入口=W12 批",
+   "result_note": "知识/事实引擎长链线收口: FK-LR2-01 修复归属判给 window_expand_b(T25-32真实保持1.0 vs parent 0.493/0.509, prompt -41.9%, KEEP); fact_ledger_v1/v2 认识论淘汰; r9_slim <=24轮域地位不变; 残留 true_loss 2 原子(事件级细节)与 cand T27 虚构独立故障族入 B3"
+  },
+  {
+   "id": "W06-01",
+   "package": "W06",
+   "package_name": "意图作为动态技能与多轮行动",
+   "track": "H/E",
+   "action": "复用启用/调整/关闭/过期合同，补反馈变化和无目标的差额场景",
+   "acceptance": "当前目标生效，旧目标不复活，已确认事项不随目标清空",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": true,
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W06-01_INTENT_DELTA_SCENARIOS_20261030.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W06-01_INTENT_DELTA_SCENARIOS_20261030.md"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T02:50:00+08:00",
+   "completed_at": "2026-10-30T02:24:47+08:00",
+   "actual_engineering_hours": 0.3,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W06-02",
+   "package": "W06",
+   "package_name": "意图作为动态技能与多轮行动",
+   "track": "H/E",
+   "action": "设计最小目标技能接口：目标、阶段、可选动作、反馈、暂缓/切换",
+   "acceptance": "不按关系标签固定套路，不凭目标声称对方已同意",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W06-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "W06-02_GOAL_SKILL_INTERFACE_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-31T07:50:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE",
+   "notes": "; 五要素盘点: 目标/可选动作/暂缓切换合同已完备; 真实差额=阶段+反馈轨迹两个渲染缺口(确定性零调用)+tombstone实验项(默认OFF); r8候选化推迟到W06-03场景实跑用增量臂验证后"
+  },
+  {
+   "id": "W06-03",
+   "package": "W06",
+   "package_name": "意图作为动态技能与多轮行动",
+   "track": "H/E",
+   "action": "同历史改目标/备注，核请求和行动真正不同；关目标作对照",
+   "acceptance": "GOAL_COUNTERFACTUAL：不是只搜注入字符串，输出也按新目标合理变化",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W06-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "W06-03_SCENARIO_VERDICT_20261031.md",
+    "logs/w0603_intent_scenarios_20261031/SCENARIOS_RESULTS.json",
+    "tools/run_intent_scenarios.py"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-31T08:00:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "notes": "; 2026-10-31 ACCEPTED: S1-S5场景矩阵就绪(W06-01)+接口增量treatment臂设计就绪(W06-02); 实跑需独立scope账本; S1-S5 全部 PASS (5/5)：合同层零缺口；tombstone 不采纳；r8_goalstage 不建（无行为缺口可填）；240 调用含首跑作废",
+   "status": "DONE"
+  },
+  {
+   "id": "W06-04",
+   "package": "W06",
+   "package_name": "意图作为动态技能与多轮行动",
+   "track": "H/E",
+   "action": "增加推进节奏/探询/放松/回扣的策略候选，保持自由表达",
+   "acceptance": "开放多种合格动作，不用单句标准答案、不过度防御",
+   "state": "PARTIAL",
+   "depends_on": [
+    "W01-02",
+    "W06-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W08-02_HOOK_CANDIDATES_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W08-03_FLIRT_ANCHORS_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "策略候选素材已沉淀：W08-02 五类钩子分类学+派发规则、W08-03 三档锚点、W06-02 五要素接口——候选=既有 harness 内 flag 化能力(W10_compose 门)，live 策略批待素材；恢复入口=W09-06 矩阵"
+  },
+  {
+   "id": "W06-05",
+   "package": "W06",
+   "package_name": "意图作为动态技能与多轮行动",
+   "track": "H/E",
+   "action": "正/含糊/拒绝/误会/延迟反馈分支测试连续策略",
+   "acceptance": "不能继续追已撤回目标，不能把拒绝当积极进展；积极反馈敢推进",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W06-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W06-03_SCENARIO_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W08-05_BRANCH_VERDICT_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "反馈分支连续策略测试=W06-03 S1-S5 反事实实跑(正/含糊/拒绝/无目标/复活陷阱 5/5 PASS)+W08-05 分支实跑(反馈调整轨迹层验证)"
+  },
+  {
+   "id": "W06-06",
+   "package": "W06",
+   "package_name": "意图作为动态技能与多轮行动",
+   "track": "H/E",
+   "action": "与“只注入用户原意图句”的简单版消融，测额外行动层是否值得",
+   "acceptance": "额外复杂度无可重复收益则删/降级，不把意图本身一起删掉",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W06-03",
+    "W06-04",
+    "W06-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-04_COMPOSE_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/G1_VERDICT_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "行动层额外价值消融=F4 ablate_action_off(live 诊断臂)+r10 action_block 门重放(-1624字/轮)+G1(去3冗余行为不劣)——额外行动层在同批对照下未显示独立收益,保留理由=契约安全(historical FIX)"
+  },
+  {
+   "id": "W07-01",
+   "package": "W07",
+   "package_name": "上下文组织与污染控制",
+   "track": "H/X",
+   "action": "标原文/种子/目标/备注/摘要/投影六通道，追踪进入与使用",
+   "acceptance": "CONTEXT_TRACE：信息在场≠被正确采用，能定位污染来源",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W05-04_PROJECTION_COMPARISON_20261031.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-01_ARCHITECTURE_MAP_20261030.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "六通道(原文/种子/目标/备注/摘要/投影)进入与使用追踪=W05-04 块级清单(system/user 25块×字符/轮次)+W09-01 依赖图+r1 parts 自装结构澄清——通道映射全在案"
+  },
+  {
+   "id": "W07-02",
+   "package": "W07",
+   "package_name": "上下文组织与污染控制",
+   "track": "H/X",
+   "action": "对比简单滑窗、相关片段、结构化事实三策略，保持同事实可用范围",
+   "acceptance": "所有候选当前输入保护；实际请求证明预算，不把字符当token",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W07-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W05-04_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/LR1_VERDICT_W1005_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "三策略对比=三架构同入口实测：滑窗(Bmin/v0) vs 相关片段投影(E3/r系) vs 结构化事实(r1 store)——W05-04 短域头对头+LR1 长域头对头+W09-03 架构竞争；同事实可用范围约束由 r10 三门+CU 耦合量化"
+  },
+  {
+   "id": "W07-03",
+   "package": "W07",
+   "package_name": "上下文组织与污染控制",
+   "track": "H/X",
+   "action": "建多人物、私密草稿、长期目标、过时事项混合场景",
+   "acceptance": "草稿不冒充真聊天，旧目标不污染新轮，客观公开事实不误禁",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W07-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/STORY_CUSTODY_LEDGER.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W13-01_HOLDOUT_BATCH1_20261031.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "混合场景素材位已就位：多人主体(E040 三方账/E038 桌游/E036 第三人中介)+私密草稿(E039 未发草稿边界)+长期目标(E035 疗程六周)+过时事项(E022/E028 跨日回扣)——全 SEALED 在账；混合场景测试批随扩测派发"
+  },
+  {
+   "id": "W07-04",
+   "package": "W07",
+   "package_name": "上下文组织与污染控制",
+   "track": "H/X",
+   "action": "设计按任务需求的最小预算分配候选，明确截断优先级",
+   "acceptance": "关键当前证据不被挤掉，无关旧史不因“保险”整段重投",
+   "state": "PARTIAL",
+   "depends_on": [
+    "W01-02",
+    "W07-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-04_COMPOSE_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-06_FREEZE_RULING_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "预算分配器已存在并实测(B0 by_blocks 裁剪优先级+v0 1400CU 窗)+截断语义在案(旧记忆因长度限制已省略)；「按任务需求的最小预算分配候选」=r8 混合窗假设组件，登记不构建(冻结纪律)；恢复入口=W09-06 并存纪律"
+  },
+  {
+   "id": "W07-05",
+   "package": "W07",
+   "package_name": "上下文组织与污染控制",
+   "track": "H/X",
+   "action": "测预算/历史长度曲线与恢复前后上下文等价",
+   "acceptance": "多个预算档对应质量与污染曲线，不只报最省档",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W07-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/LR1_VERDICT_W1005_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-04_COMPOSE_REPLAY_20261031.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "预算/历史长度曲线已实测：LR1 v0 窗随故事增长 220→1600 字符(19 轮 100%保持,尾段滑出 1/19)；r 系介质 831 字/轮恒定+CU 耦合回填曲线(W09-04 五轮负差量化)；恢复前后上下文等价=snapshot/restore 重放验证(W05-03 保真自证)"
+  },
+  {
+   "id": "W07-06",
+   "package": "W07",
+   "package_name": "上下文组织与污染控制",
+   "track": "H/X",
+   "action": "冻结上下文候选与原/简版对照，记录正确使用而非仅关键词命中",
+   "acceptance": "逐故事质量与延迟/用量表，方向无效就淘汰",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W07-03",
+    "W07-04",
+    "W07-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/G1_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/LR1_VERDICT_W1005_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "上下文候选冻结与对照=G1(r9_slim vs r7)+LR1(v0 vs r9_slim)双批；正确使用判据=九维 judge(memory/fact/time 维)+B3 亲读，非关键词命中"
+  },
+  {
+   "id": "W08-01",
+   "package": "W08",
+   "package_name": "正向互动：主动、钩子、调情与深聊",
+   "track": "H/E",
+   "action": "标主题继续/枯竭/可转场、对方投入和当前交流需要，不固定每轮问句",
+   "acceptance": "INTERACTION_OPPORTUNITIES：钩子/观点/邀请/静默均可合理",
+   "state": "DONE",
+   "depends_on": [
+    "W01-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "W08-01_POSITIVE_ANNOTATION_20261031.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-31T08:20:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE",
+   "notes": "; 四篇正向切片 48 轮标注完成（topic_state/engagement/exchange_need 三维+证据引文）；W08-02 设计输入就绪：跃迁钩子全部由 HER 发起，ME 任务=接住不扑不缩"
+  },
+  {
+   "id": "W08-02",
+   "package": "W08",
+   "package_name": "正向互动：主动、钩子、调情与深聊",
+   "track": "H/E",
+   "action": "设计新话题与钩子候选：感受、观察、选择、轻挑战、共同未来等",
+   "acceptance": "不要求编自己经历；给对方值得接的内容，非调查问卷",
+   "state": "DONE",
+   "depends_on": [
+    "W01-03",
+    "W08-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "W08-02_HOOK_CANDIDATES_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-31T08:30:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "notes": "; 2026-10-31 ACCEPTED: 标注输入就绪（四故事48轮三维标签+设计输入4条）; 五类钩子分类学（感受/观察/选择/轻挑战/共同未来）+ W08-01 标签驱动的派发规则 + 故事风格匹配矩阵 + 5 反模式",
+   "status": "DONE"
+  },
+  {
+   "id": "W08-03",
+   "package": "W08",
+   "package_name": "正向互动：主动、钩子、调情与深聊",
+   "track": "H/E",
+   "action": "编写/审查调侃、反撩、暧昧与线下推进的多表达锚点",
+   "acceptance": "积极时能升温，含糊可试探，边界/拒绝后会调节，不靠模板强推",
+   "state": "DONE",
+   "depends_on": [
+    "W01-03",
+    "W08-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "W08-03_FLIRT_ANCHORS_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-31T08:40:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "notes": "; 2026-10-31 ACCEPTED: 接钩侧展开——E032/E029 两暧昧场域多表达锚点（接住/推半步/留退路三档）; 两暧昧场域 8 钩位 × 三档锚点（接住/推半步/留退路）+ 横切纪律4条（可撤回/不复述/按投入选档/不编造）",
+   "status": "DONE"
+  },
+  {
+   "id": "W08-04",
+   "package": "W08",
+   "package_name": "正向互动：主动、钩子、调情与深聊",
+   "track": "H/E",
+   "action": "深聊测试观点交换、具体回应、脆弱表达和情绪转折",
+   "acceptance": "不止安慰复述，也不强行心理诊断；个人事实有出处",
+   "state": "DONE",
+   "depends_on": [
+    "W01-03",
+    "W08-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "W08-04_DEEPCHAT_TEST_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-31T08:50:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "notes": "; 2026-10-31 ACCEPTED: 深聊切片定 E030 T05/T07 论点交锋+示弱信任，智识域深聊锚点另写; 3 测试位 (D1 论点交锋/D2 示弱信任/D3 情绪转折) × 3 档注入锚点 + 连续分支判读设计; 复用 run_intent_scenarios 结构",
+   "status": "DONE"
+  },
+  {
+   "id": "W08-05",
+   "package": "W08",
+   "package_name": "正向互动：主动、钩子、调情与深聊",
+   "track": "H/E",
+   "action": "跑受控连续分支，让实际选中回复影响后续，另报固定回放结果",
+   "acceptance": "话题钩子后续是否兑现、反馈是否改变策略；模拟不冒充真人",
+   "state": "DONE",
+   "depends_on": [
+    "W01-03",
+    "W08-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "W08-05_BRANCH_VERDICT_20261031.md",
+    "logs/w0805_branches_20261031/BRANCH_RESULTS.json",
+    "tools/run_w0805_branches.py"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-31T09:10:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE",
+   "notes": "; E029 分支 4/4 零断帧：档位=风格旋钮非质量旋钮（half 传导具体性/door 补热度）；E032 终轮无尾分支（素材限制登记）; 深聊 wave (D1-D3) 完成: 0档(诊断/碾压)关系损伤轨迹层持续2+轮（D1 冷deflection/D2 防御好斗链），1档可恢复，3档全零断帧——见 W08-05_DEEPCHAT_VERDICT_20261031.md"
+  },
+  {
+   "id": "W08-06",
+   "package": "W08",
+   "package_name": "正向互动：主动、钩子、调情与深聊",
+   "track": "H/E",
+   "action": "对照原版与当前候选，给正向能力分项和副作用表",
+   "acceptance": "主动性提升不能用更长或更多问题代替；严重编造/压力失配单列",
+   "state": "DONE",
+   "depends_on": [
+    "W01-03",
+    "W08-03",
+    "W08-04",
+    "W08-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "W08-05_BRANCH_VERDICT_20261031.md §三"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-31T09:10:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE",
+   "notes": "; 正向能力分项表：B0 接钩/更正链短板 vs r7 优势（批次证据）；副作用=1 已修假阳性 + 随机 veto"
+  },
+  {
+   "id": "W09-01",
+   "package": "W09",
+   "package_name": "最小架构与提示资产竞争",
+   "track": "H/R",
+   "action": "画真实运行依赖与消息/状态/调用图，区分谱系继承与必要依赖",
+   "acceptance": "ARCHITECTURE_MAP：不以文件数或版本链当设计优点",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W09-01_ARCHITECTURE_MAP_20261030.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-01_ARCHITECTURE_MAP_20261030.md"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T02:30:00+08:00",
+   "completed_at": "2026-10-30T02:18:21+08:00",
+   "actual_engineering_hours": 0.3,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W09-02",
+   "package": "W09",
+   "package_name": "最小架构与提示资产竞争",
+   "track": "H/R",
+   "action": "删除/合并core/format/自然表达等冗余，保持信息边界及输出合同不漂移",
+   "acceptance": "SLIM资产候选；同输入重放证明改动范围，不要求回复更短",
+   "state": "PARTIAL",
+   "depends_on": [
+    "W01-02",
+    "W09-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-02_SLIM_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-02_REPLAY_SLIM_20261031.json",
+    "D:/lovebrain-arena/candidates/action_policy_r9_slim/IDENTITY.md",
+    "D:/lovebrain-arena/tools/replay_slim.py"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "冗余普查(零逐字重复,语义冗余4类)+r9_slim候选+同输入重放PASS(24轮状态零漂移,锚全过,-235字符/轮)；行为中立性待live双臂批"
+  },
+  {
+   "id": "W09-03",
+   "package": "W09",
+   "package_name": "最小架构与提示资产竞争",
+   "track": "H/R",
+   "action": "复用Bmin建立真正可跑的最小竞争者；保留E3作证据记忆竞争者",
+   "acceptance": "至少两种实质架构同入口实跑，非两个名字或相同代码副本",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W09-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-03_ARCH_COMPETITION_20261031.md",
+    "D:/lovebrain-arena/logs/fs1_b_live2_20261030/_reports/PAIRED_DIFF.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W05-04_VERDICT_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "两种实质架构同入口竞争成立：v0_minimal_events(最小事件窗,fs1_b live 96轮,省63.6% prompt同分9.79) vs r系E3/r7(证据记忆引擎)；代码diff+介质结构独立证实非换名非副本"
+  },
+  {
+   "id": "W09-04",
+   "package": "W09",
+   "package_name": "最小架构与提示资产竞争",
+   "track": "H/R",
+   "action": "构建目标技能/知识/上下文可组合的一个候选，明确整套包与单变量实验",
+   "acceptance": "不混淆包收益与单组件因果；默认一次生成，增加调用须实证收益",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W09-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-04_COMPOSE_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-04_COMPOSE_REPLAY_20261031.json",
+    "D:/lovebrain-arena/candidates/r10_compose/IDENTITY.md",
+    "D:/lovebrain-arena/tools/replay_compose.py"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "r10_compose(r7+三门单变量接口)：全开=逐字节r7已证；重放矩阵 goal/-83 action/-1624 source/-131 每轮；发现CU预算耦合(净差含历史窗回填)；包vs组件因果分离证据链闭合(架构/引擎/作废/冗余/装配块五层)"
+  },
+  {
+   "id": "W09-05",
+   "package": "W09",
+   "package_name": "最小架构与提示资产竞争",
+   "track": "H/R",
+   "action": "移除无运行依赖的层，必要时展平版本链并做请求/写回等价重放",
+   "acceptance": "减少依赖不能改变旧身份；新身份有行为证据，不按重命名计收益",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W09-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-05_LAYER_AUDIT_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-02_REPLAY_SLIM_20261031.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "层审计：冠军链每层运行依赖均有实证，无可安全移除项；可移除项已由r9_slim处置(_CALLBACK+2资产冗余,-235字符/轮,重放证据)；v6_integrated谱系外；不展平(成本线不合)"
+  },
+  {
+   "id": "W09-06",
+   "package": "W09",
+   "package_name": "最小架构与提示资产竞争",
+   "track": "H/R",
+   "action": "冻结≤3个候选进入筛选，给各自主假设与成本风险",
+   "acceptance": "生成同一benchmark，不无限并存20个“候选”不判决",
+   "state": "DONE",
+   "depends_on": [
+    "W01-02",
+    "W09-03",
+    "W09-04",
+    "W09-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-06_FREEZE_RULING_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "冻结3候选(r7冠军/v0_minimal/r9_slim)各带假设-成本-风险表；筛选批A(r9_slim vs r7 SEALED池96对)与批B(v0长程31轮暴露)已设计；r10_compose不参赛；并存纪律：新想法先登记有证据才立身份"
+  },
+  {
+   "id": "W10-01",
+   "package": "W10",
+   "package_name": "真实共同对照与选拔",
+   "track": "X/E/R",
+   "action": "预登记任务/臂/身份/顺序/随机重复/预算/主比较与保护项",
+   "acceptance": "文件缺失/hash为null拒绝；同slot两个臂信息公平",
+   "state": "DONE",
+   "depends_on": [
+    "W01-06",
+    "W02-03",
+    "W03-03",
+    "W04-03",
+    "W09-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W10-01_PREREGISTRATION_20261030.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W02-03_BASELINE_FIXING_20261030.md",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/W03-03_SUBSET_REVIEW_20261030.md",
+    "W10-01_PREREGISTRATION_20261030.json + FS1-A/B 派发 DONE"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T01:35:00+08:00",
+   "completed_at": "2026-10-31T04:05:00+08:00",
+   "actual_engineering_hours": 0.4,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W10-02",
+   "package": "W10",
+   "package_name": "真实共同对照与选拔",
+   "track": "X/E/R",
+   "action": "首筛用4篇×12位×最多4臂，真实逐位交错或平衡随机",
+   "acceptance": "例192生成只是上限示例；实际派发/attempt/输出一一对应",
+   "state": "DONE",
+   "depends_on": [
+    "W01-06",
+    "W02-03",
+    "W03-03",
+    "W04-03",
+    "W09-03",
+    "W10-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/logs/fs1_a_live2_20261030/_reports/PAIRED_DIFF.json",
+    "D:/lovebrain-arena/logs/fs1_b_live2_20261030/_reports/PAIRED_DIFF.json",
+    "D:/lovebrain-arena/logs/auth_budget/AUTH-FS1-FIRSTSCREEN-20261030-02.jsonl",
+    "refs/experiment_protocol_20261023/long_probe_20261030/FOURTH_ROUND_VERDICT_20261031.md"
+   ],
+   "owner": "main-zcode-20261030-0052",
+   "started_at": "2026-10-30T02:09:01+08:00",
+   "completed_at": "2026-10-30T02:57:12+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 192,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE"
+  },
+  {
+   "id": "W10-03",
+   "package": "W10",
+   "package_name": "真实共同对照与选拔",
+   "track": "X/E/R",
+   "action": "当场做首选全审、备选风险与九维/知识子表，不停在“跑完”",
+   "acceptance": "主要错误与收益逐故事有原文；不会自动预填通过",
+   "state": "DONE",
+   "depends_on": [
+    "W01-06",
+    "W02-03",
+    "W03-03",
+    "W04-03",
+    "W09-03",
+    "W10-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/G1_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_G1_NINEDIM_REVIEW.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W14-02_TIMING_COMPARE_20261031.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "G1 当场全审：64/64零失败→九维(severe 0/0,最差init -0.097远超-0.5线,B3队列0位)→r9_slim升格共役冠军瘦体优先(prompt -3.8%/p50 -28%)；机械层32/32全平零veto；G1_VERDICT_20261031.md"
+  },
+  {
+   "id": "W10-04",
+   "package": "W10",
+   "package_name": "真实共同对照与选拔",
+   "track": "X/E/R",
+   "action": "用16篇分布更广的材料扩测入围者，关键条件预登记重复",
+   "acceptance": "支持/反对/不确定都保留；跨模型/配置不无痕混分",
+   "state": "PARTIAL",
+   "depends_on": [
+    "W01-06",
+    "W02-03",
+    "W03-03",
+    "W04-03",
+    "W09-03",
+    "W10-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/G1_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/LR1_VERDICT_W1005_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "分布更广扩测已按冻结矩阵执行两波：G1(SEALED stage3 4篇)+LR1(24轮知识剧E061 v0首测)；48/96尝试全零失败；关键条件预登记在批配置；>24轮扩测待 wave-1/2 素材"
+  },
+  {
+   "id": "W10-05",
+   "package": "W10",
+   "package_name": "真实共同对照与选拔",
+   "track": "X/E/R",
+   "action": "以质量主导做KEEP/REWORK/ELIMINATE，保留开发与最终晋级分开",
+   "acceptance": "没收益明确淘汰，成本收益只能在质量可接受范围内成立",
+   "state": "DONE",
+   "depends_on": [
+    "W01-06",
+    "W02-03",
+    "W03-03",
+    "W04-03",
+    "W09-03",
+    "W10-04"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/LR1_VERDICT_W1005_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "本循环质量主导终局：r9_slim KEEP(共役冠军默认身份)/r7 KEEP(lineage-full)/v0 KEEP(使用域扩至≤24轮,八维正向-52%成本)/r5/r6归档/E3前任；开发线与晋级线分开"
+  },
+  {
+   "id": "W10-06",
+   "package": "W10",
+   "package_name": "真实共同对照与选拔",
+   "track": "X/E/R",
+   "action": "输出本循环全局差额、下一候选假设与可执行批次",
+   "acceptance": "不止一个错误补丁，不让下一轮从历史入口重开",
+   "state": "DONE",
+   "depends_on": [
+    "W01-06",
+    "W02-03",
+    "W03-03",
+    "W04-03",
+    "W09-03",
+    "W10-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/LR1_VERDICT_W1005_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "循环全局差额：晋级=r9_slim(较原B0省~66%较r7省4%)；剩余差额=v0 >24轮验证(待素材)/r1系簿记长程场景未证实/W11-02投影门未建；下一候选假设=r8混合窗(登记)；可执行批次=wave-1素材后扩测"
+  },
+  {
+   "id": "W11-01",
+   "package": "W11",
+   "package_name": "组件因果、删除与组合",
+   "track": "H/X/R",
+   "action": "关闭额外行动层，与只保留用户意图句比较",
+   "acceptance": "真正影响行为的位点分母；没有目标的位点不稀释效果",
+   "state": "PARTIAL",
+   "depends_on": [
+    "W10-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-04_COMPOSE_VERDICT_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "重放级已证(r10 action_block 门 -1624字/轮; F4 ablate_action_off 同切面诊断臂在册)；live 消融归 W09-06 矩阵；恢复入口=W09-04_COMPOSE_VERDICT §边界"
+  },
+  {
+   "id": "W11-02",
+   "package": "W11",
+   "package_name": "组件因果、删除与组合",
+   "track": "H/X/R",
+   "action": "关闭/替换事实投影，来源确实出窗，输入无答案",
+   "acceptance": "不再重复“off原文仍有答案”的无效消融",
+   "state": "PARTIAL",
+   "depends_on": [
+    "W10-02",
+    "W11-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W05-04_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W11-05_HIDDEN_DEPS_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "事实投影关闭需 r1 内部 parts 钩子(无叶子函数)——登记不构建；短域对照已由 W05-04 覆盖(投影零增益)；长域对照=批B/LR1"
+  },
+  {
+   "id": "W11-03",
+   "package": "W11",
+   "package_name": "组件因果、删除与组合",
+   "track": "H/X/R",
+   "action": "关闭主体/状态守卫，测误判与纠错真实价值",
+   "acceptance": "防止删光知识换正确率；Capture失败分母保留",
+   "state": "PARTIAL",
+   "depends_on": [
+    "W10-02",
+    "W11-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-06_FREEZE_RULING_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "主体/状态守卫消融=r2 subject_evidence_fix 旗标可关，但冻结纪律(不再新增机制候选,诊断臂除外)下需诊断身份+重放+live；恢复入口=W09-06 并存纪律"
+  },
+  {
+   "id": "W11-04",
+   "package": "W11",
+   "package_name": "组件因果、删除与组合",
+   "track": "H/X/R",
+   "action": "比较完整/精简system与表达策略，固定其它层与输出合同",
+   "acceptance": "提示更短不要求回复更短；质量和额外成本一并看",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02",
+    "W11-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/G1_VERDICT_20261031.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_G1_NINEDIM_REVIEW.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "完整vs精简 system 同批对照=G1(r9_slim vs r7)：core/redline 三冗余去除+user _CALLBACK 剥除，其余层与输出合同固定；九维全部噪声带内(最差-0.097)、severe 0/0、机械32/32全平；prompt -3.8% p50 -28%"
+  },
+  {
+   "id": "W11-05",
+   "package": "W11",
+   "package_name": "组件因果、删除与组合",
+   "track": "H/X/R",
+   "action": "做预算/检索/场景分类器删除实验，检查隐藏依赖和相互作用",
+   "acceptance": "单组件与组合结论分开；动态状态不串臂",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02",
+    "W11-04"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W11-05_HIDDEN_DEPS_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "三层删除实验+5条隐藏依赖清单：CU预算耦合重放已证(净差≠毛成本,报告口径改写)；r链装配靶澄清；场景分类器=B0谱系依赖r链无此层；live验证归W09-06矩阵"
+  },
+  {
+   "id": "W11-06",
+   "package": "W11",
+   "package_name": "组件因果、删除与组合",
+   "track": "H/X/R",
+   "action": "删除或降级连续两轮没有收益的额外复杂度，复验组合候选",
+   "acceptance": "该保留的最小核心有因果/必要性证据；不能永远“未证但全保留”",
+   "state": "PARTIAL",
+   "depends_on": [
+    "W10-02",
+    "W11-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W09-05_LAYER_AUDIT_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "无收益复杂度处置：r9_slim 已删3冗余(G1证行为不劣)；层审计无可移除项(W09-05)；「连续两轮无收益」的 live 复验归 W09-06 矩阵后续批；恢复入口=W09-05 裁定 §4"
+  },
+  {
+   "id": "W12-01",
+   "package": "W12",
+   "package_name": "长知识、多日状态与恢复",
+   "track": "X/H/E",
+   "action": "真实生成早期事实和中间聊天，保证后续问题来源出窗",
+   "acceptance": "在实际prompt核查，不人工塞“正确记忆”冒充Capture",
+   "state": "DONE",
+   "depends_on": [
+    "W03-04",
+    "W05-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/long_probe_20261030/LR2_VERDICT_20261101.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/FLJUDGE_VERDICT_20261102.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-02",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result_note": "早期事实/中间聊天/出窗探针已实证：LRE060(40轮)/LRE048(32轮)由 T1-T12 逐字保留+续写生产，E 段探针问题来源出窗，实际 prompt 可核（窗口保持率测量按真实 prompt 逐轮计算 144/144）"
+  },
+  {
+   "id": "W12-02",
+   "package": "W12",
+   "package_name": "长知识、多日状态与恢复",
+   "track": "X/H/E",
+   "action": "中途checkpoint后换进程继续真实后一轮，不重烧前史",
+   "acceptance": "恢复身份/账/状态连续；不得只做serialize roundtrip",
+   "state": "DONE",
+   "depends_on": [
+    "W03-04",
+    "W05-02",
+    "W12-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W12-02_CHECKPOINT_RESUME_TEST_20261102.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/SCORER_MSRC_REEVAL_20261102.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-02",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 24,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result_note": "checkpoint 断点续跑实测 PASS：E061×window_expand_b 前12轮停点→新进程 --resume 续跑13-24轮；resumed_from=12、checkpoint_sha256 逐字一致、turn_01-12 产物60文件字节级零差异(不重烧)、restore_completed 事件在案；与 FLREGB 同轮机制态逐字一致(events=22/prompt_cu=2138)证明状态连续无污染。AUTH-W1202-CKPT-20261102-01 24/30。副产物=发现并修复 FK-SCORE-01 评分器契约缺口(4例历史误veto离线重评清除)"
+  },
+  {
+   "id": "W12-03",
+   "package": "W12",
+   "package_name": "长知识、多日状态与恢复",
+   "track": "X/H/E",
+   "action": "测跨日相对时间、过期、周期安排与临时变更",
+   "acceptance": "发言时间≠事件时间，已确认未来安排不用每轮重问",
+   "state": "DONE",
+   "depends_on": [
+    "W03-04",
+    "W05-02",
+    "W12-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "logs/longprobe_fljudge_live_20261101/_reports/FLJUDGE_MISS_CLASSIFICATION.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/FLJUDGE_VERDICT_20261102.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-02",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result_note": "跨日相对时间/过期/临时变更已测：LRE060 多日时间线（改期货车、押金闭环、周日方案被终案取代）；miss 亲读 stale_legit=2 证明过期/被取代事实的合法出窗已发生；周期性安排（recurring）覆盖较弱，wave-3 长剧批补"
+  },
+  {
+   "id": "W12-04",
+   "package": "W12",
+   "package_name": "长知识、多日状态与恢复",
+   "track": "X/H/E",
+   "action": "多人归属/否定/条件接受/取消重开复杂交错",
+   "acceptance": "来源/新旧状态明确；能自然提问但不乱确认",
+   "state": "PARTIAL",
+   "depends_on": [
+    "W03-04",
+    "W05-02",
+    "W12-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "logs/longprobe_fljudge_live_20261101/_reports/WINDOW_KEEP_FLJUDGE.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-02",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result_note": "多人归属（subject THIRD/SHARED 原子）与否定（negation 字段）已随窗口保持率按原子测量；条件接受与取消重开交错由 r7 supersede 线（LR2R7 批）覆盖记账层；条件接受语义面（'如果你有空就…'触发）未专项测——W13-02 反事实批的状态翻转型将覆盖，故留 PARTIAL"
+  },
+  {
+   "id": "W12-05",
+   "package": "W12",
+   "package_name": "长知识、多日状态与恢复",
+   "track": "X/H/E",
+   "action": "测长链召回、知识覆盖、正确使用与污染的六段曲线",
+   "acceptance": "记录成功也记录未知/失败，不能只挑有投影的6条",
+   "state": "DONE",
+   "depends_on": [
+    "W03-04",
+    "W05-02",
+    "W12-04"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "logs/longprobe_fljudge_live_20261101/_reports/WINDOW_KEEP_FLJUDGE.json",
+    "logs/longprobe_fljudge_live_20261101/_reports/FLJUDGE_MISS_CLASSIFICATION.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-02",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 144,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result_note": "长链召回六段曲线已测(40/32轮双臂): T1-12 1.0 全臂; T13-24 parent 0.60-0.86 vs cand 1.0; T25-40 parent 0.40-0.51 vs cand 0.92-1.0(机械), 真实 0.987; miss 亲读 18/2/2/0"
+  },
+  {
+   "id": "W12-06",
+   "package": "W12",
+   "package_name": "长知识、多日状态与恢复",
+   "track": "X/H/E",
+   "action": "冻结长期能力判决与恢复缺陷，不以低成本牺牲核心知识",
+   "acceptance": "返回范围内通过/返修/失败，给原文和恢复证据",
+   "state": "DONE",
+   "depends_on": [
+    "W03-04",
+    "W05-02",
+    "W12-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/long_probe_20261030/FLJUDGE_VERDICT_20261102.md",
+    "refs/KNOWN_FAILURES.md#FK-LR2-01"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-02",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result_note": "长期能力判决冻结: KEEP window_expand_b(>24轮域), r9_slim 保 <=24轮域; 恢复缺陷=checkpoint 续跑已被 iso_run 4 residents 实证(distinct_run_ids=4); 核心知识未以低成本牺牲(severe 1<=2)"
+  },
+  {
+   "id": "W13-01",
+   "package": "W13",
+   "package_name": "未见故事、反事实与泛化",
+   "track": "E/R/X",
+   "action": "在候选冻结后准备8篇首批新验证，登记作者可见范围与暴露",
+   "acceptance": "author读过代码/失败例则不称独立；条件不足如实分级",
+   "state": "DONE",
+   "depends_on": [
+    "W10-04",
+    "W03-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W13-01_HOLDOUT_BATCH1_20261031.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "冻结后首批8篇选配登记(E038/E040/E043/E044+E022/E028/E029/E035，第二批留4)；G1四篇待收口补expose；可见范围登记(本会话读过logs不产新文)"
+  },
+  {
+   "id": "W13-02",
+   "package": "W13",
+   "package_name": "未见故事、反事实与泛化",
+   "track": "E/R/X",
+   "action": "固定历史仅换目标/主体/时间/否定/事项状态，做成对反事实",
+   "acceptance": "行为应随因果输入变化，不靠专名命中",
+   "state": "DONE",
+   "depends_on": [
+    "W10-04",
+    "W03-05",
+    "W13-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/long_probe_20261030/CF1_VERDICT_20261102.md",
+    "logs/longprobe_cf1_live_20261102/_reports/CF_SENSITIVITY.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_CF1_NINEDIM_REVIEW.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-02",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 192,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result_note": "成对反事实批完成：8 对孪生(E149-E156,5扰动型)入库+live 192/192 零失败。判决=保留不确定(双臂跟随率 0.681/0.698 落 0.60-0.75 不确定带,不补跑)；沿用率 0-1.7% ≪40%→H_CF_null 不成立；E156 专名对照过；severe cand0/parent1(亲读中)；度量法改进项=新值不出口口径"
+  },
+  {
+   "id": "W13-03",
+   "package": "W13",
+   "package_name": "未见故事、反事实与泛化",
+   "track": "E/R/X",
+   "action": "新领域与弱词面表达验证，和已见任务同量尺比较",
+   "acceptance": "开发/新故事差距分列，不因失败把题改成容易通过",
+   "state": "DONE",
+   "depends_on": [
+    "W10-04",
+    "W03-05",
+    "W13-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/long_probe_20261030/W13-03_VERDICT_20261102.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-02 17:43",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result_note": "H_GEN 成立：双冠军新域无塌陷（b 最差维差 -0.26）；b 头对头 9/9 维正+severe 亲读 0/1+成本-53%；登记 ≤24 轮域冠军再评估证据（待 W14M-02 后统一）"
+  },
+  {
+   "id": "W13-04",
+   "package": "W13",
+   "package_name": "未见故事、反事实与泛化",
+   "track": "E/R/X",
+   "action": "正向能力跨关系阶段验证（5桶盘点：渐暧昧35/熟人24/普通14/搭子14/亲属9；选 E140/E179/E205+E128/E184/E127）",
+   "acceptance": "interact/init/emotion 按桶分列机会位分母；回避型塌陷=渐暧昧桶 init<=其它-0.3 且 boundary>=+0.3；调情/深聊显式探针缺口→W13-04b 补料",
+   "state": "DONE",
+   "depends_on": [
+    "W10-04",
+    "W03-05",
+    "W13-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W13-04_STAGESPREAD_DESIGN_20261102.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W13-04_VERDICT_20261102.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-02 20:34",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "gate": "isolation (需 wave-1 素材)",
+   "result_note": "H_STAGE 成立：渐暧昧桶 b 9/9 维全正(init+0.31/boundary+0.31)无回避型塌陷；b 的 severe 位=无据确定化族(冠军链共性)；建议下一主线=≤24轮已见域确认批评估合并双冠军"
+  },
+  {
+   "id": "W13-05",
+   "package": "W13",
+   "package_name": "未见故事、反事实与泛化",
+   "track": "E/R/X",
+   "action": "扩至足够故事数做确认；关键随机重复和顺序复核有预登记",
+   "acceptance": "人工/裁判噪声边界明确，效果微小时不强行宣布赢家",
+   "state": "PLANNED",
+   "depends_on": [
+    "W10-04",
+    "W03-05",
+    "W13-04"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ]
+  },
+  {
+   "id": "W13-06",
+   "package": "W13",
+   "package_name": "未见故事、反事实与泛化",
+   "track": "E/R/X",
+   "action": "验证揭晓后冻结判决；失败题转DEV，再补新holdout",
+   "acceptance": "不无限循环同一保留集选参，原始失败公开留存",
+   "state": "PLANNED",
+   "depends_on": [
+    "W10-04",
+    "W03-05",
+    "W13-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "gate": "isolation (需 wave-1 素材与验证批)"
+  },
+  {
+   "id": "W14-01",
+   "package": "W14",
+   "package_name": "质量之后的性能、费用与可靠性",
+   "track": "X/H",
+   "action": "复用流式计时，确认headers/首内容/首个可用/结束/落盘含义",
+   "acceptance": "role-only/心跳不计内容；没有消费验证不冒称首个可发",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": true,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W14-01_TIMING_DEFS_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "计时口径三对一确认(定义/接线/落盘)：G1 live 实测分段全链在案；首内容≠首可用诚实标注(first_usable=null/not_verified)；usage=api_usage费用可比；W14-02可直接消费G1 timing"
+  },
+  {
+   "id": "W14-02",
+   "package": "W14",
+   "package_name": "质量之后的性能、费用与可靠性",
+   "track": "X/H",
+   "action": "同配置测原版/入围的p50/p95、超时、故障与恢复",
+   "acceptance": "代表性长度/并发、样本量与上游波动说明，旧非流式不混",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02",
+    "W14-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W14-02_TIMING_COMPARE_20261031.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "G1 同配置双臂 p50/p95/超时/故障对比：r9_slim p50 25.5s vs r7 35.3s(-28%)，双臂零失败；每OK结果成本 -3.8%"
+  },
+  {
+   "id": "W14-03",
+   "package": "W14",
+   "package_name": "质量之后的性能、费用与可靠性",
+   "track": "X/H",
+   "action": "核输入输出缓存失败消耗、每语义可用结果成本",
+   "acceptance": "usage未知留空，无价目不编金额；少备选作为单独变量",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02",
+    "W14-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W14-03_CACHE_COST_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "缓存普查80文件：dsf网关不回填cache统计→缓存消耗不可核算(字段留槽)；每OK结果成本 r9_slim 6049 vs r7 6290.6 tokens(-3.8%)；前缀缓存破坏效应登记网关观察项；成本不作晋级依据"
+  },
+  {
+   "id": "W14-04",
+   "package": "W14",
+   "package_name": "质量之后的性能、费用与可靠性",
+   "track": "X/H",
+   "action": "试提示/缓存/预算/流式消费等真正等待优化，保护质量",
+   "acceptance": "质量回退不得以提速抵销；不能只优化首token表面读数",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02",
+    "W14-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W14-04_LATENCY_LEVER_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "等待分解(G1 timing 零调用)：headers 逐毫秒同值→差异全在首内容前段(-24%)=服务端预读输入成本；输出tokens与延迟零相关→杠杆=缩短输入非输出；r9_slim瘦体恰在杠杆上；网关前缀缓存=次杠杆观察项"
+  },
+  {
+   "id": "W14-05",
+   "package": "W14",
+   "package_name": "质量之后的性能、费用与可靠性",
+   "track": "X/H",
+   "action": "测长时间稳定运行、协议脆弱性与消费规范化留损",
+   "acceptance": "原始raw保留、语义不被修复器编造；异常/失败分类准确",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02",
+    "W14-04"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W14-05_06_STABILITY_PARETO_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "G1+LR1 背靠背 112 次真实生成约 3.5h 零失败零协议断裂；两起配置事故均被防污染闸正确拦截；usage 落盘全量；稳定域定界 3.5h/112 次"
+  },
+  {
+   "id": "W14-06",
+   "package": "W14",
+   "package_name": "质量之后的性能、费用与可靠性",
+   "track": "X/H",
+   "action": "给质量/费用/等待/复杂度Pareto表，明确用户交易",
+   "acceptance": "不要求所有维度必须同时变好；不隐藏长尾退化",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02",
+    "W14-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W14-05_06_STABILITY_PARETO_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "Pareto 前沿=v0(≤24轮成本敏感)与r9_slim(簿记/保守谱系)两点；核心未决轴=>24轮长剧域；成本等待不作晋级依据"
+  },
+  {
+   "id": "W15-01",
+   "package": "W15",
+   "package_name": "论文式综合交付与可运行引擎",
+   "track": "R/X",
+   "action": "维护所有参赛身份谱系、运行范围与同量尺成绩",
+   "acceptance": "历史NR不补0，旧版本不贴新成绩，不画虚构升级曲线",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W15-01_LINEAGE_REGISTRY_2026-10-31.md",
+    "D:/lovebrain-arena/tools/build_lineage_registry.py"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "9身份谱系成绩册(角色/谱系/批次/同量尺成绩/成本/状态)+双文件hash漂移基线；身份时点值口径说明"
+  },
+  {
+   "id": "W15-02",
+   "package": "W15",
+   "package_name": "论文式综合交付与可运行引擎",
+   "track": "R/X",
+   "action": "交完整方法：任务分布、基线、公平输入、评分、预算、统计",
+   "acceptance": "导师可从方法理解结论，不需要先读40份过程报告",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02",
+    "W15-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W15-02_METHODS_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "完整方法文档(7节)：任务分布/基线公平输入/评分(九维+severe+B3+六段+正向)/预算(帽+预注册+零派发闸)/统计判决纪律/身份谱系/已知边界"
+  },
+  {
+   "id": "W15-03",
+   "package": "W15",
+   "package_name": "论文式综合交付与可运行引擎",
+   "track": "R/X",
+   "action": "交九维/正向切片/六段知识/严重错误/泛化/消融结果",
+   "acceptance": "支持/反对样例俱全；未知与裁判能力单列",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02",
+    "W15-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W15-03_RESULTS_DOSSIER_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "六类结果汇编卷宗(九维/正向切片/六段知识/severe谱/泛化/消融)——索引型，结论表+原始件指针"
+  },
+  {
+   "id": "W15-04",
+   "package": "W15",
+   "package_name": "论文式综合交付与可运行引擎",
+   "track": "R/X",
+   "action": "打包一个最小可跑引擎、基线、必要材料与复现命令",
+   "acceptance": "干净目录实际运行；不夹私聊/密钥/活动授权/旧ACL残骸",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02",
+    "W15-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W15-04_REPRO_MANIFEST.json",
+    "D:/lovebrain-arena/tools/verify_repro_package.py"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "最小可跑包核验 missing=0：引擎四件+派发器+冠军链(r9_slim→r7→r2→r1→v6g→v5)+基线+素材+账本全 hash 清单；复现命令 5 步；零三方依赖"
+  },
+  {
+   "id": "W15-05",
+   "package": "W15",
+   "package_name": "论文式综合交付与可运行引擎",
+   "track": "R/X",
+   "action": "有范围地给ACCEPT/REWORK/FAIL与当前推荐候选",
+   "acceptance": "不能以截止日期或模型额度把REWORK改通过；原型随时可交",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02",
+    "W15-04"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W15-05_SCOPED_RULING_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "范围裁定：ACCEPT(r9_slim推荐/r7簿记/v0≤24轮/评审链/保管纪律) + REWORK×5(全有恢复入口) + FAIL=无(只判死假设不判死身份)"
+  },
+  {
+   "id": "W15-06",
+   "package": "W15",
+   "package_name": "论文式综合交付与可运行引擎",
+   "track": "R/X",
+   "action": "原产品只交接口/迁移/回退设计，待用户解除暂停才改App",
+   "acceptance": "不让设备/JDK/Android缺件阻塞研究；不先美化接入",
+   "state": "DONE",
+   "depends_on": [
+    "W10-02",
+    "W15-05"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W15-06_INTEGRATION_DESIGN_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "接入设计交付(不改App)：服务形态+输出合同冻结点+三阶段迁移(shadow/单风格/全量)各带判据+特征开关回退(触发器继承)+custody身份对账；实施待用户解除暂停"
+  },
+  {
+   "id": "W16-01",
+   "package": "W16",
+   "package_name": "持续循环、监督与断窗恢复（从第一天就运行）",
+   "track": "X/integrator",
+   "action": "建立当前候选/批次/队列/预算/下一步的单一状态入口",
+   "acceptance": "旧指南仅历史，状态变化一次写回，不造多个“最新版”",
+   "state": "DONE",
+   "depends_on": [
+    "W01-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/global_harness_program_20261030/RESEARCH_STATE.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "RESEARCH_STATE.json 刷新：W09包闭环+G1 RUNNING(current_batch)+next_actions；单一状态入口恢复现势"
+  },
+  {
+   "id": "W16-02",
+   "package": "W16",
+   "package_name": "持续循环、监督与断窗恢复（从第一天就运行）",
+   "track": "X/integrator",
+   "action": "每项按证据核销四要素：实现、验证、结论、恢复入口",
+   "acceptance": "只有报告/自测没有所需真实实验不能记ACCEPTED",
+   "state": "DONE",
+   "depends_on": [
+    "W01-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W16-02_AUDIT_20261031.json",
+    "D:/lovebrain-arena/tools/w1602_audit.py"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "四要素核销审计 49 项：47 干净/2 缺口(W03-06 恢复入口在案待隔离会话; W04-06 零指针已回填)；审计器三修(锚点剥离/裸文件名PROG解析/早期结论在证据文档约定)"
+  },
+  {
+   "id": "W16-03",
+   "package": "W16",
+   "package_name": "持续循环、监督与断窗恢复（从第一天就运行）",
+   "track": "X/integrator",
+   "action": "宿主支持时接现有持久runner与事件通知，后台隐藏启动",
+   "acceptance": "记录pid/输出/锁/检查点；会话end_turn不冒称agent仍在思考",
+   "state": "PLANNED",
+   "depends_on": [
+    "W01-01",
+    "W01-06"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": true,
+   "evidence": [],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ]
+  },
+  {
+   "id": "W16-04",
+   "package": "W16",
+   "package_name": "持续循环、监督与断窗恢复（从第一天就运行）",
+   "track": "X/integrator",
+   "action": "断窗先核物理attempt/原始结果和未决，再恢复无冲突工作",
+   "acceptance": "未决调用不重试；不停止用户GUI/其它项目，不用静默当死亡",
+   "state": "DONE",
+   "depends_on": [
+    "W01-01",
+    "W01-06"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/RESEARCH_STATE.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "断窗恢复协议实练：本程序会话经历 G1 首派授权拒绝/LR1 撞名拒绝两次中断均按守卫→修授权→重派恢复；断窗先核 attempts/原始输出再续的纪律入 RESEARCH_STATE"
+  },
+  {
+   "id": "W16-05",
+   "package": "W16",
+   "package_name": "持续循环、监督与断窗恢复（从第一天就运行）",
+   "track": "X/integrator",
+   "action": "每个完整循环自动补未来至少48–72有效工程小时任务",
+   "acceptance": "从真实短板/未测正向/新故事/消融/效率选；不复制旧任务凑数",
+   "state": "DONE",
+   "depends_on": [
+    "W01-01",
+    "W01-06"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "W16-05_REPLENISH_LIST_20261031_v3.md + FOURTH_ROUND_VERDICT_20261031.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-10-31T04:05:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "status": "DONE",
+   "sub_status": "long_probe_b1_partial_b2_done_c1_dispatching",
+   "notes": "; 2026-10-30T09:25: staged results saved; B1 review rerun dispatched (cap=86); C1 challenge dispatching"
+  },
+  {
+   "id": "W16-06",
+   "package": "W16",
+   "package_name": "持续循环、监督与断窗恢复（从第一天就运行）",
+   "track": "X/integrator",
+   "action": "连续迭代直到验收或具体外部阻断，阶段交付后继续下一循环",
+   "acceptance": "不停在“准备好/等48次口令”，也不虚构无人值守288h；主线耗尽才报告完成",
+   "state": "DONE",
+   "depends_on": [
+    "W01-01",
+    "W01-06"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/RESEARCH_STATE.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "completion_gate": [
+    "implementation_or_reused_artifact",
+    "required_validation",
+    "scoped_decision",
+    "recovery_entry"
+   ],
+   "result": "连续迭代常态=用户「继续」触发 + 每循环完成完整工作单元；本循环 G1+LR1+15任务核销为一次完整交付；后续循环由触发器自然驱动"
+  },
+  {
+   "id": "W14M-01",
+   "package": "W14M-压制候选",
+   "package_name": "机制候选：被取代口径主动压制",
+   "track": "M/E",
+   "action": "window_expand_b2 实现+E061 回归批（48 attempts）+对拍 window_expand_b 存档",
+   "acceptance": "九维最差维>=-0.3；severe(b2)<=severe(parent) 亲读账；prompt<=r9_slim；不满足即淘汰不调参重跑",
+   "state": "DONE",
+   "depends_on": [
+    "W13-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W14_SUPPRESSION_DESIGN_20261102.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/AUTHORIZATION_W14R.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W14M01_REGRESSION_VERDICT_20261102.md"
+   ],
+   "owner": null,
+   "started_at": "2026-11-02 13:55",
+   "completed_at": "2026-11-02 14:47",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 48,
+   "estimate_engineering_hours": 1.0,
+   "estimate_note": "实现+sanity 已完成（设计§6修订记录），回归批 live 运行中",
+   "result_note": "回归 PASS：九维最差 init -0.042；severe 亲读 1<=1；prompt -52%；对拍 b2≈b 24/24 字节一致"
+  },
+  {
+   "id": "W14M-02",
+   "package": "W14M-压制候选",
+   "package_name": "机制候选：被取代口径主动压制",
+   "track": "M/E",
+   "action": "判决批：4 篇域分散 SEALED 长剧（LRE121医疗/LRE127数码/LRE145出行/LRE146家庭，144位）b2 vs window_expand_b ≈288 attempts",
+   "acceptance": "KEEP：同类 severe=0 且九维最差>=-0.5 且 T25-32 真实保持>=0.85 且 severe 总账 b2<=b（亲读）；淘汰 H_SUP_null：同类 severe>=1 或总账 b2>b",
+   "state": "DONE",
+   "depends_on": [
+    "W14M-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W14.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W14M02_JUDGMENT_VERDICT_20261102.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-02 18:29",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.0,
+   "estimate_note": "素材已备（episodes+144卡导出完成，池仍 SEALED）；回归门通过后派发",
+   "result_note": "H_SUP_null 触发→b2 淘汰：同类 severe(坐实未定) LRE146_T20 亲读成立 1 例；正向证据=LRE121 压制段活跃篇 b2 零 severe vs b≥2、keep 1.0、九维最差-0.007；下一假设=W16 检测覆盖缺口"
+  },
+  {
+   "id": "W15N-01",
+   "package": "W15N-消融",
+   "package_name": "删除实验：冠军 recap 死重检验",
+   "track": "M/E",
+   "action": "window_expand_b_norecap（删 delta ② recap，保留 3600 扩窗）vs window_expand_b，LRE117+1 篇 recap 最活跃长剧，160 attempts",
+   "acceptance": "H_NORECAP：T25-32 keep>=0.95x父本+九维最差>=-0.3+severe不升→冠军简化；任一门破→recap 保留登记低频有用",
+   "state": "DONE",
+   "depends_on": [
+    "W14M-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W15_NORECAP_ABLATION_DESIGN_20261102.md",
+    "candidates/window_expand_b_norecap/",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W15N01_ABLATION_VERDICT_20261102.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W15N_A_NINEDIM_REVIEW.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W15N_B_NINEDIM_REVIEW.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W15N_A_B3_QUEUE.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W15N_B3_READRESULT.json",
+    "logs/w15n_norecap_live_20261102/_reports/WINDOW_KEEP_W15N.json"
+   ],
+   "owner": "main-zcode-20261102",
+   "started_at": "2026-11-02 19:20",
+   "completed_at": "2026-11-02 20:52",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 160,
+   "estimate_engineering_hours": 1.0,
+   "estimate_note": "候选已实现；离线证据=LD1 四篇 recap ≤199CU 且仅 T34+；批 BATCH-W15N-NORECAP-20261102（AUTH-W15N-20261102-01，160/160 零失败，--workers 并行派发）",
+   "result_note": "KEEP→冠军简化：T25-32 keep 1.000/1.000、九维 9/9 全正（最差 init/emotion +0.038）、severe 亲读 1≤12、成本−0.3%；>24轮域冠军=window_expand_b_norecap（window_expand_b 转历史版本）"
+  },
+  {
+   "id": "W16-07",
+   "package": "W16",
+   "package_name": "状态卫生工具化（2026-11-02 污染体检后补入）",
+   "track": "X",
+   "action": "把状态散文腐化/死注册表/悬空证据/冻结件误改做成机械检查，只读工具 + 规则文档",
+   "acceptance": "audit 工具可复跑且 error=0；规则文档覆盖 R1–R7；不删除任何既有文件",
+   "state": "DONE",
+   "depends_on": [],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "tools/audit_workspace_hygiene.py",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/WORKSPACE_HYGIENE_RULES_20261102.md",
+    "logs/hygiene_audit_20261102.json",
+    "logs/INDEX.json"
+   ],
+   "owner": "main-zcode-20261102",
+   "started_at": "2026-11-02 20:56",
+   "completed_at": "2026-11-02 21:35",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 0.75,
+   "estimate_note": "体检已由人工完成一轮；本任务只做机械化与去噪（含修 2 处真实悬空 evidence）",
+   "result_note": "C1 入口新鲜度/C2 墓碑/C3 散文禁令/C4 证据可解析/C5 文件卫生/C6 工具契约 六项落地；首跑 18 error 中 16 为检查器解析口径、2 为真实错误（W10-03 与 W15N-01 evidence 路径）已修；终态 error 0/warn 7 全部登记在规则文档遗留表"
+  },
+  {
+   "id": "W17-01",
+   "package": "W17",
+   "package_name": "单冠军合并确认批",
+   "track": "E/M",
+   "action": "r9_slim（≤24 冠军）vs window_expand_b_norecap（>24 冠军）在 6 篇未暴露 12 轮标准篇头对头，144 attempts，判定双冠军能否合并",
+   "acceptance": "H_MERGE 冻结判据：G1 九维最差>=-0.3 + G2 T07-12 keep>=0.95x + G3 severe 亲读不升 → MERGE；G1 in [-0.5,-0.3) 且成本显著低 → 不合并登记分区；G1<-0.5 或 G2 破 → 维持双冠军",
+   "state": "DONE",
+   "depends_on": [],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W17_SINGLE_CHAMPION_DESIGN_20261102.md",
+    "benchmark/stories_v2/wave3/GRADING_CARDS_W17.json",
+    "benchmark/episodes/E189.json",
+    "benchmark/episodes/E190.json",
+    "benchmark/episodes/E195.json",
+    "benchmark/episodes/E199.json",
+    "benchmark/episodes/E207.json",
+    "benchmark/episodes/E208.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W17_MERGE_VERDICT_20261102.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W17_NINEDIM_REVIEW.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W17_B3_READRESULT.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/WINDOW_KEEP_W17.json",
+    "logs/w17_merge_live_20261102.DONE.json"
+   ],
+   "owner": "main-zcode-20261102",
+   "started_at": "2026-11-02 22:25",
+   "completed_at": "2026-11-02 23:58",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 144,
+   "estimate_engineering_hours": 1.5,
+   "estimate_note": "设计已冻结+素材已导出（6 篇 episode+cross 72 卡）；待离线字节核对→emit plan→AUTH cap144→precheck→live",
+   "result_note": "不合并（维持双冠军）：G1 PASS（整体最差 emotion -0.071，memory +0.132）、G2 1.0、G3 FAIL（亲读 severe 2 vs 1）、成本 -52.6%；判据外发现契约违规 16/72 vs 4/72（自造风格键）+1 例空回复 → 登记 D-W17-01，W17b 加契约守卫后重测"
+  },
+  {
+   "id": "W16-08",
+   "package": "W16",
+   "package_name": "未定标记机制",
+   "track": "M",
+   "action": "冻结 uncertain-marking 设计：hedge+实体锚点+未被后续确认关闭 三条件检测，注入≤120CU 未定段；不采用加取消词表路线",
+   "acceptance": "设计覆盖检测/注入/不变量/判据/素材/离线验收六节；判据跑前冻结",
+   "state": "DONE",
+   "depends_on": [],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W16_UNCERTAIN_DESIGN_20261102.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W15N_B3_READRESULT.json"
+   ],
+   "owner": "main-zcode-20261102",
+   "started_at": "2026-11-02 21:40",
+   "completed_at": "2026-11-02 22:05",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 0.75,
+   "estimate_note": "证据链三案+W15N 亲读补充（两臂失效方向不同）；单变量增量，不恢复 recap、不与 b2 压制合并",
+   "result_note": "设计冻结：G1 severe 从严（cand<par）+G2 interact/emotion/initiative 各>=-0.2 +G3 prompt<=+5% +G4 触发面(10%,90%]"
+  },
+  {
+   "id": "W16-09",
+   "package": "W16",
+   "package_name": "未定标记机制",
+   "track": "M",
+   "action": "实现 candidates/window_expand_b_norecap_uc（新增 uncertain_rules.py + mechanism.py 三处接入）并过离线单测/mock 字节等价",
+   "acceptance": "6 组正反例单测通过；无未定时与父本 prompt sha256 相同；有未定时只多该段；≤120CU 硬上限",
+   "state": "DONE",
+   "depends_on": [
+    "W16-08"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W16_UNCERTAIN_DESIGN_20261102.md",
+    "candidates/window_expand_b_norecap/mechanism/mechanism.py",
+    "candidates/window_expand_b_norecap_uc/mechanism/uncertain_rules.py",
+    "tools/test_uncertain_rules.py",
+    "tools/check_prompt_equivalence.py",
+    "logs/W16_UC_LRE117.json",
+    "logs/W16_UC_LRE146.json",
+    "logs/W16_UC_E190.json"
+   ],
+   "owner": null,
+   "started_at": "2026-11-02 22:20",
+   "completed_at": "2026-11-02 23:05",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 1.5,
+   "estimate_note": "纯函数零模型调用；父本已含 events(uid/role/text/ts)",
+   "result_note": "实现完成：三类结构信号+相关性过滤+引号问句门+已定决定排除；单测 8 组全过；触发面 LRE117 5/40、LRE146 10/40、E190 4/12（约20%，G4 内）；无未定时与父本逐字节相同"
+  },
+  {
+   "id": "W16-10",
+   "package": "W16",
+   "package_name": "未定标记机制",
+   "track": "E",
+   "action": "BATCH-W16-UNC：LRE117+LRE146（回归）+LRE148（泛化）x2 臂 240 attempts，判 uncertain 是否降 severe 且不引发回避",
+   "acceptance": "G1 severe 亲读 cand<par + G2 九维最差>=-0.2 且 interact/emotion/initiative 各>=-0.2 + G3 prompt<=+5%/0 额外调用 + G4 触发面(10%,90%]；全过 KEEP",
+   "state": "DONE",
+   "depends_on": [
+    "W16-09"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W16_UNCERTAIN_DESIGN_20261102.md",
+    "benchmark/stories_v2/wave3_ext/GRADING_CARDS_LD1.json",
+    "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W14.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W16.BATCH_CONFIG.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W16.INTERLEAVE_PLAN.json",
+    "benchmark/stories_v2/wave3_ext/GRADING_CARDS_W16.json",
+    "benchmark/episodes/LRE148.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W16_UNC_VERDICT_20261102.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W16_NINEDIM_REVIEW.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W16_B3_READRESULT.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/WINDOW_KEEP_W16.json",
+    "logs/w16_unc_live_20261102.DONE.json"
+   ],
+   "owner": "main-zcode-20261102",
+   "started_at": "2026-11-02 23:06",
+   "completed_at": "2026-11-03 00:30",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 240,
+   "estimate_engineering_hours": 2.0,
+   "estimate_note": "LRE117/LRE146 卡已在册；LRE148 需新生成卡片并冻结 hash；两篇回归一篇泛化防过拟合",
+   "result_note": "KEEP→>24轮冠军升级：四门全过（severes 亲读1<6、九维9/9全正 memory+0.301/最差init+0.087、prompt+0.78%、触发29.2%）；机械分8.65→9.62、契约违规10→4；LRE117/LRE146 回归篇候选 severe 0"
+  },
+  {
+   "id": "W17-02",
+   "package": "W17",
+   "package_name": "短剧域输出契约守卫（W17b）",
+   "track": "M/E",
+   "action": "给 window_expand_b_norecap 加机制层输出契约守卫（schema 校验+确定性修复，非 prompt 精修），在 E189/E190/E195/E199/E207/E208 上与 b_norecap 单变量对照，144 attempts",
+   "acceptance": "冻结判据：契约违规率 <= 父本+1 位 + 空回复=0 + 九维最差>=-0.3 + severe 亲读不升 + 成本如实报告；全过→合并再评估，否则维持双冠军",
+   "state": "DONE",
+   "depends_on": [
+    "W17-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/long_probe_20261030/W17_MERGE_VERDICT_20261102.md",
+    "candidates/action_policy_r9_slim/mechanism/mechanism.py",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W17B_GUARD_DESIGN_20261102.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W17B.BATCH_CONFIG.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W17B.INTERLEAVE_PLAN.json",
+    "candidates/window_expand_b_norecap_guard/mechanism/contract_guard.py",
+    "tools/test_contract_guard.py",
+    "tools/pipeline_review_watch.py",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W17B_GUARD_VERDICT_20261103.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W17B_NINEDIM_REVIEW.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W17B_B3_READRESULT.json",
+    "logs/w17b_guard_live_20261102.DONE.json"
+   ],
+   "owner": "main-zcode-20261102",
+   "started_at": "2026-11-03 10:20",
+   "completed_at": "2026-11-03 11:58",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 144,
+   "estimate_engineering_hours": 2.0,
+   "estimate_note": "契约守卫可参照 r9_slim 的 output_repair_e3（机制层修复而非改 prompt）；素材复用六篇已暴露篇，判决标注已见域",
+   "result_note": "KEEP：G1 契约违规 2/72 vs 7/72、G2 空回复 0、G3 九维最差 -0.058（逐篇 E190 emotion -0.364 已登记）、G4 severe 亲读 0 vs 2、G5 prompt +0%；program 8.59→8.96；评审批量由 watcher 边跑边评"
+  },
+  {
+   "id": "W17-03",
+   "package": "W17",
+   "package_name": "≤24 域合并复评（W17c）",
+   "track": "E",
+   "action": "window_expand_b_norecap_guard vs action_policy_r9_slim 在 6 篇未暴露 12 轮篇（E157/E164/E170/E183/E191/E212）头对头，144 attempts，复评单冠军合并可行性",
+   "acceptance": "冻结判据：G1 九维最差>=-0.3 且 interact/emotion/initiative>=-0.2；G2 severe 亲读 cand<=par；G3 契约违规 cand<=par+1；G4 空回复 0；G5 成本只报告；全过→合并单冠军，否则维持双冠军",
+   "state": "DONE",
+   "depends_on": [
+    "W17-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/long_probe_20261030/W17B_GUARD_VERDICT_20261103.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W17C_MERGE_VERDICT_20261103.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W17C_NINEDIM_REVIEW.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W17C_B3_READRESULT.json",
+    "logs/w17c_merge_live_20261103/_reports/ARM_STATS_W17C.json"
+   ],
+   "owner": null,
+   "started_at": "2026-11-03 12:01",
+   "completed_at": "2026-11-03 12:55",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 233,
+   "estimate_engineering_hours": 1.5,
+   "estimate_note": "候选已由 W17b 验证；需导出六篇+新卡片+plan+授权",
+   "result_note": "MERGE（≤24 域）：guard 通过 G1-G5（九维最差 emotion −0.015；severe cand 0 vs parent 3 确认/1 降级；契约 2/72 vs 2/72；空 0；prompt −52.2%；T07-12 keep 1.034）。Rev2：G1 main-only 最差 +0.033，机械均值修正 9.583（−0.093）；隔离路径 m_src 误判见 FK-SCORE-01 复现，W19-01 修复后重评。r9_slim 转历史。证据：W17C_MERGE_VERDICT_20261103.md / LP_W17C_NINEDIM_REVIEW.json / LP_W17C_B3_READRESULT.json"
+  },
+  {
+   "id": "W18-01",
+   "package": "W18",
+   "package_name": "未定+压制组合",
+   "track": "M",
+   "action": "冻结 W18 组合设计（S 门控/同锚点取最新/跨段去重/总预算360；素材 LRE117/121/146+LRE138；320 attempts）",
+   "acceptance": "设计覆盖机制规格、判据、素材暴露核实、去一法退出条件、执行清单",
+   "state": "DONE",
+   "depends_on": [],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W18_UNC_SUPPRESS_DESIGN_20261102.md"
+   ],
+   "owner": "subagent-20261103",
+   "started_at": "2026-11-03 10:00",
+   "completed_at": "2026-11-03 11:30",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 1.0,
+   "estimate_note": "设计由子智能体完成；离线触发表已由实现者复现零差异",
+   "result_note": "设计冻结；LRE138 经 plans/ledgers 核查未暴露"
+  },
+  {
+   "id": "W18-02",
+   "package": "W18",
+   "package_name": "未定+压制组合",
+   "track": "M",
+   "action": "实现 candidates/window_expand_b_norecap_uc_supp（S+U 两段、门控、同锚点取最新、跨段去重、360CU 上限）并过离线单测/触发复现",
+   "acceptance": "单测全过；触发表与设计逐篇零差异；无信号时与父本逐字节相同；LRE146 40/40 字节等价",
+   "state": "DONE",
+   "depends_on": [
+    "W18-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "candidates/window_expand_b_norecap_uc_supp/mechanism/suppression_rules.py",
+    "tools/test_uc_supp_rules.py",
+    "tools/replay_uc_supp_triggers.py",
+    "logs/W18_TRIGGER_REPLAY.json"
+   ],
+   "owner": "subagent-20261103",
+   "started_at": "2026-11-03 11:05",
+   "completed_at": "2026-11-03 11:40",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.0,
+   "estimate_note": "25/25 单测；S/U/同场/并集 33/5/5/33、36/4/4/36、0/10/0/10、18/5/2/21 与设计一致",
+   "result_note": "实现完成；字节等同 73/160；xdedup=0；见 logs/W18_TRIGGER_REPLAY.json"
+  },
+  {
+   "id": "W18-03",
+   "package": "W18",
+   "package_name": "未定+压制组合",
+   "track": "E",
+   "action": "BATCH-W18-UCSUPP：uc_supp vs uc on LRE117/LRE121/LRE146（回归）+LRE138（泛化），320 attempts",
+   "acceptance": "G1 severe 亲读两类都覆盖且 cand<par；G2 九维最差>=-0.2 且 interact/emotion/initiative>=-0.2；G3 prompt<=+8%/0 额外调用；G4 触发面(10%,90%]；全过 KEEP",
+   "state": "PARTIAL",
+   "depends_on": [
+    "W18-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W18_UNC_SUPPRESS_DESIGN_20261102.md"
+   ],
+   "owner": null,
+   "started_at": "2026-11-03 12:01",
+   "completed_at": "2026-11-03 12:25",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 91,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "LRE138 需导出 episode 与生成卡片；两批各 6 路并行",
+   "result_note": "EXECUTION_FAILED_TIMEOUT：12:24:48 LRE121_T15 parent 网关 120s 超时触发 fail_fast，批次止于 90/320 manifests（LRE138 未开始）；按授权 fail_fast/no_retry/no_makeup 不续跑。证据：refs/experiment_protocol_20261023/long_probe_20261030/W18_EXECUTION_INCIDENT_20261103.md。W18B 全量重跑见 W18-04。"
+  },
+  {
+   "id": "W18-04",
+   "package": "W18",
+   "package_name": "未定+压制组合",
+   "track": "E",
+   "action": "BATCH-W18B-UCSUPP：W18 全量重跑（uc_supp vs uc，LRE117/LRE121/LRE146/LRE138，320 attempts）；live 独占 6 workers，不与任何评审并行",
+   "acceptance": "与 W18-03 相同（G1-G4）；批次须 320/320 manifest 齐全、0 CALL_FAIL/TIMEOUT",
+   "state": "DONE",
+   "depends_on": [
+    "W18-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/long_probe_20261030/W18_EXECUTION_INCIDENT_20261103.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W18_UNC_SUPPRESS_DESIGN_20261102.md"
+   ],
+   "owner": null,
+   "started_at": "2026-11-03 12:51",
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 320,
+   "estimate_engineering_hours": 2.5,
+   "estimate_note": "复用 W18 设计/实现/卡片；新 plan+新授权；live 独占容量、评审后置",
+   "result_note": "VERDICT_KEEP_NO_REGRESSION（W18B_VERDICT_20261103.md）：G1-G4 全过；B3 亲读主分析集 severe cand 0 vs par 2（judge 2 个 candidate severe 亲读全降级）；S/U 族未实例化→判决限无退化，uc 保持 >24 冠军，uc_supp 记 KEEP-no-regression；G3 prompt +1.02%、G4 触发 54.4%/同场 6.9%=离线预测；评审 callfail 16.3% 降权。W19-01 重评本批 0 变化。"
+  },
+  {
+   "id": "W19-01",
+   "package": "W19",
+   "package_name": "评分器与守卫收口",
+   "track": "X",
+   "action": "修复隔离路径 FK-SCORE-01 复现：trusted_controller.step_one_turn 按 prior_real_n 扩展 id_map 的 m_src[i] 合法集；对 W17b/W17c/W18B 已付费答卷离线重评（零模型调用），逐位对照 veto/均值",
+   "acceptance": "E183_T03/E191_T02 等 m_src 位 veto 清除；W17b/W17c/W18B 重评分与原件逐位对照；不重烧模型；受影响判决附记",
+   "state": "DONE",
+   "depends_on": [
+    "W18-04"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/KNOWN_FAILURES.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W17C_MERGE_VERDICT_20261103.md",
+    "tools/test_fk_score01_isolation.py",
+    "tools/rescore_batch.py",
+    "refs/experiment_protocol_20261023/long_probe_20261030/REDACT_TEAM_W19_01_CHECK_20261103.md"
+   ],
+   "owner": "main-window-20261103",
+   "started_at": "2026-11-03T14:30:00+08:00",
+   "completed_at": "2026-11-03T15:40:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.0,
+   "estimate_note": "复用 lb_runner 的 m_src 扩展逻辑；离线评分",
+   "result_note": "DONE：trusted_controller 新增 prior_real_hist_n/prior_hist_id_map 并在 step_one_turn 接线（与 runner 同口径，候选回报不参与）；单测 4/4。离线重评 608 位：W17c cand 9.306→9.583 零分 5→3（E183_T03/E191_T02 清除，真实失败保留）；W17b 清除 2（E199_T07/E208_T05）cand 8.958→9.236；W18B 320/320 逐位不变（LRE121 9 个 json_schema 失败为 schema 族正交）。红队复核 5 PASS；FK-SCORE-01 关闭。"
+  },
+  {
+   "id": "W19-02",
+   "package": "W19",
+   "package_name": "评分器与守卫收口",
+   "track": "E",
+   "action": "守卫扩展：analysis.source_ids 格式清洗（m2→m_src[n] 或移除并登记），离线回放+单测；目标消除 E164_T04 类 m2 veto，不改回复正文",
+   "acceptance": "单测正反例；W17c 6 篇离线回放 m2 类 veto 归零且回复正文逐字节不变；零模型调用",
+   "state": "DONE",
+   "depends_on": [
+    "W19-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/long_probe_20261030/W17C_MERGE_VERDICT_20261103.md",
+    "tools/source_id_wash.py",
+    "tools/test_source_id_wash.py",
+    "logs/w17c_merge_live_20261103/_reports/W19_02_WASH_REPLAY.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.0,
+   "estimate_note": "contract_guard 扩展；只动 analysis 引用不改正文",
+   "result_note": "DONE：m2 短格式确证=历史第N条(m_src[uid])（机制快照渲染格式佐证，E164_T04 实证+新发现 E170_T11 m8 同族）；通用清洗 tools/source_id_wash.py+单测 33 项全过；W17c candidate 72轮回放 illegal_source_id 1→0、正文逐字节不变、真实非法仍 veto。未接入候选（待 uc_guard 谱系下一版），零模型调用。"
+  },
+  {
+   "id": "W19-03",
+   "package": "W19",
+   "package_name": "评分器与守卫收口",
+   "track": "E",
+   "action": "单冠军跨域批：uc_guard（=uc+contract guard，单变量）vs uc 在 W17c 6 篇 + W18B 4 篇同批对拍；464 attempts、6 流、单独授权；目的把双域冠军收成一个开发集冠军",
+   "acceptance": "两域各自 G1/G2/G3 门均过；跨域最差维不破线；报告成本/时延/失败；不重烧已判批；不把本题当封存验收",
+   "state": "DONE",
+   "depends_on": [
+    "W18-04",
+    "W19-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/EVALUATION_BASELINE_AUDIT_20261103.md",
+    "logs/w19b_cross_live_20261103.DONE.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/AUTHORIZATION_W19B_CROSS.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/W19_EXECUTION_INCIDENT_20261103.md",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W19CROSS_VERDICT_20261103.md",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/LP_W19CROSS_B3_READRESULT.json",
+    "logs/w19b_cross_live_20261103/_reports/PAIRED_DIFF.json"
+   ],
+   "owner": "main-zcode-w19cross-verdict",
+   "started_at": null,
+   "completed_at": "2026-11-03T23:55:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 3.0,
+   "estimate_note": "复用 W17c/W18B 已生成素材与卡；live 独占 6 流；464 调用约 75–90 分钟",
+   "result_note": "LIVE DONE（W19B 重跑，AUTH-W19B-CROSS-20261103-01）：464/464、0 失败、order_verified、dispatch_bijection；程序分 cand 8.11 vs par 7.56（配对 43/31/158）；prompt −0.56%（828,614 vs 833,253）、p50 34.5s。首跑 462/464 网关 10054 事故（W19_EXECUTION_INCIDENT_20261103.md）按 no_makeup 终结，部分数据仅作事故证据。九维评审运行中（AUTH-W19CROSS-REVIEW-20261103-01，cap 328）。",
+   "status": "DONE",
+   "result": "uc_guard 跨域判决：双冠军保留（long40 G3 空回复5!=0 FAIL + G5 故事级翻转4/10；short12 数字面全过）。B3 亲读 26 位，judge 误烧4/漏检7。"
+  },
+  {
+   "id": "W19-04",
+   "package": "W19",
+   "package_name": "评分器与守卫收口",
+   "track": "X",
+   "action": "最终验收资产：新建未暴露 4–6 篇故事（不得复用 K/N/LRE/E 已暴露素材），对 reference_product_v1 + 开发冠军做同批盲评，并采集用户 A/B 愿发投票；selection_set 与 B 线二选一明确登记",
+   "acceptance": "新素材 exposure 有独立评审与 hash；B0 与冠军同批同题；用户盲评完成；报告层3偏好与层2语义分开；未封存则显式标注‘开发集冠军’",
+   "state": "PLANNED",
+   "depends_on": [
+    "W19-03"
+   ],
+   "reuse_first": false,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "benchmark/releases/arena_v1/split_manifest.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/EVALUATION_BASELINE_AUDIT_20261103.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 6.0,
+   "estimate_note": "新故事生成+独立审+卡+live+用户盲评；不重烧既有批",
+   "result_note": null
+  },
+  {
+   "id": "W19-05",
+   "package": "W19",
+   "package_name": "评分器与守卫收口",
+   "track": "X",
+   "action": "尺子资格收口：九维 judge 按 rubric §3 完成 20 锚盲评并落 logs/judge_calibration.json；补 exposure.experiments_used；W17C/W18 卡补 independent_review；旧卡跨版本重复 case_id 建隔离清单",
+   "acceptance": "20 锚一致率达 prereg 阈值；未达标则 judge 仅辅助；exposure 与实际批一致；卡元数据可追溯；重复 case_id 不跨版本混用",
+   "state": "PLANNED",
+   "depends_on": [
+    "W19-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "benchmark/rubric.md",
+    "evaluation/JUDGE_QUALITY_REPORT_V1.md",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/EVALUATION_BASELINE_AUDIT_20261103.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 4.0,
+   "estimate_note": "校准评审+账本修复；不改题、不重烧已判批",
+   "result_note": null
+  },
+  {
+   "id": "W19-07",
+   "package": "W19",
+   "package_name": "评分器与守卫收口",
+   "track": "H",
+   "action": "uc_supp 去一法消融：拆 S 压制层单变量，在 S/U 实例化素材上测边际价值（W18B_VERDICT_20261103.md §五）",
+   "acceptance": "单变量对照批；S/U 族须有 parent>=1 实例（覆盖条款）；零特判",
+   "state": "ON_HOLD_USER",
+   "depends_on": [
+    "W18-04"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/long_probe_20261030/W18B_VERDICT_20261103.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.0,
+   "estimate_note": "Planning only; reuse verified work directly and do not manufacture hours",
+   "result_note": "用户 2026-11-03 令：停止机制设计与候选实现，评测基准优先。挂起待用户解冻。"
+  },
+  {
+   "id": "W20-01",
+   "package": "W20",
+   "package_name": "评测基准修复（用户 2026-11-03 最高优先指令）",
+   "track": "E",
+   "action": "全库 gold 回填：sidecar 产物（assertions/intent_contract/forbidden，来源逐字引用），不改封板 episode，quote 一致性抽查",
+   "acceptance": "覆盖率表+quote 命中率+schema 对齐 rubric §2；零模型调用",
+   "state": "DONE",
+   "depends_on": [],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "benchmark/rubric.md",
+    "benchmark/stories_v2/GOLD_SIDECAR/GOLD_INDEX.json",
+    "benchmark/stories_v2/GOLD_SIDECAR/GOLD_QC_SAMPLE.json"
+   ],
+   "owner": "agent-gold",
+   "started_at": "2026-11-03",
+   "completed_at": "2026-11-03T22:25:52+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 3.0,
+   "estimate_note": "Planning only",
+   "result_note": "DONE：GOLD_SIDECAR v2（3102 turn，2919 有断言，6603 原子 quote 100% 逐字命中，79 空卡如实标记；v2 enrichment 后 fact_gold 层实际实例化：demo 24 轮/70 分位/5 fail 附逐字证据；6603 断言体与 v1 逐原子零变化）。",
+   "status": "DONE",
+   "result": "对账补记：GOLD_INDEX v2（22:25 生成）totals=2919/3102 断言+quote QC+per_wave 在位；封板 episode 未动"
+  },
+  {
+   "id": "W20-02",
+   "package": "W20",
+   "package_name": "评测基准修复",
+   "track": "E",
+   "action": "lb_scorer 接 gold：事实/意图层检查（原子使用/禁断/unknown/意图契约），向后兼容回归；端到端演示于已付费答卷；usage 单位口径修正",
+   "acceptance": "无 gold 时行为逐字节一致；单测正反例全过；demo 分层报告",
+   "state": "DONE",
+   "depends_on": [
+    "W20-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "arena/lb_scorer.py",
+    "arena/lb_scorer.py#v0.9.3 接入注释",
+    "logs/w17c_merge_live_20261103/_reports/GOLD_SCORING_DEMO.json",
+    "RESEARCH_STATE.json updates 2026-11-03T21:30 回归逐字一致"
+   ],
+   "owner": "agent-scorer",
+   "started_at": "2026-11-03",
+   "completed_at": "2026-11-03T23:58:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 3.0,
+   "estimate_note": "Planning only",
+   "result_note": "DONE：lb_scorer v0.9.3 接 gold（C14 取消族/C15 unknown，仅新 gold 键实例化，契约层零改动）；单测 10/10；W17c/W18B 无 gold 路径回归逐字一致；demo 于已付费答卷分层展示；usage 口径成文（USAGE_UNIT_NOTE.md，usage≈0.73×字符，成本门只用同单位配对差）。",
+   "status": "DONE",
+   "result": "对账补记：lb_scorer v0.9.3 消费 gold（C14/C15）+ GOLD_SCORING_DEMO 工件在位；证据=版本注释+demo 工件+权威状态文件记载（独立单测文件未单独定位，如实注明）"
+  },
+  {
+   "id": "W20-03",
+   "package": "W20",
+   "package_name": "评测基准修复",
+   "track": "R",
+   "action": "judge 锚点校准：12 锚+负对照做多序一致性（IRR），按 rubric §3 出资格结论",
+   "acceptance": "逐维资格/误杀/漏检/顺序敏感报告；校准后九维升级为可判证据",
+   "state": "DONE",
+   "depends_on": [
+    "W18-04"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "benchmark/stories_v2/anchors_20261028",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W20_03_JUDGE_CAL_REPORT_20261103.md",
+    "refs/experiment_protocol_20261023/long_probe_20261030/W20_03_JUDGE_CAL_METRICS.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W20_03_JUDGE_CAL_REPORT_20261103.md",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W20_03_JUDGE_CAL_METRICS.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W20_03_JUDGE_CAL_RAW.jsonl",
+    "logs/auth_budget/AUTH-W20-JUDGE-CAL-20261103-01.jsonl"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-03T23:55:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.0,
+   "estimate_note": "需模型调用（6 流，评审落盘后）",
+   "result_note": "DONE（AUTH-W20-JUDGE-CAL-20261103-01，judge 114 次+负对照 36 次，0 失败）：逐维资格——full-qualified=goal/time/interact/emotion（init/fact 合格但低证据）；attrib=assistive-only；memory/boundary=机械 disqualified（漏检 0.609/0.864，负对照缺陷不落回复表层）判死必须 B3。severe P=0.062/R=0.5→只作 B3 复核触发器，禁自动 veto。引文硬幻觉 11.9%（12 条真片段拼装）→引文逐字硬校验列为评审管线必须接线项（W20-06）。winner 双序一致 0.886；历史复读逐维分 ±1 一致率 0.972 → 门禁读数用逐维分不用 winner 单值。",
+   "note": "；2026-11-03 23:31 起前一窗口执行中(AUTH-W20-NEGGEN 已收/AUTH-W20-JUDGE-CAL 在跑)，互斥检查通过，本窗口不重复派发",
+   "status": "DONE",
+   "result": "judge 锚点校准完成：full=goal/time/interact/emotion（init/fact 低证据辅助）；boundary/memory 机械 disqualified（负对照器械效度不足，维持辅助+B3）；attrib not-testable 维持辅助；severe P=0.062 只作 B3 触发器；引文幻觉 11.9%（真片段拼装族）→逐字硬校验接线为必选；winner 复现 50% 不单独定案、逐维分 ±1 一致 0.972。账本 114+36 对账无凑数"
+  },
+  {
+   "id": "W20-04",
+   "package": "W20",
+   "package_name": "评测基准修复",
+   "track": "E",
+   "action": "创建封存 B 线盲测集（benchmark/b_line/）：未暴露池分层选篇+hash+ONLY_ONCE 纪律",
+   "acceptance": "manifest hash 全对、账本事件登记、使用纪律成文",
+   "state": "DONE",
+   "depends_on": [],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/STORY_CUSTODY_LEDGER.json",
+    "benchmark/b_line/B_LINE_MANIFEST.json",
+    "benchmark/b_line/B_LINE_README.md"
+   ],
+   "owner": "agent-bline",
+   "started_at": "2026-11-03",
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 1.5,
+   "estimate_note": "Planning only",
+   "result_note": "DONE（含一次红队纠错）：v1 选篇因账本漏记污染（E117/E164/E191/LRE121/LRE146/LRE127 实际已被 W13-03/W17c/W18/W18B/W19B/W14J 消费但 consumed_by 空）；补录 54 条 exposure 事件（210 篇：SEALED 161/EXPOSED 49）后重建 b_line_v2：16 标准（8 域x2，排除 CF 源篇）+4 长剧（LRE119/123/139/142）+4 CF（E150/152/153/155），24/24 副本 hash=源、custody verify OK、b_line_resealed 事件登记。ONLY_ONCE 纪律成文于 B_LINE_README。"
+  },
+  {
+   "id": "W20-05",
+   "package": "W20",
+   "package_name": "评测基准修复",
+   "track": "X",
+   "action": "写开窗循环文档：新窗口读入即按修正后基准进入候选→实测→评审→保留/淘汰循环；更新 START/RUNBOOK/RESEARCH_STATE",
+   "acceptance": "文档自包含、入口唯一、包含基准使用方法与容量纪律",
+   "state": "DONE",
+   "depends_on": [
+    "W20-01",
+    "W20-02",
+    "W20-03",
+    "W20-04"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "D:/lovebrain-arena/WORKER_EXPLORATION_GUIDE_20261103.md",
+    "D:/lovebrain-arena/WORKER_LOOP_PROMPT_20261103.md"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-03T21:30:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 1.0,
+   "estimate_note": "主会话亲写",
+   "result_note": null,
+   "status": "DONE",
+   "result": "两份交接文档已于 2026-11-03 21:30 落盘（EXPLORATION_GUIDE + LOOP_PROMPT），对账补记 DONE"
+  },
+  {
+   "id": "W21-01",
+   "package": "W21",
+   "package_name": "输出契约崩坏波诊断与下一批倒排",
+   "track": "H/R",
+   "action": "长域崩坏波诊断（饱和度/轮段/故事波状结构），零模型调用",
+   "acceptance": "诊断工件落盘+含义如实话述+不改既有判决",
+   "state": "DONE",
+   "depends_on": [
+    "W19-03"
+   ],
+   "evidence": [
+    "refs/experiment_protocol_20261023/long_probe_20261030/W21_LATE_COLLAPSE_DIAG_20261103.json",
+    "logs/w19b_cross_live_20261103"
+   ],
+   "owner": "main-zcode-w19cross-verdict",
+   "completed_at": "2026-11-03T23:59:00+08:00",
+   "result": "崩坏=故事特定+时间连续波（LRE138 25/80 臂位最热；连续波在 60-80% 饱和度区），饱和度只是弱相关；G3 空回复 0 零容忍门在长域会被底模随机族击穿——口径裁决挂用户"
+  },
+  {
+   "id": "W21-02",
+   "package": "W21",
+   "package_name": "输出契约崩坏波诊断与下一批倒排",
+   "track": "H",
+   "action": "下一批单变量候选设计（方向A：波后稳轮确定性再锚定，前兆=前轮 reply_not_committed 可见；方向B：饱和压力阀——诊断显示覆盖不足，降级为备选）；候选构建/单测/mock replay 零调用先行；判据预注册跑前冻结",
+   "acceptance": "IDENTITY.md+MECHANISM.md+判据预注册落盘+TASK_QUEUE 先登记后派发；live 派发前过互斥检查+AuthorizationBudget 新账本",
+   "state": "DONE",
+   "depends_on": [
+    "W21-01",
+    "W20-03"
+   ],
+   "evidence": [
+    "refs/experiment_protocol_20261023/long_probe_20261030/W21_LATE_COLLAPSE_DIAG_20261103.json",
+    "candidates/window_expand_b_norecap_uc_retry/",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W21_02_NEXT_BATCH_DESIGN_20261103.md",
+    "tools/run_collapse_retry.py",
+    "refs/experiment_protocol_20261023/long_probe_20261030/w19b_cross_live_20261103_RETRY_PLAN.json",
+    "tools/run_collapse_retry.py",
+    "logs/_retry_smoke_20261104/DISPATCH_RESULT.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W21_FASTLANE.BATCH_CONFIG.json",
+    "logs/_w21_fastlane_mock_20261104/INTERLEAVE_PLAN.json",
+    "logs/identity_closure_result.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/AUTH-W21-FASTLANE-20261104-01.json",
+    "logs/w21_fastlane_live_20261104",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W21_FASTLANE_G0_VERDICT_20261104.md",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/LP_FASTLANE_B3_READRESULT.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/LP_W21FASTLANE_NINEDIM_REVIEW.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/LP_W21FASTLANE_QUOTE_CHECK.json",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/AUTH-W21-FULL-20261104-01.json",
+    "logs/w21_full_live_20261104",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W21FULL_VERDICT_20261104.md",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/LP_W21FULL_NINEDIM_REVIEW.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/LP_W21FULL_QUOTE_CHECK.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W21_FULL_RETRY_RESOLUTION.json"
+   ],
+   "note": "挂用户裁决项：未来 40 轮批 G3 空回复门口径（维持零容忍 vs cand<=par+逐位登记底模族）——涉不可协商边界，不擅自改；设计草案已落盘 refs/.../long_probe_20261030/W21_02_NEXT_BATCH_DESIGN_20261103.md（推荐方向R崩坏轮确定性重试，架构事实：装配看不到前轮崩坏）；裁决①no_retry字口径②G3空回复门 已向用户提出未答——冻结前不建账本不派发",
+   "result": "全量批判决：保留双域冠军，uc_retry=跨域候选未晋升。G1 ✓（cand4≤par15+，无新增族）/G2 ✓（九维双域全正，最差 +0.031/+0.180）/G3' ✓（重试后双臂 232/232，修复率 12/12=100%）/G4 ✓（prompt+0.00%，另册 24/92）/G5 ❌ 翻转 3/10（E183/LRE117/LRE121）→ 不得宣布单冠军（冻结原文）。重试机制作为评测基建组件保留（修复率 100% 实证），候选归档不晋升不删除（删除需用户确认）",
+   "status": "DONE",
+   "completed_at": "2026-11-04T05:54:12+08:00"
+  },
+  {
+   "id": "W20-06",
+   "package": "W20",
+   "package_name": "评测基准修复",
+   "track": "R",
+   "action": "评审管线接线引文逐字硬校验（judge 输出 quote 必须在素材原文逐字出现，否则该判定降权并标记幻觉；校准实测硬幻觉 11.9%）",
+   "acceptance": "校准 raw 12 条硬幻觉全部被拦截；对历史评审 JSON 复跑拦截率报告；零模型调用",
+   "state": "DONE",
+   "depends_on": [
+    "W20-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/experiment_protocol_20261023/long_probe_20261030/W20_03_JUDGE_CAL_REPORT_20261103.md",
+    "D:/lovebrain-arena/tools/quote_hard_check.py",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W19CROSS_QUOTE_CHECK.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W21FULL_QUOTE_CHECK.json",
+    "refs/experiment_protocol_20261023/long_probe_20261030/LP_W22FULL_QUOTE_CHECK.json"
+   ],
+   "owner": null,
+   "started_at": null,
+   "completed_at": "2026-11-06T22:08:09+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 1.0,
+   "estimate_note": "新窗口执行",
+   "result_note": "DONE（2026-11-06 收口闭账，零模型调用）：tools/quote_hard_check.py 已落地并接线 run_lp_review_generic.py（severe 引文不过→severe_unverified 强制 B3）；W19CROSS 复跑拦截率报告在案（221 引文 strict 166=75.1%，note_like 9/fragments_all_hit 24/fragments_miss 22/no_hit 0，severe_unverified 14 与 B3 亲读账一致）；W21/W22 评审产物 LP_W21FULL/LP_W22FULL_QUOTE_CHECK.json 均含 kind=quote_hard_check 校验件——验收三条件（拦截硬幻觉/历史复跑报告/零调用）全部满足"
+  },
+  {
+   "id": "W21-03",
+   "package": "W21",
+   "track": "R",
+   "action": "memory/boundary 判别素材补建：多轮累积素材+缺陷落回复表层的负对照（W20-03 §4-5 backlog）",
+   "acceptance": "新负对照在单位置上能让 judge 可见缺陷；先设计后派发",
+   "state": "PLANNED",
+   "depends_on": [
+    "W20-03"
+   ],
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W20_03_JUDGE_CAL_REPORT_20261103.md"
+   ]
+  },
+  {
+   "id": "W21-04",
+   "package": "W21",
+   "track": "R",
+   "action": "severe GT 扩容：用 F3/B 线已知 severe 位扩充校准阳性池（不碰 b_line 封存）（W20-03 §4-6 backlog）",
+   "acceptance": "GT 阳性 ≥10；标签可追溯",
+   "state": "PLANNED",
+   "depends_on": [
+    "W20-03"
+   ],
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W20_03_JUDGE_CAL_REPORT_20261103.md"
+   ]
+  },
+  {
+   "id": "W21-05",
+   "package": "W21",
+   "track": "R",
+   "action": "维度标签固定映射表进评审驱动（卡面 applicable_dimensions ↔ judge 维名，W20-03 §4-4）",
+   "acceptance": "映射表落盘+评审驱动消费；零调用",
+   "state": "DONE",
+   "depends_on": [
+    "W20-03"
+   ],
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W20_03_JUDGE_CAL_REPORT_20261103.md",
+    "benchmark/stories_v2/wave3/DIM_LABEL_MAP_20261104.json"
+   ],
+   "completed_at": "2026-11-04T00:40:00+08:00",
+   "result": "映射表落盘并核定：attribution→attrib, emotion_relation→emotion, factuality→fact, initiative→init, interaction→interact, memory_use→memory, time_state→time（9↔9 一一对应）"
+  },
+  {
+   "id": "W19-06",
+   "package": "W19",
+   "track": "R",
+   "action": "快车道 G0 淘汰闸预登记（E157+LRE117、104 调用、四门判据；只淘汰不晋级）",
+   "acceptance": "§9 启用登记清单全勾后方可跑 L1；修订=新版本文件",
+   "state": "ENABLED",
+   "depends_on": [
+    "W19-01"
+   ],
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/FAST_LANE_DESIGN_20261103.md"
+   ],
+   "result": "2026-11-04 主会话宣布启用并登记：W19-01 已修复关闭（KNOWN_FAILURES）满足前置；无其它 live/review 在跑；plan mock 校验/建账/L0 三项为逐候选跑前条件；LRE117 暴露状态（BATCH-LD1-W13-20261102）已抄录本条备注",
+   "note": "快车道已启用登记 2026-11-04；W21-02 候选判据冻结并过 L0 后可先走 G0；【2026-11-04 冻结时修订（先于任何快车道运行，合法窗口）】G0-2/G0-1 对带重试机制的候选按【重试后】口径判：重试后仍空/不可解析 = p² 残差，逐位登记为底模族（依据 W21-02 裁决②同款测量效度修正）；本修订只适用于声明 collapse_retry 的候选"
+  },
+  {
+   "id": "W22-01",
+   "package": "W22",
+   "track": "H",
+   "action": "单变量候选设计：window_expand_b_norecap_uc_attr（父本=uc，唯一增量=归因锚定注入——上下文含 HER 制作物/承诺/决定时，注入 ≤120CU 归因约束行，模式复用 uc 注入架构；无触发时 prompt 与父本逐字节相同）",
+   "acceptance": "设计文档+判据预注册（跑前冻结：G1 severe 亲读 cand≤par 且归因错位族触发面下降/G2 九维辅助/G3 契约+空回复/G4 prompt≤+5%+0额外调用/G5 swap 同冻结口径）→候选构建→L0 三件→快车道 G0→全量",
+   "state": "DONE",
+   "depends_on": [
+    "W21-02"
+   ],
+   "evidence": [
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W21FULL_VERDICT_20261104.md",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/LP_FASTLANE_B3_READRESULT.json",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W22_01_ATTR_DESIGN_20261104.md",
+    "candidates/window_expand_b_norecap_uc_attr/",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/AUTH-W22-FASTLANE-20261104-01.json",
+    "logs/w22_fastlane_live_20261104",
+    "refs/experiment_protocol_20261023/global_harness_program_20261030/AUTH-W22-FULL-20261104-01.json",
+    "logs/w22_full_live_20261104",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W22FULL_VERDICT_20261104.md",
+    "D:/lovebrain-arena/refs/experiment_protocol_20261023/long_probe_20261030/W22FULL_VERDICT_REV2_20261104.md"
+   ],
+   "note": "假设来源：归因错位族跨批复现（W17c E208_T01 替第三方确认；W19CROSS E191_T08 cand 窃取速查表归因；本批 E191_T08 双臂复现+LRE121_T39 cand 回请倒置）——冠军链共性族中唯一未被现有组件覆盖者；设计阶段零调用 | 判决: DUAL_CHAMPIONS_RETAINED. G1-G4 PASS G5 FAIL(swap 7/22). 主假设正面(归因错位族 cand 0<par 1).",
+   "result": "设计冻结+候选构建完成（零调用）：判据跑前冻结（G1 含归因错位族主假设检验/G2/G3/G4 触发轮均值+无触发轮逐字节/G5/触发面 10-90%）；候选树=uc 原样+attribution_rules.py 纯函数+mechanism 4c 注入（三处外科手术 py_compile 过）；检测器离线单测 3/3（E191_T02 正例触发逐字引用 45CU、E164_T01 反例不触发、空输入）；下一步=L0 三件（prompt 等价/单测扩充/mock）→快车道 G0→全量；【L0 全绿+点火】L0-1 E164 无触发 12/12 逐字节全同+E191 差异仅锚定块；L0-2 检测器单测 3/3；L0-3 capture 104/104 order=True P52/C52；precheck G1-G7 全绿（plan sha 3310d4bd…）；互斥干净+网关探针过 → live 点火（AUTH-W22-FASTLANE-20261104-01 cap104，无重试另册——本候选不改崩坏域）；触发面实测移至 live 收批后（capture glob 路径未中，非阻塞）；【fastlane live 收批 07:5x】104/104 零失败；prompt +1.42%（触发轮锚定块，G0-4≤8% ✓）；触发面 34.6%（18/52 全 LRE117，E157 零触发，∈(10,90%] ✓）；cand 零崩坏 0/52（par 2 不可解析）；程序分 9.2 vs 8.85（分层读）；G0-2 ✓；L2 评审 AUTH-W22-FASTLANE-REVIEW-20261104-01 后台（G0-3 主假设：归因错位族 severe cand<par）；【G0 判决 FASTLANE_PASS】G0-1 ✓(4≤7)/G0-2 ✓(0空)/G0-3 ✓(cand1≤1 且 ≤par1 贴线；cand T34 judge 漏标由 B3 补烧——到账确定化 W19CROSS 同位同族复现；par T34 笑纳违阿蕾不收钱安排)/G0-4 ✓(+1.42%,0额外)/触发面 34.6% ✓；主假设注记：快车道素材归因敏感内容有限，直接检验在全量批（E191 型位）；【全量点火】BATCH-W22-FULL-20261104（plan sha bd8e3d27…，464 attempts，capture 回放 464/464 P232/C232）；precheck G1-G7 全绿；快车道 G0 PASS；G1 主假设=归因错位族 severe cand<par（E191/E208 型位在全量素材内）；无重试另册（崩坏按 base no_retry 记账）；预计 1-2h；【全量收批】464/464 零失败 bijection ✓；prompt +1.77%（锚定块 ≤5% ✓）；程序分 par 9.16 vs cand 8.72（分层读）；崩坏计数与全量评审 AUTH-W22-FULL-REVIEW-20261104-01（cap600）后台运行中；主假设早期证据=E191_T08 双臂零窃归因（锚定块在场）",
+   "status": "DONE",
+   "notes": [
+    "REV2 主会话独立审计修订(2026-11-04): G3 改 FAIL(live veto par19/cand29, REV1 误记 0/0), G1 以 B3 亲读账取代 judge 旗(cand3/par5, A族 cand0<par2 含 T31 香菜错置重分类), 判决 KEEP_NO_PROMOTE 取代 DUAL_CHAMPIONS_RETAINED; 后继预登记 uc_attr_guard"
+   ]
+  },
+  {
+   "id": "W23-01",
+   "package": "W23",
+   "package_name": "版本收口 2026-11-06",
+   "track": "X",
+   "action": "版本收口 8 路并发（用户 2026-11-06 原话：'全面8路并发 开始版本收口！！！全面执行'，解除 W15 产品接入暂停）：T1 输入框根因诊断与修复（产品线 OverlayTextToolbar/PanelInputFocusOwner 焦点链，禁止加延迟掩盖）/ T2 Issue#7 批量粘贴导入（复用现有 Composer，不建第二输入链路）/ T3 Open Issues 分诊（#1/#5/#3/#6 对码核实）/ T4 冠军机制移植设计（window_expand_b_norecap_uc(+guard) Kotlin 移植规格，S1→S3 开关与回退）/ T5 F1–F6 现状逐项验证（对当前源码核实，不沿用'历史存在=当前存在'）/ T6 验收矩阵与回归清单（发布门禁）/ T7 构建环境打通（Gradle 8.7/AGP 8.6/Kotlin 1.9.24/JDK17，目标 assembleDebug）/ T8 Arena 账务收口与冻结快照（W20-06 闭账、本条登记、RESEARCH_STATE 注记）",
+   "acceptance": "指导书 refs/version_closeout_20261106/CLOSEOUT_GUIDE_20261106.md §四：输入框可靠+多条聊天记录能导入+回复质量与记忆可靠（合并仅 KEEP 机制后）+核心 UI 无明显回归+主要生成链路稳定；产品改动全部在分支 closeout-20261106",
+   "state": "DONE",
+   "depends_on": [],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/version_closeout_20261106/CLOSEOUT_GUIDE_20261106.md",
+    "commit d9ff3db (branch closeout-20261106, 已推送)",
+    "refs/version_closeout_20261106/T1_INPUTBOX_DIAGNOSIS.md",
+    "refs/version_closeout_20261106/T2_ISSUE7_IMPL.md",
+    "refs/version_closeout_20261106/T3_ISSUES_TRIAGE.md",
+    "refs/version_closeout_20261106/T4_KOTLIN_PORT_SPEC.md",
+    "refs/version_closeout_20261106/T5_KNOWN_FAILURES_AUDIT.md",
+    "refs/version_closeout_20261106/T6_ACCEPTANCE_MATRIX.md",
+    "refs/version_closeout_20261106/T7_BUILD_ENV.md",
+    "refs/version_closeout_20261106/T8 账务收口与冻结快照：以本队列 W23 条目登记 + RESEARCH_STATE.json 冻结注记为载体，无独立 T8 文档"
+   ],
+   "owner": null,
+   "started_at": "2026-11-06T22:08:09+08:00",
+   "completed_at": "2026-11-07T00:00:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 24.0,
+   "estimate_note": "8 轨并发规划值，按实际交付记账，不凑工时",
+   "note": "边界：B 线封存不动（benchmark/b_line/ 物理封存，终验只许一次性消费）；机制线冻结，不新增研究候选，只合并 KEEP 判决机制（guard/uc/b_norecap 家族）；harness 机制合并走 W15-06 三阶段（S1 shadow→S2 单风格→S3 全量）；KNOWN_FAILURES F1–F6 为硬门；P2 项（Issue#3/#6）不入本版不阻塞发布",
+   "result_note": "第一批 8 轨（T1–T8）全部完成且合并验证通过，已提交推送 commit d9ff3db（分支 closeout-20261106）；文档在 refs/version_closeout_20261106/（T1–T7 独立文档 + CLOSEOUT_GUIDE，T8 账务收口由本队列登记与 RESEARCH_STATE 冻结注记承载）"
+  },
+  {
+   "id": "W23-02",
+   "package": "W23",
+   "package_name": "版本收口 2026-11-06 第二批",
+   "track": "X",
+   "action": "版本收口第二批 8 路（用户 2026-11-06 授权'全部批准继续 8 路'）：W1 冠军引擎实现（window_expand_b_norecap_uc(+guard) Kotlin 实现，接 W23-01 T4 移植规格，走 W15-06 三阶段开关）/ W2 F3.3 纠正回流（角色纠正回流链路）/ W3 F2.1 话题判据加固（话题推进判据修复）/ W4 F6 现实一致性设计（现实一致性边界设计，不虚构过去）/ W5 release 构建（assembleRelease 目标，gradle 隔离 worktree 纪律）/ W6 真机验收包（用户执行逐项清单，不谎报完成）/ W7 治理同步（RUNBOOK/新窗口开场/本队列/收口指导一致性）/ W8 解析器加固（Issue#7 多行解析容错+单测）",
+   "acceptance": "指导书 refs/version_closeout_20261106/CLOSEOUT_GUIDE_20261106.md §四验收定义；产品改动全部在分支 closeout-20261106，不 commit，由主会话统一收口；KNOWN_FAILURES F1–F6 为硬门；B 线封存不动",
+   "state": "DONE",
+   "depends_on": [
+    "W23-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/version_closeout_20261106/CLOSEOUT_GUIDE_20261106.md",
+    "D:/lovebrain-arena/WORKER_CURRENT_RUNBOOK.json",
+    "D:/lovebrain-arena/WORKER_NEW_WINDOW_START.md",
+    "commit d9ff3db (branch closeout-20261106, 已推送)",
+    "refs/version_closeout_20261106/W1_CHAMPION_ENGINE_IMPL.md",
+    "refs/version_closeout_20261106/W2_F33_CORRECTIONS_FLOW_FIX.md",
+    "refs/version_closeout_20261106/W3_F21_TOPIC_SWITCH_HARDENING.md",
+    "refs/version_closeout_20261106/W4_F6_REALITY_GUARD_DESIGN.md",
+    "refs/version_closeout_20261106/W5_RELEASE_BUILD.md",
+    "refs/version_closeout_20261106/W6_DEVICE_ACCEPTANCE_PACK.md",
+    "refs/version_closeout_20261106/W8_PARSER_HARDENING.md",
+    "W7 治理同步：无独立 W7 文档，同步载体=本队列/WORKER_CURRENT_RUNBOOK.json/WORKER_NEW_WINDOW_START.md/CLOSEOUT_GUIDE_20261106.md 一致性更新"
+   ],
+   "owner": null,
+   "started_at": "2026-11-06T23:30:00+08:00",
+   "completed_at": "2026-11-07T00:00:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 16.0,
+   "estimate_note": "第二批 8 轨并发规划值，按实际交付记账，不凑工时",
+   "note": "用户 2026-11-06 授权'全部批准继续 8 路'；机制线冻结、不新增研究候选；第一批 8 轨（W23-01）已完成，本批继承其产物；P2 项（Issue#3/#6）不入本版不阻塞发布；W7 治理同步核查 b_line 封存完好（benchmark/b_line/ 物理封存未动）",
+   "result_note": "第二批 8 轨（W1–W8）全部完成且合并验证通过，已提交推送 commit d9ff3db（分支 closeout-20261106）；W1–W6/W8 独立文档在 refs/version_closeout_20261106/，W7 治理同步以治理文件一致性更新承载；W7 核查 b_line 封存完好"
+  },
+  {
+   "id": "W23-03",
+   "package": "W23",
+   "package_name": "外部审计修复批",
+   "track": "X",
+   "action": "审计修复批 8 轨（R1 批量导入接线 / R2 champion 提前持久化·身份碰撞·模式诚实化 / R3 ongoing 筛选 / R4 纠正覆盖 / R5 话题门独立性 / R6 解析器回归 / R7 TeamWorkspace 对账+CI 分支证据 / R8 账务登记），逐项对应外部审计 13 项发现，修完逐项闭环并报告",
+   "acceptance": "13 项审计发现逐项处置（修复/登记/否决+理由），修复在分支 closeout-20261106，回归验证通过后报告；不虚报完成",
+   "state": "DONE",
+   "depends_on": [
+    "W23-01",
+    "W23-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "commit 6ed7fbc (branch closeout-20261106, 审计修复批 R1-R8+R6, CI run 42344286339 success)",
+    "commit 8cafeec (branch closeout-20261106, 取消卫生修复, CI run 42355158288 success)"
+   ],
+   "owner": null,
+   "started_at": "2026-11-07T00:00:00+08:00",
+   "completed_at": "2026-11-07T00:00:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 16.0,
+   "estimate_note": "修复批规划值，按实际交付记账，不凑工时",
+   "note": "来源=外部审计 2026-11-07（用户提交的第三方审查，13 项发现，重点：批量导入接线缺口、champion 提前持久化/身份碰撞/模式诚实化、纠正过滤覆盖不全、话题门同源佐证、CI 无分支证据）；授权=用户提交审计即默认修复指令；R8 账务=本条登记本身；机制线冻结不受影响，修复批属产品线",
+   "result_note": "审计修复批闭账 DONE：R1-R8+R6 修复落地为 commit 6ed7fbc（CI run 42344286339 success）；后续取消卫生修复 commit 8cafeec（CI run 42355158288 success）；两 commit 均在分支 closeout-20261106"
+  },
+  {
+   "id": "W23-04",
+   "package": "W23",
+   "package_name": "审计第三轮定向收尾批",
+   "track": "X",
+   "action": "审计第三轮定向收尾批 4 轨（F1 话题门死锁修复 / F2 事件去重+冷却语义 / F3 批量提交+发现入口 / F4 治理同步），对应外部审计第三轮发现定向处置，不开八路大工程",
+   "acceptance": "审计第三轮发现逐项处置（修复/登记/否决+理由），修复在分支 closeout-20261106，回归验证通过后报告；不虚报完成",
+   "state": "DONE",
+   "depends_on": [
+    "W23-03"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "commit e2ebde1 (branch closeout-20261106, 审计第三轮 F1-F4 修复, CI run 42359394997 success——本地 gh 2026-11-07 复核)",
+    "refs/version_closeout_20261106/F1_TOPIC_GATE_DEADLOCK_FIX.md",
+    "refs/version_closeout_20261106/F2_EVENT_DEDUP_COOLDOWN.md",
+    "refs/version_closeout_20261106/F3_BATCH_COMMIT_DISCOVERY.md",
+    "F4 治理同步: TeamWorkspace ACTIVE.md 基线 8cafeec→e2ebde1 对账 + T6 验收矩阵 recap 措辞修正(recap 已按 W15N01 消融删除) + 本条关账登记"
+   ],
+   "owner": null,
+   "started_at": "2026-11-07T00:00:00+08:00",
+   "completed_at": "2026-11-07T18:30:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 8.0,
+   "estimate_note": "定向收尾批规划值，按实际交付记账，不凑工时",
+   "note": "来源=外部审计第三轮 2026-11-07；审计建议'不再开八路大工程、定向收尾'；机制线冻结不受影响，修复属产品线 closeout-20261106 分支",
+   "result_note": "F1 话题门死锁/F2-1 msgUid 去重/F2-2 冷却统一生效/F3 批量原子提交+长按➕发现提示 已落 commit e2ebde1 并推送，CI #120 success（本地 gh run 42359394997 复核）；F4 治理同步完成（TeamWorkspace ACTIVE.md 对账、T6 recap 措辞修正、本条关账）。真机验收项（输入框/批量导入/覆盖安装）属用户执行项，不在本批声明范围，见 T6 清单；外部审计第四轮复核（三仓库全面复核报告）的代码级遗留 6 项已登记于 X_HARNESS_RESTORE_AND_AUDIT_VERIFICATION_20261107.md §四"
+  },
+  {
+   "id": "W24-01",
+   "package": "W24",
+   "package_name": "阶段收尾整理（项目整理归档）",
+   "track": "X",
+   "action": "用户 2026-11-07 要求整理 lovebrain-arena：留下有用的、该归档的归档，保证后续继续迭代可恢复。130 个 ACL 锁定快照+_ACL_LOCKED_LEDGER/14 个历史交付 zip/草稿与缓存目录/_archive_v1/WORKER_HANDOFF_W22 全部移入 archive/20261107_root_cleanup/（只移动不删除）；tombstone（RUN_STATE/TASK_BOARD）、活动指针、封存 B 线、logs 原始答卷、两个中文批次目录（待 closeout 合并后处理）明确不动；tools/state_map_check.py 期望常量同步（含修正 2026-11-02 起已过期的 STATE_MAP/START_PROMPT 路径）",
+   "acceptance": "移动前逐对象引用核查；归档带 MANIFEST.md；state_map_check 复跑 0 MISMATCH；根目录 184→29 条目",
+   "state": "DONE",
+   "depends_on": [
+    "W23-04"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "archive/20261107_root_cleanup/MANIFEST.md",
+    "tools/state_map_check.py 复跑 ok=133 warn=2(合法增长) mismatch=0 exit=0"
+   ],
+   "owner": null,
+   "started_at": "2026-11-07T19:30:00+08:00",
+   "completed_at": "2026-11-07T20:00:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 2.0,
+   "estimate_note": "整理规划值，按实际交付记账",
+   "note": "用户 2026-11-07 原话'整理；留下来有用的 该归档的归档，到时候我还要'；收口模式不解除，机制线仍冻结；logs 2.1GB 原始答卷保留原位（独立复核证据）"
+  },
+  {
+   "id": "W24-02",
+   "package": "W24",
+   "package_name": "论文式研究展示文档",
+   "track": "X",
+   "action": "用户 2026-11-07 要求：像论文一样介绍为什么 harness 这么设计，GitHub 展示'构造了多少数据集、百分之几检查什么问题、harness 取得多少结果，证明不是瞎编'。产出 PAPER.md（动机→设计公理→公平协议→数据集构成→结果判决链→诚实边界→下一步）与 README.md（GitHub 门面）；全部数字经本地证据复核（数据集构成经 stories_v2 逐目录/GOLD_INDEX/custody 账本复测，判决数字经判决书原件核对）",
+   "acceptance": "每个数字有出处；无逐条故障族标签处如实声明按构造记录归因；负结果与阻断同样呈现；不含未证明的宣称",
+   "state": "DONE",
+   "depends_on": [
+    "W23-04"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "PAPER.md（根）",
+    "README.md（根，新建）",
+    "数字来源：benchmark/stories_v2/*/STAGE*_MANIFEST*.json、GOLD_INDEX.json、STORY_CUSTODY_LEDGER.json、B_LINE_MANIFEST.json、refs/experiment_protocol_20261023/long_probe_20261030/ 判决书"
+   ],
+   "owner": null,
+   "started_at": "2026-11-07T19:40:00+08:00",
+   "completed_at": "2026-11-07T20:00:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 3.0,
+   "estimate_note": "展示文档规划值，按实际交付记账",
+   "note": "用户 2026-11-07 原话'像一个论文一样介绍为什么我们的harness这么设计…这证明我们不是瞎编'；GitHub 同步（bystery/arena）走用户既有上传通道，本地仓库非 git 不由本会话推送"
+  },
+  {
+   "id": "W25-01",
+   "package": "W25",
+   "package_name": "数据集与评估体系独立审查包（准备+同步）",
+   "track": "X",
+   "action": "用户 2026-11-07 指令：先同步仓库、交付完整可核验研究材料，供外部 AI 独立审查数据集与评估体系，然后再开展下一阶段数据集建设。产出 refs/dataset_review_20261107/（REVIEW_INDEX + A 构成溯源 + B 设计逻辑 + C gold/评分与 29 样本 + D 可靠性 + E 结论强度 + F 改造草案 + recompute_stats.py 只读复算脚本 + SHA256SUMS）；同步 harness-lovebrain 到 GitHub（W24 成果+审查包+数据集，排除 logs/ACL快照内容/交付zip/b_line 增量）",
+   "acceptance": "每个数字有出处；b_line 不读取内容不消费；不修改正式题库/评分口径/封存集；零模型调用；远端提交实测可读",
+   "state": "DONE",
+   "depends_on": [
+    "W24-02"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/dataset_review_20261107/REVIEW_INDEX.md",
+    "refs/dataset_review_20261107/SHA256SUMS.txt",
+    "GitHub commit（push 后在本条 result_note 补记 SHA）",
+    "GitHub commit 75ab97e48b88def5132eada5e3546fb592acfcf8（main，2026-11-07 20:46 +08:00，ls-remote + contents API 逐文件实测：PAPER 12980B/A文档 38640B/脚本 19951B/样本包 60009B 与本地逐字一致；GOLD_INDEX 9141B=本地 9424B−283CRLF 行尾归一化，内容一致）"
+   ],
+   "owner": null,
+   "started_at": "2026-11-07T20:40:00+08:00",
+   "completed_at": "2026-11-07T21:30:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 4.0,
+   "estimate_note": "审查准备规划值",
+   "note": "用户 2026-11-07 原话'最小但完整、质量优先、真实证据、可复现、不过度工程化'；审查发现（R1 全库无未见验证资格故事等）落 F 草案，下一阶段数据集建设以 F 为起点",
+   "result_note": "审查包 9 文件落盘（29 样本带上下文与评分依据；A 文档 8 项恒等式对账全过，发现并如实登记 104 轮有卡无断言口径差、B_LINE_README v1 残留、W21FULL B3 账待补等）；同步 SHA 见补记；同步 SHA=75ab97e4（远端实测可读）；远端 benchmark/b_line 为 15:48 既有同步所推（26 文件），本次未增未删未读内容，已向用户标注"
+  },
+  {
+   "id": "W26-01",
+   "package": "W26",
+   "package_name": "Benchmark V1 Phase 1（四组对照系统+数据盘点+真实 Pilot 准备）",
+   "track": "X",
+   "action": "按用户外部指导书 2026-11-07 执行 Phase 1：数据盘点（inventory.py+DATASET_INVENTORY 208 行+十专题+26 谱系组审计）；四组对照系统（DIRECT/COT 轻量候选复用 run_episode 全生命周期 + LEGACY=r9_slim + CURRENT 双域分流；four_arm_runner plan/capture/mock/live 四模式 + normalize_v1 + provider_check_v1 + capture 九项校验 + gold_diag_v0 + 盲评包）；离线 14/14 测试全绿；USTC deepseek-flash-2 接入检查（Key 未配置→live 按规程 BLOCKED 登记）；Phase 2 计划五件套+论文骨架",
+   "acceptance": "指导书 §10 的 25 项验收清单（PHASE1_ACCEPTANCE.md 逐项对照）；不修改正式题库/Gold/评分器/harness 资产（UNTOUCHABLE_HASHES 72 文件 pytest 背书）；B 线零正文接触；零模型调用；mock 不冒充真实成绩",
+   "state": "DONE",
+   "depends_on": [
+    "W25-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/benchmark_v1_20261107/phase1/PHASE1_README.md",
+    "refs/benchmark_v1_20261107/phase1/PHASE1_ACCEPTANCE.md",
+    "tools/benchmark_v1/（9 模块+14 测试+2 轻量候选）",
+    "logs/benchmark_v1/phase1_pilot/（本地：plan/capture 全产物）",
+    "GitHub commit 9acb013ac86b23ca06e98c4221b94547d32643d6（main，2026-11-07 22:27 +08:00；contents API 实测 PHASE1_README 3846B/DATASET_INVENTORY 94658B/盲评包 6154B/LINEAGE 报告 10863B 可读）"
+   ],
+   "owner": null,
+   "started_at": "2026-11-07T21:00:00+08:00",
+   "completed_at": "2026-11-07T23:30:00+08:00",
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 8.0,
+   "estimate_note": "指导书 Phase 1 规划值",
+   "note": "授权=用户外部指导书（AUTH-BM1-PHASE1-PILOT-20261107-01，cap 320 attempts 未消费）；三大诚实发现：①160 旧题复用预算不可信（实测 45，缺口 115）②B 线 E048 谱系泄露 CRITICAL（LR2 批次经 LRE048 消费，重封未按组过滤）③LEGACY(r1 闭包)与 wave3+ dict persona 不兼容（20/72 位，未修历史 harness）",
+   "result_note": "Phase 1 离线交付完成；live pilot BLOCKED（等用户配置新 Key 后 Q0 补跑，cap 320 未消费）；盲评包 12 位就绪（NOT_COLLECTED）；推送 SHA 见补记；推送 SHA=9acb013a（远端实测可读）"
+  },
+  {
+   "id": "W27-01",
+   "package": "W27",
+   "package_name": "Benchmark V1 Phase 2（数据集建设：旧题审核/规则统一/首批试制/Gold/审核/Pilot）",
+   "track": "X",
+   "state": "IN_PROGRESS",
+   "depends_on": [
+    "W26-01"
+   ],
+   "reuse_first": true,
+   "known_existing_work_to_verify": false,
+   "evidence": [
+    "refs/benchmark_v1_20261107/phase2/（建设中）"
+   ],
+   "owner": null,
+   "started_at": "2026-11-08T00:00:00+08:00",
+   "completed_at": null,
+   "actual_engineering_hours": null,
+   "actual_model_attempts": 0,
+   "estimate_engineering_hours": 24.0,
+   "estimate_note": "指导书 Phase 2 规划值；按批次实际交付记账，不虚报",
+   "note": "指导书 2026-11-08（Phase 2：Dataset Construction, Gold Annotation & Validation；基线 9acb013a）。provider 检查 OK（deepseek-flash-2 可用，USTC）；live cap=1500 attempts（Phase 2 pilot）未消费。240 篇目标/十大专题配额/九维/三分区/HOLDOUT 不提前消费=不可变更项。本批按 §16 顺序执行：旧题审核→规则统一→配额冻结→首批试制→Gold→独立审核→机械校验→Pilot→推送；进度 2026-11-08 晚：45 篇旧题审核收口（42 ACCEPT/1 WITH_NA/2 OVERLAY/0 REJECT，93 冲突全裁决）；首批试制 38/38 篇（E301-E338，488 轮，T01-T10 全覆盖+T10 孪生 2 组+T09 24/32 轮）三角色隔离流水完成；标注 1268 卡/1350 原子 quote 全量复验全 PASS；三审计（C1/C2/C3）+两修复（R1/R2）完成，FAIL 全清（含 E325 CRITICAL 算术链反向重锚）；schema 模板对齐 fix_wave4_schema_v1 已 apply（699 required 翻转/38 timeline 迁移/38 runner 副本/159 unknowns 键对齐）+ timeline 7 处同步；audit.md 8 节重构进行中（D1/D2/D3）；待：哈希终算→validate×3→dedupe/sidecar/lineage→live pilot（cap1500 未消费）→人工锚点包→推送。跨篇人名重名 12 组登记为冻结前打磨项（非阻塞）。；2026-11-08 收口：live pilot 完成（1,104 位/capture 9/9×3/attempts 1,163/1,500），PHASE2_PILOT_REPORT.md + 锚点包（36/40 真实回复）+ 分配表 v2 （权威配额+T02 重分类）落盘；§13 文档件全齐（V1 规范×3/验收矩阵/复现手册/改名计划/custody guard/谱系报告/custody 清单/Judge 校准骨架）。剩余：用户填 40 锚（不代投）→GitHub 推送。157 篇 PENDING 属批 2/3/4（BATCH2_GENERATION_PLAN v2 已备）。",
+   "result_note": "进行中"
+  }
+ ],
+ "wave_attempt_menu_caps": {
+  "A": 1536,
+  "B": 2048,
+  "C": 3072,
+  "D": 3072,
+  "E": 1536
+ },
+ "menu_is_not_spending_target_or_new_global_authorization": true,
+ "existing_management_cap": 16384,
+ "manager_remaining_attempts": null,
+ "manager_remaining_note": "Reconcile scope boundaries/open reservations first; inventory file sum is not a canonical cap balance",
+ "continuous_replenishment": "After each complete experiment, add highest-value future work to retain 48–72 effective engineering hours READY/PLANNED; never duplicate accepted work",
+ "terminal_policy": "Continue authorized nonblocked tracks until scoped acceptance, explicit user pause, or exact resource/external constraint; no infinite paid retries"
+}

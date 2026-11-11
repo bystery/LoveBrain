@@ -1,0 +1,14 @@
+{
+ "batch_id": "BATCH-W17C-MERGE-20261103",
+ "arm_map": {"parent": "action_policy_r9_slim", "candidate": "window_expand_b_norecap_guard"},
+ "episode_order": [
+  {"episode": "E157", "arm_order": "parent_first"},
+  {"episode": "E164", "arm_order": "candidate_first"},
+  {"episode": "E170", "arm_order": "parent_first"},
+  {"episode": "E183", "arm_order": "candidate_first"},
+  {"episode": "E191", "arm_order": "parent_first"},
+  {"episode": "E212", "arm_order": "candidate_first"}
+ ],
+ "cards_path": "benchmark/stories_v2/wave3/GRADING_CARDS_W17C.json",
+ "recall_capable": false
+}

@@ -1,0 +1,31 @@
+{
+ "kind": "w1301_holdout_batch1",
+ "date": "2026-10-31",
+ "selection_rule": "G1 消费 4 篇 stage3 后，余 SEALED 12 篇中取 8：stage3 全部剩余(4) + stage2 风格分层(暧昧 E029/账务更正 E035/帮忙跨日 E022/同事饭搭 E028)；E023/E025/E030/E036 留第二批",
+ "holdout_batch1": [
+  "E038",
+  "E040",
+  "E043",
+  "E044",
+  "E022",
+  "E028",
+  "E029",
+  "E035"
+ ],
+ "reserved_batch2": [
+  "E023",
+  "E025",
+  "E030",
+  "E036"
+ ],
+ "visibility": {
+  "author_scope": "AI 合成作者（exposure.json author_type=AI, real_user_material=false）；本登记会话读过 logs/ → 按 W03-05 隔离铁律不得当轮产新故事，仅做既有 SEALED 的选配登记",
+  "exposure_rule": "每篇首次被候选批消费即 expose 记账；G1 的 4 篇完成后由收口步补 expose"
+ },
+ "pending_g1_expose": [
+  "E037",
+  "E039",
+  "E041",
+  "E042"
+ ]
+}

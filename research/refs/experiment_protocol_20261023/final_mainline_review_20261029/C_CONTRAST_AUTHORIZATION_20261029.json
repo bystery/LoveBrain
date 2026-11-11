@@ -1,0 +1,57 @@
+{
+ "kind": "authorization_registration",
+ "authorization_id": "AUTH-C-CONTRAST-20261029-01",
+ "authorized": true,
+ "status": "ACTIVE",
+ "granted_by": "用户 2026-10-29 全面授权（自行完成所有可自决的实测），额度自定为收口单 §C 上限 24 次",
+ "phase": "C",
+ "budget_ledger": "logs/auth_budget/AUTH-C-CONTRAST-20261029-01.jsonl",
+ "real_endpoint": {
+  "api_base": "http://127.0.0.1:17770/v1",
+  "model": "dsf",
+  "temperature": 0.7,
+  "max_attempts": 24
+ },
+ "api_config": "api_cfg:openai_compat_stream_false_v1；dsf 单一基座；与 F3/B 批同参数",
+ "scope": {
+  "purpose": "收口单 C：assertion_tiering 单点改动的三领域正反对照（12 位点 × base/tier 两臂 = 24 次）",
+  "stage": "C_contrast",
+  "experiment": "C_contrast_tiering_20261029",
+  "candidate": "action_policy_r5_tier",
+  "identity_sha256": "ceb8008f9c348c32bb65d40dd1b63b56561582dbe10dfeaa0a2b102ecb0e7169",
+  "supersedes_identity_sha256": "17fd2160e5306a23ba7ac52a2c5c716d4a58e345e5781d84890b69465fb76d17",
+  "freeze_file": "F_R5_CANDIDATE_FREEZE_20261029.json",
+  "method": "同一付费位点的实际出站 prompt，两臂只差“依据分层”段；判据由 tools/run_c_contrast_batch.py 在派发前写入 F_C_CONTRAST_REGISTRATION.json",
+  "categories": [
+   "NEEDS_CHECK 4",
+   "PROPOSAL 4",
+   "EVIDENCED 4"
+  ],
+  "guard_rails": [
+   "该推进不退缩",
+   "已确定不反复问"
+  ],
+  "falsification": "NEEDS_CHECK 改善但任一护栏回退即判假设被否证",
+  "allowed_models": [
+   "dsf"
+  ],
+  "forbidden_models": [
+   "hy4-preview",
+   "hy3",
+   "qwen3.8-flash",
+   "gemini-3.8-flash"
+  ],
+  "endpoint": "http://127.0.0.1:17770/v1",
+  "positions": 24,
+  "total_attempts": 24,
+  "max_concurrency": 1,
+  "fail_fast": true,
+  "no_retry": true,
+  "no_makeup": true,
+  "single_shot_per_attempt": true,
+  "closed_history_not_reused": "F1-F6 与 B 批已关闭账本不复活、不挪用、不抵扣"
+ },
+ "execution_entry": "tools/run_c_contrast_batch.py",
+ "notes": "一物理请求一 attempt；失败计消耗不重试；跑完关单不复活",
+ "registered_at": "2026-10-29T17:20:08"
+}

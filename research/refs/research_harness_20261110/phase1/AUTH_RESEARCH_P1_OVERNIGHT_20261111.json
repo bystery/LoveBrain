@@ -1,0 +1,29 @@
+{
+  "auth_id": "AUTH-RP1-OVERNIGHT-20261111-02",
+  "date": "2026-11-11",
+  "authority": "用户 2026-11-11 通宵连续迭代执行指令（同日第二份）+ RESEARCH-P1 宪章 + 既有持续实验授权",
+  "purpose": "通宵连续研究循环 LOOP-1..N：真实实验（b06 迭代、rh_b11 缓存对照、新机制原型）→ 三指标分析（必读真实回复）→ 针对性外部研究 → 新机制假设 → 实现 → 再实验 → 判决（KEEP/EXPAND/REWORK/PIVOT/ELIMINATE/UNCERTAIN）→ 下一轮。",
+  "budget_envelope": {
+    "same_night_envelope": "与本日 AUTH-RP1-SMOKE-20261111-01（已用 85/400）同属一夜资源封套，不通过分拆 AUTH 变相扩容",
+    "this_auth_cap_max_total_api_attempts": 300,
+    "night_total_upper_bound": "≤400 attempts（smoke 85 + 本批 ≤300 + provider check 少量）",
+    "priority_rule": "额度优先给最有信息价值的假设；不足时缩小规模，不砍记账"
+  },
+  "scope": {
+    "positions": "smoke_24（固定）为主；如证据充分可扩 DEV_FAST_SET 60 位中的固定子集（预登记，不临时挑位）",
+    "arms_allowed": ["rh_b04_anchored_layout", "rh_b06_tiny_cascade", "rh_b09_extractive_slim", "rh_b06b（迭代版）", "rh_b11 系（缓存对照对）", "通宵循环中新登记的 RH-B 原型（须先入 MECHANISM_REGISTRY）"],
+    "runner": "tools/benchmark_v1/prototype_runner.py",
+    "concurrency": 1,
+    "forbidden": ["HOLDOUT E401-E520 全部（E401-E423 已曝光不得当新题；E424-E520 封存）", "benchmark/b_line/", "换模型/换采样", "超 cap 补跑"]
+  },
+  "model": "deepseek-flash-2",
+  "temperature": 0.7,
+  "max_concurrent_requests": 1,
+  "retry_on_quality_failure": false,
+  "honesty_rules": [
+    "失败位置如实登记缺失，不伪造完整结果",
+    "AI 质量审阅只能标探索性，不冒充人类评分",
+    "每轮落账 CANDIDATE_SCOREBOARD.csv + LIVE_LOOP_LOG.md；每次推送记录真实 SHA",
+    "无持续进程支持时不得声称后台仍在自动执行"
+  ]
+}

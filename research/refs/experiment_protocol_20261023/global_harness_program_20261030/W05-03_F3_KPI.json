@@ -1,0 +1,140 @@
+{
+ "kind": "memory_engine_kpis_v2",
+ "date": "2026-10-31",
+ "runs": [
+  {
+   "batch": "F3",
+   "story": "E062",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 20,
+   "correction_turns": [
+    7,
+    10
+   ],
+   "added_f_total": 27,
+   "facts_store_end": 42,
+   "capture_ratio": 1.35,
+   "overstore_ratio": 2.1,
+   "correction_update_hits": "1/2",
+   "updates_at_corr": [
+    {
+     "turn": 7,
+     "applied_in_window": 0
+    },
+    {
+     "turn": 10,
+     "applied_in_window": 1
+    }
+   ],
+   "updates_applied_total": 3,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "F3",
+   "story": "E062",
+   "arm": "parent",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 20,
+   "correction_turns": [
+    7,
+    10
+   ],
+   "added_f_total": 27,
+   "facts_store_end": 41,
+   "capture_ratio": 1.35,
+   "overstore_ratio": 2.05,
+   "correction_update_hits": "1/2",
+   "updates_at_corr": [
+    {
+     "turn": 7,
+     "applied_in_window": 0
+    },
+    {
+     "turn": 10,
+     "applied_in_window": 2
+    }
+   ],
+   "updates_applied_total": 3,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "F3",
+   "story": "E064",
+   "arm": "candidate",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    4,
+    7,
+    16
+   ],
+   "added_f_total": 41,
+   "facts_store_end": 53,
+   "capture_ratio": 2.73,
+   "overstore_ratio": 3.53,
+   "correction_update_hits": "2/3",
+   "updates_at_corr": [
+    {
+     "turn": 4,
+     "applied_in_window": 2
+    },
+    {
+     "turn": 7,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 16,
+     "applied_in_window": 0
+    }
+   ],
+   "updates_applied_total": 9,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  },
+  {
+   "batch": "F3",
+   "story": "E064",
+   "arm": "parent",
+   "notes_format": "v6_bracket",
+   "turns_measured": 24,
+   "facts_gt_message_source": 15,
+   "correction_turns": [
+    4,
+    7,
+    16
+   ],
+   "added_f_total": 41,
+   "facts_store_end": 55,
+   "capture_ratio": 2.73,
+   "overstore_ratio": 3.67,
+   "correction_update_hits": "3/3",
+   "updates_at_corr": [
+    {
+     "turn": 4,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 7,
+     "applied_in_window": 1
+    },
+    {
+     "turn": 16,
+     "applied_in_window": 1
+    }
+   ],
+   "updates_applied_total": 8,
+   "updates_rejected_total": 0,
+   "invalid_src_total": 0,
+   "unsupported_src_total": 0
+  }
+ ]
+}
