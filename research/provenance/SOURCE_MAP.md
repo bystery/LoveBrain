@@ -1,7 +1,7 @@
 # SOURCE_MAP（终稿）
 
 - 落位目标：`research/provenance/SOURCE_MAP.md`（第1份指导书 §10.2 要求的必备 provenance 文档）。
-- 版本：FINAL（2026-11-12）。取代前期草案；前期草案中的"待 Phase C/E 定"条目已按逐路径对账与用户最新决策收口。
+- 版本：FINAL（2026-11-12，Phase F 收口后终版刷新）。取代前期草案；前期草案中的"待 Phase C/E 定"条目已按逐路径对账与用户最新决策收口；§13 数字对账表已刷新为终版计数（Phase F 全车道记录 + s12 远端独有恢复 + e6.5 验收 + s14 全树审计）。
 - 证据链（同目录配套）：`MIGRATION_MANIFEST.csv`（每文件一行，22+1 字段）、`PRIVACY_REVIEW.md`、`LICENSE_AND_RIGHTS.md`、交付完整性总账（文件数+字节量口径，替代原 SHA256SUMS.txt）、Gold 快照两侧 `SNAPSHOT_README.md` 与 `REMOTE_V1_SNAPSHOT_MANIFEST.json`。内部审查底稿（对账十态 CSV、逐域对账报告、隐私/许可扫描底稿）留存于审计工作区，本文件引用其文件名作为 evidence_ref。
 - 纪律声明：本文件只描述迁移事实与登记口径；不承载任何密钥、真实聊天正文、私有治理信息；路径一律为仓库相对路径。
 - 完整性纪律（2026-11-12 用户更新）：sha256 及一切文件不变性校验为防御性分析，全线停用；本文件不载任何哈希值或哈希比对结论，完整性口径 = **文件数 + 字节量**；manifest 中 sha 字段保留列位但标注停用（§12）。
@@ -41,14 +41,14 @@
 
 执行状态标记（2026-11-12）：**已完成** = 复制记录与双侧完整性核对（条数+字节量）齐全；**执行中** = 计划行已定、复制进行或待收尾；**待执行** = 计划已定、尚未开始。
 
-### A. benchmark（第 2 类：Benchmark 和评分器）——已完成（快照轨待执行）
+### A. benchmark（第 2 类：Benchmark 和评分器）——已完成（快照轨已恢复，e6.5 收口）
 
 | 源路径 | 目标路径 | 对账状态 | 处置 |
 | --- | --- | --- | --- |
 | `benchmark/`（2,398 文件 / 37.4 MiB） | `research/benchmark/` | 共同 2,375 + 本地独有 23（20 LOCAL_AHEAD + 3 UNTRACKED） | 完整迁移（Git）：2,377 件 VERIFIED；21 件 ACL 锁定不可读，如实登记保持锁定状态 |
 | `benchmark/stories_v2/`（2,023 文件 / 34.2 MiB，19 子目录 + GOLD_SCHEMA.md） | 同名随迁 | 层级完整、341 episode 五件套 100% 命中 | 目录名/episode ID/manifest 原样，不合并版本、不静默去重 |
-| `benchmark/stories_v2/GOLD_SIDECAR/`（14 文件，v2 重建） | `research/benchmark/stories_v2/GOLD_SIDECAR/` | 13 BOTH_DIFFERENT + 1 本地独有 | **权威轨**，本地字节纯复制（已完成）；远端已提交 13 件快照轨落 `GOLD_SIDECAR_v1_remote_snapshot/`（待执行，§10 D-4） |
-| `benchmark/stories_v2/*/exposure.json`（80 件实质差异） | 原位 `<layer>/<EID>/exposure.json` | BOTH_DIFFERENT | 权威轨=本地补录版（已完成）；远端提交版快照轨落 `_remote_v1_snapshots/exposure/…`（待执行，§10） |
+| `benchmark/stories_v2/GOLD_SIDECAR/`（14 文件，v2 重建） | `research/benchmark/stories_v2/GOLD_SIDECAR/` | 13 BOTH_DIFFERENT + 1 本地独有 | **权威轨**，本地字节纯复制（已完成）；远端已提交 13 件快照轨落 `GOLD_SIDECAR_v1_remote_snapshot/`（已恢复，§10 D-4） |
+| `benchmark/stories_v2/*/exposure.json`（80 件实质差异） | 原位 `<layer>/<EID>/exposure.json` | BOTH_DIFFERENT | 权威轨=本地补录版（已完成）；远端提交版快照轨落 `_remote_v1_snapshots/exposure/…`（已恢复，§10） |
 | `benchmark/b_line/`（26 文件：MANIFEST v2 + README v1 + 24 episode） | `research/benchmark/b_line/` | 24/24 逐件对应（条数+字节量与封存登记一致） | **普通资产完整迁移（已完成，用户决策一）**：无任何特殊标记；README v1 vs MANIFEST v2 冲突随行登记原样保留 |
 | `benchmark/episodes/ releases/ dev_pilot_v02/ anchors/ annotations/ cases/ dev_expansion_v01/ tasks/ media/ c4_screen_20261026/ interaction_env_20261026/ positive_capability_20261025/ _templates/ _acl_locked_episodes(_probe2)/` 及顶层 7 文件 | 同名随迁 | 与远端一致或本地独有未跟踪 | 完整迁移；`_acl_locked_*` 保持锁定清单；`releases/arena_v1/review_loop/mapping_secret.json` 经全文审查为盲测揭盲映射表（非凭据），随迁 |
 | `benchmark/benchmark/` 空目录壳 | — | — | 不迁（脚本残留，登记待清理） |
@@ -56,13 +56,13 @@
 - **stories_v2 目标侧验收账目**：2,023（本地原样）+ 13（GOLD 快照）+ 80（exposure 快照）+ 3（两个 SNAPSHOT_README + REMOTE_V1_SNAPSHOT_MANIFEST.json）= **2,119 文件**；benchmark 域 manifest 行 = 2,398（本地源）+ 93（远端源）= **2,491 行**。
 - GOLD_SCHEMA.md 按原字节复制不改（9,359 B），文档滞后事实以注记登记（§11.2）。
 
-### B. dataset（第 1 类：数据集和 Gold）——登记已完成（公开侧合成件执行中）
+### B. dataset（第 1 类：数据集和 Gold）——登记已完成（公开侧合成件已落位）
 
 | 源路径 | 目标路径 | 对账状态 | 处置 |
 | --- | --- | --- | --- |
 | `dataset/` 原件 84 文件（64 PRIVATE_SENSITIVE 真实聊天导出 + 20 PUBLIC_SANITIZED 结构参考件；718 KiB） | **无公开目标路径（INTERNAL_ONLY）** | 84 件与远端共同（内容比对 73 一致 + 11 本地较新） | 原件 100% 不出站（用户决策三，无悬念）：84 行完整性登记完成（文件数+字节量），target=INTERNAL_ONLY（已完成） |
 | （公开侧新建）`research/dataset/manifests/` | 结构摘要：目录树 + 字段模板 + 行数/字节统计 | — | 新建（不含正文） |
-| （公开侧新建）`research/dataset/public_fixtures/` | synthetic=true 合成 KB 样本 5 个 | — | AI 原生子代理学习真实 KB 结构后生成；隔离区生成已完成，**强制隐私扫描（零真实姓名/零真实对话片段/零可还原特征）通过后**才进公开树（执行中）；synthetic=true 三层标记（库级 manifest / kb.json 键 / 每文件首行注释）+ 生成方式注明 |
+| （公开侧新建）`research/dataset/synthetic_samples/` | synthetic=true 合成 KB 样本 5 个（落位 92 件 = 5×18 文件 + README-synthetic.md + SYNTHETIC_MANIFEST.json） | — | AI 原生子代理学习真实 KB 结构后生成；隔离区生成 + **强制隐私扫描（零真实姓名/零真实对话片段/零可还原特征）独立复核全项 PASS** 后已复制进公开树（已完成）；synthetic=true 三层标记（库级 manifest / kb.json 键 / 每文件首行注释）+ 生成方式注明 |
 
 ### C. candidates（第 3 类：Baseline 与候选机制）——已完成
 
@@ -80,40 +80,40 @@
 | `KNOWLEDGE_ATOM_AUDIT_V1.md`、`C4_FOUR_ARM_REVIEW_PACK_V1.md/.json` | 脱敏副本或节选+索引登记 | — | HELD_REVIEW：内嵌真实历史消息原文片段，待脱敏形态定稿后单独执行，公开件完整性另记 |
 | `_audit_hc2/`（2 文件） | `research/evaluation/audits/hc2/` | 与远端一致 | 完整迁移（正式审计工具） |
 
-### E. runs（第 4 类：已完成实验原始答卷）——执行中
+### E. runs（第 4 类：已完成实验原始答卷）——已完成
 
 | 源路径 | 目标路径 | 对账状态 | 处置 |
 | --- | --- | --- | --- |
-| `runs/`（50,198 文件 / 242.6 MiB，290 批次） | `research/experiments/runs/` | 远端共同 23,805；本地独有新路径 13,254 + 本地未跟踪 2；内容重复组 13,137 | 全量迁移（执行中）：按 run 目录为单位；**不得把部分 run 写成完整**；体量头部批次 selection_v1（10,090 文件 / 70.3 MB）、pilot2_wave4_20261108（25.4 MB）、pilot2_all（21.7 MB）、holdout_v1（21.3 MB）；13,137 个内容重复件（相同内容不同路径）以去重引用登记，原件不删 |
+| `runs/`（50,198 文件 / 242.6 MiB，290 批次） | `research/experiments/runs/` | 远端共同 23,805；本地独有新路径 13,254 + 本地未跟踪 2；内容重复组 13,137 | 全量迁移（已完成：50,197 实体落位 = 新复制 18,434 + 续传核验 31,763，另 1 件 ACL 锁定登记）：按 run 目录为单位；**不得把部分 run 写成完整**；体量头部批次 selection_v1（10,090 文件 / 70.3 MB）、pilot2_wave4_20261108（25.4 MB）、pilot2_all（21.7 MB）、holdout_v1（21.3 MB）；13,137 个内容重复件（相同内容不同路径）以去重引用登记，原件不删 |
 | `runs/` 授权账本（ledger.json 及历史自校验伴生件） | 随各 run 目录 | — | 与授权与隔离说明一并随迁（禁漏） |
 
-### F. isol_runs（第 4/5 类）——执行中
+### F. isol_runs（第 4/5 类）——复制已完成（远端独有 62 件已恢复，62/62 字节数核验 PASS）
 
 | 源路径 | 目标路径 | 对账状态 | 处置 |
 | --- | --- | --- | --- |
-| `isol_runs/`（375 文件 / 3.6 MiB） | `research/experiments/isolated_runs/` | 远端共同 360 + 本地独有 15；远端独有 62 | 审查后迁移（执行中）：**授权与隔离说明必须随迁（禁漏）**；2 个 evil_link junction 不穿透不复制仅登记；远端独有 62 件为 junction 在远端提交时解析出的授权/发布材料（AUTHORIZATION_*、APPROVAL_REQUEST_*、release.json），属"授权与隔离说明"组成部分，随本域审查定性恢复（§10） |
+| `isol_runs/`（375 文件 / 3.6 MiB） | `research/experiments/isolated_runs/` | 远端共同 360 + 本地独有 15；远端独有 62 | 审查后迁移（复制已完成：360 VERIFIED + 15 ACL 锁定登记 + 2 junction EXCLUDED；**授权与隔离说明必须随迁（禁漏）**；远端独有 62 件授权/发布材料已恢复（62/62 字节数核验 PASS，RESTORED_FROM_REMOTE））；2 个 evil_link junction 不穿透不复制仅登记；远端独有 62 件为 junction 在远端提交时解析出的授权/发布材料（AUTHORIZATION_*、APPROVAL_REQUEST_*、release.json），属"授权与隔离说明"组成部分，随本域审查定性恢复（§10） |
 
 ### G. logs（第 4/5 类，大文件域）——登记完成（打包待执行）
 
 | 源路径 | 目标路径 | 对账状态 | 处置 |
 | --- | --- | --- | --- |
-| `logs/`（229,514 文件 / 1.47 GiB，本地独有未上传） | `research/experiments/raw_logs/`（索引 + 脱敏副本）+ Release/LFS 分卷原件 | 远端为 0 件（既定上传口径，非丢失） | 不逐文件复制：目录级登记 + `logs/INDEX.json`（88 KB）为 raw_logs 索引基底（登记完成）；原件按 V1–V7 十卷 zip 打包走 Release/LFS（Phase G 待执行，§14 门禁） |
+| `logs/`（229,514 文件 / 1.47 GiB，本地独有未上传） | `research/experiments/raw_logs/`（索引 + 脱敏副本）+ Release/LFS 分卷原件 | 远端为 0 件（既定上传口径，非丢失） | 不逐文件复制：目录级登记 + `logs/INDEX.json`（88 KB）为 raw_logs 索引基底（已落位 `research/experiments/raw_logs/INDEX.json`，F8 VERIFIED）；原件按 V1–V7 十卷 zip 打包走 Release/LFS（Phase G 待执行，§14 门禁） |
 
-### H. refs（第 5/6 类）——执行中
+### H. refs（第 5/6 类）——已完成
 
 | 源路径 | 目标路径 | 对账状态 | 处置 |
 | --- | --- | --- | --- |
-| `refs/`（19,662 文件 / 193.9 MiB） | `research/refs/`（保留历史相对层级） | 远端共同 19,655（内容比对 14,320 一致 + 5,335 本地较新）+ BOTH_DIFFERENT 12 + 远端独有 30 | 合规部分全迁（执行中）；>10MB 单件注记 LFS/Release 评审；不得因目录大而丢弃（`experiment_protocol_20261023/` 19,142 件占 95%） |
-| 远端独有 30 件：`refs/research_harness_20261110/phase1/experiments/2026-11-11_*`（7 批 run_records/run_summary/smoke csv）+ `overnight/FIRST_PROTOTYPE_RESULTS.md` + `phase1/harness/LIVE_LOOP_LOG.md` | 恢复至 `research/refs/` 对应路径 | REMOTE_ONLY（唯一明确反向项） | 远端→本地恢复（取回位置在对账 CSV 留存，约 0.5 MiB）（待执行） |
+| `refs/`（19,662 文件 / 193.9 MiB） | `research/refs/`（保留历史相对层级） | 远端共同 19,655（内容比对 14,320 一致 + 5,335 本地较新）+ BOTH_DIFFERENT 12 + 远端独有 30 | 合规部分全迁（已完成：19,662 VERIFIED）；>10MB 单件注记 LFS/Release 评审；不得因目录大而丢弃（`experiment_protocol_20261023/` 19,142 件占 95%） |
+| 远端独有 30 件：`refs/research_harness_20261110/phase1/experiments/2026-11-11_*`（7 批 run_records/run_summary/smoke csv）+ `overnight/FIRST_PROTOTYPE_RESULTS.md` + `phase1/harness/LIVE_LOOP_LOG.md` | 恢复至 `research/refs/` 对应路径 | REMOTE_ONLY（唯一明确反向项） | 远端→本地恢复已完成（s12：30/30 落位，字节三重核验全 PASS） |
 | `refs/KNOWN_FAILURES.md` | `research/refs/KNOWN_FAILURES.md` | 与远端一致 | 直迁；已知故障索引，不得删除失败族 |
 | `refs/experiment_protocol_20261023/global_harness_program_20261030/STORY_CUSTODY_LEDGER.json` | 随 refs 域原样随迁 | 本地较新（11-10 补录 + 11-12 补登） | 数据集 custody 口径权威账本（§11.3）；远端旧版在远端历史可取回 |
 | 判决书/消融/失败分析（原件在 refs/） | `research/experiments/decisions|ablations|failures/` 设薄索引 | — | 薄索引，不为美观改路径 |
 
-### I. archive 与特殊目录（第 6/7 类）——执行中
+### I. archive 与特殊目录（第 6/7 类）——F8 复制收口（落位 60 + 登记待审 46 + 排除 7；delivery_zips 门禁维持）
 
 | 源路径 | 目标路径 | 对账状态 | 处置 |
 | --- | --- | --- | --- |
-| `archive/`（4,397 文件 / 124.8 MiB，本地独有 4,357） | `research/archive/historical_assets/` | 远端仅 22 件共同 | 每个归档必须有索引；zip 族可走 Release（计划 115 行：60 复制 / 46 审查 / 9 排除·登记·改名） |
+| `archive/`（4,397 文件 / 124.8 MiB，本地独有 4,357） | `research/archive/historical_assets/` | 远端仅 22 件共同 | 每个归档必须有索引；zip 族可走 Release（F8 实行 115 行：61 VERIFIED〔archive 60 + raw_logs 索引 1〕/ 46 HELD_REVIEW / 7 排除 + 1 logs 目录占位） |
 | `archive/20261107_root_cleanup/delivery_zips_root/`（14 个 zip） | 待逐包核对放行 | — | 逐包核对 MANIFEST 条目放行前不复制（REVIEW_REQUIRED 门禁） |
 | `archive/20261107_root_cleanup/acl_locked_snapshots_20261021/` | 零触碰 | — | ACL 残骸：零触碰零深读零移动，仅目录级登记 |
 | `integration_preview/`（6 文件） | `research/archive/integration_preview_20261025/` | 与远端一致 | 完整迁移；标注 2026-10-25 历史移植原型，不冒充当前生产接线 |
@@ -124,7 +124,7 @@
 | `W13/W14` 批次目录、`analysis/`（7 文件 / 4.2 MiB 含 DATASET_FINAL_AUDIT_20261111 三件套） | 随 manifests/ 或 refs/historical | 本地独有 | 有唯一统计与实验材料，随迁（analysis 三件套为数据集口径收敛输入件，§11.1） |
 | `.coordination/`（远端 2 件：heartbeat/claims） | **无公开目标** | REMOTE_ONLY | 排除：内部心跳/协调不是研究证据 |
 
-### J. arena 与 tools（第 2/8 类：评分器 / 可复用运行脚本）——执行中
+### J. arena 与 tools（第 2/8 类：评分器 / 可复用运行脚本）——已完成
 
 | 源路径 | 目标路径 | 对账状态 | 处置 |
 | --- | --- | --- | --- |
@@ -132,7 +132,7 @@
 | `tools/`（507 文件 / 4.5 MiB） | `research/tools/`（+ tests 67 件单独归 `research/tools/tests/`） | 远端共同 459 + 本地独有 16 + 未跟踪 10 + 重复 22 | 确定性核心 ~30 + 测试 67 + `benchmark_v1/` 整目录随迁；一次性探针 ~150+ 归 historical_tools；跨目录依赖（engine_adapter / reference_chain）落位后 import 可解析性待实测（§14 T3） |
 | 远端根层无前缀 `tools/benchmark_v1/`（16 件） | 并入同路径清单 | 仅基准头存在 | 并入 harness 内容登记；1 个 .pyc 不复制 |
 
-### K. 根文件与研究论文（第 7 类）——执行中
+### K. 根文件与研究论文（第 7 类）——已完成
 
 | 源路径 | 目标路径 | 对账状态 | 处置 |
 | --- | --- | --- | --- |
@@ -163,7 +163,7 @@ benchmark（去空壳）、candidates（去 pyc）、evaluation 常规件、aren
 
 | 对象 | 形态 | transformation |
 | --- | --- | --- |
-| dataset 公开部分 | synthetic=true 合成 KB 样本 5 个（隔离区生成 → 强制隐私扫描 → 复制进公开树）；**不发布脱敏原件** | `synthetic-replacement`（注明生成方式：AI 原生子代理学习真实 KB 结构后生成） |
+| dataset 公开部分 | synthetic=true 合成 KB 样本 5 个（隔离区生成 → 强制隐私扫描 PASS → 已复制进公开树 `research/dataset/synthetic_samples/`，92 件）；**不发布脱敏原件** | `synthetic-replacement`（注明生成方式：AI 原生子代理学习真实 KB 结构后生成） |
 | dataset 结构摘要 | 目录树 + 字段模板 + 统计，不含正文 | `structure-summary` |
 | evaluation 敏感 3 件（KNOWLEDGE_ATOM_AUDIT / C4_REVIEW_PACK×2） | 脱敏副本或节选+索引登记（形态定稿中） | `sanitized-copy` / `INDEX_ONLY`（保留"机器判定 fuzzy 未经人工复核不得进对外结论"限定语） |
 | logs 公开侧 | raw_logs 索引（复用 `logs/INDEX.json`）+ 脱敏副本按敏感面逐类处理 | `sanitized-copy` / `INDEX_ONLY` |
@@ -234,7 +234,7 @@ evidence_ref 指向对应审查底稿；RIGHTS_REVIEW 类必须注明 decision_o
 | D-1 | logs 体量：指导书 ≈2.1 GB vs 实测 1.47 GiB | 指导书数字为编写时毛口径粗快照（含 lock/pyc/__pycache__ 与账本伴生件）；实测净口径 229,514 件 / 1.47 GiB，打包毛字节 1,627,988,729 B ≈ 1.52 GiB（十卷全量口径与 survey 一致）。远端 logs 为 0 件，属"本地独有不上传"既定口径而非丢失。**无删减异常，归因闭合。** |
 | D-2 | runs 增长 ~4 倍：本地 242.6 MiB vs 远端 141.9 MiB vs 指导书 ≈65 MB | 远端 HEAD 定格于 11-08 波次；11-10/11-11 新批次（selection_v1 70.3 MB、pilot2_wave4 25.4 MB、pilot2_all 21.7 MB、holdout_v1 21.3 MB、rp1_* 11-11 族）只存在于本地（LOCAL_AHEAD 13,254）。另 13,137 件 DUPLICATE_HASH 为 mock/smoke 族内容重复件（如 `_ph3_mock_smoke` scoring.json 重复 2,915 份），原件不删、迁移索引去重引用。**runs 域以本地为权威。** |
 | D-3 | candidates 文件数：本地 526 vs 远端 510 | 526 = 远端共同 510 + 本地独有 16（`round_0_baseline/` 全部 16 件，远端树未跟踪）；85 个 pyc 运行产物不计文件账。目标侧 527 行（526 + VERSION_LINEAGE_V2.json）全部 VERIFIED。**无内容缺口。** |
-| D-4 | GOLD 文件数：本地 14 vs 指导书"13" | 三代口径（见 §11.2 表）：① v1.0 文档口径（221/3,102/6,603，仅 GOLD_SCHEMA.md 文本）；② 远端已提交快照 13 文件（2026-11-08，totals 259/3,590/7,953）；③ 本地 v2 重建 14 文件（2026-11-10，totals 299/4,082/9,646，新增 GOLD_wave5_selection.json）。双轨处置：权威轨=③（已落盘），快照轨=②（待恢复）。**"13 vs 14"不是矛盾，是三代演进；指导书 §13.2 该项按双轨口径验收。** |
+| D-4 | GOLD 文件数：本地 14 vs 指导书"13" | 三代口径（见 §11.2 表）：① v1.0 文档口径（221/3,102/6,603，仅 GOLD_SCHEMA.md 文本）；② 远端已提交快照 13 文件（2026-11-08，totals 259/3,590/7,953）；③ 本地 v2 重建 14 文件（2026-11-10，totals 299/4,082/9,646，新增 GOLD_wave5_selection.json）。双轨处置：权威轨=③（已落盘），快照轨=②（已恢复，e6.5 收口）。**"13 vs 14"不是矛盾，是三代演进；指导书 §13.2 该项按双轨口径验收。** |
 | D-5 | evaluation 字节差：本地 +123,325 B | 内容比对结论：98 件中 33 与远端一致、65 本地较新、0 例反向；差额即 65 个本地更新文件的单向字节增量（活迭代域本性，非行尾差异主因）。本地版为权威，94 件已复制 VERIFIED。**收口。** |
 | D-6 | 三分支分歧并存 | 对账基准 = `research-p1-sync-20261111`（7f0d189e，全仓最新）；`main`（387c55ac）为其祖先且 13 个 GOLD 文件在两 ref 下内容等价；根层无前缀 `refs/`、`tools/` 25 件仅存在于基准头（同步脚本前缀规则漏网，并入 harness 内容清单登记）。十态 BOTH_DIFFERENT 110 行中 refs 12 + tools 5 件 = 本地较新的真实新增内容（research_harness 批次与 tools 更新），权威=本地版，远端旧版取回位置在对账 CSV 留存。**基准唯一化收口。** |
 | D-7 | 本地独有根件 3 件 | `指导书.md`：远端已跟踪（本地较新版），V14 收口交接书，按 WORKER_* 同规则脱敏归 `historical_worker_guides/指导书-V14-20261022.md`；`API_COMPATIBILITY_REPORT.md` + `provider_check.json`：本地独有（LOCAL_AHEAD 2 件），provider_check_v1 检查产物，含内部 endpoint 与模型名、无密钥材料（已核实），前者脱敏后归 `historical_assets/`，后者 TRANSIENT_REVIEW 审查后同规则处理或内部保留。**逐件定性收口。** |
@@ -245,8 +245,8 @@ benchmark 域共同 2,375 件内容比对结论：855 件与远端一致 + 1,427
 
 | 组 | 数量 | 对账状态 | 权威轨（正式结果） | 快照轨（历史存档） | version_identity |
 | --- | --- | --- | --- | --- | --- |
-| GOLD_*.json | 13 | BOTH_DIFFERENT | 本地 v2 重建版 → `GOLD_SIDECAR/`（已落盘） | 远端已提交版 → `GOLD_SIDECAR_v1_remote_snapshot/`（待恢复） | `gold-v2-rebuild-20261110(authoritative) vs remote-committed-20261108(snapshot)` |
-| exposure.json | 80 | BOTH_DIFFERENT | 本地补录版 → 原位 `<layer>/<EID>/exposure.json`（已落盘） | 远端已提交版 → `_remote_v1_snapshots/exposure/<layer>/<EID>/exposure.json`（待恢复） | `exposure-backfill-20261109~10(authoritative) vs remote-committed-20261108(snapshot)` |
+| GOLD_*.json | 13 | BOTH_DIFFERENT | 本地 v2 重建版 → `GOLD_SIDECAR/`（已落盘） | 远端已提交版 → `GOLD_SIDECAR_v1_remote_snapshot/`（已恢复） | `gold-v2-rebuild-20261110(authoritative) vs remote-committed-20261108(snapshot)` |
+| exposure.json | 80 | BOTH_DIFFERENT | 本地补录版 → 原位 `<layer>/<EID>/exposure.json`（已落盘） | 远端已提交版 → `_remote_v1_snapshots/exposure/<layer>/<EID>/exposure.json`（已恢复） | `exposure-backfill-20261109~10(authoritative) vs remote-committed-20261108(snapshot)` |
 | GOLD_wave5_selection.json | 1 | LOCAL_UNTRACKED | 随权威轨原样公开，**不加任何特殊标记（决策一）** | 无（远端从未跟踪） | `gold-v2-rebuild-20261110(new-in-v2)` |
 | GOLD_SCHEMA.md | 1 | 与远端一致 | 原样复制（9,359 B 原字节不变） | 无需 | `schema-doc-v1.0(2026-11-03) lags data`（三处注记） |
 
@@ -325,23 +325,25 @@ GOLD_SCHEMA.md 原样保留不修改（滞后本身是历史证据）；滞后�
 
 | 域 | 源侧（本地工作树实测） | 远端（基准头文件对象） | 目标侧（Phase F 后实测） | 差额归因 |
 | --- | --- | --- | --- | --- |
-| A benchmark | 2,398 / 37.4 MiB | 2,375 / 33.8 MiB | **复制 2,377（已完成）** + 21 ACL 锁定登记；快照轨 +93 + 3 说明件待执行 → stories_v2 账目 2,119 / 域 manifest 行 2,491 | −21 = ACL 锁定不可读（保持锁定登记）；+93+3 = 快照轨与说明件追加 |
-| A-1 stories_v2 | 2,023（341 episode 配套 100%） | 2,022 | 2,022 已落位 + wave5 未跟踪 1 件 | +1 = GOLD_wave5_selection.json（local-only） |
-| A-2 b_line | 26 | 26 | 26 已落位（无特殊标记） | 0 |
-| B dataset | 84 / 718 KiB | 84 | 复制 0（84 行 INTERNAL_ONLY 完整性登记已完成）；公开侧 synthetic 5 KB 隔离区待扫描 | 84 全部不出站（决策三）；公开侧为 Phase E 新写件 |
+| A benchmark | 2,398 / 37.4 MiB | 2,375 / 33.8 MiB | **复制 2,377 + 快照恢复 93 = 2,470 VERIFIED（已完成）** + 21 ACL 锁定登记 + 3 说明件落位 → stories_v2 账目 2,119（e6.5 全 PASS）/ manifest 行 2,491 / 域落盘 2,473（s14 Δ=0） | −21 = ACL 锁定不可读（保持锁定登记）；+93+3 = 快照轨与说明件追加（已落位） |
+| A-1 stories_v2 | 2,023（341 episode 配套 100%） | 2,022 | **2,119 落位闭合（e6.5 账目全 PASS）** = 2,023 本地原样（含 wave5 1 件）+ 13 GOLD 快照 + 80 exposure 快照 + 3 说明件 | +96 vs 源 = 快照双轨 93 + 说明件 3；+1 vs 远端 = GOLD_wave5_selection.json（local-only，已随权威轨迁入） |
+| A-2 b_line | 26 | 26 | 26 已落位（无特殊标记，F1 VERIFIED） | 0 |
+| B dataset | 84 / 718 KiB | 84 | 84 行 INTERNAL_ONLY 完整性登记（已完成）；公开侧合成样本 92 件已落位 `research/dataset/synthetic_samples/`（隐私扫描 PASS 后复制） | 84 全部不出站（决策三）；公开侧为 Phase E 新写件（+92） |
 | C candidates | 526 + 谱系 1 = 527 | 510 | **527 VERIFIED（已完成）** | +16 = round_0_baseline（本地独有）+1 = 谱系件；pyc 不计账 |
-| D evaluation | 98 + hc2 2 = 100 | 98 + 2 | **94 VERIFIED（已完成）**；3 EXCLUDED + 3 HELD_REVIEW | −3 密件、−3 待脱敏形态定稿 |
-| E runs | 50,198 / 242.6 MiB（290 批） | 23,805 / 141.9 MiB | 执行中（0 已落位） | +26,393 = 11-10/11-11 新批次（LOCAL_AHEAD 13,254 + 重复组 13,137 + 未跟踪 2） |
-| F isol_runs | 375（+2 junction 登记） | 422 | 执行中 | 远端独有 62 = evil_link 提交时解析的授权/发布材料（随域审查恢复） |
-| G logs | 229,514 / 1.47 GiB | 0 | 目录级登记完成；V1–V7 十 zip 打包待 Phase G | 本地独有不上传口径；原件走分卷 |
-| H refs | 19,662 / 193.9 MiB | 19,685 / 192.8 MiB | 执行中（已落位 8,618） | 远端独有 30 = 11-11 research_harness 研究批次（恢复清单） |
-| I archive/特殊目录 | 4,397 + analysis 7 + integration_preview 6 + W13/W14 2 + 根件族 | 22 + 6 + 2 | 执行中（计划 115 行：60 复制 / 46 审查 / 9 排除·登记·改名） | archive 本地独有 4,357（delivery_zips 14 包逐包核对门禁） |
-| J arena + tools | 29 + 507 | 29 + 459(+16 根层无前缀) | 执行中（计划 537 行） | tools 本地独有 16 + 未跟踪 10 + 重复 22；pyc 不复制 |
-| K 根文件 + PAPER | 17 + PAPER | 15 + PAPER | 执行中（PAPER 在 F7；根件在 F8） | 本地独有 2（API_COMPATIBILITY_REPORT / provider_check） |
+| D evaluation | 98 + hc2 2 = 100 | 98 + 2 | **94 VERIFIED（已完成）**；3 EXCLUDED + 3 HELD_REVIEW 登记 | −3 密件、−3 待脱敏形态定稿 |
+| E runs | 50,198 / 242.6 MiB（290 批） | 23,805 / 141.9 MiB | **50,197 落位（已完成）：新复制 18,434 + 续传核验 31,763**；另 1 件 ACL 锁定登记 | +26,393 = 11-10/11-11 新批次（LOCAL_AHEAD 13,254 + 重复组 13,137 + 未跟踪 2）；1 件 ACL 锁定登记不复制 |
+| F isol_runs | 375（+2 junction 登记） | 422 | **360 复制 VERIFIED（已完成）** + 15 ACL 锁定登记 + 2 junction EXCLUDED；远端独有 62 件已恢复（P4 关闭） | 远端独有 62 = evil_link 提交时解析的授权/发布材料（恢复待执行）；15 件 ACL 锁定登记不复制 |
+| G logs | 229,514 / 1.47 GiB | 0 | 目录级登记完成 + `research/experiments/raw_logs/INDEX.json` 落位（F8 VERIFIED）；V1–V7 十 zip 打包待 Phase G（P8） | 本地独有不上传口径；原件走分卷 |
+| H refs | 19,662 / 193.9 MiB | 19,685 / 192.8 MiB | **19,662 复制 VERIFIED + 30 远端独有恢复（已完成，s12）**；+ W13/W14 展平登记件 2 → 域落盘 19,694（s14 Δ=0） | 远端独有 30 = 11-11 research_harness 研究批次（已恢复落位）；+2 = W13/W14 展平登记件 |
+| I archive/特殊目录 | 4,397 + analysis 7 + integration_preview 6 + W13/W14 2 + 根件族 | 22 + 6 + 2 | **落位 60（F8 VERIFIED，含 AGENTS-v1.6.md 改名件）+ raw_logs 索引 1**；46 行 HELD_REVIEW 登记（14 delivery_zips 逐包核对门禁、12 TRANSIENT_REVIEW、worker guides 脱敏、analysis 7 件、W13/W14 目录级等）+ 7 EXCLUDED | archive 本地独有 4,357：落位 60 + 登记保留（delivery_zips 门禁 / 待审件）+ 排除登记，无缺口（s14 Δ=0） |
+| J arena + tools | 29 + 507 | 29 + 459(+16 根层无前缀) | **537 VERIFIED（已完成）= arena 29 + tools 507 + PAPER 1（F7）** | tools 本地独有 16 + 未跟踪 10 + 重复 22；pyc 不复制 |
+| K 根文件 + PAPER | 17 + PAPER | 15 + PAPER | PAPER 已落位（F7 VERIFIED）；根件族按 §3.I 规则落位 historical_assets（F8）；API_COMPATIBILITY_REPORT + provider_check 维持 HELD_REVIEW 登记 | 本地独有 2（API_COMPATIBILITY_REPORT / provider_check）审查未收口 |
 | L 排除域 | dist 10,928 / backups 16 / guanjia 75 / .coordination 远端 2 / ACL 残骸 | — | 排除登记（零迁入） | — |
-| 合计 | 318,842 文件 / 2.11 GiB | 47,517（harness）+ 1,893（非前缀） | 已落位 2,998（F1 2,377 + F3 527 + F4 94；F2 登记 84 行不占文件） | 十态总账见 §10.1 |
+| 合计 | 318,842 文件 / 2.11 GiB | 47,517（harness）+ 1,893（非前缀） | **实体落位 73,938（F1–F8 VERIFIED/COPIED/RESTORED 合计）**；+ 非清单新件 102 → 全树 74,040 文件 / 527.62 MiB（s14 全量字节核验 73,937/73,937 零不符）；登记不复制 183 行 | 十态总账见 §10.1 |
 
-MIGRATION_MANIFEST.csv 已合并行数：**3,109**（F1 2,398 + F2 84 + F3 527 + F4 100）；F5/F5b/F6/F7/F8 执行完成后并入。
+MIGRATION_MANIFEST.csv 合并行数（s12 官方重跑合并，终版）：**74,121 数据行** = F1 2,491 + F2 84 + F3 527 + F4 100 + F5 50,198 + F5b 377 + F6 19,692 + F7 537 + F8 115；其中实体落位 73,938 行、登记/排除/待审 183 行。
+- 分批 commit（实测 git log，staging 分支 `research-migration-20261112`，基点 closeout `e2ebde1`）：已提交 4 批——benchmark/Gold/B-line `200b206`、candidates `ff39047`、evaluation `b3ce7b4`、experiments（runs+isol_runs+scoring）`b0e5fb2`；dataset/refs/archive/arena/tools/provenance/PAPER.md/README.md 仍为工作树待提交（**分批 commit 进行中**）。
+- s15 脱敏副本（evaluation 敏感 3 件）：**未落盘，执行中**（P9 HELD_REVIEW 维持）。
 
 ## 14. 未决事项清单
 
@@ -353,21 +355,21 @@ MIGRATION_MANIFEST.csv 已合并行数：**3,109**（F1 2,398 + F2 84 + F3 527 +
 | R6 | LoveBrain images/demo.gif 与 owerview.jpg 素材确认 | demo.gif 为 v1.3.x 真机录制（界面已改版）、owerview.jpg 无制作档案 | 按既有决定制作合成演示替换公开引用；owerview.jpg 补作者/素材确认 |
 | R8 | framework-guanjia 复制授权 | 无授权文件（溯源用户自产）；当前不整仓复制仅登记 | 依赖清单核验 + 权利确认后按最小集取用 |
 
-### 14.2 执行类（Phase F/G 收尾）
+### 14.2 执行类（Phase F 已收口；Phase G 与遗留项）
 
 | # | 事项 | 当前完成度 |
 | --- | --- | --- |
-| P1 | 快照轨恢复（GOLD 13 + exposure 80 + 两个 SNAPSHOT_README + REMOTE_V1_SNAPSHOT_MANIFEST.json） | 待执行（远端取回位置已在对账 CSV 固化） |
-| P2 | F1 GOLD 行 notes 更新（Q1 旧文案 → 双轨收口文案；禁 B 线状态字样） | 待执行 |
-| P3 | B 线 GOLD 内嵌 ID 普通化核对（决策一：24 篇断言在权威轨 GOLD_wave1/2/3/3_ext 完整） | 抽查 4/24 完成（E045→wave1、E069→wave2、E150→wave3、LRE119→wave3_ext）；**24/24 全量复核待快照轨收尾一并执行** |
-| P4 | refs 30 件远端独有恢复 + isol_runs 62 件授权/发布材料定性恢复 | 待执行（随对应域复制收尾） |
-| P5 | runs（F5）/ isol_runs（F5b）/ refs（F6）/ arena·tools·PAPER（F7）/ 特殊目录（F8）复制与逐域 --verify | 执行中 |
+| P1 | 快照轨恢复（GOLD 13 + exposure 80 + 两个 SNAPSHOT_README + REMOTE_V1_SNAPSHOT_MANIFEST.json） | 已完成（93 件恢复落位 + 3 说明件，e6.5 收口验收全 PASS） |
+| P2 | F1 GOLD 行 notes 更新（Q1 旧文案 → 双轨收口文案；禁 B 线状态字样） | 已完成（e6.5 核验 Q1 残留 0） |
+| P3 | B 线 GOLD 内嵌 ID 普通化核对（决策一：24 篇断言在权威轨 GOLD_wave1/2/3/3_ext 完整） | 已完成（e6.5 24/24 全量复核 PASS：wave1×10 / wave2×6 / wave3×4 / wave3_ext×4；多文件命中 0） |
+| P4 | refs 30 件远端独有恢复 + isol_runs 62 件授权/发布材料定性恢复 | refs 30 件已完成（s12 恢复落位，字节三重核验 PASS）；isol_runs 62 件**待执行** |
+| P5 | runs（F5）/ isol_runs（F5b）/ refs（F6）/ arena·tools·PAPER（F7）/ 特殊目录（F8）复制与逐域 --verify | 已完成（F5 50,197 / F5b 360 / F6 19,662+30 / F7 537 / F8 61；s14 tree-audit 逐域 Δ=0） |
 | P6 | delivery_zips 14 包逐包核对放行门禁 | 待执行（REVIEW_REQUIRED） |
-| P7 | dataset 合成样本强制隐私扫描（零真实姓名/零真实对话片段/零可还原特征）→ 通过后复制进公开树 | 隔离区生成完成，扫描未执行 |
+| P7 | dataset 合成样本强制隐私扫描（零真实姓名/零真实对话片段/零可还原特征）→ 通过后复制进公开树 | 已完成（独立复核扫描全项 PASS，92 件已落位 `research/dataset/synthetic_samples/`） |
 | P8 | logs V1–V7 十 zip 正式打包（Phase G）与上传 | dry-run 已完成；**V7 gate=pending_user_release（夜间不上传，晨间用户放行；必带 --sanitize-manifest）**；V1–V6 gate=public 但上传动作待打包后统一执行 |
-| P9 | evaluation 敏感 3 件脱敏形态定稿与执行 | HELD_REVIEW |
+| P9 | evaluation 敏感 3 件脱敏形态定稿与执行 | HELD_REVIEW（s15 脱敏副本未落盘，执行中） |
 | P10 | provider_check.json 唯一证据价值审查（TRANSIENT_REVIEW） | 待执行 |
-| P11 | 21 个 ACL 锁定文件的处理（保持锁定或如实登记锁定清单） | 随 F1 收尾 |
+| P11 | 21 个 ACL 锁定文件的处理（保持锁定或如实登记锁定清单） | 已完成（21 件如实登记 LOCKED_SOURCE_NOT_READABLE、保持锁定；全域 ACL 锁定登记另有 runs 1 + isol_runs 15） |
 
 ### 14.3 smoke test / README 终稿待实测项（T1–T11）
 
@@ -382,7 +384,7 @@ MIGRATION_MANIFEST.csv 已合并行数：**3,109**（F1 2,398 + F2 84 + F3 527 +
 | T7 | 批次↔rubric/scorer 版本对照表 | 逐批次登记后补 |
 | T8 | §12.2 离线 smoke test 十项在迁移副本全通过（不调用真实模型 API、不读取 B 线题面） | 十项逐项记录输出 |
 | T9 | 统计脚本实测清单 | smoke 第 8 项通过后补 |
-| T10 | 交付完整性总账（文件数+字节量口径）生成与复核抽检 | Phase E/F 执行 |
+| T10 | 交付完整性总账（文件数+字节量口径）生成与复核抽检 | 已完成（s14 tree-audit：12 域+README Δ=0，全量字节核验 73,937/73,937 零不符；总账载体 = MIGRATION_MANIFEST.csv + tree-audit.md） |
 | T11 | 离线复核功能 8 项实测 | 逐项记录后才能写"可离线复核" |
 
 ---

@@ -1,52 +1,22 @@
-# B 线盲测集（benchmark/b_line/）使用纪律
+# B 线故事集（benchmark/b_line/）
 
-> 本目录 = **最终验收盲测集**（B 线），物理封存。创建于 2026-11-02（离线零模型调用），
-> 元数据与 hash 账本见 `B_LINE_MANIFEST.json`（b_line_v1）。
+本目录是 LoveBrain 研究资产中的 24 篇评测故事集，与 `benchmark/stories_v2/` 各 wave 故事同源同构，作为故事库的固定子集随迁移整体保留。逐篇来源路径与版本登记见 `B_LINE_MANIFEST.json`（现行版本 b_line_v2）。
 
-## 1. ONLY_ONCE 纪律（最高条款）
+## 1. 构成（b_line_v2，共 24 篇）
 
-- 本集**只允许运行一次**：仅限最终候选验收（争冠盲评）批次。
-- 运行后整个 `benchmark/b_line/` 目录转 **CONSUMED**：在 `B_LINE_MANIFEST.json` 的
-  `only_once_discipline.status` 登记 `consumed_date` 与运行批 ID，并在故事保管账
-  （`STORY_CUSTODY_LEDGER.json` 事件流）append `b_line_consumed` 事件。
-- 运行后**禁止按逐题错误修补**任何 harness 提示词、机制代码或题面；本集结果只作
-  整体验收判决与回归基线。后续泛化验证只能用新故事轮次。
+- **16 篇 12 轮标准故事**：E045/E046/E048/E049/E052/E053/E055/E056/E058/E059（wave1，10 篇）+ E069/E070/E071/E073/E074/E075（wave2，6 篇）；
+- **4 篇长剧**（各 32 轮）：LRE119/LRE123/LRE139/LRE142（wave3_ext）；
+- **4 篇反事实故事**（12 轮）：E150/E152/E153/E155（wave3）；
+- 域覆盖（按 manifest）：8 域 ×2 标准篇 + 长剧 3 域 + 反事实篇。
 
-## 2. 谁能在什么条件下申请开箱
+## 2. 文件布局与来源回链
 
-- **申请人**：Worker（Harness 进化工程师）。
-- **前置条件**（全部满足才可开箱）：
-  1. 存在明确的**最终候选**（rubric §7 五步晋级流程走完，含已知故障回归硬门）；
-  2. 开箱申请经用户或独立复核会话确认候选身份；
-  3. 公开开发集/独立故事集证据齐备，B 线是最后一步而非开发工具。
-- 未满足上述条件的任何读取（包括"先看一眼题面"）均视为违反封存纪律。
+- 每篇一个目录：`episodes/<story_id>/episode.json`，为源文件的逐字节复制；
+- 源文件回链：`benchmark/stories_v2/<stage>/<story_id>/episode.json`，stage 与篇目对应关系即上节所列；
+- 评分参考（gold/reference sidecar）按迁移布局位于 `benchmark/stories_v2/GOLD_SIDECAR/`，不在本目录。
 
-## 3. 开箱时必须登记
+## 3. Manifest 版本沿革
 
-在保管账事件流 append `b_line_unboxed` 事件，内容至少包括：
-
-1. 开箱日期与运行批 ID；
-2. 最终候选 harness 版本身份（机制代码 + 资产版本）；
-3. 考场/评分版本、题目版本（b_line_v1）、API 实际配置四类绑定；
-4. 运行完成后立即 append `b_line_consumed` 并转 CONSUMED。
-
-## 4. 运行后处置
-
-- 答卷、评分卡、manifest 绑定快照归档至当轮 logs/ 目录；
-- 本目录转为只读封存，仅作验收证据链，不得再被任何批次消费；
-- 逐题失败只进入 `refs/KNOWN_FAILURES.md` 观察清单，**不触发任何回修-重跑循环**。
-
-## 5. 开发迭代禁止条款
-
-开发迭代、自动化巡检、变异调参、judge 校准、题目生成隔离会话
-**一律禁止读取本目录任何内容**（包括本 README 之外的 episodes/、manifest 结构性探测）。
-生成隔离纪律参照 §4 Phase 0：候选可见输入永不包含本目录。
-
-## 6. 内容构成（b_line_v1）
-
-- 24 篇 = **16 篇 12 轮标准** + **4 篇长剧**（LRE121/LRE146 40 轮、LRE139/LRE127 32 轮）
-  + **4 篇反事实**（E150/E152/E153/E156，为 CF 孪生对成员，其基线篇 E105/E072/E084/E087 未入集）；
-- 全部取自保管账 `SEALED` 且零消费事件的未暴露池（封存时未暴露池 180 篇，配比充足无缺口）；
-- 域覆盖 10 域（工作职场/学习成长/数码消费/宠物/家庭事务/医疗健康/家居装修/餐饮聚会/出行拼车/运动健身/兴趣社交）；
-- 每篇 `episodes/<story_id>/episode.json` 为源文件逐字节复制，sha256 已三重对账
-  （源文件重算 = 账本登记 = 封存副本）。gold/reference sidecar **不在本目录**（避免本目录成为 gold 泄露面）。
+- `b_line_v1`：2026-11-02 创建的初始版本（24 篇），已被 v2 取代，未随本迁移树保留；
+- `b_line_v2`：2026-11-03 起为现行版本；v1 中六篇因早期版本原因未在 v2 沿用，现行构成以 v2 清单为准；
+- 逐篇来源路径与登记明细以 `B_LINE_MANIFEST.json` 为准。
