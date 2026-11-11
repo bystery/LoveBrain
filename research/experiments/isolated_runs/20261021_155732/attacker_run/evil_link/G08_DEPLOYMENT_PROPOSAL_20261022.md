@@ -43,7 +43,7 @@ Allow，可实测验证）；依赖授予全部落在新目录，原运行时零
 |---|---|---|
 | N1 | 本地账户 `ArenaHostSandbox` | 随机密码（SecureString，不落命令行/环境变量）；无组成员声明不作为安全依据（见 §0），安全依据是 M1 DENY |
 | N2 | `D:\arena-sandbox\` | `icacls /inheritance:r` 切断卷继承，显式 `grant ArenaHostSandbox:(OI)(CI)M` + `grant Administrators:F`；Auth enticated Users 无条目 |
-| N3 | `D:\arena-sandbox\runtime\` | 受管 Python 的**完整拷贝**（robocopy；非共享原运行时）——防火墙按此唯一二进制路径限定，不触碰 abyss 侧 python.exe |
+| N3 | `D:\arena-sandbox\runtime\` | 受管 Python 的**完整拷贝**（robocopy；非共享原运行时）——防火墙按此唯一二进制路径限定，不触碰 <redacted> 侧 python.exe |
 | N4 | 防火墙出站阻断 2 条 | `New-NetFirewallRule -DisplayName ArenaSandbox-Block-Outbound -Direction Outbound -Action Block -Program "D:\arena-sandbox\runtime\python.exe" -RemoteAddress Any`（含回环；SDDL 与完整参数部署时落档）；第二条 `ArenaSandbox-Block-DNS` 同程序 UDP 53。**不放行任何端口**——IPC 走 stdio 管道，回环也不需要 |
 | N5 | 每 run staged 树 | `D:\arena-sandbox\staged_<run_id>\`（控制器拷贝生成，账户只读）+ `sandbox\`（唯一可写区） |
 
@@ -79,7 +79,7 @@ stdio 管道。**部署第一步先做连通性冒烟**（管道握手/hello 帧
 | 回环旁路 | 沙箱账户 python 直连 `127.0.0.1:<控制器端口>` → **阻断证据**（SocketError，且防火墙拦截计数 +1） |
 | 直连外网 | 沙箱账户 python 访问任意外部地址 → **阻断证据** |
 | 正常功能 | mock/echo 题完整跑通；评分/账本/媒体授权（staged 副本）不回归 |
-| 控制器侧 | abyss 用户一切操作不受 M1/M2 影响（DENY 仅限沙箱账户） |
+| 控制器侧 | <redacted> 用户一切操作不受 M1/M2 影响（DENY 仅限沙箱账户） |
 
 不达标即回滚（§0 两项存量 + §1 新建对象全部复原，对照快照核验）并保持
 G08 FAIL/NOT_READY，不降格残差 PASS。

@@ -263,7 +263,7 @@ reference_product_v1只有在既有保真证据支持时才代表原版；优先
 ## 12. 既有材料位置
 
 - 项目：D:/lovebrain-arena。
-- v0.2原始完整包：C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/outputs/lovebrain_questions_DEV_v0.2_20261022.zip。
+- v0.2原始完整包：<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/outputs/lovebrain_questions_DEV_v0.2_20261022.zip。
 - 内容签收与机械证据：D:/lovebrain-arena/refs/question_pilot_review_v02_20261022/。
 - 已安装开发题（worker登记，执行时核对）：D:/lovebrain-arena/benchmark/dev_pilot_v02/，及benchmark/episodes/的对应题面。
 - 上轮真实导入CLI证据：D:/lovebrain-arena/refs/arena_closeout_review_v3_20261022/evidence_154158_455873/PILOT_V02_IMPORT_ACTUAL.json。

@@ -20,7 +20,7 @@
 
 ## 2. P0：新隔离链路仍是合成测试路径，没有接上真正考场
 
-位置：[宿主加载入口](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/candidate_host.py:33)、[staging](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/trusted_controller.py:152)、[回合执行](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/trusted_controller.py:342)。
+位置：[宿主加载入口](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/candidate_host.py:33)、[staging](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/trusted_controller.py:152)、[回合执行](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/trusted_controller.py:342)。
 
 - Host固定加载`code/synthetic_candidate.py`，没有按候选目录加载机制，也没有驱动现有init/run_turn/snapshot/restore接口。`IsoRun(candidate='reference_product_v1')`改变的是标签，实际仍复制、运行同一个synthetic文件。独立运行中二者文件散列一致。
 - 合成候选先写死reply“收到，正常回复。”，再将`_proxy_calls`一次性回传。控制器随后才调代理，把结果附加为proxy_results；模型结果没有返回到正在运行的真实候选生成过程，不能完成真正多阶段生成。
@@ -32,7 +32,7 @@
 
 ## 3. P0：隔离备份可读，修改主仓ACL的方案还制造持续残留
 
-位置：[恢复快照](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/trusted_controller.py:184)、[施加拒绝](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/trusted_controller.py:197)、[整树还原](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/trusted_controller.py:219)。
+位置：[恢复快照](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/trusted_controller.py:184)、[施加拒绝](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/trusted_controller.py:197)、[整树还原](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/trusted_controller.py:219)。
 
 ### 3.1 gold的备份成为旁路
 
@@ -62,7 +62,7 @@ A6b子进程执行`open(...).read()`但不print，父进程却用“returncode=0
 
 ## 4. P0：总验收可以在子测试失败或证据为空时判PASS
 
-位置：[矩阵判定](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/verify_arena_v1.py:258)、[版本检查](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/verify_arena_v1.py:67)。
+位置：[矩阵判定](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/verify_arena_v1.py:258)、[版本检查](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/verify_arena_v1.py:67)。
 
 独立负例全部在副本，不触发ACL：
 
@@ -89,7 +89,7 @@ G04需补一个可运行参考适配器，使它与实际候选通过同一隔�
 
 ## 6. P1：人工评审标签能漂移，重复录入会制造错误胜率
 
-位置：[材料生成](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/review_loop.py:69)、[录入](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/review_loop.py:141)、[汇总](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/review_loop.py:188)、[总验收绑定](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/verify_arena_v1.py:188)。
+位置：[材料生成](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/review_loop.py:69)、[录入](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/review_loop.py:141)、[汇总](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/review_loop.py:188)、[总验收绑定](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/verify_arena_v1.py:188)。
 
 - 独立修改MAT_01的甲原文，保留旧binding字段，G07仍PASS。它重算的是spec和当前题面，不是展示出来的完整材料内容，只比较两个自报散列字符串。
 - 把同一material_id、同一reviewer的合法表单以13个文件提交，全部接收。汇总对12份材料报告**已审13、争议或未审−1、甲胜13**。多审查者可以有多张票，但票数与已覆盖材料数必须分开，重复表单也需要明确版本/替代规则。
@@ -111,7 +111,7 @@ G07应基于冻结运行产物和材料全部实际字段绑定；导入必须�
 
 ## 8. P1：156文件发布包无法按说明完成离线复验
 
-位置：[发布构建与冒烟](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/build_release_package.py:81)。
+位置：[发布构建与冒烟](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/build_release_package.py:81)。
 
 我用实际构建器在副本重建：它确实返回PASS，copied=156、missing=0、violations=0。其干净目录冒烟只运行公共协议测试和import scorer，并没有执行文档宣称的总离线验收。
 
@@ -123,7 +123,7 @@ G10退修。包无禁带文件、清单哈希等部分成果保留，不要求�
 
 ## 9. P1：G11不是“只等授权”，执行器和协议还没有实现
 
-位置：[integration入口](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/verify_arena_v1.py:336)、[上游调用](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/trusted_controller.py:70)。
+位置：[integration入口](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/tools/verify_arena_v1.py:336)、[上游调用](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/arena_closeout_review_20261021/package/arena/isolation/trusted_controller.py:70)。
 
 我在副本给分支传入明确标记fixture_only的合成授权文件，未触网：入口记G11=NOT_RUN、overall=NOT_READY，却return 0。它没有运行N1–N8，故不能说获批即可执行已准备好的集成。
 

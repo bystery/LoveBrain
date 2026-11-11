@@ -11,23 +11,23 @@
 
 ### 1. Antigravity 核心对话记录（重点必读）
 - **会话 A：项目功能与使用咨询 (`9b98c18e-a8f5-4af0-9936-31d3cb74c4b0`)**
-  - 路径：`C:\Users\abyss\.gemini\antigravity\brain\9b98c18e-a8f5-4af0-9936-31d3cb74c4b0\.system_generated\logs\transcript.jsonl` (2892 行)
+  - 路径：`<local-user-path-redacted>\.gemini\antigravity\brain\9b98c18e-a8f5-4af0-9936-31d3cb74c4b0\.system_generated\logs\transcript.jsonl` (2892 行)
   - **核心痛点**：
     - L1-L23: 用户输入 `/guanjia 状态`，面板显示“核心可用 ⚠️ 宿主已接入 ❌ 自动推进 ❌”。用户完全不理解这三项是什么意思，要求修复，但系统僵化，无法自动自愈。
     - 用户反馈：必须输入特定词汇，稍微换个自然语言就报错“未定义命令”，极其死板。
 - **会话 B：Analyze Project Bottlenecks (`d1f99f89-8be7-448d-9e95-806d38b68055`)**
-  - 路径：`C:\Users\abyss\.gemini\antigravity\brain\d1f99f89-8be7-448d-9e95-806d38b68055\.system_generated\logs\transcript.jsonl`
+  - 路径：`<local-user-path-redacted>\.gemini\antigravity\brain\d1f99f89-8be7-448d-9e95-806d38b68055\.system_generated\logs\transcript.jsonl`
   - **核心痛点**：
     - L5-L12: 用户反复强调：“用 A100 上面的 GPU2，只能用这个 GPU2，用 8B 小模型探索新推理机制，严格防范文件混乱、覆盖与指令脱节”。
     - 脚手架却因为单任务锁或文件命名混乱，多次发生文件相互覆盖与状态丢失。
 - **会话 C：Scientific Research Project Start (`be02c422-69f1-4038-8c9b-9132c647c4ef`)**
-  - 路径：`C:\Users\abyss\.gemini\antigravity\brain\be02c422-69f1-4038-8c9b-9132c647c4ef\.system_generated\logs\transcript.jsonl`
+  - 路径：`<local-user-path-redacted>\.gemini\antigravity\brain\be02c422-69f1-4038-8c9b-9132c647c4ef\.system_generated\logs\transcript.jsonl`
   - **灵魂拷问（L87）**：
     > *“你现在还是管家吗？我想知道是只有我/guanjia的时候才能召唤出来吗？正常发消息不能召唤吗？我不太懂现在怎么回事，因为你也没有派子代理，感觉你也没有管家的人格啊！”*
   - **根因分析**：旧管家过度依赖前缀 `/guanjia`，无法对自然语言产生常态化管家人格响应；缺乏随身小工调度机制，导致用户觉得管家“没有手脚”。
 
 ### 2. ZCode 命令行与执行日志
-- 路径模式：`C:\Users\abyss\.zcode\cli\log\zcode-*.jsonl`
+- 路径模式：`<local-user-path-redacted>\.zcode\cli\log\zcode-*.jsonl`
 - **挖掘价值**：用户在终端直接调用 CLI 工具时的参数习惯、常见报错退出码（如 Exit 127、权限阻断、参数不兼容）。
 
 ---

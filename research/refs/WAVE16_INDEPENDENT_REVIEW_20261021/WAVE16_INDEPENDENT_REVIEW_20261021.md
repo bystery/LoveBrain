@@ -28,11 +28,11 @@ Wave16 独立复核：原验收确实通过，事实协议仍有回归
 
 这里的mock“成功”是调用与审计成功。独立干净批每臂仍有8条other_veto（固定替身输出与题面不适配），没有把它们算作真实回复质量通过。原66实跑仍封存，不需要付费重跑。
 
-证据：[调用与材料证据](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/CONTROLS_EVIDENCE.json)、[全部回归结果](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/REGRESSIONS.json)、[原文件稳定性](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/SOURCE_FINAL_INTEGRITY.json)。
+证据：[调用与材料证据](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/CONTROLS_EVIDENCE.json)、[全部回归结果](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/REGRESSIONS.json)、[原文件稳定性](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/SOURCE_FINAL_INTEGRITY.json)。
 
 **二、P1：类型化时刻检查互相打架，已经大规模误删旧真实输出**
 
-源码：[事实证据门](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:118)，关键顺序在136、140行。
+源码：[事实证据门](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:118)，关键顺序在136、140行。
 
 代码先要求HH:MM完整出现在所引原文或时间戳，这一步是正确方向。随后却把同一HH:MM再次拆成数字token，并要求这些数字出现在消息正文。时间戳在第二步被排除，导致前一步明确允许的证据被后一步否决。
 
@@ -55,11 +55,11 @@ Wave16 独立复核：原验收确实通过，事实协议仍有回归
 
 修复要求：已按类型验证的完整时刻，不再作为普通散数字重审；其余编号/数量仍独立校验。不得把整份时间戳重新放进任意取数池。保留来源时间与事件发生时间的语义区别。
 
-证据：[149条逐条归因与来源](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/REPLAY_GATE_ANALYSIS.json)、[66条历史写回及实际请求](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/HISTORICAL_REPLAY.json)。这是旧输出通过新写回的离线反事实，不是新prompt的真实生成效果。
+证据：[149条逐条归因与来源](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/REPLAY_GATE_ANALYSIS.json)、[66条历史写回及实际请求](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/HISTORICAL_REPLAY.json)。这是旧输出通过新写回的离线反事实，不是新prompt的真实生成效果。
 
 **三、P1：按轮修好了互杀，按人物/事件的纠正仍没有做到**
 
-源码：[纠正旧记录](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:231)。实际判定仍是“旧值token相交、没有历史词就作废”；没有使用已经持久化的来源说话人来限定纠正范围。
+源码：[纠正旧记录](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:231)。实际判定仍是“旧值token相交、没有历史词就作废”；没有使用已经持久化的来源说话人来限定纠正范围。
 
 独立两轮：
 
@@ -74,7 +74,7 @@ Wave16 独立复核：原验收确实通过，事实协议仍有回归
 
 **四、P1：状态标签仍受不可信摘要和无关完成词控制**
 
-源码：[状态推导](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:154)。`joined=摘要+所有引用原文`只要出现“已经/昨天/去了”等词，就优先返回event。完成词不绑定对应活动；模型自己写出的“已经”甚至可以替自己背书。
+源码：[状态推导](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:154)。`joined=摘要+所有引用原文`只要出现“已经/昨天/去了”等词，就优先返回event。完成词不绑定对应活动；模型自己写出的“已经”甚至可以替自己背书。
 
 | 独立输入 | 模型待写回摘要 | 当前事实/ongoing结果 |
 |---|---|---|
@@ -97,7 +97,7 @@ Wave16 独立复核：原验收确实通过，事实协议仍有回归
 
 **五、P1：ongoing只复用了状态函数，没有复用事实出处边界**
 
-源码：[ongoing写回](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:516)。它将item和整个窗口传给状态函数，不调用实体支持门、不带逐项证据关联，随后全量注入。
+源码：[ongoing写回](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:516)。它将item和整个窗口传给状态函数，不调用实体支持门、不带逐项证据关联，随后全量注入。
 
 反例：真实消息只有“到合肥了”，scene_facts为空，ongoing写入“她坐G7812到合肥了”。本应受证据门约束的G7812从这里原样持久化，次日请求仍出现“她坐G7812到合肥了 | event”。
 
@@ -105,13 +105,13 @@ Wave16 独立复核：原验收确实通过，事实协议仍有回归
 
 修复可选：让ongoing也有可追溯的支持检查，或将不能验证的item明确隔离为未核验摘要、禁止作为已确认事实消费。不要求机械从没有source_ids的字段里证明完整语义，但不能继续裸注入当事实。
 
-以上三、四、五节的完整输入、存储与下一轮实际请求见[同族核心证据](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/CORE_EVIDENCE.json)。都有本地固定回复；它们证明机制行为，不估计真实模型发生率。
+以上三、四、五节的完整输入、存储与下一轮实际请求见[同族核心证据](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/CORE_EVIDENCE.json)。都有本地固定回复；它们证明机制行为，不估计真实模型发生率。
 
 **六、P2：材料许可仍未绑定；其余小边界合并登记**
 
 匿名生成器当前27份内容正确，原角色和意图守卫确已修。剩下一处上一轮提过的字段：`may_decline`。
 
-将NCA_t06 episode中的true改成false，`_assert_binding`仍通过；真实请求有“【本轮允许不回复】”条款。因此未来仍可能展示错误的“允许不回”。补有效许可与真实请求的对照即可，当前27条不作废、不重抄。证据：[许可变更漏检](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/MATERIAL_PERMISSION.json)。
+将NCA_t06 episode中的true改成false，`_assert_binding`仍通过；真实请求有“【本轮允许不回复】”条款。因此未来仍可能展示错误的“允许不回”。补有效许可与真实请求的对照即可，当前27条不作废、不重抄。证据：[许可变更漏检](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/MATERIAL_PERMISSION.json)。
 
 中文数词目前是单字替换：两盒→2盒通过，十二盒→12盒仍被拒。可明确缩窄到已经支持的单字数词，或同批补常用范围归一；不作为本轮额外升级目标，更不要声称所有中文数量等价已支持。
 
@@ -125,7 +125,7 @@ Wave16 独立复核：原验收确实通过，事实协议仍有回归
 2. **事实权威一起收口**：纠正限定主体/事件；状态不让摘要自证、不把无关完成词当共同确认；ongoing受支持门保护或明确作为未核验摘要隔离。一起保住真实接受、共同完成、HER更正的正例。未实现的复杂语义明确标不确定，不能用错误确定标签替代。
 3. **一次验收与冻结**：补材料may_decline绑定，更新相关报告及散列；运行原20项、下方10项同族回归、原既有测试及52槽mock守卫。提交一份差异报告、逐条149条回放、存储/下一请求证据、最终52槽清单。打包数量不算进度，不追加生成冒烟。
 
-可执行工具：[原20项](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/verify_wave15_closure.py)、[10项同族回归](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/verify_wave16_same_family.py)。用Python依次运行工具，参数都传仓库绝对路径`D:/lovebrain-arena`；两者仅用本地固定替身，输出证据在工具旁，均不调用端点、不改候选源码。
+可执行工具：[原20项](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/verify_wave15_closure.py)、[10项同族回归](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/verify_wave16_same_family.py)。用Python依次运行工具，参数都传仓库绝对路径`D:/lovebrain-arena`；两者仅用本地固定替身，输出证据在工具旁，均不调用端点、不改候选源码。
 
 当前新10项为**4通过、6未通过**：包括合法时刻、人物隔离、两种未确认绕过、明确拒绝、ongoing旁路的针对性检查。它们是开发回归，不是新的封存测试集、线上错误率或项目完成比例。验收以行为为准，允许拒绝、正确改写或清楚标为未核验；不能删除正例换取通过。
 
@@ -139,4 +139,4 @@ Wave16 独立复核：原验收确实通过，事实协议仍有回归
 
 正式晋级、自主进化、独立泛化验证和个人愿发裁决仍未完成；这些不额外阻挡修好本次机制后做受控52次开发对照。
 
-复核索引：[判决与证据索引](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/FINAL_SUMMARY.json)。原项目文件保持原样；本次所有运行与反例均在独立副本中完成。
+复核索引：[判决与证据索引](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave16_review_20261021/FINAL_SUMMARY.json)。原项目文件保持原样；本次所有运行与反例均在独立副本中完成。

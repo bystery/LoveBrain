@@ -144,17 +144,17 @@
     "import_events": [
       {
         "pid": 29388,
-        "file": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\arena_v14_review_20261022\\evidence\\rt\\run\\staged\\candidates\\zz_review\\mechanism\\mechanism.py"
+        "file": "<local-user-path-redacted>\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\arena_v14_review_20261022\\evidence\\rt\\run\\staged\\candidates\\zz_review\\mechanism\\mechanism.py"
       },
       {
         "pid": 44264,
-        "file": "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\arena_v14_review_20261022\\package\\candidates\\zz_review\\mechanism\\mechanism.py"
+        "file": "<local-user-path-redacted>\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\arena_v14_review_20261022\\package\\candidates\\zz_review\\mechanism\\mechanism.py"
       }
     ],
     "candidate_executed_in_controller": true,
     "controller_private_canary_read": true,
     "production_deny_targets": [
-      "C:\\Users\\abyss\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\arena_v14_review_20261022\\evidence\\rt\\episode.json"
+      "<local-user-path-redacted>\\.codex\\.chatgpt-projects\\g-p-6abf72e02e2c819194f242ce5551c8b9\\arena_v14_review_20261022\\evidence\\rt\\episode.json"
     ],
     "canary_is_outside_production_deny_set": true,
     "acl_was_not_executed": true,
@@ -242,8 +242,8 @@
     "duplicate_attempt_keys": true,
     "log_write_failure_request_accepted": true,
     "audit_errors": [
-      "PermissionError: [Errno 13] Permission denied: 'C:\\\\Users\\\\abyss\\\\.codex\\\\.chatgpt-projects\\\\g-p-6abf72e02e2c819194f242ce5551c8b9\\\\arena_v14_review_20261022\\\\evidence\\\\proxy\\\\not_a_file'",
-      "PermissionError: [Errno 13] Permission denied: 'C:\\\\Users\\\\abyss\\\\.codex\\\\.chatgpt-projects\\\\g-p-6abf72e02e2c819194f242ce5551c8b9\\\\arena_v14_review_20261022\\\\evidence\\\\proxy\\\\not_a_file'"
+      "PermissionError: [Errno 13] Permission denied: '<local-user-path-redacted>\\\\.codex\\\\.chatgpt-projects\\\\g-p-6abf72e02e2c819194f242ce5551c8b9\\\\arena_v14_review_20261022\\\\evidence\\\\proxy\\\\not_a_file'",
+      "PermissionError: [Errno 13] Permission denied: '<local-user-path-redacted>\\\\.codex\\\\.chatgpt-projects\\\\g-p-6abf72e02e2c819194f242ce5551c8b9\\\\arena_v14_review_20261022\\\\evidence\\\\proxy\\\\not_a_file'"
     ],
     "log_failure_calls_actually_dispatched": 1
   },

@@ -164,7 +164,7 @@ cd D:/lovebrain-arena
 ```
 
 `<python>` = 上一会话跑 _dbg7 的同一解释器（iso_run 用 `sys.executable` spawn 宿主，
-保持一致即可；可用 managed `C:\Users\abyss\.workbuddy\binaries\python\versions\3.13.12\python.exe`）。
+保持一致即可；可用 managed `<local-user-path-redacted>\.workbuddy\binaries\python\versions\3.13.12\python.exe`）。
 **预期**：hello 握手 → INIT_DONE → 2 轮 TURN_DONE（真实 score10/veto 落 scoring.json）
 → episode_manifest complete=true → ledger.json + sidecar 落 `runs/_dbg8/_control/`。
 
@@ -234,7 +234,7 @@ cd D:/lovebrain-arena
 | 陷阱 | 教训 |
 |---|---|
 | 目录级 `(OI)(CI)` 继承 deny 级联锁死 benchmark/episodes+media/pilot | 被 deny 文件用户级不可恢复；只能整目录改名隔离+从 `lovebrain_review_v13_wave15_20261021.zip` 重建（split_manifest 散列对账 0 丢失）。现行=文件级 deny+残石登记，**再也不用目录级** |
-| `icacls` deny 参数必须带括号：`abyss:(R,W)` | 任意 SID 授权需 `*` 前缀 |
+| `icacls` deny 参数必须带括号：`<redacted>:(R,W)` | 任意 SID 授权需 `*` 前缀 |
 | 密钥嗅探模式表自匹配 | 用 regex + 转义规避 |
 | `release.json` 冻结时序 | 必须在代码定稿后冻结，否则散列漂移 |
 | verify 修 bug 时 G03 漏记录 → 总状态误判 | 改验收器必须跑负例自测 |

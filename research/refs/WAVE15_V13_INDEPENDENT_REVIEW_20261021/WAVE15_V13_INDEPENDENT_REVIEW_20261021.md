@@ -24,7 +24,7 @@
 
 ## 2. P1：来源门把IDEA当成真实消息，合法HER事实反而被拒
 
-位置：[phase3 `_src_lookup`](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:79)。
+位置：[phase3 `_src_lookup`](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:79)。
 
 注释说“仅HER/ME编号，IDEA不占号”，代码却枚举全部字典消息，并把非HER都标成ME。它与runner、render_chat的来源编号不一致。
 
@@ -45,7 +45,7 @@ input.messages[1] = HER ：我现在坐D3145
 
 ## 3. P1：纠正不是一次状态变更，而是按摘要顺序互相作废
 
-位置：[纠正写回循环](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:327)。
+位置：[纠正写回循环](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:327)。
 
 同一真实消息：“不是G7812了，我改签成D3145，你帮我看这趟”。三个正常摘要均引用它：
 
@@ -63,7 +63,7 @@ input.messages[1] = HER ：我现在坐D3145
 
 ## 4. P1：未确认状态既会误标，也能从ongoing绕过
 
-位置：[状态推导](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:117)、[ongoing写回](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:351)。
+位置：[状态推导](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:117)、[ongoing写回](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:351)。
 
 `_OFFER_MARKS`包含“一起”，代码据此把以下三种情况都标成offer：
 
@@ -81,7 +81,7 @@ worker已声明ongoing不做证据门，这点诚实；但因此不能同时宣�
 
 ## 5. P1：英数token集合不能称为完整实体证据门
 
-位置：[英数支持检查](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:92)。
+位置：[英数支持检查](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/package/candidates/phase3_facts/mechanism/mechanism.py:92)。
 
 - HER只说“正点，到合肥了”，时间戳为`2026-10-29 20:35`。摘要编造“她**20:29**到合肥”，门仍放行：20来自小时，29来自日期，被重新组合成了一个从未出现的时刻。
 - 合法“两盒”改写为“2盒”却被拒。机制并未证明既能拦无出处细节，又能保留等价表达。
@@ -94,7 +94,7 @@ worker已声明ongoing不做证据门，这点诚实；但因此不能同时宣�
 
 ## 6. 场景规则修了点名例，同族仍未闭合
 
-位置：[infer_scene](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/package/arena/lb_assembly.py:134)。
+位置：[infer_scene](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/package/arena/lb_assembly.py:134)。
 
 | 独立输入 | 当前结果 | 问题 |
 |---|---|---|
@@ -145,7 +145,7 @@ Wave14只在头部加撤回声明，但旧正文还保留12/12、62/66等失效�
 2. **共同工程与审稿守卫一起修**：场景的指向/收尾重开/礼貌问句；补真实检索依赖冻结、唯一run_id、开发组序与CAP文案；材料对角色、意图与原回复做闭合绑定；当前报告与旧正文分开。两臂共同装配版本照常锁定。
 3. **同批自验，不拆交付**：运行下方20项独立矩阵，执行原既有回归及52槽mock守卫矩阵；保留对应文件/状态/下一轮实际请求证据。更新冻结散列后一次提交“修复差异+全部验收+最终52槽清单”。不要只交一份“全部采纳”报告，也不靠重打包文件数证明完成。
 
-[verify_wave15_closure.py](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/verify_wave15_closure.py) 可直接对仓库路径运行，只使用本地Stub，不调用端点、不改候选源码。当前v13结果是 **20项中5项通过、15项未通过**；这是有针对性的反例矩阵，不是线上错误率估计，也不是15个互不相关的大故障。完整输入、存储和请求见结果目录。
+[verify_wave15_closure.py](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/verify_wave15_closure.py) 可直接对仓库路径运行，只使用本地Stub，不调用端点、不改候选源码。当前v13结果是 **20项中5项通过、15项未通过**；这是有针对性的反例矩阵，不是线上错误率估计，也不是15个互不相关的大故障。完整输入、存储和请求见结果目录。
 
 验收以行为为准，不要求死守某个内部函数写法；如缩窄支持范围，必须同步候选协议与试验目标，不能删掉正例后声称无损改善。模型层尚不能确定的中文语义可以继续如实列限制，不能用来掩盖来源错号、顺序依赖或旁路注入。
 
@@ -153,10 +153,10 @@ Wave14只在头部加撤回声明，但旧正文还保留12/12、62/66等失效�
 
 ## 9. 证据与复算附件
 
-- [EVIDENCE.json](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/EVIDENCE.json)：包散列、历史432文件比对、独立反例、52/13次演练、checkpoint守卫、测试结果。
-- [HISTORICAL_WRITEBACK_REPLAY.json](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/HISTORICAL_WRITEBACK_REPLAY.json)：66条旧真实输出经新写回逻辑的离线回放，135事实接受、14拒绝。拒绝中有原目标错误，也有引用不全、日期推导等情况，不能把14都算成“修好14错”。旧输出回放不代表新prompt的真实生成效果。
-- [MATERIALS_EVIDENCE.json](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/MATERIALS_EVIDENCE.json)：27回复一致、生成产物可复现、角色与意图错配漏检。
-- [20项矩阵结果](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/CLOSURE_REVIEW_RESULT.json)：逐项输入对应的判决，内含原始结果目录位置；该目录保留实际存储与请求。
-- [复核脚本](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/audit_wave15_v13.py)、[材料复核](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/audit_wave15_materials.py)、[最终守卫检查](C:/Users/abyss/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/audit_wave15_final_checks.py)。
+- [EVIDENCE.json](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/EVIDENCE.json)：包散列、历史432文件比对、独立反例、52/13次演练、checkpoint守卫、测试结果。
+- [HISTORICAL_WRITEBACK_REPLAY.json](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/HISTORICAL_WRITEBACK_REPLAY.json)：66条旧真实输出经新写回逻辑的离线回放，135事实接受、14拒绝。拒绝中有原目标错误，也有引用不全、日期推导等情况，不能把14都算成“修好14错”。旧输出回放不代表新prompt的真实生成效果。
+- [MATERIALS_EVIDENCE.json](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/MATERIALS_EVIDENCE.json)：27回复一致、生成产物可复现、角色与意图错配漏检。
+- [20项矩阵结果](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/wave15_v13_review_20261021/CLOSURE_REVIEW_RESULT.json)：逐项输入对应的判决，内含原始结果目录位置；该目录保留实际存储与请求。
+- [复核脚本](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/audit_wave15_v13.py)、[材料复核](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/audit_wave15_materials.py)、[最终守卫检查](<local-user-path-redacted>/.codex/.chatgpt-projects/g-p-6abf72e02e2c819194f242ce5551c8b9/audit_wave15_final_checks.py)。
 
 追踪口径还需保留一个区别：场景链在装配时会过滤距当前不超过2小时的记录，因此retrieval trace的selected及名为injected的前置ID列表不一定等于最后实际请求内容。应以最终calls.user为准；本报告没有把辅助渲染函数的成功当作真实模型已看见或采用。

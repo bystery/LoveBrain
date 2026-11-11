@@ -58,7 +58,7 @@
   ```powershell
   Set-Location D:\lovebrain-arena
   Get-Content _ACL_LOCKED_LEDGER.json | ConvertFrom-Json | % locked | % path | % {
-    icacls $_ /remove:d abyss /T /C ; Remove-Item $_ -Recurse -Force }
+    icacls $_ /remove:d <redacted> /T /C ; Remove-Item $_ -Recurse -Force }
   ```
 
 ## 4. 已知限制与最小权限需求（D4 收口条件）

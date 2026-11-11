@@ -4,9 +4,9 @@
 为什么需要它：跨用户拉起宿主（CreateProcessWithLogonW）必须拿到明文口令，
 但计划承诺"口令不落命令行/环境变量/日志"。折中且可审计的做法：
   口令只在部署进程内生成一次 → 用 CryptProtectData（CurrentUser 作用域）
-  加密后落 D:\\arena-sandbox\\cred\\sandbox.cred（ACL 仅 abyss 可读）→
-  运行时由同一账户（abyss）解密使用。
-安全性等价于"abyss 账户可读"，不比该账户自身的文件权限更强；但**不是明文**，
+  加密后落 D:\\arena-sandbox\\cred\\sandbox.cred（ACL 仅 <redacted> 可读）→
+  运行时由同一账户（<redacted>）解密使用。
+安全性等价于"<redacted> 账户可读"，不比该账户自身的文件权限更强；但**不是明文**，
 且无法被其他账户（含沙箱账户本身）解密。
 
 纯 ctypes，无第三方依赖；DPAPI 往返可在当前（非管理员）会话直接自测。

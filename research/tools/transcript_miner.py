@@ -19,10 +19,10 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
 TRANSCRIPT_TARGETS = {
-    "antigravity_usage": r"C:\Users\abyss\.gemini\antigravity\brain\9b98c18e-a8f5-4af0-9936-31d3cb74c4b0\.system_generated\logs\transcript.jsonl",
-    "antigravity_bottlenecks": r"C:\Users\abyss\.gemini\antigravity\brain\d1f99f89-8be7-448d-9e95-806d38b68055\.system_generated\logs\transcript.jsonl",
-    "antigravity_research_start": r"C:\Users\abyss\.gemini\antigravity\brain\be02c422-69f1-4038-8c9b-9132c647c4ef\.system_generated\logs\transcript.jsonl",
-    "zcode_logs_pattern": r"C:\Users\abyss\.zcode\cli\log\zcode-*.jsonl"
+    "antigravity_usage": r"<LOCAL_USER_DIR>\.gemini\antigravity\brain\9b98c18e-a8f5-4af0-9936-31d3cb74c4b0\.system_generated\logs\transcript.jsonl",
+    "antigravity_bottlenecks": r"<LOCAL_USER_DIR>\.gemini\antigravity\brain\d1f99f89-8be7-448d-9e95-806d38b68055\.system_generated\logs\transcript.jsonl",
+    "antigravity_research_start": r"<LOCAL_USER_DIR>\.gemini\antigravity\brain\be02c422-69f1-4038-8c9b-9132c647c4ef\.system_generated\logs\transcript.jsonl",
+    "zcode_logs_pattern": r"<LOCAL_USER_DIR>\.zcode\cli\log\zcode-*.jsonl"
 }
 
 def mine_antigravity_transcript(file_path: str, keyword: str = None, max_results: int = 20):

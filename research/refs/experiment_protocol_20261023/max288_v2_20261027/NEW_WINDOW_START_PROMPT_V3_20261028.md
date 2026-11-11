@@ -63,6 +63,6 @@ CLOSED 账本一律不复活；新批新建授权文书（新有限预算按用�
 ## 5. 收尾（每轮）
 
 heartbeat 追加 done 行 + claims release；报告做了什么+证据绝对路径+分母/缺失数/unknown；
-回填管家账本 `C:\Users\abyss\.zcode\cli\plugins\data\butler@butler-local\projects\e7533dd1477b984a\records\tasklist.json`
+回填管家账本 `<local-user-path-redacted>\.zcode\cli\plugins\data\butler@butler-local\projects\e7533dd1477b984a\records\tasklist.json`
 （多写者文件：Edit 冲突=他人已写入，重读合并、不碰他人条目）；
 STATE_MAP 相关事实变化时同步 STATE_MAP 与 `tools\state_map_check.py` 并跑到全绿。
