@@ -1,0 +1,76 @@
+{
+ "kind": "FAULT_FAMILY_IMPLEMENTATION_V1",
+ "as_of": "2026-10-27T22:40:00+08:00",
+ "note": "从当前真实源码+已执行测试填账；不以 .bak/内存 冒充已实现。每条列 file/function/status/evidence/remaining_boundary。",
+ "executed_tests": {
+   "tools/test_v6_candidates.py": "ALL PASS (exit 0) — 含 'v6i irrelevant fact filtered'、'v6g/v6i format 键齐全'、'v6i core 记忆段'",
+   "tools/test_v6_restore_e2e.py": "ALL PASS (exit 0) — 'fact 带 source uid'、'restore event 持久化'、'manifest 完整'、'mock 无真实 API'（跨进程 snapshot/restore 验）"
+ },
+ "families": [
+  {
+   "id": "C3_subject_swap",
+   "issue": "事实归属主体串写（把 HER 说的安到 ME/THIRD）",
+   "file": "candidates/v6_integrated/mechanism/mechanism.py",
+   "functions": ["_merge_facts", "_resolve_src", "_quote_supported", "_find_by_key"],
+   "status": "hard_check_implemented / semantic_boundary_open",
+   "implemented": "subject 必属枚举{ME,HER,THIRD,SHARED,PUBLIC,UNKNOWN}(否则 UNKNOWN)；quote 必须是所引 src_ids 消息的逐字子串(空白归一)；src_ids 必须属于本轮；不成立→存 unverified_src，只留审计、不投影。",
+   "remaining_boundary": "引文存在≠语义主体正确：机械层查的是成员/逐字/枚举，'谁真的说了这句'的语义主体错配仍由评审层(九维 attribution)判，未机械闭合。",
+   "evidence": "mechanism.py L263-305, L232-252；文件头诚实边界段"
+  },
+  {
+   "id": "correction_scoping",
+   "issue": "更正/取消/完成/重开越界扩散或复活",
+   "file": "candidates/v6_integrated/mechanism/mechanism.py",
+   "functions": ["_apply_updates", "_archive_version"],
+   "status": "implemented",
+   "implemented": "仅改指定 fact_id；action 必须∈{correct,cancel,complete,reopen}；correct 必须有 new_text；必须带本轮合法 src+逐字 quote 否则 rejected；旧版本入 history 可审计；cancel/complete 从投影移除且 _facts_projection 过滤不复活。",
+   "remaining_boundary": "'该不该做这次更正'的语义合理性仍由评审层判；机械层只做合法性/依据闸门。",
+   "evidence": "mechanism.py L334-395, L398-435"
+  },
+  {
+   "id": "time_as_validity",
+   "issue": "把发言时间当事实有效期 / 过期项复现",
+   "file": "candidates/v6_integrated/mechanism/mechanism.py",
+   "functions": ["_facts_projection", "_new_fact", "_apply_updates"],
+   "status": "implemented",
+   "implemented": "区分 ts(发言/写入时间) 与 event_time(事件时间) 与 valid_from/valid_to(有效期)；valid_to<=now_clock 或 status∈{cancelled,completed,superseded} 不投影。",
+   "remaining_boundary": "期限(valid_to)≠发言时间，但'某事实此刻是否仍成立'的语义判断留评审层。",
+   "evidence": "mechanism.py L398-435, L128-139"
+  },
+  {
+   "id": "C2_ambiguous_routing",
+   "issue": "含糊语气下的动作路由（该承接却硬推/该收尾却邀约）",
+   "file": "candidates/v6_goal_context/mechanism/mechanism.py",
+   "functions": ["_signal", "_capabilities", "_action_block", "_goal_state"],
+   "status": "partial",
+   "implemented": "含糊优先记 含糊/不明 不按单词硬套降温；按 signal+goal 约束'本轮可用能力'集合，动作必须在允许集内(_validate_analysis 核 action_taken)。",
+   "remaining_boundary": "signal 本身可能被误读；P06 判词已抓到疑似硬转话题/违背当下意愿的 major（如 P06N0065/P06N0040），语义合宜性仍靠评审。",
+   "evidence": "v6_goal_context funcs 列表；INDEPENDENT_RESULTS.major_details"
+  },
+  {
+   "id": "analysis_vs_sent_text",
+   "issue": "把 analysis/模型草稿当成已发送内容写回记忆或评分",
+   "file": "candidates/v6_integrated/mechanism/mechanism.py",
+   "functions": ["run_turn"],
+   "status": "implemented",
+   "implemented": "真实历史事件只收 HER/ME 原文(带 uid/role/ts)；模型回复是草稿永不写回 events；notes 末段 reply_not_committed=1；analysis 只服务本轮装配+记忆写回不发给对方。",
+   "remaining_boundary": "闭环中'实际发送的是首选还是备选'由 P07 发送策略强制（只发 response.recommended），见 run_p07_pilot.py。",
+   "evidence": "mechanism.py L496-647 事件仅原文；P07 协议 §发送策略"
+  },
+  {
+   "id": "output_contract_delivery_family",
+   "issue": "候选/父本输出契约脆弱致 json_schema_broken 及来源非法（PROTOCOL_FAILURES 共 8 条：B candidate 3、C parent 3、C candidate 2）",
+   "file": "candidates/v6_goal_context, v6_integrated (response/directions 装配) + tools/normalize_reply_contract.py",
+   "status": "first_round_done_deterministic_consumer",
+   "first_round_evidence": "evaluation/P06_DELIVERY_NORMALIZER_REPLAY.json（已执行）：8 失败离线回放 → 6 consumer_recovered(bad_boys→bad_boy / 缺风格槽补 null 并登记 / directions 补或截到 4)、1 still_malformed(B/E007_T04 结构真畸形,不编造修复)、1 needs_src_validator(C/parent/E006_T07 illegal_source_id,属来源成员层)；8 条已合格件同规则重放 0 回归。",
+   "forms": [
+     "smart/curly quotes(\\u201c\\u201d)致 json.loads 失败 — 例 B E007_T04 raw_sha 4a70c11f…（break at char 223，本器仍判 still_malformed）",
+     "风格键漂移 bad_boys≠bad_boy — 例 B E007_T05 raw_sha 21c88243…（consumer_recovered）",
+     "directions 数量<4（仅3条） — 例 B E012_T02 raw_sha 691ed589…（consumer_recovered，补 null 不编造）"
+   ],
+   "planned_fix": "已建确定性消费归一器 tools/normalize_reply_contract.py（键名归一/缺槽补 null 登记/directions 数量归一/结构弯引号保守修复），基线与候选同规则离线重放、记消费器版本，不把共同修正只算 v6 收益。剩余两类本器不改判：真结构畸形=模型输出错误计交付失败；illegal_source_id=来源成员层(v6 _resolve_src 已强制，基线 reference 未强制→C 父本命中)。下一轮可选：候选侧受约束结构输出则建 v6_*_r2 新身份 + ≤12pair/24gen 回放小验证。",
+   "note": "共享输出协议脆弱族（父本 reference 亦有 illegal_source_id/坏键族），非候选独有；见 evaluation/P06_DELIVERY_RELIABILITY_V1.md 与 P06_DELIVERY_NORMALIZER_REPLAY.json。缺槽补 null 使首选可发，但该备选风格内容确缺属真实内容缺失，不计作完整恢复。",
+   "evidence": "PROTOCOL_FAILURES.json（8 条 veto 原文路径+哈希）；normalize_reply_contract.py 回放"
+  }
+ ]
+}

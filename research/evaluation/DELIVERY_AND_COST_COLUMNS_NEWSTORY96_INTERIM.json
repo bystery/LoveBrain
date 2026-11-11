@@ -1,0 +1,509 @@
+{
+ "doc": "DELIVERY_AND_COST_COLUMNS_NEWSTORY96_STREAM_V1",
+ "batch": "BATCH-NEWSTORY-96-20261026",
+ "identity_note": "流式 include_usage 身份，独立成列，不与历史非流式合并",
+ "mode": "interim(67 turns)",
+ "versions": {
+  "consumer_module": "1777524ed03738520b69863752f85cc97a5b6d34958dc7f202f07546aeb31c2a",
+  "consumer_class": "OutputConsumer.parse+key_normalization",
+  "scorer": "冻结评分器 json_schema_valid（各批 scoring.json 内原判定，不改判）"
+ },
+ "columns": {
+  "parent": {
+   "n": 34,
+   "T": 34,
+   "P": 33,
+   "C": 34,
+   "K": 33,
+   "Q": "unknown",
+   "W": "unknown",
+   "full_slot": 18,
+   "partial_slot": 16,
+   "no_reply_success": 0,
+   "tokens_prompt": 253346,
+   "tokens_completion": 8807,
+   "cache_unknown_calls": 68,
+   "token_per_C": 7710.4,
+   "token_per_K": 7944.0
+  },
+  "candidate": {
+   "n": 33,
+   "T": 33,
+   "P": 31,
+   "C": 33,
+   "K": 31,
+   "Q": "unknown",
+   "W": "unknown",
+   "full_slot": 18,
+   "partial_slot": 15,
+   "no_reply_success": 0,
+   "tokens_prompt": 100666,
+   "tokens_completion": 6965,
+   "cache_unknown_calls": 66,
+   "token_per_C": 3261.5,
+   "token_per_K": 3472.0
+  }
+ },
+ "wait": {
+  "parent": {
+   "first_content_ms": {
+    "n": 34,
+    "p50": 25676.6,
+    "p95": 64840.2,
+    "max": 71960.8
+   },
+   "first_preview_ms": {
+    "n": 34,
+    "p50": 25889.1,
+    "p95": 65030.7,
+    "max": 72065.6
+   },
+   "completion_ms": {
+    "n": 34,
+    "p50": 30780.2,
+    "p95": 68165.9,
+    "max": 83359.7
+   },
+   "first_usable_ms_null": 34
+  },
+  "candidate": {
+   "first_content_ms": {
+    "n": 33,
+    "p50": 23099.7,
+    "p95": 78925.9,
+    "max": 82980.5
+   },
+   "first_preview_ms": {
+    "n": 33,
+    "p50": 23225.5,
+    "p95": 79053.4,
+    "max": 83177.3
+   },
+   "completion_ms": {
+    "n": 33,
+    "p50": 28201.8,
+    "p95": 90107.3,
+    "max": 94159.4
+   },
+   "first_usable_ms_null": 33
+  }
+ },
+ "adjusted_intent_loci": {
+  "count": 14,
+  "expected": 14,
+  "note": "intent.status=ADJUSTED 而两臂闸门只认 ACTIVE → 目标块未注入；两臂共同输入缺口；这些位点不得用作意图调整机制有效的证据",
+  "loci": [
+   {
+    "case_id": "P001_T03",
+    "intent": {
+     "enabled": true,
+     "text": "她对骑车有兴趣但要'看状态'；把'想约骑'降级成暂定，别催",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": true
+   },
+   {
+    "case_id": "P001_T07",
+    "intent": {
+     "enabled": true,
+     "text": "她愿配合看排班；把话头保持开放，先不锁定",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": true
+   },
+   {
+    "case_id": "P002_T02",
+    "intent": {
+     "enabled": true,
+     "text": "她反应淡；把'想组局'降级成不催，有再说",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": true
+   },
+   {
+    "case_id": "P002_T07",
+    "intent": {
+     "enabled": true,
+     "text": "她愿进群局；把话头保持为多人局，先别谈单独",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": true
+   },
+   {
+    "case_id": "P003_T02",
+    "intent": {
+     "enabled": true,
+     "text": "她降了温；把调情收一点，别升级",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": true
+   },
+   {
+    "case_id": "P003_T05",
+    "intent": {
+     "enabled": true,
+     "text": "她从玩笑切到情绪；把调情换成陪伴",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": true
+   },
+   {
+    "case_id": "P004_T02",
+    "intent": {
+     "enabled": true,
+     "text": "她反应淡；先收回一点，别趁势往前",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": true
+   },
+   {
+    "case_id": "P004_T07",
+    "intent": {
+     "enabled": true,
+     "text": "她在表态；陪她聊这点，别当推进窗口",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": true
+   },
+   {
+    "case_id": "P005_T03",
+    "intent": {
+     "enabled": true,
+     "text": "她要先歇；把这次深聊放慢、留到下次",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": false
+   },
+   {
+    "case_id": "P005_T05",
+    "intent": {
+     "enabled": true,
+     "text": "她也交底了；陪她把这层想清楚，不替她决定",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": false
+   },
+   {
+    "case_id": "P005_T08",
+    "intent": {
+     "enabled": true,
+     "text": "她开放下次深聊但没定；保持开放，不锁定",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": false
+   },
+   {
+    "case_id": "P006_T03",
+    "intent": {
+     "enabled": true,
+     "text": "她安了个你没说过的话；先弄清事实，不编也不硬顶",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": false
+   },
+   {
+    "case_id": "P006_T06",
+    "intent": {
+     "enabled": true,
+     "text": "她在交底；陪她把这点聊开，不评判不代决定",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": false
+   },
+   {
+    "case_id": "P006_T07",
+    "intent": {
+     "enabled": true,
+     "text": "她给个'嗯'；不用再加码",
+     "status": "ADJUSTED"
+    },
+    "turn_dir_present": false
+   }
+  ]
+ },
+ "problem_detail": {
+  "parent": [
+   {
+    "slot": "newstory96_stream/parent_P001/turn_02_P001_T02",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P001/turn_03_P001_T03",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P001/turn_04_P001_T04",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P001/turn_07_P001_T07",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P001/turn_08_P001_T08",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[2],directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P002/turn_01_P002_T01",
+    "veto": "json_schema_broken",
+    "P": false,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "bad_boy",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P002/turn_02_P002_T02",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P002/turn_06_P002_T06",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P002/turn_08_P002_T08",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P003/turn_05_P003_T05",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P003/turn_07_P003_T07",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P003/turn_08_P003_T08",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P004/turn_05_P004_T05",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P004/turn_08_P004_T08",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[1],directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P005/turn_01_P005_T01",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/parent_P005/turn_02_P005_T02",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   }
+  ],
+  "candidate": [
+   {
+    "slot": "newstory96_stream/candidate_P001/turn_02_P001_T02",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[2]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P001/turn_05_P001_T05",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P001/turn_08_P001_T08",
+    "veto": "json_schema_broken",
+    "P": false,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "bad_boy,directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P002/turn_03_P002_T03",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P002/turn_04_P002_T04",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P002/turn_06_P002_T06",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P002/turn_07_P002_T07",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P002/turn_08_P002_T08",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[0],directions[1],directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P003/turn_02_P003_T02",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P003/turn_04_P003_T04",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P003/turn_07_P003_T07",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[0],directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P003/turn_08_P003_T08",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P004/turn_05_P004_T05",
+    "veto": "json_schema_broken",
+    "P": false,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions_count=5",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P004/turn_06_P004_T06",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "newstory96_stream/candidate_P004/turn_08_P004_T08",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   }
+  ]
+ }
+}

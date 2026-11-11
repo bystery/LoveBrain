@@ -1,0 +1,191 @@
+{
+ "tool": "analyze_a3.py V1 (pre-registered 2026-10-26 05:50, batch in flight)",
+ "interim": true,
+ "ratings_path": "D:\\lovebrain-arena\\logs\\a3_judge_live_live1\\RATINGS_A3.jsonl",
+ "coverage": {
+  "records": 42,
+  "transport_ok": 38,
+  "parse_ok": 38,
+  "infra_failed_cells": [
+   {
+    "req_id": "a3:primary:S3:A020",
+    "error": "ModuleNotFoundError: No module named 'lb_assembly'"
+   },
+   {
+    "req_id": "a3:primary:S1:A001",
+    "error": "ModuleNotFoundError: No module named 'lb_assembly'"
+   },
+   {
+    "req_id": "a3:primary:S3:A008",
+    "error": "RuntimeError: LB_API_BASE 未设置"
+   },
+   {
+    "req_id": "a3:primary:S2:A020",
+    "error": "RuntimeError: LB_API_BASE 未设置"
+   }
+  ],
+  "not_rated_entries": {
+   "乙的 backups 为空，无未评槽位": 2,
+   "甲/乙均无受保护表达电池条目需单独裁定": 1,
+   "乙.backups、甲.backups：均为空，无可评内容": 1,
+   "乙所称“黄牛”渠道是否真实存在，无外部信息可核，未作事实认定，仅按无据承诺记录": 1,
+   "两条 backups 均为空，无备用候选可评": 1,
+   "甲.backups（空，无可评内容）": 2,
+   "乙.backups（空，无可评内容）": 2,
+   "乙.backups：空，无内容可评": 1,
+   "甲.backups：空，无内容可评": 1,
+   "甲「周末火锅回血」为软性邀约而非“已约成”断言，未计入事实风险": 1,
+   "乙「没事没事」为礼貌承接，未评": 1,
+   "节点编号未在请求中给出，未评": 1,
+   "乙句『怪我？』为反问语气，不构成独立事实主张，未入旗": 1,
+   "甲.backups 与 乙.backups 均为空，无可评备份槽位": 1,
+   "乙的“周末火锅回血”：属参考 acceptable_wordings 内的提议式措辞，不构成“已约成”断言，未计旗": 1,
+   "甲的“没事没事”：该接受动作已并入 action_score 考量，不单独列为缺陷或旗帜": 1,
+   "乙「周五吧」：属于软性时间提议，不是替她决定的硬断言，因此不列入行动或事实扣分": 1,
+   "甲「大学城那家」：备选场馆名称与参考可接受措辞一致，不作为无据主张入旗": 1,
+   "乙「全馆」与「市里」是否应拆成两条独立主张：因证据片段相同，合并为一条次要旗记录": 1,
+   "乙.backups 为空，无备份内容可评": 1,
+   "甲无 backups 内容可评": 1,
+   "乙的\"习惯就好\"属说教型行动表达而非事实主张，已在 action_score 中体现，不计入 fact_risk_fla": 1,
+   "双方均未出现个人口味/带限定的观点/自身感受/边界表达/自嘲+偏好类内容，protected_hits 为空": 1,
+   "乙的\"福报\"按风格化口号记为次要旗，未按关键级处理": 1,
+   "甲.backups 为空数组，无备份槽位可评": 1,
+   "乙.backups 为空数组，无备份槽位可评": 1,
+   "allowed_goal_score_range [3,5] 与 action_score 0–3 量纲不同，未直接换算": 1,
+   "甲『你可千万别回』属行动层面的越界代办与施压，已计入 action_score，不作为事实主张单独入旗": 1,
+   "乙无 backups 内容，未评": 1,
+   "甲.backups（空数组，无可评内容）": 1,
+   "乙.backups（空数组，无可评内容）": 1,
+   "甲「要不要我假装你对象撑过周末饭局」为提议性假设邀约，非已发生/已拥有/已约成断言，未入旗": 1,
+   "甲.backups 与 乙.backups 均为空，无备用答案可评": 1,
+   "甲中“你先记喝水量和精神状态”属行动建议而非事实主张，未入旗": 1,
+   "乙的『以后别叫他了』按动作轨记为越界替她决定（0分依据），未计入事实旗：该句为指令而非事实主张": 1,
+   "甲、乙 backups 均为空，无未评槽位": 1,
+   "乙 backups 为空，无备用槽位可评": 1,
+   "「说好的约饭呢」未入旗：她此前主动说「下周约饭呀」、我回「好呀，你挑日子」，属双方已暂定，有据，不计无据断言": 1,
+   "甲「上次说的饭这周安排上」「忙就顺延」未入旗：直接由 prior_messages 的「下周约饭呀」支撑，且落在 all": 1,
+   "甲/乙 backups 均为空，无可评槽位": 1,
+   "乙「没事玩玩就熟了」属安抚性套话，未构成可核查主张，未入旗": 1,
+   "甲.backups 为空，未评": 1,
+   "乙.backups 为空，未评": 1,
+   "甲.backups 与 乙.backups 均为空数组，无备选槽位可评": 1,
+   "乙.backups、甲.backups：均为空，无内容可评": 1
+  }
+ },
+ "action_range": {
+  "甲": {
+   "n": 28,
+   "in_range": 25,
+   "in_range_rate": {
+    "k": 25,
+    "n": 28,
+    "rate": 0.8929,
+    "ci95": [
+     0.7177,
+     0.9773
+    ]
+   },
+   "missing": 0
+  },
+  "乙": {
+   "n": 28,
+   "in_range": 3,
+   "in_range_rate": {
+    "k": 3,
+    "n": 28,
+    "rate": 0.1071,
+    "ci95": [
+     0.0227,
+     0.2823
+    ]
+   },
+   "missing": 0
+  }
+ },
+ "fact_risk": {
+  "甲_clean_nodes_n": 28,
+  "乙_claim_nodes_n": 13,
+  "乙_detected": 12,
+  "甲_false_flag": 5
+ },
+ "fact_risk_rates": {
+  "乙_detection": {
+   "k": 12,
+   "n": 13,
+   "rate": 0.9231,
+   "ci95": [
+    0.6397,
+    0.9981
+   ]
+  },
+  "甲_false_flag": {
+   "k": 5,
+   "n": 28,
+   "rate": 0.1786,
+   "ci95": [
+    0.0606,
+    0.3689
+   ]
+  }
+ },
+ "battery": {
+  "prot_n": 5,
+  "prot_true": 5,
+  "fact_n": 5,
+  "fact_unfounded": 5
+ },
+ "battery_rates": {
+  "fact_unfounded": {
+   "k": 5,
+   "n": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.4782,
+    1.0
+   ]
+  },
+  "protected_true": {
+   "k": 5,
+   "n": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.4782,
+    1.0
+   ]
+  }
+ },
+ "pref": {
+  "n": 28,
+  "甲": 25,
+  "乙": 3
+ },
+ "retest_vs_S1": {
+  "n": 1,
+  "pref_same": 1,
+  "act_甲_exact": 1
+ },
+ "swap_vs_sameorder": {
+  "n": 1,
+  "same": 1,
+  "flip_detail": []
+ },
+ "pairwise_sessions": {
+  "S1-S2": {
+   "n": 3,
+   "pref_exact": 3,
+   "act_甲_exact": 3
+  },
+  "S1-S3": {
+   "n": 1,
+   "pref_exact": 1,
+   "act_甲_exact": 1
+  },
+  "S2-S3": {
+   "n": 3,
+   "pref_exact": 3,
+   "act_甲_exact": 3
+  }
+ },
+ "expected_pref_note": "全部节点期望 pref=甲（包 known_limitation；pref 符合率不得外推为无位置偏差）",
+ "real_model_calls": 0
+}

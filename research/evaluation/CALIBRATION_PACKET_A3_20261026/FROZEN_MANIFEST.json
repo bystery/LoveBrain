@@ -1,0 +1,55 @@
+{
+ "version": "CALIB-V2.0-A3",
+ "created": "2026-10-26",
+ "manual_ref": "MANUAL-V2.0-A3 (evaluation/JUDGE_MANUAL_V2_0_A3.md)",
+ "provenance": "authored_offline_by_worker_ai_20261026；非人类金标（REVIEW §三.3），评审用途=裁判校准，允许分数区间/合格集合由证据审核复核",
+ "counts": {
+  "pairs": 32,
+  "swap_probe_pairs": 16,
+  "families": {
+   "正向动作": 7,
+   "适宜克制": 5,
+   "无据断言": 6,
+   "暂定确认取消": 5,
+   "第三人": 4,
+   "玩笑内嵌断言": 5
+  },
+  "domains": [
+   "FRIEND",
+   "LOVE",
+   "WORK"
+  ],
+  "fact_claims": 22,
+  "protected": 22
+ },
+ "expected_relation_spread": {
+  "乙bad_clear": 7,
+  "乙fab": 13,
+  "乙over": 3,
+  "乙risky": 4,
+  "甲better": 5
+ },
+ "files": {
+  "nodes.jsonl": {
+   "sha256": "9c8deb227c8fc4f337c23ce077609f764dbff21410016d0427301cda65c0536f",
+   "bytes": 59663
+  },
+  "FACT_CLAIMS_BATTERY.json": {
+   "sha256": "b4ead4b6a08bd28ed05814b95a8753fc1b1e4af1b4e000412a15f93615ec4bd3",
+   "bytes": 3098
+  },
+  "PROTECTED_EXPRESSIONS.json": {
+   "sha256": "e6a08807aed567a7d58059dab56887904c87305ec525fe31e65427ae996034c3",
+   "bytes": 3200
+  },
+  "JUDGE_MANUAL_V2_0_A3.md": {
+   "sha256": "f412cff4db54481164fda450e5204ace193b47c2902dd01d60836f98cd81bdf6",
+   "bytes": 5881
+  }
+ },
+ "real_model_calls": 0,
+ "known_limitations": [
+  "期望关系全部为甲优/乙缺陷型(甲better5/乙bad_clear7/乙fab13/乙over3/乙risky4)，无原生乙better/tie对；位置偏差主要靠16对swap子集补偿——分析时不许据此宣称裁判对乙优场景无偏",
+  "provenance=worker_ai authored：参考集合/分数区间是工程判断，派发后由证据审核复核，不冒充人类金标"
+ ]
+}

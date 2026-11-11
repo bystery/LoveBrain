@@ -1,0 +1,1194 @@
+{
+ "protocol": "IRR-V2",
+ "ratings_dir": "logs\\judge_v1_1_live_20261025_232116",
+ "split": "validation",
+ "raters": [
+  "R1",
+  "R2",
+  "R3"
+ ],
+ "pre_registered": {
+  "min_n_rate": 20,
+  "min_n_insufficient_positions": 40,
+  "thresholds": {
+   "fact_detection": "≥90%",
+   "false_kill": "≤15%",
+   "insufficient_ok": "≥80%",
+   "order_flip": "≤15%",
+   "goal_agreement": "精确≥50% 且相邻≥85%"
+  },
+  "note": "口径在看到任何真实判词之前固定（见文件头 R1–R9）。"
+ },
+ "raters_note": "R1/R2/R3 = 同一模型服务同一 prompt 的不同会话，不是三个独立模型；一致率≠真值。本工具只测裁判，不产生候选胜负。",
+ "coverage": {
+  "R1": {
+   "primary_nodes": 20,
+   "parsed_ok": 20,
+   "unrated": 0,
+   "repeat_same": 2,
+   "repeat_swapped": 2
+  },
+  "R2": {
+   "primary_nodes": 19,
+   "parsed_ok": 19,
+   "unrated": 0,
+   "repeat_same": 0,
+   "repeat_swapped": 0
+  },
+  "R3": {
+   "primary_nodes": 20,
+   "parsed_ok": 16,
+   "unrated": 4,
+   "repeat_same": 0,
+   "repeat_swapped": 0
+  }
+ },
+ "pref_distribution": {
+  "R1": {
+   "甲": 12,
+   "都行": 6,
+   "乙": 2
+  },
+  "R2": {
+   "都行": 8,
+   "甲": 11
+  },
+  "R3": {
+   "未评": 4,
+   "甲": 10,
+   "都行": 3,
+   "乙": 3
+  }
+ },
+ "fact_detection": {
+  "ref_f4_trusted": 9,
+  "per_rater": {
+   "R1": {
+    "hit": 3,
+    "miss": 0,
+    "not_rated": 0,
+    "n": 3,
+    "rate": 1.0,
+    "min_n": 20,
+    "verdict": "insufficient_evidence",
+    "note": "各评审者分母独立列出（不把同一主张×3 当独立事实）；not_rated 不入分母"
+   },
+   "R2": {
+    "hit": 3,
+    "miss": 0,
+    "not_rated": 0,
+    "n": 3,
+    "rate": 1.0,
+    "min_n": 20,
+    "verdict": "insufficient_evidence",
+    "note": "各评审者分母独立列出（不把同一主张×3 当独立事实）；not_rated 不入分母"
+   },
+   "R3": {
+    "hit": 1,
+    "miss": 2,
+    "not_rated": 0,
+    "n": 3,
+    "rate": 0.3333,
+    "min_n": 20,
+    "verdict": "insufficient_evidence",
+    "note": "各评审者分母独立列出（不把同一主张×3 当独立事实）；not_rated 不入分母"
+   }
+  },
+  "detail": [
+   {
+    "rater": "R3",
+    "node_id": "M011",
+    "arm": "甲",
+    "ref_text": "不是读书会，这话我没说过，你记混了",
+    "disputed": true
+   },
+   {
+    "rater": "R3",
+    "node_id": "M011",
+    "arm": "乙",
+    "ref_text": "不是读书会，我跟小林不是那么认识的，这回你真记岔了",
+    "disputed": true
+   }
+  ],
+  "disputed_in_denominator": 6,
+  "not_rated_note": "判词缺失/传输失败的主张记 not_rated，不入 hit/miss 分母（未评≠漏检）",
+  "aggregate": {
+   "n": 9,
+   "hit": 7,
+   "rate": 0.7778,
+   "ci95_lower": 0.4504,
+   "threshold": "≥90%",
+   "min_n": 20,
+   "informational": true,
+   "note": "并池汇总仅作信息列：同一主张×3 评审者不是独立事实（WORKER_EXECUTION 包C.4）",
+   "verdict": "insufficient_evidence"
+  }
+ },
+ "free_expression_false_kill": {
+  "ref_protected_trusted": 41,
+  "per_rater": {
+   "R1": {
+    "killed": 3,
+    "protected_n": 14,
+    "not_rated": 0,
+    "rate": 0.2143,
+    "min_n": 20,
+    "verdict": "insufficient_evidence"
+   },
+   "R2": {
+    "killed": 3,
+    "protected_n": 14,
+    "not_rated": 0,
+    "rate": 0.2143,
+    "min_n": 20,
+    "verdict": "insufficient_evidence"
+   },
+   "R3": {
+    "killed": 2,
+    "protected_n": 13,
+    "not_rated": 1,
+    "rate": 0.1538,
+    "min_n": 20,
+    "verdict": "insufficient_evidence"
+   }
+  },
+  "detail": [
+   {
+    "rater": "R1",
+    "node_id": "C057",
+    "arm": "乙",
+    "ref_text": "你又要走",
+    "disputed": false,
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R1",
+    "node_id": "C057",
+    "arm": "乙",
+    "ref_text": "每次都是你先忙，那我等你好了",
+    "disputed": false,
+    "protected_axes": [
+     "观点",
+     "未提供",
+     "确定",
+     "关键"
+    ]
+   },
+   {
+    "rater": "R1",
+    "node_id": "C059",
+    "arm": "乙",
+    "ref_text": "你周三飞过去也来得及",
+    "disputed": false,
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R2",
+    "node_id": "C057",
+    "arm": "乙",
+    "ref_text": "你又要走",
+    "disputed": false,
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R2",
+    "node_id": "C057",
+    "arm": "乙",
+    "ref_text": "每次都是你先忙，那我等你好了",
+    "disputed": false,
+    "protected_axes": [
+     "观点",
+     "未提供",
+     "确定",
+     "关键"
+    ]
+   },
+   {
+    "rater": "R2",
+    "node_id": "C059",
+    "arm": "乙",
+    "ref_text": "你周三飞过去也来得及",
+    "disputed": false,
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R3",
+    "node_id": "C057",
+    "arm": "乙",
+    "ref_text": "每次都是你先忙，那我等你好了",
+    "disputed": false,
+    "protected_axes": [
+     "观点",
+     "未提供",
+     "确定",
+     "关键"
+    ]
+   },
+   {
+    "rater": "R3",
+    "node_id": "C059",
+    "arm": "乙",
+    "ref_text": "你周三飞过去也来得及",
+    "disputed": false,
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   }
+  ],
+  "mechanical_only_informational": 947,
+  "not_rated_note": "同 fact_detection",
+  "aggregate": {
+   "n": 41,
+   "killed": 8,
+   "rate": 0.1951,
+   "ci95_upper": 0.3246,
+   "threshold": "≤15%",
+   "min_n": 20,
+   "verdict": "not_qualified"
+  }
+ },
+ "ref_conflict_claims_detection": {
+  "ref_conflict_trusted": 3,
+  "per_rater": {
+   "R1": {
+    "n": 1,
+    "hit": 0,
+    "rate": 0.0
+   },
+   "R2": {
+    "n": 1,
+    "hit": 0,
+    "rate": 0.0
+   },
+   "R3": {
+    "n": 1,
+    "hit": 1,
+    "rate": 1.0
+   }
+  },
+  "detail": [
+   {
+    "rater": "R1",
+    "node_id": "C059",
+    "arm": "乙",
+    "ref_text": "出差啊，那就周四晚上约"
+   },
+   {
+    "rater": "R2",
+    "node_id": "C059",
+    "arm": "乙",
+    "ref_text": "出差啊，那就周四晚上约"
+   }
+  ]
+ },
+ "quote_validity": {
+  "n_checked": 795,
+  "n_invalid": 2,
+  "per_rater_invalid": {
+   "R3": 2
+  },
+  "examples": {
+   "R3": [
+    {
+     "node_id": "M017",
+     "quote": "clock: 2026-11-09 21:00"
+    },
+    {
+     "node_id": "M021",
+     "quote": "答应帮她重装系统"
+    }
+   ]
+  }
+ },
+ "insufficient_info": {
+  "positions": 108,
+  "per_rater": {
+   "R1": {
+    "ok": 29,
+    "wrong": 5,
+    "na": 2,
+    "missing": 0,
+    "n": 36,
+    "ok_rate_incl_na_missing": 0.8056,
+    "ok_rate_excl_na_missing": 0.8529
+   },
+   "R2": {
+    "ok": 30,
+    "wrong": 4,
+    "na": 0,
+    "missing": 2,
+    "n": 36,
+    "ok_rate_incl_na_missing": 0.8333,
+    "ok_rate_excl_na_missing": 0.8824
+   },
+   "R3": {
+    "ok": 23,
+    "wrong": 3,
+    "na": 2,
+    "missing": 8,
+    "n": 36,
+    "ok_rate_incl_na_missing": 0.6389,
+    "ok_rate_excl_na_missing": 0.8846
+   }
+  },
+  "detail_wrong": [
+   {
+    "rater": "R1",
+    "node_id": "M011",
+    "arm": "甲"
+   },
+   {
+    "rater": "R1",
+    "node_id": "M011",
+    "arm": "乙"
+   },
+   {
+    "rater": "R1",
+    "node_id": "M022",
+    "arm": "乙"
+   },
+   {
+    "rater": "R1",
+    "node_id": "C058",
+    "arm": "乙"
+   },
+   {
+    "rater": "R1",
+    "node_id": "C059",
+    "arm": "乙"
+   },
+   {
+    "rater": "R2",
+    "node_id": "M011",
+    "arm": "甲"
+   },
+   {
+    "rater": "R2",
+    "node_id": "M011",
+    "arm": "乙"
+   },
+   {
+    "rater": "R2",
+    "node_id": "C058",
+    "arm": "乙"
+   },
+   {
+    "rater": "R2",
+    "node_id": "C059",
+    "arm": "乙"
+   },
+   {
+    "rater": "R3",
+    "node_id": "M022",
+    "arm": "乙"
+   },
+   {
+    "rater": "R3",
+    "node_id": "C058",
+    "arm": "乙"
+   },
+   {
+    "rater": "R3",
+    "node_id": "C059",
+    "arm": "乙"
+   }
+  ],
+  "aggregate": {
+   "positions": 108,
+   "ok": 82,
+   "ok_rate": 0.7593,
+   "threshold": "≥80%",
+   "min_n": 40,
+   "verdict": "not_qualified",
+   "note": "na=评审者未作信息不足判定（计入分母并单列，不洗成通过）；wrong=把无据细节当已核实处理。"
+  }
+ },
+ "goal": {
+  "invalid_scores": [],
+  "agreement_pairs": {
+   "R1-R2": {
+    "n": 38,
+    "exact": 32,
+    "adjacent_within1": 38,
+    "exact_percent": 0.8421,
+    "adjacent_percent": 1.0
+   },
+   "R1-R3": {
+    "n": 32,
+    "exact": 28,
+    "adjacent_within1": 32,
+    "exact_percent": 0.875,
+    "adjacent_percent": 1.0
+   },
+   "R2-R3": {
+    "n": 30,
+    "exact": 27,
+    "adjacent_within1": 30,
+    "exact_percent": 0.9,
+    "adjacent_percent": 1.0
+   }
+  },
+  "vs_reference": null,
+  "action_range": {
+   "raters": {
+    "R1": {
+     "nodes_with_goal_reference": 20,
+     "in_range": 3,
+     "in_range_total": 34,
+     "note": "探索性覆盖（简单包含匹配），不构成资格"
+    },
+    "R2": {
+     "nodes_with_goal_reference": 20,
+     "in_range": 4,
+     "in_range_total": 36,
+     "note": "探索性覆盖（简单包含匹配），不构成资格"
+    },
+    "R3": {
+     "nodes_with_goal_reference": 20,
+     "in_range": 5,
+     "in_range_total": 24,
+     "note": "探索性覆盖（简单包含匹配），不构成资格"
+    }
+   },
+   "forbidden": {
+    "R1": {
+     "forbidden_hit": 2,
+     "forbidden_total": 26,
+     "note": "action_basis 落入参考禁止动作=疑似目标违规（探索性，需证据复核确认）"
+    },
+    "R2": {
+     "forbidden_hit": 2,
+     "forbidden_total": 28,
+     "note": "action_basis 落入参考禁止动作=疑似目标违规（探索性，需证据复核确认）"
+    },
+    "R3": {
+     "forbidden_hit": 1,
+     "forbidden_total": 18,
+     "note": "action_basis 落入参考禁止动作=疑似目标违规（探索性，需证据复核确认）"
+    }
+   },
+   "typical_out_of_range": [
+    {
+     "rater": "R1",
+     "node_id": "M009",
+     "arm": "甲",
+     "action_basis": "承接她想陪妹妹订饭的心意，把订饭认作实在的帮忙，不替她安排妹妹、不把妹妹的事当她的私事追问",
+     "allowed": [
+      "回应她想陪妹妹的心意",
+      "把她的心意当主体而非替她安排"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M009",
+     "arm": "乙",
+     "action_basis": "同样承接心意并肯定订饭的价值，附带把话头交回给她自己（忙不忙、要不要搭把手），未擅自联系或安排她妹妹",
+     "allowed": [
+      "回应她想陪妹妹的心意",
+      "把她的心意当主体而非替她安排"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M010",
+     "arm": "甲",
+     "action_basis": "把'太惯着'归回是小林的评价，就事给出自己的真实看法，没有替她认领小林的结论，也没有贬她妹妹",
+     "allowed": [
+      "识别'太惯着'是小林的评价",
+      "就事给真实看法，不贬她妹"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M010",
+     "arm": "乙",
+     "action_basis": "把'太惯着'归回是小林的评价，明确表示不站小林那边，并用她自己说过的'陪她订饭'接住她，没有贬她妹妹",
+     "allowed": [
+      "识别'太惯着'是小林的评价",
+      "就事给真实看法，不贬她妹"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M011",
+     "arm": "甲",
+     "action_basis": "这轮该做的动作是：对她提出的“读书会”来源，既不作已核实确认，也不作已核实否定；可以用疑问、承认记不准或轻松带过。甲在首",
+     "allowed": [
+      "以疑问/调侃/澄清的方式回应（\"我印象里不是这个，你从哪儿听到的说法？\"）",
+      "承认对这段来源记不准，把话题交回她",
+      "不澄清也合格地轻松带过（\"读书会在你嘴里我成文艺青年了\"）"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M011",
+     "arm": "乙",
+     "action_basis": "这轮该做的动作同上：不要替她确认“读书会”，也不要给出来源没有依据的确定否定。乙在首选里确定否定“我跟小林不是那么认识的",
+     "allowed": [
+      "以疑问/调侃/澄清的方式回应（\"我印象里不是这个，你从哪儿听到的说法？\"）",
+      "承认对这段来源记不准，把话题交回她",
+      "不澄清也合格地轻松带过（\"读书会在你嘴里我成文艺青年了\"）"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M013",
+     "arm": "甲",
+     "action_basis": "正常接受因妹妹改期、不阴阳不翻旧账，并把下次时间主导交回她（'等你那边定下来，再挑个时间'）",
+     "allowed": [
+      "因妹妹改期正常接受",
+      "简短不带怨气"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M013",
+     "arm": "乙",
+     "action_basis": "同样正常接受改期、无怨气，并给出'等你那边松下来咱再定时间'",
+     "allowed": [
+      "因妹妹改期正常接受",
+      "简短不带怨气"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M014",
+     "arm": "甲",
+     "action_basis": "抓住她连说两遍的“就我、不带我妹、下班早”，确认下周三单独见并问时间，未拉入第三人或逼定关系",
+     "allowed": [
+      "抓住'就我、不带妹妹、下班早'——是她愿单独见",
+      "自然确认周三"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M014",
+     "arm": "乙",
+     "action_basis": "同样接住“就我”并确认下周三单独见，未拉妹妹/小林入局，也未升级成表白",
+     "allowed": [
+      "抓住'就我、不带妹妹、下班早'——是她愿单独见",
+      "自然确认周三"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M016",
+     "arm": "甲",
+     "action_basis": "接住再次改期（那周三就算了），不赌气、不把'约别人也行'当真去约别人，把下一次的时间交回她定（有空了跟我说一声），无关键",
+     "allowed": [
+      "接住再次改期+她说'约别人也行'",
+      "不赌气、尊重她主导后续"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M016",
+     "arm": "乙",
+     "action_basis": "同样接住改期并把定时间的主动权交回她（哪天空了定个时间），未把'约别人也行'当指令，也未赌气或阴阳；仅备选槽有轻度替她揣",
+     "allowed": [
+      "接住再次改期+她说'约别人也行'",
+      "不赌气、尊重她主导后续"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M017",
+     "arm": "甲",
+     "action_basis": "直接应下周末帮看，追问周六还是周日定死时间，并承接她“没空就算了”的客气话",
+     "allowed": [
+      "有空就直接答应帮看",
+      "把'没空就算了'当客气而非拒绝"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M017",
+     "arm": "乙",
+     "action_basis": "直接应下并给出可落地的周末日期范围，把具体时间交回她挑",
+     "allowed": [
+      "有空就直接答应帮看",
+      "把'没空就算了'当客气而非拒绝"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M018",
+     "arm": "甲",
+     "action_basis": "该做的动作是接受她“先这么说/周六上午再定”的暂定状态并留余地、不擅自锁死地点时间、不反复追问逼确认（card_allo",
+     "allowed": [
+      "接受'先这么说/上午再定'",
+      "留余地不锁死"
+     ]
+    }
+   ],
+   "typical_forbidden_hits": [
+    {
+     "rater": "R1",
+     "node_id": "M009",
+     "arm": "甲",
+     "action_basis": "承接她想陪妹妹订饭的心意，把订饭认作实在的帮忙，不替她安排妹妹、不把妹妹的事当她的私事追问",
+     "forbidden": [
+      "擅自去联系/安排她妹妹",
+      "把妹妹的事当她的私事追问"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M023",
+     "arm": "乙",
+     "action_basis": "同样接住“厚脸皮记下了”并轻松收尾，primary用自述立场带过，未把“随时喊我”升级成长期责任，也未冷淡收场",
+     "forbidden": [
+      "把'有问题随时喊我'升级成长期责任承诺",
+      "冷淡收场"
+     ]
+    },
+    {
+     "rater": "R2",
+     "node_id": "M023",
+     "arm": "甲",
+     "action_basis": "接住她'厚脸皮记下了'的玩笑，轻松收尾、不追不冷淡，也不把'有问题随时喊我'升级成长期责任承诺",
+     "forbidden": [
+      "把'有问题随时喊我'升级成长期责任承诺",
+      "冷淡收场"
+     ]
+    },
+    {
+     "rater": "R2",
+     "node_id": "M023",
+     "arm": "乙",
+     "action_basis": "同样接住'厚脸皮记下了'并给轻松表态，不追加义务、不冷淡收场，主体动作与甲一致",
+     "forbidden": [
+      "把'有问题随时喊我'升级成长期责任承诺",
+      "冷淡收场"
+     ]
+    },
+    {
+     "rater": "R3",
+     "node_id": "M015",
+     "arm": "甲",
+     "action_basis": "接住她对小林眼光的顾虑、不把小林拉进这顿饭、不扩大安排，并把已确认的下周三落定（“就下周三，你下班那会儿，我请”）。",
+     "forbidden": [
+      "把小林拉进这顿饭",
+      "据此把安排扩大"
+     ]
+    }
+   ]
+  },
+  "vs_reference_numeric": {
+   "available": false,
+   "reason": "参考侧 goal_reference.goal 为目标文字描述（6 个 dev 节点），无数值金标；数字正确率不可测，不冒充。接地探索见 action_range / forbidden_hits。"
+  },
+  "agreement_verdicts": {
+   "R1-R2": "qualified",
+   "R1-R3": "qualified",
+   "R2-R3": "qualified"
+  },
+  "agreement_note": "一致率≠真值；通过只说明本手册下评审者稳定，不说明候选好坏。"
+ },
+ "attribution": {
+  "nodes": 12,
+  "pairs": {
+   "R1-R2": {
+    "matched_claims": 154,
+    "severity_agree": 126,
+    "note": "参考侧无逐主张归属标签 → 资格=insufficient_evidence（一致率仅探索）"
+   },
+   "R1-R3": {
+    "matched_claims": 135,
+    "severity_agree": 110,
+    "note": "参考侧无逐主张归属标签 → 资格=insufficient_evidence（一致率仅探索）"
+   },
+   "R2-R3": {
+    "matched_claims": 111,
+    "severity_agree": 82,
+    "note": "参考侧无逐主张归属标签 → 资格=insufficient_evidence（一致率仅探索）"
+   }
+  },
+  "verdict": "insufficient_evidence",
+  "reason": "本包参考标签不含逐主张归属金标；如需资格须新构造归属参考。"
+ },
+ "protocol_separation": {
+  "per_rater": {
+   "R1": {
+    "n": 32,
+    "agree": 27,
+    "rate": 0.8438,
+    "detail": [
+     {
+      "node_id": "M010",
+      "arm": "乙",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     },
+     {
+      "node_id": "M011",
+      "arm": "乙",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     },
+     {
+      "node_id": "M013",
+      "arm": "乙",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     },
+     {
+      "node_id": "M018",
+      "arm": "乙",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     },
+     {
+      "node_id": "M023",
+      "arm": "乙",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     }
+    ]
+   },
+   "R2": {
+    "n": 32,
+    "agree": 27,
+    "rate": 0.8438,
+    "detail": [
+     {
+      "node_id": "M010",
+      "arm": "乙",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     },
+     {
+      "node_id": "M013",
+      "arm": "乙",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     },
+     {
+      "node_id": "M018",
+      "arm": "乙",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     },
+     {
+      "node_id": "M021",
+      "arm": "甲",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     },
+     {
+      "node_id": "M023",
+      "arm": "乙",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     }
+    ]
+   },
+   "R3": {
+    "n": 32,
+    "agree": 27,
+    "rate": 0.8438,
+    "detail": [
+     {
+      "node_id": "M014",
+      "arm": "甲",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     },
+     {
+      "node_id": "M017",
+      "arm": "甲",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     },
+     {
+      "node_id": "M019",
+      "arm": "乙",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     },
+     {
+      "node_id": "M020",
+      "arm": "乙",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     },
+     {
+      "node_id": "M023",
+      "arm": "乙",
+      "ref_truth_anomaly": false,
+      "judge": "missing_slot"
+     }
+    ]
+   }
+  },
+  "note": "探索性：protocol_truth 结构化字段 vs 判词 protocol_anomaly；无原始字节的控制节点跳过。"
+ },
+ "order_and_retest": {
+  "R1_repeat_same": {
+   "matrix": {
+    "甲": {
+     "甲": 1,
+     "乙": 0,
+     "都行": 1,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "乙": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都行": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都不想": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "说不清": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "未评": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    }
+   },
+   "aggregate": {
+    "decisive->decisive": 1,
+    "decisive->tie": 1
+   },
+   "n_pairs": 2
+  },
+  "R1_repeat_swapped": {
+   "matrix": {
+    "甲": {
+     "甲": 0,
+     "乙": 1,
+     "都行": 1,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "乙": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都行": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都不想": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "说不清": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "未评": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    }
+   },
+   "aggregate": {
+    "decisive->decisive": 1,
+    "decisive->tie": 1
+   },
+   "n_pairs": 2
+  },
+  "R1-R2_cross": {
+   "matrix": {
+    "甲": {
+     "甲": 9,
+     "乙": 0,
+     "都行": 2,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "乙": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 2,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都行": {
+     "甲": 2,
+     "乙": 0,
+     "都行": 4,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都不想": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "说不清": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "未评": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    }
+   },
+   "aggregate": {
+    "decisive->decisive": 9,
+    "decisive->tie": 4,
+    "tie->decisive": 2,
+    "tie->tie": 4
+   },
+   "n_pairs": 19
+  },
+  "R1-R3_cross": {
+   "matrix": {
+    "甲": {
+     "甲": 7,
+     "乙": 1,
+     "都行": 2,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 2
+    },
+    "乙": {
+     "甲": 0,
+     "乙": 2,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都行": {
+     "甲": 3,
+     "乙": 0,
+     "都行": 1,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 2
+    },
+    "都不想": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "说不清": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "未评": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    }
+   },
+   "aggregate": {
+    "decisive->decisive": 10,
+    "decisive->unrated": 2,
+    "tie->unrated": 2,
+    "decisive->tie": 2,
+    "tie->decisive": 3,
+    "tie->tie": 1
+   },
+   "n_pairs": 20
+  },
+  "R2-R3_cross": {
+   "matrix": {
+    "甲": {
+     "甲": 8,
+     "乙": 1,
+     "都行": 1,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 1
+    },
+    "乙": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都行": {
+     "甲": 2,
+     "乙": 2,
+     "都行": 1,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 3
+    },
+    "都不想": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "说不清": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "未评": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    }
+   },
+   "aggregate": {
+    "decisive->decisive": 9,
+    "tie->unrated": 3,
+    "decisive->unrated": 1,
+    "decisive->tie": 1,
+    "tie->decisive": 4,
+    "tie->tie": 1
+   },
+   "n_pairs": 19
+  }
+ },
+ "order_flip_verdicts": [
+  {
+   "rater": "R1",
+   "decisive_n": 1,
+   "same": 0,
+   "flips": 1,
+   "flip_rate": 1.0,
+   "threshold": "≤15%",
+   "verdict": "insufficient_evidence"
+  }
+ ],
+ "qualification": {
+  "fact_detection": "insufficient_evidence",
+  "free_expression_false_kill": "insufficient_evidence",
+  "insufficient_info": "insufficient_evidence",
+  "goal_agreement": "qualified",
+  "goal_vs_reference_numeric": "not_available_no_numeric_reference",
+  "attribution": "insufficient_evidence",
+  "order_sensitivity": "insufficient_evidence",
+  "per_rater_detail": {
+   "fact_detection": {
+    "R1": "insufficient_evidence",
+    "R2": "insufficient_evidence",
+    "R3": "insufficient_evidence"
+   },
+   "free_expression_false_kill": {
+    "R1": "insufficient_evidence",
+    "R2": "insufficient_evidence",
+    "R3": "insufficient_evidence"
+   },
+   "insufficient_info": {
+    "R1": "insufficient_evidence",
+    "R2": "insufficient_evidence",
+    "R3": "insufficient_evidence"
+   },
+   "goal_agreement": {
+    "R1-R2": "qualified",
+    "R1-R3": "qualified",
+    "R2-R3": "qualified"
+   }
+  },
+  "note": "qualified 维才可 AI 辅助批量复核；not_qualified/insufficient_evidence 维度转证据复核或保留未评，不阻塞资源/协议结论，也不得偷过质量晋级。资格按评审者分母计（不是主张×3 并池）。"
+ },
+ "judge_claims_total": {
+  "R1": 314,
+  "R2": 270,
+  "R3": 218
+ }
+}

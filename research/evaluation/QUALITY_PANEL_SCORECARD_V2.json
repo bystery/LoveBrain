@@ -1,0 +1,1527 @@
+{
+ "kind": "quality_panel_scorecard_v2",
+ "date": "2026-10-27",
+ "generated_by": "tools/build_quality_scorecard_v2.py",
+ "status": "judge scores unchanged; denominators and primary/backup split corrected",
+ "sources": {
+  "ratings": "D:/lovebrain-arena/logs/quality_panel_v1_live_20261027_003723/RATINGS_REPAIRED.jsonl",
+  "analysis": "D:/lovebrain-arena/logs/quality_panel_v1_live_20261027_003723/QUALITY_PANEL_ANALYSIS_V1_1.json",
+  "bindings": "D:/lovebrain-arena/refs/experiment_protocol_20261023/knowledge_quality_independent_review_20261026/PRIVATE_BINDINGS.json",
+  "knowledge_scorecard": "D:/lovebrain-arena/evaluation/KNOWLEDGE_STAGE_SCORECARD_V1.json",
+  "judge_manual": "evaluation/QUALITY_MANUAL_V1_1.md",
+  "worker_reads": [
+   "evaluation/B3_PRIMARY_READ_E006_V1.md",
+   "evaluation/B3_PRIMARY_READ_E007_V1.md",
+   "evaluation/B3_PRIMARY_READ_E008_V1.md",
+   "evaluation/B3_PRIMARY_READ_E012_V1.md"
+  ],
+  "major_review": "evaluation/QUALITY_PANEL_MAJOR_REVIEW_V1.md"
+ },
+ "scope": {
+  "batch_dir": "D:/lovebrain-arena/logs/quality_panel_v1_live_20261027_003723",
+  "authorization": "AUTH-QUALITY-PANEL-20261027-01",
+  "authorization_status": "CLOSED 173/192; 余 19 不是补跑额度",
+  "stories": [
+   "E006",
+   "E007",
+   "E008",
+   "E012"
+  ],
+  "arms": [
+   "reference_product_v1",
+   "v5_purpose_aligned",
+   "goal_action_v1",
+   "evidence_memory_v1"
+  ],
+  "four_arm_batches": {
+   "sweep_a": "reference_product_v1 vs goal_action_v1",
+   "sweep_b": "v5_purpose_aligned vs evidence_memory_v1"
+  },
+  "judge_identity": "worker-AI 亲笔开发控制 + AI 判词；非独立封存集、非人类标定。",
+  "arm_identities": {
+   "reference_product_v1": {
+    "historical_c4": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+    "current": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+    "changed": true,
+    "what_changed": "历史 C4 冻结→当前：IDENTITY.md 修订 + reference_chain.py v1.1 选择器/v1.2 ADJUSTED 生效。"
+   },
+   "v5_purpose_aligned": {
+    "historical_c4": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+    "current": "7c6b51cec9780049d11cb0aabdfe9c42f65ff1a33d2afe22f5a926034e6eb7ac",
+    "changed": true,
+    "what_changed": "v5 自身文件未变，但闭包内 reference 从历史 6e65 变为 501bc4，因此身份变为 7c6b。"
+   },
+   "goal_action_v1": {
+    "historical_c4": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59",
+    "current": "fc296dd822fbfd4e97def9cdfd532ecb892ef9467b43b80eeebd88450f2ebcba",
+    "changed": true,
+    "what_changed": "历史 C4→当前：format.md analysis 契约与机制消费一致化（v1.1，P04-05）；机制代码同。"
+   },
+   "evidence_memory_v1": {
+    "historical_c4": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26",
+    "current": "fddcdb51aa802ca9e133b80c72caa89cd72653e89a1239c869aa15e6e8939897",
+    "changed": true,
+    "what_changed": "历史 C4→当前：v1.1 成员/引文硬校验 + v1.2 静态种子事实（P04-02/03）。"
+   }
+  },
+  "identity_warning": "本成绩单判的是 C4 历史答卷（历史身份）；当前候选身份已变，不得把本成绩单直接当作当前代码的成绩。P06 必须按新身份重跑。"
+ },
+ "denominators": {
+  "attempts_total": 173,
+  "primary_planned": 128,
+  "primary_assessed": 117,
+  "primary_unassessed": 11,
+  "primary_unassessed_nodes": [
+   "Q024",
+   "Q031",
+   "Q036",
+   "Q118",
+   "Q104",
+   "Q058",
+   "Q056",
+   "Q098",
+   "Q103",
+   "Q113",
+   "Q057"
+  ],
+  "primary_unassessed_detail": [
+   {
+    "item_id": "Q024",
+    "case_id": "E006_T03",
+    "arm": "v5_purpose_aligned"
+   },
+   {
+    "item_id": "Q031",
+    "case_id": "E007_T01",
+    "arm": "goal_action_v1"
+   },
+   {
+    "item_id": "Q036",
+    "case_id": "E007_T01",
+    "arm": "reference_product_v1"
+   },
+   {
+    "item_id": "Q118",
+    "case_id": "E008_T04",
+    "arm": "goal_action_v1"
+   },
+   {
+    "item_id": "Q104",
+    "case_id": "E008_T05",
+    "arm": "goal_action_v1"
+   },
+   {
+    "item_id": "Q058",
+    "case_id": "E012_T01",
+    "arm": "reference_product_v1"
+   },
+   {
+    "item_id": "Q056",
+    "case_id": "E012_T03",
+    "arm": "reference_product_v1"
+   },
+   {
+    "item_id": "Q098",
+    "case_id": "E012_T04",
+    "arm": "reference_product_v1"
+   },
+   {
+    "item_id": "Q103",
+    "case_id": "E012_T05",
+    "arm": "evidence_memory_v1"
+   },
+   {
+    "item_id": "Q113",
+    "case_id": "E012_T07",
+    "arm": "reference_product_v1"
+   },
+   {
+    "item_id": "Q057",
+    "case_id": "E012_T08",
+    "arm": "v5_purpose_aligned"
+   }
+  ],
+  "control_planned": 32,
+  "control_assessed": 32,
+  "repeat_planned": 13,
+  "repeat_assessed": 10,
+  "repeat_unassessed": 3,
+  "backup_slots": 769,
+  "backup_slots_by_arm": {
+   "reference_product_v1": 179,
+   "v5_purpose_aligned": 197,
+   "goal_action_v1": 190,
+   "evidence_memory_v1": 203
+  },
+  "claimed_total_assessed": 159,
+  "claimed_total_unassessed": 14
+ },
+ "qualification": {
+  "controls": {
+   "n_assessed": 32,
+   "n_expected": 32,
+   "kill_identified": 15,
+   "kill_total": 16,
+   "protect_false_killed": 1,
+   "protect_total": 16,
+   "by_group": {
+    "冷场展开vs适当收尾": {
+     "n": 4,
+     "hit": 4
+    },
+    "归属HER_ME_第三人": {
+     "n": 4,
+     "hit": 4
+    },
+    "无据事实vs新提议": {
+     "n": 4,
+     "hit": 4
+    },
+    "日期与更正状态": {
+     "n": 4,
+     "hit": 4
+    },
+    "私密指导vs公开事实": {
+     "n": 4,
+     "hit": 4
+    },
+    "观点玩笑vs确定亲历": {
+     "n": 4,
+     "hit": 2
+    },
+    "该回忆vs不该回提": {
+     "n": 4,
+     "hit": 4
+    },
+    "随反馈调整": {
+     "n": 4,
+     "hit": 4
+    }
+   },
+   "note": "总分代理口径：verdict 由期望维分数推导（≤1 判错=检出；0 分=误杀）。逐维细分与 threshold 对照在 QUALITY_PANEL_QUALIFICATION 里按需展开。"
+  },
+  "repeat_consistency": {
+   "n": 10,
+   "comparable": 9,
+   "mean_dims_exact": 6.56,
+   "mean_dims_within1": 7.111,
+   "rows": [
+    {
+     "item_id": "Q013",
+     "comparable": true,
+     "dims_compared": 9,
+     "dims_exact": 6,
+     "dims_within1": 8
+    },
+    {
+     "item_id": "Q042",
+     "comparable": true,
+     "dims_compared": 8,
+     "dims_exact": 7,
+     "dims_within1": 7
+    },
+    {
+     "item_id": "Q027",
+     "comparable": true,
+     "dims_compared": 9,
+     "dims_exact": 8,
+     "dims_within1": 8
+    },
+    {
+     "item_id": "Q062",
+     "comparable": true,
+     "dims_compared": 8,
+     "dims_exact": 4,
+     "dims_within1": 5
+    },
+    {
+     "item_id": "Q046",
+     "comparable": true,
+     "dims_compared": 9,
+     "dims_exact": 7,
+     "dims_within1": 7
+    },
+    {
+     "item_id": "Q099",
+     "comparable": true,
+     "dims_compared": 9,
+     "dims_exact": 6,
+     "dims_within1": 7
+    },
+    {
+     "item_id": "Q104",
+     "comparable": false
+    },
+    {
+     "item_id": "Q108",
+     "comparable": true,
+     "dims_compared": 9,
+     "dims_exact": 6,
+     "dims_within1": 6
+    },
+    {
+     "item_id": "Q126",
+     "comparable": true,
+     "dims_compared": 9,
+     "dims_exact": 6,
+     "dims_within1": 7
+    },
+    {
+     "item_id": "Q127",
+     "comparable": true,
+     "dims_compared": 9,
+     "dims_exact": 9,
+     "dims_within1": 9
+    }
+   ]
+  },
+  "quote_audit": {
+   "source": "evaluation/QUALITY_PANEL_MAJOR_REVIEW_V1.md §2",
+   "raw_level_flags": 19,
+   "validator_false_positives": 16,
+   "whitespace_or_punct_edits": 3,
+   "fabrications": 0,
+   "residual_analyzer_flags": 5,
+   "residual_items": [
+    "Q015",
+    "Q034",
+    "Q044",
+    "Q081",
+    "Q111"
+   ],
+   "residual_note": "V1_1 分析器仍有 5 条归一化未命中（Q015 卡片文本重建缺口；Q034/Q044/Q081 为轻微改写；Q111 待核）。均为判词审计队列，不当作考生错误。",
+   "corrected_reading": "撤销 V1 “19 处不符=判词不可靠”的读法：19 条中 16 条是分析器输入重建假阳性，3 条是空格/标点级编辑，0 条捏造。"
+  },
+  "judge_identity": "AI 辅助读数；不得单独决定晋级/淘汰。"
+ },
+ "judge_scores": {
+  "primary": {
+   "n": 117,
+   "by_arm": {
+    "reference_product_v1": {
+     "dims_mean": {
+      "goal": 2.778,
+      "factuality": 2.76,
+      "attribution": 2.905,
+      "time_state": 2.929,
+      "boundary": 2.9,
+      "memory_use": 2.737,
+      "interaction": 2.704,
+      "initiative": 2.318,
+      "emotion_relation": 2.333
+     },
+     "dims_scored_n": {
+      "goal": 27,
+      "factuality": 25,
+      "attribution": 21,
+      "time_state": 14,
+      "boundary": 20,
+      "memory_use": 19,
+      "interaction": 27,
+      "initiative": 22,
+      "emotion_relation": 27
+     },
+     "dims_na_n": {
+      "goal": 0,
+      "factuality": 2,
+      "attribution": 6,
+      "time_state": 13,
+      "boundary": 7,
+      "memory_use": 8,
+      "interaction": 0,
+      "initiative": 5,
+      "emotion_relation": 0
+     },
+     "n_planned": 32,
+     "n_assessed": 27,
+     "n_unassessed": 5,
+     "primary_major_nodes": 1,
+     "primary_major_free": 26,
+     "claims": {
+      "total": 65,
+      "by_severity": {
+       "none": 59,
+       "minor": 3,
+       "major": 3
+      },
+      "by_support": {
+       "supported": 24,
+       "unknown": 9,
+       "na": 32
+      }
+     }
+    },
+    "v5_purpose_aligned": {
+     "dims_mean": {
+      "goal": 3.0,
+      "factuality": 2.793,
+      "attribution": 2.929,
+      "time_state": 2.85,
+      "boundary": 2.96,
+      "memory_use": 2.875,
+      "interaction": 2.933,
+      "initiative": 2.643,
+      "emotion_relation": 2.6
+     },
+     "dims_scored_n": {
+      "goal": 30,
+      "factuality": 29,
+      "attribution": 28,
+      "time_state": 20,
+      "boundary": 25,
+      "memory_use": 24,
+      "interaction": 30,
+      "initiative": 28,
+      "emotion_relation": 30
+     },
+     "dims_na_n": {
+      "goal": 0,
+      "factuality": 1,
+      "attribution": 2,
+      "time_state": 10,
+      "boundary": 5,
+      "memory_use": 6,
+      "interaction": 0,
+      "initiative": 2,
+      "emotion_relation": 0
+     },
+     "n_planned": 32,
+     "n_assessed": 30,
+     "n_unassessed": 2,
+     "primary_major_nodes": 0,
+     "primary_major_free": 30,
+     "claims": {
+      "total": 94,
+      "by_severity": {
+       "none": 87,
+       "minor": 7
+      },
+      "by_support": {
+       "supported": 33,
+       "unknown": 15,
+       "na": 46
+      }
+     }
+    },
+    "goal_action_v1": {
+     "dims_mean": {
+      "goal": 2.966,
+      "factuality": 2.897,
+      "attribution": 3.0,
+      "time_state": 3.0,
+      "boundary": 3.0,
+      "memory_use": 2.88,
+      "interaction": 3.0,
+      "initiative": 2.63,
+      "emotion_relation": 2.759
+     },
+     "dims_scored_n": {
+      "goal": 29,
+      "factuality": 29,
+      "attribution": 29,
+      "time_state": 23,
+      "boundary": 23,
+      "memory_use": 25,
+      "interaction": 29,
+      "initiative": 27,
+      "emotion_relation": 29
+     },
+     "dims_na_n": {
+      "goal": 0,
+      "factuality": 0,
+      "attribution": 0,
+      "time_state": 6,
+      "boundary": 6,
+      "memory_use": 4,
+      "interaction": 0,
+      "initiative": 2,
+      "emotion_relation": 0
+     },
+     "n_planned": 32,
+     "n_assessed": 29,
+     "n_unassessed": 3,
+     "primary_major_nodes": 0,
+     "primary_major_free": 29,
+     "claims": {
+      "total": 93,
+      "by_severity": {
+       "none": 85,
+       "minor": 8
+      },
+      "by_support": {
+       "supported": 44,
+       "unknown": 13,
+       "na": 36
+      }
+     }
+    },
+    "evidence_memory_v1": {
+     "dims_mean": {
+      "goal": 2.935,
+      "factuality": 2.867,
+      "attribution": 2.931,
+      "time_state": 3.0,
+      "boundary": 2.958,
+      "memory_use": 2.889,
+      "interaction": 2.968,
+      "initiative": 2.679,
+      "emotion_relation": 2.677
+     },
+     "dims_scored_n": {
+      "goal": 31,
+      "factuality": 30,
+      "attribution": 29,
+      "time_state": 21,
+      "boundary": 24,
+      "memory_use": 27,
+      "interaction": 31,
+      "initiative": 28,
+      "emotion_relation": 31
+     },
+     "dims_na_n": {
+      "goal": 0,
+      "factuality": 1,
+      "attribution": 2,
+      "time_state": 10,
+      "boundary": 7,
+      "memory_use": 4,
+      "interaction": 0,
+      "initiative": 3,
+      "emotion_relation": 0
+     },
+     "n_planned": 32,
+     "n_assessed": 31,
+     "n_unassessed": 1,
+     "primary_major_nodes": 1,
+     "primary_major_free": 30,
+     "claims": {
+      "total": 100,
+      "by_severity": {
+       "none": 95,
+       "minor": 4,
+       "major": 1
+      },
+      "by_support": {
+       "supported": 42,
+       "unknown": 16,
+       "na": 42
+      }
+     }
+    }
+   },
+   "by_story_arm": {
+    "E006|reference_product_v1": {
+     "story": "E006",
+     "arm": "reference_product_v1",
+     "n_assessed": 8,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.842,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 53,
+     "backup_major_claims": 0
+    },
+    "E006|v5_purpose_aligned": {
+     "story": "E006",
+     "arm": "v5_purpose_aligned",
+     "n_assessed": 7,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.854,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 46,
+     "backup_major_claims": 0
+    },
+    "E006|goal_action_v1": {
+     "story": "E006",
+     "arm": "goal_action_v1",
+     "n_assessed": 8,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.891,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 51,
+     "backup_major_claims": 0
+    },
+    "E006|evidence_memory_v1": {
+     "story": "E006",
+     "arm": "evidence_memory_v1",
+     "n_assessed": 8,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.918,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 53,
+     "backup_major_claims": 0
+    },
+    "E007|reference_product_v1": {
+     "story": "E007",
+     "arm": "reference_product_v1",
+     "n_assessed": 7,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.647,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 47,
+     "backup_major_claims": 0
+    },
+    "E007|v5_purpose_aligned": {
+     "story": "E007",
+     "arm": "v5_purpose_aligned",
+     "n_assessed": 8,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.899,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 51,
+     "backup_major_claims": 0
+    },
+    "E007|goal_action_v1": {
+     "story": "E007",
+     "arm": "goal_action_v1",
+     "n_assessed": 7,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.897,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 45,
+     "backup_major_claims": 1
+    },
+    "E007|evidence_memory_v1": {
+     "story": "E007",
+     "arm": "evidence_memory_v1",
+     "n_assessed": 8,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.79,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 53,
+     "backup_major_claims": 0
+    },
+    "E008|reference_product_v1": {
+     "story": "E008",
+     "arm": "reference_product_v1",
+     "n_assessed": 8,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.523,
+     "primary_major_claims": 3,
+     "primary_major_nodes": 1,
+     "backup_slots": 54,
+     "backup_major_claims": 1
+    },
+    "E008|v5_purpose_aligned": {
+     "story": "E008",
+     "arm": "v5_purpose_aligned",
+     "n_assessed": 8,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.779,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 55,
+     "backup_major_claims": 0
+    },
+    "E008|goal_action_v1": {
+     "story": "E008",
+     "arm": "goal_action_v1",
+     "n_assessed": 6,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.942,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 40,
+     "backup_major_claims": 0
+    },
+    "E008|evidence_memory_v1": {
+     "story": "E008",
+     "arm": "evidence_memory_v1",
+     "n_assessed": 8,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.855,
+     "primary_major_claims": 1,
+     "primary_major_nodes": 1,
+     "backup_slots": 53,
+     "backup_major_claims": 3
+    },
+    "E012|reference_product_v1": {
+     "story": "E012",
+     "arm": "reference_product_v1",
+     "n_assessed": 4,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.828,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 25,
+     "backup_major_claims": 0
+    },
+    "E012|v5_purpose_aligned": {
+     "story": "E012",
+     "arm": "v5_purpose_aligned",
+     "n_assessed": 7,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.831,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 45,
+     "backup_major_claims": 1
+    },
+    "E012|goal_action_v1": {
+     "story": "E012",
+     "arm": "goal_action_v1",
+     "n_assessed": 8,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.884,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 54,
+     "backup_major_claims": 0
+    },
+    "E012|evidence_memory_v1": {
+     "story": "E012",
+     "arm": "evidence_memory_v1",
+     "n_assessed": 7,
+     "n_planned": 8,
+     "dims_mean_unweighted": 2.933,
+     "primary_major_claims": 0,
+     "primary_major_nodes": 0,
+     "backup_slots": 44,
+     "backup_major_claims": 0
+    }
+   },
+   "claims": {
+    "total": 352,
+    "by_severity": {
+     "none": 326,
+     "minor": 22,
+     "major": 4
+    },
+    "by_support": {
+     "supported": 143,
+     "unknown": 53,
+     "na": 156
+    }
+   }
+  },
+  "backups": {
+   "n": 769,
+   "by_arm": {
+    "reference_product_v1": {
+     "dims_mean": {
+      "goal": 2.335,
+      "factuality": 2.752,
+      "attribution": 2.873,
+      "time_state": 2.787,
+      "boundary": 2.833,
+      "memory_use": 2.481,
+      "interaction": 2.447,
+      "initiative": 2.129,
+      "emotion_relation": 2.291
+     },
+     "dims_scored_n": {
+      "goal": 179,
+      "factuality": 165,
+      "attribution": 150,
+      "time_state": 89,
+      "boundary": 132,
+      "memory_use": 131,
+      "interaction": 179,
+      "initiative": 155,
+      "emotion_relation": 179
+     },
+     "dims_na_n": {
+      "goal": 0,
+      "factuality": 14,
+      "attribution": 29,
+      "time_state": 90,
+      "boundary": 47,
+      "memory_use": 48,
+      "interaction": 0,
+      "initiative": 24,
+      "emotion_relation": 0
+     },
+     "n_slots": 179,
+     "slots_with_major": 1,
+     "backup_major_claims": 1,
+     "claims": {
+      "total": 305,
+      "by_severity": {
+       "none": 279,
+       "minor": 25,
+       "major": 1
+      },
+      "by_support": {
+       "supported": 80,
+       "unknown": 52,
+       "na": 173
+      }
+     }
+    },
+    "v5_purpose_aligned": {
+     "dims_mean": {
+      "goal": 2.299,
+      "factuality": 2.876,
+      "attribution": 2.916,
+      "time_state": 2.825,
+      "boundary": 2.891,
+      "memory_use": 2.547,
+      "interaction": 2.437,
+      "initiative": 2.351,
+      "emotion_relation": 2.315
+     },
+     "dims_scored_n": {
+      "goal": 197,
+      "factuality": 186,
+      "attribution": 178,
+      "time_state": 114,
+      "boundary": 165,
+      "memory_use": 159,
+      "interaction": 197,
+      "initiative": 188,
+      "emotion_relation": 197
+     },
+     "dims_na_n": {
+      "goal": 0,
+      "factuality": 11,
+      "attribution": 19,
+      "time_state": 83,
+      "boundary": 32,
+      "memory_use": 38,
+      "interaction": 0,
+      "initiative": 9,
+      "emotion_relation": 0
+     },
+     "n_slots": 197,
+     "slots_with_major": 1,
+     "backup_major_claims": 1,
+     "claims": {
+      "total": 375,
+      "by_severity": {
+       "none": 350,
+       "minor": 24,
+       "major": 1
+      },
+      "by_support": {
+       "supported": 115,
+       "unknown": 48,
+       "conflict": 1,
+       "na": 211
+      }
+     }
+    },
+    "goal_action_v1": {
+     "dims_mean": {
+      "goal": 2.379,
+      "factuality": 2.798,
+      "attribution": 2.949,
+      "time_state": 2.825,
+      "boundary": 2.887,
+      "memory_use": 2.446,
+      "interaction": 2.6,
+      "initiative": 2.372,
+      "emotion_relation": 2.416
+     },
+     "dims_scored_n": {
+      "goal": 190,
+      "factuality": 183,
+      "attribution": 178,
+      "time_state": 114,
+      "boundary": 150,
+      "memory_use": 166,
+      "interaction": 190,
+      "initiative": 183,
+      "emotion_relation": 190
+     },
+     "dims_na_n": {
+      "goal": 0,
+      "factuality": 7,
+      "attribution": 12,
+      "time_state": 76,
+      "boundary": 40,
+      "memory_use": 24,
+      "interaction": 0,
+      "initiative": 7,
+      "emotion_relation": 0
+     },
+     "n_slots": 190,
+     "slots_with_major": 1,
+     "backup_major_claims": 1,
+     "claims": {
+      "total": 346,
+      "by_severity": {
+       "none": 310,
+       "minor": 35,
+       "major": 1
+      },
+      "by_support": {
+       "supported": 116,
+       "unknown": 42,
+       "conflict": 3,
+       "na": 185
+      }
+     }
+    },
+    "evidence_memory_v1": {
+     "dims_mean": {
+      "goal": 2.303,
+      "factuality": 2.853,
+      "attribution": 2.93,
+      "time_state": 2.875,
+      "boundary": 2.878,
+      "memory_use": 2.656,
+      "interaction": 2.522,
+      "initiative": 2.262,
+      "emotion_relation": 2.388
+     },
+     "dims_scored_n": {
+      "goal": 201,
+      "factuality": 191,
+      "attribution": 185,
+      "time_state": 104,
+      "boundary": 156,
+      "memory_use": 180,
+      "interaction": 201,
+      "initiative": 187,
+      "emotion_relation": 201
+     },
+     "dims_na_n": {
+      "goal": 2,
+      "factuality": 12,
+      "attribution": 18,
+      "time_state": 99,
+      "boundary": 47,
+      "memory_use": 23,
+      "interaction": 2,
+      "initiative": 16,
+      "emotion_relation": 2
+     },
+     "n_slots": 203,
+     "slots_with_major": 2,
+     "backup_major_claims": 3,
+     "claims": {
+      "total": 368,
+      "by_severity": {
+       "none": 340,
+       "minor": 25,
+       "major": 3
+      },
+      "by_support": {
+       "supported": 104,
+       "unknown": 60,
+       "na": 204
+      }
+     }
+    }
+   },
+   "claims": {
+    "total": 1394,
+    "by_severity": {
+     "none": 1279,
+     "minor": 109,
+     "major": 6
+    },
+    "by_support": {
+     "supported": 415,
+     "unknown": 202,
+     "conflict": 4,
+     "na": 773
+    }
+   }
+  },
+  "same_batch_pairs": [
+   {
+    "pair": "reference_product_v1 vs goal_action_v1",
+    "a": "reference_product_v1",
+    "b": "goal_action_v1",
+    "label": "C4 sweep_a (same batch)",
+    "n_planned": 32,
+    "n_comparable": 25,
+    "wins_a": 0,
+    "ties": 21,
+    "wins_b": 4,
+    "incomparable": 7,
+    "by_story": {
+     "E006": {
+      "w": 0,
+      "t": 8,
+      "l": 0,
+      "x": 0
+     },
+     "E007": {
+      "w": 0,
+      "t": 6,
+      "l": 1,
+      "x": 1
+     },
+     "E008": {
+      "w": 0,
+      "t": 3,
+      "l": 3,
+      "x": 2
+     },
+     "E012": {
+      "w": 0,
+      "t": 4,
+      "l": 0,
+      "x": 4
+     }
+    },
+    "note": "同一 C4 批内严格配对；|九维均差|<=0.5 记平。跨批横比不作严格比较。"
+   },
+   {
+    "pair": "v5_purpose_aligned vs evidence_memory_v1",
+    "a": "v5_purpose_aligned",
+    "b": "evidence_memory_v1",
+    "label": "C4 sweep_b (same batch)",
+    "n_planned": 32,
+    "n_comparable": 29,
+    "wins_a": 1,
+    "ties": 27,
+    "wins_b": 1,
+    "incomparable": 3,
+    "by_story": {
+     "E006": {
+      "w": 0,
+      "t": 7,
+      "l": 0,
+      "x": 1
+     },
+     "E007": {
+      "w": 1,
+      "t": 7,
+      "l": 0,
+      "x": 0
+     },
+     "E008": {
+      "w": 0,
+      "t": 8,
+      "l": 0,
+      "x": 0
+     },
+     "E012": {
+      "w": 0,
+      "t": 5,
+      "l": 1,
+      "x": 2
+     }
+    },
+    "note": "同一 C4 批内严格配对；|九维均差|<=0.5 记平。跨批横比不作严格比较。"
+   }
+  ],
+  "legacy_merged_view": {
+   "note": "V1 合并段口径，仅作历史对照；不用于 V2 判优。",
+   "source": "QUALITY_PANEL_ANALYSIS_V1_1.json per_arm",
+   "by_arm": {
+    "reference_product_v1": {
+     "n_answers": 27,
+     "dims_mean": {
+      "goal": 2.393,
+      "factuality": 2.753,
+      "attribution": 2.877,
+      "time_state": 2.806,
+      "boundary": 2.842,
+      "memory_use": 2.513,
+      "interaction": 2.481,
+      "initiative": 2.153,
+      "emotion_relation": 2.296
+     },
+     "claims": {
+      "total": 370,
+      "conflict": 0,
+      "major": 4,
+      "unsupported": 0
+     }
+    },
+    "v5_purpose_aligned": {
+     "n_answers": 30,
+     "dims_mean": {
+      "goal": 2.392,
+      "factuality": 2.865,
+      "attribution": 2.917,
+      "time_state": 2.828,
+      "boundary": 2.9,
+      "memory_use": 2.59,
+      "interaction": 2.502,
+      "initiative": 2.389,
+      "emotion_relation": 2.352
+     },
+     "claims": {
+      "total": 469,
+      "conflict": 1,
+      "major": 1,
+      "unsupported": 0
+     }
+    },
+    "goal_action_v1": {
+     "n_answers": 29,
+     "dims_mean": {
+      "goal": 2.457,
+      "factuality": 2.811,
+      "attribution": 2.957,
+      "time_state": 2.854,
+      "boundary": 2.902,
+      "memory_use": 2.503,
+      "interaction": 2.653,
+      "initiative": 2.405,
+      "emotion_relation": 2.461
+     },
+     "claims": {
+      "total": 439,
+      "conflict": 3,
+      "major": 1,
+      "unsupported": 0
+     }
+    },
+    "evidence_memory_v1": {
+     "n_answers": 31,
+     "dims_mean": {
+      "goal": 2.388,
+      "factuality": 2.855,
+      "attribution": 2.93,
+      "time_state": 2.896,
+      "boundary": 2.889,
+      "memory_use": 2.686,
+      "interaction": 2.582,
+      "initiative": 2.316,
+      "emotion_relation": 2.427
+     },
+     "claims": {
+      "total": 468,
+      "conflict": 0,
+      "major": 4,
+      "unsupported": 0
+     }
+    }
+   }
+  }
+ },
+ "worker_review_overlay": {
+  "nature": "worker-AI 亲读复核（同一 AI 作者侧的第二双眼睛），不是独立人类金标；只登记分歧与漏检，不改历史判词分数。",
+  "primary_read": {
+   "documents": [
+    "evaluation/B3_PRIMARY_READ_E006_V1.md",
+    "evaluation/B3_PRIMARY_READ_E007_V1.md",
+    "evaluation/B3_PRIMARY_READ_E008_V1.md",
+    "evaluation/B3_PRIMARY_READ_E012_V1.md"
+   ],
+   "stories_read": 4,
+   "primary_texts_read": 128,
+   "primary_with_verdict_reported_by_B3": 121,
+   "primary_with_verdict_recomputed": 117,
+   "score_corrections": 0,
+   "note": "四片合计 117 条可评首选；B3 分片内的 121 为手工计数，V2 按 RATINGS_REPAIRED 重算并已在 corrections 登记。"
+  },
+  "missed_detections": [
+   {
+    "item_id": "Q? (C2/E012_T03)",
+    "case_id": "E012_T03",
+    "arm": "goal_action_v1",
+    "severity": "major",
+    "finding": "首选“那家我也一直想再去一次”是无据亲历断言（原话只支持“你上次提过”，不支持“我也去过”）；判词仅 factuality=2，未标 major。",
+    "source": "evaluation/B3_PRIMARY_READ_E012_V1.md §1/§2",
+    "effect": "不修改历史判词；登记为 V1_1 下批判的控制/回归位点。"
+   },
+   {
+    "item_id": "Q? (v5/E008_T02)",
+    "case_id": "E008_T02",
+    "arm": "v5_purpose_aligned",
+    "severity": "minor",
+    "finding": "用“他”指小林，题面未给小林性别；无据人称具体化，判词未标 minor。",
+    "source": "evaluation/B3_PRIMARY_READ_E008_V1.md §1/§2",
+    "effect": "登记为 minor 漏检；V1_1 §0-7 覆盖，不修改分数。"
+   }
+  ],
+  "major_review": {
+   "source": "evaluation/QUALITY_PANEL_MAJOR_REVIEW_V1.md",
+   "control_major_claims": 20,
+   "real_arm_major_claims": 10,
+   "confirmed_candidate_defects": 9,
+   "doubtful": 1,
+   "doubtful_entry": {
+    "item_id": "Q054",
+    "case_id": "E012_T05",
+    "arm": "v5_purpose_aligned",
+    "where": "backup:directions[3]",
+    "quote": "先不说这个了",
+    "reason": "备选槽允许弱选项；以“关闭话题”判 major 存疑，待备选风险表统一裁量。"
+   },
+   "hotspot": "E008_T03（ref+C3 共 8 条 major）",
+   "note": "控制 20 条 major 全部落在预期应判错的控制上；真实臂 10 条中 9 条确认为候选缺陷。"
+  },
+  "quote_review": {
+   "source": "evaluation/QUALITY_PANEL_MAJOR_REVIEW_V1.md §2",
+   "raw_level_flags": 19,
+   "validator_false_positives": 16,
+   "whitespace_or_punct_edits": 3,
+   "fabrications": 0,
+   "residual_analyzer_flags": 5,
+   "residual_items": [
+    "Q015",
+    "Q034",
+    "Q044",
+    "Q081",
+    "Q111"
+   ],
+   "residual_note": "V1_1 分析器仍有 5 条归一化未命中（Q015 卡片文本重建缺口；Q034/Q044/Q081 为轻微改写；Q111 待核）。均为判词审计队列，不当作考生错误。",
+   "corrected_reading": "撤销 V1 “19 处不符=判词不可靠”的读法：19 条中 16 条是分析器输入重建假阳性，3 条是空格/标点级编辑，0 条捏造。"
+  },
+  "qualitative_findings": [
+   {
+    "id": "F1",
+    "finding": "E006 跨轮回扣分野：C2/C3 在 T05/T07 主动回扣“昨天被当众批评”，ref/v5 全故事零回扣。",
+    "evidence": "B3 E006 §2；卡把回扣列为 optional_history、无 required atoms，memory_use 不计分。",
+    "action": "九维未覆盖的正向行为；下一版卡增设 optional 回扣加分观察，不加扣分。"
+   },
+   {
+    "id": "F2",
+    "finding": "C3 在 E007_T01 第一轮情绪位塞入隐性邀约（“出来吃口热的，就当逃跑第一站”）。",
+    "evidence": "B3 E007 §1；judge goal=1 压分正确。",
+    "action": "动作层加“首情绪位不塞邀约”护栏；列 M2 回归。"
+   },
+   {
+    "id": "F3",
+    "finding": "E007_T03 首选层四臂均无编造亲历；编造在 C2 备选槽（directions[1]）。",
+    "evidence": "B3 E007 §2；major 复核确认。",
+    "action": "首选/备选必须分开读，备选 major 不得被首选层均分稀释。"
+   },
+   {
+    "id": "F4",
+    "finding": "回扣行为跨臂不稳定：E007_T07 v5 回扣最佳；E006 则 C2/C3 回扣。",
+    "evidence": "B3 E006/E007 §2。",
+    "action": "不能把“某臂会回扣”当稳定属性；需多故事收尾/转场位采样。"
+   },
+   {
+    "id": "F5",
+    "finding": "E008_T03 factuality 梯度 0/1/2/2 与无据确定否定条数 3/2/1/1 精确对应；v5 是唯一引用有据事实的臂。",
+    "evidence": "B3 E008 §1/§2；4 条 major 落在 f0/f1 两臂。",
+    "action": "本热点上判词事实维可信度正例；作为裁判锚例。"
+   },
+   {
+    "id": "F6",
+    "finding": "E008_T06 memory_use 对“行动即确认”不敏感：ref/C2 用行动配合得 m=None，v5/C3 显式复述得 m=3。",
+    "evidence": "B3 E008 §2。",
+    "action": "m 均分差不得直接读成“记忆能力差”；口径注记。"
+   },
+   {
+    "id": "F7",
+    "finding": "E012_T03 C2 首选“那家我也一直想再去一次”漏标 major（无据亲历）。",
+    "evidence": "B3 E012 §1；与控制组 CTL06/08、E007_T03 备选同族。",
+    "action": "V1_1 §0-7+§2a 必要性的第三处证据；下批带 CTL33-36 复测。"
+   },
+   {
+    "id": "F8",
+    "finding": "判词轻微保守：打趣/计划自述被 factuality=2 压半档（C2/C3 E012_T01、ref E012_T02），无 0/1 级错判。",
+    "evidence": "B3 E012 §2。",
+    "action": "会系统性压低 interaction 高臂的 factuality 均分；V2 注记，不改分。"
+   }
+  ],
+  "positive_anchors": [
+   "v5 E012_T04 “话我收回一半”（退边界/不赌气）",
+   "v5 E012_T05 “是我推得太急了…去不去、什么时候去你说了算，不去我也不会多想”（认领+还主动权）",
+   "C2 E012_T08 “这句我先收着，等你困劲儿过去再说”（接信号不逼定）"
+  ]
+ },
+ "derived_indicators": {
+  "definitions": {
+   "any_sendable_text": "reply_raw 的 response 四个候选或 directions 至少一个非空字符串；只证明有字，不证明质量。",
+   "strict_usable": "has_any_sendable_text 且判词可解析 且 primary+backups 全部已判小节均无 major；未评=unknown，不算失败。",
+   "primary_major_free": "首选小节无 major 的可评首选数。",
+   "backup_major_free": "全部备选小节无 major 的可评首选数。"
+  },
+  "n_planned": 128,
+  "n_assessed": 117,
+  "has_any_sendable_text": {
+   "n": 128,
+   "n_planned": 128,
+   "rate": 100.0
+  },
+  "strict_usable": {
+   "assessed": 117,
+   "usable": 113,
+   "rate_assessed": 96.6,
+   "planned": 128,
+   "rate_planned_floor": 88.3,
+   "unassessed_unknown": 11,
+   "unassessed_items": [
+    "Q024",
+    "Q031",
+    "Q036",
+    "Q118",
+    "Q104",
+    "Q058",
+    "Q056",
+    "Q098",
+    "Q103",
+    "Q113",
+    "Q057"
+   ]
+  },
+  "primary_major_free": {
+   "assessed": 117,
+   "nodes": 115,
+   "rate": 98.3,
+   "items_with_major": [
+    "Q008",
+    "Q043"
+   ]
+  },
+  "backup_major_free": {
+   "assessed": 117,
+   "nodes": 113,
+   "rate": 96.6,
+   "items_with_major": [
+    "Q008",
+    "Q015",
+    "Q043",
+    "Q054"
+   ]
+  },
+  "major_claims_by_section": {
+   "primary": 4,
+   "backup": 6
+  },
+  "backup_major_slots": [
+   {
+    "item_id": "Q015",
+    "story": "E007",
+    "arm": "goal_action_v1",
+    "slot": "directions[1]",
+    "major_claims": 1
+   },
+   {
+    "item_id": "Q008",
+    "story": "E008",
+    "arm": "evidence_memory_v1",
+    "slot": "response.playful",
+    "major_claims": 1
+   },
+   {
+    "item_id": "Q008",
+    "story": "E008",
+    "arm": "evidence_memory_v1",
+    "slot": "response.warm",
+    "major_claims": 2
+   },
+   {
+    "item_id": "Q043",
+    "story": "E008",
+    "arm": "reference_product_v1",
+    "slot": "response.warm",
+    "major_claims": 1
+   },
+   {
+    "item_id": "Q054",
+    "story": "E012",
+    "arm": "v5_purpose_aligned",
+    "slot": "directions[3]",
+    "major_claims": 1
+   }
+  ],
+  "by_arm": {
+   "reference_product_v1": {
+    "planned": 32,
+    "assessed": 27,
+    "has_any_sendable_text": 32,
+    "primary_major_free": 26,
+    "backup_major_free": 26,
+    "strict_usable": 26,
+    "strict_usable_rate_assessed": 96.3,
+    "strict_usable_rate_planned": 81.2
+   },
+   "v5_purpose_aligned": {
+    "planned": 32,
+    "assessed": 30,
+    "has_any_sendable_text": 32,
+    "primary_major_free": 30,
+    "backup_major_free": 29,
+    "strict_usable": 29,
+    "strict_usable_rate_assessed": 96.7,
+    "strict_usable_rate_planned": 90.6
+   },
+   "goal_action_v1": {
+    "planned": 32,
+    "assessed": 29,
+    "has_any_sendable_text": 32,
+    "primary_major_free": 29,
+    "backup_major_free": 28,
+    "strict_usable": 28,
+    "strict_usable_rate_assessed": 96.6,
+    "strict_usable_rate_planned": 87.5
+   },
+   "evidence_memory_v1": {
+    "planned": 32,
+    "assessed": 31,
+    "has_any_sendable_text": 32,
+    "primary_major_free": 30,
+    "backup_major_free": 30,
+    "strict_usable": 30,
+    "strict_usable_rate_assessed": 96.8,
+    "strict_usable_rate_planned": 93.8
+   }
+  }
+ },
+ "knowledge_denominator": {
+  "source": "evaluation/KNOWLEDGE_STAGE_SCORECARD_V1.json",
+  "real_model_calls": 0,
+  "atoms_total_chat_messages": 45,
+  "excluded_note_intent_records": 38,
+  "panel_atoms_in_scope": 40,
+  "pairs": 158,
+  "storage_observable_arms": [
+   "reference_product_v1"
+  ],
+  "rows": {
+   "reference_product_v1": {
+    "S1_T08_present": "11/40",
+    "S1_store": "44/45",
+    "S1_distilled": "6/45",
+    "S2_entries": 53,
+    "S2_src_resolvable_rate": 100.0,
+    "S2_src_rank1_rate": 90.6,
+    "S2_src_grounded_rate": 62.5,
+    "S2_src_weak_rate": 34.4,
+    "S2_src_unsupported_rate": 3.1,
+    "S2_plan_grounded_rate": "NR(抽象投影)",
+    "S3_present": "67/158",
+    "S3_structured": "18/158",
+    "S3_raw_only_rate": 29.7,
+    "S3_backref": "67/151",
+    "S4": "NR-需人判"
+   },
+   "v5_purpose_aligned": {
+    "S1_T08_present": "39/40",
+    "S1_store": "NR(无可观测存储)",
+    "S1_distilled": "NR",
+    "S2_entries": null,
+    "S2_src_resolvable_rate": null,
+    "S2_src_rank1_rate": null,
+    "S2_src_grounded_rate": null,
+    "S2_src_weak_rate": null,
+    "S2_src_unsupported_rate": null,
+    "S2_plan_grounded_rate": "NR(抽象投影)",
+    "S3_present": "157/158",
+    "S3_structured": "0/158",
+    "S3_raw_only_rate": 96.8,
+    "S3_backref": "157/158",
+    "S4": "NR-需人判"
+   },
+   "goal_action_v1": {
+    "S1_T08_present": "39/40",
+    "S1_store": "NR(无可观测存储)",
+    "S1_distilled": "NR",
+    "S2_entries": null,
+    "S2_src_resolvable_rate": null,
+    "S2_src_rank1_rate": null,
+    "S2_src_grounded_rate": null,
+    "S2_src_weak_rate": null,
+    "S2_src_unsupported_rate": null,
+    "S2_plan_grounded_rate": "NR(抽象投影)",
+    "S3_present": "157/158",
+    "S3_structured": "0/158",
+    "S3_raw_only_rate": 96.8,
+    "S3_backref": "157/158",
+    "S4": "NR-需人判"
+   },
+   "evidence_memory_v1": {
+    "S1_T08_present": "39/40",
+    "S1_store": "NR(无可观测存储)",
+    "S1_distilled": "NR",
+    "S2_entries": null,
+    "S2_src_resolvable_rate": null,
+    "S2_src_rank1_rate": null,
+    "S2_src_grounded_rate": null,
+    "S2_src_weak_rate": null,
+    "S2_src_unsupported_rate": null,
+    "S2_plan_grounded_rate": "NR(抽象投影)",
+    "S3_present": "157/158",
+    "S3_structured": "2/158",
+    "S3_raw_only_rate": 95.6,
+    "S3_backref": "157/158",
+    "S4": "NR-需人判"
+   }
+  },
+  "reading_rules": [
+   "45 条是本卡集聊天消息原子；38 条是被排除的 note/intent 记录；两者不是同一总体的加减，不可用 45-38 推 40。",
+   "S1 三列数据源不同，不可相加；S1_store 只有 reference_product_v1 可观测。",
+   "S3 只证明“进了出站 prompt”，不证明回复用对；S4 为 NR-需人判。",
+   "S2 只有有落盘存储的臂可测；本批仅 reference_product_v1，其他 NR=覆盖缺口，不是零分。"
+  ]
+ },
+ "unknowns": [
+  "用户愿发 W：unknown（模型禁填；32 样本表仍未回收）。",
+  "金额：unknown（无可核对单价；judge 侧 token 记账在账本）。",
+  "泛化：四个故事全部 dev_exposed，本成绩只对开发集成立。",
+  "11 条首选未评：unknown，不是失败，也不是零分。",
+  "九维资格：AI 辅助读数；重测逐维精确一致 6.56/9，未达“全信”门槛。"
+ ],
+ "comparability": {
+  "four_arm_note": "四臂横比来自 C4 两批（sweep_a ref/C2，sweep_b v5/C3），批次/时段混杂；仅同批配对可作严格比较，跨批横比只作探索，不得据此晋级/淘汰。",
+  "same_batch_only": [
+   "reference_product_v1 vs goal_action_v1",
+   "v5_purpose_aligned vs evidence_memory_v1"
+  ],
+  "not_rankable": "C2 与 C3、ref 与 v5、ref 与 C3 等跨批组合均无同批严格配对。"
+ },
+ "corrections": [
+  {
+   "item": "B3 分片的首选可评数",
+   "original": "B3 E012 分片写四片合计 121 条有判词；E008 分片写 31 条；四片分项相加为 118（E006 31 + E007 30 + E008 31 + E012 26）。",
+   "corrected": "按 RATINGS_REPAIRED 重算：117 条首选可评；四片为 31/30/30/26（E008 缺 Q118 E008_T04、Q104 E008_T05，均为 C2 未评）。",
+   "reason": "手工分片计数未按可解析字段重算，且分片间算术不一致；V2 以机器分母为准。",
+   "sources": [
+    "evaluation/B3_PRIMARY_READ_E008_V1.md",
+    "evaluation/B3_PRIMARY_READ_E012_V1.md",
+    "logs/quality_panel_v1_live_20261027_003723/RATINGS_REPAIRED.jsonl"
+   ]
+  },
+  {
+   "item": "重测差≤1 均值",
+   "original": "V1 写 7.22/9。",
+   "corrected": "按 9 条可比复算 7.11/9（64/9）；逐维精确一致 6.56/9（59/9）不变。",
+   "reason": "V1 的分母/求和口径笔误；V2 由 repeat rows 重算。",
+   "sources": [
+    "logs/quality_panel_v1_live_20261027_003723/QUALITY_PANEL_ANALYSIS_V1_1.json"
+   ]
+  },
+  {
+   "item": "判词引文 19 处不符",
+   "original": "V1 把 19 条原始 flag 读成“判词引文不可靠”的证据。",
+   "corrected": "19 条中 16 条为分析器输入重建假阳性、3 条为空格/标点级轻微编辑、0 条捏造；V1_1 分析器仍有 5 条 residual 审计队列（Q015/Q034/Q044/Q081/Q111）。",
+   "reason": "原始 flag 是待核队列，不是判词错误；major 复核已逐条人工对读。",
+   "sources": [
+    "evaluation/QUALITY_PANEL_SCORECARD_V1.md",
+    "evaluation/QUALITY_PANEL_MAJOR_REVIEW_V1.md",
+    "logs/quality_panel_v1_live_20261027_003723/QUALITY_PANEL_ANALYSIS_V1_1.json"
+   ]
+  },
+  {
+   "item": "首选/备选均分口径",
+   "original": "V1 §2 的逐维均分是“首选+非空备选合并段”口径，n 为首选数。",
+   "corrected": "V2 把 primary（117）与 backups（769 槽）完全分开；合并段仅作为 legacy_merged_view 附录保留，不用于判优。",
+   "reason": "备选是弱选项，混入均值会稀释/放大风险，且不同臂备选槽数不同。",
+   "sources": [
+    "evaluation/QUALITY_PANEL_SCORECARD_V1.md",
+    "logs/quality_panel_v1_live_20261027_003723/QUALITY_PANEL_ANALYSIS_V1_1.json"
+   ]
+  }
+ ],
+ "headline": {
+  "primary_assessed": "117/128",
+  "primary_unassessed": 11,
+  "primary_major_free": "115/117",
+  "strict_usable": "113/117 assessed",
+  "strict_usable_rate_assessed": 96.6,
+  "backup_slots": 769,
+  "backup_major_claims": 6,
+  "same_batch_pairs": [
+   "reference_product_v1 vs goal_action_v1: 0/21/4 (a/tie/b), incomparable=7",
+   "v5_purpose_aligned vs evidence_memory_v1: 1/27/1 (a/tie/b), incomparable=3"
+  ],
+  "winner": "none declared; cross-batch ranking forbidden"
+ },
+ "evidence_index": [
+  "D:/lovebrain-arena/logs/quality_panel_v1_live_20261027_003723/RATINGS_REPAIRED.jsonl",
+  "D:/lovebrain-arena/logs/quality_panel_v1_live_20261027_003723/QUALITY_PANEL_ANALYSIS_V1_1.json",
+  "D:/lovebrain-arena/logs/quality_panel_v1_live_20261027_003723/JUDGE_BATCH_SUMMARY.json",
+  "refs/experiment_protocol_20261023/knowledge_quality_independent_review_20261026/PRIVATE_BINDINGS.json",
+  "evaluation/KNOWLEDGE_STAGE_SCORECARD_V1.json"
+ ]
+}

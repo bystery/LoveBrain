@@ -1,0 +1,94 @@
+{
+ "protocol": "JUDGE-QUALITY-V2 + V5-DISPOSITION-E1",
+ "created": "2026-10-26",
+ "basis": {
+  "ratings_source": "D:\\lovebrain-arena\\logs\\judge_v1_1_live_20261025_232116",
+  "ledger": "logs/auth_budget/AUTH-EVAL-JUDGE-20261025-01.jsonl (204/204 dispatched, 200 completed, 3 failed never-refilled: M006 timeout / R3:M009,M010 502; 1 orphan M015; 1 parse-fail R3:M011)",
+  "analyzer": "tools/analyze_irr_v2.py sha16 7f3f44e1abdbd897",
+  "dev_report": "evaluation/IRR_AGREEMENT_V2_dev_debug.json",
+  "validation_report": "evaluation/IRR_AGREEMENT_V2_validation_frozen.json",
+  "thresholds_declared_before_dispatch": "evaluation/JUDGE_QUALITY_THRESHOLDS_DECLARED_V1.md (sha16 188a20fbc64278d7)",
+  "honesty_notes": [
+   "R1/R2/R3 = 同一模型服务(dsf/deepseek-v4.1-flash)同一 prompt 不同请求，不是三个独立模型；一致率不等于真值",
+   "dev(40) 用于诊断与规则修订建议；validation(20) 冻结验证只报告结果，未用其调整任何口径",
+   "事实检出维度分母结构性不足（本包 trusted F4 全集仅 9 条：dev 6 / val 3）——这是包设计极限，不是评审者功劳或过错"
+  ]
+ },
+ "qualification_by_dimension": {
+  "goal_agreement": {
+   "verdict": "QUALIFIED",
+   "evidence": "dev: R1-R2 87.2%/98.7%, R1-R3 83.3%/98.7%, R2-R3 88.8%/100% (n=78-80, 精确/相邻); validation: 84.2-90.0%/100% (n=30-38). 阈值 精确≥50% 且相邻≥85%，跨集稳定复现",
+   "scope_granted": "目标完成度 0-3 的 AI 辅助批量复核（附原文判词，允许说不清），不授予其他维度"
+  },
+  "free_expression_false_kill": {
+   "verdict": "NOT_QUALIFIED",
+   "evidence": "dev: R1 25.0% R2 21.9% R3 25.0% (n=32, 阈值≤15%)；validation 同方向 15.4-21.4% (n=13-14 不足认证但一致)",
+   "failure_mode": "观点/新提议/共情句内嵌具体内容被按事实核查；其中 2/8(dev R1) 属 disputed 参考争议",
+   "handling": "误杀相关判断转证据复核（参考主张清单）或保留未评；不得以 AI 判词单独定'表达缺陷'"
+  },
+  "insufficient_info": {
+   "verdict": "NOT_QUALIFIED",
+   "evidence": "dev: R1 76.4% R2 73.6% R3 81.9% (n=72, 阈值≥80%, 仅 R3 过线但 validation 63.9% 不稳)；validation: R1 80.6% R2 83.3% R3 63.9%",
+   "handling": "信息不足处理判定保留未评/人工抽检"
+  },
+  "fact_detection": {
+   "verdict": "INSUFFICIENT_EVIDENCE",
+   "evidence": "dev n=6/评审者 (R1=R2=R3 66.7%)；validation n=3 (R1/R2 100%, R3 33.3%)——分母远低于 min_n=20，无法定罪也无法洗白",
+   "observed_direction": "漏检集中于'答应/共情句内嵌既成断言'（M034 已订位、C053 你不怕晒）三人一致；下一轮参考包需补足该类主张分母",
+   "handling": "候选事实缺陷判定以证据复核（参考认定清单）为准"
+  },
+  "order_sensitivity": {
+   "verdict": "INSUFFICIENT_EVIDENCE",
+   "evidence": "decisive 翻转 4/7=57.1% (阈值≤15%, n=7<20)；同序重测 9/10 稳定",
+   "failure_mode": "位置标签偏置（甲→乙3、乙→甲1），非内容不稳定",
+   "handling": "单份判词的 pref 不用于候选胜负；节点级配对均分不受位置影响，可用于处置参考"
+  },
+  "attribution": {
+   "verdict": "INSUFFICIENT_EVIDENCE",
+   "evidence": "包内无逐主张归属金标"
+  },
+  "protocol_separation": {
+   "verdict": "EXPLORATORY",
+   "evidence": "96/96 位置 per rater，agree 95/96（唯一分歧=M008 甲 零宽污染被判 none）"
+  }
+ },
+ "debug_round_fixes_for_next_batch": [
+  "1) 拆分粒度：答应/共情/玩笑句内嵌的既成状态断言（已订/已确认/你不怕X）必须单独列条评估，不得随整句类型放行（修 fact 漏检模式）",
+  "2) 受保护边界：观点/玩笑/新提议/不确定表达整句受保护，只核查其中内嵌的既成事实断言；明确否认/反驳不因语气确定而判无据（修误杀模式）",
+  "3) 位置中立：先各自独立评甲乙再比较，位置先后不构成偏好理由（缓解位置偏置）",
+  "下一轮验证必须换新验证材料（本 validation 20 已被本批判词消耗）"
+ ],
+ "v5_disposition": {
+  "decision": "保留开发（RETAIN），可进入独立验证",
+  "not": "不得写成 'v5 更好'——目标维度是唯一合格 AI 评审维度且为同源模型判断；W(用户愿发)=unknown；语义/误杀维度未获资格",
+  "evidence": {
+   "goal_0_3_paired": {
+    "per_rater_scores_n": "parent 66 / candidate 66 (24节点×3评审, 含not_rated缺口)",
+    "mean": {"parent": 2.67, "candidate": 2.83},
+    "node_level": "parent胜2 / candidate胜9 / 平13",
+    "dist": {"parent": {"3": 47, "2": 17, "1": 1, "0": 1}, "candidate": {"3": 58, "2": 6, "1": 1, "0": 1}},
+    "note": "节点级均分配对不受左右位置影响（每节点两臂独立打分）"
+   },
+   "pref_votes_decisive": {"R1": "cand 9:6", "R2": "cand 7:5", "R3": "cand 11:5", "caveat": "pref 受位置偏置影响，仅参考"},
+   "evidence_review_deterministic": {
+    "trusted_defects": "parent 1 / candidate 2 (均为 事实+未提供+确定；差 1 条不构成故障家族差异)",
+    "protocol_contamination": "candidate 1 例零宽键名（已知事件）；完整槽位交付 candidate 15 vs parent 17（部分槽位留空是合法常态）",
+    "source": "evaluation/V5_EVIDENCE_REVIEW_V1.json"
+   },
+   "resources_verified": {"total_tokens": "parent 183,321 vs candidate 77,637 (-57.65%)", "latency": "p50 -17.65%, p95 +26.95%, 累计等待 +0.26%", "source": "refs/experiment_protocol_20261023/v5_next_batch_20261025/V5_INDEPENDENT_RESULTS_REV01.json"},
+   "unknown_coverage": {
+    "Q_semantic_full": "语义合格未整体授权（仅目标维度合格）",
+    "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 16组未回收）",
+    "generalization": "24 节点嵌套于 E007-E009 三故事，非独立样本；新故事(P001-P006)未测",
+    "positive_capability": "主动开题/钩子/调侃推进等正向能力在 v5 上完全未测（下一批 96 次的新 6 故事正是为此）"
+   }
+  },
+  "next_candidate_hypothesis": "来自损失最大且出现最多的故障族：协议交付鲁棒性（结构化契约在两种形状上破——零宽键名+方向缺失）与内嵌既成断言漏检（评审与生成同源模式）→ 下一候选假设优先'输出契约自愈/校验层'（M 层机制），不做第二轮纯省 token 或措辞精简"
+ },
+ "cost_ledger": {
+  "bucket": "评估研发",
+  "judge_tokens_total": 1283058,
+  "attempts": "204 dispatched / 200 completed / 3 failed / 1 orphan / 1 parse-fail",
+  "amount": null
+ }
+}

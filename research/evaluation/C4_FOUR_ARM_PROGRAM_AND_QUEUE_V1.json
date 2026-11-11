@@ -1,0 +1,645 @@
+{
+ "kind": "c4_four_arm_program_and_queue",
+ "source_pack": "evaluation/C4_FOUR_ARM_REVIEW_PACK_V1.json",
+ "coverage": {
+  "positions_total": 32,
+  "positions_goal_live": 7,
+  "loci_goal_live": [
+   "E006_T05",
+   "E007_T02",
+   "E007_T03",
+   "E007_T06",
+   "E012_T02",
+   "E012_T03",
+   "E012_T06"
+  ]
+ },
+ "aggregate_all_positions": {
+  "reference_product_v1": {
+   "n": 32,
+   "T_P_C_K": [
+    32,
+    29,
+    32,
+    29
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 90.62,
+    "C": 100.0,
+    "K": 90.62
+   },
+   "full_slot": 18,
+   "key_norm_events": 1,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 235091,
+    "completion": 9156,
+    "total": 244247
+   },
+   "token_per_extractable_primary": 7632.7,
+   "token_per_program_not_vetoed": 8422.3,
+   "latency_ms_p50_p95_max": [
+    22509,
+    62328,
+    75336
+   ],
+   "first_content_ms_p50_p95": [
+    16889.9,
+    60806.3
+   ],
+   "first_usable_nonnull": 0
+  },
+  "v5_purpose_aligned": {
+   "n": 32,
+   "T_P_C_K": [
+    32,
+    32,
+    32,
+    32
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "full_slot": 18,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 96198,
+    "completion": 7553,
+    "total": 103751
+   },
+   "token_per_extractable_primary": 3242.2,
+   "token_per_program_not_vetoed": 3242.2,
+   "latency_ms_p50_p95_max": [
+    23865,
+    77894,
+    87022
+   ],
+   "first_content_ms_p50_p95": [
+    16137.6,
+    74859.3
+   ],
+   "first_usable_nonnull": 0
+  },
+  "goal_action_v1": {
+   "n": 32,
+   "T_P_C_K": [
+    32,
+    32,
+    32,
+    32
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "full_slot": 20,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 125319,
+    "completion": 8053,
+    "total": 133372
+   },
+   "token_per_extractable_primary": 4167.9,
+   "token_per_program_not_vetoed": 4167.9,
+   "latency_ms_p50_p95_max": [
+    30089,
+    84560,
+    86807
+   ],
+   "first_content_ms_p50_p95": [
+    28058.7,
+    82917.2
+   ],
+   "first_usable_nonnull": 0
+  },
+  "evidence_memory_v1": {
+   "n": 32,
+   "T_P_C_K": [
+    32,
+    29,
+    32,
+    29
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 90.62,
+    "C": 100.0,
+    "K": 90.62
+   },
+   "full_slot": 17,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 102790,
+    "completion": 8449,
+    "total": 111239
+   },
+   "token_per_extractable_primary": 3476.2,
+   "token_per_program_not_vetoed": 3835.8,
+   "latency_ms_p50_p95_max": [
+    30474,
+    66192,
+    70689
+   ],
+   "first_content_ms_p50_p95": [
+    23609.4,
+    64799.9
+   ],
+   "first_usable_nonnull": 0
+  }
+ },
+ "aggregate_goal_live_only": {
+  "reference_product_v1": {
+   "n": 7,
+   "T_P_C_K": [
+    7,
+    6,
+    7,
+    6
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 85.71,
+    "C": 100.0,
+    "K": 85.71
+   },
+   "full_slot": 4,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 51640,
+    "completion": 2066,
+    "total": 53706
+   },
+   "token_per_extractable_primary": 7672.3,
+   "token_per_program_not_vetoed": 8951.0,
+   "latency_ms_p50_p95_max": [
+    21293,
+    75336,
+    75336
+   ],
+   "first_content_ms_p50_p95": [
+    19742.8,
+    73297.7
+   ],
+   "first_usable_nonnull": 0
+  },
+  "v5_purpose_aligned": {
+   "n": 7,
+   "T_P_C_K": [
+    7,
+    7,
+    7,
+    7
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "full_slot": 2,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 21470,
+    "completion": 1884,
+    "total": 23354
+   },
+   "token_per_extractable_primary": 3336.3,
+   "token_per_program_not_vetoed": 3336.3,
+   "latency_ms_p50_p95_max": [
+    24775,
+    25788,
+    25788
+   ],
+   "first_content_ms_p50_p95": [
+    14120.7,
+    23200.7
+   ],
+   "first_usable_nonnull": 0
+  },
+  "goal_action_v1": {
+   "n": 7,
+   "T_P_C_K": [
+    7,
+    7,
+    7,
+    7
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "full_slot": 4,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 27840,
+    "completion": 1989,
+    "total": 29829
+   },
+   "token_per_extractable_primary": 4261.3,
+   "token_per_program_not_vetoed": 4261.3,
+   "latency_ms_p50_p95_max": [
+    55559,
+    84560,
+    84560
+   ],
+   "first_content_ms_p50_p95": [
+    53473.3,
+    82917.2
+   ],
+   "first_usable_nonnull": 0
+  },
+  "evidence_memory_v1": {
+   "n": 7,
+   "T_P_C_K": [
+    7,
+    7,
+    7,
+    7
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "full_slot": 4,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 22897,
+    "completion": 2000,
+    "total": 24897
+   },
+   "token_per_extractable_primary": 3556.7,
+   "token_per_program_not_vetoed": 3556.7,
+   "latency_ms_p50_p95_max": [
+    29611,
+    56330,
+    56330
+   ],
+   "first_content_ms_p50_p95": [
+    27966.7,
+    44287.9
+   ],
+   "first_usable_nonnull": 0
+  }
+ },
+ "pairs_program_and_resource_only": {
+  "reference_product_v1|goal_action_v1": {
+   "n": 32,
+   "tokens_total": [
+    244247,
+    133372
+   ],
+   "token_per_C": [
+    7632.7,
+    4167.9
+   ],
+   "C": [
+    32,
+    32
+   ],
+   "P": [
+    29,
+    32
+   ],
+   "K": [
+    29,
+    32
+   ],
+   "full_slot": [
+    18,
+    20
+   ]
+  },
+  "v5_purpose_aligned|evidence_memory_v1": {
+   "n": 32,
+   "tokens_total": [
+    103751,
+    111239
+   ],
+   "token_per_C": [
+    3242.2,
+    3476.2
+   ],
+   "C": [
+    32,
+    32
+   ],
+   "P": [
+    32,
+    29
+   ],
+   "K": [
+    32,
+    29
+   ],
+   "full_slot": [
+    18,
+    17
+   ]
+  },
+  "reference_product_v1|v5_purpose_aligned": {
+   "n": 32,
+   "tokens_total": [
+    244247,
+    103751
+   ],
+   "token_per_C": [
+    7632.7,
+    3242.2
+   ],
+   "C": [
+    32,
+    32
+   ],
+   "P": [
+    29,
+    32
+   ],
+   "K": [
+    29,
+    32
+   ],
+   "full_slot": [
+    18,
+    18
+   ]
+  },
+  "goal_action_v1|v5_purpose_aligned": {
+   "n": 32,
+   "tokens_total": [
+    133372,
+    103751
+   ],
+   "token_per_C": [
+    4167.9,
+    3242.2
+   ],
+   "C": [
+    32,
+    32
+   ],
+   "P": [
+    32,
+    32
+   ],
+   "K": [
+    32,
+    32
+   ],
+   "full_slot": [
+    20,
+    18
+   ]
+  }
+ },
+ "reading_queue": [
+  {
+   "case_id": "E006_T05",
+   "goal_live": true,
+   "reasons": [
+    "v5_purpose_aligned 部分槽：directions[3]",
+    "goal_action_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E007_T02",
+   "goal_live": true,
+   "reasons": [
+    "v5_purpose_aligned 部分槽：directions[3]",
+    "goal_action_v1 部分槽：directions[3]",
+    "evidence_memory_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E007_T06",
+   "goal_live": true,
+   "reasons": [
+    "v5_purpose_aligned 部分槽：directions[3]",
+    "evidence_memory_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E012_T02",
+   "goal_live": true,
+   "reasons": [
+    "reference_product_v1 部分槽：directions[3]",
+    "v5_purpose_aligned 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E012_T03",
+   "goal_live": true,
+   "reasons": [
+    "reference_product_v1 部分槽：directions[3]",
+    "goal_action_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E012_T06",
+   "goal_live": true,
+   "reasons": [
+    "程序列不一致 {'reference_product_v1': '010', 'v5_purpose_aligned': '111', 'goal_action_v1': '111', 'evidence_memory_v1': '111'}",
+    "reference_product_v1 部分槽：bad_boy",
+    "reference_product_v1 veto=json_schema_broken",
+    "v5_purpose_aligned 部分槽：directions[3]",
+    "evidence_memory_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E006_T02",
+   "goal_live": false,
+   "reasons": [
+    "v5_purpose_aligned 部分槽：directions[3]",
+    "goal_action_v1 部分槽：directions[3]",
+    "evidence_memory_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E006_T03",
+   "goal_live": false,
+   "reasons": [
+    "reference_product_v1 部分槽：directions[3]",
+    "v5_purpose_aligned 部分槽：directions[3]",
+    "goal_action_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E006_T04",
+   "goal_live": false,
+   "reasons": [
+    "evidence_memory_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E006_T06",
+   "goal_live": false,
+   "reasons": [
+    "reference_product_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E006_T08",
+   "goal_live": false,
+   "reasons": [
+    "reference_product_v1 部分槽：directions[3]",
+    "v5_purpose_aligned 部分槽：directions[3]",
+    "goal_action_v1 部分槽：directions[1],directions[3]",
+    "evidence_memory_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E007_T04",
+   "goal_live": false,
+   "reasons": [
+    "reference_product_v1 部分槽：directions[3]",
+    "goal_action_v1 部分槽：directions[2],directions[3]",
+    "evidence_memory_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E007_T05",
+   "goal_live": false,
+   "reasons": [
+    "程序列不一致 {'reference_product_v1': '111', 'v5_purpose_aligned': '111', 'goal_action_v1': '111', 'evidence_memory_v1': '010'}",
+    "evidence_memory_v1 部分槽：directions_count=5",
+    "evidence_memory_v1 veto=json_schema_broken"
+   ]
+  },
+  {
+   "case_id": "E007_T07",
+   "goal_live": false,
+   "reasons": [
+    "程序列不一致 {'reference_product_v1': '010', 'v5_purpose_aligned': '111', 'goal_action_v1': '111', 'evidence_memory_v1': '111'}",
+    "reference_product_v1 部分槽：directions[3]",
+    "reference_product_v1 键名归一 1 次",
+    "reference_product_v1 veto=json_schema_broken",
+    "v5_purpose_aligned 部分槽：directions[0],directions[3]",
+    "goal_action_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E007_T08",
+   "goal_live": false,
+   "reasons": [
+    "v5_purpose_aligned 部分槽：directions[1]"
+   ]
+  },
+  {
+   "case_id": "E008_T01",
+   "goal_live": false,
+   "reasons": [
+    "reference_product_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E008_T02",
+   "goal_live": false,
+   "reasons": [
+    "v5_purpose_aligned 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E008_T03",
+   "goal_live": false,
+   "reasons": [
+    "程序列不一致 {'reference_product_v1': '010', 'v5_purpose_aligned': '111', 'goal_action_v1': '111', 'evidence_memory_v1': '010'}",
+    "reference_product_v1 部分槽：directions_count=5",
+    "reference_product_v1 veto=json_schema_broken",
+    "evidence_memory_v1 部分槽：directions_count=6",
+    "evidence_memory_v1 veto=json_schema_broken"
+   ]
+  },
+  {
+   "case_id": "E008_T04",
+   "goal_live": false,
+   "reasons": [
+    "evidence_memory_v1 部分槽：directions[2]"
+   ]
+  },
+  {
+   "case_id": "E008_T05",
+   "goal_live": false,
+   "reasons": [
+    "程序列不一致 {'reference_product_v1': '111', 'v5_purpose_aligned': '111', 'goal_action_v1': '111', 'evidence_memory_v1': '010'}",
+    "reference_product_v1 部分槽：directions[3]",
+    "goal_action_v1 部分槽：directions[3]",
+    "evidence_memory_v1 部分槽：bad_boy,directions[3]",
+    "evidence_memory_v1 veto=json_schema_broken"
+   ]
+  },
+  {
+   "case_id": "E008_T06",
+   "goal_live": false,
+   "reasons": [
+    "goal_action_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E008_T08",
+   "goal_live": false,
+   "reasons": [
+    "goal_action_v1 部分槽：directions[3]",
+    "evidence_memory_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E012_T01",
+   "goal_live": false,
+   "reasons": [
+    "v5_purpose_aligned 部分槽：directions[3]",
+    "evidence_memory_v1 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E012_T04",
+   "goal_live": false,
+   "reasons": [
+    "reference_product_v1 部分槽：directions[2]",
+    "evidence_memory_v1 部分槽：directions[0],directions[1]"
+   ]
+  },
+  {
+   "case_id": "E012_T05",
+   "goal_live": false,
+   "reasons": [
+    "reference_product_v1 部分槽：directions[2]"
+   ]
+  },
+  {
+   "case_id": "E012_T07",
+   "goal_live": false,
+   "reasons": [
+    "v5_purpose_aligned 部分槽：directions[3]"
+   ]
+  },
+  {
+   "case_id": "E012_T08",
+   "goal_live": false,
+   "reasons": [
+    "reference_product_v1 部分槽：directions[3]",
+    "v5_purpose_aligned 部分槽：directions[3]",
+    "goal_action_v1 部分槽：directions[3]",
+    "evidence_memory_v1 部分槽：directions[3]"
+   ]
+  }
+ ],
+ "reading_queue_n": 27,
+ "not_claimed": "本文件不含语义/口味判定：Q=unknown、W=unknown。程序列一致不代表聊得对，差异位点必须读原文再判（队列已给）。",
+ "real_model_calls": 0
+}

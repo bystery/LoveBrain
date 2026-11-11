@@ -1,0 +1,340 @@
+{
+ "doc": "DELIVERY_AND_COST_COLUMNS_C4_SWEEPS_V1",
+ "batches": {
+  "sweep_a_orig_vs_goal": "logs/c4_sweep_a_orig_vs_goal_live_20261026",
+  "sweep_b_v5_vs_mem": "logs/c4_sweep_b_v5_vs_mem_live_20261026"
+ },
+ "authorization_id": "AUTH-C4-SCREEN-20261026-01",
+ "identity_note": "两批同一流式共同身份 api_cfg:openai_compat_stream_true_v1(include_usage gated)；不与任何非流式历史批合并数字",
+ "cards_frozen": {
+  "file": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json（32 张新建合并卡：03/04 选取 + 05 r2 覆盖 E007_T03/E008_T03；逐字回核与未改写断言见 .PROVENANCE.json；卡 split=dev_exposed、review_status 原样，不冒充人工认证）",
+  "plan_sha256": {
+   "sweep_a_orig_vs_goal": "7f158c57495e200dec990db48630228e8ea5a1724227b032b40c75ed1061736f",
+   "sweep_b_v5_vs_mem": "1f0d78c6aecd8781a478927e85c8e3484370c619df6b4b209c422b0f90bfdf16"
+  }
+ },
+ "mode": "interim(7 turns)",
+ "versions": {
+  "consumer_module": "1777524ed03738520b69863752f85cc97a5b6d34958dc7f202f07546aeb31c2a",
+  "consumer_class": "OutputConsumer.parse+key_normalization",
+  "scorer": "冻结评分器 json_schema_valid（各批 scoring.json 内原判定，不改判）"
+ },
+ "expected_turns_per_arm": 32,
+ "expected_turns_total": 128,
+ "turns_on_disk": 7,
+ "columns_by_arm": {
+  "reference_product_v1": {
+   "n": 4,
+   "columns": {
+    "T": 4,
+    "P": 4,
+    "C": 4,
+    "K": 4,
+    "Q": "unknown",
+    "W": "unknown"
+   },
+   "denominator_definitions": {
+    "T": "账本completed且原文非空无传输错误 / n",
+    "P": "冻结评分器 json_schema_valid（必需键+directions=4）原始字节 / n",
+    "C": "消费器能提出非空首选 / n",
+    "K": "无veto且有首选 / n",
+    "Q": "需有资格评审维度，本轮未授 ⇒ unknown（不填 n）",
+    "W": "用户愿发标签未回收 ⇒ unknown"
+   },
+   "rates_percent": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "delivery_completeness": {
+    "full_four_styles_four_directions": 3,
+    "partial_or_missing_slot": 1
+   },
+   "legal_blank_success_actions": {
+    "direction_nulls": 1,
+    "no_reply_turns": 0
+   },
+   "key_normalization_events": 0,
+   "tokens": {
+    "prompt": 29141,
+    "completion": 1190,
+    "total": 30331,
+    "cache_fields_unknown": 8
+   },
+   "cost_named_two_ways": {
+    "token_per_extractable_primary": 7582.75,
+    "token_per_program_not_vetoed_position": 7582.75,
+    "token_per_semantically_passed": "unknown",
+    "token_per_user_would_send": "unknown"
+   },
+   "money": null,
+   "money_reason": "无可核验单价；不折算金额，不把 token 降幅当金额降幅",
+   "wall_completion_ms_sum": 106938,
+   "batch": "sweep_a_orig_vs_goal"
+  },
+  "goal_action_v1": {
+   "n": 3,
+   "columns": {
+    "T": 3,
+    "P": 3,
+    "C": 3,
+    "K": 3,
+    "Q": "unknown",
+    "W": "unknown"
+   },
+   "denominator_definitions": {
+    "T": "账本completed且原文非空无传输错误 / n",
+    "P": "冻结评分器 json_schema_valid（必需键+directions=4）原始字节 / n",
+    "C": "消费器能提出非空首选 / n",
+    "K": "无veto且有首选 / n",
+    "Q": "需有资格评审维度，本轮未授 ⇒ unknown（不填 n）",
+    "W": "用户愿发标签未回收 ⇒ unknown"
+   },
+   "rates_percent": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "delivery_completeness": {
+    "full_four_styles_four_directions": 1,
+    "partial_or_missing_slot": 2
+   },
+   "legal_blank_success_actions": {
+    "direction_nulls": 2,
+    "no_reply_turns": 0
+   },
+   "key_normalization_events": 0,
+   "tokens": {
+    "prompt": 11196,
+    "completion": 718,
+    "total": 11914,
+    "cache_fields_unknown": 6
+   },
+   "cost_named_two_ways": {
+    "token_per_extractable_primary": 3971.333,
+    "token_per_program_not_vetoed_position": 3971.333,
+    "token_per_semantically_passed": "unknown",
+    "token_per_user_would_send": "unknown"
+   },
+   "money": null,
+   "money_reason": "无可核验单价；不折算金额，不把 token 降幅当金额降幅",
+   "wall_completion_ms_sum": 154878,
+   "batch": "sweep_a_orig_vs_goal"
+  }
+ },
+ "wait_by_arm": {
+  "goal_action_v1": {
+   "first_content_ms": {
+    "n": 3,
+    "p50": 43344.6,
+    "p95": 85898.2,
+    "max": 85898.2
+   },
+   "first_preview_ms": {
+    "n": 3,
+    "p50": 43646.3,
+    "p95": 86046.0,
+    "max": 86046.0
+   },
+   "completion_ms": {
+    "n": 3,
+    "p50": 44874.1,
+    "p95": 86776.2,
+    "max": 86776.2
+   },
+   "first_usable_ms_null": 3
+  },
+  "reference_product_v1": {
+   "first_content_ms": {
+    "n": 4,
+    "p50": 19568.7,
+    "p95": 34425.3,
+    "max": 34425.3
+   },
+   "first_preview_ms": {
+    "n": 4,
+    "p50": 19729.2,
+    "p95": 34545.5,
+    "max": 34545.5
+   },
+   "completion_ms": {
+    "n": 4,
+    "p50": 25194.2,
+    "p95": 37739.7,
+    "max": 37739.7
+   },
+   "first_usable_ms_null": 4
+  }
+ },
+ "per_locus_four_arms": {
+  "E006_T01": {
+   "arms_present": [
+    "goal_action_v1",
+    "reference_product_v1"
+   ],
+   "arms_missing": [
+    "evidence_memory_v1",
+    "v5_purpose_aligned"
+   ],
+   "per_arm": {
+    "goal_action_v1": {
+     "turn_dir": "logs/c4_sweep_a_orig_vs_goal_live_20261026/candidate_E006/out/turn_01_E006_T01",
+     "P_json_schema_valid": true,
+     "veto": null,
+     "program_score10": null,
+     "prompt_cu": 3576,
+     "completion_cu": 272,
+     "latency_ms": 23148,
+     "first_content_ms": 21875.7,
+     "completion_ms": 23114.0,
+     "first_usable_ms": null
+    },
+    "reference_product_v1": {
+     "turn_dir": "logs/c4_sweep_a_orig_vs_goal_live_20261026/parent_E006/out/turn_01_E006_T01",
+     "P_json_schema_valid": true,
+     "veto": null,
+     "program_score10": null,
+     "prompt_cu": 7018,
+     "completion_cu": 269,
+     "latency_ms": 37767,
+     "first_content_ms": 34425.3,
+     "completion_ms": 37739.7,
+     "first_usable_ms": null
+    }
+   }
+  },
+  "E006_T02": {
+   "arms_present": [
+    "goal_action_v1",
+    "reference_product_v1"
+   ],
+   "arms_missing": [
+    "evidence_memory_v1",
+    "v5_purpose_aligned"
+   ],
+   "per_arm": {
+    "goal_action_v1": {
+     "turn_dir": "logs/c4_sweep_a_orig_vs_goal_live_20261026/candidate_E006/out/turn_02_E006_T02",
+     "P_json_schema_valid": true,
+     "veto": null,
+     "program_score10": null,
+     "prompt_cu": 3810,
+     "completion_cu": 194,
+     "latency_ms": 86807,
+     "first_content_ms": 85898.2,
+     "completion_ms": 86776.2,
+     "first_usable_ms": null
+    },
+    "reference_product_v1": {
+     "turn_dir": "logs/c4_sweep_a_orig_vs_goal_live_20261026/parent_E006/out/turn_02_E006_T02",
+     "P_json_schema_valid": true,
+     "veto": null,
+     "program_score10": null,
+     "prompt_cu": 7366,
+     "completion_cu": 292,
+     "latency_ms": 22872,
+     "first_content_ms": 11319.1,
+     "completion_ms": 22825.9,
+     "first_usable_ms": null
+    }
+   }
+  },
+  "E006_T03": {
+   "arms_present": [
+    "goal_action_v1",
+    "reference_product_v1"
+   ],
+   "arms_missing": [
+    "evidence_memory_v1",
+    "v5_purpose_aligned"
+   ],
+   "per_arm": {
+    "goal_action_v1": {
+     "turn_dir": "logs/c4_sweep_a_orig_vs_goal_live_20261026/candidate_E006/out/turn_03_E006_T03",
+     "P_json_schema_valid": true,
+     "veto": null,
+     "program_score10": null,
+     "prompt_cu": 3810,
+     "completion_cu": 252,
+     "latency_ms": 44923,
+     "first_content_ms": 43344.6,
+     "completion_ms": 44874.1,
+     "first_usable_ms": null
+    },
+    "reference_product_v1": {
+     "turn_dir": "logs/c4_sweep_a_orig_vs_goal_live_20261026/parent_E006/out/turn_03_E006_T03",
+     "P_json_schema_valid": true,
+     "veto": null,
+     "program_score10": null,
+     "prompt_cu": 7414,
+     "completion_cu": 314,
+     "latency_ms": 21059,
+     "first_content_ms": 19568.7,
+     "completion_ms": 20997.1,
+     "first_usable_ms": null
+    }
+   }
+  },
+  "E006_T04": {
+   "arms_present": [
+    "reference_product_v1"
+   ],
+   "arms_missing": [
+    "evidence_memory_v1",
+    "goal_action_v1",
+    "v5_purpose_aligned"
+   ],
+   "per_arm": {
+    "reference_product_v1": {
+     "turn_dir": "logs/c4_sweep_a_orig_vs_goal_live_20261026/parent_E006/out/turn_04_E006_T04",
+     "P_json_schema_valid": true,
+     "veto": null,
+     "program_score10": null,
+     "prompt_cu": 7343,
+     "completion_cu": 315,
+     "latency_ms": 25240,
+     "first_content_ms": 13880.3,
+     "completion_ms": 25194.2,
+     "first_usable_ms": null
+    }
+   }
+  }
+ },
+ "loci_with_all_four_arms": 0,
+ "problem_detail": {
+  "reference_product_v1": [
+   {
+    "slot": "sweep_a_orig_vs_goal/parent_E006/turn_03_E006_T03",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   }
+  ],
+  "goal_action_v1": [
+   {
+    "slot": "sweep_a_orig_vs_goal/candidate_E006/turn_02_E006_T02",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   },
+   {
+    "slot": "sweep_a_orig_vs_goal/candidate_E006/turn_03_E006_T03",
+    "veto": null,
+    "P": true,
+    "C": true,
+    "full_slot": false,
+    "partial_reason": "directions[3]",
+    "key_norm": []
+   }
+  ]
+ },
+ "semantics_note": "Q/W 一律 unknown：本脚本不做语义判定；逐位原文初审与故障族归因另由离线评审件产出（不烧额度、不改尺子）。"
+}

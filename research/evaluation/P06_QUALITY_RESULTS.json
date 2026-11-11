@@ -1,0 +1,3371 @@
+{
+ "kind": "p06_quality_results_v1",
+ "ratings_dir": "logs/p06_judge_live_gemrun.repaired",
+ "packet_plan_sha256": "8f849896c0fa978f78baa0cc58b7829b9002b61afd8fa78d9da25fc01a2da943",
+ "duplicate_records": 0,
+ "records": 230,
+ "assessed": 209,
+ "transport_fail": 21,
+ "parse_fail": 0,
+ "schema_fail": 0,
+ "by_arm": {
+  "A/candidate": {
+   "n_planned": 32,
+   "n_assessed": 27,
+   "n_missing": 5,
+   "n_veto": 0,
+   "dims": {
+    "goal": {
+     "sum": 80,
+     "n": 27,
+     "na": 0,
+     "mean": 2.963
+    },
+    "factuality": {
+     "sum": 81,
+     "n": 27,
+     "na": 0,
+     "mean": 3.0
+    },
+    "attribution": {
+     "sum": 81,
+     "n": 27,
+     "na": 0,
+     "mean": 3.0
+    },
+    "time_state": {
+     "sum": 54,
+     "n": 18,
+     "na": 9,
+     "mean": 3.0
+    },
+    "boundary": {
+     "sum": 79,
+     "n": 27,
+     "na": 0,
+     "mean": 2.926
+    },
+    "memory_use": {
+     "sum": 72,
+     "n": 24,
+     "na": 3,
+     "mean": 3.0
+    },
+    "interaction": {
+     "sum": 80,
+     "n": 27,
+     "na": 0,
+     "mean": 2.963
+    },
+    "initiative": {
+     "sum": 61,
+     "n": 24,
+     "na": 3,
+     "mean": 2.542
+    },
+    "emotion_relation": {
+     "sum": 79,
+     "n": 27,
+     "na": 0,
+     "mean": 2.926
+    }
+   },
+   "claims_total": 61,
+   "claims_major": 0,
+   "major_nodes": 0,
+   "major_details": [],
+   "backup_slots": 175,
+   "backup_major": 3,
+   "backup_major_details": [
+    {
+     "case_id": "E012_T05",
+     "slot": "directions[0]",
+     "quote": "那你中午最后点的哪家？",
+     "support": "conflict",
+     "type": "事实"
+    },
+    {
+     "case_id": "E012_T05",
+     "slot": "directions[3]",
+     "quote": "不聊吃了，你这两天忙什么项目",
+     "support": "supported",
+     "type": "新提议"
+    },
+    {
+     "case_id": "E012_T06",
+     "slot": "directions[3]",
+     "quote": "周六前我先去踩个点看看菜单",
+     "support": "conflict",
+     "type": "新提议"
+    }
+   ],
+   "strict_usable": 25,
+   "strict_usable_missing": 2,
+   "has_text": 27,
+   "missing_cases": [
+    "E008_T04",
+    "E007_T01",
+    "E007_T03",
+    "E006_T07",
+    "E006_T02"
+   ],
+   "strict_usable_assessed_rate": 0.9259,
+   "strict_usable_planned_rate": 0.7812,
+   "coverage": 0.8438
+  },
+  "A/parent": {
+   "n_planned": 32,
+   "n_assessed": 29,
+   "n_missing": 3,
+   "n_veto": 0,
+   "dims": {
+    "goal": {
+     "sum": 86,
+     "n": 29,
+     "na": 0,
+     "mean": 2.966
+    },
+    "factuality": {
+     "sum": 87,
+     "n": 29,
+     "na": 0,
+     "mean": 3.0
+    },
+    "attribution": {
+     "sum": 87,
+     "n": 29,
+     "na": 0,
+     "mean": 3.0
+    },
+    "time_state": {
+     "sum": 42,
+     "n": 14,
+     "na": 15,
+     "mean": 3.0
+    },
+    "boundary": {
+     "sum": 87,
+     "n": 29,
+     "na": 0,
+     "mean": 3.0
+    },
+    "memory_use": {
+     "sum": 62,
+     "n": 21,
+     "na": 8,
+     "mean": 2.952
+    },
+    "interaction": {
+     "sum": 86,
+     "n": 29,
+     "na": 0,
+     "mean": 2.966
+    },
+    "initiative": {
+     "sum": 69,
+     "n": 28,
+     "na": 1,
+     "mean": 2.464
+    },
+    "emotion_relation": {
+     "sum": 86,
+     "n": 29,
+     "na": 0,
+     "mean": 2.966
+    }
+   },
+   "claims_total": 51,
+   "claims_major": 0,
+   "major_nodes": 0,
+   "major_details": [],
+   "backup_slots": 193,
+   "backup_major": 5,
+   "backup_major_details": [
+    {
+     "case_id": "E012_T03",
+     "slot": "response.warm",
+     "quote": "正好我也想再去",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E012_T03",
+     "slot": "directions[0]",
+     "quote": "那家我确实还想去一次",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E007_T05",
+     "slot": "directions[3]",
+     "quote": "你定你的，定了跟我说一声就行",
+     "support": "conflict",
+     "type": "事实"
+    },
+    {
+     "case_id": "E007_T08",
+     "slot": "response.warm",
+     "quote": "你第一次去这种场子",
+     "support": "conflict",
+     "type": "事实"
+    },
+    {
+     "case_id": "E012_T08",
+     "slot": "response.warm",
+     "quote": "周六见",
+     "support": "conflict",
+     "type": "事实"
+    }
+   ],
+   "strict_usable": 25,
+   "strict_usable_missing": 4,
+   "has_text": 29,
+   "missing_cases": [
+    "E012_T04",
+    "E012_T06",
+    "E006_T01"
+   ],
+   "strict_usable_assessed_rate": 0.8621,
+   "strict_usable_planned_rate": 0.7812,
+   "coverage": 0.9062
+  },
+  "B/candidate": {
+   "n_planned": 31,
+   "n_assessed": 23,
+   "n_missing": 8,
+   "n_veto": 2,
+   "dims": {
+    "goal": {
+     "sum": 68,
+     "n": 23,
+     "na": 0,
+     "mean": 2.957
+    },
+    "factuality": {
+     "sum": 66,
+     "n": 22,
+     "na": 1,
+     "mean": 3.0
+    },
+    "attribution": {
+     "sum": 66,
+     "n": 22,
+     "na": 1,
+     "mean": 3.0
+    },
+    "time_state": {
+     "sum": 39,
+     "n": 13,
+     "na": 10,
+     "mean": 3.0
+    },
+    "boundary": {
+     "sum": 69,
+     "n": 23,
+     "na": 0,
+     "mean": 3.0
+    },
+    "memory_use": {
+     "sum": 57,
+     "n": 19,
+     "na": 4,
+     "mean": 3.0
+    },
+    "interaction": {
+     "sum": 68,
+     "n": 23,
+     "na": 0,
+     "mean": 2.957
+    },
+    "initiative": {
+     "sum": 62,
+     "n": 23,
+     "na": 0,
+     "mean": 2.696
+    },
+    "emotion_relation": {
+     "sum": 68,
+     "n": 23,
+     "na": 0,
+     "mean": 2.957
+    }
+   },
+   "claims_total": 52,
+   "claims_major": 0,
+   "major_nodes": 0,
+   "major_details": [],
+   "backup_slots": 151,
+   "backup_major": 1,
+   "backup_major_details": [
+    {
+     "case_id": "E012_T03",
+     "slot": "directions[1]",
+     "quote": "那家我上次去人挺多",
+     "support": "unknown",
+     "type": "事实"
+    }
+   ],
+   "strict_usable": 22,
+   "strict_usable_missing": 1,
+   "has_text": 23,
+   "missing_cases": [
+    "E012_T06",
+    "E006_T04",
+    "E006_T05",
+    "E007_T06",
+    "E008_T03",
+    "E012_T01",
+    "E007_T07",
+    "E012_T04"
+   ],
+   "strict_usable_assessed_rate": 0.9565,
+   "strict_usable_planned_rate": 0.7097,
+   "coverage": 0.7419
+  },
+  "B/parent": {
+   "n_planned": 32,
+   "n_assessed": 29,
+   "n_missing": 3,
+   "n_veto": 0,
+   "dims": {
+    "goal": {
+     "sum": 84,
+     "n": 29,
+     "na": 0,
+     "mean": 2.897
+    },
+    "factuality": {
+     "sum": 85,
+     "n": 29,
+     "na": 0,
+     "mean": 2.931
+    },
+    "attribution": {
+     "sum": 86,
+     "n": 29,
+     "na": 0,
+     "mean": 2.966
+    },
+    "time_state": {
+     "sum": 39,
+     "n": 14,
+     "na": 15,
+     "mean": 2.786
+    },
+    "boundary": {
+     "sum": 86,
+     "n": 29,
+     "na": 0,
+     "mean": 2.966
+    },
+    "memory_use": {
+     "sum": 64,
+     "n": 22,
+     "na": 7,
+     "mean": 2.909
+    },
+    "interaction": {
+     "sum": 84,
+     "n": 29,
+     "na": 0,
+     "mean": 2.897
+    },
+    "initiative": {
+     "sum": 61,
+     "n": 26,
+     "na": 3,
+     "mean": 2.346
+    },
+    "emotion_relation": {
+     "sum": 84,
+     "n": 29,
+     "na": 0,
+     "mean": 2.897
+    }
+   },
+   "claims_total": 49,
+   "claims_major": 1,
+   "major_nodes": 1,
+   "major_details": [
+    {
+     "case_id": "E012_T08",
+     "slot": "primary",
+     "quote": "那就周六见",
+     "support": "conflict",
+     "type": "事实",
+     "reason": "当前时间为2026-11-14周六22:30，对方发来的是周六当晚聚餐后的正面反馈与道晚安，回复却把周六当成未来待赴约的安排断言‘那就周六见’，与时间状态和已知事实严重冲突。"
+    }
+   ],
+   "backup_slots": 191,
+   "backup_major": 10,
+   "backup_major_details": [
+    {
+     "case_id": "E008_T08",
+     "slot": "directions[2]",
+     "quote": "确实有点扫兴",
+     "support": "supported",
+     "type": "观点"
+    },
+    {
+     "case_id": "E008_T08",
+     "slot": "directions[3]",
+     "quote": "那我这周末先跟朋友约一场",
+     "support": "conflict",
+     "type": "新提议"
+    },
+    {
+     "case_id": "E007_T03",
+     "slot": "directions[1]",
+     "quote": "他们现场音量不大，跟那种一直炸的场子不一样。",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E012_T06",
+     "slot": "directions[3]",
+     "quote": "周六定下来跟我说",
+     "support": "conflict",
+     "type": "事实"
+    },
+    {
+     "case_id": "E007_T05",
+     "slot": "directions[3]",
+     "quote": "你想好了跟我说一声就行，不急。",
+     "support": "conflict",
+     "type": "事实"
+    },
+    {
+     "case_id": "E006_T06",
+     "slot": "directions[0]",
+     "quote": "到底什么事啊，你先说说",
+     "support": "conflict",
+     "type": "疑问"
+    },
+    {
+     "case_id": "E012_T08",
+     "slot": "response.warm",
+     "quote": "周六见",
+     "support": "conflict",
+     "type": "事实"
+    },
+    {
+     "case_id": "E012_T08",
+     "slot": "directions[0]",
+     "quote": "周六见",
+     "support": "conflict",
+     "type": "事实"
+    },
+    {
+     "case_id": "E012_T03",
+     "slot": "directions[0]",
+     "quote": "那家锅底挺冲的",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E012_T03",
+     "slot": "directions[1]",
+     "quote": "那附近晚上挺热闹",
+     "support": "unknown",
+     "type": "事实"
+    }
+   ],
+   "strict_usable": 22,
+   "strict_usable_missing": 7,
+   "has_text": 29,
+   "missing_cases": [
+    "E012_T02",
+    "E008_T04",
+    "E012_T01"
+   ],
+   "strict_usable_assessed_rate": 0.7586,
+   "strict_usable_planned_rate": 0.6875,
+   "coverage": 0.9062
+  },
+  "C/candidate": {
+   "n_planned": 32,
+   "n_assessed": 23,
+   "n_missing": 9,
+   "n_veto": 2,
+   "dims": {
+    "goal": {
+     "sum": 68,
+     "n": 23,
+     "na": 0,
+     "mean": 2.957
+    },
+    "factuality": {
+     "sum": 69,
+     "n": 23,
+     "na": 0,
+     "mean": 3.0
+    },
+    "attribution": {
+     "sum": 69,
+     "n": 23,
+     "na": 0,
+     "mean": 3.0
+    },
+    "time_state": {
+     "sum": 39,
+     "n": 13,
+     "na": 10,
+     "mean": 3.0
+    },
+    "boundary": {
+     "sum": 69,
+     "n": 23,
+     "na": 0,
+     "mean": 3.0
+    },
+    "memory_use": {
+     "sum": 54,
+     "n": 18,
+     "na": 5,
+     "mean": 3.0
+    },
+    "interaction": {
+     "sum": 69,
+     "n": 23,
+     "na": 0,
+     "mean": 3.0
+    },
+    "initiative": {
+     "sum": 64,
+     "n": 23,
+     "na": 0,
+     "mean": 2.783
+    },
+    "emotion_relation": {
+     "sum": 68,
+     "n": 23,
+     "na": 0,
+     "mean": 2.957
+    }
+   },
+   "claims_total": 53,
+   "claims_major": 0,
+   "major_nodes": 0,
+   "major_details": [],
+   "backup_slots": 146,
+   "backup_major": 3,
+   "backup_major_details": [
+    {
+     "case_id": "E012_T04",
+     "slot": "directions[2]",
+     "quote": "我这人容易把话说太满 你提醒得对 我改",
+     "support": "supported",
+     "type": "观点"
+    },
+    {
+     "case_id": "E007_T08",
+     "slot": "directions[2]",
+     "quote": "我其实挺久没进livehouse了",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E008_T08",
+     "slot": "directions[0]",
+     "quote": "监考具体是哪天？",
+     "support": "conflict",
+     "type": "疑问"
+    }
+   ],
+   "strict_usable": 20,
+   "strict_usable_missing": 3,
+   "has_text": 23,
+   "missing_cases": [
+    "E007_T06",
+    "E012_T05",
+    "E007_T07",
+    "E007_T04",
+    "E007_T01",
+    "E007_T02",
+    "E008_T07",
+    "E012_T01",
+    "E008_T02"
+   ],
+   "strict_usable_assessed_rate": 0.8696,
+   "strict_usable_planned_rate": 0.625,
+   "coverage": 0.7188
+  },
+  "C/parent": {
+   "n_planned": 32,
+   "n_assessed": 23,
+   "n_missing": 9,
+   "n_veto": 3,
+   "dims": {
+    "goal": {
+     "sum": 66,
+     "n": 23,
+     "na": 0,
+     "mean": 2.87
+    },
+    "factuality": {
+     "sum": 63,
+     "n": 23,
+     "na": 0,
+     "mean": 2.739
+    },
+    "attribution": {
+     "sum": 68,
+     "n": 23,
+     "na": 0,
+     "mean": 2.957
+    },
+    "time_state": {
+     "sum": 42,
+     "n": 14,
+     "na": 9,
+     "mean": 3.0
+    },
+    "boundary": {
+     "sum": 68,
+     "n": 23,
+     "na": 0,
+     "mean": 2.957
+    },
+    "memory_use": {
+     "sum": 49,
+     "n": 18,
+     "na": 5,
+     "mean": 2.722
+    },
+    "interaction": {
+     "sum": 68,
+     "n": 23,
+     "na": 0,
+     "mean": 2.957
+    },
+    "initiative": {
+     "sum": 49,
+     "n": 20,
+     "na": 3,
+     "mean": 2.45
+    },
+    "emotion_relation": {
+     "sum": 68,
+     "n": 23,
+     "na": 0,
+     "mean": 2.957
+    }
+   },
+   "claims_total": 44,
+   "claims_major": 3,
+   "major_nodes": 3,
+   "major_details": [
+    {
+     "case_id": "E008_T03",
+     "slot": "primary",
+     "quote": "小林是朋友介绍认识的",
+     "support": "unknown",
+     "type": "事实",
+     "reason": "题面未提供ME认识小林的场景，确定断言'小林是朋友介绍认识的'触碰了'把不是读书会、我们是××认识的当作已核实事实给出'的明确禁止条件。"
+    },
+    {
+     "case_id": "E007_T03",
+     "slot": "primary",
+     "quote": "全程没什么炸的地方",
+     "support": "unknown",
+     "type": "事实",
+     "reason": "输入材料与历史中未提及具体乐队名称及现场表现，以确定姿态断言现场/曲目全程音量特性，属于无据既成事实断言"
+    },
+    {
+     "case_id": "E012_T03",
+     "slot": "primary",
+     "quote": "那家我也还想再去",
+     "support": "unknown",
+     "type": "事实",
+     "reason": "输入材料仅有HER提到ME提过汤锅，无ME去过该店的亲历记录，按V1_1 §0-7判定为无据亲历断言，依据§2a触发factuality压制至<=1"
+    }
+   ],
+   "backup_slots": 150,
+   "backup_major": 12,
+   "backup_major_details": [
+    {
+     "case_id": "E012_T05",
+     "slot": "directions[1]",
+     "quote": "你平时想吃的时候一般是什么节奏，周末还是随便哪天下班？",
+     "support": "conflict",
+     "type": "疑问"
+    },
+    {
+     "case_id": "E008_T03",
+     "slot": "response.bad_boy",
+     "quote": "小林是朋友介绍的",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E008_T03",
+     "slot": "response.playful",
+     "quote": "小林是朋友介绍认识的",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E008_T03",
+     "slot": "response.warm",
+     "quote": "小林是朋友介绍认识的",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E008_T03",
+     "slot": "directions[0]",
+     "quote": "小林是朋友介绍认识的",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E012_T07",
+     "slot": "response.warm",
+     "quote": "你挑的地方你更熟",
+     "support": "conflict",
+     "type": "事实"
+    },
+    {
+     "case_id": "E007_T03",
+     "slot": "response.playful",
+     "quote": "那支最大的动静就是结尾爆发一下，前面都挺乖的。",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E007_T03",
+     "slot": "directions[0]",
+     "quote": "整场都是慢慢铺开的那种。",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E012_T03",
+     "slot": "directions[1]",
+     "quote": "那家挺火的，去晚了要排队，最好早点去",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E012_T03",
+     "slot": "directions[2]",
+     "quote": "正好我也想再去吃一次",
+     "support": "unknown",
+     "type": "事实"
+    },
+    {
+     "case_id": "E008_T08",
+     "slot": "directions[2]",
+     "quote": "约了三次都没成",
+     "support": "conflict",
+     "type": "事实"
+    },
+    {
+     "case_id": "E008_T08",
+     "slot": "directions[2]",
+     "quote": "你要是不太想出来直说，我不介意",
+     "support": "conflict",
+     "type": "观点"
+    }
+   ],
+   "strict_usable": 17,
+   "strict_usable_missing": 6,
+   "has_text": 23,
+   "missing_cases": [
+    "E012_T01",
+    "E006_T02",
+    "E006_T03",
+    "E008_T06",
+    "E007_T01",
+    "E006_T07",
+    "E012_T08",
+    "E008_T07",
+    "E007_T05"
+   ],
+   "strict_usable_assessed_rate": 0.7391,
+   "strict_usable_planned_rate": 0.5312,
+   "coverage": 0.7188
+  }
+ },
+ "delivery": {
+  "A": {
+   "batch_id": "BATCH-P06-A-BASE-VS-V5-20261027",
+   "arm_mapping": {
+    "parent": "reference_product_v1",
+    "candidate": "v5_purpose_aligned"
+   },
+   "mode": "live",
+   "started": 64,
+   "completed": 64,
+   "failed": 0,
+   "stopped": null,
+   "order_verified": true,
+   "dispatch_bijection": true,
+   "real_model_calls": 64,
+   "program_mean10": {
+    "parent": 9.9,
+    "candidate": 10.0
+   },
+   "paired_program_winner_counts": {
+    "parent": 0,
+    "candidate": 2,
+    "tie": 30
+   },
+   "cost_parent": {
+    "prompt": 234998,
+    "completion": 9140,
+    "latency_p50_ms": 22668,
+    "latency_p95_ms": 42966,
+    "latency_max_ms": 63494
+   },
+   "cost_candidate": {
+    "prompt": 96198,
+    "completion": 7487,
+    "latency_p50_ms": 30151,
+    "latency_p95_ms": 80336,
+    "latency_max_ms": 84680
+   },
+   "tokens_per_strict_usable_parent": 9765.5,
+   "tokens_per_strict_usable_candidate": 4147.4
+  },
+  "B": {
+   "batch_id": "BATCH-P06-B-BASE-VS-V6G-20261027",
+   "arm_mapping": {
+    "parent": "reference_product_v1",
+    "candidate": "v6_goal_context"
+   },
+   "mode": "live",
+   "started": 64,
+   "completed": 64,
+   "failed": 0,
+   "stopped": null,
+   "order_verified": true,
+   "dispatch_bijection": true,
+   "real_model_calls": 64,
+   "program_mean10": {
+    "parent": 10.0,
+    "candidate": 9.01
+   },
+   "paired_program_winner_counts": {
+    "parent": 4,
+    "candidate": 0,
+    "tie": 28
+   },
+   "cost_parent": {
+    "prompt": 235239,
+    "completion": 9005,
+    "latency_p50_ms": 26814,
+    "latency_p95_ms": 83076,
+    "latency_max_ms": 90114
+   },
+   "cost_candidate": {
+    "prompt": 126099,
+    "completion": 8739,
+    "latency_p50_ms": 31428,
+    "latency_p95_ms": 66314,
+    "latency_max_ms": 74856
+   },
+   "tokens_per_strict_usable_parent": 11102.0,
+   "tokens_per_strict_usable_candidate": 6129.0
+  },
+  "C": {
+   "batch_id": "BATCH-P06-C-BASE-VS-V6I-20261027",
+   "arm_mapping": {
+    "parent": "reference_product_v1",
+    "candidate": "v6_integrated"
+   },
+   "mode": "live",
+   "started": 64,
+   "completed": 64,
+   "failed": 0,
+   "stopped": null,
+   "order_verified": true,
+   "dispatch_bijection": true,
+   "real_model_calls": 64,
+   "program_mean10": {
+    "parent": 9.01,
+    "candidate": 9.38
+   },
+   "paired_program_winner_counts": {
+    "parent": 2,
+    "candidate": 3,
+    "tie": 27
+   },
+   "cost_parent": {
+    "prompt": 234981,
+    "completion": 8896,
+    "latency_p50_ms": 25547,
+    "latency_p95_ms": 60798,
+    "latency_max_ms": 83907
+   },
+   "cost_candidate": {
+    "prompt": 152989,
+    "completion": 12571,
+    "latency_p50_ms": 26904,
+    "latency_p95_ms": 70179,
+    "latency_max_ms": 89669
+   },
+   "tokens_per_strict_usable_parent": 14345.7,
+   "tokens_per_strict_usable_candidate": 8278.0
+  }
+ },
+ "pairs": {
+  "A": {
+   "cases": 32,
+   "wins_candidate": 1,
+   "ties": 22,
+   "wins_parent": 1,
+   "incomparable": 8,
+   "diffs": [
+    {
+     "case_id": "E006_T03",
+     "mean_diff": 0.0,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E006_T04",
+     "mean_diff": 0.0,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E006_T05",
+     "mean_diff": 0.0,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E006_T06",
+     "mean_diff": 0.125,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E006_T08",
+     "mean_diff": 0.0,
+     "n_dims": 6
+    },
+    {
+     "case_id": "E007_T02",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E007_T04",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E007_T05",
+     "mean_diff": 0.0,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E007_T06",
+     "mean_diff": 0.111,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E007_T07",
+     "mean_diff": 0.0,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E007_T08",
+     "mean_diff": 0.125,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E008_T01",
+     "mean_diff": 0.0,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E008_T02",
+     "mean_diff": 0.0,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E008_T03",
+     "mean_diff": -0.125,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E008_T05",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E008_T06",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E008_T07",
+     "mean_diff": -0.111,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E008_T08",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E012_T01",
+     "mean_diff": 0.0,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E012_T02",
+     "mean_diff": 0.571,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E012_T03",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E012_T05",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E012_T07",
+     "mean_diff": -0.857,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E012_T08",
+     "mean_diff": 0.0,
+     "n_dims": 8
+    }
+   ],
+   "by_story": {
+    "E006": {
+     "w": 0,
+     "t": 5,
+     "l": 0,
+     "x": 3
+    },
+    "E007": {
+     "w": 0,
+     "t": 6,
+     "l": 0,
+     "x": 2
+    },
+    "E008": {
+     "w": 0,
+     "t": 7,
+     "l": 0,
+     "x": 1
+    },
+    "E012": {
+     "w": 1,
+     "t": 4,
+     "l": 1,
+     "x": 2
+    }
+   },
+   "major_delta": [
+    {
+     "case_id": "E006_T03",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T04",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T05",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T06",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T08",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T02",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T04",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T05",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T06",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T07",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T08",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T01",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T02",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T03",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T05",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T06",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T07",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T08",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T01",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T02",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T03",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T05",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T07",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T08",
+     "parent_major": 0,
+     "candidate_major": 0
+    }
+   ],
+   "details": [
+    {
+     "case_id": "E006_T01",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E006_T02",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E006_T03",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T04",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T05",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T06",
+     "result": "tie",
+     "mean_diff": 0.125,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T07",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E006_T08",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T01",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E007_T02",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T03",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E007_T04",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T05",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T06",
+     "result": "tie",
+     "mean_diff": 0.111,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T07",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T08",
+     "result": "tie",
+     "mean_diff": 0.125,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T01",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T02",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T03",
+     "result": "tie",
+     "mean_diff": -0.125,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T04",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E008_T05",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T06",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T07",
+     "result": "tie",
+     "mean_diff": -0.111,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T08",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T01",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T02",
+     "result": "candidate",
+     "mean_diff": 0.571,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T03",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T04",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E012_T05",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T06",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E012_T07",
+     "result": "parent",
+     "mean_diff": -0.857,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T08",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    }
+   ],
+   "note": "同批配对；|mean_diff|<=0.5 记平"
+  },
+  "B": {
+   "cases": 31,
+   "wins_candidate": 1,
+   "ties": 20,
+   "wins_parent": 0,
+   "incomparable": 10,
+   "diffs": [
+    {
+     "case_id": "E006_T01",
+     "mean_diff": -0.429,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E006_T02",
+     "mean_diff": 0.0,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E006_T03",
+     "mean_diff": 0.0,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E006_T06",
+     "mean_diff": 0.0,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E006_T07",
+     "mean_diff": 0.0,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E006_T08",
+     "mean_diff": 0.0,
+     "n_dims": 6
+    },
+    {
+     "case_id": "E007_T01",
+     "mean_diff": 0.0,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E007_T02",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E007_T03",
+     "mean_diff": 0.25,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E007_T05",
+     "mean_diff": 0.0,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E007_T08",
+     "mean_diff": 0.125,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E008_T01",
+     "mean_diff": 0.125,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E008_T02",
+     "mean_diff": 0.125,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E008_T05",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E008_T06",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E008_T07",
+     "mean_diff": 0.111,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E008_T08",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E012_T03",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E012_T05",
+     "mean_diff": 0.0,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E012_T07",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E012_T08",
+     "mean_diff": 1.778,
+     "n_dims": 9
+    }
+   ],
+   "by_story": {
+    "E006": {
+     "w": 0,
+     "t": 6,
+     "l": 0,
+     "x": 2
+    },
+    "E007": {
+     "w": 0,
+     "t": 5,
+     "l": 0,
+     "x": 3
+    },
+    "E008": {
+     "w": 0,
+     "t": 6,
+     "l": 0,
+     "x": 2
+    },
+    "E012": {
+     "w": 1,
+     "t": 3,
+     "l": 0,
+     "x": 3
+    }
+   },
+   "major_delta": [
+    {
+     "case_id": "E006_T01",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T02",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T03",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T06",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T07",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T08",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T01",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T02",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T03",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T05",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T08",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T01",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T02",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T05",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T06",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T07",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T08",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T03",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T05",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T07",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T08",
+     "parent_major": 1,
+     "candidate_major": 0
+    }
+   ],
+   "details": [
+    {
+     "case_id": "E006_T01",
+     "result": "tie",
+     "mean_diff": -0.429,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T02",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T03",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T04",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E006_T05",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E006_T06",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T07",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T08",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T01",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T02",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T03",
+     "result": "tie",
+     "mean_diff": 0.25,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T04",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E007_T05",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T06",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E007_T07",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E007_T08",
+     "result": "tie",
+     "mean_diff": 0.125,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T01",
+     "result": "tie",
+     "mean_diff": 0.125,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T02",
+     "result": "tie",
+     "mean_diff": 0.125,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T03",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E008_T04",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E008_T05",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T06",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T07",
+     "result": "tie",
+     "mean_diff": 0.111,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T08",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T02",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E012_T03",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T04",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E012_T05",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T06",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E012_T07",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T08",
+     "result": "candidate",
+     "mean_diff": 1.778,
+     "parent_major": 1,
+     "candidate_major": 0
+    }
+   ],
+   "note": "同批配对；|mean_diff|<=0.5 记平"
+  },
+  "C": {
+   "cases": 29,
+   "wins_candidate": 2,
+   "ties": 15,
+   "wins_parent": 0,
+   "incomparable": 12,
+   "diffs": [
+    {
+     "case_id": "E006_T01",
+     "mean_diff": -0.143,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E006_T04",
+     "mean_diff": 0.0,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E006_T05",
+     "mean_diff": 0.0,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E006_T06",
+     "mean_diff": 0.0,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E006_T08",
+     "mean_diff": 0.0,
+     "n_dims": 6
+    },
+    {
+     "case_id": "E007_T03",
+     "mean_diff": 0.875,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E007_T08",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E008_T01",
+     "mean_diff": 0.125,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E008_T03",
+     "mean_diff": 1.375,
+     "n_dims": 8
+    },
+    {
+     "case_id": "E008_T04",
+     "mean_diff": 0.0,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E008_T05",
+     "mean_diff": -0.111,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E008_T08",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E012_T02",
+     "mean_diff": 0.0,
+     "n_dims": 7
+    },
+    {
+     "case_id": "E012_T03",
+     "mean_diff": 0.333,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E012_T04",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E012_T06",
+     "mean_diff": 0.111,
+     "n_dims": 9
+    },
+    {
+     "case_id": "E012_T07",
+     "mean_diff": 0.0,
+     "n_dims": 9
+    }
+   ],
+   "by_story": {
+    "E006": {
+     "w": 0,
+     "t": 5,
+     "l": 0,
+     "x": 3
+    },
+    "E007": {
+     "w": 1,
+     "t": 1,
+     "l": 0,
+     "x": 5
+    },
+    "E008": {
+     "w": 1,
+     "t": 4,
+     "l": 0,
+     "x": 2
+    },
+    "E012": {
+     "w": 0,
+     "t": 5,
+     "l": 0,
+     "x": 2
+    }
+   },
+   "major_delta": [
+    {
+     "case_id": "E006_T01",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T04",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T05",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T06",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T08",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T03",
+     "parent_major": 1,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T08",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T01",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T03",
+     "parent_major": 1,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T04",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T05",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T08",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T02",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T03",
+     "parent_major": 1,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T04",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T06",
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T07",
+     "parent_major": 0,
+     "candidate_major": 0
+    }
+   ],
+   "details": [
+    {
+     "case_id": "E006_T01",
+     "result": "tie",
+     "mean_diff": -0.143,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T02",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E006_T03",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E006_T04",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T05",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T06",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E006_T07",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E006_T08",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T02",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E007_T03",
+     "result": "candidate",
+     "mean_diff": 0.875,
+     "parent_major": 1,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E007_T04",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E007_T05",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E007_T06",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E007_T07",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E007_T08",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T01",
+     "result": "tie",
+     "mean_diff": 0.125,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T02",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E008_T03",
+     "result": "candidate",
+     "mean_diff": 1.375,
+     "parent_major": 1,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T04",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T05",
+     "result": "tie",
+     "mean_diff": -0.111,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E008_T06",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E008_T08",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T02",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T03",
+     "result": "tie",
+     "mean_diff": 0.333,
+     "parent_major": 1,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T04",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T05",
+     "result": "incomparable"
+    },
+    {
+     "case_id": "E012_T06",
+     "result": "tie",
+     "mean_diff": 0.111,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T07",
+     "result": "tie",
+     "mean_diff": 0.0,
+     "parent_major": 0,
+     "candidate_major": 0
+    },
+    {
+     "case_id": "E012_T08",
+     "result": "incomparable"
+    }
+   ],
+   "note": "同批配对；|mean_diff|<=0.5 记平"
+  }
+ },
+ "controls": {
+  "n": 36,
+  "assessed": 33,
+  "kill_n": 16,
+  "kill_hit": 13,
+  "protect_n": 17,
+  "protect_false_kill": 2,
+  "suppression_violations": 0
+ },
+ "control_rows": [
+  {
+   "control_id": "CTL33",
+   "group": "编造亲历族_应判错",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 2,
+   "major_quotes": [
+    "那场我就在台下",
+    "主唱歇斯底里的时候我鸡皮疙瘩全起来了"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "factuality"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL18",
+   "group": "私密指导vs公开事实",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 1,
+   "major_quotes": [
+    "你不是交代过别提加班吗"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "factuality",
+    "attribution"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL23",
+   "group": "该回忆vs不该回提",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "goal",
+    "interaction"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL20",
+   "group": "私密指导vs公开事实",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 1,
+   "major_quotes": [
+    "你妹妹今年高考"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "factuality"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL08",
+   "group": "观点玩笑vs确定亲历",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 1,
+   "major_quotes": [
+    "我当时就在现场"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "factuality"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL32",
+   "group": "随反馈调整",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "emotion_relation"
+   ],
+   "kill_hit": false
+  },
+  {
+   "control_id": "CTL28",
+   "group": "冷场展开vs适当收尾",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "interaction",
+    "emotion_relation"
+   ],
+   "kill_hit": false
+  },
+  {
+   "control_id": "CTL30",
+   "group": "随反馈调整",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 2,
+   "major_quotes": [
+    "位置我已经订好了周六的",
+    "你到时候来就行"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "boundary",
+    "factuality"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL10",
+   "group": "归属HER_ME_第三人",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 1,
+   "major_quotes": [
+    "你也夸我稳重"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "attribution"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL16",
+   "group": "日期与更正状态",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "time_state",
+    "emotion_relation"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL25",
+   "group": "冷场展开vs适当收尾",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 1,
+   "major_quotes": [
+    "上周在老城区发现一家旧书店"
+   ],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "initiative",
+    "interaction"
+   ],
+   "protect_false_kill": true
+  },
+  {
+   "control_id": "CTL07",
+   "group": "观点玩笑vs确定亲历",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "interaction",
+    "goal"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL14",
+   "group": "日期与更正状态",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "minor",
+   "major_claims": 1,
+   "major_quotes": [
+    "上周我提请你吃饭"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "time_state"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL03",
+   "group": "无据事实vs新提议",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 2,
+   "major_quotes": [
+    "我知道你最爱金属乐",
+    "下周带你去最躁的那场"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "factuality"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL34",
+   "group": "编造亲历族_应判错",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 2,
+   "major_quotes": [
+    "我以前加班到十点就靠他们续命 听着听着就哭了",
+    "你不懂那种感觉"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "factuality"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL13",
+   "group": "日期与更正状态",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "time_state",
+    "emotion_relation"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL06",
+   "group": "观点玩笑vs确定亲历",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 1,
+   "major_quotes": [
+    "我去年就跟领导掰扯过一次 最后还赢了"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "factuality"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL31",
+   "group": "随反馈调整",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "emotion_relation",
+    "goal"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL01",
+   "group": "无据事实vs新提议",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 2,
+   "major_quotes": [
+    "票我已经买好了",
+    "我一看你家近就顺手订了"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "factuality"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL21",
+   "group": "该回忆vs不该回提",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "memory_use",
+    "goal"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL09",
+   "group": "归属HER_ME_第三人",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "attribution"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL17",
+   "group": "私密指导vs公开事实",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "goal",
+    "emotion_relation"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL29",
+   "group": "随反馈调整",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "emotion_relation",
+    "goal"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL26",
+   "group": "冷场展开vs适当收尾",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "interaction",
+    "emotion_relation"
+   ],
+   "kill_hit": false
+  },
+  {
+   "control_id": "CTL36",
+   "group": "编造亲历族_保护",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "factuality",
+    "memory_use"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL27",
+   "group": "冷场展开vs适当收尾",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "interaction"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL11",
+   "group": "归属HER_ME_第三人",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "attribution",
+    "interaction"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL05",
+   "group": "观点玩笑vs确定亲历",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "interaction"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL24",
+   "group": "该回忆vs不该回提",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 1,
+   "major_quotes": [
+    "你上次被甲方毙方案那事"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "goal",
+    "memory_use"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL35",
+   "group": "编造亲历族_保护",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "factuality",
+    "interaction"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL02",
+   "group": "无据事实vs新提议",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 0,
+   "major_quotes": [],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "factuality",
+    "initiative"
+   ],
+   "protect_false_kill": false
+  },
+  {
+   "control_id": "CTL22",
+   "group": "该回忆vs不该回提",
+   "assessed": true,
+   "expected_acceptable": false,
+   "expected_protected": false,
+   "expected_severity": "major",
+   "major_claims": 1,
+   "major_quotes": [
+    "三个月前你也因为方案哭过一场"
+   ],
+   "dim_le1": true,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "memory_use",
+    "emotion_relation"
+   ],
+   "kill_hit": true
+  },
+  {
+   "control_id": "CTL19",
+   "group": "私密指导vs公开事实",
+   "assessed": true,
+   "expected_acceptable": true,
+   "expected_protected": true,
+   "expected_severity": "none",
+   "major_claims": 1,
+   "major_quotes": [
+    "看了几集"
+   ],
+   "dim_le1": false,
+   "suppression_violations": [],
+   "applicable_dims": [
+    "goal",
+    "interaction"
+   ],
+   "protect_false_kill": true
+  },
+  {
+   "control_id": "CTL15",
+   "group": "日期与更正状态",
+   "assessed": false
+  },
+  {
+   "control_id": "CTL04",
+   "group": "无据事实vs新提议",
+   "assessed": false
+  },
+  {
+   "control_id": "CTL12",
+   "group": "归属HER_ME_第三人",
+   "assessed": false
+  }
+ ],
+ "repeats": {
+  "n": 24,
+  "assessed_pairs": 19,
+  "exact": 10,
+  "within1": 13,
+  "dim_exact_rate": {
+   "goal": 1.0,
+   "factuality": 1.0,
+   "attribution": 1.0,
+   "time_state": 1.0,
+   "boundary": 0.9474,
+   "memory_use": 0.9091,
+   "interaction": 0.9474,
+   "initiative": 0.8421,
+   "emotion_relation": 0.9474
+  }
+ },
+ "repeat_rows": [
+  {
+   "repeat_id": "P06N0002",
+   "source_id": "P06N0019",
+   "case_id": "E006_T05",
+   "batch": "C",
+   "arm": "candidate",
+   "assessed": true,
+   "exact": true,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "boundary": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0006",
+   "source_id": "P06N0075",
+   "case_id": "E008_T03",
+   "batch": "C",
+   "arm": "parent",
+   "assessed": true,
+   "exact": false,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "boundary": 1,
+    "memory_use": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0010",
+   "source_id": "P06N0007",
+   "case_id": "E012_T07",
+   "batch": "C",
+   "arm": "candidate",
+   "assessed": true,
+   "exact": false,
+   "within1": false,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "time_state": 0,
+    "boundary": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0012",
+   "source_id": "P06N0116",
+   "case_id": "E006_T05",
+   "batch": "B",
+   "arm": "parent",
+   "assessed": true,
+   "exact": true,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "boundary": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0022",
+   "source_id": "P06N0199",
+   "case_id": "E006_T05",
+   "batch": "A",
+   "arm": "parent",
+   "assessed": true,
+   "exact": true,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "boundary": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0037",
+   "source_id": "P06N0217",
+   "case_id": "E008_T03",
+   "batch": "B",
+   "arm": "candidate",
+   "assessed": true
+  },
+  {
+   "repeat_id": "P06N0055",
+   "source_id": "P06N0183",
+   "case_id": "E008_T03",
+   "batch": "A",
+   "arm": "parent",
+   "assessed": true,
+   "exact": true,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "boundary": 0,
+    "memory_use": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0067",
+   "source_id": "P06N0078",
+   "case_id": "E007_T03",
+   "batch": "A",
+   "arm": "parent",
+   "assessed": true,
+   "exact": true,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "time_state": 0,
+    "boundary": 0,
+    "memory_use": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0068",
+   "source_id": "P06N0032",
+   "case_id": "E006_T05",
+   "batch": "A",
+   "arm": "candidate",
+   "assessed": true,
+   "exact": false,
+   "within1": false,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "boundary": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0071",
+   "source_id": "P06N0017",
+   "case_id": "E007_T03",
+   "batch": "B",
+   "arm": "parent",
+   "assessed": true,
+   "exact": false,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "boundary": 0,
+    "memory_use": 0,
+    "interaction": -1,
+    "initiative": -1,
+    "emotion_relation": -1
+   }
+  },
+  {
+   "repeat_id": "P06N0084",
+   "source_id": "P06N0163",
+   "case_id": "E007_T03",
+   "batch": "B",
+   "arm": "candidate",
+   "assessed": true,
+   "exact": false,
+   "within1": false,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "boundary": 0,
+    "memory_use": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0085",
+   "source_id": "P06N0165",
+   "case_id": "E008_T03",
+   "batch": "C",
+   "arm": "candidate",
+   "assessed": true,
+   "exact": true,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "boundary": 0,
+    "memory_use": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0105",
+   "source_id": "P06N0181",
+   "case_id": "E008_T03",
+   "batch": "A",
+   "arm": "candidate",
+   "assessed": true,
+   "exact": false,
+   "within1": false,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "boundary": 0,
+    "memory_use": 0,
+    "interaction": 0,
+    "initiative": 1,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0126",
+   "source_id": "P06N0178",
+   "case_id": "E006_T05",
+   "batch": "B",
+   "arm": "candidate",
+   "assessed": true
+  },
+  {
+   "repeat_id": "P06N0139",
+   "source_id": "P06N0123",
+   "case_id": "E007_T03",
+   "batch": "C",
+   "arm": "candidate",
+   "assessed": true,
+   "exact": true,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "time_state": 0,
+    "boundary": 0,
+    "memory_use": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0150",
+   "source_id": "P06N0098",
+   "case_id": "E006_T05",
+   "batch": "C",
+   "arm": "parent",
+   "assessed": true,
+   "exact": false,
+   "within1": false,
+   "diffs": {
+    "goal": 0,
+    "boundary": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0151",
+   "source_id": "P06N0082",
+   "case_id": "E012_T07",
+   "batch": "C",
+   "arm": "parent",
+   "assessed": true,
+   "exact": true,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "time_state": 0,
+    "boundary": 0,
+    "memory_use": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0160",
+   "source_id": "P06N0224",
+   "case_id": "E007_T03",
+   "batch": "A",
+   "arm": "candidate",
+   "assessed": true
+  },
+  {
+   "repeat_id": "P06N0162",
+   "source_id": "P06N0020",
+   "case_id": "E012_T07",
+   "batch": "B",
+   "arm": "parent",
+   "assessed": true,
+   "exact": true,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "time_state": 0,
+    "boundary": 0,
+    "memory_use": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0171",
+   "source_id": "P06N0036",
+   "case_id": "E012_T07",
+   "batch": "A",
+   "arm": "parent",
+   "assessed": true,
+   "exact": true,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "boundary": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0204",
+   "source_id": "P06N0130",
+   "case_id": "E008_T03",
+   "batch": "B",
+   "arm": "parent",
+   "assessed": true,
+   "exact": false,
+   "within1": true,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "boundary": 0,
+    "memory_use": -1,
+    "interaction": 0,
+    "initiative": 1,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0209",
+   "source_id": "P06N0047",
+   "case_id": "E012_T07",
+   "batch": "B",
+   "arm": "candidate",
+   "assessed": true,
+   "exact": false,
+   "within1": false,
+   "diffs": {
+    "goal": 0,
+    "factuality": 0,
+    "attribution": 0,
+    "time_state": 0,
+    "boundary": 0,
+    "interaction": 0,
+    "initiative": 0,
+    "emotion_relation": 0
+   }
+  },
+  {
+   "repeat_id": "P06N0249",
+   "source_id": "P06N0101",
+   "case_id": "E007_T03",
+   "batch": "C",
+   "arm": "parent",
+   "assessed": false
+  },
+  {
+   "repeat_id": "P06N0251",
+   "source_id": "P06N0172",
+   "case_id": "E012_T07",
+   "batch": "A",
+   "arm": "candidate",
+   "assessed": false
+  }
+ ],
+ "quotes": {
+  "claims_checked": 1746,
+  "mismatches": 1
+ },
+ "quote_rows": [
+  {
+   "item_id": "P06N0203",
+   "case_id": "E008_T01",
+   "slot": "response.warm",
+   "kind": "quote_not_in_answer",
+   "quote": "你在里头答辩，知道外头有人管着饭，心里就稳了。"
+  }
+ ],
+ "decision_flags": {
+  "A": {
+   "g1_data_integrity": false,
+   "g2_major_not_worse": true,
+   "g3_strict_usable": true,
+   "g2b_protocol_veto_not_worse": true,
+   "strict_usable_rate_parent": 0.8621,
+   "strict_usable_rate_candidate": 0.9259,
+   "veto_parent": 0,
+   "veto_candidate": 0,
+   "wins_candidate": 1,
+   "ties": 22,
+   "wins_parent": 1,
+   "incomparable": 8,
+   "dim_deltas_candidate_minus_baseline": {
+    "goal": -0.003,
+    "factuality": 0.0,
+    "attribution": 0.0,
+    "time_state": 0.0,
+    "boundary": -0.074,
+    "memory_use": 0.048,
+    "interaction": -0.003,
+    "initiative": 0.078,
+    "emotion_relation": -0.04
+   },
+   "benefit_dims": [],
+   "harm_dims": [],
+   "preliminary": "unknown_blocked",
+   "requires_worker_primary_read": true,
+   "note": "机械套用 P06_DECISION_RULES；最终判决须 worker 亲读原文、控制与复评后落笔"
+  },
+  "B": {
+   "g1_data_integrity": false,
+   "g2_major_not_worse": true,
+   "g3_strict_usable": true,
+   "g2b_protocol_veto_not_worse": true,
+   "strict_usable_rate_parent": 0.7586,
+   "strict_usable_rate_candidate": 0.9565,
+   "veto_parent": 0,
+   "veto_candidate": 2,
+   "wins_candidate": 1,
+   "ties": 20,
+   "wins_parent": 0,
+   "incomparable": 10,
+   "dim_deltas_candidate_minus_baseline": {
+    "goal": 0.06,
+    "factuality": 0.069,
+    "attribution": 0.034,
+    "time_state": 0.214,
+    "boundary": 0.034,
+    "memory_use": 0.091,
+    "interaction": 0.06,
+    "initiative": 0.35,
+    "emotion_relation": 0.06
+   },
+   "benefit_dims": [
+    "time_state",
+    "initiative"
+   ],
+   "harm_dims": [],
+   "preliminary": "unknown_blocked",
+   "requires_worker_primary_read": true,
+   "note": "机械套用 P06_DECISION_RULES；最终判决须 worker 亲读原文、控制与复评后落笔"
+  },
+  "C": {
+   "g1_data_integrity": false,
+   "g2_major_not_worse": true,
+   "g3_strict_usable": true,
+   "g2b_protocol_veto_not_worse": true,
+   "strict_usable_rate_parent": 0.7391,
+   "strict_usable_rate_candidate": 0.8696,
+   "veto_parent": 3,
+   "veto_candidate": 2,
+   "wins_candidate": 2,
+   "ties": 15,
+   "wins_parent": 0,
+   "incomparable": 12,
+   "dim_deltas_candidate_minus_baseline": {
+    "goal": 0.087,
+    "factuality": 0.261,
+    "attribution": 0.043,
+    "time_state": 0.0,
+    "boundary": 0.043,
+    "memory_use": 0.278,
+    "interaction": 0.043,
+    "initiative": 0.333,
+    "emotion_relation": 0.0
+   },
+   "benefit_dims": [
+    "factuality",
+    "memory_use",
+    "initiative"
+   ],
+   "harm_dims": [],
+   "preliminary": "unknown_blocked",
+   "requires_worker_primary_read": true,
+   "note": "机械套用 P06_DECISION_RULES；最终判决须 worker 亲读原文、控制与复评后落笔"
+  }
+ },
+ "scope_notes": [
+  "四条故事 E006/E007/E008/E012 均 dev_exposed；不支持泛化。",
+  "W（用户愿发）unknown；金额 unknown（无单价）；cache null 记 unknown_usage。",
+  "跨批横比只作探索；严格对照只在同批两臂之间。",
+  "自动判决只是预注册规则的机械应用，必须 worker 亲读后才可落最终判决。"
+ ],
+ "packet_nodes_sha256": "d4e80cc4cfbfbf15baff976df92e304bbb681b678be570b85190bc9e6730b21a"
+}

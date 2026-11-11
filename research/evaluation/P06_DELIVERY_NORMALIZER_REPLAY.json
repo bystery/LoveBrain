@@ -1,0 +1,187 @@
+{
+ "failures_replayed": [
+  {
+   "case": "B/candidate/E007_T04",
+   "veto": "json_schema_broken",
+   "raw_len": 375,
+   "classify": "still_malformed",
+   "after_repairs": [
+    "unparseable:Expecting value: line 1 column 224 (char 223)"
+   ],
+   "after_outcome": "delivery_failed",
+   "after_sendable": "",
+   "after_unmapped": [],
+   "after_missing_slots": []
+  },
+  {
+   "case": "B/candidate/E007_T05",
+   "veto": "json_schema_broken",
+   "raw_len": 475,
+   "classify": "consumer_recovered",
+   "after_repairs": [
+    "style_key_fix:bad_boys->bad_boy"
+   ],
+   "after_outcome": "send",
+   "after_sendable": "没什么大计划，主要是补觉、随便晃晃，可能找个安静的地方坐一下午。你周末除了想听现场，还想干点什么？",
+   "after_unmapped": [],
+   "after_missing_slots": []
+  },
+  {
+   "case": "B/candidate/E012_T02",
+   "veto": "json_schema_broken",
+   "raw_len": 379,
+   "classify": "consumer_recovered",
+   "after_repairs": [
+    "directions_pad_to_4"
+   ],
+   "after_outcome": "send",
+   "after_sendable": "两个选项报上来，我帮你砍掉一个，别饿着肚子纠结",
+   "after_unmapped": [],
+   "after_missing_slots": [
+    "directions[3]"
+   ]
+  },
+  {
+   "case": "C/parent/E006_T07",
+   "veto": "illegal_source_id:t6_1",
+   "raw_len": 519,
+   "classify": "needs_src_validator_not_consumer",
+   "after_repairs": [],
+   "after_outcome": "send",
+   "after_sendable": "有。有些事明明没摊上过，一想起来心里就发闷。",
+   "after_unmapped": [],
+   "after_missing_slots": []
+  },
+  {
+   "case": "C/parent/E008_T06",
+   "veto": "json_schema_broken",
+   "raw_len": 513,
+   "classify": "consumer_recovered",
+   "after_repairs": [
+    "directions_extra_preserved_to_audit:1"
+   ],
+   "after_outcome": "send",
+   "after_sendable": "行，那就下周三，就你。下班早的话时间你定，我配合。",
+   "after_unmapped": [],
+   "after_missing_slots": []
+  },
+  {
+   "case": "C/parent/E012_T08",
+   "veto": "json_schema_broken",
+   "raw_len": 519,
+   "classify": "consumer_recovered",
+   "after_repairs": [
+    "response_slot_add_null:bad_boy"
+   ],
+   "after_outcome": "send",
+   "after_sendable": "行，那周六见。下次不在饭点也行，我记着。晚安",
+   "after_unmapped": [],
+   "after_missing_slots": [
+    "response.bad_boy"
+   ]
+  },
+  {
+   "case": "C/candidate/E007_T05",
+   "veto": "json_schema_broken",
+   "raw_len": 535,
+   "classify": "consumer_recovered",
+   "after_repairs": [
+    "response_slot_add_null:bad_boy"
+   ],
+   "after_outcome": "send",
+   "after_sendable": "除了livehouse真没什么大计划，大概就是睡到自然醒，找家安静的店坐到天黑。倒是想知道，要是周六真给你空出来，你最想干嘛",
+   "after_unmapped": [],
+   "after_missing_slots": [
+    "response.bad_boy"
+   ]
+  },
+  {
+   "case": "C/candidate/E008_T01",
+   "veto": "json_schema_broken",
+   "raw_len": 694,
+   "classify": "consumer_recovered",
+   "after_repairs": [
+    "response_slot_add_null:bad_boy"
+   ],
+   "after_outcome": "send",
+   "after_sendable": "陪订饭其实已经是在搭把手了，答辩那几天有人管饭挺管用的。倒是你自己那几天会不会也跟着紧张",
+   "after_unmapped": [],
+   "after_missing_slots": [
+    "response.bad_boy"
+   ]
+  }
+ ],
+ "classify_tally": {
+  "still_malformed": 1,
+  "consumer_recovered": 6,
+  "needs_src_validator_not_consumer": 1
+ },
+ "clean_samples_no_regression": [
+  {
+   "path": "logs\\p06_A_live_20261027\\parent_E006\\out\\turn_01_E006_T01",
+   "before_parse_ok": true,
+   "before_sendable": true,
+   "after_sendable": true,
+   "repairs_applied": [],
+   "regression": false
+  },
+  {
+   "path": "logs\\p06_A_live_20261027\\parent_E006\\out\\turn_02_E006_T02",
+   "before_parse_ok": true,
+   "before_sendable": true,
+   "after_sendable": true,
+   "repairs_applied": [],
+   "regression": false
+  },
+  {
+   "path": "logs\\p06_A_live_20261027\\parent_E006\\out\\turn_03_E006_T03",
+   "before_parse_ok": true,
+   "before_sendable": true,
+   "after_sendable": true,
+   "repairs_applied": [],
+   "regression": false
+  },
+  {
+   "path": "logs\\p06_A_live_20261027\\parent_E006\\out\\turn_04_E006_T04",
+   "before_parse_ok": true,
+   "before_sendable": true,
+   "after_sendable": true,
+   "repairs_applied": [],
+   "regression": false
+  },
+  {
+   "path": "logs\\p06_A_live_20261027\\candidate_E006\\out\\turn_01_E006_T01",
+   "before_parse_ok": true,
+   "before_sendable": true,
+   "after_sendable": true,
+   "repairs_applied": [],
+   "regression": false
+  },
+  {
+   "path": "logs\\p06_A_live_20261027\\candidate_E006\\out\\turn_02_E006_T02",
+   "before_parse_ok": true,
+   "before_sendable": true,
+   "after_sendable": true,
+   "repairs_applied": [],
+   "regression": false
+  },
+  {
+   "path": "logs\\p06_A_live_20261027\\candidate_E006\\out\\turn_03_E006_T03",
+   "before_parse_ok": true,
+   "before_sendable": true,
+   "after_sendable": true,
+   "repairs_applied": [],
+   "regression": false
+  },
+  {
+   "path": "logs\\p06_A_live_20261027\\candidate_E006\\out\\turn_04_E006_T04",
+   "before_parse_ok": true,
+   "before_sendable": true,
+   "after_sendable": true,
+   "repairs_applied": [],
+   "regression": false
+  }
+ ],
+ "regressions": [],
+ "note": "确定性消费归一只修机械族(风格键漂移/directions 数量/结构弯引号)；illegal_source_id 属来源成员校验层(本器不改判)；真正结构畸形不编造修复。基线/候选同规则。"
+}

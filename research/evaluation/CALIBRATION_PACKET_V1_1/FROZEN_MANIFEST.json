@@ -1,0 +1,28 @@
+{
+ "frozen_at": "2026-10-25",
+ "real_model_calls": 0,
+ "hashes": {
+  "REFERENCE_LABELS_V1_1.json": "e8d06608eaa1ecf286f7ca40d281a821e61d3e06b47d34456b1b410cffd06b46",
+  "nodes.jsonl": "5d96dd07117363317b4db40ff9bb95b8e7d398318649300a9e2dd61d79a8a02e",
+  "nodes_public.jsonl": "63cfe6801ae2d9cb6513acf636fac9c878587d49d9a0489fd32a43957da5b8ad",
+  "SEALED_KEY_V1_1.json": "d758b75f5c268b7d0b895f6345cac214a8e95075210d66783ae9869931c97b7e",
+  "reference_overrides.json": "d673fdf33b083d770d9d906d1b3204c4da401ef19287e1b5893dbd7103225cd2",
+  "CONTROLS_REF.json": "708bff7ffbea0abb86c76365b7c391be2b0ea6ac4e961682ad8e0f38b49182bc",
+  "JUDGE_MANUAL_V1_1.md": "dbbbf9cde656875e12d54e611d66ddc4f84512d479f9de24a321aae937a23fa5",
+  "JUDGE_QUALITY_THRESHOLDS_DECLARED_V1.md": "188a20fbc64278d7c6b24997bb231e3056a16475f975b584903e1bebfbcd2773"
+ },
+ "splits": {
+  "dev": 40,
+  "validation": 20
+ },
+ "stats": {
+  "claims_total": 1064,
+  "human_reviewed": 17,
+  "constructed_reference": 39,
+  "mechanical_only": 1008,
+  "disputed": 5,
+  "reference_unsupported_claims": 13,
+  "reference_protected_claims": 1048
+ },
+ "rule": "参考、分组、阈值、重复抽样在派发裁判之前冻结；冻结后查看验证集只报告结果，不得再用同一验证集把规则调到过线。"
+}

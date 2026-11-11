@@ -1,0 +1,38 @@
+{
+ "doc": "JUDGE_QUALITY_V2_1_SCOPE_CORRECTION",
+ "date": "2026-10-26",
+ "cause": "mainline_review_20261026/REVIEW.md §三.1/§三.2/§三.3：独立复核纠偏。旧文件 JUDGE_QUALITY_V2_AND_V5_DISPOSITION.json 不改写，本文件为生效口径。",
+ "corrections": {
+  "goal_agreement": {
+   "was": "QUALIFIED",
+   "now": "STABILITY_PASSED_CORRECTNESS_NOT_QUALIFIED",
+   "reason": [
+     "资格仅由两两评分一致算出；vs_reference_numeric.available=false，无正确性金标。",
+     "允许动作覆盖是对 action_basis 的字符串包含，未验证实际输出是否做到允许动作；含'没有冷淡收场'字样的答案会被误列为禁止动作命中的探索性缺陷已确认。",
+     "judge 系统把 3 分定义为'动作到位且无关键无据断言'，混入尚未验证的事实判断；该依赖必须报告，行动达成与事实风险应在下一版手册分开给分。"
+   ],
+   "usage": "目标一致性可辅助排序；行动正确性尚未获资格。9胜2负13平保留为探索性排序，不作质量非劣证明。"
+  },
+  "order_dimension": {
+   "was": "INSUFFICIENT（位置偏置：甲→乙 3 flips）",
+   "now": "INSUFFICIENT_AND_WITHDRAWN_AS_MEASURED",
+   "reason": "v1_1 换序实验两处实错（payload 绑定未换+normalize 原地覆盖）已亲证；重解释后 R1 同坐标翻转 3/8，旧 57.1%/翻转计数混入坐标转换误差。见 evaluation/SWAP_REINTERPRETATION_V1_2.json 与 tools/judge_swap_v1_2.py。"
+  },
+  "reference_labels": {
+   "was": "17 条 reference_provenance=human_reviewed",
+   "now": "evidence_reviewed_by_ai（V1_2）",
+   "reason": "无人类身份/回收表/逐条人类确认凭据。旧 V1_1 保留；争议参考不进硬胜负，参考作者与模型判词均可被复核。",
+   "file": "evaluation/CALIBRATION_PACKET_V1_1/REFERENCE_LABELS_V1_2.json"
+  },
+  "unaffected_dimensions": {
+   "fact_detection": "INSUFFICIENT（结构性：可信 F4 总量 9，min_n=20 未达）——结论不变",
+   "false_kill": "NOT_QUALIFIED（22-25% vs ≤15%）——结论不变",
+   "insufficient_info": "NOT_QUALIFIED——结论不变"
+  },
+  "v5_disposition": {
+   "was": "RETAIN（can enter independent validation）",
+   "now": "RETAIN_DEVELOPMENT（工程决定：已知省 token 且值得继续试；目标维度配对 9W:2L:13T 降为探索性排序证据；不得写成已证明整体更好/非劣/可替换原版）"
+  }
+ },
+ "next_validation_requirements": "下一轮裁判验证需新材料（validation-20 已消耗）；三处已登记修订=拆分粒度/受保护边界/位置中性，另加：行动与事实风险分开给分、真绑定换序构造（judge_swap_v1_2）、参考来源如实标注。"
+}

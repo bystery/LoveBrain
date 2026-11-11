@@ -1,0 +1,1258 @@
+{
+ "kind": "paid_answer_coverage_matrix",
+ "date": "2026-10-26",
+ "batches": [
+  {
+   "dir": "logs/c4_sweep_a_orig_vs_goal_live_20261026",
+   "authorization_id": "AUTH-C4-SCREEN-20261026-01",
+   "batch_id": "BATCH-C4-A-ORIG-VS-GOAL-20261026",
+   "arm_map": {
+    "parent": "reference_product_v1",
+    "candidate": "goal_action_v1"
+   },
+   "plan_sha256": "7f158c57495e200d",
+   "started": 64,
+   "completed": 64,
+   "failed": 0,
+   "real_model_calls": 64,
+   "meta_sources": [
+    "c4_sweep_a_orig_vs_goal_live_20261026.DONE.json",
+    "c4_sweep_a_orig_vs_goal_live_20261026.RESULT.json"
+   ],
+   "execution_order_verified": true,
+   "dispatch_bijection": true,
+   "per_key_dispatch": {
+    "parent/E006": 8,
+    "candidate/E006": 8,
+    "candidate/E008": 8,
+    "parent/E008": 8,
+    "parent/E012": 8,
+    "candidate/E012": 8,
+    "candidate/E007": 8,
+    "parent/E007": 8
+   },
+   "turn_dirs": 64,
+   "arms": [
+    "goal_action_v1",
+    "reference_product_v1"
+   ],
+   "loci_per_arm": {
+    "goal_action_v1": 32,
+    "reference_product_v1": 32
+   },
+   "unresolved_arm_dirs": [],
+   "prompt_archived": 64,
+   "state_archived": 32,
+   "config_identities": [
+    "stream+usage"
+   ]
+  },
+  {
+   "dir": "logs/c4_sweep_b_v5_vs_mem_live_20261026",
+   "authorization_id": "AUTH-C4-SCREEN-20261026-01",
+   "batch_id": "BATCH-C4-B-V5-VS-MEM-20261026",
+   "arm_map": {
+    "parent": "v5_purpose_aligned",
+    "candidate": "evidence_memory_v1"
+   },
+   "plan_sha256": "1f0d78c6aecd8781",
+   "started": 64,
+   "completed": 64,
+   "failed": 0,
+   "real_model_calls": 64,
+   "meta_sources": [
+    "c4_sweep_b_v5_vs_mem_live_20261026.DONE.json",
+    "c4_sweep_b_v5_vs_mem_live_20261026.RESULT.json"
+   ],
+   "execution_order_verified": true,
+   "dispatch_bijection": true,
+   "per_key_dispatch": {
+    "parent/E006": 8,
+    "candidate/E006": 8,
+    "candidate/E008": 8,
+    "parent/E008": 8,
+    "parent/E012": 8,
+    "candidate/E012": 8,
+    "candidate/E007": 8,
+    "parent/E007": 8
+   },
+   "turn_dirs": 64,
+   "arms": [
+    "evidence_memory_v1",
+    "v5_purpose_aligned"
+   ],
+   "loci_per_arm": {
+    "evidence_memory_v1": 32,
+    "v5_purpose_aligned": 32
+   },
+   "unresolved_arm_dirs": [],
+   "prompt_archived": 64,
+   "state_archived": 0,
+   "config_identities": [
+    "stream+usage"
+   ]
+  },
+  {
+   "dir": "logs/newstory96_live_20261026",
+   "authorization_id": "AUTH-NEWSTORY-96-20261026-01",
+   "batch_id": "BATCH-NEWSTORY-96-20261026",
+   "arm_map": {
+    "parent": "reference_product_v1",
+    "candidate": "v5_purpose_aligned"
+   },
+   "plan_sha256": null,
+   "started": null,
+   "completed": null,
+   "failed": null,
+   "real_model_calls": 96,
+   "meta_sources": [
+    "newstory96_live_20261026.DONE.json",
+    "newstory96_live_20261026.RESULT.json"
+   ],
+   "execution_order_verified": true,
+   "dispatch_bijection": true,
+   "per_key_dispatch": {
+    "parent/P001": 8,
+    "candidate/P001": 8,
+    "candidate/P002": 8,
+    "parent/P002": 8,
+    "parent/P003": 8,
+    "candidate/P003": 8,
+    "candidate/P004": 8,
+    "parent/P004": 8,
+    "parent/P005": 8,
+    "candidate/P005": 8,
+    "candidate/P006": 8,
+    "parent/P006": 8
+   },
+   "turn_dirs": 96,
+   "arms": [
+    "reference_product_v1",
+    "v5_purpose_aligned"
+   ],
+   "loci_per_arm": {
+    "v5_purpose_aligned": 48,
+    "reference_product_v1": 48
+   },
+   "unresolved_arm_dirs": [],
+   "prompt_archived": 96,
+   "state_archived": 48,
+   "config_identities": [
+    "stream+usage"
+   ]
+  },
+  {
+   "dir": "logs/r2_ctx_live_20261024",
+   "authorization_id": "AUTH-R2-CTX-20261024-01",
+   "batch_id": "BATCH-R2-CTX-20261024",
+   "arm_map": {
+    "parent": "reference_product_v1",
+    "candidate": "v4_intent_context_r2"
+   },
+   "plan_sha256": null,
+   "started": null,
+   "completed": null,
+   "failed": null,
+   "real_model_calls": 48,
+   "meta_sources": [
+    "r2_ctx_live_20261024.DONE.json",
+    "r2_ctx_live_20261024.RESULT.json"
+   ],
+   "execution_order_verified": true,
+   "dispatch_bijection": true,
+   "per_key_dispatch": {
+    "parent/E007": 8,
+    "candidate/E007": 8,
+    "candidate/E010": 8,
+    "parent/E010": 8,
+    "parent/E012": 8,
+    "candidate/E012": 8
+   },
+   "turn_dirs": 48,
+   "arms": [
+    "reference_product_v1",
+    "v4_intent_context_r2"
+   ],
+   "loci_per_arm": {
+    "v4_intent_context_r2": 24,
+    "reference_product_v1": 24
+   },
+   "unresolved_arm_dirs": [],
+   "prompt_archived": 48,
+   "state_archived": 24,
+   "config_identities": [
+    "non_stream_or_unknown"
+   ]
+  },
+  {
+   "dir": "logs/v3_deletion_live_20261024",
+   "authorization_id": "AUTH-V3-DELETION-20261024-01",
+   "batch_id": "BATCH-V3-DELETION-20261024",
+   "arm_map": {
+    "parent": "reference_product_v1",
+    "candidate": "v3_system_slim"
+   },
+   "plan_sha256": null,
+   "started": null,
+   "completed": null,
+   "failed": null,
+   "real_model_calls": 48,
+   "meta_sources": [
+    "v3_deletion_live_20261024.DONE.json",
+    "v3_deletion_live_20261024.RESULT.json"
+   ],
+   "execution_order_verified": true,
+   "dispatch_bijection": true,
+   "per_key_dispatch": {
+    "parent/E004": 8,
+    "candidate/E004": 8,
+    "candidate/E005": 8,
+    "parent/E005": 8,
+    "parent/E006": 8,
+    "candidate/E006": 8
+   },
+   "turn_dirs": 48,
+   "arms": [
+    "reference_product_v1",
+    "v3_system_slim"
+   ],
+   "loci_per_arm": {
+    "v3_system_slim": 24,
+    "reference_product_v1": 24
+   },
+   "unresolved_arm_dirs": [],
+   "prompt_archived": 48,
+   "state_archived": 48,
+   "config_identities": [
+    "non_stream_or_unknown"
+   ]
+  },
+  {
+   "dir": "logs/v5_ctx_live_20261025",
+   "authorization_id": "AUTH-V5-CTX-20261025-01",
+   "batch_id": "BATCH-V5-CTX-20261025",
+   "arm_map": {
+    "parent": "reference_product_v1",
+    "candidate": "v5_purpose_aligned"
+   },
+   "plan_sha256": null,
+   "started": null,
+   "completed": null,
+   "failed": null,
+   "real_model_calls": 48,
+   "meta_sources": [
+    "v5_ctx_live_20261025.DONE.json",
+    "v5_ctx_live_20261025.RESULT.json"
+   ],
+   "execution_order_verified": true,
+   "dispatch_bijection": true,
+   "per_key_dispatch": {
+    "parent/E007": 8,
+    "candidate/E007": 8,
+    "candidate/E008": 8,
+    "parent/E008": 8,
+    "parent/E009": 8,
+    "candidate/E009": 8
+   },
+   "turn_dirs": 48,
+   "arms": [
+    "reference_product_v1",
+    "v5_purpose_aligned"
+   ],
+   "loci_per_arm": {
+    "v5_purpose_aligned": 24,
+    "reference_product_v1": 24
+   },
+   "unresolved_arm_dirs": [],
+   "prompt_archived": 48,
+   "state_archived": 24,
+   "config_identities": [
+    "non_stream_or_unknown"
+   ]
+  }
+ ],
+ "cells": 368,
+ "arms_seen": [
+  "evidence_memory_v1",
+  "goal_action_v1",
+  "reference_product_v1",
+  "v3_system_slim",
+  "v4_intent_context_r2",
+  "v5_purpose_aligned"
+ ],
+ "episodes": {
+  "E004": {
+   "family": "dev_expansion",
+   "loci": 8,
+   "arms": [
+    "reference_product_v1",
+    "v3_system_slim"
+   ],
+   "loci_with_4plus_arms": 0,
+   "arm_min": 2,
+   "arm_max": 2
+  },
+  "E005": {
+   "family": "dev_expansion",
+   "loci": 8,
+   "arms": [
+    "reference_product_v1",
+    "v3_system_slim"
+   ],
+   "loci_with_4plus_arms": 0,
+   "arm_min": 2,
+   "arm_max": 2
+  },
+  "E006": {
+   "family": "dev_expansion",
+   "loci": 8,
+   "arms": [
+    "evidence_memory_v1",
+    "goal_action_v1",
+    "reference_product_v1",
+    "v3_system_slim",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 8,
+   "arm_min": 5,
+   "arm_max": 5
+  },
+  "E007": {
+   "family": "dev_expansion",
+   "loci": 8,
+   "arms": [
+    "evidence_memory_v1",
+    "goal_action_v1",
+    "reference_product_v1",
+    "v4_intent_context_r2",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 8,
+   "arm_min": 5,
+   "arm_max": 5
+  },
+  "E008": {
+   "family": "dev_expansion",
+   "loci": 8,
+   "arms": [
+    "evidence_memory_v1",
+    "goal_action_v1",
+    "reference_product_v1",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 8,
+   "arm_min": 4,
+   "arm_max": 4
+  },
+  "E009": {
+   "family": "dev_expansion",
+   "loci": 8,
+   "arms": [
+    "reference_product_v1",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 0,
+   "arm_min": 2,
+   "arm_max": 2
+  },
+  "E010": {
+   "family": "dev_expansion",
+   "loci": 8,
+   "arms": [
+    "reference_product_v1",
+    "v4_intent_context_r2"
+   ],
+   "loci_with_4plus_arms": 0,
+   "arm_min": 2,
+   "arm_max": 2
+  },
+  "E012": {
+   "family": "dev_expansion",
+   "loci": 8,
+   "arms": [
+    "evidence_memory_v1",
+    "goal_action_v1",
+    "reference_product_v1",
+    "v4_intent_context_r2",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 8,
+   "arm_min": 5,
+   "arm_max": 5
+  },
+  "P001": {
+   "family": "positive_capability",
+   "loci": 8,
+   "arms": [
+    "reference_product_v1",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 0,
+   "arm_min": 2,
+   "arm_max": 2
+  },
+  "P002": {
+   "family": "positive_capability",
+   "loci": 8,
+   "arms": [
+    "reference_product_v1",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 0,
+   "arm_min": 2,
+   "arm_max": 2
+  },
+  "P003": {
+   "family": "positive_capability",
+   "loci": 8,
+   "arms": [
+    "reference_product_v1",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 0,
+   "arm_min": 2,
+   "arm_max": 2
+  },
+  "P004": {
+   "family": "positive_capability",
+   "loci": 8,
+   "arms": [
+    "reference_product_v1",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 0,
+   "arm_min": 2,
+   "arm_max": 2
+  },
+  "P005": {
+   "family": "positive_capability",
+   "loci": 8,
+   "arms": [
+    "reference_product_v1",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 0,
+   "arm_min": 2,
+   "arm_max": 2
+  },
+  "P006": {
+   "family": "positive_capability",
+   "loci": 8,
+   "arms": [
+    "reference_product_v1",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 0,
+   "arm_min": 2,
+   "arm_max": 2
+  }
+ },
+ "panel_candidates": {
+  "E006": {
+   "family": "dev_expansion",
+   "loci": 8,
+   "arms": [
+    "evidence_memory_v1",
+    "goal_action_v1",
+    "reference_product_v1",
+    "v3_system_slim",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 8,
+   "arm_min": 5,
+   "arm_max": 5
+  },
+  "E007": {
+   "family": "dev_expansion",
+   "loci": 8,
+   "arms": [
+    "evidence_memory_v1",
+    "goal_action_v1",
+    "reference_product_v1",
+    "v4_intent_context_r2",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 8,
+   "arm_min": 5,
+   "arm_max": 5
+  },
+  "E008": {
+   "family": "dev_expansion",
+   "loci": 8,
+   "arms": [
+    "evidence_memory_v1",
+    "goal_action_v1",
+    "reference_product_v1",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 8,
+   "arm_min": 4,
+   "arm_max": 4
+  },
+  "E012": {
+   "family": "dev_expansion",
+   "loci": 8,
+   "arms": [
+    "evidence_memory_v1",
+    "goal_action_v1",
+    "reference_product_v1",
+    "v4_intent_context_r2",
+    "v5_purpose_aligned"
+   ],
+   "loci_with_4plus_arms": 8,
+   "arm_min": 5,
+   "arm_max": 5
+  }
+ },
+ "panel_locus_detail": {
+  "E006_T01": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v3_system_slim": [
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E006_T02": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v3_system_slim": [
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E006_T03": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v3_system_slim": [
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E006_T04": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v3_system_slim": [
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E006_T05": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v3_system_slim": [
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E006_T06": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v3_system_slim": [
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E006_T07": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v3_system_slim": [
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E006_T08": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v3_system_slim": [
+    "v3_deletion_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E007_T01": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E007_T02": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E007_T03": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E007_T04": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E007_T05": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E007_T06": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E007_T07": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E007_T08": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E008_T01": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ]
+  },
+  "E008_T02": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ]
+  },
+  "E008_T03": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ]
+  },
+  "E008_T04": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ]
+  },
+  "E008_T05": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ]
+  },
+  "E008_T06": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ]
+  },
+  "E008_T07": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ]
+  },
+  "E008_T08": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage",
+    "v5_ctx_live_20261025/non_stream_or_unknown"
+   ]
+  },
+  "E012_T01": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E012_T02": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E012_T03": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E012_T04": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E012_T05": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E012_T06": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E012_T07": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  },
+  "E012_T08": {
+   "goal_action_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage"
+   ],
+   "reference_product_v1": [
+    "c4_sweep_a_orig_vs_goal_live_20261026/stream+usage",
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ],
+   "evidence_memory_v1": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v5_purpose_aligned": [
+    "c4_sweep_b_v5_vs_mem_live_20261026/stream+usage"
+   ],
+   "v4_intent_context_r2": [
+    "r2_ctx_live_20261024/non_stream_or_unknown"
+   ]
+  }
+ },
+ "panel_confound": {
+  "panel_loci": 32,
+  "distinct_batches_per_locus_histogram": {
+   "3": 24,
+   "4": 8
+  },
+  "clean_within_batch_pairs": [
+   {
+    "batch": "BATCH-C4-A-ORIG-VS-GOAL-20261026",
+    "pair": [
+     "goal_action_v1",
+     "reference_product_v1"
+    ],
+    "loci": 32,
+    "order_verified": true,
+    "dispatch_bijection": true,
+    "per_key_dispatch": {
+     "keys": 8,
+     "total_dispatches": 64,
+     "max_per_key": 8,
+     "matches_real_calls": true
+    },
+    "config_identities": [
+     "stream+usage"
+    ],
+    "note": "同批两臂、同一时间块、同一配置身份——这是唯一无批次混淆的对照"
+   },
+   {
+    "batch": "BATCH-C4-B-V5-VS-MEM-20261026",
+    "pair": [
+     "evidence_memory_v1",
+     "v5_purpose_aligned"
+    ],
+    "loci": 32,
+    "order_verified": true,
+    "dispatch_bijection": true,
+    "per_key_dispatch": {
+     "keys": 8,
+     "total_dispatches": 64,
+     "max_per_key": 8,
+     "matches_real_calls": true
+    },
+    "config_identities": [
+     "stream+usage"
+    ],
+    "note": "同批两臂、同一时间块、同一配置身份——这是唯一无批次混淆的对照"
+   },
+   {
+    "batch": "BATCH-NEWSTORY-96-20261026",
+    "pair": [
+     "reference_product_v1",
+     "v5_purpose_aligned"
+    ],
+    "loci": 48,
+    "order_verified": true,
+    "dispatch_bijection": true,
+    "per_key_dispatch": {
+     "keys": 12,
+     "total_dispatches": 96,
+     "max_per_key": 8,
+     "matches_real_calls": true
+    },
+    "config_identities": [
+     "stream+usage"
+    ],
+    "note": "同批两臂、同一时间块、同一配置身份——这是唯一无批次混淆的对照"
+   },
+   {
+    "batch": "BATCH-R2-CTX-20261024",
+    "pair": [
+     "reference_product_v1",
+     "v4_intent_context_r2"
+    ],
+    "loci": 24,
+    "order_verified": true,
+    "dispatch_bijection": true,
+    "per_key_dispatch": {
+     "keys": 6,
+     "total_dispatches": 48,
+     "max_per_key": 8,
+     "matches_real_calls": true
+    },
+    "config_identities": [
+     "non_stream_or_unknown"
+    ],
+    "note": "同批两臂、同一时间块、同一配置身份——这是唯一无批次混淆的对照"
+   },
+   {
+    "batch": "BATCH-V3-DELETION-20261024",
+    "pair": [
+     "reference_product_v1",
+     "v3_system_slim"
+    ],
+    "loci": 24,
+    "order_verified": true,
+    "dispatch_bijection": true,
+    "per_key_dispatch": {
+     "keys": 6,
+     "total_dispatches": 48,
+     "max_per_key": 8,
+     "matches_real_calls": true
+    },
+    "config_identities": [
+     "non_stream_or_unknown"
+    ],
+    "note": "同批两臂、同一时间块、同一配置身份——这是唯一无批次混淆的对照"
+   },
+   {
+    "batch": "BATCH-V5-CTX-20261025",
+    "pair": [
+     "reference_product_v1",
+     "v5_purpose_aligned"
+    ],
+    "loci": 24,
+    "order_verified": true,
+    "dispatch_bijection": true,
+    "per_key_dispatch": {
+     "keys": 6,
+     "total_dispatches": 48,
+     "max_per_key": 8,
+     "matches_real_calls": true
+    },
+    "config_identities": [
+     "non_stream_or_unknown"
+    ],
+    "note": "同批两臂、同一时间块、同一配置身份——这是唯一无批次混淆的对照"
+   }
+  ],
+  "arm_never_repeated_across_batches": [
+   "reference_product_v1",
+   "v5_purpose_aligned"
+  ]
+ },
+ "loci_with_4arms": [
+  "E006_T01",
+  "E006_T02",
+  "E006_T03",
+  "E006_T04",
+  "E006_T05",
+  "E006_T06",
+  "E006_T07",
+  "E006_T08",
+  "E007_T01",
+  "E007_T02",
+  "E007_T03",
+  "E007_T04",
+  "E007_T05",
+  "E007_T06",
+  "E007_T07",
+  "E007_T08",
+  "E008_T01",
+  "E008_T02",
+  "E008_T03",
+  "E008_T04",
+  "E008_T05",
+  "E008_T06",
+  "E008_T07",
+  "E008_T08",
+  "E012_T01",
+  "E012_T02",
+  "E012_T03",
+  "E012_T04",
+  "E012_T05",
+  "E012_T06",
+  "E012_T07",
+  "E012_T08"
+ ],
+ "loci_total": 112,
+ "excluded_by_design": {
+  "judge_stage_answers": "A3/judge_v1_* 批的单位是「成对判断」不是「臂×位点答卷」，本矩阵不计入同题可比性，只在裁判资格里报告",
+  "mock_capture_rehearsal_probe": "零真实调用的夹具/演练目录一律排除"
+ },
+ "real_model_calls_this_script": 0
+}

@@ -1,0 +1,2795 @@
+{
+ "protocol": "IRR-V2",
+ "ratings_dir": "logs\\judge_v1_1_mock_20261025_230547",
+ "split": "all",
+ "raters": [
+  "R1",
+  "R2",
+  "R3"
+ ],
+ "pre_registered": {
+  "min_n_rate": 20,
+  "min_n_insufficient_positions": 40,
+  "thresholds": {
+   "fact_detection": "≥90%",
+   "false_kill": "≤15%",
+   "insufficient_ok": "≥80%",
+   "order_flip": "≤15%",
+   "goal_agreement": "精确≥50% 且相邻≥85%"
+  },
+  "note": "口径在看到任何真实判词之前固定（见文件头 R1–R9）。"
+ },
+ "raters_note": "R1/R2/R3 = 同一模型服务同一 prompt 的不同会话，不是三个独立模型；一致率≠真值。本工具只测裁判，不产生候选胜负。",
+ "coverage": {
+  "R1": {
+   "primary_nodes": 60,
+   "parsed_ok": 60,
+   "unrated": 0,
+   "repeat_same": 12,
+   "repeat_swapped": 12
+  },
+  "R2": {
+   "primary_nodes": 60,
+   "parsed_ok": 60,
+   "unrated": 0,
+   "repeat_same": 0,
+   "repeat_swapped": 0
+  },
+  "R3": {
+   "primary_nodes": 60,
+   "parsed_ok": 60,
+   "unrated": 0,
+   "repeat_same": 0,
+   "repeat_swapped": 0
+  }
+ },
+ "pref_distribution": {
+  "R1": {
+   "说不清": 20,
+   "甲": 40
+  },
+  "R2": {
+   "说不清": 20,
+   "甲": 40
+  },
+  "R3": {
+   "说不清": 20,
+   "甲": 40
+  }
+ },
+ "fact_detection": {
+  "ref_f4_trusted": 27,
+  "per_rater": {
+   "R1": {
+    "hit": 4,
+    "miss": 5,
+    "n": 9,
+    "rate": 0.4444,
+    "min_n": 20,
+    "verdict": "insufficient_evidence",
+    "note": "各评审者分母独立列出（不把同一主张×3 当独立事实）"
+   },
+   "R2": {
+    "hit": 4,
+    "miss": 5,
+    "n": 9,
+    "rate": 0.4444,
+    "min_n": 20,
+    "verdict": "insufficient_evidence",
+    "note": "各评审者分母独立列出（不把同一主张×3 当独立事实）"
+   },
+   "R3": {
+    "hit": 4,
+    "miss": 5,
+    "n": 9,
+    "rate": 0.4444,
+    "min_n": 20,
+    "verdict": "insufficient_evidence",
+    "note": "各评审者分母独立列出（不把同一主张×3 当独立事实）"
+   }
+  },
+  "detail": [
+   {
+    "rater": "R1",
+    "node_id": "M003",
+    "arm": "甲",
+    "ref_text": "对，就是那种——不吵，鼓和吉他一层层往上铺，中间还能听见彼此说话",
+    "disputed": true
+   },
+   {
+    "rater": "R1",
+    "node_id": "M011",
+    "arm": "甲",
+    "ref_text": "不是读书会，这话我没说过，你记混了",
+    "disputed": true
+   },
+   {
+    "rater": "R1",
+    "node_id": "M034",
+    "arm": "甲",
+    "ref_text": "我提前把位置订了",
+    "disputed": false
+   },
+   {
+    "rater": "R1",
+    "node_id": "C049",
+    "arm": "乙",
+    "ref_text": "今晚十点老地方那场我已经订好了，你直接来就行",
+    "disputed": false
+   },
+   {
+    "rater": "R1",
+    "node_id": "C053",
+    "arm": "甲",
+    "ref_text": "可以，你不怕晒我就放心了",
+    "disputed": false
+   },
+   {
+    "rater": "R2",
+    "node_id": "M003",
+    "arm": "甲",
+    "ref_text": "对，就是那种——不吵，鼓和吉他一层层往上铺，中间还能听见彼此说话",
+    "disputed": true
+   },
+   {
+    "rater": "R2",
+    "node_id": "M011",
+    "arm": "甲",
+    "ref_text": "不是读书会，这话我没说过，你记混了",
+    "disputed": true
+   },
+   {
+    "rater": "R2",
+    "node_id": "M034",
+    "arm": "甲",
+    "ref_text": "我提前把位置订了",
+    "disputed": false
+   },
+   {
+    "rater": "R2",
+    "node_id": "C049",
+    "arm": "乙",
+    "ref_text": "今晚十点老地方那场我已经订好了，你直接来就行",
+    "disputed": false
+   },
+   {
+    "rater": "R2",
+    "node_id": "C053",
+    "arm": "甲",
+    "ref_text": "可以，你不怕晒我就放心了",
+    "disputed": false
+   },
+   {
+    "rater": "R3",
+    "node_id": "M003",
+    "arm": "甲",
+    "ref_text": "对，就是那种——不吵，鼓和吉他一层层往上铺，中间还能听见彼此说话",
+    "disputed": true
+   },
+   {
+    "rater": "R3",
+    "node_id": "M011",
+    "arm": "甲",
+    "ref_text": "不是读书会，这话我没说过，你记混了",
+    "disputed": true
+   },
+   {
+    "rater": "R3",
+    "node_id": "M034",
+    "arm": "甲",
+    "ref_text": "我提前把位置订了",
+    "disputed": false
+   },
+   {
+    "rater": "R3",
+    "node_id": "C049",
+    "arm": "乙",
+    "ref_text": "今晚十点老地方那场我已经订好了，你直接来就行",
+    "disputed": false
+   },
+   {
+    "rater": "R3",
+    "node_id": "C053",
+    "arm": "甲",
+    "ref_text": "可以，你不怕晒我就放心了",
+    "disputed": false
+   }
+  ],
+  "disputed_in_denominator": 9,
+  "aggregate": {
+   "n": 27,
+   "hit": 12,
+   "rate": 0.4444,
+   "ci95_lower": 0.2801,
+   "threshold": "≥90%",
+   "min_n": 20,
+   "informational": true,
+   "note": "并池汇总仅作信息列：同一主张×3 评审者不是独立事实（WORKER_EXECUTION 包C.4）",
+   "verdict": "not_qualified"
+  }
+ },
+ "free_expression_false_kill": {
+  "ref_protected_trusted": 138,
+  "per_rater": {
+   "R1": {
+    "killed": 8,
+    "protected_n": 46,
+    "rate": 0.1739,
+    "min_n": 20,
+    "verdict": "not_qualified"
+   },
+   "R2": {
+    "killed": 8,
+    "protected_n": 46,
+    "rate": 0.1739,
+    "min_n": 20,
+    "verdict": "not_qualified"
+   },
+   "R3": {
+    "killed": 8,
+    "protected_n": 46,
+    "rate": 0.1739,
+    "min_n": 20,
+    "verdict": "not_qualified"
+   }
+  },
+  "detail": [
+   {
+    "rater": "R1",
+    "node_id": "M003",
+    "arm": "乙",
+    "ref_text": "对，就是那种，基本没人声，一层一层铺上来，听完人会静下来",
+    "protected_axes": [
+     "类指常识",
+     "未提供",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R1",
+    "node_id": "C049",
+    "arm": "乙",
+    "ref_text": "懂，这种时候连手机都懒得点",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R1",
+    "node_id": "C050",
+    "arm": "乙",
+    "ref_text": "确实烧黑了，那次我不对",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R1",
+    "node_id": "C051",
+    "arm": "乙",
+    "ref_text": "所以你是嫌我跟你生分咯",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "确定",
+     "无"
+    ]
+   },
+   {
+    "rater": "R1",
+    "node_id": "C053",
+    "arm": "乙",
+    "ref_text": "换个晚上或者找有遮阳的，露天太晒了",
+    "protected_axes": [
+     "新提议",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R1",
+    "node_id": "C054",
+    "arm": "乙",
+    "ref_text": "那你有空就去呗",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "关键"
+    ]
+   },
+   {
+    "rater": "R1",
+    "node_id": "C055",
+    "arm": "乙",
+    "ref_text": "没有，你想多了，别太自恋",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "确定",
+     "次要"
+    ]
+   },
+   {
+    "rater": "R1",
+    "node_id": "C057",
+    "arm": "乙",
+    "ref_text": "你又要走",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R2",
+    "node_id": "M003",
+    "arm": "乙",
+    "ref_text": "对，就是那种，基本没人声，一层一层铺上来，听完人会静下来",
+    "protected_axes": [
+     "类指常识",
+     "未提供",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R2",
+    "node_id": "C049",
+    "arm": "乙",
+    "ref_text": "懂，这种时候连手机都懒得点",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R2",
+    "node_id": "C050",
+    "arm": "乙",
+    "ref_text": "确实烧黑了，那次我不对",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R2",
+    "node_id": "C051",
+    "arm": "乙",
+    "ref_text": "所以你是嫌我跟你生分咯",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "确定",
+     "无"
+    ]
+   },
+   {
+    "rater": "R2",
+    "node_id": "C053",
+    "arm": "乙",
+    "ref_text": "换个晚上或者找有遮阳的，露天太晒了",
+    "protected_axes": [
+     "新提议",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R2",
+    "node_id": "C054",
+    "arm": "乙",
+    "ref_text": "那你有空就去呗",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "关键"
+    ]
+   },
+   {
+    "rater": "R2",
+    "node_id": "C055",
+    "arm": "乙",
+    "ref_text": "没有，你想多了，别太自恋",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "确定",
+     "次要"
+    ]
+   },
+   {
+    "rater": "R2",
+    "node_id": "C057",
+    "arm": "乙",
+    "ref_text": "你又要走",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R3",
+    "node_id": "M003",
+    "arm": "乙",
+    "ref_text": "对，就是那种，基本没人声，一层一层铺上来，听完人会静下来",
+    "protected_axes": [
+     "类指常识",
+     "未提供",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R3",
+    "node_id": "C049",
+    "arm": "乙",
+    "ref_text": "懂，这种时候连手机都懒得点",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R3",
+    "node_id": "C050",
+    "arm": "乙",
+    "ref_text": "确实烧黑了，那次我不对",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R3",
+    "node_id": "C051",
+    "arm": "乙",
+    "ref_text": "所以你是嫌我跟你生分咯",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "确定",
+     "无"
+    ]
+   },
+   {
+    "rater": "R3",
+    "node_id": "C053",
+    "arm": "乙",
+    "ref_text": "换个晚上或者找有遮阳的，露天太晒了",
+    "protected_axes": [
+     "新提议",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   },
+   {
+    "rater": "R3",
+    "node_id": "C054",
+    "arm": "乙",
+    "ref_text": "那你有空就去呗",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "关键"
+    ]
+   },
+   {
+    "rater": "R3",
+    "node_id": "C055",
+    "arm": "乙",
+    "ref_text": "没有，你想多了，别太自恋",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "确定",
+     "次要"
+    ]
+   },
+   {
+    "rater": "R3",
+    "node_id": "C057",
+    "arm": "乙",
+    "ref_text": "你又要走",
+    "protected_axes": [
+     "观点",
+     "不适用",
+     "有条件",
+     "无"
+    ]
+   }
+  ],
+  "mechanical_only_informational": 3024,
+  "aggregate": {
+   "n": 138,
+   "killed": 24,
+   "rate": 0.1739,
+   "ci95_upper": 0.2358,
+   "threshold": "≤15%",
+   "min_n": 20,
+   "verdict": "not_qualified"
+  }
+ },
+ "ref_conflict_claims_detection": {
+  "ref_conflict_trusted": 3,
+  "per_rater": {
+   "R1": {
+    "n": 1,
+    "hit": 1,
+    "rate": 1.0
+   },
+   "R2": {
+    "n": 1,
+    "hit": 1,
+    "rate": 1.0
+   },
+   "R3": {
+    "n": 1,
+    "hit": 1,
+    "rate": 1.0
+   }
+  },
+  "detail": []
+ },
+ "quote_validity": {
+  "n_checked": 360,
+  "n_invalid": 360,
+  "per_rater_invalid": {
+   "R1": 120,
+   "R2": 120,
+   "R3": 120
+  },
+  "examples": {
+   "R1": [
+    {
+     "node_id": "M001",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M001",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M002",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M002",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M003",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M003",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M004",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M004",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M005",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M005",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M006",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M006",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M007",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M007",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M008",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M008",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M009",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M009",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M010",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M010",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M011",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M011",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M012",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M012",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M013",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M013",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M014",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M014",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M015",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M015",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M016",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M016",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M017",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M017",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M018",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M018",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M019",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M019",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M020",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M020",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M021",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M021",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M022",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M022",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M023",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M023",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M024",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M024",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M025",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M025",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M026",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M026",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M027",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M027",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M028",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M028",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M029",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M029",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M030",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M030",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M031",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M031",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M032",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M032",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M033",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M033",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M034",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M034",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M035",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M035",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M036",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M036",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M037",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M037",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M038",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M038",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M039",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M039",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M040",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M040",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M041",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M041",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M042",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M042",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M043",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M043",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M044",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M044",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M045",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M045",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M046",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M046",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M047",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M047",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M048",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M048",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C049",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C049",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C050",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C050",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C051",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C051",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C052",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C052",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C053",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C053",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C054",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C054",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C055",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C055",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C056",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C056",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C057",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C057",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C058",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C058",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C059",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C059",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C060",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C060",
+     "quote": "NOT-A-REAL-QUOTE"
+    }
+   ],
+   "R2": [
+    {
+     "node_id": "M001",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M001",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M002",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M002",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M003",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M003",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M004",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M004",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M005",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M005",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M006",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M006",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M007",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M007",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M008",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M008",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M009",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M009",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M010",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M010",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M011",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M011",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M012",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M012",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M013",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M013",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M014",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M014",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M015",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M015",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M016",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M016",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M017",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M017",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M018",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M018",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M019",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M019",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M020",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M020",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M021",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M021",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M022",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M022",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M023",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M023",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M024",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M024",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M025",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M025",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M026",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M026",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M027",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M027",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M028",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M028",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M029",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M029",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M030",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M030",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M031",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M031",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M032",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M032",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M033",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M033",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M034",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M034",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M035",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M035",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M036",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M036",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M037",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M037",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M038",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M038",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M039",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M039",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M040",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M040",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M041",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M041",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M042",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M042",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M043",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M043",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M044",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M044",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M045",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M045",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M046",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M046",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M047",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M047",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M048",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M048",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C049",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C049",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C050",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C050",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C051",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C051",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C052",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C052",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C053",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C053",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C054",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C054",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C055",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C055",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C056",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C056",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C057",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C057",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C058",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C058",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C059",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C059",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C060",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C060",
+     "quote": "NOT-A-REAL-QUOTE"
+    }
+   ],
+   "R3": [
+    {
+     "node_id": "M001",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M001",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M002",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M002",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M003",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M003",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M004",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M004",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M005",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M005",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M006",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M006",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M007",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M007",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M008",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M008",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M009",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M009",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M010",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M010",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M011",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M011",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M012",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M012",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M013",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M013",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M014",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M014",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M015",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M015",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M016",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M016",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M017",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M017",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M018",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M018",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M019",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M019",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M020",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M020",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M021",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M021",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M022",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M022",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M023",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M023",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M024",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M024",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M025",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M025",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M026",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M026",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M027",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M027",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M028",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M028",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M029",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M029",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M030",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M030",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M031",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M031",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M032",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M032",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M033",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M033",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M034",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M034",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M035",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M035",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M036",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M036",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M037",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M037",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M038",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M038",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M039",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M039",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M040",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M040",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M041",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M041",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M042",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M042",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M043",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M043",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M044",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M044",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M045",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M045",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M046",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M046",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M047",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M047",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "M048",
+     "quote": "[{'ts': '202"
+    },
+    {
+     "node_id": "M048",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C049",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C049",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C050",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C050",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C051",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C051",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C052",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C052",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C053",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C053",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C054",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C054",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C055",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C055",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C056",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C056",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C057",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C057",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C058",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C058",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C059",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C059",
+     "quote": "NOT-A-REAL-QUOTE"
+    },
+    {
+     "node_id": "C060",
+     "quote": "[{'ts': None"
+    },
+    {
+     "node_id": "C060",
+     "quote": "NOT-A-REAL-QUOTE"
+    }
+   ]
+  }
+ },
+ "insufficient_info": {
+  "positions": 324,
+  "per_rater": {
+   "R1": {
+    "ok": 54,
+    "wrong": 0,
+    "na": 54,
+    "missing": 0,
+    "n": 108,
+    "ok_rate_incl_na_missing": 0.5,
+    "ok_rate_excl_na_missing": 1.0
+   },
+   "R2": {
+    "ok": 54,
+    "wrong": 0,
+    "na": 54,
+    "missing": 0,
+    "n": 108,
+    "ok_rate_incl_na_missing": 0.5,
+    "ok_rate_excl_na_missing": 1.0
+   },
+   "R3": {
+    "ok": 54,
+    "wrong": 0,
+    "na": 54,
+    "missing": 0,
+    "n": 108,
+    "ok_rate_incl_na_missing": 0.5,
+    "ok_rate_excl_na_missing": 1.0
+   }
+  },
+  "detail_wrong": [],
+  "aggregate": {
+   "positions": 324,
+   "ok": 162,
+   "ok_rate": 0.5,
+   "threshold": "≥80%",
+   "min_n": 40,
+   "verdict": "not_qualified",
+   "note": "na=评审者未作信息不足判定（计入分母并单列，不洗成通过）；wrong=把无据细节当已核实处理。"
+  }
+ },
+ "goal": {
+  "invalid_scores": [],
+  "agreement_pairs": {
+   "R1-R2": {
+    "n": 120,
+    "exact": 120,
+    "adjacent_within1": 120,
+    "exact_percent": 1.0,
+    "adjacent_percent": 1.0
+   },
+   "R1-R3": {
+    "n": 120,
+    "exact": 120,
+    "adjacent_within1": 120,
+    "exact_percent": 1.0,
+    "adjacent_percent": 1.0
+   },
+   "R2-R3": {
+    "n": 120,
+    "exact": 120,
+    "adjacent_within1": 120,
+    "exact_percent": 1.0,
+    "adjacent_percent": 1.0
+   }
+  },
+  "vs_reference": null,
+  "action_range": {
+   "raters": {
+    "R1": {
+     "nodes_with_goal_reference": 60,
+     "in_range": 14,
+     "in_range_total": 120,
+     "note": "探索性覆盖（简单包含匹配），不构成资格"
+    },
+    "R2": {
+     "nodes_with_goal_reference": 60,
+     "in_range": 14,
+     "in_range_total": 120,
+     "note": "探索性覆盖（简单包含匹配），不构成资格"
+    },
+    "R3": {
+     "nodes_with_goal_reference": 60,
+     "in_range": 14,
+     "in_range_total": 120,
+     "note": "探索性覆盖（简单包含匹配），不构成资格"
+    }
+   },
+   "forbidden": {
+    "R1": {
+     "forbidden_hit": 3,
+     "forbidden_total": 96,
+     "note": "action_basis 落入参考禁止动作=疑似目标违规（探索性，需证据复核确认）"
+    },
+    "R2": {
+     "forbidden_hit": 3,
+     "forbidden_total": 96,
+     "note": "action_basis 落入参考禁止动作=疑似目标违规（探索性，需证据复核确认）"
+    },
+    "R3": {
+     "forbidden_hit": 3,
+     "forbidden_total": 96,
+     "note": "action_basis 落入参考禁止动作=疑似目标违规（探索性，需证据复核确认）"
+    }
+   },
+   "typical_out_of_range": [
+    {
+     "rater": "R1",
+     "node_id": "M001",
+     "arm": "乙",
+     "action_basis": "推进",
+     "allowed": [
+      "先接住'想离家出走'的累",
+      "可一句共情或轻问"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M002",
+     "arm": "甲",
+     "action_basis": "接住",
+     "allowed": [
+      "据她说的'想看livehouse但不吵'顺势创造机会",
+      "把话头接下来但留余地",
+      "幽默/间接/直接表达均可"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M002",
+     "arm": "乙",
+     "action_basis": "推进",
+     "allowed": [
+      "据她说的'想看livehouse但不吵'顺势创造机会",
+      "把话头接下来但留余地",
+      "幽默/间接/直接表达均可"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M003",
+     "arm": "甲",
+     "action_basis": "接住",
+     "allowed": [
+      "回扣\"我上次提过这支乐队\"这一真实旧信息；记不清细节就说记不清",
+      "按她\"怕吵/喜欢后摇\"的偏好提出筛选方向，并去查场次或现场反馈再回她",
+      "以曲风常识带条件口气回应（如\"后摇大多没人声，具体这场我去看评价\"）",
+      "把选择权交给她（你挑/我先看两场再发你）"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M003",
+     "arm": "乙",
+     "action_basis": "推进",
+     "allowed": [
+      "回扣\"我上次提过这支乐队\"这一真实旧信息；记不清细节就说记不清",
+      "按她\"怕吵/喜欢后摇\"的偏好提出筛选方向，并去查场次或现场反馈再回她",
+      "以曲风常识带条件口气回应（如\"后摇大多没人声，具体这场我去看评价\"）",
+      "把选择权交给她（你挑/我先看两场再发你）"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M004",
+     "arm": "乙",
+     "action_basis": "推进",
+     "allowed": [
+      "接住'再看状态'不追逼",
+      "轻松留余地"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M005",
+     "arm": "甲",
+     "action_basis": "接住",
+     "allowed": [
+      "跟着她把话题挪到'周末还干嘛'正常聊",
+      "不硬扯回约会上"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M005",
+     "arm": "乙",
+     "action_basis": "推进",
+     "allowed": [
+      "跟着她把话题挪到'周末还干嘛'正常聊",
+      "不硬扯回约会上"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M006",
+     "arm": "甲",
+     "action_basis": "接住",
+     "allowed": [
+      "把状态从暂定升为她要买票去",
+      "配合、确认、别夺主导"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M006",
+     "arm": "乙",
+     "action_basis": "推进",
+     "allowed": [
+      "把状态从暂定升为她要买票去",
+      "配合、确认、别夺主导"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M007",
+     "arm": "甲",
+     "action_basis": "接住",
+     "allowed": [
+      "确认'就这么说定了'",
+      "一句轻松收尾"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M007",
+     "arm": "乙",
+     "action_basis": "推进",
+     "allowed": [
+      "确认'就这么说定了'",
+      "一句轻松收尾"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M008",
+     "arm": "甲",
+     "action_basis": "接住",
+     "allowed": [
+      "针对'要不要带耳塞'给具体看法",
+      "承认她本就怕吵(T02 是她本人说的)并回应这一顾虑",
+      "分清'同事说她去了会头疼'是同事的推断,不是她已下的结论"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M008",
+     "arm": "乙",
+     "action_basis": "推进",
+     "allowed": [
+      "针对'要不要带耳塞'给具体看法",
+      "承认她本就怕吵(T02 是她本人说的)并回应这一顾虑",
+      "分清'同事说她去了会头疼'是同事的推断,不是她已下的结论"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M009",
+     "arm": "甲",
+     "action_basis": "接住",
+     "allowed": [
+      "回应她想陪妹妹的心意",
+      "把她的心意当主体而非替她安排"
+     ]
+    }
+   ],
+   "typical_forbidden_hits": [
+    {
+     "rater": "R1",
+     "node_id": "M012",
+     "arm": "乙",
+     "action_basis": "推进",
+     "forbidden": [
+      "把'小林夸你稳重'当成 HER 在示爱并立刻推进",
+      "冷处理否认自己"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M021",
+     "arm": "乙",
+     "action_basis": "推进",
+     "forbidden": [
+      "把同事的评价当作她本人的表态并据此推进关系判断",
+      "据此擅自安排带东西/买东西",
+      "把来源（同事）与对象（ME）互相张冠李戴"
+     ]
+    },
+    {
+     "rater": "R1",
+     "node_id": "M036",
+     "arm": "乙",
+     "action_basis": "推进",
+     "forbidden": [
+      "当场把话题推进成'那我们算在一起了吗'式关系逼定",
+      "过度正经解释'我不累'把气氛聊死",
+      "冷处理或贬低她的主动"
+     ]
+    },
+    {
+     "rater": "R2",
+     "node_id": "M012",
+     "arm": "乙",
+     "action_basis": "推进",
+     "forbidden": [
+      "把'小林夸你稳重'当成 HER 在示爱并立刻推进",
+      "冷处理否认自己"
+     ]
+    },
+    {
+     "rater": "R2",
+     "node_id": "M021",
+     "arm": "乙",
+     "action_basis": "推进",
+     "forbidden": [
+      "把同事的评价当作她本人的表态并据此推进关系判断",
+      "据此擅自安排带东西/买东西",
+      "把来源（同事）与对象（ME）互相张冠李戴"
+     ]
+    },
+    {
+     "rater": "R2",
+     "node_id": "M036",
+     "arm": "乙",
+     "action_basis": "推进",
+     "forbidden": [
+      "当场把话题推进成'那我们算在一起了吗'式关系逼定",
+      "过度正经解释'我不累'把气氛聊死",
+      "冷处理或贬低她的主动"
+     ]
+    },
+    {
+     "rater": "R3",
+     "node_id": "M012",
+     "arm": "乙",
+     "action_basis": "推进",
+     "forbidden": [
+      "把'小林夸你稳重'当成 HER 在示爱并立刻推进",
+      "冷处理否认自己"
+     ]
+    },
+    {
+     "rater": "R3",
+     "node_id": "M021",
+     "arm": "乙",
+     "action_basis": "推进",
+     "forbidden": [
+      "把同事的评价当作她本人的表态并据此推进关系判断",
+      "据此擅自安排带东西/买东西",
+      "把来源（同事）与对象（ME）互相张冠李戴"
+     ]
+    },
+    {
+     "rater": "R3",
+     "node_id": "M036",
+     "arm": "乙",
+     "action_basis": "推进",
+     "forbidden": [
+      "当场把话题推进成'那我们算在一起了吗'式关系逼定",
+      "过度正经解释'我不累'把气氛聊死",
+      "冷处理或贬低她的主动"
+     ]
+    }
+   ]
+  },
+  "vs_reference_numeric": {
+   "available": false,
+   "reason": "参考侧 goal_reference.goal 为目标文字描述（6 个 dev 节点），无数值金标；数字正确率不可测，不冒充。接地探索见 action_range / forbidden_hits。"
+  },
+  "agreement_verdicts": {
+   "R1-R2": "qualified",
+   "R1-R3": "qualified",
+   "R2-R3": "qualified"
+  },
+  "agreement_note": "一致率≠真值；通过只说明本手册下评审者稳定，不说明候选好坏。"
+ },
+ "attribution": {
+  "nodes": 20,
+  "pairs": {
+   "R1-R2": {
+    "matched_claims": 40,
+    "severity_agree": 40,
+    "note": "参考侧无逐主张归属标签 → 资格=insufficient_evidence（一致率仅探索）"
+   },
+   "R1-R3": {
+    "matched_claims": 40,
+    "severity_agree": 40,
+    "note": "参考侧无逐主张归属标签 → 资格=insufficient_evidence（一致率仅探索）"
+   },
+   "R2-R3": {
+    "matched_claims": 40,
+    "severity_agree": 40,
+    "note": "参考侧无逐主张归属标签 → 资格=insufficient_evidence（一致率仅探索）"
+   }
+  },
+  "verdict": "insufficient_evidence",
+  "reason": "本包参考标签不含逐主张归属金标；如需资格须新构造归属参考。"
+ },
+ "protocol_separation": {
+  "per_rater": {
+   "R1": {
+    "n": 96,
+    "agree": 95,
+    "rate": 0.9896,
+    "detail": [
+     {
+      "node_id": "M008",
+      "arm": "甲",
+      "ref_truth_anomaly": true,
+      "judge": "none"
+     }
+    ]
+   },
+   "R2": {
+    "n": 96,
+    "agree": 95,
+    "rate": 0.9896,
+    "detail": [
+     {
+      "node_id": "M008",
+      "arm": "甲",
+      "ref_truth_anomaly": true,
+      "judge": "none"
+     }
+    ]
+   },
+   "R3": {
+    "n": 96,
+    "agree": 95,
+    "rate": 0.9896,
+    "detail": [
+     {
+      "node_id": "M008",
+      "arm": "甲",
+      "ref_truth_anomaly": true,
+      "judge": "none"
+     }
+    ]
+   }
+  },
+  "note": "探索性：protocol_truth 结构化字段 vs 判词 protocol_anomaly；无原始字节的控制节点跳过。"
+ },
+ "order_and_retest": {
+  "R1_repeat_same": {
+   "matrix": {
+    "甲": {
+     "甲": 4,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 4,
+     "未评": 0
+    },
+    "乙": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都行": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都不想": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "说不清": {
+     "甲": 4,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "未评": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    }
+   },
+   "aggregate": {
+    "unknown->decisive": 4,
+    "decisive->decisive": 4,
+    "decisive->unknown": 4
+   },
+   "n_pairs": 12
+  },
+  "R1_repeat_swapped": {
+   "matrix": {
+    "甲": {
+     "甲": 5,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 3,
+     "未评": 0
+    },
+    "乙": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都行": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都不想": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "说不清": {
+     "甲": 3,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 1,
+     "未评": 0
+    },
+    "未评": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    }
+   },
+   "aggregate": {
+    "decisive->decisive": 5,
+    "decisive->unknown": 3,
+    "unknown->decisive": 3,
+    "unknown->unknown": 1
+   },
+   "n_pairs": 12
+  },
+  "R1-R2_cross": {
+   "matrix": {
+    "甲": {
+     "甲": 40,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "乙": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都行": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都不想": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "说不清": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 20,
+     "未评": 0
+    },
+    "未评": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    }
+   },
+   "aggregate": {
+    "unknown->unknown": 20,
+    "decisive->decisive": 40
+   },
+   "n_pairs": 60
+  },
+  "R1-R3_cross": {
+   "matrix": {
+    "甲": {
+     "甲": 40,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "乙": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都行": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都不想": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "说不清": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 20,
+     "未评": 0
+    },
+    "未评": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    }
+   },
+   "aggregate": {
+    "unknown->unknown": 20,
+    "decisive->decisive": 40
+   },
+   "n_pairs": 60
+  },
+  "R2-R3_cross": {
+   "matrix": {
+    "甲": {
+     "甲": 40,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "乙": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都行": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "都不想": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    },
+    "说不清": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 20,
+     "未评": 0
+    },
+    "未评": {
+     "甲": 0,
+     "乙": 0,
+     "都行": 0,
+     "都不想": 0,
+     "说不清": 0,
+     "未评": 0
+    }
+   },
+   "aggregate": {
+    "unknown->unknown": 20,
+    "decisive->decisive": 40
+   },
+   "n_pairs": 60
+  }
+ },
+ "order_flip_verdicts": [
+  {
+   "rater": "R1",
+   "decisive_n": 5,
+   "same": 5,
+   "flips": 0,
+   "flip_rate": 0.0,
+   "threshold": "≤15%",
+   "verdict": "insufficient_evidence"
+  }
+ ],
+ "qualification": {
+  "fact_detection": "insufficient_evidence",
+  "free_expression_false_kill": "not_qualified",
+  "insufficient_info": "not_qualified",
+  "goal_agreement": "qualified",
+  "goal_vs_reference_numeric": "not_available_no_numeric_reference",
+  "attribution": "insufficient_evidence",
+  "order_sensitivity": "insufficient_evidence",
+  "per_rater_detail": {
+   "fact_detection": {
+    "R1": "insufficient_evidence",
+    "R2": "insufficient_evidence",
+    "R3": "insufficient_evidence"
+   },
+   "free_expression_false_kill": {
+    "R1": "not_qualified",
+    "R2": "not_qualified",
+    "R3": "not_qualified"
+   },
+   "insufficient_info": {
+    "R1": "not_qualified",
+    "R2": "not_qualified",
+    "R3": "not_qualified"
+   },
+   "goal_agreement": {
+    "R1-R2": "qualified",
+    "R1-R3": "qualified",
+    "R2-R3": "qualified"
+   }
+  },
+  "note": "qualified 维才可 AI 辅助批量复核；not_qualified/insufficient_evidence 维度转证据复核或保留未评，不阻塞资源/协议结论，也不得偷过质量晋级。资格按评审者分母计（不是主张×3 并池）。"
+ },
+ "judge_claims_total": {
+  "R1": 120,
+  "R2": 120,
+  "R3": 120
+ }
+}

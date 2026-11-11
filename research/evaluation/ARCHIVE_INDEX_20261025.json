@@ -1,0 +1,216 @@
+{
+ "archived_at": "2026-10-25",
+ "real_model_calls_this_session": 0,
+ "budget": {
+  "AUTH-HARNESS-PERF-PHASE1-20261025-01": {
+   "cap": 256,
+   "used": 4,
+   "remaining": 252
+  }
+ },
+ "evaluation_method_frozen_before_test_judges": true,
+ "frozen_reference_sha256": "e8d06608eaa1ecf286f7ca40d281a821e61d3e06b47d34456b1b410cffd06b46",
+ "judge_batch_run": false,
+ "stream_integration_8calls_run": false,
+ "v5_rescore_with_v1_1": "not_started",
+ "v5_verdict": "undetermined",
+ "items": [
+  {
+   "label": "评审量尺(修订)",
+   "path": "evaluation/JUDGE_MANUAL_V1_1.md",
+   "exists": true,
+   "sha256_16": "dbbbf9cde656875e",
+   "bytes": 9962
+  },
+  {
+   "label": "评审量尺(旧,历史)",
+   "path": "evaluation/JUDGE_MANUAL_V1.md",
+   "exists": true,
+   "sha256_16": "66e6286259bfbaae",
+   "bytes": 7659
+  },
+  {
+   "label": "缺陷卡修订(6张)",
+   "path": "benchmark/dev_expansion_v01/05_GRADING_CARDS_R2REV_20261025.json",
+   "exists": true,
+   "sha256_16": "530a3cd66c6c67fa",
+   "bytes": 24789
+  },
+  {
+   "label": "卡片冲突审计",
+   "path": "evaluation/CARD_CONFLICTS_V1.json",
+   "exists": true,
+   "sha256_16": "391fcac175115514",
+   "bytes": 4581
+  },
+  {
+   "label": "六列交付/费用 v2",
+   "path": "evaluation/DELIVERY_AND_COST_COLUMNS_V2.json",
+   "exists": true,
+   "sha256_16": "61150f23ad4c2285",
+   "bytes": 21230
+  },
+  {
+   "label": "证据更正",
+   "path": "evaluation/EVIDENCE_CORRECTIONS_V1.md",
+   "exists": true,
+   "sha256_16": "258230bd8557fe29",
+   "bytes": 6461
+  },
+  {
+   "label": "标定包 60对(公开评审输入)",
+   "path": "evaluation/CALIBRATION_PACKET_V1_1/nodes_public.jsonl",
+   "exists": true,
+   "sha256_16": "63cfe6801ae2d9cb",
+   "bytes": 259223
+  },
+  {
+   "label": "标定包 60对(内部含分组)",
+   "path": "evaluation/CALIBRATION_PACKET_V1_1/nodes.jsonl",
+   "exists": true,
+   "sha256_16": "5d96dd0711736331",
+   "bytes": 283087
+  },
+  {
+   "label": "密件(臂身份/散列)",
+   "path": "evaluation/CALIBRATION_PACKET_V1_1/SEALED_KEY_V1_1.json",
+   "exists": true,
+   "sha256_16": "d758b75f5c268b7d",
+   "bytes": 43909
+  },
+  {
+   "label": "参考标签(裁判前冻结)",
+   "path": "evaluation/CALIBRATION_PACKET_V1_1/REFERENCE_LABELS_V1_1.json",
+   "exists": true,
+   "sha256_16": "e8d06608eaa1ecf2",
+   "bytes": 888073
+  },
+  {
+   "label": "冻结清单(哈希)",
+   "path": "evaluation/CALIBRATION_PACKET_V1_1/FROZEN_MANIFEST.json",
+   "exists": true,
+   "sha256_16": "c41b3f968e18e386",
+   "bytes": 1302
+  },
+  {
+   "label": "人工核对覆盖表",
+   "path": "evaluation/CALIBRATION_PACKET_V1_1/reference_overrides.json",
+   "exists": true,
+   "sha256_16": "d673fdf33b083d77",
+   "bytes": 8196
+  },
+  {
+   "label": "控制项构造参考",
+   "path": "evaluation/CALIBRATION_PACKET_V1_1/CONTROLS_REF.json",
+   "exists": true,
+   "sha256_16": "708bff7ffbea0abb",
+   "bytes": 9908
+  },
+  {
+   "label": "主张机械初稿",
+   "path": "evaluation/CALIBRATION_PACKET_V1_1/CLAIMS_MECHANICAL.json",
+   "exists": true,
+   "sha256_16": "15e31827504445f2",
+   "bytes": 555494
+  },
+  {
+   "label": "新6故事 题面",
+   "path": "benchmark/positive_capability_20261025/01_EPISODES_P1.json",
+   "exists": true,
+   "sha256_16": "0aae58594e0e4634",
+   "bytes": 34939
+  },
+  {
+   "label": "新6故事 卡片(48位)",
+   "path": "benchmark/positive_capability_20261025/02_GRADING_CARDS_P1.json",
+   "exists": true,
+   "sha256_16": "d0aeda20beb1f3bd",
+   "bytes": 72294
+  },
+  {
+   "label": "产品接入盘点",
+   "path": "integration_preview/PRODUCT_WIRING_INVENTORY_V1.md",
+   "exists": true,
+   "sha256_16": "fafdcdcaaaf482f6",
+   "bytes": 15494
+  },
+  {
+   "label": "阈值预声明",
+   "path": "evaluation/JUDGE_QUALITY_THRESHOLDS_DECLARED_V1.md",
+   "exists": true,
+   "sha256_16": "188a20fbc64278d7",
+   "bytes": 4640
+  },
+  {
+   "label": "v5 独立重算(null更正)",
+   "path": "refs/experiment_protocol_20261023/v5_next_batch_20261025/V5_INDEPENDENT_RESULTS_REV01.json",
+   "exists": true,
+   "sha256_16": "dabc54ee41a33b40",
+   "bytes": 4903
+  },
+  {
+   "label": "流式计时接通测试 v2",
+   "path": "tools/test_stream_timing_v2.py",
+   "exists": true,
+   "sha256_16": "2dfe0535516d4266",
+   "bytes": 9861
+  },
+  {
+   "label": "流式计时接通测试 v1",
+   "path": "tools/test_stream_timing.py",
+   "exists": true,
+   "sha256_16": "c88c6d65cec255ac",
+   "bytes": 10467
+  },
+  {
+   "label": "新故事自检",
+   "path": "tools/test_positive_capability_stories_p1.py",
+   "exists": true,
+   "sha256_16": "ed525c03054a86c2",
+   "bytes": 21093
+  },
+  {
+   "label": "裁判批次脚本(未跑通)",
+   "path": "tools/run_judge_batch_v1_1.py",
+   "exists": true,
+   "sha256_16": "63b839aacf4b8527",
+   "bytes": 11290
+  },
+  {
+   "label": "标定包生成器",
+   "path": "tools/build_calibration_packet_v1_1.py",
+   "exists": true,
+   "sha256_16": "69efdd3cbf077ab3",
+   "bytes": 39704
+  },
+  {
+   "label": "参考冻结器",
+   "path": "tools/build_reference_labels_v1_1.py",
+   "exists": true,
+   "sha256_16": "b411cb5d45d41665",
+   "bytes": 13027
+  },
+  {
+   "label": "交接文档",
+   "path": "refs/experiment_protocol_20261023/evaluation_baseline_review_20261025/HANDOFF_TO_NEXT_SESSION.md",
+   "exists": true,
+   "sha256_16": "65cc8f9f5a35581e",
+   "bytes": 15492
+  },
+  {
+   "label": "执行书",
+   "path": "refs/experiment_protocol_20261023/evaluation_baseline_review_20261025/WORKER_EXECUTION.md",
+   "exists": true,
+   "sha256_16": "307314eabf3fb0c3",
+   "bytes": 11119
+  },
+  {
+   "label": "独立复核",
+   "path": "refs/experiment_protocol_20261023/evaluation_baseline_review_20261025/REVIEW.md",
+   "exists": true,
+   "sha256_16": "d4d32067406970fa",
+   "bytes": 10750
+  }
+ ],
+ "missing": []
+}

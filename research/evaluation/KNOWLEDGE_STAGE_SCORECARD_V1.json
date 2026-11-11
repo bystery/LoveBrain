@@ -1,0 +1,472 @@
+{
+ "kind": "knowledge_stage_scorecard",
+ "date": "2026-10-26",
+ "panel": {
+  "arms": [
+   "evidence_memory_v1",
+   "goal_action_v1",
+   "reference_product_v1",
+   "v5_purpose_aligned"
+  ],
+  "episodes": [
+   "E006",
+   "E007",
+   "E008",
+   "E012"
+  ],
+  "turns": 8
+ },
+ "thresholds": {
+  "fuzzy_entry": 0.3,
+  "store": 0.3,
+  "anchor_df": 3,
+  "anchor_need": "max(1, ceil(anchors/4))"
+ },
+ "atoms_total": 45,
+ "atoms_excluded": 38,
+ "atom_exclusion_reasons": "note/intent 非聊天消息，不计入知识原子集",
+ "audit_rows_s3": 575,
+ "audit_rows_s2": 53,
+ "store_stats": {
+  "reference_product_v1": {
+   "E006": {
+    "files": [
+     "moment/plan.md",
+     "moment/recent.md",
+     "moment/scene.md",
+     "moment/topic.md",
+     "raw_topic.md"
+    ],
+    "entries": 16,
+    "src_entries": 14,
+    "plan_entries": 2,
+    "src_resolvable": 14,
+    "src_rank1": 13,
+    "src_supported": 10,
+    "src_weak": 4,
+    "src_unsupported": 0,
+    "plan_clusters": 2,
+    "plan_dup_clusters": {},
+    "plan_date_conflicts": {},
+    "plan_status_conflicts": {},
+    "plan_injected_items": 0,
+    "ongoing_loci": 0,
+    "notes_turns": 8,
+    "src_resolvable_rate": 100.0,
+    "src_rank1_rate": 92.9,
+    "src_supported_rate": 71.4,
+    "src_weak_rate": 28.6,
+    "src_unsupported_rate": 0.0,
+    "speaker_ok": 14,
+    "speaker_bad": 0,
+    "speaker_ok_rate": 100.0,
+    "distilled_files": [
+     "moment/plan.md",
+     "moment/scene.md",
+     "moment/topic.md"
+    ],
+    "archive_files": [
+     "moment/recent.md",
+     "raw_topic.md"
+    ]
+   },
+   "E007": {
+    "files": [
+     "moment/plan.md",
+     "moment/recent.md",
+     "moment/scene.md",
+     "moment/topic.md",
+     "raw_chat.md",
+     "raw_scene.md"
+    ],
+    "entries": 8,
+    "src_entries": 1,
+    "plan_entries": 7,
+    "src_resolvable": 1,
+    "src_rank1": 1,
+    "src_supported": 1,
+    "src_weak": 0,
+    "src_unsupported": 0,
+    "plan_clusters": 2,
+    "plan_dup_clusters": {
+     "0": [
+      "周末看livehouse",
+      "约看livehouse",
+      "2026-11-14看后摇乐队livehouse",
+      "2026-11-14周六看后摇乐队livehouse",
+      "计划2026-11-14去livehouse",
+      "2026-11-14 livehouse之约"
+     ]
+    },
+    "plan_date_conflicts": {},
+    "plan_status_conflicts": {},
+    "plan_injected_items": 0,
+    "ongoing_loci": 0,
+    "notes_turns": 8,
+    "src_resolvable_rate": 100.0,
+    "src_rank1_rate": 100.0,
+    "src_supported_rate": 100.0,
+    "src_weak_rate": 0.0,
+    "src_unsupported_rate": 0.0,
+    "speaker_ok": 1,
+    "speaker_bad": 0,
+    "speaker_ok_rate": 100.0,
+    "distilled_files": [
+     "moment/plan.md",
+     "moment/scene.md",
+     "moment/topic.md"
+    ],
+    "archive_files": [
+     "moment/recent.md",
+     "raw_chat.md",
+     "raw_scene.md"
+    ]
+   },
+   "E008": {
+    "files": [
+     "moment/plan.md",
+     "moment/recent.md",
+     "moment/scene.md",
+     "moment/topic.md",
+     "raw_chat.md",
+     "raw_scene.md",
+     "raw_topic.md"
+    ],
+    "entries": 17,
+    "src_entries": 11,
+    "plan_entries": 6,
+    "src_resolvable": 11,
+    "src_rank1": 10,
+    "src_supported": 7,
+    "src_weak": 3,
+    "src_unsupported": 1,
+    "plan_clusters": 5,
+    "plan_dup_clusters": {
+     "3": [
+      "2026-11-18 咖啡见面",
+      "2026-11-14 周末咖啡"
+     ]
+    },
+    "plan_date_conflicts": {
+     "3": [
+      "11-14",
+      "11-18"
+     ]
+    },
+    "plan_status_conflicts": {
+     "3": [
+      "已取消",
+      "进行中"
+     ]
+    },
+    "plan_injected_items": 0,
+    "ongoing_loci": 0,
+    "notes_turns": 8,
+    "src_resolvable_rate": 100.0,
+    "src_rank1_rate": 90.9,
+    "src_supported_rate": 63.6,
+    "src_weak_rate": 27.3,
+    "src_unsupported_rate": 9.1,
+    "speaker_ok": 11,
+    "speaker_bad": 0,
+    "speaker_ok_rate": 100.0,
+    "distilled_files": [
+     "moment/plan.md",
+     "moment/scene.md",
+     "moment/topic.md"
+    ],
+    "archive_files": [
+     "moment/recent.md",
+     "raw_chat.md",
+     "raw_scene.md",
+     "raw_topic.md"
+    ]
+   },
+   "E012": {
+    "files": [
+     "moment/plan.md",
+     "moment/recent.md",
+     "moment/scene.md",
+     "moment/topic.md",
+     "raw_chat.md",
+     "raw_scene.md",
+     "raw_topic.md"
+    ],
+    "entries": 12,
+    "src_entries": 6,
+    "plan_entries": 6,
+    "src_resolvable": 6,
+    "src_rank1": 5,
+    "src_supported": 2,
+    "src_weak": 4,
+    "src_unsupported": 0,
+    "plan_clusters": 4,
+    "plan_dup_clusters": {
+     "0": [
+      "约一起去吃汤锅",
+      "约吃汤锅"
+     ],
+     "3": [
+      "计划11-14周六吃汤锅",
+      "计划11-14周六汤锅见面"
+     ]
+    },
+    "plan_date_conflicts": {},
+    "plan_status_conflicts": {
+     "0": [
+      "新出现",
+      "进行中"
+     ],
+     "3": [
+      "已完成",
+      "进行中"
+     ]
+    },
+    "plan_injected_items": 0,
+    "ongoing_loci": 0,
+    "notes_turns": 8,
+    "src_resolvable_rate": 100.0,
+    "src_rank1_rate": 83.3,
+    "src_supported_rate": 33.3,
+    "src_weak_rate": 66.7,
+    "src_unsupported_rate": 0.0,
+    "speaker_ok": 6,
+    "speaker_bad": 0,
+    "speaker_ok_rate": 100.0,
+    "distilled_files": [
+     "moment/plan.md",
+     "moment/scene.md",
+     "moment/topic.md"
+    ],
+    "archive_files": [
+     "moment/recent.md",
+     "raw_chat.md",
+     "raw_scene.md",
+     "raw_topic.md"
+    ]
+   }
+  },
+  "goal_action_v1": {
+   "E006": {
+    "files": [],
+    "entries": 0,
+    "observable": false,
+    "ongoing_loci": 0,
+    "notes_turns": 8
+   },
+   "E007": {
+    "files": [],
+    "entries": 0,
+    "observable": false,
+    "ongoing_loci": 0,
+    "notes_turns": 8
+   },
+   "E008": {
+    "files": [],
+    "entries": 0,
+    "observable": false,
+    "ongoing_loci": 0,
+    "notes_turns": 8
+   },
+   "E012": {
+    "files": [],
+    "entries": 0,
+    "observable": false,
+    "ongoing_loci": 0,
+    "notes_turns": 8
+   }
+  },
+  "v5_purpose_aligned": {
+   "E006": {
+    "files": [],
+    "entries": 0,
+    "observable": false,
+    "ongoing_loci": 0,
+    "notes_turns": 8
+   },
+   "E007": {
+    "files": [],
+    "entries": 0,
+    "observable": false,
+    "ongoing_loci": 0,
+    "notes_turns": 8
+   },
+   "E008": {
+    "files": [],
+    "entries": 0,
+    "observable": false,
+    "ongoing_loci": 0,
+    "notes_turns": 8
+   },
+   "E012": {
+    "files": [],
+    "entries": 0,
+    "observable": false,
+    "ongoing_loci": 0,
+    "notes_turns": 8
+   }
+  },
+  "evidence_memory_v1": {
+   "E006": {
+    "files": [],
+    "entries": 0,
+    "observable": false,
+    "ongoing_loci": 0,
+    "notes_turns": 8
+   },
+   "E007": {
+    "files": [],
+    "entries": 0,
+    "observable": false,
+    "ongoing_loci": 0,
+    "notes_turns": 8
+   },
+   "E008": {
+    "files": [],
+    "entries": 0,
+    "observable": false,
+    "ongoing_loci": 0,
+    "notes_turns": 8
+   },
+   "E012": {
+    "files": [],
+    "entries": 0,
+    "observable": false,
+    "ongoing_loci": 0,
+    "notes_turns": 8
+   }
+  }
+ },
+ "rows": {
+  "reference_product_v1": {
+   "atoms_scope": 40,
+   "pairs": 158,
+   "S3_present": "67/158",
+   "S3_rate": 42.4,
+   "S3_structured": "18/158",
+   "S3_structured_rate": 11.4,
+   "S3_raw_only_rate": 29.7,
+   "S3_backref": "67/151",
+   "S3_backref_rate": 44.4,
+   "S1_T08_present": "11/40",
+   "S1_store": "44/45",
+   "S1_distilled": "6/45",
+   "S2_entries": 53,
+   "S2_src_entries": 32,
+   "S2_plan_entries": 21,
+   "S2_src_resolvable_rate": 100.0,
+   "S2_src_rank1_rate": 90.6,
+   "S2_src_grounded_rate": 62.5,
+   "S2_src_weak_rate": 34.4,
+   "S2_src_unsupported_rate": 3.1,
+   "S2_plan_grounded_rate": "NR(抽象投影)",
+   "S2_plan_items": 21,
+   "S2_plan_clusters": 13,
+   "S2_plan_max_dup": 6,
+   "S2_plan_date_conflicts": 1,
+   "S2_plan_status_conflicts": 3,
+   "S2_plan_injected": 0,
+   "S2_ongoing_loci": "0/32",
+   "S2_speaker_ok_rate": 100.0,
+   "S4": "NR-需人判"
+  },
+  "goal_action_v1": {
+   "atoms_scope": 40,
+   "pairs": 158,
+   "S3_present": "157/158",
+   "S3_rate": 99.4,
+   "S3_structured": "0/158",
+   "S3_structured_rate": 0.0,
+   "S3_raw_only_rate": 96.8,
+   "S3_backref": "157/158",
+   "S3_backref_rate": 99.4,
+   "S1_T08_present": "39/40",
+   "S1_store": "NR(无可观测存储)",
+   "S1_distilled": "NR",
+   "S2_entries": null,
+   "S2_src_entries": null,
+   "S2_plan_entries": null,
+   "S2_src_resolvable_rate": null,
+   "S2_src_rank1_rate": null,
+   "S2_src_grounded_rate": null,
+   "S2_src_weak_rate": null,
+   "S2_src_unsupported_rate": null,
+   "S2_plan_grounded_rate": "NR(抽象投影)",
+   "S2_plan_items": null,
+   "S2_plan_clusters": null,
+   "S2_plan_max_dup": null,
+   "S2_plan_date_conflicts": null,
+   "S2_plan_status_conflicts": null,
+   "S2_plan_injected": null,
+   "S2_ongoing_loci": "0/32",
+   "S2_speaker_ok_rate": null,
+   "S4": "NR-需人判"
+  },
+  "v5_purpose_aligned": {
+   "atoms_scope": 40,
+   "pairs": 158,
+   "S3_present": "157/158",
+   "S3_rate": 99.4,
+   "S3_structured": "0/158",
+   "S3_structured_rate": 0.0,
+   "S3_raw_only_rate": 96.8,
+   "S3_backref": "157/158",
+   "S3_backref_rate": 99.4,
+   "S1_T08_present": "39/40",
+   "S1_store": "NR(无可观测存储)",
+   "S1_distilled": "NR",
+   "S2_entries": null,
+   "S2_src_entries": null,
+   "S2_plan_entries": null,
+   "S2_src_resolvable_rate": null,
+   "S2_src_rank1_rate": null,
+   "S2_src_grounded_rate": null,
+   "S2_src_weak_rate": null,
+   "S2_src_unsupported_rate": null,
+   "S2_plan_grounded_rate": "NR(抽象投影)",
+   "S2_plan_items": null,
+   "S2_plan_clusters": null,
+   "S2_plan_max_dup": null,
+   "S2_plan_date_conflicts": null,
+   "S2_plan_status_conflicts": null,
+   "S2_plan_injected": null,
+   "S2_ongoing_loci": "0/32",
+   "S2_speaker_ok_rate": null,
+   "S4": "NR-需人判"
+  },
+  "evidence_memory_v1": {
+   "atoms_scope": 40,
+   "pairs": 158,
+   "S3_present": "157/158",
+   "S3_rate": 99.4,
+   "S3_structured": "2/158",
+   "S3_structured_rate": 1.3,
+   "S3_raw_only_rate": 95.6,
+   "S3_backref": "157/158",
+   "S3_backref_rate": 99.4,
+   "S1_T08_present": "39/40",
+   "S1_store": "NR(无可观测存储)",
+   "S1_distilled": "NR",
+   "S2_entries": null,
+   "S2_src_entries": null,
+   "S2_plan_entries": null,
+   "S2_src_resolvable_rate": null,
+   "S2_src_rank1_rate": null,
+   "S2_src_grounded_rate": null,
+   "S2_src_weak_rate": null,
+   "S2_src_unsupported_rate": null,
+   "S2_plan_grounded_rate": "NR(抽象投影)",
+   "S2_plan_items": null,
+   "S2_plan_clusters": null,
+   "S2_plan_max_dup": null,
+   "S2_plan_date_conflicts": null,
+   "S2_plan_status_conflicts": null,
+   "S2_plan_injected": null,
+   "S2_ongoing_loci": "0/32",
+   "S2_speaker_ok_rate": null,
+   "S4": "NR-需人判"
+  }
+ },
+ "S4_policy": "S4 不测；需人判或先过裁判资格校准",
+ "real_model_calls": 0
+}

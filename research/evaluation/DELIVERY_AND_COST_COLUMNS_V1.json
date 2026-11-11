@@ -1,0 +1,145 @@
+{
+ "real_model_calls": 0,
+ "unit_price_evidence": null,
+ "money": null,
+ "definitions": {
+  "T": "传输成功",
+  "P": "原始协议通过(不容忍)",
+  "C": "消费后拿到非空可发送首选",
+  "S": "程序级语义可用(无veto)",
+  "W": "用户原样愿发——不由脚本判定"
+ },
+ "batches": {
+  "v5": {
+   "parent": {
+    "n": 24,
+    "T": 24,
+    "P": 24,
+    "C": 24,
+    "S": 23,
+    "rates_percent": {
+     "T": 100.0,
+     "P": 100.0,
+     "C": 100.0,
+     "S": 95.83
+    },
+    "tokens": {
+     "prompt": 176355,
+     "completion": 6966,
+     "total": 183321,
+     "calls": 24,
+     "cache_fields_unknown": 48
+    },
+    "tokens_per_usable_result": 7970.5,
+    "key_normalization_applied": [],
+    "failures": [
+     {
+      "slot": "v5/parent_E007/turn_05_E007_T05",
+      "column": "S",
+      "veto": "illegal_source_id:t4_1"
+     }
+    ]
+   },
+   "candidate": {
+    "n": 24,
+    "T": 24,
+    "P": 23,
+    "C": 24,
+    "S": 23,
+    "rates_percent": {
+     "T": 100.0,
+     "P": 95.83,
+     "C": 100.0,
+     "S": 95.83
+    },
+    "tokens": {
+     "prompt": 72146,
+     "completion": 5491,
+     "total": 77637,
+     "calls": 24,
+     "cache_fields_unknown": 48
+    },
+    "tokens_per_usable_result": 3375.5,
+    "key_normalization_applied": [
+     {
+      "slot": "v5/candidate_E007/turn_08_E007_T08",
+      "original_repr": "'bad_bo\\u200by'",
+      "normalized": "bad_boy",
+      "slot_affected": "response.bad_boy"
+     }
+    ],
+    "failures": [
+     {
+      "slot": "v5/candidate_E007/turn_08_E007_T08",
+      "column": "P",
+      "veto": "json_schema_broken"
+     },
+     {
+      "slot": "v5/candidate_E007/turn_08_E007_T08",
+      "column": "S",
+      "veto": "json_schema_broken"
+     }
+    ]
+   }
+  },
+  "r2": {
+   "parent": {
+    "n": 24,
+    "T": 24,
+    "P": 23,
+    "C": 24,
+    "S": 23,
+    "rates_percent": {
+     "T": 100.0,
+     "P": 95.83,
+     "C": 100.0,
+     "S": 95.83
+    },
+    "tokens": {
+     "prompt": 176313,
+     "completion": 7039,
+     "total": 183352,
+     "calls": 24,
+     "cache_fields_unknown": 48
+    },
+    "tokens_per_usable_result": 7971.8,
+    "key_normalization_applied": [],
+    "failures": [
+     {
+      "slot": "r2/parent_E007/turn_08_E007_T08",
+      "column": "P",
+      "veto": "json_schema_broken"
+     },
+     {
+      "slot": "r2/parent_E007/turn_08_E007_T08",
+      "column": "S",
+      "veto": "json_schema_broken"
+     }
+    ]
+   },
+   "candidate": {
+    "n": 24,
+    "T": 24,
+    "P": 24,
+    "C": 24,
+    "S": 24,
+    "rates_percent": {
+     "T": 100.0,
+     "P": 100.0,
+     "C": 100.0,
+     "S": 100.0
+    },
+    "tokens": {
+     "prompt": 71428,
+     "completion": 8218,
+     "total": 79646,
+     "calls": 24,
+     "cache_fields_unknown": 48
+    },
+    "tokens_per_usable_result": 3318.6,
+    "key_normalization_applied": [],
+    "failures": []
+   }
+  }
+ }
+}

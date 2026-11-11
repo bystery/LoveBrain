@@ -1,0 +1,748 @@
+{
+ "doc": "C4_SCREEN_CLOSURE_V1",
+ "authorization_id": "AUTH-C4-SCREEN-20261026-01",
+ "ledger_events": {
+  "authorization_scope": 1,
+  "attempt_started": 128,
+  "attempt_completed": 128
+ },
+ "quota": {
+  "cap": 128,
+  "used": 128,
+  "completed": 128,
+  "failed": 0,
+  "orphans": [],
+  "unknown_consumed_registered": 0
+ },
+ "tokens_total_by_arm": {
+  "reference_product_v1": 244247,
+  "goal_action_v1": 133372,
+  "v5_purpose_aligned": 103751,
+  "evidence_memory_v1": 111239
+ },
+ "columns_by_arm": {
+  "reference_product_v1": {
+   "n": 32,
+   "columns": {
+    "T": 32,
+    "P": 29,
+    "C": 32,
+    "K": 29,
+    "Q": "unknown",
+    "W": "unknown"
+   },
+   "denominator_definitions": {
+    "T": "账本completed且原文非空无传输错误 / n",
+    "P": "冻结评分器 json_schema_valid（必需键+directions=4）原始字节 / n",
+    "C": "消费器能提出非空首选 / n",
+    "K": "无veto且有首选 / n",
+    "Q": "需有资格评审维度，本轮未授 ⇒ unknown（不填 n）",
+    "W": "用户愿发标签未回收 ⇒ unknown"
+   },
+   "rates_percent": {
+    "T": 100.0,
+    "P": 90.62,
+    "C": 100.0,
+    "K": 90.62
+   },
+   "delivery_completeness": {
+    "full_four_styles_four_directions": 18,
+    "partial_or_missing_slot": 14
+   },
+   "legal_blank_success_actions": {
+    "direction_nulls": 13,
+    "no_reply_turns": 0
+   },
+   "key_normalization_events": 1,
+   "tokens": {
+    "prompt": 235091,
+    "completion": 9156,
+    "total": 244247,
+    "cache_fields_unknown": 64
+   },
+   "cost_named_two_ways": {
+    "token_per_extractable_primary": 7632.719,
+    "token_per_program_not_vetoed_position": 8422.31,
+    "token_per_semantically_passed": "unknown",
+    "token_per_user_would_send": "unknown"
+   },
+   "money": null,
+   "money_reason": "无可核验单价；不折算金额，不把 token 降幅当金额降幅",
+   "wall_completion_ms_sum": 912965,
+   "batch": "sweep_a_orig_vs_goal"
+  },
+  "goal_action_v1": {
+   "n": 32,
+   "columns": {
+    "T": 32,
+    "P": 32,
+    "C": 32,
+    "K": 32,
+    "Q": "unknown",
+    "W": "unknown"
+   },
+   "denominator_definitions": {
+    "T": "账本completed且原文非空无传输错误 / n",
+    "P": "冻结评分器 json_schema_valid（必需键+directions=4）原始字节 / n",
+    "C": "消费器能提出非空首选 / n",
+    "K": "无veto且有首选 / n",
+    "Q": "需有资格评审维度，本轮未授 ⇒ unknown（不填 n）",
+    "W": "用户愿发标签未回收 ⇒ unknown"
+   },
+   "rates_percent": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "delivery_completeness": {
+    "full_four_styles_four_directions": 20,
+    "partial_or_missing_slot": 12
+   },
+   "legal_blank_success_actions": {
+    "direction_nulls": 14,
+    "no_reply_turns": 0
+   },
+   "key_normalization_events": 0,
+   "tokens": {
+    "prompt": 125319,
+    "completion": 8053,
+    "total": 133372,
+    "cache_fields_unknown": 64
+   },
+   "cost_named_two_ways": {
+    "token_per_extractable_primary": 4167.875,
+    "token_per_program_not_vetoed_position": 4167.875,
+    "token_per_semantically_passed": "unknown",
+    "token_per_user_would_send": "unknown"
+   },
+   "money": null,
+   "money_reason": "无可核验单价；不折算金额，不把 token 降幅当金额降幅",
+   "wall_completion_ms_sum": 1267887,
+   "batch": "sweep_a_orig_vs_goal"
+  },
+  "v5_purpose_aligned": {
+   "n": 32,
+   "columns": {
+    "T": 32,
+    "P": 32,
+    "C": 32,
+    "K": 32,
+    "Q": "unknown",
+    "W": "unknown"
+   },
+   "denominator_definitions": {
+    "T": "账本completed且原文非空无传输错误 / n",
+    "P": "冻结评分器 json_schema_valid（必需键+directions=4）原始字节 / n",
+    "C": "消费器能提出非空首选 / n",
+    "K": "无veto且有首选 / n",
+    "Q": "需有资格评审维度，本轮未授 ⇒ unknown（不填 n）",
+    "W": "用户愿发标签未回收 ⇒ unknown"
+   },
+   "rates_percent": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "delivery_completeness": {
+    "full_four_styles_four_directions": 18,
+    "partial_or_missing_slot": 14
+   },
+   "legal_blank_success_actions": {
+    "direction_nulls": 14,
+    "no_reply_turns": 0
+   },
+   "key_normalization_events": 0,
+   "tokens": {
+    "prompt": 96198,
+    "completion": 7553,
+    "total": 103751,
+    "cache_fields_unknown": 64
+   },
+   "cost_named_two_ways": {
+    "token_per_extractable_primary": 3242.219,
+    "token_per_program_not_vetoed_position": 3242.219,
+    "token_per_semantically_passed": "unknown",
+    "token_per_user_would_send": "unknown"
+   },
+   "money": null,
+   "money_reason": "无可核验单价；不折算金额，不把 token 降幅当金额降幅",
+   "wall_completion_ms_sum": 987834,
+   "batch": "sweep_b_v5_vs_mem"
+  },
+  "evidence_memory_v1": {
+   "n": 32,
+   "columns": {
+    "T": 32,
+    "P": 29,
+    "C": 32,
+    "K": 29,
+    "Q": "unknown",
+    "W": "unknown"
+   },
+   "denominator_definitions": {
+    "T": "账本completed且原文非空无传输错误 / n",
+    "P": "冻结评分器 json_schema_valid（必需键+directions=4）原始字节 / n",
+    "C": "消费器能提出非空首选 / n",
+    "K": "无veto且有首选 / n",
+    "Q": "需有资格评审维度，本轮未授 ⇒ unknown（不填 n）",
+    "W": "用户愿发标签未回收 ⇒ unknown"
+   },
+   "rates_percent": {
+    "T": 100.0,
+    "P": 90.62,
+    "C": 100.0,
+    "K": 90.62
+   },
+   "delivery_completeness": {
+    "full_four_styles_four_directions": 17,
+    "partial_or_missing_slot": 15
+   },
+   "legal_blank_success_actions": {
+    "direction_nulls": 15,
+    "no_reply_turns": 0
+   },
+   "key_normalization_events": 0,
+   "tokens": {
+    "prompt": 102790,
+    "completion": 8449,
+    "total": 111239,
+    "cache_fields_unknown": 64
+   },
+   "cost_named_two_ways": {
+    "token_per_extractable_primary": 3476.219,
+    "token_per_program_not_vetoed_position": 3835.828,
+    "token_per_semantically_passed": "unknown",
+    "token_per_user_would_send": "unknown"
+   },
+   "money": null,
+   "money_reason": "无可核验单价；不折算金额，不把 token 降幅当金额降幅",
+   "wall_completion_ms_sum": 1111829,
+   "batch": "sweep_b_v5_vs_mem"
+  }
+ },
+ "wait_by_arm": {
+  "goal_action_v1": {
+   "first_content_ms": {
+    "n": 32,
+    "p50": 28058.7,
+    "p95": 82917.2,
+    "max": 85898.2
+   },
+   "first_preview_ms": {
+    "n": 32,
+    "p50": 28224.5,
+    "p95": 83109.9,
+    "max": 86046.0
+   },
+   "completion_ms": {
+    "n": 32,
+    "p50": 30047.3,
+    "p95": 84528.4,
+    "max": 86776.2
+   },
+   "first_usable_ms_null": 32
+  },
+  "reference_product_v1": {
+   "first_content_ms": {
+    "n": 32,
+    "p50": 16889.9,
+    "p95": 60806.3,
+    "max": 73297.7
+   },
+   "first_preview_ms": {
+    "n": 32,
+    "p50": 16986.3,
+    "p95": 60952.6,
+    "max": 73387.7
+   },
+   "completion_ms": {
+    "n": 32,
+    "p50": 22451.2,
+    "p95": 62263.3,
+    "max": 75255.5
+   },
+   "first_usable_ms_null": 32
+  },
+  "evidence_memory_v1": {
+   "first_content_ms": {
+    "n": 32,
+    "p50": 23609.4,
+    "p95": 64799.9,
+    "max": 69273.0
+   },
+   "first_preview_ms": {
+    "n": 32,
+    "p50": 23856.5,
+    "p95": 65021.1,
+    "max": 69472.3
+   },
+   "completion_ms": {
+    "n": 32,
+    "p50": 30433.7,
+    "p95": 66158.5,
+    "max": 70612.5
+   },
+   "first_usable_ms_null": 32
+  },
+  "v5_purpose_aligned": {
+   "first_content_ms": {
+    "n": 32,
+    "p50": 16137.6,
+    "p95": 74859.3,
+    "max": 86152.0
+   },
+   "first_preview_ms": {
+    "n": 32,
+    "p50": 16355.9,
+    "p95": 74980.9,
+    "max": 86303.6
+   },
+   "completion_ms": {
+    "n": 32,
+    "p50": 23825.8,
+    "p95": 77855.4,
+    "max": 86982.0
+   },
+   "first_usable_ms_null": 32
+  }
+ },
+ "four_arm_aggregate_all32": {
+  "reference_product_v1": {
+   "n": 32,
+   "T_P_C_K": [
+    32,
+    29,
+    32,
+    29
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 90.62,
+    "C": 100.0,
+    "K": 90.62
+   },
+   "full_slot": 18,
+   "key_norm_events": 1,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 235091,
+    "completion": 9156,
+    "total": 244247
+   },
+   "token_per_extractable_primary": 7632.7,
+   "token_per_program_not_vetoed": 8422.3,
+   "latency_ms_p50_p95_max": [
+    22509,
+    62328,
+    75336
+   ],
+   "first_content_ms_p50_p95": [
+    16889.9,
+    60806.3
+   ],
+   "first_usable_nonnull": 0
+  },
+  "v5_purpose_aligned": {
+   "n": 32,
+   "T_P_C_K": [
+    32,
+    32,
+    32,
+    32
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "full_slot": 18,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 96198,
+    "completion": 7553,
+    "total": 103751
+   },
+   "token_per_extractable_primary": 3242.2,
+   "token_per_program_not_vetoed": 3242.2,
+   "latency_ms_p50_p95_max": [
+    23865,
+    77894,
+    87022
+   ],
+   "first_content_ms_p50_p95": [
+    16137.6,
+    74859.3
+   ],
+   "first_usable_nonnull": 0
+  },
+  "goal_action_v1": {
+   "n": 32,
+   "T_P_C_K": [
+    32,
+    32,
+    32,
+    32
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "full_slot": 20,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 125319,
+    "completion": 8053,
+    "total": 133372
+   },
+   "token_per_extractable_primary": 4167.9,
+   "token_per_program_not_vetoed": 4167.9,
+   "latency_ms_p50_p95_max": [
+    30089,
+    84560,
+    86807
+   ],
+   "first_content_ms_p50_p95": [
+    28058.7,
+    82917.2
+   ],
+   "first_usable_nonnull": 0
+  },
+  "evidence_memory_v1": {
+   "n": 32,
+   "T_P_C_K": [
+    32,
+    29,
+    32,
+    29
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 90.62,
+    "C": 100.0,
+    "K": 90.62
+   },
+   "full_slot": 17,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 102790,
+    "completion": 8449,
+    "total": 111239
+   },
+   "token_per_extractable_primary": 3476.2,
+   "token_per_program_not_vetoed": 3835.8,
+   "latency_ms_p50_p95_max": [
+    30474,
+    66192,
+    70689
+   ],
+   "first_content_ms_p50_p95": [
+    23609.4,
+    64799.9
+   ],
+   "first_usable_nonnull": 0
+  }
+ },
+ "four_arm_aggregate_goal_live7": {
+  "reference_product_v1": {
+   "n": 7,
+   "T_P_C_K": [
+    7,
+    6,
+    7,
+    6
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 85.71,
+    "C": 100.0,
+    "K": 85.71
+   },
+   "full_slot": 4,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 51640,
+    "completion": 2066,
+    "total": 53706
+   },
+   "token_per_extractable_primary": 7672.3,
+   "token_per_program_not_vetoed": 8951.0,
+   "latency_ms_p50_p95_max": [
+    21293,
+    75336,
+    75336
+   ],
+   "first_content_ms_p50_p95": [
+    19742.8,
+    73297.7
+   ],
+   "first_usable_nonnull": 0
+  },
+  "v5_purpose_aligned": {
+   "n": 7,
+   "T_P_C_K": [
+    7,
+    7,
+    7,
+    7
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "full_slot": 2,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 21470,
+    "completion": 1884,
+    "total": 23354
+   },
+   "token_per_extractable_primary": 3336.3,
+   "token_per_program_not_vetoed": 3336.3,
+   "latency_ms_p50_p95_max": [
+    24775,
+    25788,
+    25788
+   ],
+   "first_content_ms_p50_p95": [
+    14120.7,
+    23200.7
+   ],
+   "first_usable_nonnull": 0
+  },
+  "goal_action_v1": {
+   "n": 7,
+   "T_P_C_K": [
+    7,
+    7,
+    7,
+    7
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "full_slot": 4,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 27840,
+    "completion": 1989,
+    "total": 29829
+   },
+   "token_per_extractable_primary": 4261.3,
+   "token_per_program_not_vetoed": 4261.3,
+   "latency_ms_p50_p95_max": [
+    55559,
+    84560,
+    84560
+   ],
+   "first_content_ms_p50_p95": [
+    53473.3,
+    82917.2
+   ],
+   "first_usable_nonnull": 0
+  },
+  "evidence_memory_v1": {
+   "n": 7,
+   "T_P_C_K": [
+    7,
+    7,
+    7,
+    7
+   ],
+   "rates_pct": {
+    "T": 100.0,
+    "P": 100.0,
+    "C": 100.0,
+    "K": 100.0
+   },
+   "full_slot": 4,
+   "key_norm_events": 0,
+   "no_reply_turns": 0,
+   "tokens": {
+    "prompt": 22897,
+    "completion": 2000,
+    "total": 24897
+   },
+   "token_per_extractable_primary": 3556.7,
+   "token_per_program_not_vetoed": 3556.7,
+   "latency_ms_p50_p95_max": [
+    29611,
+    56330,
+    56330
+   ],
+   "first_content_ms_p50_p95": [
+    27966.7,
+    44287.9
+   ],
+   "first_usable_nonnull": 0
+  }
+ },
+ "coverage": {
+  "positions_total": 32,
+  "positions_goal_live": 7,
+  "loci_goal_live": [
+   "E006_T05",
+   "E007_T02",
+   "E007_T03",
+   "E007_T06",
+   "E012_T02",
+   "E012_T03",
+   "E012_T06"
+  ]
+ },
+ "reading_queue_n": 27,
+ "batches": {
+  "sweep_a_orig_vs_goal": {
+   "dir": "logs/c4_sweep_a_orig_vs_goal_live_20261026",
+   "done": {
+    "batch_id": "BATCH-C4-A-ORIG-VS-GOAL-20261026",
+    "authorization_id": "AUTH-C4-SCREEN-20261026-01",
+    "arm_mapping": {
+     "parent": "reference_product_v1",
+     "candidate": "goal_action_v1"
+    },
+    "cards_file": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+    "plan_sha256": "7f158c57495e200dec990db48630228e8ea5a1724227b032b40c75ed1061736f",
+    "arm_identity_sha256": {
+     "parent": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+     "candidate": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59"
+    },
+    "mode": "live",
+    "started": 64,
+    "completed": 64,
+    "failed": 0,
+    "stopped": null,
+    "order_verified": true,
+    "dispatch_bijection": true,
+    "residents": 8,
+    "state_isolated_note": "execute_plan 的 state_isolated 键沿用旧 6-resident 判定式，4 故事批恒 false；真实隔离=8 个独立 resident 各自 _iso_run。此判据与 96 批一致，本轮不改（改判据=尺子改动，只登记不生效）。",
+    "real_model_calls": 64,
+    "turns_parent": 32,
+    "turns_candidate": 32,
+    "cost_parent": {
+     "prompt": 235091,
+     "completion": 9156,
+     "latency_p50_ms": 22470,
+     "latency_p95_ms": 57278,
+     "latency_max_ms": 75336
+    },
+    "cost_candidate": {
+     "prompt": 125319,
+     "completion": 8053,
+     "latency_p50_ms": 29178,
+     "latency_p95_ms": 81274,
+     "latency_max_ms": 86807
+    },
+    "program_mean10": {
+     "parent": 9.06,
+     "candidate": 9.95
+    },
+    "paired_program_winner_counts": {
+     "parent": 0,
+     "candidate": 3,
+     "tie": 29
+    },
+    "all_semantic_unrated_without_annotations": true,
+    "stream_identity": "api_cfg:openai_compat_stream_true_v1(include_usage gated)",
+    "reports_dir": "logs\\c4_sweep_a_orig_vs_goal_live_20261026\\_reports"
+   },
+   "turn_dirs": 64,
+   "order_verified": true,
+   "dispatch_bijection": true,
+   "residents": 8,
+   "real_model_calls": 64
+  },
+  "sweep_b_v5_vs_mem": {
+   "dir": "logs/c4_sweep_b_v5_vs_mem_live_20261026",
+   "done": {
+    "batch_id": "BATCH-C4-B-V5-VS-MEM-20261026",
+    "authorization_id": "AUTH-C4-SCREEN-20261026-01",
+    "arm_mapping": {
+     "parent": "v5_purpose_aligned",
+     "candidate": "evidence_memory_v1"
+    },
+    "cards_file": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json",
+    "plan_sha256": "1f0d78c6aecd8781a478927e85c8e3484370c619df6b4b209c422b0f90bfdf16",
+    "arm_identity_sha256": {
+     "parent": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+     "candidate": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26"
+    },
+    "mode": "live",
+    "started": 64,
+    "completed": 64,
+    "failed": 0,
+    "stopped": null,
+    "order_verified": true,
+    "dispatch_bijection": true,
+    "residents": 8,
+    "state_isolated_note": "execute_plan 的 state_isolated 键沿用旧 6-resident 判定式，4 故事批恒 false；真实隔离=8 个独立 resident 各自 _iso_run。此判据与 96 批一致，本轮不改（改判据=尺子改动，只登记不生效）。",
+    "real_model_calls": 64,
+    "turns_parent": 32,
+    "turns_candidate": 32,
+    "cost_parent": {
+     "prompt": 96198,
+     "completion": 7553,
+     "latency_p50_ms": 23673,
+     "latency_p95_ms": 72576,
+     "latency_max_ms": 87022
+    },
+    "cost_candidate": {
+     "prompt": 102790,
+     "completion": 8449,
+     "latency_p50_ms": 30042,
+     "latency_p95_ms": 62747,
+     "latency_max_ms": 70689
+    },
+    "program_mean10": {
+     "parent": 9.95,
+     "candidate": 9.01
+    },
+    "paired_program_winner_counts": {
+     "parent": 4,
+     "candidate": 1,
+     "tie": 27
+    },
+    "all_semantic_unrated_without_annotations": true,
+    "stream_identity": "api_cfg:openai_compat_stream_true_v1(include_usage gated)",
+    "reports_dir": "logs\\c4_sweep_b_v5_vs_mem_live_20261026\\_reports"
+   },
+   "turn_dirs": 64,
+   "order_verified": true,
+   "dispatch_bijection": true,
+   "residents": 8,
+   "real_model_calls": 64
+  }
+ },
+ "identity": {
+  "cards": "benchmark/c4_screen_20261026/GRADING_CARDS_C4_E006_E007_E008_E012_R2.json（32 张新建合并卡：03/04 选取 + 05 r2 覆盖 E007_T03/E008_T03；逐字回核与未改写断言见 .PROVENANCE.json；卡 split=dev_exposed、review_status 原样，不冒充人工认证）",
+  "plan_sha256": {
+   "sweep_a_orig_vs_goal": "7f158c57495e200dec990db48630228e8ea5a1724227b032b40c75ed1061736f",
+   "sweep_b_v5_vs_mem": "1f0d78c6aecd8781a478927e85c8e3484370c619df6b4b209c422b0f90bfdf16"
+  },
+  "stream_identity": "api_cfg:openai_compat_stream_true_v1(include_usage gated)"
+ },
+ "not_claimed": [
+  "Q（语义行动正确性）unknown：裁判该维只到稳定性/清晰材料辅助排序",
+  "W（用户愿发）unknown：口味表未回收",
+  "first_usable 普通链路仍未接消费回调 → 逐位 null，不离线回填",
+  "金额 null（无可核对单价）"
+ ],
+ "problems": [],
+ "close": "closed",
+ "real_model_calls_this_script": 0
+}

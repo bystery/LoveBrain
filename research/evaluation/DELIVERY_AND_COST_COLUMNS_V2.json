@@ -1,0 +1,808 @@
+{
+ "protocol": "COLUMNS-V2 / MANUAL-V1.1 §5",
+ "real_model_calls": 0,
+ "tool_versions": {
+  "consumer_module": "1777524ed03738520b69863752f85cc97a5b6d34958dc7f202f07546aeb31c2a",
+  "consumer_class": "OutputConsumer.parse+key_normalization",
+  "scorer": "冻结评分器 json_schema_valid（各批 scoring.json 内原判定，不改判）"
+ },
+ "batches": {
+  "v5": {
+   "parent": {
+    "n": 24,
+    "columns": {
+     "T": 24,
+     "P": 24,
+     "C": 24,
+     "K": 23,
+     "Q": "unknown",
+     "W": "unknown"
+    },
+    "denominator_definitions": {
+     "T": "账本completed且原文非空无传输错误 / n",
+     "P": "冻结评分器 json_schema_valid（必需键+directions=4）原始字节 / n",
+     "C": "消费器能提出非空首选 / n",
+     "K": "无veto且有首选 / n",
+     "Q": "需有资格评审维度，本轮未授 ⇒ unknown（不填 n）",
+     "W": "用户愿发标签未回收 ⇒ unknown"
+    },
+    "rates_percent": {
+     "T": 100.0,
+     "P": 100.0,
+     "C": 100.0,
+     "K": 95.83
+    },
+    "delivery_completeness": {
+     "full_four_styles_four_directions": 17,
+     "partial_or_missing_slot": 7
+    },
+    "legal_blank_success_actions": {
+     "direction_nulls": 7,
+     "no_reply_turns": 0
+    },
+    "key_normalization_events": 0,
+    "tokens": {
+     "prompt": 176355,
+     "completion": 6966,
+     "total": 183321,
+     "cache_fields_unknown": 48
+    },
+    "cost_named_two_ways": {
+     "token_per_extractable_primary": 7638.375,
+     "token_per_program_not_vetoed_position": 7970.478,
+     "token_per_semantically_passed": "unknown",
+     "token_per_user_would_send": "unknown"
+    },
+    "money": null,
+    "money_reason": "无可核验单价；不折算金额，不把 token 降幅当金额降幅",
+    "wall_completion_ms_sum": 823836
+   },
+   "candidate": {
+    "n": 24,
+    "columns": {
+     "T": 24,
+     "P": 23,
+     "C": 24,
+     "K": 23,
+     "Q": "unknown",
+     "W": "unknown"
+    },
+    "denominator_definitions": {
+     "T": "账本completed且原文非空无传输错误 / n",
+     "P": "冻结评分器 json_schema_valid（必需键+directions=4）原始字节 / n",
+     "C": "消费器能提出非空首选 / n",
+     "K": "无veto且有首选 / n",
+     "Q": "需有资格评审维度，本轮未授 ⇒ unknown（不填 n）",
+     "W": "用户愿发标签未回收 ⇒ unknown"
+    },
+    "rates_percent": {
+     "T": 100.0,
+     "P": 95.83,
+     "C": 100.0,
+     "K": 95.83
+    },
+    "delivery_completeness": {
+     "full_four_styles_four_directions": 15,
+     "partial_or_missing_slot": 9
+    },
+    "legal_blank_success_actions": {
+     "direction_nulls": 12,
+     "no_reply_turns": 0
+    },
+    "key_normalization_events": 1,
+    "tokens": {
+     "prompt": 72146,
+     "completion": 5491,
+     "total": 77637,
+     "cache_fields_unknown": 48
+    },
+    "cost_named_two_ways": {
+     "token_per_extractable_primary": 3234.875,
+     "token_per_program_not_vetoed_position": 3375.522,
+     "token_per_semantically_passed": "unknown",
+     "token_per_user_would_send": "unknown"
+    },
+    "money": null,
+    "money_reason": "无可核验单价；不折算金额，不把 token 降幅当金额降幅",
+    "wall_completion_ms_sum": 826005
+   },
+   "_exception_detail": {
+    "parent": [
+     {
+      "slot": "v5/parent_E007/turn_01_E007_T01",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/parent_E007/turn_04_E007_T04",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/parent_E007/turn_05_E007_T05",
+      "veto": "illegal_source_id:t4_1",
+      "P": true,
+      "C": true,
+      "full_slot": true,
+      "partial_reason": "",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/parent_E007/turn_06_E007_T06",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/parent_E007/turn_07_E007_T07",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/parent_E008/turn_03_E008_T03",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/parent_E008/turn_08_E008_T08",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/parent_E009/turn_07_E009_T07",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     }
+    ],
+    "candidate": [
+     {
+      "slot": "v5/candidate_E007/turn_04_E007_T04",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/candidate_E007/turn_05_E007_T05",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/candidate_E007/turn_06_E007_T06",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/candidate_E007/turn_07_E007_T07",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/candidate_E007/turn_08_E007_T08",
+      "veto": "json_schema_broken",
+      "P": false,
+      "C": true,
+      "full_slot": true,
+      "partial_reason": "",
+      "key_norm": [
+       "'bad_bo\\u200by'"
+      ]
+     },
+     {
+      "slot": "v5/candidate_E008/turn_08_E008_T08",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/candidate_E009/turn_02_E009_T02",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[2],directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/candidate_E009/turn_05_E009_T05",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/candidate_E009/turn_06_E009_T06",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[1],directions[2],directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v5/candidate_E009/turn_07_E009_T07",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[2],directions[3]",
+      "key_norm": []
+     }
+    ]
+   }
+  },
+  "r2": {
+   "parent": {
+    "n": 24,
+    "columns": {
+     "T": 24,
+     "P": 23,
+     "C": 24,
+     "K": 23,
+     "Q": "unknown",
+     "W": "unknown"
+    },
+    "denominator_definitions": {
+     "T": "账本completed且原文非空无传输错误 / n",
+     "P": "冻结评分器 json_schema_valid（必需键+directions=4）原始字节 / n",
+     "C": "消费器能提出非空首选 / n",
+     "K": "无veto且有首选 / n",
+     "Q": "需有资格评审维度，本轮未授 ⇒ unknown（不填 n）",
+     "W": "用户愿发标签未回收 ⇒ unknown"
+    },
+    "rates_percent": {
+     "T": 100.0,
+     "P": 95.83,
+     "C": 100.0,
+     "K": 95.83
+    },
+    "delivery_completeness": {
+     "full_four_styles_four_directions": 16,
+     "partial_or_missing_slot": 8
+    },
+    "legal_blank_success_actions": {
+     "direction_nulls": 8,
+     "no_reply_turns": 0
+    },
+    "key_normalization_events": 0,
+    "tokens": {
+     "prompt": 176313,
+     "completion": 7039,
+     "total": 183352,
+     "cache_fields_unknown": 48
+    },
+    "cost_named_two_ways": {
+     "token_per_extractable_primary": 7639.667,
+     "token_per_program_not_vetoed_position": 7971.826,
+     "token_per_semantically_passed": "unknown",
+     "token_per_user_would_send": "unknown"
+    },
+    "money": null,
+    "money_reason": "无可核验单价；不折算金额，不把 token 降幅当金额降幅",
+    "wall_completion_ms_sum": 705882
+   },
+   "candidate": {
+    "n": 24,
+    "columns": {
+     "T": 24,
+     "P": 24,
+     "C": 24,
+     "K": 24,
+     "Q": "unknown",
+     "W": "unknown"
+    },
+    "denominator_definitions": {
+     "T": "账本completed且原文非空无传输错误 / n",
+     "P": "冻结评分器 json_schema_valid（必需键+directions=4）原始字节 / n",
+     "C": "消费器能提出非空首选 / n",
+     "K": "无veto且有首选 / n",
+     "Q": "需有资格评审维度，本轮未授 ⇒ unknown（不填 n）",
+     "W": "用户愿发标签未回收 ⇒ unknown"
+    },
+    "rates_percent": {
+     "T": 100.0,
+     "P": 100.0,
+     "C": 100.0,
+     "K": 100.0
+    },
+    "delivery_completeness": {
+     "full_four_styles_four_directions": 13,
+     "partial_or_missing_slot": 11
+    },
+    "legal_blank_success_actions": {
+     "direction_nulls": 16,
+     "no_reply_turns": 0
+    },
+    "key_normalization_events": 0,
+    "tokens": {
+     "prompt": 71428,
+     "completion": 8218,
+     "total": 79646,
+     "cache_fields_unknown": 48
+    },
+    "cost_named_two_ways": {
+     "token_per_extractable_primary": 3318.583,
+     "token_per_program_not_vetoed_position": 3318.583,
+     "token_per_semantically_passed": "unknown",
+     "token_per_user_would_send": "unknown"
+    },
+    "money": null,
+    "money_reason": "无可核验单价；不折算金额，不把 token 降幅当金额降幅",
+    "wall_completion_ms_sum": 847830
+   },
+   "_exception_detail": {
+    "parent": [
+     {
+      "slot": "r2/parent_E007/turn_04_E007_T04",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/parent_E007/turn_05_E007_T05",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/parent_E007/turn_08_E007_T08",
+      "veto": "json_schema_broken",
+      "P": false,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions_count=3",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/parent_E010/turn_08_E010_T08",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[1],directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/parent_E012/turn_01_E012_T01",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/parent_E012/turn_02_E012_T02",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/parent_E012/turn_06_E012_T06",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/parent_E012/turn_08_E012_T08",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     }
+    ],
+    "candidate": [
+     {
+      "slot": "r2/candidate_E007/turn_02_E007_T02",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/candidate_E007/turn_07_E007_T07",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[0],directions[1],directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/candidate_E007/turn_08_E007_T08",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[2]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/candidate_E010/turn_01_E010_T01",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[2],directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/candidate_E010/turn_04_E010_T04",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/candidate_E010/turn_05_E010_T05",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/candidate_E010/turn_08_E010_T08",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[2],directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/candidate_E012/turn_01_E012_T01",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/candidate_E012/turn_02_E012_T02",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/candidate_E012/turn_06_E012_T06",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "r2/candidate_E012/turn_08_E012_T08",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[0],directions[3]",
+      "key_norm": []
+     }
+    ]
+   }
+  },
+  "v3": {
+   "parent": {
+    "n": 24,
+    "columns": {
+     "T": 24,
+     "P": 24,
+     "C": 24,
+     "K": 24,
+     "Q": "unknown",
+     "W": "unknown"
+    },
+    "denominator_definitions": {
+     "T": "账本completed且原文非空无传输错误 / n",
+     "P": "冻结评分器 json_schema_valid（必需键+directions=4）原始字节 / n",
+     "C": "消费器能提出非空首选 / n",
+     "K": "无veto且有首选 / n",
+     "Q": "需有资格评审维度，本轮未授 ⇒ unknown（不填 n）",
+     "W": "用户愿发标签未回收 ⇒ unknown"
+    },
+    "rates_percent": {
+     "T": 100.0,
+     "P": 100.0,
+     "C": 100.0,
+     "K": 100.0
+    },
+    "delivery_completeness": {
+     "full_four_styles_four_directions": 19,
+     "partial_or_missing_slot": 5
+    },
+    "legal_blank_success_actions": {
+     "direction_nulls": 5,
+     "no_reply_turns": 0
+    },
+    "key_normalization_events": 0,
+    "tokens": {
+     "prompt": 175872,
+     "completion": 6913,
+     "total": 182785,
+     "cache_fields_unknown": 48
+    },
+    "cost_named_two_ways": {
+     "token_per_extractable_primary": 7616.042,
+     "token_per_program_not_vetoed_position": 7616.042,
+     "token_per_semantically_passed": "unknown",
+     "token_per_user_would_send": "unknown"
+    },
+    "money": null,
+    "money_reason": "无可核验单价；不折算金额，不把 token 降幅当金额降幅",
+    "wall_completion_ms_sum": 774629
+   },
+   "candidate": {
+    "n": 24,
+    "columns": {
+     "T": 24,
+     "P": 24,
+     "C": 24,
+     "K": 23,
+     "Q": "unknown",
+     "W": "unknown"
+    },
+    "denominator_definitions": {
+     "T": "账本completed且原文非空无传输错误 / n",
+     "P": "冻结评分器 json_schema_valid（必需键+directions=4）原始字节 / n",
+     "C": "消费器能提出非空首选 / n",
+     "K": "无veto且有首选 / n",
+     "Q": "需有资格评审维度，本轮未授 ⇒ unknown（不填 n）",
+     "W": "用户愿发标签未回收 ⇒ unknown"
+    },
+    "rates_percent": {
+     "T": 100.0,
+     "P": 100.0,
+     "C": 100.0,
+     "K": 95.83
+    },
+    "delivery_completeness": {
+     "full_four_styles_four_directions": 13,
+     "partial_or_missing_slot": 11
+    },
+    "legal_blank_success_actions": {
+     "direction_nulls": 11,
+     "no_reply_turns": 0
+    },
+    "key_normalization_events": 0,
+    "tokens": {
+     "prompt": 63430,
+     "completion": 8237,
+     "total": 71667,
+     "cache_fields_unknown": 48
+    },
+    "cost_named_two_ways": {
+     "token_per_extractable_primary": 2986.125,
+     "token_per_program_not_vetoed_position": 3115.957,
+     "token_per_semantically_passed": "unknown",
+     "token_per_user_would_send": "unknown"
+    },
+    "money": null,
+    "money_reason": "无可核验单价；不折算金额，不把 token 降幅当金额降幅",
+    "wall_completion_ms_sum": 690327
+   },
+   "_exception_detail": {
+    "parent": [
+     {
+      "slot": "v3/parent_E004/turn_07_E004_T07",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/parent_E005/turn_05_E005_T05",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/parent_E005/turn_07_E005_T07",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/parent_E006/turn_02_E006_T02",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/parent_E006/turn_08_E006_T08",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     }
+    ],
+    "candidate": [
+     {
+      "slot": "v3/candidate_E004/turn_02_E004_T02",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/candidate_E004/turn_05_E004_T05",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/candidate_E005/turn_02_E005_T02",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/candidate_E005/turn_03_E005_T03",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/candidate_E005/turn_04_E005_T04",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/candidate_E005/turn_05_E005_T05",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[0]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/candidate_E005/turn_06_E005_T06",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/candidate_E006/turn_01_E006_T01",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/candidate_E006/turn_02_E006_T02",
+      "veto": "illegal_source_id:t1_0",
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[2],directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/candidate_E006/turn_04_E006_T04",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     },
+     {
+      "slot": "v3/candidate_E006/turn_08_E006_T08",
+      "veto": null,
+      "P": true,
+      "C": true,
+      "full_slot": false,
+      "partial_reason": "directions[3]",
+      "key_norm": []
+     }
+    ]
+   }
+  }
+ }
+}

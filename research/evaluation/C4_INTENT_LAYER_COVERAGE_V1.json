@@ -1,0 +1,337 @@
+{
+ "kind": "c4_intent_layer_coverage",
+ "episodes": [
+  "E006",
+  "E007",
+  "E008",
+  "E012"
+ ],
+ "judged_by": "reference_chain.is_intent_effective（两臂共同闸门，未改判据）",
+ "per_episode": {
+  "E006": {
+   "turns": 8,
+   "goal_live": 1,
+   "goal_inert": 7
+  },
+  "E007": {
+   "turns": 8,
+   "goal_live": 3,
+   "goal_inert": 5
+  },
+  "E008": {
+   "turns": 8,
+   "goal_live": 0,
+   "goal_inert": 8
+  },
+  "E012": {
+   "turns": 8,
+   "goal_live": 3,
+   "goal_inert": 5
+  }
+ },
+ "positions_total": 32,
+ "positions_goal_live": 7,
+ "positions_goal_inert": 25,
+ "coverage_rate": 0.2188,
+ "loci_goal_live": [
+  "E006_T05",
+  "E007_T02",
+  "E007_T03",
+  "E007_T06",
+  "E012_T02",
+  "E012_T03",
+  "E012_T06"
+ ],
+ "rows": [
+  {
+   "case_id": "E006_T01",
+   "episode": "E006",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": false
+  },
+  {
+   "case_id": "E006_T02",
+   "episode": "E006",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E006_T03",
+   "episode": "E006",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E006_T04",
+   "episode": "E006",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E006_T05",
+   "episode": "E006",
+   "intent_present": true,
+   "enabled": true,
+   "status": null,
+   "goal_block_effective": true,
+   "note_present": true
+  },
+  {
+   "case_id": "E006_T06",
+   "episode": "E006",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E006_T07",
+   "episode": "E006",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E006_T08",
+   "episode": "E006",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E007_T01",
+   "episode": "E007",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E007_T02",
+   "episode": "E007",
+   "intent_present": true,
+   "enabled": true,
+   "status": "ACTIVE",
+   "goal_block_effective": true,
+   "note_present": true
+  },
+  {
+   "case_id": "E007_T03",
+   "episode": "E007",
+   "intent_present": true,
+   "enabled": true,
+   "status": "ACTIVE",
+   "goal_block_effective": true,
+   "note_present": true
+  },
+  {
+   "case_id": "E007_T04",
+   "episode": "E007",
+   "intent_present": true,
+   "enabled": false,
+   "status": "CLOSED",
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E007_T05",
+   "episode": "E007",
+   "intent_present": true,
+   "enabled": false,
+   "status": "CLOSED",
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E007_T06",
+   "episode": "E007",
+   "intent_present": true,
+   "enabled": true,
+   "status": "ACTIVE",
+   "goal_block_effective": true,
+   "note_present": true
+  },
+  {
+   "case_id": "E007_T07",
+   "episode": "E007",
+   "intent_present": true,
+   "enabled": false,
+   "status": "CLOSED",
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E007_T08",
+   "episode": "E007",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E008_T01",
+   "episode": "E008",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E008_T02",
+   "episode": "E008",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E008_T03",
+   "episode": "E008",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E008_T04",
+   "episode": "E008",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E008_T05",
+   "episode": "E008",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E008_T06",
+   "episode": "E008",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E008_T07",
+   "episode": "E008",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E008_T08",
+   "episode": "E008",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E012_T01",
+   "episode": "E012",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E012_T02",
+   "episode": "E012",
+   "intent_present": true,
+   "enabled": true,
+   "status": "ACTIVE",
+   "goal_block_effective": true,
+   "note_present": true
+  },
+  {
+   "case_id": "E012_T03",
+   "episode": "E012",
+   "intent_present": true,
+   "enabled": true,
+   "status": "ACTIVE",
+   "goal_block_effective": true,
+   "note_present": true
+  },
+  {
+   "case_id": "E012_T04",
+   "episode": "E012",
+   "intent_present": true,
+   "enabled": false,
+   "status": "CLOSED",
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E012_T05",
+   "episode": "E012",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E012_T06",
+   "episode": "E012",
+   "intent_present": true,
+   "enabled": true,
+   "status": "ACTIVE",
+   "goal_block_effective": true,
+   "note_present": true
+  },
+  {
+   "case_id": "E012_T07",
+   "episode": "E012",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  },
+  {
+   "case_id": "E012_T08",
+   "episode": "E012",
+   "intent_present": false,
+   "enabled": null,
+   "status": null,
+   "goal_block_effective": false,
+   "note_present": true
+  }
+ ],
+ "reading_rule": "C2 的目标-动作层只在 goal_block_effective=true 的位点被真正 exercise；四臂对比必须并列两个口径：全部 32 位（含惰性位点，会稀释差值）与目标存活位点（分母=7）。不得用聚合差值单独判目标动作层无效。",
+ "real_model_calls": 0
+}

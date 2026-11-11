@@ -1,0 +1,236 @@
+{
+ "protocol": "IRR-V1.0",
+ "subset_nodes": 13,
+ "raters": {
+  "R1": 13,
+  "R2": 13,
+  "R3": 13
+ },
+ "real_model_calls": 0,
+ "note": "R1/R2/R3 同源模型不同会话，不是独立模型；一致≠真值。",
+ "field_completeness": {
+  "missing": [],
+  "ok": true
+ },
+ "fact_error_detection": {
+  "reference_items": 12,
+  "detected": 10,
+  "missed": [
+   [
+    "R3",
+    "N003",
+    "甲",
+    [
+     "F3",
+     "F2"
+    ]
+   ],
+   [
+    "R3",
+    "N003",
+    "乙",
+    [
+     "F3",
+     "F2"
+    ]
+   ]
+  ],
+  "detection_rate_percent": 83.3,
+  "threshold": "≥90%",
+  "pass": false,
+  "per_rater": {
+   "R1": [
+    1,
+    1,
+    1
+   ],
+   "R2": [
+    1,
+    1,
+    1
+   ],
+   "R3": [
+    0,
+    1,
+    1
+   ]
+  }
+ },
+ "free_expression_false_kill": {
+  "legitimate_items": 9,
+  "killed": [],
+  "kill_rate_percent": 0.0,
+  "threshold": "≤15%",
+  "pass": true
+ },
+ "goal_completion_agreement": {
+  "pairs": {
+   "R1-R2": {
+    "n": 26,
+    "exact_percent": 88.5,
+    "adjacent_percent": 100.0,
+    "large_gaps": []
+   },
+   "R1-R3": {
+    "n": 26,
+    "exact_percent": 88.5,
+    "adjacent_percent": 100.0,
+    "large_gaps": []
+   },
+   "R2-R3": {
+    "n": 26,
+    "exact_percent": 76.9,
+    "adjacent_percent": 100.0,
+    "large_gaps": []
+   }
+  },
+  "threshold": "精确≥50% 且相邻≥85%",
+  "pass_all_pairs": true
+ },
+ "insufficient_info_handling": {
+  "nodes": [
+   "N003",
+   "N011",
+   "N034",
+   "N051"
+  ],
+  "per_rater": {
+   "R1": {
+    "checked": 8,
+    "handled_as_insufficient": 5,
+    "percent": 62.5
+   },
+   "R2": {
+    "checked": 8,
+    "handled_as_insufficient": 5,
+    "percent": 62.5
+   },
+   "R3": {
+    "checked": 8,
+    "handled_as_insufficient": 7,
+    "percent": 87.5
+   }
+  },
+  "threshold": "≥80%（该维度按答案计）",
+  "note": "这里统计的是\"能识别该位存在信息不足并给出 F3/yes 出口\"，不是要求答案必须承认不足。"
+ },
+ "order_sensitivity": {
+  "comparable_decisive": 6,
+  "same": 6,
+  "flipped": 0,
+  "pairs_with_abstain": 9,
+  "flip_rate_percent": 0.0,
+  "threshold": "≤15%",
+  "pass": true,
+  "detail": [],
+  "abstain_rates": {
+   "R1": 30.8,
+   "R3": 69.2
+  }
+ },
+ "preference_agreement": {
+  "R1-R2": {
+   "n": 13,
+   "raw_agree_percent": 84.6,
+   "both_decisive": 8,
+   "decisive_agree_percent": 100.0
+  },
+  "R1-R3": {
+   "n": 13,
+   "raw_agree_percent": 46.2,
+   "both_decisive": 3,
+   "decisive_agree_percent": 100.0
+  },
+  "R2-R3": {
+   "n": 13,
+   "raw_agree_percent": 46.2,
+   "both_decisive": 3,
+   "decisive_agree_percent": 100.0
+  }
+ },
+ "abstain_rate": {
+  "R1": 30.8,
+  "R2": 30.8,
+  "R3": 69.2
+ },
+ "attribution_agreement": {
+  "nodes": [
+   "N005",
+   "N012",
+   "N037",
+   "N015"
+  ],
+  "pairs": {
+   "R1-R2": {
+    "n": 8,
+    "agree_percent": 50.0
+   },
+   "R1-R3": {
+    "n": 6,
+    "agree_percent": 33.3
+   },
+   "R2-R3": {
+    "n": 8,
+    "agree_percent": 50.0
+   }
+  },
+  "threshold": "≥75%",
+  "pass_all": false
+ },
+ "protocol_vs_content_separation": {
+  "testable": false,
+  "reason": "CALIB-V1.0 节点由抽取后的文本组装，零宽键名等协议污染在抽取层已被抹平，评审者看不到也无法判。下一版包必须附原文字节（raw）才能测这一维。",
+  "observed_field_usage": {
+   "R1": [
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na"
+   ],
+   "R2": [
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na"
+   ],
+   "R3": [
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na",
+    "na"
+   ]
+  }
+ },
+ "goal_vs_constructed_reference": {
+  "items": 18,
+  "off_by_more_than_one": [],
+  "pass": true
+ }
+}

@@ -1,0 +1,4124 @@
+{
+ "protocol": "V5-EVIDENCE-REVIEW-V1",
+ "created": "2026-10-25",
+ "zero_model_calls": true,
+ "sources": {
+  "SEALED_KEY_V1_1.json": "d758b75f5c268b7d",
+  "REFERENCE_LABELS_V1_1.json": "e8d06608eaa1ecf2"
+ },
+ "scope_note": "v5 批 24 位置 × 2 臂 = 48 份答案；首选(response.recommended)+全部非空备选(backup[1..7])按参考主张槽位逐条复核。不重跑生成、不计 harness 收益。",
+ "denominator_discipline": "trusted=constructed_reference+human_reviewed；mechanical_only 只作信息列；disputed 带标记列出（不计候选胜负）。Q/W=unknown 不冒充。",
+ "per_answer": [
+  {
+   "node_id": "M001",
+   "position": "E007_T01",
+   "story": "E007",
+   "split": "dev",
+   "arms": {
+    "parent": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 1,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "candidate": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M002",
+   "position": "E007_T02",
+   "story": "E007",
+   "split": "dev",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M003",
+   "position": "E007_T03",
+   "story": "E007",
+   "split": "dev",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 3
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 3
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [
+        {
+         "claim_id": "response.recommended#c0.0",
+         "text": "对，就是那种——不吵，鼓和吉他一层层往上铺，中间还能听见彼此说话",
+         "severity": "次要",
+         "disputed": true,
+         "provenance": "human_reviewed"
+        }
+       ],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 1,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M004",
+   "position": "E007_T04",
+   "story": "E007",
+   "split": "dev",
+   "arms": {
+    "parent": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 1,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 1,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 0
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "candidate": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 1,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 1,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M005",
+   "position": "E007_T05",
+   "story": "E007",
+   "split": "dev",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 0.0,
+     "veto": "illegal_source_id:t4_1",
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M006",
+   "position": "E007_T06",
+   "story": "E007",
+   "split": "dev",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 1,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 4
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 4
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 1,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M007",
+   "position": "E007_T07",
+   "story": "E007",
+   "split": "dev",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 1,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 8.33,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 1,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M008",
+   "position": "E007_T08",
+   "story": "E007",
+   "split": "dev",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 0.0,
+     "veto": "json_schema_broken",
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 1,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 1,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M009",
+   "position": "E008_T01",
+   "story": "E008",
+   "split": "validation",
+   "arms": {
+    "parent": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "candidate": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 3
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M010",
+   "position": "E008_T02",
+   "story": "E008",
+   "split": "validation",
+   "arms": {
+    "parent": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 1,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 0
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "candidate": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M011",
+   "position": "E008_T03",
+   "story": "E008",
+   "split": "validation",
+   "arms": {
+    "parent": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 1,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "response.recommended": {
+       "trusted_viol": [
+        {
+         "claim_id": "response.recommended#c0.0",
+         "text": "不是读书会，这话我没说过，你记混了",
+         "severity": "次要",
+         "disputed": true,
+         "provenance": "human_reviewed"
+        }
+       ],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 0
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "candidate": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 3
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [
+        {
+         "claim_id": "response.recommended#c0.0",
+         "text": "不是读书会，我跟小林不是那么认识的，这回你真记岔了",
+         "severity": "次要",
+         "disputed": true,
+         "provenance": "human_reviewed"
+        }
+       ],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M012",
+   "position": "E008_T04",
+   "story": "E008",
+   "split": "validation",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M013",
+   "position": "E008_T05",
+   "story": "E008",
+   "split": "validation",
+   "arms": {
+    "parent": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "candidate": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M014",
+   "position": "E008_T06",
+   "story": "E008",
+   "split": "validation",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M015",
+   "position": "E008_T07",
+   "story": "E008",
+   "split": "validation",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M016",
+   "position": "E008_T08",
+   "story": "E008",
+   "split": "validation",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 1,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 3
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 1,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M017",
+   "position": "E009_T01",
+   "story": "E009",
+   "split": "validation",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 1,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 3
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M018",
+   "position": "E009_T02",
+   "story": "E009",
+   "split": "validation",
+   "arms": {
+    "parent": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "candidate": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 2,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M019",
+   "position": "E009_T03",
+   "story": "E009",
+   "split": "validation",
+   "arms": {
+    "parent": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "candidate": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M020",
+   "position": "E009_T04",
+   "story": "E009",
+   "split": "validation",
+   "arms": {
+    "parent": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 3
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "candidate": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M021",
+   "position": "E009_T05",
+   "story": "E009",
+   "split": "validation",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 1,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M022",
+   "position": "E009_T06",
+   "story": "E009",
+   "split": "validation",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 3,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 1,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 0
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M023",
+   "position": "E009_T07",
+   "story": "E009",
+   "split": "validation",
+   "arms": {
+    "parent": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 1,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "candidate": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 2,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  },
+  {
+   "node_id": "M024",
+   "position": "E009_T08",
+   "story": "E009",
+   "split": "validation",
+   "arms": {
+    "candidate": {
+     "label": "甲",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    },
+    "parent": {
+     "label": "乙",
+     "program_score10": 10.0,
+     "veto": null,
+     "protocol_truth": {
+      "raw_present": true,
+      "invisible_key_chars": 0,
+      "style_slots_missing": [],
+      "directions_len": 4,
+      "directions_null_count": 0,
+      "response_nonstring_values": []
+     },
+     "slots": {
+      "backup[1]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[2]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[3]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 2
+      },
+      "backup[4]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[5]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[6]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "backup[7]": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      },
+      "response.recommended": {
+       "trusted_viol": [],
+       "trusted_conflict": [],
+       "trusted_protected_n": 0,
+       "mech_viol": 0,
+       "mech_conflict": 0,
+       "mech_protected_n": 1
+      }
+     },
+     "unknown": {
+      "Q_semantic": "unknown（待裁判分维度资格）",
+      "W_user_willing": "unknown（USER_CALIBRATION_SHEET_V1 未回收）"
+     }
+    }
+   }
+  }
+ ],
+ "per_story": {
+  "E007": {
+   "nodes": 8,
+   "severe_trusted_viol": {
+    "parent": 0,
+    "candidate": 1
+   }
+  },
+  "E008": {
+   "nodes": 8,
+   "severe_trusted_viol": {
+    "parent": 1,
+    "candidate": 1
+   }
+  },
+  "E009": {
+   "nodes": 8,
+   "severe_trusted_viol": {
+    "parent": 0,
+    "candidate": 0
+   }
+  }
+ },
+ "per_axis_defects": {
+  "事实": {
+   "未提供/确定": 3
+  }
+ },
+ "aggregates": {
+  "answers_per_arm": 24,
+  "arms": {
+   "parent": {
+    "trusted_viol": 1,
+    "trusted_conflict": 0,
+    "trusted_protected": 4,
+    "mechanical_viol": 0,
+    "mechanical_conflict": 0,
+    "mechanical_protected": 233,
+    "disputed_in_defects": 1,
+    "proto_invisible_key": 0,
+    "proto_slots_missing": 0,
+    "proto_nonstring": 0,
+    "proto_directions_bad": 0,
+    "program_score10_sum": 228.32999999999998,
+    "veto_n": 1
+   },
+   "candidate": {
+    "trusted_viol": 2,
+    "trusted_conflict": 0,
+    "trusted_protected": 3,
+    "mechanical_viol": 0,
+    "mechanical_conflict": 0,
+    "mechanical_protected": 272,
+    "disputed_in_defects": 2,
+    "proto_invisible_key": 1,
+    "proto_slots_missing": 0,
+    "proto_nonstring": 0,
+    "proto_directions_bad": 0,
+    "program_score10_sum": 230.0,
+    "veto_n": 1
+   }
+  },
+  "unknown_coverage": {
+   "Q_semantic": "unknown — 语义/行动合格需裁判分维度资格（204 批运行中）",
+   "W_user_willing": "unknown — 用户口味表 16 组未回收",
+   "cost_per_Q": "unknown",
+   "cost_per_W": "unknown",
+   "amount": "null（无可核对单价）"
+  },
+  "note": "本工具只列参考已认定的缺陷/保护清单与协议真相，不产生候选胜负；严重风险按 trusted 主张计，mechanical_only 未逐条人工核对仅作信息列。"
+ }
+}

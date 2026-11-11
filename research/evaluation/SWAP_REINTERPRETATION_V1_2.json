@@ -1,0 +1,120 @@
+{
+ "doc": "SWAP_REINTERPRETATION_V1_2",
+ "date": "2026-10-26",
+ "cause": "mainline_review_20261026/REVIEW.md §三.2 两处实错：v1_1 swapped payload 标签↔内容绑定未换（只换序列化顺序）；normalize_rec 原地覆盖丢边。均已亲证+离线复现（tools/judge_swap_v1_2.py SELFTEST）。",
+ "old_claim_withdrawn": "repeat_swapped 57.1% 翻转不能解释为纯位置偏置；顺序维度结论撤回为探索性。",
+ "method": "旧 payload 绑定未换 → 两轮判词同一坐标系，直接比较（不转置）= 纯呈现顺序效应+噪声。",
+ "per_rater": {
+  "R1": {
+   "n": 8,
+   "same_coord_flips": 3,
+   "old_transposed_flips": 5
+  },
+  "R2": {
+   "n": 0,
+   "same_coord_flips": 0,
+   "old_transposed_flips": 0
+  },
+  "R3": {
+   "n": 0,
+   "same_coord_flips": 0,
+   "old_transposed_flips": 0
+  }
+ },
+ "fix_module": "tools/judge_swap_v1_2.py（swap_payload 真绑定交换 + swap_labels 非破坏 + normalize_v1_2，9 checks OK）",
+ "old_files": "旧判词/旧分析输出不改写；R2/R3 未覆盖 repeat_swapped（历史事实照记）。",
+ "node_detail": [
+  {
+   "rater": "R1",
+   "node": "M012",
+   "primary_pref": "甲",
+   "swapped_raw_pref": "甲",
+   "same_coord_agree": true,
+   "old_transposed_agree": false
+  },
+  {
+   "rater": "R1",
+   "node": "M013",
+   "primary": "甲",
+   "swapped": "都行",
+   "excluded": "parsed缺失"
+  },
+  {
+   "rater": "R1",
+   "node": "M026",
+   "primary_pref": "乙",
+   "swapped_raw_pref": "甲",
+   "same_coord_agree": false,
+   "old_transposed_agree": true
+  },
+  {
+   "rater": "R1",
+   "node": "M027",
+   "primary": "都行",
+   "swapped": "甲",
+   "excluded": "parsed缺失"
+  },
+  {
+   "rater": "R1",
+   "node": "M030",
+   "primary_pref": "甲",
+   "swapped_raw_pref": "甲",
+   "same_coord_agree": true,
+   "old_transposed_agree": false
+  },
+  {
+   "rater": "R1",
+   "node": "M034",
+   "primary": "乙",
+   "swapped": "都行",
+   "excluded": "parsed缺失"
+  },
+  {
+   "rater": "R1",
+   "node": "M036",
+   "primary_pref": "乙",
+   "swapped_raw_pref": "乙",
+   "same_coord_agree": true,
+   "old_transposed_agree": false
+  },
+  {
+   "rater": "R1",
+   "node": "M039",
+   "primary_pref": "乙",
+   "swapped_raw_pref": "甲",
+   "same_coord_agree": false,
+   "old_transposed_agree": true
+  },
+  {
+   "rater": "R1",
+   "node": "M040",
+   "primary": "都行",
+   "swapped": "都行",
+   "excluded": "parsed缺失"
+  },
+  {
+   "rater": "R1",
+   "node": "C050",
+   "primary_pref": "甲",
+   "swapped_raw_pref": "甲",
+   "same_coord_agree": true,
+   "old_transposed_agree": false
+  },
+  {
+   "rater": "R1",
+   "node": "M046",
+   "primary_pref": "甲",
+   "swapped_raw_pref": "乙",
+   "same_coord_agree": false,
+   "old_transposed_agree": true
+  },
+  {
+   "rater": "R1",
+   "node": "C051",
+   "primary_pref": "甲",
+   "swapped_raw_pref": "甲",
+   "same_coord_agree": true,
+   "old_transposed_agree": false
+  }
+ ]
+}

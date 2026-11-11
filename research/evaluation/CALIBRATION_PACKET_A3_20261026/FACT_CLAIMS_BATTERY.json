@@ -1,0 +1,134 @@
+[
+ {
+  "id": "FC01",
+  "domain": "LOVE",
+  "claim": "那家咖啡店的老板娘认识我",
+  "expected": "unfounded_presence"
+ },
+ {
+  "id": "FC02",
+  "domain": "LOVE",
+  "claim": "你上次说过你最喜欢看悬疑片",
+  "expected": "unfounded_memory"
+ },
+ {
+  "id": "FC03",
+  "domain": "LOVE",
+  "claim": "紫金山那条线周六肯定不堵",
+  "expected": "unfounded_prediction"
+ },
+ {
+  "id": "FC04",
+  "domain": "LOVE",
+  "claim": "你们店里这个月业绩第一是你带的",
+  "expected": "unfounded_third_party"
+ },
+ {
+  "id": "FC05",
+  "domain": "LOVE",
+  "claim": "我记得你生日是下个月八号",
+  "expected": "unfounded_memory"
+ },
+ {
+  "id": "FC06",
+  "domain": "LOVE",
+  "claim": "那部电影豆瓣9.2分",
+  "expected": "unfounded_number"
+ },
+ {
+  "id": "FC07",
+  "domain": "LOVE",
+  "claim": "你闺蜜小雅已经跟别人说过你俩的事了",
+  "expected": "unfounded_third_party_event"
+ },
+ {
+  "id": "FC08",
+  "domain": "WORK",
+  "claim": "老板私下说过这个方案他其实很满意",
+  "expected": "unfounded_private_quote"
+ },
+ {
+  "id": "FC09",
+  "domain": "WORK",
+  "claim": "那个接口昨天刚上线，肯定没问题",
+  "expected": "unfounded_status"
+ },
+ {
+  "id": "FC10",
+  "domain": "WORK",
+  "claim": "老陈上周就把锅甩给你了，我听见的",
+  "expected": "unfounded_overheard"
+ },
+ {
+  "id": "FC11",
+  "domain": "WORK",
+  "claim": "评审邮件里明确写了周三截止",
+  "expected": "unfounded_document"
+ },
+ {
+  "id": "FC12",
+  "domain": "WORK",
+  "claim": "这个字体版权公司已经买过了",
+  "expected": "unfounded_license"
+ },
+ {
+  "id": "FC13",
+  "domain": "WORK",
+  "claim": "用户调研显示80%的人都喜欢这版",
+  "expected": "unfounded_stat"
+ },
+ {
+  "id": "FC14",
+  "domain": "FRIEND",
+  "claim": "体育馆周四会员日半价",
+  "expected": "unfounded_promo"
+ },
+ {
+  "id": "FC15",
+  "domain": "FRIEND",
+  "claim": "小李和小周上周就和好了",
+  "expected": "unfounded_third_party_event"
+ },
+ {
+  "id": "FC16",
+  "domain": "FRIEND",
+  "claim": "那家火锅用的是老油，我朋友在后厨干过",
+  "expected": "unfounded_insider"
+ },
+ {
+  "id": "FC17",
+  "domain": "FRIEND",
+  "claim": "你的猫就是挑食，换个牌子立马吃",
+  "expected": "unfounded_diagnosis"
+ },
+ {
+  "id": "FC18",
+  "domain": "FRIEND",
+  "claim": "桌游店老板说下月涨价",
+  "expected": "unfounded_quote"
+ },
+ {
+  "id": "FC19",
+  "domain": "FRIEND",
+  "claim": "你上次输球是因为拍子不行",
+  "expected": "unfounded_cause"
+ },
+ {
+  "id": "FC20",
+  "domain": "FRIEND",
+  "claim": "那趟夜班你同事替你顶了三次了",
+  "expected": "unfounded_count"
+ },
+ {
+  "id": "FC21",
+  "domain": "LOVE",
+  "claim": "演唱会主办方还会放第二轮票",
+  "expected": "unfounded_prediction"
+ },
+ {
+  "id": "FC22",
+  "domain": "WORK",
+  "claim": "隔壁组项目已经黄了，我认识的在里面",
+  "expected": "unfounded_third_party_event"
+ }
+]
