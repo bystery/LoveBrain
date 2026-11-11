@@ -1,0 +1,7 @@
+{
+  "role": "candidate",
+  "parent": "window_expand_b_norecap_uc",
+  "output_contract": null,
+  "collapse_retry": 1,
+  "note": "window_expand_b_norecap_uc_retry（W21-02 崩坏轮重试）：mechanism/ 与父本 uc 逐字节相同，prompt 构造零改动；单变量 = runner 批级崩坏轮重试策略（空/不可解析 raw 同 prompt 重调 1 次，双臂同策，重试头寸 ≤20% 预注册，逐次登记）。判据冻结见 W21_02_NEXT_BATCH_DESIGN_20261103.md（2026-11-04 主会话代裁①②）。"
+}

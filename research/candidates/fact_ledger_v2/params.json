@@ -1,0 +1,6 @@
+{
+  "role": "candidate",
+  "parent": "fact_ledger_v1",
+  "output_contract": null,
+  "note": "fact_ledger_v2（FLREG_VERDICT_20261101 归因 H-主观句错账的针对性迭代，父本 fact_ledger_v1）。基座仍 v0_minimal_events。三处 delta：①capture 侧 R0 主观句排除层（无硬锚且命中推测/情绪/意愿语言学信号不入账，R1–R6 之前）；②注入降权：kind=other/event 且 subject=HER 且无 digits 且无 valid_time 的行 w_type 0.4/0.6→0.15；③注入行来源透明化：subject=HER 且 origin=message 且 kind∈{other,event} 加 ‹她说› 前缀。账本 schema/注入位置/预算 800 CU/k=12/pin/supersede/每轮 1 次 generate 全继承 v1。output_contract 沿用 v0/v1 口径：legacy 契约不声明。system 资产沿用 v0 精简资产不改（控制变量）。"
+}

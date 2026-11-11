@@ -1,0 +1,6 @@
+{
+  "role": "candidate",
+  "parent": "reference_product_v1",
+  "output_contract": null,
+  "note": "v0_minimal_events 最小 harness 对照（§C）。自包含简单事件记忆（仅实际发送的 HER/ME，生成回复是草稿不入史），画像取 ep_meta.persona，本轮 intent/note 独立分区只取当前，多层 topic/ongoing/scene 摘要、自动重估/反思、辅助生成一律不做。复用经 B 修订的精简 system 资产（本候选自带同一份）；共享依赖 rc.utf16_len/build_system_prompt 来自父本 reference_product_v1（进入身份闭包，不复制后漂移）。legacy 输出契约不声明。"
+}

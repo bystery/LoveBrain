@@ -1,0 +1,15 @@
+{
+ "candidate": "action_policy_r5_tier",
+ "role": "candidate",
+ "parent": "action_policy_r2",
+ "output_contract": null,
+ "mechanism_flags": {
+  "hygiene_wording_fix": true,
+  "contract_guard_fix": true,
+  "subject_evidence_fix": true,
+  "output_repair_e3": true,
+  "assertion_tiering": true
+ },
+ "note": "F5 repaired-identity candidate. Code files (mechanism/mechanism.py, mechanism/contract_guard.py, mechanism/_vendor/*, assets/system_prompt/*) are byte-identical to the copies staged during the F5 live recheck (logs/f5_recheck_live2_20261029_133653/_iso_run_candidate_N01/staged). Runtime parent is action_policy_r2 (same as action_policy_r4_guard_final); the only code difference from that frozen identity is vendored output_repair.py rule E3 (unwrap stray object + at most one mismatched ]/} ), which fires only when inherited parse and E2 both fail and the reassembled document parses with response+directions+analysis. Offline replay over the 72 paid candidate answers changed exactly 1 harness output (N01_T05, previously json_schema_broken) and left 71 byte-identical; historical parity over 260 raws shows 0 regressions. No prompt, policy, scorer, card or endpoint change; no extra model calls.",
+ "f5_revision": "2026-10-29 F5：E3 修复单独注册为新身份 action_policy_r4_guard_e3（原 r4_guard_final 目录已还原到冻结字节）"
+}

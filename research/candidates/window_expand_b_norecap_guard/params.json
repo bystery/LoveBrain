@@ -1,0 +1,9 @@
+{
+  "role": "candidate",
+  "parent": "window_expand_b_norecap",
+  "output_contract": null,
+  "mechanism_flags": {
+    "contract_guard_fix": true
+  },
+  "note": "W17b 阶段一单变量：window_expand_b_norecap 逐字复制 + 机制层输出契约守卫（mechanism/contract_guard.py，复用 action_policy_r9_slim 的 _vendor/output_repair.py + normalize_reply_contract.py 逐字节副本）。prompt 构造、3600 CU 历史预算、intent/note 装配、事件存储均未改动；唯一变异=输出契约守卫（对 gw.generate 返回的 text 做确定性修复）。父本 b_norecap 目录不改。依据 W17_MERGE_VERDICT_20261102.md D-W17-01；供下一 live 批与父本/父父本对照。"
+}

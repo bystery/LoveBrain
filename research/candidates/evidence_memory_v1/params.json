@@ -1,0 +1,9 @@
+{
+ "candidate": "evidence_memory_v1",
+ "design_ref": "candidates/marathon_c_20261026/C2_C3_CANDIDATE_DESIGN_V1.md §C3",
+ "base": "v5_purpose_aligned (closure; system assets byte-identical)",
+ "mechanism": "five-separated storage (events/facts/tentatives/goals/notes with provenance) + budgeted projection (current>events 1400CU>facts 500CU relevant>tentatives 300CU>goal 600CU); relevance = char-bigram overlap with (current messages + goal), zero domain words, floor 0.12, recency fallback when no signal; closed goals never delete confirmed facts",
+ "extraction": "model reports per-turn analysis facts/tentatives with src_ids; mechanism validates src in current window + hash-dedup; initial_kb.ongoing_plan seeds facts",
+ "honest_limits": ["V1 has no automatic correction/status-flip of old facts (deferred until long-story tests expose need)", "no special-case retrieval words", "never wins by deleting all content"],
+ "extra_model_calls": 0
+}

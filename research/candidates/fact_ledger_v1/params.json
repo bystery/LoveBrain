@@ -1,0 +1,6 @@
+{
+  "role": "candidate",
+  "parent": "v0_minimal_events",
+  "output_contract": null,
+  "note": "fact_ledger_v1（W12 FK-LR2-01 修复候选 A，设计 W12_FACT_LEDGER_DESIGN_20261101.md §2）。基座 v0_minimal_events：复用其 init/snapshot/restore 骨架与 parts 装配顺序，新增 M1/M2 事实账本（capture 时规则化逐字入账 + top-k 相关度注入，零额外模型调用）。output_contract 沿用 v0 口径：legacy 契约不声明。system 资产沿用 v0 自带精简资产不改（控制变量：只动 M1/M2）。"
+}

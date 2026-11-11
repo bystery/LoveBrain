@@ -1,0 +1,14 @@
+{
+ "candidate": "action_policy_r6_tier2",
+ "role": "candidate",
+ "parent": "action_policy_r2",
+ "output_contract": null,
+ "mechanism_flags": {
+  "hygiene_wording_fix": true,
+  "contract_guard_fix": true,
+  "subject_evidence_fix": true,
+  "output_repair_e3": true,
+  "assertion_tiering": true
+ },
+ "note": "tiering v2 candidate. Identical to action_policy_r5_tier except mechanism/mechanism.py _TIER line (v2: memory-sourced claims must keep source tone and must not upgrade \"general\" to \"this case\"; specific parameters (count/location/condition/serial/time) absent from input are banned from being named). Motivated by D1 head-to-head failure modes E061_T13 (source-wrapped unfounded certainty) and E062_T23 (fabricated dust-spot details). Flag off = byte-identical to e3."
+}

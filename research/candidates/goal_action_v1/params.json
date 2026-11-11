@@ -1,0 +1,9 @@
+{
+ "candidate": "goal_action_v1",
+ "design_ref": "candidates/marathon_c_20261026/C2_C3_CANDIDATE_DESIGN_V1.md §C2",
+ "base": "v5_purpose_aligned (closure; system assets byte-identical, sha set = v5 four)",
+ "mechanism": "GoalActionSelector: goal_category x feedback_signal -> action type with conditional capability segments (<=3 lines each); model self-assesses both in the SAME call (zero extra calls); unknown signal -> conservative 承接; 邀约 forbidden under 拒绝; 停 always available",
+ "output_contract_addition": "analysis={feedback_signal,goal_category,action_taken} (consumed+validated by mechanism notes; v5 had analysis:{} because unconsumed)",
+ "domain_words": "none (action layer contains zero domain/topic words by design)",
+ "extra_model_calls": 0
+}

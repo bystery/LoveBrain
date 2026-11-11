@@ -1,0 +1,22 @@
+{
+ "candidate": "r10_compose",
+ "role": "candidate",
+ "parent": "action_policy_r7_supersede",
+ "output_contract": null,
+ "mechanism_flags": {
+  "hygiene_wording_fix": true,
+  "contract_guard_fix": true,
+  "subject_evidence_fix": true,
+  "output_repair_e3": true,
+  "mem_dump": true,
+  "supersede_contradiction": true
+ },
+ "note": "W09-04 composable candidate. Parent: action_policy_r7_supersede (champion). Adds flag-gated single-variable controls over the four composed blocks: knowledge_block (lb_assembly.build_knowledge_block -> empty), scene_block, intent_block, goal_capabilities (r2 _r2_capabilities -> unconditioned full menu). All flags on = byte-identical r7 (default single generation; extra arms only with budget justification). Purpose: separate package benefit from per-block causality; replay scope proof via tools/replay_compose.py.",
+ "f5_revision": "2026-10-29 F5\uff1aE3 \u4fee\u590d\u5355\u72ec\u6ce8\u518c\u4e3a\u65b0\u8eab\u4efd action_policy_r4_guard_e3\uff08\u539f r4_guard_final \u76ee\u5f55\u5df2\u8fd8\u539f\u5230\u51bb\u7ed3\u5b57\u8282\uff09",
+ "compose_flags": {
+  "knowledge_block": false,
+  "scene_block": true,
+  "intent_block": true,
+  "goal_capabilities": true
+ }
+}

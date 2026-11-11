@@ -1,0 +1,10 @@
+{
+ "candidate": "ablate_action_off_final",
+ "role": "ablation_diagnostic",
+ "parent": "action_policy_r4_guard_final",
+ "output_contract": null,
+ "mechanism_flags": {
+  "abl_action_off": true
+ },
+ "note": "F4 diagnostic only. Identical to action_policy_r4_guard_final except init sets h['flags']['action_layer']=False. Used only to test the action-layer component; never report as a default candidate or as a deliverable."
+}

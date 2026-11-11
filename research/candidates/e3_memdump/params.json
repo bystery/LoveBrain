@@ -1,0 +1,15 @@
+{
+ "candidate": "e3_memdump",
+ "role": "candidate",
+ "parent": "action_policy_r2",
+ "output_contract": null,
+ "mechanism_flags": {
+  "hygiene_wording_fix": true,
+  "contract_guard_fix": true,
+  "subject_evidence_fix": true,
+  "output_repair_e3": true,
+  "mem_dump": true
+ },
+ "note": "Instrumented copy of action_policy_r4_guard_e3 (frozen champion 17fd2160...) for W05-02 content-level fidelity measurement. Only change: run_turn wrapper appends a post-call memdump=<json> digest of h[\"mem\"] (facts id/text80/status/ts/relation + updates) to out[\"notes\"] when mechanism_flags.mem_dump is true. Post-call only - the model call and its inputs/outputs are byte-identical to E3; flag off = byte-identical behavior. Measurement-only identity, not a champion candidate.",
+ "f5_revision": "2026-10-29 F5：E3 修复单独注册为新身份 action_policy_r4_guard_e3（原 r4_guard_final 目录已还原到冻结字节）"
+}

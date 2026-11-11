@@ -1,0 +1,283 @@
+{
+ "kind": "version_lineage_v2",
+ "date": "2026-10-27",
+ "scope": "LoveBrain arena harness candidates and reference baselines",
+ "identity_method": "tools/api_trial.py::harness_identity: recursive params.json.parent closure; files ending .py/.md/.json; .bak/.pyc excluded; hash = sha256 of sorted 'relpath:sha256' lines",
+ "historical_identity_method": "C4 frozen identity closures in refs/experiment_protocol_20261023/c4_screen_20261026/*.INTERLEAVE_PLAN.json; exact 6e65 reconstruction verified against staged C4 files (IDENTITY.md 4f4ec9..., reference_chain.py ecca9f...)",
+ "not_ability_order": "版本号/时间顺序不代表能力顺序；所有能力结论必须由同批实跑与评估给出。",
+ "lineage_order": [
+  "reference_c4_frozen",
+  "reference_faithful_v1_0",
+  "reference_repaired_v1_1",
+  "reference_current_v1_2",
+  "v5_historical_c4",
+  "v5_current",
+  "goal_action_v1_historical_c4",
+  "goal_action_v1_current",
+  "evidence_memory_v1_historical_c4",
+  "evidence_memory_v1_current",
+  "v6_goal_context",
+  "v6_integrated"
+ ],
+ "nodes": {
+  "reference_c4_frozen": {
+   "label": "历史 C4 冻结基线（旧付费身份，只作历史）",
+   "identity_sha256": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "parent": null,
+   "closure": ["reference_product_v1"],
+   "file_count": 9,
+   "system_assets": "core.md 34c5e020..., format.md 3ee15ff9..., naturalness_check.md a8aa4273..., redline.md 66c16e3e...（与当前四件同哈希）",
+   "mechanism": "reference_chain.py ecca9f87...（v1.0 忠实移植；extractKeywords/extractEventDate 保留原生行为；intent 仅 ACTIVE 生效）+ product_memory.py + mechanism/mechanism.py",
+   "output_contract": "response 四风格 / directions 四方向 / analysis 五键（signal, goal_category, action_taken, anchor, hook）",
+   "features": "前台提示词装配、知识/场景/计划/note/chat、时间戳、byBlocks 裁剪、参考版记忆投影",
+   "batches": ["C4 sweep_a (historical)", "C4 sweep_b (historical)"],
+   "evaluation": ["QUALITY_PANEL_SCORECARD_V1/V2 (C4 历史答卷)"],
+   "status": "historical_only",
+   "notes": "不得把此身份当作当前 reference 的成绩；当前 reference 已改选择器与 ADJUSTED。"
+  },
+  "reference_faithful_v1_0": {
+   "label": "reference_faithful（Kotlin 声明范围内忠实移植，v1.0 行为）",
+   "identity_sha256": "7db3a37124132945d8d40c765360727fcbd3af9857275a9a35f147ae998dac9a",
+   "identity_note": "以 2026-10-27 04:50 的 reference_chain.py.bak 重建、配当前文档；若配历史 IDENTITY.md 则精确复现 6e65...。",
+   "parent": null,
+   "closure": ["reference_product_v1"],
+   "file_count": 9,
+   "system_assets": "同 reference_c4_frozen 四件",
+   "mechanism": "reference_chain.py v1.0（extractKeywords 保留括注内容；extractEventDate 无数字边界；intent 仅 ACTIVE）",
+   "output_contract": "同 reference_c4_frozen",
+   "features": "同 reference_c4_frozen；保留原生选择器缺陷与 ADJUSTED 不注入",
+   "batches": [],
+   "evaluation": ["NR（仅行为重建，未直接实跑）"],
+   "status": "reference_only_not_run",
+   "notes": "用于说明“忠实原版”的边界，不作为当前可跑基线；旧 6e65 是它的历史冻结身份。"
+  },
+  "reference_repaired_v1_1": {
+   "label": "reference_repaired v1.1（选择器修复，ADJUSTED 仍不生效）",
+   "identity_sha256": "ee05db2658a1920e5f2a73fd9e0d4b7c429209320d54ebee95fc5ea8a1dc8ab2",
+   "identity_note": "以 2026-10-27 05:05 的 reference_chain.py.bak 重建、配当前文档。",
+   "parent": null,
+   "closure": ["reference_product_v1"],
+   "file_count": 9,
+   "system_assets": "同 reference_c4_frozen 四件",
+   "mechanism": "reference_chain.py v1.1（括注整体移除、全年月日先删、月日数字边界；intent 仅 ACTIVE）",
+   "output_contract": "同 reference_c4_frozen",
+   "features": "修复原生选择器把事项名改坏/把 2026-11-14 读成 26-11 的局限；其余同 v1.0",
+   "batches": [],
+   "evaluation": ["NR（未直接实跑）"],
+   "status": "superseded_by_v1_2",
+   "notes": "选择器修复属增强基线，不是“原版一直有”的能力；不得回写成 6e65 的历史能力。"
+  },
+  "reference_current_v1_2": {
+   "label": "reference_current v1.2（当前 P06 共享基线）",
+   "identity_sha256": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "parent": null,
+   "closure": ["reference_product_v1"],
+   "file_count": 9,
+   "system_assets": "同 reference_c4_frozen 四件",
+   "mechanism": "reference_chain.py v1.2：v1.1 选择器修复 + ADJUSTED 视为生效；关闭仍按终态",
+   "output_contract": "同 reference_c4_frozen",
+   "features": "选择器增强 + ADJUSTED 输入适配；用于 P06 A/B/C 的同一参照臂",
+   "batches": ["P06 A/B/C harness (live 2026-10-27)"],
+   "evaluation": ["P06 评估待完成"],
+   "status": "current_baseline_in_p06",
+   "notes": "ADJUSTED 是实验输入层的状态，不在 Kotlin IntentStatus 枚举；接受它属于公共输入适配增强，不是原生保真修复。"
+  },
+  "v5_historical_c4": {
+   "label": "v5_purpose_aligned 历史 C4 身份",
+   "identity_sha256": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+   "parent": "reference_c4_frozen",
+   "closure": ["v5_purpose_aligned", "v4_intent_context_r2", "reference_product_v1"],
+   "file_count": 25,
+   "system_assets": "v5 自有 core.md/format.md/redline.md/naturalness_check.md；format.md 的 analysis 固定 {}",
+   "mechanism": "v5_purpose_aligned/mechanism/mechanism.py（继承 reference 闭包；简化真实事件记忆/目标优先级/三项输入护栏）",
+   "output_contract": "response 四风格 / directions 四方向 / analysis 固定 {}",
+   "features": "用途对齐简化 harness；删除未被消费的内部摘要；事实与行动区分",
+   "batches": ["C4 sweep_b (historical)"],
+   "evaluation": ["QUALITY_PANEL_SCORECARD_V1/V2 (C4 历史答卷)"],
+   "status": "historical_only",
+   "notes": "v5 资产未变，但闭包内 reference 已改，当前身份不是 ef855510。"
+  },
+  "v5_current": {
+   "label": "v5_purpose_aligned 当前身份",
+   "identity_sha256": "7c6b51cec9780049d11cb0aabdfe9c42f65ff1a33d2afe22f5a926034e6eb7ac",
+   "parent": "reference_current_v1_2",
+   "closure": ["v5_purpose_aligned", "v4_intent_context_r2", "reference_product_v1"],
+   "file_count": 25,
+   "system_assets": "同 v5_historical_c4 四件",
+   "mechanism": "同 v5_historical_c4 代码；父本 reference 变为 501bc4，行为随选择器/ADJUSTED 变化",
+   "output_contract": "同 v5_historical_c4",
+   "features": "同 v5_historical_c4；在 P06 中作为 A 批候选、B/C 批的父级",
+   "batches": ["P06 A harness (live)", "P06 B/C 的父级 (live)"],
+   "evaluation": ["P06 评估待完成"],
+   "status": "current_candidate_in_p06",
+   "notes": "v5 自身文件不变不等于身份不变；新批必须按 7c6b 记录，不得沿用 ef8555。"
+  },
+  "goal_action_v1_historical_c4": {
+   "label": "C2 goal_action_v1 历史 C4 身份",
+   "identity_sha256": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59",
+   "parent": null,
+   "declared_closure": ["goal_action_v1"],
+   "declared_file_count": 7,
+   "actual_behavior_closure": ["goal_action_v1", "v5_purpose_aligned", "v4_intent_context_r2", "reference_product_v1"],
+   "actual_file_count": 32,
+   "actual_behavior_identity_sha256": "590209db955c98c69d0e112210a338a8bebc1595e3c7039c3076e2bfd8363632",
+   "system_assets": "core/redline/naturalness 继承 v5；format.md 历史版 analysis 固定 {}（与机制消费不一致）",
+   "mechanism": "goal_action_v1/mechanism/mechanism.py：目标类别 × 反馈信号 → 动作类型；同一次调用自评",
+   "output_contract": "历史 C4：response/directions + analysis 固定 {}（机制自评字段尚未进入 format 契约）",
+   "features": "目标驱动动作矩阵；C2 的实际 v5/reference 依赖未写入 params.parent",
+   "batches": ["C4 sweep_a (historical)"],
+   "evaluation": ["QUALITY_PANEL_SCORECARD_V1/V2 (C4 历史答卷)"],
+   "status": "historical_only",
+   "notes": "历史 C4 答卷的身份按 de600/实际闭包 590209 解释，不得用当前 fc296 冒充。"
+  },
+  "goal_action_v1_current": {
+   "label": "C2 goal_action_v1 当前身份",
+   "identity_sha256": "fc296dd822fbfd4e97def9cdfd532ecb892ef9467b43b80eeebd88450f2ebcba",
+   "parent": null,
+   "declared_closure": ["goal_action_v1"],
+   "declared_file_count": 7,
+   "actual_behavior_closure": ["goal_action_v1", "v5_purpose_aligned", "v4_intent_context_r2", "reference_product_v1"],
+   "actual_file_count": 32,
+   "actual_behavior_identity_sha256": "01335a56052b533efa45ccf5874f7cb9746e891e853d4b3926988f6721dfe86a",
+   "system_assets": "core/redline/naturalness 继承 v5；format.md 已改为 analysis 三字段（v1.1 P04-05）",
+   "mechanism": "同历史 C2 机制代码；format 契约与机制消费一致化",
+   "output_contract": "response/directions + analysis {feedback_signal, goal_category, action_taken}",
+   "features": "同历史 C2；当前未进入 P06，未实跑",
+   "batches": [],
+   "evaluation": ["NR（P06 不使用）"],
+   "status": "current_not_run",
+   "notes": "params.parent 缺失是登记缺口；实际 import 仍走 v5→reference。修 parent 会再次改身份，须单独登记。"
+  },
+  "evidence_memory_v1_historical_c4": {
+   "label": "C3 evidence_memory_v1 历史 C4 身份",
+   "identity_sha256": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26",
+   "parent": null,
+   "declared_closure": ["evidence_memory_v1"],
+   "declared_file_count": 7,
+   "actual_behavior_closure": ["evidence_memory_v1", "v5_purpose_aligned", "v4_intent_context_r2", "reference_product_v1"],
+   "actual_file_count": 32,
+   "actual_behavior_identity_sha256": "afa15b2184a330389a56108827672c424a8a1b05f17eb6be123565048d9df76e",
+   "system_assets": "core/redline/naturalness 继承 v5；format.md 历史版含 facts/tentatives 契约",
+   "mechanism": "evidence_memory_v1/mechanism/mechanism.py 历史版：五分离存储 + 预算投影；src 成员校验尚未硬化",
+   "output_contract": "response/directions + analysis {facts, tentatives}",
+   "features": "证据记忆、带出处事实、预算化投影",
+   "batches": ["C4 sweep_b (historical)"],
+   "evaluation": ["QUALITY_PANEL_SCORECARD_V1/V2 (C4 历史答卷)"],
+   "status": "historical_only",
+   "notes": "历史 C4 答卷的身份按 009d/实际闭包 afa15b 解释，不得用当前 fddcdb 冒充。"
+  },
+  "evidence_memory_v1_current": {
+   "label": "C3 evidence_memory_v1 当前身份",
+   "identity_sha256": "fddcdb51aa802ca9e133b80c72caa89cd72653e89a1239c869aa15e6e8939897",
+   "parent": null,
+   "declared_closure": ["evidence_memory_v1"],
+   "declared_file_count": 7,
+   "actual_behavior_closure": ["evidence_memory_v1", "v5_purpose_aligned", "v4_intent_context_r2", "reference_product_v1"],
+   "actual_file_count": 32,
+   "actual_behavior_identity_sha256": "b1e7737d2a8917ad33eb55e0dcb4fb1a2666fcf7500dda63a637e8f6089d9df8",
+   "system_assets": "core/redline/naturalness 继承 v5；format.md 含 facts/tentatives 契约",
+   "mechanism": "当前版：v1.1 成员/引文硬校验 + v1.2 静态种子事实（P04-02/03）",
+   "output_contract": "response/directions + analysis {facts, tentatives}",
+   "features": "五分离存储、证据校验、静态种子、预算投影；当前未进入 P06，未实跑",
+   "batches": [],
+   "evaluation": ["NR（P06 不使用）"],
+   "status": "current_not_run",
+   "notes": "params.parent 缺失是登记缺口；实际 import 仍走 v5→reference。"
+  },
+  "v6_goal_context": {
+   "label": "v6_goal_context（目标行动分支）",
+   "identity_sha256": "4e9d454aabd50a18f77fcd350ffe0ca8fd8a6271c8db99bc3249ed2fb7f157f6",
+   "parent": "v5_current",
+   "closure": ["v6_goal_context", "v5_purpose_aligned", "v4_intent_context_r2", "reference_product_v1"],
+   "file_count": 33,
+   "system_assets": "core.md 增加互动/动作段；format.md 增加 analysis 五键（signal/goal_category/action_taken/anchor/hook）；redline/naturalness 与 v5 同哈希",
+   "mechanism": "v6_goal_context/mechanism/mechanism.py：目标状态 ACTIVE/ADJUSTED 生效、终态失效、expiry 失效、goal_history；信号→条件化 2-5 动作能力；analysis 枚举/anchor/hook 兑现校验；snapshot/restore",
+   "output_contract": "response/directions + analysis 五键；钩子必须逐字出现在最终正文",
+   "features": "目标上下文 + 动作层；状态恢复；消融 action_layer 可关",
+   "batches": ["P06 B harness (live)"],
+   "evaluation": ["P06 评估待完成"],
+   "status": "current_candidate_in_p06",
+   "notes": "不是只改名字/加规则：有装配/读写/恢复/行为差异；具体证据见 tools/test_v6_candidates.py 与 tools/test_v6_restore_e2e.py。"
+  },
+  "v6_integrated": {
+   "label": "v6_integrated（整合记忆分支）",
+   "identity_sha256": "ac2672ffac3ba82d799a49b753840573cb1933eb71d8110792e5e0f3448c127b",
+   "parent": "v6_goal_context",
+   "closure": ["v6_integrated", "v6_goal_context", "v5_purpose_aligned", "v4_intent_context_r2", "reference_product_v1"],
+   "file_count": 41,
+   "system_assets": "core.md 增加记忆/事实段；format.md 合并 analysis 五键 + facts/tentatives/updates；redline/naturalness 与 v5 同哈希",
+   "mechanism": "v6_integrated/mechanism/mechanism.py：真实事件日志、证据事实 schema、状态机与 history、src/quote 硬校验、相关性投影、静态种子去重、最近更正块、snapshot/restore、消融 flags",
+   "output_contract": "response/directions + analysis 五键 + facts/tentatives/updates 三数组",
+   "features": "目标行动 + 证据记忆整合；记忆写回可恢复；消融 evidence_memory 可关",
+   "batches": ["P06 C harness (live)"],
+   "evaluation": ["P06 评估待完成"],
+   "status": "current_candidate_in_p06",
+   "notes": "真实读写/恢复/行为差异见 tools/test_v6_candidates.py 与 tools/test_v6_restore_e2e.py；不是名字级改动。"
+  }
+ },
+ "identity_comparison": {
+  "historical_c4": {
+   "reference_product_v1": "6e65b6bced2c2e3fb8d39ada4ae6c09887e2ea1c277158114eb0605fa7479492",
+   "v5_purpose_aligned": "ef85551091a36452bde5d6ff6ac614fefeae5dfc6687ddb691a16e16641e1fbf",
+   "goal_action_v1": "de600ff9c0521221036a5bd7a71000ce5ecb362d981733228c029e126370cf59",
+   "evidence_memory_v1": "009d2425e13c54171586249813dbd9ebebdf0a2af6d4ba98f668f4d2fae2cb26"
+  },
+  "current": {
+   "reference_product_v1": "501bc426977b2e9bcee3a6d83b917bb670642f3d9d4c2e79154634f64cd65b67",
+   "v5_purpose_aligned": "7c6b51cec9780049d11cb0aabdfe9c42f65ff1a33d2afe22f5a926034e6eb7ac",
+   "goal_action_v1": "fc296dd822fbfd4e97def9cdfd532ecb892ef9467b43b80eeebd88450f2ebcba",
+   "evidence_memory_v1": "fddcdb51aa802ca9e133b80c72caa89cd72653e89a1239c869aa15e6e8939897",
+   "v6_goal_context": "4e9d454aabd50a18f77fcd350ffe0ca8fd8a6271c8db99bc3249ed2fb7f157f6",
+   "v6_integrated": "ac2672ffac3ba82d799a49b753840573cb1933eb71d8110792e5e0f3448c127b"
+  },
+  "declared_vs_actual_closure_gap": {
+   "goal_action_v1": {
+    "declared_file_count": 7,
+    "actual_file_count": 32,
+    "declared_identity": "de600ff9... / fc296dd8...",
+    "actual_historical_identity": "590209db955c98c69d0e112210a338a8bebc1595e3c7039c3076e2bfd8363632",
+    "actual_current_identity": "01335a56052b533efa45ccf5874f7cb9746e891e853d4b3926988f6721dfe86a"
+   },
+   "evidence_memory_v1": {
+    "declared_file_count": 7,
+    "actual_file_count": 32,
+    "declared_identity": "009d2425... / fddcdb51...",
+    "actual_historical_identity": "afa15b2184a330389a56108827672c424a8a1b05f17eb6be123565048d9df76e",
+    "actual_current_identity": "b1e7737d2a8917ad33eb55e0dcb4fb1a2666fcf7500dda63a637e8f6089d9df8"
+   },
+   "consequence": "C2/C3 的 params.json 未写 parent，声明闭包只含自身 7 文件；实际 import v5→reference，行为闭包 32 文件。任何新批若直接用声明身份会把父本漂移漏掉。P06 不使用 C2/C3；旧 C4 答卷按历史实际闭包解释，不追溯改分。"
+  }
+ },
+ "baseline_classification": {
+  "reference_c4_frozen": "旧付费历史身份 6e65；只作历史参照，不作当前“原版”",
+  "reference_faithful": "Kotlin 声明范围内忠实移植 v1.0；保留原生选择器缺陷；ADJUSTED 不生效；未直接实跑，NR",
+  "reference_repaired": "另行增强/修正后的参照：v1.1 选择器修复、v1.2 ADJUSTED 生效；当前 P06 使用 501bc4；不得叫“原版原样”",
+  "rule": "旧 6e65 与当前 501bc4 不得混用；任何 P06 结论必须绑定 501bc4，历史质量成绩绑定 6e65/ef8555/de600/009d。"
+ },
+ "kotlin_evidence": {
+  "extractKeywords": {
+   "source": "D:/LoveBrain/app/src/main/java/com/lovebrain/app/domain/OngoingContextSelector.kt:266-294",
+   "native_behavior": "先删括号字符但保留内容；再用 \\d{1,2}[-/]\\d{1,2} 去日期，无数字边界；括注内容和全年日期都可能残留/咬错。",
+   "v1_0_port": "逐语义移植，保留同一行为。",
+   "classification": "原生局限；v1.1 修复属增强基线，不是保真修复。"
+  },
+  "extractEventDate": {
+   "source": "D:/LoveBrain/app/src/main/java/com/lovebrain/app/domain/OngoingContextSelector.kt:337-347",
+   "native_behavior": "正则 (\\d{1,2})-(\\d{1,2}) 直接找，2026-11-14 会先命中 26-11，产出非法日期。",
+   "v1_0_port": "同样无数字边界，保留原生行为。",
+   "classification": "原生局限；v1.1 修复属增强基线。"
+  },
+  "isIntentEffective": {
+   "source": "D:/LoveBrain/app/src/main/java/com/lovebrain/app/model/Models.kt:446-447; enum IntentStatus:471-479",
+   "native_behavior": "enabled && text.isNotBlank() && status == ACTIVE；原生枚举只有 ACTIVE/PAUSED/COMPLETED/EXPIRED，没有 ADJUSTED。",
+   "v1_0_port": "完全一致：status == ACTIVE。",
+   "classification": "v1.0 是保真移植；把 ADJUSTED 视为生效是实验输入适配增强，不是原生修复。",
+   "current_action": "v1.2 接受 ADJUSTED；必须作为公共输入适配登记，不计任何候选收益。"
+  }
+ },
+ "parent_gap": {
+  "affected": ["goal_action_v1", "evidence_memory_v1"],
+  "rule": "新批使用 C2/C3 前必须补 params.parent（并重算身份），或记录实际行为闭包；不得用声明 7 文件身份冒充。",
+  "not_changed_now": "为避免影响旧 C4 答卷解释，本轮不修改 C2/C3 的 params；P06 不使用它们。"
+ }
+}

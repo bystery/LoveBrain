@@ -1,0 +1,16 @@
+{
+ "candidate": "action_policy_r7_supersede",
+ "role": "candidate",
+ "parent": "action_policy_r2",
+ "output_contract": null,
+ "mechanism_flags": {
+  "hygiene_wording_fix": true,
+  "contract_guard_fix": true,
+  "subject_evidence_fix": true,
+  "output_repair_e3": true,
+  "mem_dump": true,
+  "supersede_contradiction": true
+ },
+ "note": "W05-03 engine-side supersession candidate. Parent: action_policy_r4_guard_e3 chain (r1 live engine). Only change: wraps r1 _merge_facts with a post-merge contradiction pass - newly confirmed reported facts carrying correction cues that overlap (bigram>=0.42) an older confirmed reported fact downgrade it to status=superseded (history preserved, logged as auto_supersede). Seeds (kbin:/persona:) never downgraded. Closes the parallel-add stale-coexistence gap (STATUS_DEAD has superseded but no code path assigned it; F1 evidence f_0009||f_0025). Keeps e3_memdump hook for offline replay validation. Flag off = byte-identical E3.",
+ "f5_revision": "2026-10-29 F5：E3 修复单独注册为新身份 action_policy_r4_guard_e3（原 r4_guard_final 目录已还原到冻结字节）"
+}

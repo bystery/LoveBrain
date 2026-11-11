@@ -1,0 +1,17 @@
+{
+ "candidate": "action_policy_r9_slim",
+ "role": "candidate",
+ "parent": "action_policy_r7_supersede",
+ "output_contract": null,
+ "mechanism_flags": {
+  "hygiene_wording_fix": true,
+  "contract_guard_fix": true,
+  "subject_evidence_fix": true,
+  "output_repair_e3": true,
+  "mem_dump": true,
+  "supersede_contradiction": true,
+  "slim_callback_user": true
+ },
+ "note": "W09-02 SLIM candidate. Parent: action_policy_r7_supersede (champion). Changes: (1) assets core.md drops L32 (dup of redline L1, AI-exposure ban) and L35-37 期望的可用回复 section (covered by core 互动 item1 + naturalness item1); (2) assets redline.md drops item2 emotion cluster (union-covered by core 底线 item2); (3) mechanism strips r2 _CALLBACK from user action block when slim_callback_user flag on (rule retained in system core.md 记忆与事实·回扣旧事的自检, fuller version). Info boundary (core 你在依据什么说话 four categories) and output contract (format.md + r2 _HYGIENE) untouched. slim_callback_user=false + original assets = byte-identical r7. Replay-scope proof: tools/replay_slim.py",
+ "f5_revision": "2026-10-29 F5：E3 修复单独注册为新身份 action_policy_r4_guard_e3（原 r4_guard_final 目录已还原到冻结字节）"
+}

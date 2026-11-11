@@ -1,0 +1,21 @@
+{
+ "candidate": "r10_compose",
+ "role": "candidate",
+ "parent": "action_policy_r7_supersede",
+ "output_contract": null,
+ "mechanism_flags": {
+  "hygiene_wording_fix": true,
+  "contract_guard_fix": true,
+  "subject_evidence_fix": true,
+  "output_repair_e3": true,
+  "mem_dump": true,
+  "supersede_contradiction": true
+ },
+ "note": "W09-04 composable candidate. Parent: action_policy_r7_supersede (champion). Finding: the r-chain assembles the user prompt inside r1's mechanism from module-function parts (v6g._goal_block, v6g._action_block, v5._source_rule, memory projection, history, ...); it does NOT route through lb_assembly (that is the B0/v0 lineage path). Gates: goal_block (v6g._goal_block -> ''), action_block (v6g._action_block -> '', F4-style), source_rule (v5._source_rule -> ''). All on = byte-identical r7. Replay matrix: tools/replay_compose.py. Memory-projection gate registered as future work (needs r1-internal parts hook).",
+ "f5_revision": "2026-10-29 F5：E3 修复单独注册为新身份 action_policy_r4_guard_e3（原 r4_guard_final 目录已还原到冻结字节）",
+ "compose_flags": {
+  "goal_block": true,
+  "action_block": true,
+  "source_rule": true
+ }
+}

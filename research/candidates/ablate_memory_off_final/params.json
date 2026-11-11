@@ -1,0 +1,10 @@
+{
+ "candidate": "ablate_memory_off_final",
+ "role": "ablation_diagnostic",
+ "parent": "action_policy_r4_guard_final",
+ "output_contract": null,
+ "mechanism_flags": {
+  "abl_memory_off": true
+ },
+ "note": "F4 diagnostic only. Identical to action_policy_r4_guard_final except init sets memory_off=True after parent init. Used only to test the declared knowledge channel; never report as a default candidate or as a deliverable."
+}
